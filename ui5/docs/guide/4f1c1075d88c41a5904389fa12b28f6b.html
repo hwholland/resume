@@ -1,0 +1,156 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="With sap.m.URLHelper you can easily trigger native mobile phone applications such as e-mail, telephone, and text messages."/>
+<meta name="description" content="With sap.m.URLHelper you can easily trigger native mobile phone applications such as e-mail, telephone, and text messages."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=17569964510405078"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=17569964510405078"/>
+<title>URL Helper</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio4f1c1075d88c41a5904389fa12b28f6b">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">URL Helper</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">With <samp class="ph codeph">sap.m.URLHelper</samp> you can easily trigger native mobile phone
+		applications such as e-mail, telephone, and text messages. </p>
+
+		<p class="p">You can set predefined values for the application so that a user does not need to enter this
+			information themselves. When personal information is displayed, for example phone
+			numbers and e-mail addresses, you can initiate a phone call or e-mail with just one
+			tap.</p>
+
+		<p class="p">The URLHelper API contains the following triggers for telephone, texts, and e-mail
+			applications: </p>
+
+		<ul class="ul" id="loio4f1c1075d88c41a5904389fa12b28f6b__ul_tym_lcq_xl">
+			<li class="li">
+				<p class="p">Trigger telephone application</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+sap.m.URLHelper.triggerTel( [Telephone Number] ); //Telephone number is optional</pre></div>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Trigger text messaging application</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+sap.m.URLHelper.triggerSms( [Telephone Number] ); //Telephone number is optional</pre></div>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Trigger e-mail application</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+sap.m.URLHelper.triggerEmail( [Destination Email], [Subject], [Default Message Text], [CC], [BCC] ); 
+// All parameters are optional</pre></div>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Redirect To custom URL</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+sap.m.URLHelper.redirect( URL ); 
+//URL is required and can be used for custom protocols (e.g http, ftp, ...)</pre></div>
+
+			</li>
+
+		</ul>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<ul class="ul" id="loio4f1c1075d88c41a5904389fa12b28f6b__ul_qmw_lfp_2j">
+				<li class="li">
+					<p class="p">iOS does <span class="ph emphasis emphasis">not</span> trigger a phone call if the phone number
+						contains "*" or "#".</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">You can add multiple recipients for a text message in Android phones by
+						separating recipient numbers with ";".</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">According to RFC 2368 you can set multiple subscribers for the e-mail
+						application by separating each with ","; however, this still depends on the
+						application. Outlook, for example, uses ";" as separator.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">You can use the <samp class="ph codeph">sap.m.URLHelper.redirect</samp> method to use
+						custom URL schemes: </p>
+
+					<ul class="ul" id="loio4f1c1075d88c41a5904389fa12b28f6b__ul_z4n_s4v_gj">
+						<li class="li">
+							<p class="p">For iOS: <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fdeveloper.apple.com%2Flibrary%2Fsafari%2F%23featuredarticles%2FiPhoneURLScheme_Reference%2FIntroduction%2FIntroduction.html" alt="http://developer.apple.com/library/safari/#featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html" title="http://developer.apple.com/library/safari/#featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html"> http://developer.apple.com/library/safari/#featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">For Android: <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fdeveloper.android.com%2Fguide%2Fappendix%2Fg-app-intents.html" alt="http://developer.android.com/guide/appendix/g-app-intents.html" title="http://developer.android.com/guide/appendix/g-app-intents.html"> http://developer.android.com/guide/appendix/g-app-intents.html<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a>
+							</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">URI schemes: <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fen.wikipedia.org%2Fwiki%2FURI_scheme" alt="http://en.wikipedia.org/wiki/URI_scheme" title="http://en.wikipedia.org/wiki/URI_scheme"> http://en.wikipedia.org/wiki/URI_scheme<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></p>
+
+						</li>
+
+					</ul>
+
+				</li>
+
+				<li class="li">
+					<p class="p">If you just want to get a URI back without a redirect, you can use normalize
+						methods which have the same parameter as trigger methods, for example:</p>
+
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+/*
+ * These methods do not redirect but return URI scheme back as string.
+ * All parameters are optional
+ */
+sap.m.URLHelper.normalizeTel( [Telephone Number] );
+sap.m.URLHelper.normalizeSms( [Telephone Number] );
+sap.m.URLHelper.normalizeEmail( [Destination Email], [Subject], [Default Message Text], [CC], [BCC] );  </pre></div>
+
+				</li>
+
+			</ul>
+
+		</div>
+
+		<div class="section"><div class="section_title">API Reference</div><div type="API Reference">
+			
+			<ul class="ul" id="loio4f1c1075d88c41a5904389fa12b28f6b__ul_j4j_ddy_tk">
+				<li class="li"><span class="ph"><a class="xref" href="../../docs/api/symbols/sap.m.URLHelper.html" alt="../../docs/api/symbols/sap.m.URLHelper.html" title="../../docs/api/symbols/sap.m.URLHelper.html">sap.m.URLHelper</a></span></li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="021ac23c547c48f087adfef85aca8413.html" title="Code samples for triggering telephone, text and e-mail applications.">Examples for Triggering Telephone, Text and E-Mail Applications</a></strong><br/>
+</div>
+</ul>
+
+</div>
+</div></div>
+
+</body>
+</html>

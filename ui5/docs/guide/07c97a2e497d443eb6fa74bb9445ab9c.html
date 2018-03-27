@@ -1,0 +1,141 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, we will step back from our tests and application features that we have implemented so far and add another important piece of test code: The test suite page. A test suite can execute multiple tests and collect the results. This comes in handy for automatic tools in a continuous integration process."/>
+<meta name="description" content="In this step, we will step back from our tests and application features that we have implemented so far and add another important piece of test code: The test suite page. A test suite can execute multiple tests and collect the results. This comes in handy for automatic tools in a continuous integration process."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7282402336739217"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7282402336739217"/>
+<title>Step 10: Test Suite and Automated Testing</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio07c97a2e497d443eb6fa74bb9445ab9c">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 10: Test Suite and Automated Testing</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we will step back from our tests and application features that we have
+		implemented so far and add another important piece of test code: The test suite page. A test
+		suite can execute multiple tests and collect the results. This comes in handy for automatic
+		tools in a continuous integration process.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio07c97a2e497d443eb6fa74bb9445ab9c__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loio07c97a2e497d443eb6fa74bb9445ab9c__image_d5c_cmd_jt" src="loioa715577da0714787b4e7839cdc524991_LowRes.png"/>
+			<div class="figcap">A Selenium runner for the test suite of the bulletin board</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Samples</span> in the Demo Kit
+					<span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.testing.10/preview" alt="../../explored.html#/sample/sap.m.tutorial.testing.10/preview" title="../../explored.html#/sample/sap.m.tutorial.testing.10/preview">Testing - Step 10</a></span>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/test/testsuite.qunit.html (New)</div><div type="webapp/test/testsuite.qunit.html (New)">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html"><span class="ph emphasis emphasis">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;QUnit TestSuite for Bulletin Board&lt;/title&gt;
+	&lt;script type="text/javascript" src="/resources/sap/ui/qunit/qunit-redirect.js"&gt;&lt;/script&gt;
+	&lt;script&gt;
+		/**
+		 * Add test pages to this test suite function.
+		 *
+		 */
+		function suite() {
+			var oSuite = new parent.jsUnitTestSuite(),
+				sContextPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/") + 1);
+			oSuite.addTestPage(sContextPath + "unit/unitTests.qunit.html");
+			oSuite.addTestPage(sContextPath + "integration/opaTests.qunit.html");
+			return oSuite;
+		}
+	&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;/body&gt;
+&lt;/html&gt;</span></pre></div>
+
+			<p class="p">The coding is quite straight-forward, we require the relevant QUnit files
+				for redirecting to the central test suite and provide a
+				configuration function <samp class="ph codeph">suite()</samp> that is called
+				automatically by the testrunner.</p>
+
+			<div class="p">Inside this function we add the QUnit pages for the app’s unit and
+				integration tests. For technical reasons, we have to provide an
+				absolute path to the HTML pages so that the testrunner can
+				execute them centrally. You can now run the
+					<span class="ph filepath">webapp/test/testsuite.qunit.html</span> file
+				to check if all unit and integration tests are running fine with
+				one URL.<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">A similar test suite can be configured as a pre-commit hook in local build environments or
+						as a pre-submit hook in a continuous integration scenario on the central
+						build server. Only when all tests run successfully, a new change is accepted
+						and may be merged. </p>
+
+					<p class="p">Alternatively you can use a local test runner, such as
+						Selenium or Karma, that automatically executes all tests
+						whenever a file in the app project has been changed. All
+						of these configurations run the tests and collect the
+						resulting messages for further analysis. Therefore, it
+						is very important to define meaningful test descriptions
+						and success as well as error messages as you write your
+						application tests.</p>
+
+				</div>
+
+			</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Conventions</div><div type="Conventions">
+			
+			<ul class="ul" id="loio07c97a2e497d443eb6fa74bb9445ab9c__ul_nh5_ybb_nr">
+				<li class="li">
+					<p class="p">Create a test suite app that triggers all your tests at once</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Run the test suite whenever you change the code of the app</p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="291c9121e6044ab381e0b51716f97f52.html" title="In this tutorial we will test application functionality with the testing tools that are delivered with OpenUI5. At different steps of this tutorial you will write tests using QUnit, OPA5, and the mock server. Additionally, you will learn about testing strategies, Test Driven Development (TDD), and much more.">Testing</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="4a9f063d4a4143d5b5c10416677f04b6.html" title="Now that we have covered all kinds of tests for navigation, we introduce our Post page that shows details of a post in the bulletin board. To achieve this, we have to introduce a new view/controller pair and adjust the routing of the application.">Step 9: Adding the Post Page</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="92959b10ecf14582b65eaadb40571156.html" title="In this step, we will write a test that simulates a user search. We will enter the search string into the search field and check if the correct results are shown in worklist table.">Step 11: Testing User Input</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fkarma" alt="https://www.npmjs.com/package/karma" title="https://www.npmjs.com/package/karma"><span class="ph uicontrol">Karma</span> Home Page<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fdocs.seleniumhq.org%2F" alt="http://docs.seleniumhq.org/" title="http://docs.seleniumhq.org/"><span class="ph uicontrol">Selenium</span> Home Page<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+<div><a class="link" href="ae448243822448d8ba04b4784f4b09a0.html#loioae448243822448d8ba04b4784f4b09a0" title="To make sure that the code is always tested thoroughly before it is included in a productive app, you should use a test runner that automates tests. The test runner can be included in your project setup so that it is called whenever code changes are submitted.">Test Automation</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

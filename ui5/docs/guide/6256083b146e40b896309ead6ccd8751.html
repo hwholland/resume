@@ -1,0 +1,137 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The templates include basic testing features, unit tests as well as integration tests for a basic test coverage of the initial app. The tests are written independently of the actual data displayed in the app."/>
+<meta name="description" content="The templates include basic testing features, unit tests as well as integration tests for a basic test coverage of the initial app. The tests are written independently of the actual data displayed in the app."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7728546798346103"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7728546798346103"/>
+<title>Testing</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio6256083b146e40b896309ead6ccd8751">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Testing</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The templates include basic testing features, unit tests as well as integration tests
+		for a basic test coverage of the initial app. The tests are written independently of the
+		actual data displayed in the app.</p>
+
+		<p class="p">The <span class="ph filepath">webapp</span> folder of the template app contains a
+				<span class="ph filepath">test.html</span> file which serves as an overview for the different
+			test pages. You can run the app with or without mock data and run the unit and
+			integration tests. This section describes which application tests are provided and how
+			they are structured.</p>
+
+		<div class="section"><div class="section_title">Integration Tests</div><div type="Integration Tests">
+			
+			<div class="p">The integration tests shipped with the template cover all basic functionality and
+				provide several "journeys". Journeys include a series of OPA tests that belong to
+				the same functionality and should be executed together. Some of the journeys are
+				implemented for both phone and desktop use cases to test device-specific interaction
+					steps:<ul class="ul" id="loio6256083b146e40b896309ead6ccd8751__ul_awt_jq1_bt">
+					<li class="li">
+						<p class="p"><samp class="ph codeph">BusyJourney</samp> / <samp class="ph codeph">BusyJourneyPhone</samp>: This
+							journey tests the busy indication features of the app for phone and
+							other devices.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">NavigationJourney</samp> /
+								<samp class="ph codeph">NavigationJourneyPhone</samp>: This journey will trigger
+							user interactions and navigate through the application. The routing
+							configuration, basic navigation events, and error handling are tested
+							here.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">NotFoundJourney</samp>: Several "not found" cases of the
+							application are tested here. Faulty navigation scenarios are introduced
+							intentionally to simulate errors.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">MasterJourney</samp>: Tests for the
+								<span class="ph uicontrol">Master</span> page that check the search, sorting,
+							filtering and grouping features built into the app.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">FLPIntegrationJourney</samp>: This journey is available if you have enabled SAP
+							Fiori launchpad (<span class="ph pname">FLP</span>) for your app. It tests the <span class="ph pname">FLP</span> integration
+							features <span class="ph uicontrol">Save as tile</span> and <span class="ph uicontrol">Share on SAP
+								Jam</span>.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">AllJourneys</samp>: This is a convenience journey that will
+							call all the other journeys specified above and is used in the test
+							suite file.</p>
+
+					</li>
+
+				</ul>
+</div>
+
+			<p class="p">You can execute all journeys by calling the test suite file
+					<span class="ph filepath">opaTests.qunit.html</span> or
+					<span class="ph filepath">opaTestsPhone.qunit.html</span> in the
+					<span class="ph filepath">webapp/test/integration</span> folder or selecting the
+					<span class="ph uicontrol">run all integration tests</span> link in the
+					<span class="ph filepath">test.html</span> file in the app’s root folder.</p>
+
+			<p class="p">For more information, see <a class="xref" href="2696ab50faad458f9b4027ec2f9b884d.html" title="OPA5 is an API for OpenUI5 controls. It hides asynchronicity and eases access to OpenUI5 elements. This makes OPA especially helpful for testing user interactions, integration with OpenUI5, navigation, and data binding.">Integration Testing with One Page Acceptance Tests (OPA5)</a>
+				<span class="ph">and <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.test.Opa5/samples" alt="../../explored.html#/entity/sap.ui.test.Opa5/samples" title="../../explored.html#/entity/sap.ui.test.Opa5/samples">sap.ui.test.Opa5</a> in the
+						<span class="ph uicontrol">Samples</span> within the Demo Kit.</span></p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Unit Tests</div><div type="Unit Tests">
+			
+			<p class="p">In the <span class="ph filepath">unit</span> subfolder you can find all unit tests for our
+				application. They are structured similarly to the structure of the
+					<span class="ph filepath">webapp</span> folder. For example, controller tests are located in
+				the <span class="ph filepath">controller</span> folder whereas formatter tests are located in
+				the <span class="ph filepath">model</span> folder.</p>
+
+			<p class="p">Unit tests are included for the following functionality:</p>
+
+			<ul class="ul" id="loio6256083b146e40b896309ead6ccd8751__ol_i5j_ws1_bt">
+				<li class="li">App controller tests</li>
+
+				<li class="li">ListSelector tests</li>
+
+				<li class="li">Formatters</li>
+
+				<li class="li">Groupers</li>
+
+				<li class="li">Device model</li>
+
+			</ul>
+
+			<p class="p">As with the integration tests, you can execute all unit tests by calling the test
+				suite file <span class="ph filepath">unitTests.qunit.html</span> in the
+					<span class="ph filepath">webapp/test/unit</span> folder or selecting the <span class="ph uicontrol" id="loio6256083b146e40b896309ead6ccd8751__icon_utt_dt1_bt">run all unit tests</span> link in the
+					<span class="ph filepath">test.html</span> file in the app’s root folder.</p>
+
+			<p class="p">For more information, see <a class="xref" href="09d145cd86ee4f8e9d08715f1b364c51.html" title="QUnit is a powerful, easy-to-use JavaScript unit testing framework. It is used by the jQuery, jQuery UI and jQuery Mobile projects and is capable of testing any generic JavaScript code. It supports asynchronous tests out-of-the-box.">Unit Testing with QUnit</a>, <a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fqunitjs.com%2F" alt="https://qunitjs.com/" title="https://qunitjs.com/">https://qunitjs.com/<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a> and <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fsinonjs.org%2F" alt="http://sinonjs.org/" title="http://sinonjs.org/">http://sinonjs.org/<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a>.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

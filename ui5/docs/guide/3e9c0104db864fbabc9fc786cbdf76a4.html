@@ -1,0 +1,212 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Navigation with the keyboard and screen reader have to both work properly at the same time. In order for this to happen, you need to use the correct ARIA attributes and to map them to their HTML counterparts."/>
+<meta name="description" content="Navigation with the keyboard and screen reader have to both work properly at the same time. In order for this to happen, you need to use the correct ARIA attributes and to map them to their HTML counterparts."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5370011894477379"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5370011894477379"/>
+<title>ARIA Attribute Mapping</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio3e9c0104db864fbabc9fc786cbdf76a4">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">ARIA Attribute Mapping</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Navigation with the keyboard and screen reader have to both work properly at the same
+		time. In order for this to happen, you need to use the correct ARIA attributes and to map
+		them to their HTML counterparts. </p>
+
+		<div class="section"><div class="section_title">Attribute Mapping</div><div type="Attribute Mapping">
+			
+			<p class="p">The ARIA <samp class="ph codeph">role=application</samp> is added to the body of each page by <span class="ph"><span class="ph pname">OpenUI5</span></span> Core to ensure
+				that the page can be properly navigated using the keyboard. It this is not the case,
+				the <span class="ph"><span class="ph pname">OpenUI5</span></span> JavaScript
+				key handler code may get overridden by the screen reader and this will hinder
+				keyboard handling. </p>
+
+			<div class="p">The mapping of HTML attributes to ARIA attributes is described in the following
+					table:
+<div class="table-wrapper tablenoborder"><table summary="" id="loio3e9c0104db864fbabc9fc786cbdf76a4__table_i55_wg4_ds" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Attribute Mapping</span></caption>
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+						
+						
+						<thead class="thead" align="left">
+							<tr class="row">
+								<th class="entry" valign="top" width="50%" id="d2965692e52">
+									<p class="p">HTML Attribute</p>
+
+								</th>
+
+								<th class="entry" valign="top" width="50%" id="d2965692e58">
+									<p class="p">ARIA Attribute</p>
+
+								</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody class="tbody">
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d2965692e52 ">
+									<p class="p"><samp class="ph codeph">editable</samp></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="50%" headers="d2965692e58 ">
+									<p class="p"><samp class="ph codeph">aria-readonly</samp></p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d2965692e52 ">
+									<p class="p"><samp class="ph codeph">enabled</samp></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="50%" headers="d2965692e58 ">
+									<p class="p"><samp class="ph codeph">aria-disabled</samp></p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d2965692e52 ">
+									<p class="p"><samp class="ph codeph">visible</samp></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="50%" headers="d2965692e58 ">
+									<p class="p"><samp class="ph codeph">aria-hidden</samp></p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d2965692e52 ">
+									<p class="p"><samp class="ph codeph">required</samp></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="50%" headers="d2965692e58 ">
+									<p class="p"><samp class="ph codeph">aria-required</samp></p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d2965692e52 ">
+									<p class="p"><samp class="ph codeph">checked</samp></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="50%" headers="d2965692e58 ">
+									<p class="p"><samp class="ph codeph">aria-checked</samp></p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d2965692e52 ">
+									<p class="p"><samp class="ph codeph">selected</samp></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="50%" headers="d2965692e58 ">
+									<p class="p"><samp class="ph codeph">aria-selected</samp></p>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+</div>
+</div>
+
+			<p class="p">For custom controls, not part of the ARIA 1.0 role definitions, mapping to similar and
+				existing ARIA base role concepts is applied. In special cases, custom role names can
+				be added by the <span class="ph"><span class="ph pname">OpenUI5</span></span>
+				framework using <samp class="ph codeph">aria-describedby</samp> or
+					<samp class="ph codeph">aria-labelledby</samp> references.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Additional API Associations</div><div type="Additional API Associations">
+			
+			<div class="p">In order to ease the setting of ARIA attributes, we have introduced two new
+				associations to the <span class="ph"><span class="ph pname">OpenUI5</span></span> API:<ol class="ol" id="loio3e9c0104db864fbabc9fc786cbdf76a4__ol_vnh_qkb_2s">
+					<li class="li">
+						<p class="p">• ariaLabelledBy - holds a reference to the control that has the
+								<samp class="ph codeph">aria-labelledby</samp> attribute set</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">• ariaDescribedBy - holds a reference to the control that has the
+								<samp class="ph codeph">aria-describedby</samp> attribute set</p>
+
+					</li>
+
+				</ol>
+</div>
+
+			<p class="p">These associations have the following structure:</p>
+
+			<div class="p">
+				<div class="note sap-sourcecodeblock sourcecodeblock"><span class="sourcecodeblocktitle">Source Code</span> 
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">ariaLabelledBy : {
+
+type : "sap.ui.core.Control",
+
+multiple : true,
+
+singularName : "ariaLabelledBy"
+
+}
+</pre></div>
+
+				</div>
+
+			</div>
+
+			<div class="p">
+				<div class="note sap-sourcecodeblock sourcecodeblock"><span class="sourcecodeblocktitle">Source Code</span> 
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">ariaDescribedBy : {
+
+type : "sap.ui.core.Control",
+
+multiple : true,
+
+singularName : "ariaDescribedBy"
+
+}
+</pre></div>
+
+				</div>
+
+			</div>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

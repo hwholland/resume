@@ -1,0 +1,179 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=1447171061646455"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=1447171061646455"/>
+<title>Lifecycle of Binding Templates</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio3a4a9e562988456c9be0ef883ae7da50">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Lifecycle of Binding Templates</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">The lifecycle of the binding templates differs from the lifecycle of controls that are
+			contained in an aggregation. Whenever a control object is destroyed, any aggregating
+			object is destroyed as well. For list binding templates, you specify the behavior by
+			using the additional property <samp class="ph codeph">templateShareable</samp> in the parameter of the
+				<samp class="ph codeph">bindAggregation</samp> method of class
+				<samp class="ph codeph">sap.ui.base.ManagedObject</samp>. </p>
+
+		<div class="p">In <span class="ph emphasis emphasis">XML views</span>, you can also use the
+				<samp class="ph codeph">templateShareable</samp> property by adding it to the binding info as
+			follows:
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+      &lt;Table id="EmployeeEquipments" headerText="Employee Equipments"
+            items="{<span class="ph emphasis emphasis">path</span>:’EMPLOYEE_2_EQUIPMENTS’, <span class="ph emphasis emphasis">templateShareable:true</span>}"&gt;
+            &lt;columns&gt;
+[…]
+            &lt;/columns&gt;
+            &lt;items&gt;
+                  &lt;ColumnListItem&gt;
+                        &lt;cells&gt;
+                             &lt;Text text="{ID}"/&gt;
+                        &lt;/cells&gt;
+                        &lt;cells&gt;
+                             &lt;Text text="{EQUIPMENT_2_PRODUCT/Name}"/&gt;
+                        &lt;/cells&gt;
+                        &lt;cells&gt;
+                             &lt;Text text="{Category}"/&gt;
+                        &lt;/cells&gt;
+                        &lt;cells&gt;
+                             &lt;!-- Name="PRODUCT_2_CATEGORY" Type="Collection(...)" --&gt;
+                             &lt;List items="{EQUIPMENT_2_PRODUCT/PRODUCT_2_CATEGORY}"&gt;
+                                   &lt;StandardListItem <span class="ph emphasis emphasis">templateShareable="true"</span> title="{CategoryName}"/&gt;
+                             &lt;/List&gt;
+                        &lt;/cells&gt;
+                        &lt;cells&gt;
+                             &lt;Text text="{EQUIPMENT_2_PRODUCT/PRODUCT_2_SUPPLIER/Supplier_Name}"/&gt;
+                        &lt;/cells&gt;
+                  &lt;/ColumnListItem&gt;
+            &lt;/items&gt;
+      &lt;/Table&gt;</pre></div>
+<ul class="ul" id="loio3a4a9e562988456c9be0ef883ae7da50__ul_lmr_f4s_4v">
+				<li class="li">
+					<p class="p"><samp class="ph codeph">templateShareable = "false"</samp> (preferred setting)</p>
+
+					<p class="p">If you set the parameter to <samp class="ph codeph">false</samp> the lifecycle is
+						controlled by the framework. It will destroy the template when the binding
+						is removed (<samp class="ph codeph">unbindAggregation</samp>,
+						<samp class="ph codeph">unbindItems</samp>) </p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">templateShareable = "true"</samp></p>
+
+					<div class="p">If you set the parameter to <samp class="ph codeph">true</samp> the template is
+							<span class="ph emphasis emphasis">not</span> destroyed when (the binding of) the aggregated
+						object is destroyed. Use this option in the following cases only:<ul class="ul" id="loio3a4a9e562988456c9be0ef883ae7da50__ul_i5t_frs_4v">
+							<li class="li">
+								<p class="p">The template is reused in your app to define an additional list
+									binding. </p>
+
+								<p class="p">Since the template is not destroyed, this could also affect some
+									other aggregation that uses the same template at a later point
+									in time.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">The parent control that contains the list binding with the
+									template is cloned. The binding info is used in the clone as
+									well.</p>
+
+								<p class="p">This means, when <samp class="ph codeph">templateShareable</samp> is set to
+										<samp class="ph codeph">true</samp>, the template will not be cloned, when
+									it is set to <samp class="ph codeph">false</samp> it will be cloned when the
+									parent is cloned.</p>
+
+							</li>
+
+						</ul>
+In these cases, the app has to make sure that the templates are
+						properly cleaned up at some point in time - at the latest when the
+						corresponding controller or component is destroyed.</div>
+
+				</li>
+
+				<li class="li">
+					<div class="p">If the parameter is undefined, (neither <samp class="ph codeph">true</samp> nor
+							<samp class="ph codeph">false</samp>), the framework checks at several points in time
+						whether all list bindings are removed. If there are no bindings, the
+						templates is marked as <samp class="ph codeph">candidate for destroy()</samp>, but it is
+						not immediately destroyed. The candidate is destroyed in the following
+							cases:<ul class="ul" id="loio3a4a9e562988456c9be0ef883ae7da50__ul_c43_v5m_rv">
+							<li class="li">
+								<p class="p">A <span class="ph emphasis emphasis">new object with the same ID</span> is
+									created.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">The component that owns the objects is destroyed.</p>
+
+							</li>
+
+						</ul>
+</div>
+
+					<div class="p">If the framework determines that a "candidate for destroy" is still in use in
+						another binding or in a clone operation, the framework makes sure that the
+						candidate is not destroyed by implicitly setting
+							<samp class="ph codeph">templateShareable</samp> to <samp class="ph codeph">true</samp> (as this
+						best reflects how the app deals with the template). But now the template is
+						not destroyed at all (an error message is issued), and the app
+						implementation needs to make sure that the binding template is destroyed as
+						soon as it is no longer needed.<div class="note note"><span class="notetitle">Note</span> 
+							<div class="p">The error messages are:<ul class="ul" id="loio3a4a9e562988456c9be0ef883ae7da50__ul_zss_hcm_vv">
+									<li class="li">
+										<p class="p"><span class="ph uicontrol">A binding template that is marked as
+												'candidate for destroy' is reused in a
+												binding.</span></p>
+
+									</li>
+
+									<li class="li">
+										<p class="p"><span class="ph uicontrol">During a clone operation, a template was found
+												that neither was marked with
+												'templateShareable:true' nor
+												'templateShareable:false'.</span>
+										</p>
+
+									</li>
+
+								</ul>
+</div>
+
+						</div>
+</div>
+
+					<div class="note caution"><span class="cautiontitle">Caution</span> 
+						<p class="p">To leave the parameter undefined is<span class="ph emphasis emphasis"> very
+							error-prone</span>, therefore we don't recommend this! Always set
+							the parameter explicitly to <samp class="ph codeph">true</samp> or
+								<samp class="ph codeph">false</samp>.</p>
+
+					</div>
+
+				</li>
+
+			</ul>
+</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

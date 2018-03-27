@@ -1,0 +1,99 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="After defining the metadata of a control, you add the method implementation to the control."/>
+<meta name="description" content="After defining the metadata of a control, you add the method implementation to the control."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=10613903317482676"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=10613903317482676"/>
+<title>Adding Method Implementations</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio91f0a8dc6f4d1014b6dd926db0e91070">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Adding Method Implementations</h1>
+
+	<div class="body"><p class="shortdesc">After defining the metadata of a control, you add the method implementation to the
+		control.</p>
+<p class="p">The following restrictions apply with regard to the method names:</p>
+<ul class="ul"><li class="li"> 
+		  <p class="p">Do not use names of methods that are or will be provided by a superclass. Due to inheritance,
+					your implementation would overwrite the implementation of the superclass.</p>
+ 
+		</li>
+<li class="li"> 
+		  <p class="p">Names starting with
+						<samp class="ph codeph">set...</samp>/<samp class="ph codeph">get...</samp>/<samp class="ph codeph">insert...</samp>/<samp class="ph codeph">add...</samp>/<samp class="ph codeph">remove...</samp>/<samp class="ph codeph">indexOf...</samp>/<samp class="ph codeph">destroy...</samp>
+					shall not be used because they may collide with setters/getters for properties
+					or aggregations that are defned explicitely or by a superclass.</p>
+ 
+		</li>
+<li class="li"> 
+		  <p class="p">Names starting with
+						<samp class="ph codeph">attach...</samp>/<samp class="ph codeph">detach...</samp>/<samp class="ph codeph">fire</samp>
+					may collide with methods created for events.</p>
+ 
+		</li>
+</ul>
+<p class="p">The following method names have a specific meaning and should be used accordingly:</p>
+<ul class="ul" id="loio91f0a8dc6f4d1014b6dd926db0e91070__ul_r1j_szp_gq">
+			<li class="li">
+				<p class="p"><samp class="ph codeph">on...</samp>: Used for event handlers that are automatically bound to
+					browser events</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p"><samp class="ph codeph">init</samp>: Used for the initialization function that is called after
+					control instantiation</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p"><samp class="ph codeph">renderer</samp>: Used for the function that creates the control's
+					HTML</p>
+
+			</li>
+
+		</ul>
+
+		<div class="note note" id="loio91f0a8dc6f4d1014b6dd926db0e91070__NOTE_InheritingControl_init_exit"><span class="notetitle">Note</span> 
+			<p class="p">Any method in your inheriting control overrides methods with the same name in the
+				superclass. If, for example, your control implements the <samp class="ph codeph">init()</samp>
+				method, the <samp class="ph codeph">init()</samp> of the superclass will no longer be executed.
+				The control is then no longer properly initialized and this typically causes an
+				error. To avoid breaking the control, call the superclass method.</p>
+
+			<p class="p">Consider also that the superclass might implement the method later on, or removes its
+				own method implementation because it is not needed anymore. We recommend that you
+				check for the existence of the superclass method before calling it:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+sap.ui.somelib.SomeControl.extend("my.OwnControl", {
+       ...
+       init: function() {
+             if (sap.ui.somelib.SomeControl.prototype.init) { // check whether superclass implements the method
+                    sap.ui.somelib.SomeControl.prototype.init.apply(this, arguments); // call the method with the original arguments
+             }
+
+             //... do any further initialization of your subclass... 
+       } </pre></div>
+
+		</div>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">When you modify the HTML of a control using the code in the control behavior file, make sure to escape any unchecked data you write with
+					<samp class="ph codeph">jQuery.sap.encodeHTML(...)</samp> to prevent cross-site-scripting issues. For more information, see <a class="xref" href="91f0bd316f4d1014b6dd926db0e91070.html" title="Cross-site scripting (XSS) is a widely known vulnerability most web sites have. This page does not provide general information about cross-site scripting but focuses on what you as an application developer using OpenUI5 can do to avoid these security issues.">Cross-Site Scripting</a>.</p>
+
+		</div>
+</div>
+<div class="related-links"> 
+</div>
+</div></div>
+
+</body>
+</html>

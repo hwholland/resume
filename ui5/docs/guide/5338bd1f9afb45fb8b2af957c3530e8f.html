@@ -1,0 +1,217 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The OData V4 Model supports server side filtering on lists."/>
+<meta name="description" content="The OData V4 Model supports server side filtering on lists."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8856198973523037"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8856198973523037"/>
+<title>Filtering</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio5338bd1f9afb45fb8b2af957c3530e8f">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Filtering</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The OData V4 Model supports server side filtering on lists.</p>
+
+		<p class="p">To use server side filtering, set the operation mode to <span class="ph"><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fui5.sap.com%2Fsdk%2F%23%2Fapi%2Fsap.ui.model.odata.OperationMode%2Fproperties" alt="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.OperationMode/properties" title="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.OperationMode/properties">sap.ui.model.odata.OperationMode.Server<img src="images/sap_link.png" class="link-sap" alt="Information published on SAP site" title="Information published on SAP site" border="0"/></a></span><span class="ph"/>. This can be done as
+			follows:</p>
+
+		<ul class="ul" id="loio5338bd1f9afb45fb8b2af957c3530e8f__ul_rvr_25c_sw">
+			<li class="li">
+				<p class="p">For a single <samp class="ph codeph">ODataListBinding</samp> instance, set the binding
+					parameter <samp class="ph codeph">$$operationMode</samp></p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">For all list bindings of the model, set the model parameter
+						<samp class="ph codeph">operationMode</samp>.</p>
+
+			</li>
+
+		</ul>
+
+		<div class="p">
+			<span class="ph emphasis emphasis">Example: Operation mode set in <samp class="ph codeph">manifest.json</samp> for the
+				model</span>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+"models" : {
+    "" : {
+        "dataSource" : "default",
+        "settings" : {
+            "operationMode" : "Server",
+            "synchronizationMode" : "None"
+        }
+    }
+}</pre></div>
+</div>
+
+		<p class="p"><span class="ph emphasis emphasis">Example: Operation mode set as binding parameter for a specific list
+				binding</span></p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+&lt;Table growing="true" growingThreshold="5" id="Equipments"
+    items="{
+            path : '/Equipments',
+            parameters : {
+                $$operationMode : 'Server',
+                $filter : 'Category eq \'Electronics\'',
+                $select : 'Category,EmployeeId,ID,Name'
+            }
+        }"&gt;</pre></div>
+
+		<p class="p">The <samp class="ph codeph">ODataListBinding</samp> allows to set static and dynamic filters:</p>
+
+		<ul class="ul" id="loio5338bd1f9afb45fb8b2af957c3530e8f__ul_pmh_s1d_sw">
+			<li class="li">
+				<p class="p">To set a static filter, use the <samp class="ph codeph">$filter</samp> system query option in
+					the binding parameters. The static filter value is sent with every data service
+					request for the binding; you may specify any filter value allowed in OData V4.
+					The static filter cannot be overwritten for an existing binding.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">The dynamic filter is an instance of <span class="ph"><a class="xref" href="../../docs/api/symbols/sap.ui.model.Filter.html" alt="../../docs/api/symbols/sap.ui.model.Filter.html" title="../../docs/api/symbols/sap.ui.model.Filter.html">sap.ui.model.Filter</a></span>
+					, or an array thereof. For an
+					array, the filters are combined with a logical AND. You can set the initial
+					value for the dynamic filter in <span class="ph"><a class="xref" href="../../docs/api/symbols/ODataModel.bindList.html" alt="../../docs/api/symbols/ODataModel.bindList.html" title="../../docs/api/symbols/ODataModel.bindList.html">ODataModel.bindList</a></span>
+					 or declaratively in an XML
+					view with the <samp class="ph codeph">filters</samp> property in an aggregation's binding
+					information. To set the dynamic filter, use the <span class="ph"><a class="xref" href="../../docs/api/symbols/ODataListBinding.filter.html" alt="../../docs/api/symbols/ODataListBinding.filter.html" title="../../docs/api/symbols/ODataListBinding.filter.html">ODataListBinding.filter</a></span>
+					 method. This filter
+					overwrites the initial value specified on binding construction.</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p">The <samp class="ph codeph">ODataListBinding</samp> combines the dynamic filter and static filter with
+			a logical AND.</p>
+
+		<p class="p"><span class="ph emphasis emphasis">Examle: Dynamic and static filters</span></p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+&lt;Table growing="true" growingThreshold="5" id="Equipments"
+    items="{
+            path : '/Equipments',
+            parameters : {
+                $$operationMode : 'Server',
+                $filter : 'Category eq \'Electronics\'',                             &lt;-- static filter
+                $select : 'Category,EmployeeId,ID,Name'
+            },
+            filters : {                                      &lt;-- dynamic filter initial value
+                path : 'EmployeeId',
+                operator : 'GE',
+                value : '0000',
+            }
+        }"&gt;</pre></div>
+
+		<p class="p">The example above filters the <samp class="ph codeph">Equipments</samp> entity set by
+				<samp class="ph codeph">Category</samp> (static filter) and <samp class="ph codeph">EmployeeId</samp> (dynamic
+			filter, initial value).</p>
+
+		<div class="section" id="loio5338bd1f9afb45fb8b2af957c3530e8f__section_mqn_jkk_b1b"><div class="section_title">Filtering with Any and All</div><div type="Filtering with Any and All"><p class="p">The OData V4 model
+				also supports the Lambda Operators <samp class="ph codeph">any</samp> and <samp class="ph codeph">all</samp> as
+				defined in section 5.1.1.10 of the <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fdocs.oasis-open.org%2Fodata%2Fodata%2Fv4.0%2Ferrata03%2Fos%2Fcomplete%2Fpart2-url-conventions%2Fodata-v4.0-errata03-os-part2-url-conventions-complete.html%23_Toc453752358" alt="http://docs.oasis-open.org/odata/odata/v4.0/errata03/os/complete/part2-url-conventions/odata-v4.0-errata03-os-part2-url-conventions-complete.html#_Toc453752358" title="http://docs.oasis-open.org/odata/odata/v4.0/errata03/os/complete/part2-url-conventions/odata-v4.0-errata03-os-part2-url-conventions-complete.html#_Toc453752358">OData Version 4.0. Part 2: URL Conventions<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a>
+				specification. They are represented by <span class="ph"><a class="xref" href="../../docs/api/symbols/sap.ui.model.Filter.html" alt="../../docs/api/symbols/sap.ui.model.Filter.html" title="../../docs/api/symbols/sap.ui.model.Filter.html">sap.ui.model.Filter</a></span> objects with
+				filter operators <span class="ph"><a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.ui.model.FilterOperator/properties" alt="https://ui5.sap.com/sdk/#/api/sap.ui.model.FilterOperator/properties" title="https://ui5.sap.com/sdk/#/api/sap.ui.model.FilterOperator/properties">sap.ui.model.FilterOperator.Any</a></span>
+				and <span class="ph"><a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.ui.model.FilterOperator/properties" alt="https://ui5.sap.com/sdk/#/api/sap.ui.model.FilterOperator/properties" title="https://ui5.sap.com/sdk/#/api/sap.ui.model.FilterOperator/properties">sap.ui.model.FilterOperator.All</a></span>.</p>
+<p class="p">Example:</p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap.ui.model.Filter({
+        // the path of the collection for which the condition needs to be evaluated
+        path : "TEAM_2_EMPLOYEES",
+        // either sap.ui.model.FilterOperator.Any or sap.ui.model.FilterOperator.All
+        operator : sap.ui.model.FilterOperator.Any,    
+        // any OData identifier which is a variable for the current element of the collection referenced by path
+        variable : "employee",
+        // the filter condition; the path of the nested filter contains the variable as prefix to reference current element of the collection
+        condition : new sap.ui.model.Filter("employee/AGE", sap.ui.model.FilterOperator.GT, 42)  
+    })</pre></div>
+<p class="p">The
+				path of the filter object is the path of the collection for which the boolean
+				condition needs to be evaluated. The variable can be any OData identifier and it
+				needs to be part of the path of a nested filter condition.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Filter Operator any</p>
+
+				<p class="p">The filter operator Any applies the <samp class="ph codeph">boolean</samp> filter condition to
+					each member of the collection referenced by <samp class="ph codeph">path</samp>. If the
+					condition is true for <span class="ph emphasis emphasis">at least one</span> member of the
+					collection, the any-filter matches. The filter with the Any operator without a
+					filter condition matches only if the collection referenced by path is not
+					empty.</p>
+
+				<p class="p">Example 1: Get all teams that have at least one employee who is older than 42</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+oTeamsBinding.filter(
+    new sap.ui.model.Filter({
+        path : "TEAM_2_EMPLOYEES",
+        operator : sap.ui.model.FilterOperator.Any,
+        variable : "employee",
+        condition : new sap.ui.model.Filter("employee/AGE", sap.ui.model.FilterOperator.GT, 42)
+    });
+);</pre></div>
+
+				<p class="p">The resulting request would be:
+							<span class="ph emphasis emphasis"><span class="ph filepath">http://host/service/TEAMS?$filter=TEAM_2_EMPLOYEES/any(employee:employee/AGE
+							gt 42)</span></span></p>
+
+				<p class="p">Example 2: Get all teams that have at least one employee assigned</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">oTeamsBinding.filter(
+    new sap.ui.model.Filter({
+        path : "TEAM_2_EMPLOYEES",
+        operator : sap.ui.model.FilterOperator.Any
+    });
+);</pre></div>
+
+				<p class="p">The resulting request would be:
+							<span class="ph emphasis emphasis"><span class="ph filepath">http://host/service/TEAMS?$filter=TEAM_2_EMPLOYEES/any()</span></span></p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Filter Operator all</p>
+
+				<p class="p">The filter operator All applies the <samp class="ph codeph">boolean</samp> filter condition to
+					each member of the collection referenced by <samp class="ph codeph">path</samp>. If the
+					condition is true for <span class="ph emphasis emphasis">all</span> members of the collection, the
+					all-filter matches.</p>
+
+				<p class="p">Example: Get all teams for which all employees are older than 42.</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+oOrdersListBinding.filter(
+    new sap.ui.model.Filter({
+        path : "TEAM_2_EMPLOYEES",
+        operator : sap.ui.model.FilterOperator.All,
+        variable : "employee",
+        condition : new sap.ui.model.Filter("employee/AGE", sap.ui.model.FilterOperator.GT, 42)
+    });
+);</pre></div>
+
+				<p class="p">The resulting request would be:
+							<span class="ph emphasis emphasis"><span class="ph filepath">http://host/service/TEAMS?$filter=TEAM_2_EMPLOYEES/all(employee:employee/AGE
+							gt 42)</span></span></p>
+
+			</div></div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.model.odata.OperationMode.html%23.Server" alt="../../docs/api/symbols/sap.ui.model.odata.OperationMode.html%23.Server" title="../../docs/api/symbols/sap.ui.model.odata.OperationMode.html%23.Server">sap.ui.model.odata.OperationMode.Server</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

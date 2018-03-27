@@ -1,0 +1,145 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Applying preprocessing to views enables you to use features like XML templating. This feature is currently only enabled for XML views. On an abstract level, preprocessing means that a view can be modified during runtime before it is rendered. This makes it possible to use the templating syntax, as it is interpreted by the preprocessor. It also makes it possible to apply user customization."/>
+<meta name="description" content="Applying preprocessing to views enables you to use features like XML templating. This feature is currently only enabled for XML views. On an abstract level, preprocessing means that a view can be modified during runtime before it is rendered. This makes it possible to use the templating syntax, as it is interpreted by the preprocessor. It also makes it possible to apply user customization."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9401878829646692"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9401878829646692"/>
+<title>Preprocessing XML Views</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio48b81b967af34ad08f1f88c962b4740a">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Preprocessing XML Views</h1>
+
+	
+	<div class="body"><p class="shortdesc">Applying preprocessing to views enables you to use features like XML templating. This feature is currently only enabled for XML views. On an
+		abstract level, preprocessing means that a view can be modified during runtime before it is rendered. This makes it possible to use the templating
+		syntax, as it is interpreted by the preprocessor. It also makes it possible to apply user customization.</p>
+
+		<p class="p">The following figure shows the different stages of view initialization. There are three hooks, XML, ViewXML and controls, which differ mainly in the
+			source that is passed to the preprocessor.</p>
+
+		<img class="image" id="loio48b81b967af34ad08f1f88c962b4740a__image_d5l_q3c_zs" src="loiof33daeb55f54422ebe67ec9b13d74447_LowRes.png"/>
+		<ul class="ul" id="loio48b81b967af34ad08f1f88c962b4740a__ul_nxg_4jc_zs">
+			<li class="li">
+				<p class="p">XML</p>
+
+				<p class="p">The raw view source in the XML format is passed to the preprocessor. This enables example templating on XML level.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">ViewXML</p>
+
+				<p class="p">The raw view source with all XML preprocessing results gets enhanced with its full IDs for the controls and passed on to the preprocessor.
+					Adaptions on a valid view source can now be made before the XML is being parsed into a control tree.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Controls</p>
+
+				<p class="p">The view source is already processed to the JavaScript object and the control tree is available. This enables you to make changes to the view
+					after design time, like special customizations, stored at some persistence layer or similar, the user has made previously. Or customizations
+					depending on the user role which are not applicable during design time.</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p">For preprocessor for view sources of type XML or ViewXML which create cacheable results, see <a class="xref" href="3d85d5eec1594be0a71236d5e61f89aa.html#loio3d85d5eec1594be0a71236d5e61f89aa__ViewCache_Preprocessor">VML View Cache: Preprocessor Integration</a>.</p>
+
+		<div class="section"><div class="section_title">Using the Preprocessor</div><div type="Using the Preprocessor">
+			
+			<p class="p">First, you need a preprocessor implementation. SAPUI5 provides a default preprocessor for XML
+				templating which can be enabled by default. You can also build your own preprocessor
+				based on the <samp class="ph codeph">Preprocessor</samp> interface. 
+				</p>
+
+			<p class="p">To use the preprocessor, you can choose one of the following options:</p>
+
+			<ul class="ul" id="loio48b81b967af34ad08f1f88c962b4740a__ul_p5h_4kc_zs">
+				<li class="li">
+					<p class="p">Global availability</p>
+
+					<p class="p">Makes the preprocessor available to all XML views and processes it every time a View is initialized. This maybe the right case for
+						essential operations you want to apply to every view in your application. Therefore you can make use of the
+							<samp class="ph codeph">registerPreprocessor</samp> method: </p>
+
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">XMLView.registerPreprocessor("xml", "sap.ui.sample.samplepreprocessor",
+/* bSyncSupport = */ false, {sampleInfo: "this is a global preprocessor",
+moreInfo: "…"});</pre></div>
+
+					<p class="p"><span class="ph">For more
+							information, see <a class="xref" href="https://ui5.sap.com/#/api/sap.ui.core.mvc.XMLView/methods/sap.ui.core.mvc.XMLView.registerPreprocessor" alt="https://ui5.sap.com/#/api/sap.ui.core.mvc.XMLView/methods/sap.ui.core.mvc.XMLView.registerPreprocessor" title="https://ui5.sap.com/#/api/sap.ui.core.mvc.XMLView/methods/sap.ui.core.mvc.XMLView.registerPreprocessor">API Reference:
+									<samp class="ph codeph">sap.ui.core.mvc.XMLView.registerPreprocessor</samp></a>.</span>
+						</p>
+</li>
+
+				<li class="li">
+					<p class="p">Local availability</p>
+
+					<p class="p">Make a preprocessor available to one instance. This can be achieved by passing the preprocessor to the view factory function, which then
+						processes it for this special instance. This would be the choice for smaller tasks the preprocessor should perform.</p>
+
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap.ui.xmlview({
+       viewName: "sap.ui.core.sample.View.preprocessor.Sample",
+       async: true,
+       preprocessors: {
+             xml: [{
+                   preprocessor: "sap.ui.sample.samplepreprocessor",
+                   sampleInfo: "this is a local preprocessor",
+                   moreInfo: "…"
+             },
+             {
+                   preprocessor: “another.preprocessor”
+             }]
+       }
+}).loaded().then(function(oView) {
+       oView.doSomething();
+});</pre></div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">On demand availability</p>
+
+					<p class="p">This enables the developer to activate a preprocessor for a view instance, without the need to provide an implementation, by just
+						specifying a preprocessor, which has been registered globally earlier. This is currently used by the XML templating.</p>
+
+				</li>
+
+			</ul>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">Preprocessors are per default only available for async views. Although it is possible to enable the preprocessor for sync views, we strongly
+					recommend to only use them with async views.</p>
+
+			</div>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">The information that is provided when using a preprocessor locally will be passed to the preprocessor according to the
+						<samp class="ph codeph">mSettings</samp> of the register method.</p>
+
+			</div>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="3d85d5eec1594be0a71236d5e61f89aa.html" title="To be able to speed up processing times of XML views that make heavy use of the preprocessor feature, you can use the view cache to store its processed XML source. Then according network requests for the source and all preprocessor runs that modify the XML source are skipped and the source is taken from the cache.">XML View Cache</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

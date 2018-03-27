@@ -1,0 +1,168 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Configuring OPA to use autoWait parameter for all statements improves test stability and reduces the number of waitFor statements."/>
+<meta name="description" content="Configuring OPA to use autoWait parameter for all statements improves test stability and reduces the number of waitFor statements."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7584364101926329"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7584364101926329"/>
+<title>Using autoWait Parameter</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiofb487ef0f9bf41a3afdbd0cc97368873">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Using <samp class="ph codeph">autoWait</samp> Parameter</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Configuring OPA to use <samp class="ph codeph">autoWait</samp> parameter for all statements improves
+		test stability and reduces the number of <samp class="ph codeph">waitFor</samp> statements.</p>
+
+		<div class="section" id="loiofb487ef0f9bf41a3afdbd0cc97368873__section_vnr_vln_2cb"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p">OPA <samp class="ph codeph">autoWait</samp> parameter is available as of version 1.48. It is a good
+				practice to enable it in your tests. By default, it is not enabled in order to keep
+				old tests running.</p>
+
+			<p class="p"><samp class="ph codeph">autoWait</samp> synchronizes test execution with the app. No interactions are
+				attempted while the app is performing asynchronous work. This will increase the
+				probability that OPA statements succeed as they will only be executed when the app
+				is ready to respond.</p>
+
+			<p class="p"><samp class="ph codeph">autoWait</samp> is used:</p>
+
+			<ul class="ul" id="loiofb487ef0f9bf41a3afdbd0cc97368873__ul_rlg_rxj_wbb">
+				<li class="li">
+					<p class="p">When you retrieve a control with the intent to perform an action on it</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">For every control search, when you explicitly set <samp class="ph codeph">autoWait</samp>
+						to <samp class="ph codeph">true</samp></p>
+
+				</li>
+
+			</ul>
+
+			<p class="p"><samp class="ph codeph">autoWait</samp> is applied before searching for a control, which means
+				before OPA check functions and matchers. If there is no work to await, the controls
+				will be retrieved, then actions will be executed on them and lastly the success
+				function will be called. If there is still pending work, matchers, actions and
+				success function will be skipped and OPA will retry the check until it succeeds or a
+				timeout is reached.</p>
+
+			<p class="p">Success functions are only called when controls are found, their state is valid and the app is
+				responsive. It is recommended to use actions rather than the success function when
+				interacting with a control. This will ensure that the interaction itself is
+				performed properly and also that the app is in a state that allows the interaction
+				to be executed.</p>
+
+			<p class="p"><samp class="ph codeph">autoWait</samp> covers several types of asynchronous work:</p>
+
+			<ul class="ul" id="loiofb487ef0f9bf41a3afdbd0cc97368873__ul_qnb_5yj_wbb">
+				<li class="li">Delayed work set with timeout and immediate</li>
+
+				<li class="li">XHR requests created using XMLHttpRequests and sinon.FakeXMLHttpRequests</li>
+
+				<li class="li">Native promises created with <samp class="ph codeph">resolve</samp>, <samp class="ph codeph">all</samp>,
+						<samp class="ph codeph">race</samp> and <samp class="ph codeph">reject</samp> functions</li>
+
+				<li class="li">UI navigation of parent containers</li>
+
+				<li class="li">UIArea rerendering</li>
+
+			</ul>
+
+			<p class="p">Enabling <samp class="ph codeph">autoWait</samp> ensures that the controls and their parents are
+				visible, enabled and not busy and also that the controls are not hidden behind
+				static elements, such as dialogs.</p>
+
+			<p class="p">If your app still has ongoing asynchronous work when the OPA timeout is reached, the
+				test will fail. The test failure message will include details of the last detected
+				work before the timeout. This type of OPA timeouts are usually caused by test
+				instability. When writing a huge set of tests and executing them frequently, you
+				might notice some tests that fail sporadically. Setting <samp class="ph codeph">autoWait</samp> to
+					<samp class="ph codeph">true</samp> should stabilize most of these tests.</p>
+
+			<p class="p">If you decide to follow the best practices and enable <samp class="ph codeph">autoWait</samp>, it
+				is recommended to do it only once in your code, near your tests' starting point and
+				then disable it per <samp class="ph codeph">waitFor</samp> statement where needed. This will help
+				you to avoid confusion when debugging test failures.</p>
+
+			<p class="p">Example:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">// in QUnit start page, before all OPA tests
+Opa5.extendConfig({
+    autoWait: true
+});
+// in an OPA test
+oOpa.waitFor({
+    id: "myControlID",
+    success: function (oControl) {
+        Opa5.assert.ok(!oControl.getBusy(), "My control was not busy");
+    }
+});
+// and then in a special waitFor case which requires a control to be non-interactable
+oOpa.waitFor({
+    autoWait: false,
+    id: "myControlID",
+    success: function (oControl) {
+        // now you can explicitly check for some blocking condition
+        Opa5.assert.ok(oControl.getBusy(), "My control was busy");
+    }
+})</pre></div>
+
+			<p class="p">If you decide to start using <samp class="ph codeph">autoWait</samp> in your existing tests, the
+				easiest way to migrate is to extend OPA config by enabling
+				<samp class="ph codeph">autoWait</samp>, run the tests to see if any <samp class="ph codeph">waitFor</samp>
+				statements time out and then disable <samp class="ph codeph">autoWait</samp> specifically for
+				them.</p>
+
+		</div></div>
+
+		<div class="section" id="loiofb487ef0f9bf41a3afdbd0cc97368873__section_efn_nnn_2cb"><div class="section_title">autoWait and App Startup</div><div type="autoWait and App Startup">
+			
+			<p class="p">Usually, there is a lot of time-consuming work done on app startup which can make the
+				entire app noninteractive for a long time.</p>
+
+			<p class="p">To ensure that OPA doesn't timeout before the app is fully loaded, the timeout for
+					<samp class="ph codeph">iStartMyAppInAFrame</samp> and <samp class="ph codeph">iStartMyUIComponent</samp> is
+				increased to the default of 80 seconds.</p>
+
+			<p class="p">Despite the increase, there are still some tests that timeout. The timeout usually
+				occurs during the first test step, which can be misleading regarding the actual
+				cause of failure. <samp class="ph codeph">autoWait</samp> is recommended in such cases but it is
+				disabled during startup to prevent issues with module loading during app launcher
+				initialization.</p>
+
+			<p class="p">As of version 1.54, the optional use of <samp class="ph codeph">autoWait</samp> after launcher
+				initialization is allowed to make sure the app is loaded before the first test step.
+				It is disabled by default for backward compatibility as some tests check for busy
+				indicators on app start. You can use the option with both app launchers, for
+				example:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">Given.iStartMyAppInAFrame({
+    source: "applicationUnderTest/index.html",
+    autoWait: true
+});</pre></div>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="698f8c0a889f48d3a8b7fbcd26779be2.html" title="Tips and tricks if OPA is not behaving or reacting the way you expect it to.">Pitfalls and Troubleshooting</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.test.Opa5.html" alt="../../docs/api/symbols/sap.ui.test.Opa5.html" title="../../docs/api/symbols/sap.ui.test.Opa5.html">API Reference: <samp class="ph codeph">sap.ui.test.Opa5</samp></a></div>
+<div><a class="link" target="_blank" href="../../explored.html#/entity/sap.ui.test.Opa5/samples" alt="../../explored.html#/entity/sap.ui.test.Opa5/samples" title="../../explored.html#/entity/sap.ui.test.Opa5/samples">Samples: <samp class="ph codeph">sap.ui.test.Opa5</samp></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

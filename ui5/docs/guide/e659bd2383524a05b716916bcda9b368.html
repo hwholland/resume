@@ -1,0 +1,240 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.38 to 1.40."/>
+<meta name="description" content="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.38 to 1.40."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7522491584129559"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7522491584129559"/>
+<title>What's New in OpenUI5 1.40</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioe659bd2383524a05b716916bcda9b368">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">What's New in <span class="ph"><span class="ph pname">OpenUI5</span></span> 1.40</h1>
+
+	
+	<div class="body conbody" id="Conbody_WN_SAPUI5_140"><p class="shortdesc">With this release the <span class="ph pname">UI development toolkit for HTML5</span> (<span class="ph"><span class="ph pname">OpenUI5</span></span>) is upgraded from version 1.38 to 1.40.</p>
+
+		<p class="p">In the following sections, we list the main new features and enhancements to <span class="ph"><span class="ph pname">OpenUI5</span></span>. <span class="ph">For a complete, detailed list of all new and enhanced functions, see: <a class="xref" href="../../releasenotes.html" alt="../../releasenotes.html" title="../../releasenotes.html">Change Log</a>.</span></p>
+
+		<div class="section collapsible expanded"><div class="section_title">New Belize Theme (SAP Fiori 2.0 Design)</div><div type="New Belize Theme (SAP Fiori 2.0 Design)">
+			
+			<div class="p"><span class="ph">The new Belize theme (<samp class="ph codeph">sap_belize</samp>) has been introduced and replaces Blue Crystal
+						(<samp class="ph codeph">sap_bluecrystal</samp>) as the default theme. Blue Crystal is only supported until version 1.38. Note that Blue Crystal will
+					remain supported for at least two more years in the 1.38 release branch, which is a long-term maintenance branch.</span><div class="note caution"><span class="cautiontitle">Caution</span> 
+					<p class="p">The Belize theme does not support deprecated libraries such as <span class="ph"><samp class="ph codeph">sap.ui.commons</samp>,  or
+								<samp class="ph codeph">sap.ui.ux3</samp></span> (see <a class="xref" href="a87ca843bcee469f82a9072927a7dcdb.html" title="As OpenUI5 evolves over time, some of the UI controls are replaced by others, or their concepts abandoned entirely. This chapter gives an overview on theme and library level of the most important deprecations. Individual control deprecations and more information about the controls replacing them can be found in the API reference within the Demo Kit.">Deprecated Themes and Libraries</a>).</p>
+
+					<p class="p">Custom themes based on <samp class="ph codeph">sap_bluecrystal</samp> are no longer supported with 1.40 or higher. Furthermore, custom themes cannot be
+						converted to Belize automatically, you will have to adapt them manually.</p>
+
+					<p class="p">Belize does not support the same set of theme parameters as Blue Crystal. If you use custom themes or custom controls, check whether all
+						parameters you use are still supported.</p>
+
+				</div>
+<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">Sorry! Many of the examples, tutorials, and screenshots in this documentation still use Blue Crystal (<samp class="ph codeph">sap_bluecrystal</samp>).
+						Since there are so many, we simply could not manage to update those. Please keep in mind that you should use Belize
+							(<samp class="ph codeph">sap_belize</samp>) instead.</p>
+
+				</div>
+</div>
+
+		</div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">Older jQuery Versions Removed</div><div type="Older jQuery Versions Removed">
+			
+			<p class="p">As of this version, <span class="ph"><span class="ph pname">OpenUI5</span></span> only contains one version of jQuery (the current version is
+				2.2.3). This standard version is always used when no other jQuery version is included in the bootstrap of an app. If you need a specific jQuery
+				version for your app, add and load it explicitly as described in <a class="xref" href="91f1dd0c6f4d1014b6dd926db0e91070.html" title="The noJQuery variant supports bootstrapping for an application that already integrates jQuery or uses a different jQuery version than OpenUI5.">noJQuery Variant for Bootstrapping</a>. Check the console for
+				the related warning message if you are unsure which version you are using. </p>
+
+		</div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">XML View Cache</div><div type="XML View Cache">
+			
+			<p class="p">You can use a caching mechanism to speed up processing times of XML views that make heavy use of the preprocessor feature. To make sure that the cache
+				always contains the latest view data, invalidate the cache whenever the data that is needed for preprocessing changes. When the cache is
+				invalidated, all resources are processed again and the cache gets filled with new data. For more information, see <a class="xref" href="3d85d5eec1594be0a71236d5e61f89aa.html" title="To be able to speed up processing times of XML views that make heavy use of the preprocessor feature, you can use the view cache to store its processed XML source. Then according network requests for the source and all preprocessor runs that modify the XML source are skipped and the source is taken from the cache.">XML View Cache</a>.</p>
+<p class="p">Parts of this feature are currently still experimental! <span class="ph">For more information, see
+						<a class="xref" href="../..//api/sap.ui/methods/sap.ui.xmlview.html" alt="../..//api/sap.ui/methods/sap.ui.xmlview.html" title="../..//api/sap.ui/methods/sap.ui.xmlview.html">API Reference: <samp class="ph codeph">sap.ui.xmlview</samp></a>.</span>
+				</p>
+
+		</div></div>
+
+		
+		<div class="section collapsible expanded"><div class="section_title">Improved Features</div><div type="Improved Features"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle"><span class="ph"><span class="ph pname">OpenUI5</span></span> OData V4 Model</p>
+
+				<div class="p">The second version of the <span class="ph"><span class="ph pname">OpenUI5</span></span> OData V4 model introduces the following
+						features:<ul class="ul" id="loioe659bd2383524a05b716916bcda9b368__ul_tzx_3ch_pw">
+						<li class="li">
+							<p class="p">Server-side sorting and filtering integrated in the <span class="ph"><span class="ph pname">OpenUI5</span></span>
+								programming model</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Reset changes functionality for batch groups</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">List bindings and context bindings with relative paths can read their own data</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Context objects as an API</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Support for contained entities </p>
+
+						</li>
+
+					</ul>
+</div>
+
+				<div class="note restriction"><span class="restrictiontitle">Restriction</span> 
+					<p class="p">Due to the limited feature scope of this version of the <span class="ph"><span class="ph pname">OpenUI5</span></span> OData V4 model, check that
+						all required features are in place before developing applications. Double check the detailed documentation of the features, as certain
+						parts of a feature may be missing although you might expect these parts as given. While we aimed at being compatible with existing
+						controls, some controls might not work due to small incompatibilities compared to <samp class="ph codeph">sap.ui.model.odata.(v2.)ODataModel</samp>,
+						or due to missing features in the model (like tree binding). The interface for applications has been changed for easier and more
+						efficient use of the model. For a summary of these changes, see <a class="xref" href="abd4d7c7548d4c29ab8364d3904a6d74.html" title="This section outlines the main differences between the OData V2 and OData V4 models.">Changes Compared to OData V2 Model</a>.</p>
+
+				</div>
+
+				
+				<p class="p">For more information, see <a class="xref" href="5de13cf4dd1f4a3480f7e2eaaee3f5b8.html" title="The sap.ui.model.odata.v4.ODataModel is the model implementation for consuming an OData V4 service.">OData V4 Model</a>, the <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v4.html" alt="../../docs/api/symbols/sap.ui.model.odata.v4.html" title="../../docs/api/symbols/sap.ui.model.odata.v4.html">API
+						Reference</a>, and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.model.odata.v4.ODataModel/samples" alt="../../explored.html#/entity/sap.ui.model.odata.v4.ODataModel/samples" title="../../explored.html#/entity/sap.ui.model.odata.v4.ODataModel/samples">sample</a> in the Demo Kit. </p>
+
+			</div></div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">Improved Controls</div><div type="Improved Controls">
+			
+			<ul class="ul" id="loioe659bd2383524a05b716916bcda9b368__ul_d2j_q2j_lw">
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis"><samp class="ph codeph">sap.m.GenericTile</samp></span>: The <samp class="ph codeph">GenericTile</samp> control can be implemented as slide tile. The animated content
+						of the slide tile now includes a navigation option to pause the slide show or to navigate forward or backward to the slide. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.GenericTile.html" alt="../../docs/api/symbols/sap.m.GenericTile.html" title="../../docs/api/symbols/sap.m.GenericTile.html">API
+								Reference</a>, and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.SlideTile/preview" alt="../../explored.html#/sample/sap.m.sample.SlideTile/preview" title="../../explored.html#/sample/sap.m.sample.SlideTile/preview">sample</a> in the Demo Kit. </span></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis"><samp class="ph codeph">sap.m.IconTabHeaderMode</samp></span>: A new <samp class="ph codeph">IconTabBar</samp> property, <samp class="ph codeph">headerMode</samp>, has been
+						introduced. It accepts <samp class="ph codeph">sap.m.IconTabHeaderMode.Standard</samp> and <samp class="ph codeph">sap.m.IconTabHeaderMode.Inline</samp> values.
+						Inline mode forces the tab text and item number to be on the same row. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.IconTabHeaderMode.html" alt="../../docs/api/symbols/sap.m.IconTabHeaderMode.html" title="../../docs/api/symbols/sap.m.IconTabHeaderMode.html">API
+								Reference</a>, and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.IconTabBarInlineMode/preview" alt="../../explored.html#/sample/sap.m.sample.IconTabBarInlineMode/preview" title="../../explored.html#/sample/sap.m.sample.IconTabBarInlineMode/preview">sample</a> in the Demo Kit. </span></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis"><samp class="ph codeph">sap.m.Page</samp></span>: The <samp class="ph codeph">Page</samp> control now offers a floating footer. This new feature helps unify the
+						look-and-feel of page controls and also improves the visibility of the actions located in the footer. The floating footer can be
+						switched on with the <samp class="ph codeph">toggleFooter</samp> property. <span class="ph">For
+							more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.Page.html#setFloatingFooter" alt="../../docs/api/symbols/sap.m.Page.html#setFloatingFooter" title="../../docs/api/symbols/sap.m.Page.html#setFloatingFooter">API Reference</a>, and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.PageFloatingFooter/preview" alt="../../explored.html#/sample/sap.m.sample.PageFloatingFooter/preview" title="../../explored.html#/sample/sap.m.sample.PageFloatingFooter/preview">sample</a> in the Demo Kit. </span></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis"><samp class="ph codeph">sap.m.OverflowToolbar</samp></span>: <span class="ph">The overflow menu is now configurable to remain
+							open if the selected element triggers <samp class="ph codeph">sap.m.ActionSheet</samp> or <samp class="ph codeph">sap.m.Popover</samp>.</span></p>
+
+				</li>
+
+				<li class="li">
+					<div class="p"><span class="ph emphasis emphasis"><samp class="ph codeph">sap.m.RangeSlider</samp></span>:<ul class="ul" id="loioe659bd2383524a05b716916bcda9b368__ul_lqq_3b2_qw">
+							<li class="li">
+								<p class="p">The tooltips above the handles of the <samp class="ph codeph">RangeSlider</samp> can be used to define values for the slider. This eases
+									the interaction with the control and helps users to enter precise values. You can enable this by setting the
+										<samp class="ph codeph">inputsAsTooltips</samp> property. <span class="ph">For
+										more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.RangeSlider.html#setInputsAsTooltips" alt="../../docs/api/symbols/sap.m.RangeSlider.html#setInputsAsTooltips" title="../../docs/api/symbols/sap.m.RangeSlider.html#setInputsAsTooltips">API Reference</a> in the Demo Kit. </span></p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">You can now move the entire selected range. Selecting and holding the range line moves the whole range. <span class="ph">For more information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.RangeSlider/preview" alt="../../explored.html#/sample/sap.m.sample.RangeSlider/preview" title="../../explored.html#/sample/sap.m.sample.RangeSlider/preview">sample</a> in the Demo Kit. </span></p>
+
+							</li>
+
+						</ul>
+</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis"><samp class="ph codeph">sap.m.Text </samp></span>: Line breaks (<samp class="ph codeph">\r\n</samp>, <samp class="ph codeph">\n\r</samp>, <samp class="ph codeph">\r</samp>, <samp class="ph codeph">\n</samp>)
+						are always visualized now. You can disable this by setting the wrapping property to <samp class="ph codeph">false</samp>. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.Text.html#setWrapping" alt="../../docs/api/symbols/sap.m.Text.html#setWrapping" title="../../docs/api/symbols/sap.m.Text.html#setWrapping">API
+								Reference</a> in the Demo Kit. </span></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis"><samp class="ph codeph">sap.m.TimePicker</samp></span>: The
+							<samp class="ph codeph">TimePicker</samp> control now has configurable step precision
+						for minutes and seconds.</p>
+
+					<p class="p">For more
+						information, see the <a class="xref" href="../../docs/api/symbols/sap.m.TimePicker.html" alt="../../docs/api/symbols/sap.m.TimePicker.html" title="../../docs/api/symbols/sap.m.TimePicker.html">API Reference</a> in the Demo
+						Kit.</p>
+
+				</li>
+
+				
+				
+				
+				
+				
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis"><samp class="ph codeph">sap.ui.core.format.NumberFormat</samp></span>: You can now use the <samp class="ph codeph">shortRefNumber</samp> option to calculate all
+						numbers in one screen, especially for charts, based on the same scaling factor. With the <samp class="ph codeph">showScale</samp> option, you can show
+						or hide the scaling factor in the formatted number. The scaling takes the current locale into account. </p>
+
+				</li>
+
+				
+			</ul>
+
+		</div></div>
+
+		
+		
+		<div class="section collapsible expanded"><div class="section_title">Documentation Changes</div><div type="Documentation Changes">
+			
+			<p class="p">Since the <span class="ph uicontrol">Control-specific Information</span> was not easy to find, we decided to move the content to the new section
+					<span class="ph uicontrol">More About Controls</span> on top level of the structure (see <a class="xref" href="3ec6808ff0f34a75a9f40748cf9989b9.html" title="OpenUI5 contains controls that are provided with multiple libraries. This section contains detailed information about some of the controls beyond the information provided in the API reference.">More About Controls</a>).</p>
+
+			
+		</div></div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="6660a59a8a22460a91fe65a0d96a567e.html">Previous Versions</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="a8449849c81249bb8abd98b4b9342a4a.html" title="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.48 to 1.50.">What's New in OpenUI5 1.50</a></div>
+<div><a class="link" href="2818f800e7424c5c91dbd495f8cb757b.html" title="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.46 to 1.48.">What's New in OpenUI5 1.48</a></div>
+<div><a class="link" href="4cf0986450ca43e5a8d12dd66e999a77.html" title="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.44 to 1.46.">What's New in OpenUI5 1.46</a></div>
+<div><a class="link" href="05ce1dc72c74475bada39234f6721f21.html" title="With this release, the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.42 to 1.44.">What's New in OpenUI5 1.44</a></div>
+<div><a class="link" href="4768f1ac7f0645929b4e9ea9981bb65e.html" title="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.40 to 1.42.">What's New in OpenUI5 1.42</a></div>
+<div><a class="link" href="6a875f998994489483e8085705347d72.html#loio6a875f998994489483e8085705347d72" title="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.36 to 1.38.">What's New in OpenUI5 1.38</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

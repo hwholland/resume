@@ -1,0 +1,83 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Table-like controls, mainly for desktop scenarios."/>
+<meta name="description" content="Table-like controls, mainly for desktop scenarios."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=07815005018281751"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=07815005018281751"/>
+<title>sap.ui.table</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio08197fa68e4f479cbe30f639cc1cd22c">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">sap.ui.table</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"> Table-like controls, mainly for desktop scenarios.</p>
+
+		<div class="p">
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">The following sections only provide additional information for some of the controls. <span class="ph">For a
+						complete list of all controls and their documentation, see the <a class="xref" href="../../docs/api/symbols/sap.ui.html" alt="../../docs/api/symbols/sap.ui.html" title="../../docs/api/symbols/sap.ui.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html" alt="../../explored.html" title="../../explored.html">Samples</a>.</span>
+					</p>
+
+			</div>
+
+		</div>
+
+		<div class="section"><div class="section_title">Row Virtualization</div><div type="Row Virtualization">
+			
+			<p class="p">To improve rendering and memory performance, only the number of rows that are visible on the
+				user interface are created internally for <samp class="ph codeph">sap.ui.table.Table</samp> (this
+				is called "row virtualization"). For example, if the table has enough space to
+				render 20 rows, exactly 20 rows are created internally.</p>
+
+			<div class="note example"><span class="exampletitle">Example</span> Imagine an OData service with 10 million entries. Keeping
+				10 million row controls, either inside or outside the DOM, is simply not technically
+				feasible for most client devices. Also, a single table row usually contains
+				additional controls inside each cell, such as <samp class="ph codeph">sap.m.Labels</samp> or
+					<samp class="ph codeph">sap.ui.unified.Currency</samp> controls. The number of used control
+				instances would then be multiplied by the number of columns for every row. Instead
+				of creating all of these <span class="ph"><span class="ph pname">OpenUI5</span></span> controls for
+				every data entry, the table virtualizes the rows, and in this way only a limited set
+				of control instances are created for each table control instance.</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">OData Model</div><div type="OData Model">
+			
+			<p class="p">OData as a RESTful protocol provides a specified and a generalized way to access back-end
+				services via HTTP requests. The <span class="ph"><span class="ph pname">OpenUI5</span></span> OData model
+				provides a stable module for querying OData services via the network. All
+					<samp class="ph codeph">sap.ui.table.*</samp> controls fully support data bindings over OData
+				V2. Since OData services can hold millions of entries, and these entries have to be
+				loaded somehow to the client and rendered, the <samp class="ph codeph">sap.ui.table.*</samp>
+				controls implement advanced paging mechanisms based on the underlying
+					<samp class="ph codeph">ODataListBinding</samp> and <samp class="ph codeph">ODataTreeBinding</samp>. The <span class="ph"><span class="ph pname">OpenUI5</span></span> OData bindings
+				take care of all necessary back-end requests to retrieve the currently-needed data
+				entries. This is done as efficiently as possible with the minimum amount of back-end
+				requests.</p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="6c47b2b39db9404582994070ec3d57a2.html#loio6c47b2b39db9404582994070ec3d57a2" title="The OData V2 Model enables binding of controls to data from OData services.">OData V2 Model</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.table.html" alt="../../docs/api/symbols/sap.ui.table.html" title="../../docs/api/symbols/sap.ui.table.html">API Reference: <samp class="ph codeph">sap.ui.table</samp></a></div>
+<div><a class="link" href="148892ff9aea4a18b912829791e38f3e.html" title="The libraries provided by OpenUI5 contain various different table controls that are suitable for different use cases. The table below outlines which table controls are available, and what features are supported by each one.">Tables: Which One Should I Choose?</a></div>
+<div><a class="link" href="363cd16eba1f45babe3f661f321a7820.html" title="OpenUI5 provides a set of JavaScript and CSS libraries, which can be combined in an application using the combinations that are supported.">Supported Library Combinations</a></div>
+<div><a class="link" href="74b59efa0eef48988d3b716bd0ecc933.html" title="Browser and platform support for the OpenUI5 libraries on iOS, Android, macOS, and Windows platforms.">Browser and Platform Support</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

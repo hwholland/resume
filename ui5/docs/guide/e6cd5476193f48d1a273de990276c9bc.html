@@ -1,0 +1,252 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Screen readers offer list features, that ease the app navigation, by grouping and extracting all elements with similar behaviors. This leads to additional requirements when creating OpenUI5 controls. Control developers need to make sure that their controls are marked with the correct ARIA role."/>
+<meta name="description" content="Screen readers offer list features, that ease the app navigation, by grouping and extracting all elements with similar behaviors. This leads to additional requirements when creating OpenUI5 controls. Control developers need to make sure that their controls are marked with the correct ARIA role."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8215893197188341"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8215893197188341"/>
+<title>Keyboard Usage of ARIA Role Mapped Controls</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioe6cd5476193f48d1a273de990276c9bc">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Keyboard Usage of ARIA Role Mapped Controls</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Screen readers offer list features, that ease the app navigation, by grouping and
+		extracting all elements with similar behaviors. This leads to additional requirements when
+		creating <span class="ph"><span class="ph pname">OpenUI5</span></span> controls.
+		Control developers need to make sure that their controls are marked with the correct ARIA
+		role.</p>
+
+		
+		
+		<div class="section"><div class="section_title">Keyboard Handling for Role Mapped Controls</div><div type="Keyboard Handling for Role Mapped Controls">
+			
+			<p class="p">The applied role names define implicitly the keyboard usage. For example an element with
+					<samp class="ph codeph">role=button</samp> can be activated with <kbd class="key">SPACE</kbd> and
+					<kbd class="key">ENTER</kbd> keys, navigation between controls with
+					<samp class="ph codeph">role=menuitem</samp> is expected using <kbd class="key">Arrow keys</kbd> and so
+				on.</p>
+
+			<div class="p">
+				<div class="note note"><span class="notetitle">Note</span> 
+					<div class="p">If you develop new <span class="ph"><span class="ph pname">OpenUI5</span></span>
+						controls please note the following:<ul class="ul" id="loioe6cd5476193f48d1a273de990276c9bc__ul_jny_vlk_1s">
+							<li class="li">
+								<p class="p">Navigation with the cursor of the screen reader cannot be the
+									only option. Keyboard navigation has to be implemented as well.
+								</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">All information about roles, states, and properties must be present at the keyboard focus
+									position and be spoken when the focus moves to the control.</p>
+
+							</li>
+
+						</ul>
+</div>
+
+				</div>
+
+			</div>
+
+		</div></div>
+
+		
+		<div class="section"><div class="section_title">Additional Requirements for Some Control Types</div><div type="Additional Requirements for Some Control Types">
+			
+			<p class="p">Screen readers offer lists that group certain types of elements. These lists ease and speed up
+				the navigation. There are some requirements, that specific control types have to
+				comply to, in order to be properly used by the screen reader lists. </p>
+
+			<div class="p">
+				<ul class="ul" id="loioe6cd5476193f48d1a273de990276c9bc__ul_j2m_wp5_yr">
+					<li class="li">
+						<p class="p"><span class="ph emphasis emphasis">Landmarks/Regions</span>
+						</p>
+
+						<ul class="ul" id="loioe6cd5476193f48d1a273de990276c9bc__ul_rzq_qq5_yr">
+							<li class="li">
+								<p class="p">Special regions must be indicated and labeled (Navigation, Page Header, Main etc.) in
+									order to be part of the landmark list.</p>
+
+							</li>
+
+						</ul>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><span class="ph emphasis emphasis">Headings</span></p>
+
+						<ul class="ul" id="loioe6cd5476193f48d1a273de990276c9bc__ul_y2d_vq5_yr">
+							<li class="li">
+								<p class="p">The headings in an <span class="ph"><span class="ph pname">OpenUI5</span></span>
+									app must have either ARIA <samp class="ph codeph">role=heading</samp> +
+										<samp class="ph codeph">aria-level</samp> or use <samp class="ph codeph">&lt;H1 – H6&gt;</samp> HTML tags.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">The panel heading hierarchy must be logical (for example, nested panels must have higher
+									hierarchy levels).</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Headings must be referenced by the containers they belong to (using
+										<samp class="ph codeph">aria-labelledby = <span class="q">“HEADING_ID”</span></samp>).</p>
+
+							</li>
+
+						</ul>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><span class="ph emphasis emphasis">Links</span></p>
+
+						<ul class="ul" id="loioe6cd5476193f48d1a273de990276c9bc__ul_p43_gr5_yr">
+							<li class="li">
+								<p class="p">Links in an <span class="ph"><span class="ph pname">OpenUI5</span></span> app must
+									either be true <samp class="ph codeph">&lt;a&gt;</samp> HTML elements or have
+									ARIA <samp class="ph codeph">role=link</samp>.</p>
+
+							</li>
+
+						</ul>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><span class="ph emphasis emphasis">Form Controls</span></p>
+
+						<ul class="ul" id="loioe6cd5476193f48d1a273de990276c9bc__ul_ymm_lr5_yr">
+							<li class="li">
+								<p class="p">Form fields must be correctly labeled and their list indicators have to be
+									distinctive.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Form fields will show up as Input, Radio Buttons and so on in the
+									form list of the screen reader. </p>
+
+							</li>
+
+						</ul>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><span class="ph emphasis emphasis">Lists</span></p>
+
+						<ul class="ul" id="loioe6cd5476193f48d1a273de990276c9bc__ul_lth_1s5_yr">
+							<li class="li">
+								<p class="p">Lists have to implement a navigation concept that allows using both arrow keys to go
+									through list item entities, and also be able to focus individual
+									active sub-parts of a list item.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Lists and list items should always be identified using correctly nested
+										<samp class="ph codeph">&lt;ul&gt;</samp> and <samp class="ph codeph">&lt;li&gt;</samp>
+									markup or alternatively by ARIA <samp class="ph codeph">role=list</samp> and
+										<samp class="ph codeph">role=listitem</samp> roles.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Sometimes list items may need special roles (for example <samp class="ph codeph">menuitem</samp>).</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">For lists with a specific number of items, speech output should always be
+											<span class="q">“<cite class="cite">Current item number of N total
+									items</cite>”</span>. No matter how many items are visible, if the
+									total number is not known, speech output should always be
+											<span class="q">“<cite class="cite">Current item number</cite>”</span>.</p>
+
+							</li>
+
+						</ul>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><span class="ph emphasis emphasis">Tables</span></p>
+
+						<ul class="ul" id="loioe6cd5476193f48d1a273de990276c9bc__ul_flx_rs5_yr">
+							<li class="li">
+								<p class="p">Data tables must be coded with valid HTML.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Tables must have titles.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Layout tables for presentational purposes must be coded as such (using ARIA
+											<samp class="ph codeph">role=<span class="q">“presentation”</span></samp>). Then they
+									are not displayed in the table list.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Editable and active cells may require special interaction models.
+									During navigation, all screen reader relevant information must
+									be available at the focus location.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Tables have to properly associate and identify (even hierarchical) row/column headers.
+									They have to be announced for every cell.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">In case there are no visible headers, but information is organized in a table-like layout
+									with individual columns/cells, a respective row/column
+									identifier has to be provided.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">For tables with a specific number of rows, speech output should always be
+											<span class="q">“<cite class="cite">Current row of N total rows</cite>”</span>. No
+									matter how many rows are visible, if the total number is not
+									known, speech output should always be <span class="q">“<cite class="cite">Current
+											row</cite>”</span>.</p>
+
+							</li>
+
+						</ul>
+
+					</li>
+
+				</ul>
+
+			</div>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

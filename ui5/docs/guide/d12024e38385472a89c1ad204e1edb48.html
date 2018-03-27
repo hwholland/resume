@@ -1,0 +1,158 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="For loading (requiring) a module, OpenUI5, you use the sap.ui.require function, which takes over the dependency resolution for you."/>
+<meta name="description" content="For loading (requiring) a module, OpenUI5, you use the sap.ui.require function, which takes over the dependency resolution for you."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5408845544894039"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5408845544894039"/>
+<title>Loading a Module</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiod12024e38385472a89c1ad204e1edb48">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Loading a Module</h1>
+
+	
+	<div class="body"><p class="shortdesc">For loading (requiring) a module, <span class="ph"><span class="ph pname">OpenUI5</span></span>, you use the
+			<samp class="ph codeph">sap.ui.require</samp> function, which takes over the dependency resolution for
+		you.</p>
+
+		<p class="p">You can either load modules asynchronously or synchonously.</p>
+
+		<div class="section" id="loiod12024e38385472a89c1ad204e1edb48__section_r1g_rlx_dz"><div class="section_title">Asynchronous Loading</div><div type="Asynchronous Loading">
+			
+			<p class="p">If the arguments of the <samp class="ph codeph">sap.ui.require</samp> call consist of an array of
+				one or more strings (module names) and an optional callback function, the string
+				array is interpreted as a list of dependent modules.</p>
+
+			<p class="p">The corresponding modules are loaded and the callback function is called
+				asynchronously once all required modules are loaded.</p>
+
+		</div></div>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">// the callback function will be executed once the JSONModel, and the UIComponent modules are loaded
+sap.ui.require(['sap/ui/model/json/JSONModel', 'sap/ui/core/UIComponent'], function(JSONModel, UIComponent) {
+ 
+    var MyComponent = UIComponent.extend('MyComponent', {
+      ...
+    });
+    ...
+ });</pre></div>
+
+		<div class="note caution"><span class="cautiontitle">Caution</span> 
+			<p class="p">If necessary, you can load a module synchronously. Be aware, that synchronous requests are
+				already deprecated in some modern browsers and may not be supported in future. It is
+				a better practice to load modules asynchronously.</p>
+
+		</div>
+
+		<div class="section" id="loiod12024e38385472a89c1ad204e1edb48__section_cvl_zlx_dz"><div class="section_title">Synchronous Retrieval of a Single Module Value</div><div type="Synchronous Retrieval of a Single Module Value">
+			
+			<p class="p">When calling <samp class="ph codeph">sap.ui.require</samp> with a single string as argument, the
+				respective module has to be loaded already.</p>
+
+			<p class="p">If the module is not yet loaded or it is not a <span class="ph"><span class="ph pname">OpenUI5</span></span> module
+				(third-party module), the return value is <samp class="ph codeph">undefined</samp>.</p>
+
+			<div class="p">By using <samp class="ph codeph">sap.ui.require</samp>, you can synchronously access modules
+				without triggering a loading request in case the module is not
+				present.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">// If JSONModel class is loaded, it is returned. If the module is not loaded yet, there will be no additional loading request.
+// The variable JSONModel might be undefined after making this call.
+var JSONModel = sap.ui.require("sap/ui/model/json/JSONModel");</pre></div>
+</div>
+
+		</div></div>
+
+		<div class="section" id="loiod12024e38385472a89c1ad204e1edb48__section_r1s_5mx_dz"><div class="section_title">Loading Dependencies</div><div type="Loading Dependencies"><p class="p">You can load
+				dependencies at different points in time.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Constructor and <samp class="ph codeph">init</samp></p>
+
+				<p class="p">If a module is needed during the constructor call or initialization of a class,
+					you declare the dependency as a static dependency in the
+						<samp class="ph codeph">sap.ui.define</samp> call.</p>
+
+				<p class="p">If the dependency is required in the constructor, the instantiation is of course
+					delayed until the dependency is loaded.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">User interaction</p>
+
+				<p class="p">Some modules can be required dynamically on user interaction. An example could be
+					a dialog, which is not needed in most cases, but needs to be loaded only in case
+					the user performs a certain interaction.</p>
+
+				<p class="p">Other modules might be required dynamically while a data request is running to
+					minimize the overall load time, as the user has to wait on the data anyway.</p>
+
+			</div></div></div>
+
+		<div class="section" id="loiod12024e38385472a89c1ad204e1edb48__section_a5y_knx_dz"><div class="section_title">Checking the Availability of Modules</div><div type="Checking the Availability of Modules">
+			
+			<p class="p">The <samp class="ph codeph">sap.ui.require</samp> function can not only be used to load modules,
+				but also to check the availability of modules.</p>
+
+			<p class="p">The return value of the following function call is either a reference on the already
+				loaded module or <samp class="ph codeph">undefined</samp>. If <samp class="ph codeph">undefined</samp> is
+				returned, the module was not loaded yet and the <samp class="ph codeph">sap.ui.require</samp> call
+				without a callback function will not trigger a load.</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var ModuleInQuestion = sap.ui.require("name/of/module/in/Question");</pre></div>
+
+		</div></div>
+
+		<div class="section" id="loiod12024e38385472a89c1ad204e1edb48__section_blt_qnx_dz"><div class="section_title">instanceof Checks</div><div type="instanceof Checks"><p class="p">Since the
+				above <samp class="ph codeph">sap.ui.require</samp> call retrieves a module reference, you can use
+				the reference not only to instantiate instances of classes but also to perform
+				JavaScript instanceof checks.</p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define(['sap/ui/core/mvc/View', 'sap/ui/core/Fragment'], function(View, Fragment) {
+    ...
+    if (oControl instanceof View) {
+        ...
+    } else if (oControl instanceof Fragment) {
+        ...
+    }
+});</pre></div>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle"><samp class="ph codeph">instanceof</samp> Checks for Dynamically Required
+					Modules</p>
+
+				<p class="p">You can use the following approach to make sure your <samp class="ph codeph">instanceof</samp>
+					check is valid without the need to actually load the module.</p>
+
+				<p class="p">To perform an <samp class="ph codeph">instanceof</samp> check, the respective class does not
+					need to be loaded. If the class module is not loaded, there can never be an
+					instance of that class. The <samp class="ph codeph">sap.ui.require</samp> call returns
+						<samp class="ph codeph">undefined</samp> in case the module is not loaded.</p>
+
+				<p class="p">The <samp class="ph codeph">lazyInstanceOf</samp> convenience function makes sure that the
+						<samp class="ph codeph">instanceof</samp> check is performed against a function and not
+						<samp class="ph codeph">undefined</samp>, in case the module or class was not loaded
+					yet.</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+function lazyInstanceof(obj, module) {
+    var FNClass = sap.ui.require(module);
+    return typeof FNClass === 'function' ? obj instanceof FNClass : false;
+}
+  
+if (lazyInstanceof(oControl, "sap/ui/core/mvc/View")) {
+                …
+} else if (lazyInstanceof(oControl, "sap/ui/core/Fragment")) {
+                …
+}</pre></div>
+
+			</div></div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="OpenUI5 provides several options for the configuration of the OpenUI5 runtime, such as runtime default values and script tag attributes."/>
+<meta name="description" content="OpenUI5 provides several options for the configuration of the OpenUI5 runtime, such as runtime default values and script tag attributes."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=08646502472882378"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=08646502472882378"/>
+<title>Configuration of the OpenUI5 Runtime</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio91f08de06f4d1014b6dd926db0e91070">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Configuration of the <span class="ph"><span class="ph pname">OpenUI5</span></span> Runtime</h1>
+
+	<div class="body"><p class="shortdesc"><span class="ph"><span class="ph pname">OpenUI5</span></span> provides several options for the configuration of the <span class="ph"><span class="ph pname">OpenUI5</span></span> runtime, such as
+		runtime default values and script tag attributes.</p>
+
+		<p class="p">When the <span class="ph"><span class="ph pname">OpenUI5</span></span> bootstrap
+			script is included in a page, the <span class="ph"><span class="ph pname">OpenUI5</span></span> runtime will
+			automatically be initialized as soon as the script is loaded and executed by the
+			browser. For simple use cases and for a default <span class="ph"><span class="ph pname">OpenUI5</span></span> installation, this
+			should already be sufficient to build and run UIs. The only additional information that
+			usually is specified, is the set of libraries and the theme that is used.</p>
+
+			<div class="p">So a typical bootstrap script looks like this:
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;script id="sap-ui-bootstrap" 
+            type="text/javascript"
+            src="resources/sap-ui-core.js"
+            data-sap-ui-theme="sap_belize"
+            data-sap-ui-libs="sap.m"
+            data-sap-ui-compatVersion="edge"&gt;
+&lt;/script&gt;</pre></div>
+
+			For more information see <a class="xref" href="a04b0d10fb494d1cb722b9e341b584ba.html" title="To use OpenUI5 features in your HTML page, you have to load and initialize the SAPUI5 library.">Bootstrapping: Loading and Initializing</a>.</div>
+
+		<p class="p">You can use the following ways to provide configuration information.</p>
+
+			<div class="section collapsible expanded"><div class="section_title">Default Values</div><div type="Default Values">
+			
+			<p class="p">The easiest way to specify a configuration value is <span class="ph emphasis emphasis">not to
+					specify</span> it. The <span class="ph"><span class="ph pname">OpenUI5</span></span> runtime contains
+				a default value for each configuration option. As long as you don't have to change
+				the value, you don't specify it.</p>
+
+		</div></div>
+
+			<div class="section collapsible expanded"><div class="section_title">Individual Script Tag Attributes</div><div type="Individual Script Tag Attributes">
+			
+			<p class="p">For each configuration option, you can have one attribute in the bootstrap script tag.</p>
+
+			<p class="p">The attributes have to provide the following information:</p>
+
+			<ul class="ul" id="loio91f08de06f4d1014b6dd926db0e91070__ul_swq_415_yt">
+				<li class="li">
+					<p class="p">Attribute name</p>
+
+					<p class="p">The attribute name is composed of the name of the configuration option and
+						the <samp class="ph codeph">data-sap-ui-</samp> prefix. The first part of the prefix
+							(<samp class="ph codeph">data-</samp>) is necessary to comply with the W3C
+						recommendations for custom attributes in HTML. The second part
+							(<samp class="ph codeph">-sap-ui-</samp>) separates <span class="ph"><span class="ph pname">OpenUI5</span></span>
+						attributes from custom attributes defined by any other framework.</p>
+
+					<div class="note note"><span class="notetitle">Note</span> 
+						<p class="p">Attribute names in HTML are case-insensitive and this also applies to the
+							configuration attribute names. However, <span class="ph"><span class="ph pname">OpenUI5</span></span> has
+							defined some configuration options names in camel case, for example
+								<samp class="ph codeph">originInfo</samp>. <span class="ph"><span class="ph pname">OpenUI5</span></span>
+							converts these names automatically to lower case when accessing the
+							configuration.</p>
+
+					</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Value</p>
+
+					<p class="p">Element attributes in HTML have a <samp class="ph codeph">string</samp> value by
+						definition. For configuration options of type <samp class="ph codeph">string</samp>, the
+						attribute value is equivalent to the value of the option.</p>
+
+					<div class="note note"><span class="notetitle">Note</span> 
+						<p class="p">If the value contains specific HTML characters, such as '&lt;' or '&gt;', or if the value
+							contains the same quote character that is used to wrap the attribute
+							value, the usual HTML escape mechanisms must be used: Use entities for
+							the specific HTML characters, for example <samp class="ph codeph">&amp;lt;</samp>
+							instead of <samp class="ph codeph">&lt;</samp>, and switch the type of quotes from
+							single to double or vice versa.</p>
+
+					</div>
+
+					<p class="p">For configuration options that are <strong class="ph b">not</strong> of type
+						<samp class="ph codeph">string</samp>, the format of the allowed values has to be defined
+						as follows:</p>
+
+					<div class="table-wrapper"><table summary="" id="loio91f08de06f4d1014b6dd926db0e91070__simpletable_twq_415_yt" border="1" class="simpletable"><tr class="sthead">
+							<th valign="bottom" align="left" id="d6993168e167" class="stentry">Type</th>
+
+							<th valign="bottom" align="left" id="d6993168e170" class="stentry">Notation/Values</th>
+
+						</tr>
+<tr class="strow">
+							<td valign="top" headers="d6993168e167" class="stentry"><samp class="ph codeph">string</samp></td>
+
+							<td valign="top" headers="d6993168e170" class="stentry">String; escaped according to the HTML conventions</td>
+
+						</tr>
+<tr class="strow">
+							<td valign="top" headers="d6993168e167" class="stentry"><samp class="ph codeph">boolean</samp></td>
+
+							<td valign="top" headers="d6993168e170" class="stentry"><samp class="ph codeph">true</samp> and <samp class="ph codeph">x</samp> are both accepted as true values
+								(case-insensitive), all others are false. We recommend to use
+									<samp class="ph codeph">false</samp> for false values</td>
+
+						</tr>
+<tr class="strow">
+							<td valign="top" headers="d6993168e167" class="stentry"><samp class="ph codeph">int</samp></td>
+
+							<td valign="top" headers="d6993168e170" class="stentry">Any integer value</td>
+
+						</tr>
+<tr class="strow">
+							<td valign="top" headers="d6993168e167" class="stentry"><samp class="ph codeph">string array</samp></td>
+
+							<td valign="top" headers="d6993168e170" class="stentry">Comma-separated list of values; comma is not supported in the values (no
+								escaping)</td>
+
+						</tr>
+<tr class="strow">
+							<td valign="top" headers="d6993168e167" class="stentry">map from string to string</td>
+
+							<td valign="top" headers="d6993168e170" class="stentry">JavaScript object literal (preferably JSON syntax)</td>
+
+						</tr>
+</table></div>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+			<div class="section collapsible expanded"><div class="section_title">Single and Complex Configuration Attributes</div><div type="Single and Complex Configuration Attributes">
+			
+			<p class="p">The attribute <samp class="ph codeph">data-sap-ui-config</samp> makes it possible to provide a
+				single attribute with the configuration information for the <span class="ph"><span class="ph pname">OpenUI5</span></span> runtime.</p>
+
+			<p class="p">You can use this attribute instead of attaching individual options with individual
+				configuration attributes to the script tag. Its content is similar to the global
+				configuration object, but without the enclosing parenthesis: It is a comma separated
+				list of key-value pairs.</p>
+
+			<div class="note note" id="loio91f08de06f4d1014b6dd926db0e91070__note_N100CF_N100BF_N10013_N10001"><span class="notetitle">Note</span> The usual HTML escape mechanisms must be
+				used if the value contains specific HTML characters (&lt;, &gt;, &amp;) or the quote
+				character that is used to enclose the attribute value.</div>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;script id="sap-ui-bootstrap" 
+	type="text/javascript"
+	src="resources/sap-ui-core.js"
+	data-sap-ui-config="theme:'sap_belize',
+	libs:'sap.m'"
+	&gt;
+&lt;/script&gt;</pre></div>
+
+		</div></div>
+
+			<div class="section collapsible expanded"><div class="section_title">Global Configuration Objects</div><div type="Global Configuration Objects">
+			
+			<p class="p">The global configuration object is a property in the global <samp class="ph codeph">window</samp>
+				object with property name <samp class="ph codeph">sap-ui-config</samp>. The property must be a
+				simple object, where each property represents the configuration option of the
+				corresponding name.</p>
+
+			<p class="p">To avoid conflicts with typical JavaScript coding, the name of the
+					<samp class="ph codeph">window</samp> property is not a valid JavaScript identifier. The name
+				structure is chosen to avoid conflicts with SAP objects. To define the object,
+				quotes must be used. If a configuration option has a name that is not a valid
+				JavaScript identifier or that is a reserved token in JavaScript, the property name
+				in the configuration object must be quoted. Currently, such a configuration option
+				does <strong class="ph b">not</strong> exist.</p>
+
+			<p class="p">As the configuration is evaluated during bootstrap, the configuration object must be
+				created <strong class="ph b">before</strong>
+				<span class="ph"><span class="ph pname">OpenUI5</span></span> is bootstrapped.
+				Otherwise, the contained configuration cannot be evaluated. As a consequence, using
+				the global configuration object requires another script tag in front of the
+				bootstrap script tag. It is up to the application whether it uses an inline script
+				tag or a separate JavaScript file, which is loaded via a script tag, for this
+				purpose. If you use a dedicated file, it may require more work initially, but offers
+				the following advantages: </p>
+
+			<ul class="ul" id="loio91f08de06f4d1014b6dd926db0e91070__ul_osf_ttl_wk">
+				<li class="li">
+					<p class="p">Several pages can share the file and, thus, use the same configuration.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">The Content Security Policy (CSP) mechanism as introduced, for example, by
+						Firefox 4.0 and others requires the use of a file.</p>
+
+				</li>
+
+			</ul>
+
+			<p class="p">The following code snippet shows an example for an inline script tag:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;script type="text/javascript"&gt;
+            window["sap-ui-config"] = {
+			theme : "sap_belize",
+			libs : "sap.m",
+            };
+&lt;/script&gt;
+&lt;script id="sap-ui-bootstrap" 
+            src="resources/sap-ui-core.js"
+		&gt;
+&lt;/script&gt;</pre></div>
+
+			<p class="p">This option requires an additional script or script tag, but it offers the following
+				advantages:</p>
+
+			<ul class="ul" id="loio91f08de06f4d1014b6dd926db0e91070__ul_drg_fqz_fp">
+				<li class="li">
+					<p class="p">Possibility to share configuration between pages</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Can be used in environments where the scrip tag cannot be influenced, for
+						example, because it is created out of some configuration, like in some
+						mashup frameworks</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Allows to provide configuration before the core boots</p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+			<div class="section collapsible expanded"><div class="section_title">URL Parameters</div><div type="URL Parameters">
+			
+			<p class="p">Configuration parameters can be added to the URL of an app.</p>
+
+			<p class="p">The URL parameter name is composed of the name of the configuration option and the <samp class="ph codeph">sap-ui-</samp> prefix, for example like
+					<samp class="ph codeph">index.html?sap-ui-debug=true&amp;sap-ui-preload=off</samp>.</p>
+
+			<div class="note note" id="loio91f08de06f4d1014b6dd926db0e91070__note_N1013A_N1012A_N10013_N10001"><span class="notetitle">Note</span> The W3C proposed that the
+					<samp class="ph codeph">data-</samp> prefix is not needed and not even allowed here as all URL
+				parameters are kind of custom parameters.</div>
+
+			<p class="p">The value of a URL parameter is of type <samp class="ph codeph">string</samp> and the same type
+				mapping as for HTML attributes applies. However, URLs require a different encoding
+				than HTML; they use, for example % encoding instead of entity encoding.</p>
+
+			<p class="p">For security reasons, only some configuration options can be set via URL parameters.
+				An application can set the <samp class="ph codeph">ignoreUrlParameters</samp> option to
+					<samp class="ph codeph">true</samp> to disable URL configuration parameters completely.</p>
+
+		</div></div>
+
+			<div class="section collapsible expanded"><div class="section_title">Runtime Configuration Object</div><div type="Runtime Configuration Object">
+			
+			<p class="p">The runtime configuration object enables you to modify a limited set of configuration options
+				at runtime.</p>
+
+			<p class="p">The configuration options above are evaluated during the <span class="ph"><span class="ph pname">OpenUI5</span></span> runtime boots.
+				After that, all changes to these parameters are ignored. To read the final
+				configuration result, you can use the
+					<samp class="ph codeph">sap.ui.getCore().getConfiguration()</samp> method.</p>
+
+			<p class="p">The same object also provides set methods for a very limited set of configuration
+				options that can be modified at runtime. The runtime and/or the controls can react
+				on these configuration changes. The most prominent (and so far only) example for
+				such a configuration option is the theme.</p>
+
+		</div></div>
+
+			<div class="section collapsible expanded"><div class="section_title">Order of Significance</div><div type="Order of Significance">
+			
+		</div></div>
+
+		<ol class="ol" id="loio91f08de06f4d1014b6dd926db0e91070__ol_z5p_3xg_ps">
+			<li class="li">
+				<p class="p">Attributes of the DOM reference override the system defaults.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">URL parameters override the DOM attributes; empty URL parameters reset the parameter to its
+					system default.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">If you call setters at runtime, any previous settings calculated during object creation are
+					overwritten with the new value.</p>
+
+			</li>
+
+		</ol>
+
+	</div>
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="91f2d03b6f4d1014b6dd926db0e91070.html" title="The complete list of configuration options available in OpenUI5 can be found in the API Reference under sap.ui.core.Configuration. The following table shows a subset of the available configuration options.">Configuration Options and URL Parameters</a></strong><br/>
+</div>
+<div><strong><a class="link" href="9feb96da02c2429bb1afcf6534d77c79.html" title="Compatibility version flags allow applications to react to incompatible changes in OpenUI5.">Compatibility Version Information</a></strong><br/>
+</div>
+</ul>
+
+</div>
+</div></div>
+
+</body>
+</html>

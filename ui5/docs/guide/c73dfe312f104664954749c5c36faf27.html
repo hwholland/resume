@@ -1,0 +1,341 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, we extend the product detail view by adding a feature allowing to add comments to the product."/>
+<meta name="description" content="In this step, we extend the product detail view by adding a feature allowing to add comments to the product."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6175392008033809"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6175392008033809"/>
+<title>Step 7: Adding a Comments Section</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc73dfe312f104664954749c5c36faf27">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 7: Adding a Comments Section</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we extend the product detail view by adding a feature allowing to add
+		comments to the product.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loioc73dfe312f104664954749c5c36faf27__fig_apx_45y_c5"><div class="figcontainer">
+				
+				<img class="image" id="loioc73dfe312f104664954749c5c36faf27__image_ufd_q5y_c5" src="loio90d59f4fa77d4cdf98c85d2b23d6783d_HiRes.png"/>
+			<div class="figcap">Comments section added to the detail page</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Samples</span> in the
+				Demo Kit <span class="ph">at
+						<a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.worklist.07/preview" alt="../../explored.html#/sample/sap.m.tutorial.worklist.07/preview" title="../../explored.html#/sample/sap.m.tutorial.worklist.07/preview">Worklist App - Step 7</a></span>
+				.</p>
+
+		
+		<div class="sectiondiv subsection">
+			<p class="p subsectiontitle">webapp/view/Object.view.xml</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+	controllerName="myCompany.myApp.controller.Object"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:form="sap.ui.layout.form"
+	xmlns="sap.m"&gt;
+	&lt;semantic:FullscreenPage
+		id="page"
+		busy="{objectView&gt;/busy}"
+		busyIndicatorDelay="{objectView&gt;/delay}"
+		navButtonPress="onNavBack"
+		showNavButton="true"
+		title="{i18n&gt;objectTitle}"&gt;
+		&lt;semantic:content&gt;
+			&lt;ObjectHeader
+				id="objectHeader"
+				responsive="true"
+				title="{ProductName}"
+				numberUnit="PC"
+				numberState="{
+					path: 'UnitsInStock',
+					formatter: '.formatter.quantityState'
+				}"
+				number="{UnitsInStock}"&gt;
+				&lt;attributes&gt;
+[...}
+				&lt;/attributes&gt;
+				&lt;statuses&gt;
+[...]
+				&lt;/statuses&gt;
+			&lt;/ObjectHeader&gt;
+			&lt;Panel
+				class="sapUiNoContentPadding"
+				headerText="{i18n&gt;ObjectSupplierTabTitle}"&gt;
+    			&lt;content&gt;
+[...]
+    			&lt;/content&gt;
+			&lt;/Panel&gt;
+			<span class="ph emphasis emphasis">&lt;Panel
+				class="sapUiContentPadding"
+				headerText="{i18n&gt;ObjectCommentsTabTitle}"&gt;
+				&lt;content&gt;
+					&lt;FeedInput post="onPost"/&gt;
+					&lt;List
+						id="idCommentsList"
+						noDataText="{i18n&gt;ObjectCommentNoData}"
+						showSeparators="Inner"
+						items="{
+							path: 'productFeedback&gt;/productComments',
+							sorter: {
+							    path: 'date',
+							    descending: true
+							}
+						}"&gt;
+						&lt;FeedListItem
+							info="{productFeedback&gt;type}"
+							text="{productFeedback&gt;comment}"
+							timestamp="{productFeedback&gt;date}"/&gt;
+					&lt;/List&gt;
+				&lt;/content&gt;
+			&lt;/Panel&gt;
+</span>
+		&lt;/semantic:content&gt;
+		&lt;semantic:sendEmailAction&gt;
+			&lt;semantic:SendEmailAction
+				id="shareEmail"
+				press="onShareEmailPress"/&gt;
+		&lt;/semantic:sendEmailAction&gt;
+	&lt;/semantic:FullscreenPage&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">Below the already existing panel, we add another panel that will serve as a container
+				for our comments section. Inside the new panel we add a
+					<samp class="ph codeph">sap.m.FeedInput</samp> control and attach an event handler
+					<samp class="ph codeph">onPost</samp> for the <samp class="ph codeph">post</samp> event. This control will
+				render an input field and a button which allow users to post comments. The event
+				handler we registered will be implemented below.</p>
+
+			<p class="p">Below the <samp class="ph codeph">FeedInput</samp> control, we add a list with all existing
+				comments. The <samp class="ph codeph">items</samp> aggregation of the list is bound to the
+					<samp class="ph codeph">/productComments</samp> property of the named model
+					<samp class="ph codeph">productFeedback</samp> that we will create below. All comments shall
+				be displayed in descending order based on their publishing date. Therefore, we also
+				configure a sorter for our items in the list.</p>
+
+			<p class="p">The template for each row is a <samp class="ph codeph">FeedListItem</samp> control. We configure
+				the <samp class="ph codeph">FeedListItem</samp> to simply display the date of the post, the text
+				of the post itself, and the type of the post.</p>
+
+		</div>
+		<div class="sectiondiv subsection">
+			<p class="p subsectiontitle">webapp/controller/Object.controller.js</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">...
+/*global location*/
+sap.ui.define([
+   "myCompany/myApp/controller/BaseController",
+   "sap/ui/model/json/JSONModel",
+   "sap/ui/core/routing/History",
+   "myCompany/myApp/model/formatter"<span class="ph emphasis emphasis">,
+   "sap/ui/core/format/DateFormat",
+   "sap/ui/model/Filter",
+   "sap/ui/model/FilterOperator"
+</span>
+], function(BaseController, JSONModel, History, formatter<span class="ph emphasis emphasis">, DateFormat, Filter, FilterOperator</span>) {
+   "use strict";
+   return BaseController.extend("myCompany.myApp.controller.Object", {
+      formatter: formatter,
+      ...
+      _onBindingChange: function(oEvent) {
+         ...
+ <span class="ph emphasis emphasis">        // Update the comments in the list
+         var oList = this.byId("idCommentsList");
+         var oBinding = oList.getBinding("items");
+         oBinding.filter(new Filter("productID", FilterOperator.EQ, sObjectId));
+      },
+      /**
+      * Updates the model with the user comments on Products.
+      * @function
+      * @param {sap.ui.base.Event} oEvent object of the user input
+      */
+      onPost: function (oEvent) {
+         var oFormat = DateFormat.getDateTimeInstance({style: "medium"});
+         var sDate = oFormat.format(new Date());
+         var oObject = this.getView().getBindingContext().getObject();
+         var sValue = oEvent.getParameter("value");
+         var oEntry = {
+             productID: oObject.ProductID,
+             type: "Comment",
+             date: sDate,
+             comment: sValue
+         };        
+         // update model
+         var oFeedbackModel = this.getModel("productFeedback");
+         var aEntries = oFeedbackModel.getData().productComments;
+         aEntries.push(oEntry);
+         oFeedbackModel.setData({
+            productComments : aEntries
+         });
+      }
+</span>
+   });
+});</pre></div>
+
+			<p class="p"> First, we add three new dependencies to the controller. We need these dependencies
+				because we want to create a filter for the list and because we format the date and
+				time of each post.</p>
+
+			<p class="p">Whenever the binding of the detail view changes, we want to make sure that the
+				comments for the current product are displayed. Therefore, we change the private
+				function <samp class="ph codeph">_onBindingChange</samp> and update the filter of the list that
+				displays the comments by getting a reference to the binding of the
+					<samp class="ph codeph">items</samp> aggregation of our list and calling the
+					<samp class="ph codeph">filter()</samp> API afterwards. The filter is passed on to the
+					<samp class="ph codeph">filter()</samp> API. We use the <samp class="ph codeph">productID</samp> as fiilter
+				criterium, because we only want comments for a specific product.</p>
+
+			<p class="p">Next, the event handler for the <samp class="ph codeph">post</samp> event of the
+					<samp class="ph codeph">FeedInput</samp> is implemented. In the <samp class="ph codeph">onPost</samp>
+				handler, we create a new <samp class="ph codeph">entry</samp> object that contains all data we
+				want to store in our model. This data is the <samp class="ph codeph">productId</samp>, the
+					<samp class="ph codeph">type</samp> of the post (hard-coded in our example), the current
+					<samp class="ph codeph">date</samp> in a medium date format, and the <samp class="ph codeph">comment</samp>
+				itself. The comment is retrieved from the event object. The
+					<samp class="ph codeph">productId</samp> is determined by calling <samp class="ph codeph">getObject()</samp>
+				on the view’s binding context.</p>
+
+			<p class="p">Finally, the new entry is added to the named model called
+					<samp class="ph codeph">productFeedback</samp>. This model does not exist yet, so let’s create
+				it next. </p>
+
+		</div>
+		<div class="sectiondiv subsection">
+			<p class="p subsectiontitle">webapp/model/models.js</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+   "sap/ui/model/json/JSONModel",
+   "sap/ui/Device"
+], function(JSONModel, Device) {
+   "use strict";
+   return {
+      createDeviceModel: function() {
+         var oModel = new JSONModel(Device);
+         oModel.setDefaultBindingMode("OneWay");
+         return oModel;
+      }<span class="ph emphasis emphasis">,   
+      createCommentsModel: function() {
+         return new JSONModel({ productComments : [] });
+      }
+</span>
+   };
+});</pre></div>
+
+			<p class="p">In both the object view (detail page) as well as in the corresponding controller we
+				used a named model called <samp class="ph codeph">productFeedback</samp>. In our example this
+				model is a simple <samp class="ph codeph">JSONModel</samp>. It is created in the function
+					<samp class="ph codeph">createCommentsModel()</samp> in the<span class="ph filepath"> model.js</span>
+				file. As you can see above, the function simply returns a new instance of a
+					<samp class="ph codeph">JSONModel</samp> with a simple data object. The property
+					<samp class="ph codeph">productComments</samp> is an empty array and it will be updated every
+				time someone posts a new comment.</p>
+
+			<p class="p">However, this model is not yet accessible throughout our app. Let’s fix this next. </p>
+
+		</div>
+		<div class="sectiondiv subsection">
+			<p class="p subsectiontitle">webapp/Component.js</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+   "sap/ui/core/UIComponent",
+   "sap/ui/Device",
+   "myCompany/myApp/model/models",
+   "myCompany/myApp/controller/ErrorHandler"
+], function(UIComponent, Device, models, ErrorHandler) {
+   "use strict";
+   return UIComponent.extend("myCompany.myApp.Component", {
+      ...
+      init: function() {
+         // call the base component's init function
+         UIComponent.prototype.init.apply(this, arguments);
+
+         // initialize the error handler with the component
+         this._oErrorHandler = new ErrorHandler(this);
+
+         // set the device model
+         this.setModel(models.createDeviceModel(), "device");
+         
+         <span class="ph emphasis emphasis">// set the product feedback model
+         this.setModel(models.createCommentsModel(), "productFeedback");
+</span>
+
+         // create the views based on the url/hash
+         this.getRouter().initialize();
+      },
+      ...
+   });
+});</pre></div>
+
+			<p class="p">Now it’s time to make the named model <samp class="ph codeph">productFeedback</samp> available to
+				our app. Therefore, just change the <samp class="ph codeph">init</samp> function of our
+					<span class="ph filepath">Component.js</span> file by calling our
+					<samp class="ph codeph">createCommentsModel()</samp> method and setting the returned model on
+				the component. After this, our model is accessible in our app.</p>
+
+		</div>
+		<div class="sectiondiv subsection">
+			<p class="p subsectiontitle">webapp/i18n/i18n.properties</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-prefs">...
+<span class="ph emphasis emphasis">#Comments tab title
+ObjectCommentsTabTitle=Comments
+
+#No comments text
+ObjectCommentNoData=No Comments
+</span>
+
+#~~~ Footer Options ~~~~~~~~~~~~~~~~~~~~~~~
+...</pre></div>
+
+			<p class="p">Now add the new texts to our <span class="ph filepath">i18n.properties</span> file and you’re
+				done.</p>
+
+			<p class="p">You can test the new features by navigating to the details page of any given product.
+				After that, just create a new comment for that product and post it.</p>
+
+		</div>
+		</div></div>
+
+		<div class="section" id="loioc73dfe312f104664954749c5c36faf27__section_jvq_kgt_qbb"><div class="section_title">Summary</div><div type="Summary">
+			
+			<p class="p">You have learned how to use <span class="ph pname">SAP Web IDE</span> to create a simple
+				worklist app from a template and you know where to find the code in the
+					<span class="ph uicontrol">Samples</span>. Based on the initial app you have seen how easy
+				it can be to generate or download initial code and to extend it according to your
+				own requirements. This tutorial also illustrated how to communicate easily with an
+				OData back end using the OData V2 model. Furthermore, it illustrated how to use the
+				mock server with both generated mock data and more realistic data.</p>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="6a6a621c978145ad9eef2b221d2cf21d.html" title="In this tutorial we will build an app using OpenUI5 that, for example, a shop owner can use to manage his product stock levels.">Worklist App</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="b561d146f9114b029bd60fa26df09c6b.html" title="In this step, we will extend the detail page of our app to show more information of a given product with various UI controls. We will enrich the header area and display further attributes in an info panel for information about the supplier.">Step 6: Extending the Detail Page</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this tutorial, we will explore some advanced features of the mock server."/>
+<meta name="description" content="In this tutorial, we will explore some advanced features of the mock server."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6053628126767118"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6053628126767118"/>
+<title>Mock Server</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio3a9728ec31f94ca18a7d543ce419d85d">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Mock Server</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this tutorial, we will explore some advanced features of the mock server. </p>
+
+		<p class="p">If no OData service is available or you simply don’t want to depend on the OData backend
+			connectivity for your development and tests, the mock server can mimic the OData
+			back-end calls. It is designed to simulate an OData provider by intercepting the HTTP
+			communication made to the server, and providing a fake output. All this is transparent
+			to the data binding and usage of OData model.</p>
+
+		<p class="p">In certain scenarios, using only the built-in OData simulation of the mock server is
+			insufficient for completely server-independent tests. For example, if your application
+			is using an OData feature that is not supported by the mock server, or if your
+			application invokes a function import that depends on server specific implementation
+			(and thus is also not simulated generically). We will demonstrate how to use function
+			callbacks in order to change existing mock requests.</p>
+
+		<p class="p">Additionally, we will demonstrate how to mock an additional request that is not simulated out
+			of the box by the <span class="ph"><span class="ph pname">OpenUI5</span></span>
+			mock server.</p>
+
+		<div class="note caution"><span class="cautiontitle">Caution</span> 
+			<p class="p">The tutorial describes how to use some advanced features of the mock server, disregarding the
+				legal aspects of shipping mock data. Usually the mock data and mock server
+				invocation is done in a test folder that is not shipped to customers. Be very
+				careful that you don't ship mock data!</p>
+
+		</div>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio3a9728ec31f94ca18a7d543ce419d85d__fig_rwd_smq_st"><div class="figcontainer">
+				<img class="image" id="loio3a9728ec31f94ca18a7d543ce419d85d__image_xw4_smq_st" src="loio55edd9fa2cc24f398a9373d6d497d3e4_HiRes.png"/>
+			</div></div>
+
+			<div class="note tip"><span class="tiptitle">Tip</span> 
+				<p class="p">You don't have to do all tutorial steps sequentially, you can also jump directly
+					to any step you want. Just download the code from the previous step, and start
+					there.</p>
+
+				<p class="p">You can view and download the files for all steps in the Demo Kit <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.core.tutorial.mockserver/samples" alt="../../explored.html#/entity/sap.ui.core.tutorial.mockserver/samples" title="../../explored.html#/entity/sap.ui.core.tutorial.mockserver/samples">Mock Server</a></span>. Copy the code to your workspace and make sure
+					that the application runs by calling the <samp class="ph codeph">webapp/index.html</samp>
+					file. Depending on your development environment you might have to adjust
+					resource paths and configuration entries.</p>
+
+				<div class="p">For more information check the following sections of the tutorials overview page (see <a class="xref" href="8b49fc198bf04b2d9800fc37fecbb218.html" title="Set up your development environment and go through our tutorials. They introduce you to all major development paradigms of OpenUI5 using practical examples in an interactive format.">Get Started: Setup and Tutorials</a>):<ul class="ul" id="loio3a9728ec31f94ca18a7d543ce419d85d__ul_uxg_vmr_xs">
+						<li class="li">
+							<p class="p"><a class="xref" href="8b49fc198bf04b2d9800fc37fecbb218.html#loio8b49fc198bf04b2d9800fc37fecbb218__tutorials_download">Downloading Code for a Tutorial Step</a></p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><a class="xref" href="8b49fc198bf04b2d9800fc37fecbb218.html#loio8b49fc198bf04b2d9800fc37fecbb218__tutorials_adaptation">Adapting Code to Your Development Environment</a></p>
+
+						</li>
+
+					</ul>
+</div>
+
+			</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Prerequisites</div><div type="Prerequisites">
+			
+			<p class="p">This tutorial assumes you have access to the <span class="ph pname">SAP Web IDE</span> either by having a trial account or a
+				customer account. For more information, see <a class="xref" href="13ced9493472408999143bc99bbb73b9.html" title="SAP Web IDE is a web-based development environment that is optimized for developing OpenUI5 complex apps using the latest innovations, developing and extending SAP Fiori apps, developing mobile hybrid apps, and extending SAP Web IDE with plug-ins and templates.">App Development Using SAP Web IDE</a>.</p>
+
+			<p class="p">You should also be familiar with the concepts explained in the <a class="xref" href="3da5f4be63264db99f2e5b04c5e853db.html" title="In this tutorial we will introduce you to all major development paradigms of OpenUI5.">Walkthrough</a> tutorial and with the OData
+				specification.</p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<ol>
+<li><strong><a class="link" href="7a78f1b707c248fd9ec53dcb5f10814c.html" title="We start with a simple app scenario with a list of items bound to an OData service. Since the OData service is not available yet on a real server, we will use the mock server to simulate both data and data calls.">Step 1: Initial App Without Data</a></strong><br/>
+</li>
+<li><strong><a class="link" href="50897decc9504b2a875fb41d89fd254a.html" title="In this step, we use the mock server to add data to our app without dependency to any remote server or system.">Step 2: Creating a Mock Server to Simulate Data</a></strong><br/>
+</li>
+<li><strong><a class="link" href="46c1ca4eb2804af6bfa371ad51c9b887.html" title="In this step, we add the functionality to interpret URL parameters in our local mock server configuration.">Step 3: Handling Custom URL Parameters</a></strong><br/>
+</li>
+<li><strong><a class="link" href="95e5b87804ef4059bb68dd511666d4e3.html" title="We only want to display the upcoming meetings and hide the meetings happened in the past in our app. By using a function import that calculates these items on the back end we do not need to do the calculation on the client. The mock server will be instructed to do the calculation locally for testing purposes.">Step 4: Calling a Function Import</a></strong><br/>
+</li>
+</ol>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="69d3cbd4150c4ffb884e788f7f60fd93.html" title="Mock server is a mocking framework for HTTP and HTTPS that is used to simplify integration testing and to decouple development teams by allowing to develop against a service that is not complete or unstable.">Mock Server</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

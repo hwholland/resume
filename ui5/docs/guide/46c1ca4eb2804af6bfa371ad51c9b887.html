@@ -1,0 +1,130 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, we add the functionality to interpret URL parameters in our local mock server configuration."/>
+<meta name="description" content="In this step, we add the functionality to interpret URL parameters in our local mock server configuration."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6308608703005858"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6308608703005858"/>
+<title>Step 3: Handling Custom URL Parameters</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio46c1ca4eb2804af6bfa371ad51c9b887">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 3: Handling Custom URL Parameters</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we add the functionality to interpret URL parameters in our local mock
+		server configuration.</p>
+
+		<p class="p">We know that the OData provider of this service implements a URL parameter that returns
+			only the first three entries of a set. So, for example, calling the URL with
+				parameter<samp class="ph codeph">/Meetups?first=3</samp> should return only the first 3 meet-up
+			entries instead of all available entries.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio46c1ca4eb2804af6bfa371ad51c9b887__fig_lfn_3jq_st"><div class="figcontainer">
+				
+				<img class="image" id="loio46c1ca4eb2804af6bfa371ad51c9b887__image_zlc_tjq_st" src="loioe65ccb233c334129b11726a20b102211_HiRes.png"/>
+			<div class="figcap">Only the next three meet-ups are shown</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the Demo Kit <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.tutorial.mockserver.03/preview" alt="../../explored.html#/sample/sap.ui.core.tutorial.mockserver.03/preview" title="../../explored.html#/sample/sap.ui.core.tutorial.mockserver.03/preview">Mock Server - Step 3</a></span>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/localService/mockserver.js</div><div type="webapp/localService/mockserver.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+	"sap/ui/core/util/MockServer"
+], function(MockServer) {
+	"use strict";
+
+	return {
+		/**
+		 * Initializes the mock server.
+		 * You can configure the delay with the URL parameter "serverDelay".
+		 * The local mock data in this folder is returned instead of the real data for testing.
+		 * @public
+		 */
+		init: function() {
+			// create
+			var oMockServer = new MockServer({
+				rootUri: "/"
+			});
+
+			oMockServer.simulate("../localService/metadata.xml", {
+				sMockdataBaseUrl: "../localService/mockdata",
+				bGenerateMissingMockData: true
+			});
+
+			<span class="ph emphasis emphasis">// handling custom URL parameter step
+			var fnCustom = function(oEvent) {
+				var oXhr = oEvent.getParameter("oXhr");
+				if (oXhr &amp;&amp; oXhr.url.indexOf("first") &gt; -1) {
+					oEvent.getParameter("oFilteredData").results.splice(3, 100);
+				}
+			};
+			oMockServer.attachAfter("GET", fnCustom, "Meetups");</span>
+
+			// start
+			oMockServer.start();
+
+			jQuery.sap.log.info("Running the app with mock data");
+		}
+
+	};
+
+});</pre></div>
+
+			<p class="p">In some scenarios, a server-specific implementation is used to calculate the returned data. For example, you can use a custom URL parameter that
+				is typically interpreted by the server. The mock server ignores it, thus still returning the entire set of meet-ups. </p>
+
+			<p class="p">In this tutorial, we use the URL parameter <samp class="ph codeph">first=3</samp> to fetch the first three entries. So, for example, calling to
+					<samp class="ph codeph">/Meetups?first=3</samp> should return at most three meet-up entries.</p>
+
+			<p class="p">However, since this is a custom parameter that is not part of the standard official OData query options, it will not get processed correctly by
+				the mock server. Moreover, the mock server simply ignores it and return the entire set of meet-ups.</p>
+
+			<p class="p">We now enable the functionality when running in mock mode. As its functionality corresponds to the OData <samp class="ph codeph">$top</samp> system query, we
+				simply evaluate it to <samp class="ph codeph">$top</samp> at runtime.</p>
+
+			<p class="p">First, we create a callback function that we later attach to every <samp class="ph codeph">GET</samp> request made to the <samp class="ph codeph">Meetups</samp> entity set
+				of the service. Note that we choose the <samp class="ph codeph">attachAfter</samp> event that is fired after the built-in request processing of the mock
+				server. The event contains the actual <samp class="ph codeph">XHR</samp> object and the mock data to be returned to the application. Inside the callback
+				function we remove all results starting from third entry: The <samp class="ph codeph">oFilteredData</samp> parameter comes with the event
+					<samp class="ph codeph">attachAfter</samp> and contains the mock data entries that are about to be returned in the response.</p>
+
+			<p class="p">Second, we attach the callback to every <samp class="ph codeph">GET</samp> request to the specific <samp class="ph codeph">Meetups</samp> entity set. </p>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="3a9728ec31f94ca18a7d543ce419d85d.html" title="In this tutorial, we will explore some advanced features of the mock server.">Mock Server</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="50897decc9504b2a875fb41d89fd254a.html" title="In this step, we use the mock server to add data to our app without dependency to any remote server or system.">Step 2: Creating a Mock Server to Simulate Data</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="95e5b87804ef4059bb68dd511666d4e3.html" title="We only want to display the upcoming meetings and hide the meetings happened in the past in our app. By using a function import that calculates these items on the back end we do not need to do the calculation on the client. The mock server will be instructed to do the calculation locally for testing purposes.">Step 4: Calling a Function Import</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="For using Git for developing content for OpenUI5, rules and guidelines for the use of Git and the content of commit messages have been introduced."/>
+<meta name="description" content="For using Git for developing content for OpenUI5, rules and guidelines for the use of Git and the content of commit messages have been introduced."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7080290858145304"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7080290858145304"/>
+<title>Git Guidelines</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob2f563900ed2492b9b9003560e00ea9d">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Git Guidelines</h1>
+
+	
+	<div class="body"><p class="shortdesc">For using Git for developing content for <span class="ph"><span class="ph pname">OpenUI5</span></span>, rules and guidelines for the use of Git
+		and the content of commit messages have been introduced.</p>
+
+		<p class="p">Set the <samp class="ph codeph">core.autocrlf</samp> configuration property in Git to <samp class="ph codeph">false</samp>
+			and make sure to use Unix-style linebreaks (LR-only).</p>
+
+		<div class="section"><div class="section_title">Commit Message</div><div type="Commit Message"><div class="p">The commit message consists of two or three parts, which are separated by empty lines:<ul class="ul" id="loiob2f563900ed2492b9b9003560e00ea9d__ul_dch_c2p_np">
+					<li class="li">
+						<p class="p">Commit summary</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Description</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Data section</p>
+
+					</li>
+
+				</ul>
+</div>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Commit Summary</p>
+
+				<p class="p">The summary should be 50-70 characters long.</p>
+
+				<p class="p">The summary line must be prefixed with either <samp class="ph codeph">[FIX]</samp> or <samp class="ph codeph">[FEATURE]</samp>, which should be followed by the control
+					or component that is the main subject of the change.</p>
+
+				<p class="p">Instead of <samp class="ph codeph">[FIX]</samp> or <samp class="ph codeph">[FEATURE]</samp> and at any other location in the commit message, you can use
+						<samp class="ph codeph">[INTERNAL]</samp> for commits or explanations which should not be part of the change log. If you add
+						<samp class="ph codeph">[INTERNAL]</samp> as only prefix to the commit message, the entire message won't be part of the change log. If you add this
+					prefix to the middle of the message, everything after this prefix will be ignored for the change log.</p>
+
+				<p class="p">Do not use any <samp class="ph codeph">[</samp> or <samp class="ph codeph">]</samp> within the summary but for the prefixes.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Description</p>
+
+				<p class="p">Describe the problem you fix with this change. Whether your patch is a one-line bug fix or 5000 lines of a new feature, there must be an
+					underlying problem that motivated you to do this work. Make the necessity of the fix clear to the reviewers, so they will continue
+					reading.</p>
+
+				<p class="p">Describe the effect that this change has from a user's point of view. App crashes and lockups are pretty convincing for example, but not all
+					bugs are that obvious and should be mentioned in the text. Even if the problem was spotted during code review, describe the impact you think
+					it can have on users.</p>
+
+				<p class="p">After that, describe the technical details of what you changed. It is important to describe the change in a most understandable way so the
+					reviewer is able to verify that the code is behaving as you intend it to.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Data section</p>
+
+				<div class="p">The data section consists of name-value pairs:<ul class="ul" id="loiob2f563900ed2492b9b9003560e00ea9d__ul_e5g_qhp_np">
+						<li class="li">
+							<p class="p"><samp class="ph codeph">Fixes: https://github.com/SAP/openui5/issues/(issueNumber)</samp> if the change fixes a GitHub-reported bug</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">Closes: https://github.com/SAP/openui5/pull/(pullRequestNumber)</samp> if the change comes from a pull request. This is
+								usually added by the <span class="ph pname">OpenUI5</span> committer handling the pull request</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">Change-Id</samp> for Gerrit</p>
+
+						</li>
+
+						
+					</ul>
+</div>
+
+			</div></div></div>
+
+		<div class="example"><h2 class="exampletitle">Example</h2>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">[FIX] sap.m.Popover: scrolling is removed after Popover is rerendered
+
+- this was caused by the special treatment in dealing with rerendering
+in Popover.
+
+- Now the normal invalidation is used and Popup.js takes care of the
+focus/blur event listener in onBefore/AfterRerendering
+
+Change-Id: I3c7d6e4d52fa71e9412b729b7a234a112915c2a4
+Fixes: https://github.com/SAP/openui5/issues/1</pre></div>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

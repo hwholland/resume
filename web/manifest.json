@@ -1,0 +1,65 @@
+{
+    "_version": "1.0.0",
+    "sap.app": {
+        "_version": "1.0.0",
+        "id": "resume.web",
+        "type": "application",
+        "i18n": "web/model/i18n/i18n.properties",
+        "title": "{{title}}",
+        "description": "{{description}}",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "dataSources": {
+        }
+    },
+    "sap.ui5": {
+        "_version": "1.52.2",
+        "rootView": {
+            "viewName": "resume.web.view.Home",
+            "type": "JSON"
+        },
+        "models": {
+        },
+        "dependencies": {
+            "minUI5Version": "1.52.2",
+            "libs": {
+                "sap.ui.core": {
+                    "lazy": false
+                },
+                "sap.m": {
+                    "lazy": false
+                },
+                "sap.ui.layout": {
+                    "lazy": false
+                }
+            }
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "controlId": "NavContainer",
+                "controlAggregation": "pages",
+                "transition": "show",
+                "async": true
+            },
+            "routes": [
+                {
+                    "pattern": "",
+                    "name": "Home",
+                    "target": "Home"
+                }
+            ],
+            "targets": {
+                "Home": {
+                    "viewName": "resume.web.view.Home",
+                    "viewId": "Home",
+                    "viewLevel": 1,
+                    "viewType": "JSON"
+                }
+            }
+        },
+        "resources": {},
+        "resourceRoots": {}
+    }
+}
