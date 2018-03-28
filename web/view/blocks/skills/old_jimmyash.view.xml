@@ -1,0 +1,33 @@
+<mvc:View
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m">
+	<Table id="idJimmyAshSkills"
+		inset="false"
+		alternateRowColors="true"
+		items="{
+			path: 'tokens>/jimmyash'
+		}">
+		
+		<columns>
+			<Column>
+				<Text text="Skill Name" />
+			</Column>
+			<Column
+				minScreenWidth="Tablet"
+				demandPopin="true">
+				<Text text="Level Developed" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<ObjectIdentifier
+						title="{tokens>text}"
+						text="{tokens>description}"/>
+					<Text
+						text="{tokens>level}" />
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</mvc:View>

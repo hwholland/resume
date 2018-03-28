@@ -11,7 +11,8 @@ sap.ui.define([
     return Controller.extend("resume.web.controller.Home", {
 
         onInit: function() {
-            
+            var oTokens = this.getOwnerComponent().getModel("tokens");
+            this.getView().setModel(oTokens, "tokens");
         }
     });
 });
