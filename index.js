@@ -66,6 +66,7 @@ oApp.use(sPublicPath, oExpress.static(sDirectory, {
 oApp.use("/web/controller", oExpress.static(__dirname + "/web/controller"));
 oApp.use("/web/view", oExpress.static(__dirname + "/web/view"));
 oApp.use("/web/models", oExpress.static(__dirname + "/web/models"));
+oApp.use("/web/view/blocks", oExpress.static(__dirname + "/web/view/blocks"));
 //oApp.use("/web/fragments", oExpress.static(__dirname + "/web/fragments"));
 
 oApp.use("/ui5", oServeIndex(__dirname + sPublicPath, {'icons': true}));

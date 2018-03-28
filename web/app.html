@@ -1,41 +1,25 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta charset="utf-8">
-		<script src="../ui5/resources/sap-ui-core.js" id="sap-ui-bootstrap" data-sap-ui-theme="sap_belize" data-sap-ui-bindingSyntax="complex"
-		data-sap-ui-compatVersion="edge" data-sap-ui-preload="async" data-sap-ui-language="en" data-sap-ui-resourceroots='{
-			"resume.web": "./"  }'>
-		</script>
-		<script id="web">
-			/**
-			 * @typedef    {Object} resume.web.ComponentContainer
-			 * 
-			 * Good mother of titty-fucks, I hate bootstrapping.  After doing
-			 * this for years I still have no idea why the fuck it has to be so
-			 * complicated.  But essentially, we need to (using the library
-			 * specified above) create an object which can contain a
-			 * "component", which in UI5 terms is a class of object that
-			 * compartmentalizes functionality that shouldn't be expressed in a
-			 * traditional OOP design paradigm.  Basically, rather than making
-			 * abstract objects that build up to a complete web application,
-			 * it's easier in some cases to just focus on the function of a set
-			 * of code or objects. In this case, the component is just bundling
-			 * together everything in the front-end and labeling it all as
-			 * "front-end stuff".
-			 */
-			sap.ui.getCore().attachInit(function () {
-				new sap.ui.core.ComponentContainer({
-					async: true,
-					manifestFirst: true,
-					name: "resume.web",
-					id: "resume.web",
-				}).placeAt("body");
-			});
-		</script>
-		<title>Harrison Holland - Digital Resume</title>
-	</head>
-	<body class="sapUiBody" id="body" role="sapUiBody">
-	</body>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <script src="../ui5/resources/sap-ui-core.js" id="sap-ui-bootstrap" data-sap-ui-theme="sap_belize" data-sap-ui-compatVersion="edge" data-sap-ui-preload="async" data-sap-ui-language="en" data-sap-ui-resourceroots='{
+            "resume.web": "./"
+         }'>
+    </script>
+    <script>
+        sap.ui.getCore().attachInit(function() {
+            new sap.ui.core.ComponentContainer({
+                name: "resume.web",
+                id: "resume.web"
+            }).placeAt("body");
+        });
+    </script>
+    <title>Harrison Holland - Online Resume</title>
+</head>
+
+<body class="sapUiBody" id="body" role="sapUiBody"> </body>
+
 </html>

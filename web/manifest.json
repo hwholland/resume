@@ -2,9 +2,9 @@
     "_version": "1.0.0",
     "sap.app": {
         "_version": "1.0.0",
-        "id": "resume.web",
+        "id": "app",
         "type": "application",
-        "i18n": "web/model/i18n/i18n.properties",
+        "i18n": "model/i18n/i18n.properties",
         "title": "{{title}}",
         "description": "{{description}}",
         "applicationVersion": {
@@ -14,15 +14,16 @@
         }
     },
     "sap.ui5": {
-        "_version": "1.52.2",
+        "_version": "1.54.2",
         "rootView": {
-            "viewName": "resume.web.view.Home",
-            "type": "JSON"
+            "viewName": "resume.web.view.App",
+            "type": "JS",
+             "async": true
         },
         "models": {
         },
         "dependencies": {
-            "minUI5Version": "1.52.2",
+            "minUI5Version": "1.54.2",
             "libs": {
                 "sap.ui.core": {
                     "lazy": false
@@ -32,14 +33,17 @@
                 },
                 "sap.ui.layout": {
                     "lazy": false
+                },
+                "sap.uxap": {
+                    "lazy": false
                 }
             }
         },
-        "routing": {
+           "routing": {
             "config": {
                 "routerClass": "sap.m.routing.Router",
-                "controlId": "NavContainer",
-                "controlAggregation": "pages",
+                "controlId": "resume-app",
+                "controlAggregation": "detailPages",
                 "transition": "show",
                 "async": true
             },
@@ -55,7 +59,7 @@
                     "viewName": "resume.web.view.Home",
                     "viewId": "Home",
                     "viewLevel": 1,
-                    "viewType": "JSON"
+                    "viewType": "XML"
                 }
             }
         },

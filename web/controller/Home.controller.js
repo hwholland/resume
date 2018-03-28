@@ -8,11 +8,10 @@ sap.ui.define([
      * @class      solo.web.controller.Home
      * @extends    sap.ui.core.mvc.Controller
      */
-    return Controller.extend("solo.web.controller.Home", {
+    return Controller.extend("resume.web.controller.Home", {
 
         onInit: function() {
             
-        },
-
+        }
     });
 });

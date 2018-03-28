@@ -14,7 +14,7 @@ rm = require('gulp-rimraf');
 var gulps = require("gulp-series");
 var prettify = require('gulp-prettify');
 
-var your_project = 'lw.bridge.web';
+var your_project = 'resume.web';
  
 gulp.task(
     'ui5preload',

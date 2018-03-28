@@ -1,0 +1,86 @@
+<core:View class="sapUiSizeCozy sapUiNoMargin sapUiNoContentPadding" controllerName="resume.web.controller.Home" height="100%" width="100%" xmlns="sap.uxap" xmlns:core="sap.ui.core" xmlns:entreprenuership="resume.web.view.blocks.entreprenuership" xmlns:f="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:m="sap.m">
+	<m:ScrollContainer class="sapUiSizeCozy sapUiNoMargin sapUiNoContentPadding">
+		<ObjectPageLayout alwaysShowContentHeader="true" id="ObjectPageLayout">
+			<headerTitle>
+				<ObjectPageHeader headerDesign="Light" id="header" isObjectIconAlwaysVisible="true" objectImageShape="Circle" objectImageURI="./view/img/picture.jpg" objectSubtitle="Digital Resume" objectTitle="Harrison Holland">
+					<actions>
+						<ObjectPageHeaderActionButton icon="sap-icon://action" text="action"/>
+						<ObjectPageHeaderActionButton icon="sap-icon://action-settings" text="settings"/>
+						<ObjectPageHeaderActionButton icon="sap-icon://edit" text="edit"/>
+						<ObjectPageHeaderActionButton icon="sap-icon://save" text="save" visible="false"/>
+						<ObjectPageHeaderActionButton icon="sap-icon://refresh" text="{buttons&gt;/text}"/>
+					</actions>
+				</ObjectPageHeader>
+			</headerTitle>
+			<headerContent>
+				<layout:VerticalLayout>
+					<m:ObjectStatus text="Atlanta, GA" title="Location"/>
+					<m:ObjectStatus text="+1 (757) 291-9057" title="Phone"/>
+					<m:ObjectStatus text="harrisonholland@gmail.com" title="Email"/>
+				</layout:VerticalLayout>
+				<layout:HorizontalLayout>
+					<m:Text text="Hello, I'm Harrison.  I have been working in the IT field for 15 years in various roles.  The areas where I have unique knowledge and experience include: abstract systems, data architecture / modeling, and digital security." width="400px"/>
+				</layout:HorizontalLayout>
+			</headerContent>
+			<sections>
+				<ObjectPageSection title="Startups">
+					<subSections>
+						<ObjectPageSubSection title="SOLO">
+							<blocks>
+								<entreprenuership:solo columnLayout="2"/>
+							</blocks>
+						</ObjectPageSubSection>
+						<ObjectPageSubSection title="Holland Systems / Big Concepts">
+							<blocks>
+								<entreprenuership:concepts columnLayout="2"/>
+							</blocks>
+						</ObjectPageSubSection>
+						<ObjectPageSubSection title="Discrete Ventures">
+							<blocks>
+								<entreprenuership:social columnLayout="2"/>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+				<ObjectPageSection title="Consulting">
+					<subSections>
+						<ObjectPageSubSection title="SOLO">
+							<blocks>
+								<entreprenuership:solo columnLayout="2"/>
+							</blocks>
+						</ObjectPageSubSection>
+						<ObjectPageSubSection title="Holland Systems / Big Concepts">
+							<blocks>
+								<entreprenuership:concepts columnLayout="2"/>
+							</blocks>
+						</ObjectPageSubSection>
+						<ObjectPageSubSection title="Discrete Ventures">
+							<blocks>
+								<entreprenuership:social columnLayout="2"/>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+				<ObjectPageSection title="Employment">
+					<subSections>
+						<ObjectPageSubSection title="SOLO">
+							<blocks>
+								<entreprenuership:solo columnLayout="2"/>
+							</blocks>
+						</ObjectPageSubSection>
+						<ObjectPageSubSection title="Holland Systems / Big Concepts">
+							<blocks>
+								<entreprenuership:concepts columnLayout="2"/>
+							</blocks>
+						</ObjectPageSubSection>
+						<ObjectPageSubSection title="Discrete Ventures">
+							<blocks>
+								<entreprenuership:social columnLayout="2"/>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+			</sections>
+		</ObjectPageLayout>
+	</m:ScrollContainer>
+</core:View>
