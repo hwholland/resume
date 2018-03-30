@@ -1,5 +1,5 @@
-<core:View controllerName="resume.web.controller.Home" height="100%" width="100%" xmlns="sap.uxap" xmlns:consulting="resume.web.view.blocks.consulting" xmlns:core="sap.ui.core" xmlns:entreprenuership="resume.web.view.blocks.entreprenuership" xmlns:f="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:m="sap.m" xmlns:skills="resume.web.view.blocks.skills">
-	<ObjectPageLayout alwaysShowContentHeader="false" id="ObjectPageLayout" subSectionLayout="TitleOnLeft">
+<core:View controllerName="resume.web.controller.Home" height="100%" width="100%" xmlns="sap.uxap" xmlns:consulting="resume.web.view.blocks.consulting"  xmlns:employment="resume.web.view.blocks.employment" xmlns:core="sap.ui.core" xmlns:entreprenuership="resume.web.view.blocks.entreprenuership" xmlns:f="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:m="sap.m" xmlns:skills="resume.web.view.blocks.skills">
+	<ObjectPageLayout alwaysShowContentHeader="false" id="ObjectPageLayout" useIconTabBar="true" subSectionLayout="TitleOnLeft">
 		<headerTitle>
 			<ObjectPageHeader headerDesign="Light" id="header" isObjectIconAlwaysVisible="true" objectImageShape="Circle" objectImageURI="./view/img/picture.jpg" objectSubtitle="Software Engineer &amp; Data Architect" objectTitle="Harrison Holland">
 				<actions>
@@ -130,20 +130,40 @@
 							<skills:sysco columnLayout="auto"/>
 						</moreBlocks>
 					</ObjectPageSubSection>
-					<ObjectPageSubSection title="Applied Materials"/>
-					<ObjectPageSubSection title="Kraft Foods"/>
+					<ObjectPageSubSection title="Applied Materials">
+						<blocks>
+							<consulting:amat columnLayout="auto"/>
+						</blocks>
+						<moreBlocks>
+							<skills:amat columnLayout="auto"/>
+						</moreBlocks>
+					</ObjectPageSubSection>
+					<ObjectPageSubSection title="Kraft Foods">
+											<blocks>
+							<consulting:kraft columnLayout="auto"/>
+						</blocks>
+						<moreBlocks>
+							<skills:kraft columnLayout="auto"/>
+						</moreBlocks>
+					</ObjectPageSubSection>
 				</subSections>
 			</ObjectPageSection>
 			<ObjectPageSection title="Employment">
 				<subSections>
 					<ObjectPageSubSection title="SAP America">
-						<blocks/>
+											<blocks>
+							<employment:sap columnLayout="auto"/>
+						</blocks>
 					</ObjectPageSubSection>
 					<ObjectPageSubSection title="Wolseley">
-						<blocks/>
+						<blocks>
+							<employment:wolseley columnLayout="auto"/>
+						</blocks>
 					</ObjectPageSubSection>
 					<ObjectPageSubSection title="DataXstream">
-						<blocks/>
+						<blocks>
+							<employment:dxs columnLayout="auto"/>
+						</blocks>
 					</ObjectPageSubSection>
 				</subSections>
 			</ObjectPageSection>

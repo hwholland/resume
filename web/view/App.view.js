@@ -6,7 +6,8 @@ sap.ui.jsview("resume.web.view.App", {
 
         //this.setDisplayBlock(true);
         
-        var splitApp = new sap.m.SplitApp("resume-app", {
+        var splitApp = new sap.m.App("resume-app", {
+            /*
         	masterPages: [
         		new sap.m.Page({
         			showHeader: false,
@@ -38,7 +39,8 @@ sap.ui.jsview("resume.web.view.App", {
         			]
         		})
         	],
-            mode: sap.m.SplitAppMode.ShowHideMode
+            */
+            //mode: sap.m.SplitAppMode.ShowHideMode
         	//mode: sap.m.SplitAppMode.HideMode
         }).addStyleClass("sapUiSizeCozy sapUiNoMargin sapUiNoContentPadding");
         
