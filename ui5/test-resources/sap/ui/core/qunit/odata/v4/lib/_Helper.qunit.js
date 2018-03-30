@@ -1,15 +1,14 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
 	"jquery.sap.global",
-	"sap/ui/base/SyncPromise",
 	"sap/ui/model/odata/v4/lib/_Helper",
 	"sap/ui/test/TestUtils",
 	"sap/ui/thirdparty/URI"
-], function (jQuery, SyncPromise, _Helper, TestUtils, URI) {
+], function (jQuery, _Helper, TestUtils, URI) {
 	/*global QUnit, sinon */
 	/*eslint max-nested-callbacks: 0, no-multi-str: 0, no-warning-comments: 0 */
 	"use strict";
@@ -17,98 +16,14 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.module("sap.ui.model.odata.v4.lib._Helper", {
 		beforeEach : function () {
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oLogMock = sinon.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
+		},
+
+		afterEach : function () {
+			this.oLogMock.verify();
 		}
-	});
-
-	//*********************************************************************************************
-	QUnit.test("createGetMethod, not throwing", function (assert) {
-		var aArguments = ["foo", "bar"],
-			oResult = {},
-			oSyncPromise = SyncPromise.resolve(oResult),
-			oContext = {
-				fetch : function () {
-					assert.strictEqual(this, oContext);
-					assert.deepEqual(Array.prototype.slice.call(arguments), aArguments);
-					return oSyncPromise;
-				}
-			},
-			fnGet;
-
-		// code under test
-		// Note: passing the function's name instead of reference allows for dynamic dispatch, thus
-		// making a mock for "fetch*" possible in the first place
-		fnGet = _Helper.createGetMethod("fetch");
-
-		assert.strictEqual(fnGet.apply(oContext, aArguments), oResult);
-		this.mock(oSyncPromise).expects("isFulfilled").returns(false);
-		assert.strictEqual(fnGet.apply(oContext, aArguments), undefined);
-	});
-
-	//*********************************************************************************************
-	QUnit.test("createGetMethod, throwing", function (assert) {
-		var aArguments = ["foo", "bar"],
-			oResult = {},
-			oSyncPromise = SyncPromise.resolve(oResult),
-			oContext = {
-				fetch : function () {
-					assert.strictEqual(this, oContext);
-					assert.deepEqual(Array.prototype.slice.call(arguments), aArguments);
-					return oSyncPromise;
-				}
-			},
-			fnGet,
-			oSyncPromiseMock = this.mock(oSyncPromise);
-
-		// code under test
-		fnGet = _Helper.createGetMethod("fetch", true);
-
-		// fulfilled
-		assert.strictEqual(fnGet.apply(oContext, aArguments), oResult);
-
-		// pending
-		oSyncPromiseMock.expects("isFulfilled").returns(false);
-		oSyncPromiseMock.expects("isRejected").returns(false);
-		assert.throws(function () {
-			fnGet.apply(oContext, aArguments);
-		}, new Error("Result pending"));
-
-		// verify and restore
-		oSyncPromiseMock.verify();
-		oSyncPromiseMock = this.mock(oSyncPromise);
-
-		// rejected
-		oSyncPromiseMock.expects("isFulfilled").returns(false);
-		oSyncPromiseMock.expects("isRejected").returns(true);
-		oSyncPromiseMock.expects("caught");
-		assert.throws(function () {
-			fnGet.apply(oContext, aArguments);
-		}, oResult);
-	});
-
-	//*********************************************************************************************
-	QUnit.test("createRequestMethod", function (assert) {
-		var aArguments = ["foo", "bar"],
-			oResult = {},
-			oSyncPromise = SyncPromise.resolve(),
-			oContext = {
-				fetch : function () {
-					assert.strictEqual(this, oContext);
-					assert.deepEqual(Array.prototype.slice.call(arguments), aArguments);
-					return oSyncPromise;
-				}
-			},
-			fnRequest;
-
-		this.mock(Promise).expects("resolve")
-			.withExactArgs(sinon.match.same(oSyncPromise)).returns(oResult);
-
-		// code under test
-		fnRequest = _Helper.createRequestMethod("fetch");
-
-		assert.strictEqual(fnRequest.apply(oContext, aArguments), oResult);
 	});
 
 	//*********************************************************************************************
@@ -649,137 +564,6 @@ sap.ui.require([
 	}
 
 	//*********************************************************************************************
-	[{
-		sKeyPredicate : "('42')",
-		oEntityInstance : {"ID" : "42"},
-		oEntityType : {
-			"$Key" : ["ID"],
-			"ID" : {
-				"$Type" : "Edm.String"
-			}
-		}
-	}, {
-		sKeyPredicate : "('Walter%22s%20Win''s')",
-		oEntityInstance : {"ID" : "Walter\"s Win's"},
-		oEntityType : {
-			"$Key" : ["ID"],
-			"ID" : {
-				"$Type" : "Edm.String"
-			}
-		}
-	}, {
-		sKeyPredicate : "(Sector='DevOps',ID='42')",
-		oEntityInstance : {"ID" : "42", "Sector" : "DevOps"},
-		oEntityType : {
-			"$Key" : ["Sector", "ID"],
-			"Sector" : {
-				"$Type" : "Edm.String"
-			},
-			"ID" : {
-				"$Type" : "Edm.String"
-			}
-		}
-	}, {
-		sKeyPredicate : "(Bar=42,Fo%3Do='Walter%22s%20Win''s')",
-		oEntityInstance : {
-			"Bar" : 42,
-			"Fo=o" : "Walter\"s Win's"
-		},
-		oEntityType : {
-			"$Key" : ["Bar", "Fo=o"],
-			"Bar" : {
-				"$Type" : "Edm.Int16"
-			},
-			"Fo=o" : {
-				"$Type" : "Edm.String"
-			}
-		}
-	}].forEach(function (oFixture) {
-		QUnit.test("getKeyPredicate: " + oFixture.sKeyPredicate, function (assert) {
-			this.spy(_Helper, "formatLiteral");
-
-			assert.strictEqual(
-				_Helper.getKeyPredicate(oFixture.oEntityInstance, "~path~", {
-					"~path~" : oFixture.oEntityType
-				}),
-				oFixture.sKeyPredicate);
-
-			// check that formatPropertyAsLiteral() is called for each key property
-			oFixture.oEntityType.$Key.forEach(function (sProperty) {
-				sinon.assert.calledWithExactly(_Helper.formatLiteral,
-					sinon.match.same(oFixture.oEntityInstance[sProperty]),
-					sinon.match.same(oFixture.oEntityType[sProperty].$Type));
-			});
-		});
-	});
-
-	//*********************************************************************************************
-	QUnit.test("getKeyPredicate: key with alias", function (assert) {
-		var oComplexType = {
-				"baz" : {
-					"$kind" : "Property",
-					"$Type" : "Edm.Int16"
-				}
-			},
-			oEntityInstance = {},
-			oEntityType = {
-				"$Key" : ["qux", {"foo" : "bar/baz"}],
-				"qux" : {
-					"$kind" : "Property",
-					"$Type" : "Edm.String"
-				}
-			},
-			oHelperMock = this.mock(_Helper);
-
-		oHelperMock.expects("drillDown")
-			.withExactArgs(oEntityInstance, ["qux"]).returns("v1");
-		oHelperMock.expects("drillDown")
-			.withExactArgs(oEntityInstance, ["bar", "baz"]).returns("v2");
-		oHelperMock.expects("formatLiteral")
-			.withExactArgs("v1", "Edm.String").returns("~1");
-		oHelperMock.expects("formatLiteral")
-			.withExactArgs("v2", "Edm.Int16").returns("~2");
-
-		assert.strictEqual(_Helper.getKeyPredicate(oEntityInstance, "~path~", {
-				"~path~" : oEntityType,
-				"~path~/bar" : oComplexType
-			}),
-			"(qux=~1,foo=~2)");
-	});
-
-	//*********************************************************************************************
-	[{
-		sDescription : "one key property",
-		oEntityInstance : {},
-		oEntityType : {
-			"$Key" : ["ID"],
-			"ID" : {
-				"$Type" : "Edm.String"
-			}
-		}
-	}, {
-		sDescription : "multiple key properties",
-		oEntityInstance : {"Sector" : "DevOps"},
-		oEntityType : {
-			"$Key" : ["Sector", "ID"],
-			"Sector" : {
-				"$Type" : "Edm.String"
-			},
-			"ID" : {
-				"$Type" : "Edm.String"
-			}
-		}
-	}].forEach(function (oFixture) {
-		QUnit.test("getKeyPredicate: missing key, " + oFixture.sDescription, function (assert) {
-			assert.strictEqual(
-				_Helper.getKeyPredicate(oFixture.oEntityInstance, "~path~", {
-					"~path~" : oFixture.oEntityType
-				}),
-				undefined);
-		});
-	});
-
-	//*********************************************************************************************
 	QUnit.test("namespace", function (assert) {
 		assert.strictEqual(_Helper.namespace("Products"), "");
 		assert.strictEqual(_Helper.namespace("zui5_epm_sample.Products"), "zui5_epm_sample");
@@ -968,61 +752,4 @@ sap.ui.require([
 		assert.strictEqual(_Helper.makeAbsolute("Foo('1')/Bar(baz='2',qux=3)", "/service/"),
 			"/service/Foo('1')/Bar(baz='2',qux=3)");
 	});
-
-	//*********************************************************************************************
-	QUnit.test("drillDown", function (assert) {
-		var oObject = {
-				"foo" : "bar",
-				"bar" : {
-					"baz" : "qux"
-				},
-				"null" : null
-			};
-
-		assert.strictEqual(_Helper.drillDown(oObject, []), oObject);
-		assert.strictEqual(_Helper.drillDown(oObject, ["foo"]), "bar");
-		assert.strictEqual(_Helper.drillDown(oObject, ["bar", "baz"]), "qux");
-		assert.strictEqual(_Helper.drillDown(oObject, ["unknown"]), undefined);
-		assert.strictEqual(_Helper.drillDown(oObject, ["unknown", "value"]), undefined);
-		assert.strictEqual(_Helper.drillDown(oObject, ["null"]), null);
-		assert.strictEqual(_Helper.drillDown(oObject, ["null", "value"]), undefined);
-	});
-
-	//*********************************************************************************************
-	[{
-		dataPath : "/Foo",
-		metaPath : "/Foo"
-	}, { // e.g. function call plus key predicate
-		dataPath : "/Foo/name.space.bar_42(key='value')(key='value')",
-		metaPath : "/Foo/name.space.bar_42"
-	}, {
-		dataPath : "/Foo(key='value')(key='value')/bar",
-		metaPath : "/Foo/bar"
-	}, { // any segment with digits only
-		dataPath : "/Foo/" + Date.now(),
-		metaPath : "/Foo"
-	}, {
-		dataPath : "/Foo/" + Date.now() + "/bar",
-		metaPath : "/Foo/bar"
-	}, { // global removal needed
-		dataPath : "/Foo(key='value')/" + Date.now() + "/bar(key='value')/"  + Date.now(),
-		metaPath : "/Foo/bar"
-	}, { // transient entity
-		dataPath : "/Foo/-1/bar",
-		metaPath : "/Foo/bar"
-	}].forEach(function (oFixture) {
-		QUnit.test("getMetaPath: " + oFixture.dataPath, function (assert) {
-			var sMetaPath = _Helper.getMetaPath(oFixture.dataPath);
-
-			assert.strictEqual(sMetaPath, oFixture.metaPath);
-		});
-	});
-	//TODO $all, $count, $crossjoin, $ref, $value
-	// Q: Do we need to keep signatures to resolve overloads?
-	// A: Most probably not. The spec says "All bound functions with the same function name and
-	//    binding parameter type within a namespace MUST specify the same return type."
-	//    "All unbound functions with the same function name within a namespace MUST specify the
-	//    same return type." --> We can find the return type (from the binding parameter type).
-	//    If it comes to annotations, the signature might make a difference, but then "unordered
-	//    set of (non-binding) parameter names" is unique.
 });

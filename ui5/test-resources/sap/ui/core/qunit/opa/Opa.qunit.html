@@ -498,7 +498,7 @@ sap.ui.require([
 		setTimeout(function () {
 			// _stopQueue on QUnit timeout is called outside the queue
 			// put this in a timeout to ensure the queue is started
-			Opa._stopQueue({qunitTimeout: 30000});
+			Opa._stopQueue({qunitTimeout: true});
 		}, 50);
 	});
 
@@ -741,17 +741,13 @@ sap.ui.require([
 
 	QUnit.test("Should read an opa config value from URL parameter", function (assert) {
 		var fnDone = assert.async();
-		var fnOrig = URI.prototype.search;
-		var oStub = sinon.stub(URI.prototype, "search", function (query) {
-			if ( query === true ) {
-				return {
-					"opaKey": "value",			// should parse prefixed params
-					"opaExecutionDelay": "2000",// should override default value params
-					"another": "value",			// should not parse unprefixed params
-					"opaOverride": "value"		// should override already set params
-				};
-			}
-			return fnOrig.apply(this, arguments); // should use callThrough with sinon > 3.0
+		var oStub = sinon.stub(URI.prototype, "search", function () {
+			return {
+				"opaKey": "value",			// should parse prefixed params
+				"opaExecutionDelay": "2000",// should override default value params
+				"another": "value",			// should not parse unprefixed params
+				"opaOverride": "value"		// should override already set params
+			};
 		});
 		$.sap.unloadResources("sap/ui/test/Opa.js", false, true, true);
 
@@ -780,14 +776,10 @@ sap.ui.require([
 	QUnit.test("Should configure the max log level", function (assert) {
 		var fnDone = assert.async();
 		var fnLogLevelSpy = sinon.spy(sap.ui.test._OpaLogger, "setLevel");
-		var fnOrig = URI.prototype.search;
-		var oStub = sinon.stub(URI.prototype, "search", function (query) {
-			if ( query === true ) {
-				return {
-					opaLogLevel: "trace"
-				};
-			}
-			return fnOrig.apply(this, arguments); // should use callThrough with sinon > 3.0
+		var oStub = sinon.stub(URI.prototype, "search", function () {
+			return {
+				opaLogLevel: "trace"
+			};
 		});
 
 		$.sap.unloadResources("sap/ui/test/Opa.js", false, true, true);
@@ -795,8 +787,6 @@ sap.ui.require([
 			assert.strictEqual(Opa.config.logLevel, "trace");
 			assert.ok(fnLogLevelSpy.calledOnce, "Log level was changed");
 			sinon.assert.calledWith(fnLogLevelSpy, "trace");
-			oStub.restore();
-			fnLogLevelSpy.restore();
 			fnDone();
 		});
 	});

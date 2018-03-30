@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -156,7 +156,7 @@
                                     				
                                     				<img xmlns="" class="inline  " id="loiod12d2ee6a5454d799358d425f9e7c4db__image_o4x_vzm_yr" src="loioe3e163a7b93d498595586d5043f77ddb_HiRes.png">
                                     			
-                                 </div><span class="figcap">A custom product rating control is added to the detail page</span></div>
+                                 </div><span class="figcap"><span class="enumeration fig-enumeration">Figure 47: </span>A custom product rating control is added to the detail page</span></div>
                               
                               		
                            </section>
@@ -275,33 +275,23 @@
 			}));
 			this.setAggregation(&quot;_label&quot;, new Label({
 				text: &quot;{i18n&gt;productRatingLabelInitial}&quot;
-			}).addStyleClass(&quot;sapUiSmallMargin&quot;));
+			}).addStyleClass(&quot;sapUiTinyMargin&quot;));
 			this.setAggregation(&quot;_button&quot;, new Button({
 				text: &quot;{i18n&gt;productRatingButton}&quot;,
 				press: this._onSubmit.bind(this)
-			}).addStyleClass(&quot;sapUiTinyMarginTopBottom&quot;));
+			}));
 		},
 
-		setValue: function (fValue) {
-			this.setProperty(&quot;value&quot;, fValue, true);
-			this.getAggregation(&quot;_rating&quot;).setValue(fValue);
-		},
-
-		reset: function () {
-			var oResourceBundle = this.getModel(&quot;i18n&quot;).getResourceBundle();
-
-			this.setValue(0);
-			this.getAggregation(&quot;_label&quot;).setDesign(&quot;Standard&quot;);
-			this.getAggregation(&quot;_rating&quot;).setEnabled(true);
-			this.getAggregation(&quot;_label&quot;).setText(oResourceBundle.getText(&quot;productRatingLabelInitial&quot;));
-			this.getAggregation(&quot;_button&quot;).setEnabled(true);
+		setValue: function (iValue) {
+			this.setProperty(&quot;value&quot;, iValue, true);
+			this.getAggregation(&quot;_rating&quot;).setValue(iValue);
 		},
 
 		_onRate : function (oEvent) {
 			var oRessourceBundle = this.getModel(&quot;i18n&quot;).getResourceBundle();
 			var fValue = oEvent.getParameter(&quot;value&quot;);
 
-			this.setProperty(&quot;value&quot;, fValue, true);
+			this.setValue(fValue);
 
 			this.getAggregation(&quot;_label&quot;).setText(oRessourceBundle.getText(&quot;productRatingLabelIndicator&quot;, [fValue, oEvent.getSource().getMaxValue()]));
 			this.getAggregation(&quot;_label&quot;).setDesign(&quot;Bold&quot;);
@@ -563,19 +553,13 @@
                            </p>
                            
                            			
-                           <p class="p">Next, we have the <samp class="ph codeph">press</samp> handler for the rating button that submits our
-                              				rating. We assume that rating a product is a one-time action and first disable the
-                              				rating and the button so that the user is not allowed to submit another rating. We
-                              				also update the label to show a &quot;Thank you for your rating!&quot; message, then we fire
-                              				the change event of the control and pass in the current value as a parameter so that
+                           <p class="p">And last but not least, we have the press handler for the rating button that submits
+                              				our rating. We assume that rating a product is a one-time action and first disable
+                              				the rating and the button so that the user is not allowed to submit another rating.
+                              				We also update the label to show a &quot;Thank You&quot; message, then we fire the change
+                              				event of the control and pass in the current value as a parameter so that
                               				applications that are listening to this event can react on the rating
                               				interaction.
-                           </p>
-                           
-                           			
-                           <p class="p">We define the <samp class="ph codeph">reset</samp> method to be able to revert the state of the
-                              				control on the UI to its initial state so that the user can again submit a
-                              				rating.
                            </p>
                            
                            		
@@ -598,7 +582,7 @@
 		&lt;ObjectHeader
 			intro=&quot;{invoice&gt;ShipperName}&quot;
 			title=&quot;{invoice&gt;ProductName}&quot;/&gt;
-		<span class="ph emphasis emphasis">&lt;wt:ProductRating id=&quot;rating&quot; class=&quot;sapUiSmallMarginBeginEnd&quot; change=&quot;onRatingChange&quot;/&gt;</span>
+		<span class="ph emphasis emphasis">&lt;wt:ProductRating class=&quot;sapUiSmallMarginBeginEnd&quot; change=&quot;onRatingChange&quot;/&gt;</span>
 	&lt;/Page&gt;
 &lt;/mvc:View&gt;
 </pre>
@@ -627,13 +611,6 @@
 	use strict;
 	return Controller.extend(sap.ui.demo.walkthrough.controller.Detail, {
 		&#x2026;
-		_onObjectMatched: function (oEvent) {
-			<span class="ph emphasis emphasis">this.byId(&quot;rating&quot;).reset();</span>
-			this.getView().bindElement({
-				path: &quot;/&quot; + oEvent.getParameter(&quot;arguments&quot;).invoicePath,
-				model: &quot;invoice&quot;
-			});
-		},
 		onNavBack: function () {
 			&#x2026;
 		}<span class="ph emphasis emphasis">,
@@ -651,12 +628,6 @@
                                  				handler <samp class="ph codeph">onRatingChange</samp> reads the value of our custom change event
                                  				that is fired when the rating has been submitted. We then display a confirmation
                                  				message with the value in a <samp class="ph codeph">MessageToast</samp> control.
-                              </p>
-                              
-                              			
-                              <p class="p">In the <samp class="ph codeph">onObjectMatched</samp> private method, we call the
-                                 					<samp class="ph codeph">reset</samp> method to make it possible to submit another rating as
-                                 				soon as the detail view is displayed for a different item.
                               </p>
                               
                               		
@@ -704,7 +675,7 @@ detailPageTitle=Walkthrough - Details
 # Product Rating
 productRatingLabelInitial=Please rate this product
 productRatingLabelIndicator=Your rating: {0} out of {1}
-productRatingLabelFinal=Thank you for your rating!
+productRatingLabelFinal=Thank you!
 productRatingButton=Rate</span></pre>
                            
                            			<p class="p">The resource bundle is extended with the confirmation message and the strings that we
@@ -766,9 +737,9 @@ productRatingButton=Rate</span></pre>
                         <div class="relinfo">
                            <div class="relinfotitle ">Related Information</div>
                            
-                           <div><a class="link" href="../../#/topic/8dcab0011d274051808f959800cabf9f.html" title="You can create own content for OpenUI5. To develop controls in JavaScript, you can either extend existing controls or create new ones." target="_top">Developing Controls</a></div>
+                           <div><a class="link" href="../../#/topic/91f1703b6f4d1014b6dd926db0e91070.html" title="For developing controls for OpenUI5 in JavaScript, you can either extend existing controls or create new controls." target="_top">Developing OpenUI5 Controls</a></div>
                            
-                           <div><a class="link" href="../../#/topic/7b52540d9d8c4e00b9723151622bbb64.html" title="Control metadata consists of properties, events, as well as aggregations and associations." target="_top">Defining the Control Metadata</a></div>
+                           <div><a class="link" href="../../#/topic/7b52540d9d8c4e00b9723151622bbb64.html" title="Control metadata consist of properties, events, as well as aggregations and associations." target="_top">Defining the Control Metadata</a></div>
                            
                            <div><a class="link" href="../../#/api/sap.m.RatingIndicator" target="_top" alt="#/api/sap.m.RatingIndicator" title="#/api/sap.m.RatingIndicator">API Reference: <samp class="ph codeph">sap.m.RatingIndicator</samp></a></div>
                            

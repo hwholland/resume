@@ -25,7 +25,7 @@ sap.ui.define([
 
 		// Assertions
 		Then.onTheObjectPage.iShouldSeeTheRememberedObject().
-			and.theViewIsNotBusyAnymore();
+		and.theViewIsNotBusyAnymore();
 	});
 
 	opaTest("Should go back to the TablePage", function(Given, When, Then) {

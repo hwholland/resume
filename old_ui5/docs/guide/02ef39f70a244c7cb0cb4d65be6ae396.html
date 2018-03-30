@@ -1,0 +1,88 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=0003152247639301997"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=0003152247639301997"/>
+<title>Frequently Asked Questions</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio02ef39f70a244c7cb0cb4d65be6ae396">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Frequently Asked Questions</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<div class="section collapsible"><div class="section_title">How can I avoid timeouts?</div><div type="How can I avoid timeouts?">
+			
+			<div class="p">There are two  situations where you might have trouble with timeouts:<ul class="ul" id="loio02ef39f70a244c7cb0cb4d65be6ae396__ul_lrm_pzv_kx">
+					<li class="li">
+						<p class="p">When loading your app</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">When trying to find <span class="ph"><span class="ph pname">OpenUI5</span></span> controls in the app</p>
+
+					</li>
+
+				</ul>
+</div>
+
+			<div class="p">When loading the app, the OPA5 command can accept a parameterdefining the number of seconds to
+				wait for the application to load.
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var opa5 = new Opa5();
+opa5.iStartMyAppInAFrame("path/to/your/app.html", 30); // wait time in seconds</pre></div>
+</div>
+
+			<div class="p">When trying to find <span class="ph"><span class="ph pname">OpenUI5</span></span>
+				controls in the app, you can add the following settings to cause OPA5 to wait a
+				different amount of time for a control to become available on the screen. You also
+				need to set the QUnit timeout (to a time equal to or greater than the OPA5 setting),
+				otherwise QUnit might give up
+				early:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.test.Opa.config.timeout = 20; // wait time in seconds
+QUnit.config.testTimeout = 20000; // wait time in milliseconds</pre></div>
+</div>
+
+		</div></div>
+
+		<div class="section collapsible"><div class="section_title">Who should write feature files?</div><div type="Who should write feature files?">
+			
+			<p class="p">Ideally, the Product Owner develops feature files together with developers. Depending on how familiar Product Owners are with the tool, they can upload
+				the feature files directly to source control, or let the developers do the upload.</p>
+
+		</div></div>
+
+		<div class="section collapsible"><div class="section_title">How can I avoid inadequacies when writing the step definitions?</div><div type="How can I avoid inadequacies when writing the step definitions?">
+			
+			<p class="p">You may find that there is a gap between what the Product Owner has written, and the information that the developer requires to implement an integration
+				test. Developers can modify the feature file to enable testing, as long as they check back with the Product Owner to ensure that the feature
+				file is still correct.</p>
+
+		</div></div>
+
+		<div class="section collapsible"><div class="section_title">Every time the Product Owner modifies the feature file, it breaks the tests How can I avoid this?</div><div type="Every time the Product Owner modifies the feature file, it breaks the tests How can I avoid this?">
+			
+			<p class="p">Actually, this is the point of Gherkin. When modifications to a feature file are uploaded to source control, we expect this to break existing tests, since
+				the application's expected behavior has changed — but the application itself has not changed yet. Gherkin is forcing the application to stay in
+				sync with the feature file. Consider that this also encourages you to be more honest about accepting new feature changes into your product — and
+				the amount of extra work that this entails. We recommend that you use your formal code review process to allow developers to change the
+				application and fix the tests, and then submit all the new code together with the feature file changes at the same time into the master
+				branch.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

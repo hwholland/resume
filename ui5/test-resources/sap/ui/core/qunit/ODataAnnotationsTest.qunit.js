@@ -1,20 +1,17 @@
-/*global QUnit */
-
 /**
  * Test-Function to be used in place of deepEquals which only tests for the existence of the given
  * values, not the absence of others.
  *
- * @param {object} assert - The QUnit assert object
  * @param {object} oValue - The value to be tested
  * @param {object} oExpected - The value that is tested against, containing the structure expected inside oValue
  * @param {string} sMessage - Message prefix for every sub-test. The property names of the structure will be prepended to this string
  * @returns {void}
  */
-function deepContains(assert, oValue, oExpected, sMessage) {
+function deepContains(oValue, oExpected, sMessage) {
 	for (var sKey in oExpected) {
 
 		if (!(sKey in oValue)) {
-			assert.ok(false, "Expected property " + sMessage + "/" + sKey + " does not exist");
+			assert.ok(false, "Expected property " + sMessage + "/" + sKey + + " does not exist");
 			continue;
 		}
 
@@ -34,7 +31,7 @@ function deepContains(assert, oValue, oExpected, sMessage) {
 			if (oValue[sKey] === null) {
 				assert.ok(false, "Property " + sMessage + "/" + sKey + " is null");
 			} else {
-				deepContains(assert, oValue[sKey], oExpected[sKey], sMessage + "/" + sKey);
+				deepContains(oValue[sKey], oExpected[sKey], sMessage + "/" + sKey);
 			}
 		} else {
 			// Compare directly
@@ -43,7 +40,7 @@ function deepContains(assert, oValue, oExpected, sMessage) {
 	}
 }
 
-function fnCreateModel(assert, iModelVersion, sServiceUrl, aAnnotationUrls, mMetadataUrlParams) {
+function fnCreateModel(iModelVersion, sServiceUrl, aAnnotationUrls, mMetadataUrlParams) {
 	var oModel;
 	if (iModelVersion == 1) {
 		oModel = new sap.ui.model.odata.ODataModel(sServiceUrl, {
@@ -377,7 +374,7 @@ function runODataAnnotationTests() {
 	QUnit.module("Synchronous loading");
 
 	fnTest = function(sServiceURI, mModelOptions, bServiceValid, sAnnotationsValid, bSharedMetadata) {
-		return function(assert) {
+		return function() {
 			if (!bSharedMetadata){
 				cleanOdataCache();
 			}
@@ -1041,7 +1038,7 @@ function runODataAnnotationTests() {
 
 	QUnit.module("V1 only: Synchronous loading and MetaModel");
 
-	var fnTestSynchronousLoading = function(mTest, assert) {
+	var fnTestSynchronousLoading = function(mTest) {
 		assert.expect(5);
 		var oModel = new sap.ui.model.odata.ODataModel(mTest.service, {
 			annotationURI : mTest.annotations,
@@ -3219,7 +3216,7 @@ function runODataAnnotationTests() {
 
 		assert.ok(!!oAnnotations["UrlTest"], "Main entry exists");
 
-		deepContains(assert,
+		deepContains(
 			oAnnotations["UrlTest"],
 			{
 				"com.sap.vocabularies.UI.v1.Identification": [{
@@ -3317,7 +3314,7 @@ function runODataAnnotationTests() {
 
 			assert.ok(!!oAnnotations["UrlTest"], "Main entry exists");
 
-			deepContains(assert,
+			deepContains(
 				oAnnotations["UrlTest"],
 				{
 					"com.sap.vocabularies.UI.v1.Identification": [{
@@ -3544,7 +3541,7 @@ function runODataAnnotationTests() {
 						done();
 
 					}).catch(function(mResults) {
-						assert.ok(false, "Third Annotations could not be parsed...");
+						assert.ok(false, "Third Annotations could not be parsed...")
 						oModel.destroy();
 						done();
 					})
@@ -3636,7 +3633,7 @@ function runODataAnnotationTests() {
 				{ "String": "Male" }
 			]
 		};
-		deepContains(assert, mValue, mExpected, "Value is correct: DynamicExpressions/org.example.person.Gender");
+		deepContains(mValue, mExpected, "Value is correct: DynamicExpressions/org.example.person.Gender");
 		oModel.destroy();
 	});
 
@@ -3702,7 +3699,7 @@ function runODataAnnotationTests() {
 			}]
 		};
 
-		deepContains(assert, mValue, mExpected, "Value is correct: DynamicExpressions2/com.sap.vocabularies.Test.v1.Data/Value");
+		deepContains(mValue, mExpected, "Value is correct: DynamicExpressions2/com.sap.vocabularies.Test.v1.Data/Value");
 
 		oModel.destroy();
 	});
@@ -3735,7 +3732,7 @@ function runODataAnnotationTests() {
 			{ "String": "String02" },
 			{ "String": "String03" }
 		];
-		deepContains(assert, mValue, mExpected, "Value is correct: CollectionsWithSimpleValues/com.sap.vocabularies.Test.v1.Data");
+		deepContains(mValue, mExpected, "Value is correct: CollectionsWithSimpleValues/com.sap.vocabularies.Test.v1.Data");
 		oModel.destroy();
 	});
 
@@ -3758,7 +3755,7 @@ function runODataAnnotationTests() {
 		assert.ok(!!oMetadata, "Metadata is available.");
 		assert.ok(!!oAnnotations, "Annotations are available.");
 
-		deepContains(assert,
+		deepContains(
 			oAnnotations["SimpleValues"],
 			{
 				"com.sap.vocabularies.Test.v1.Data": {
@@ -3792,7 +3789,7 @@ function runODataAnnotationTests() {
 			assert.ok(!!oMetadata, "Metadata is available.");
 			assert.ok(!!oAnnotations, "Annotations are available.");
 
-			deepContains(assert,
+			deepContains(
 				oAnnotations["IfInApply"],
 				{
 					"com.sap.vocabularies.Test.v1.Data": {
@@ -3863,7 +3860,7 @@ function runODataAnnotationTests() {
 			assert.ok(!!oMetadata, "Metadata is available.");
 			assert.ok(!!oAnnotations, "Annotations are available.");
 
-			deepContains(assert,
+			deepContains(
 				oAnnotations["LabeledElement"],
 				{
 					"com.sap.vocabularies.Test.v1.Data": {
@@ -4083,7 +4080,7 @@ function runODataAnnotationTests() {
 			assert.ok(!!oMetadata, "Metadata is available.");
 			assert.ok(!!oAnnotations, "Annotations are available.");
 
-			deepContains(assert,
+			deepContains(
 				oAnnotations["ApplyInIf"],
 				{
 					"ui5.test.1": {
@@ -4166,7 +4163,7 @@ function runODataAnnotationTests() {
 			assert.ok(!!oMetadata, "Metadata is available.");
 			assert.ok(!!oAnnotations, "Annotations are available.");
 
-			deepContains(assert,
+			deepContains(
 				oAnnotations["ApplyInIf"],
 				{
 					"ui5.test.1": {
@@ -4284,12 +4281,12 @@ function runODataAnnotationTests() {
 	});
 
 
-	var fnTestAnnotationInRecord = function(iModelVersion, assert) {
+	var fnTestAnnotationInRecord = function(iModelVersion) {
 		var done = assert.async();
 		assert.expect(54);
 
 		var mTest = mAdditionalTestsServices["Default Annotated Service"];
-		var oModel = fnCreateModel(assert, iModelVersion, mTest.service, mTest.annotations);
+		var oModel = fnCreateModel(iModelVersion, mTest.service, mTest.annotations);
 
 		oModel.attachAnnotationsLoaded(function() {
 			var oMetadata = oModel.getServiceMetadata();
@@ -4304,7 +4301,7 @@ function runODataAnnotationTests() {
 
 			var mTestCase1 = oAnnotations["Test.AnnotationInRecord"]["Test.AnnotationInRecord.Case1"];
 
-			deepContains(assert, mTestCase1, {
+			deepContains(mTestCase1, {
 				"Test.AnnotationInRecord.Case1.Record.SubAnnotation1": {
 					"String": "SubAnnotation1"
 				},
@@ -4327,7 +4324,7 @@ function runODataAnnotationTests() {
 
 			var mTestCase2 = oAnnotations["Test.AnnotationInRecord"]["Test.AnnotationInRecord.Case2"];
 
-			deepContains(assert, mTestCase2, {
+			deepContains(mTestCase2, {
 				"Test.AnnotationInRecord.Case2.Record.SubAnnotation1": {
 					"String": "SubAnnotation1"
 				},
@@ -4350,7 +4347,7 @@ function runODataAnnotationTests() {
 
 			var mTestCase3 = oAnnotations["Test.AnnotationInRecord"]["Test.AnnotationInRecord.Case3"];
 
-			deepContains(assert, mTestCase3, {
+			deepContains(mTestCase3, {
 				"Null": null,
 				"RecordType": "Test.AnnotationInRecord.Case3.Record"
 			}, "Case 3 has correct values");
@@ -4366,12 +4363,12 @@ function runODataAnnotationTests() {
 
 
 
-	var fnTestEmptyCollection = function(iModelVersion, assert) {
+	var fnTestEmptyCollection = function(iModelVersion) {
 		var done = assert.async();
 		assert.expect(15);
 
 		var mTest = mAdditionalTestsServices["Empty collection"];
-		var oModel = fnCreateModel(assert, iModelVersion, mTest.service, mTest.annotations);
+		var oModel = fnCreateModel(iModelVersion, mTest.service, mTest.annotations);
 
 		oModel.attachAnnotationsLoaded(function() {
 			var oMetadata = oModel.getServiceMetadata();
@@ -4380,7 +4377,7 @@ function runODataAnnotationTests() {
 			assert.ok(!!oMetadata, "Metadata is available.");
 			assert.ok(!!oAnnotations, "Annotations are available.");
 
-			deepContains(assert,
+			deepContains(
 				oAnnotations["ui5.test.Annotation"],
 				{
 					"ui5.test.FilledCollection": [
@@ -4402,12 +4399,12 @@ function runODataAnnotationTests() {
 	QUnit.test("V2: Empty collection", fnTestEmptyCollection.bind(this, 2));
 
 
-	var fnTestEmptyCollection = function(iModelVersion, assert) {
+	var fnTestEmptyCollection = function(iModelVersion) {
 		var done = assert.async();
 		assert.expect(10);
 
 		var mTest = mAdditionalTestsServices["Multiple Enums"];
-		var oModel = fnCreateModel(assert, iModelVersion, mTest.service, mTest.annotations);
+		var oModel = fnCreateModel(iModelVersion, mTest.service, mTest.annotations);
 
 		oModel.attachAnnotationsLoaded(function() {
 			var oMetadata = oModel.getServiceMetadata();
@@ -4416,7 +4413,7 @@ function runODataAnnotationTests() {
 			assert.ok(!!oMetadata, "Metadata is available.");
 			assert.ok(!!oAnnotations, "Annotations are available.");
 
-			deepContains(assert,
+			deepContains(
 				oAnnotations["ui5.test.Annotation"],
 				{
 					"ui5.test.SimpleEnum": {
@@ -4443,12 +4440,12 @@ function runODataAnnotationTests() {
 
 
 
-	var fnTestCachedValueLists = function(iModelVersion, assert) {
+	var fnTestCachedValueLists = function(iModelVersion) {
 		var done = assert.async();
 		assert.expect(40);
 
 		var mTest = mAdditionalTestsServices["Cached Value Lists"];
-		var oModel = fnCreateModel(assert, iModelVersion, mTest.service, mTest.annotations);
+		var oModel = fnCreateModel(iModelVersion, mTest.service, mTest.annotations);
 
 		new Promise(function(fnResolve) {
 			// Only react to annotationsLoaded once...
@@ -4462,7 +4459,7 @@ function runODataAnnotationTests() {
 
 			assert.ok(true, "Annotations (Metadata) for Model 1 loaded.");
 
-			deepContains(assert,
+			deepContains(
 				oAnnotations["ui5.test.Annotation"],
 				{
 					"ui5.test.SimpleAnnotation": {
@@ -4477,7 +4474,7 @@ function runODataAnnotationTests() {
 
 				assert.ok(true, "Annotations (Value List 1) for Model 1 loaded.");
 
-				deepContains(assert,
+				deepContains(
 					oAnnotations["ui5.test.Annotation"],
 					{
 						"ui5.test.SimpleAnnotation": {
@@ -4495,7 +4492,7 @@ function runODataAnnotationTests() {
 
 					assert.ok(true, "Annotations (Value List 2) for Model 1 loaded.");
 
-					deepContains(assert,
+					deepContains(
 						oAnnotations["ui5.test.Annotation"],
 						{
 							"ui5.test.SimpleAnnotation": {
@@ -4516,7 +4513,7 @@ function runODataAnnotationTests() {
 
 						assert.ok(true, "Annotations (Value List 3) for Model 1 loaded.");
 
-						deepContains(assert,
+						deepContains(
 							oAnnotations["ui5.test.Annotation"],
 							{
 								"ui5.test.SimpleAnnotation": {
@@ -4546,7 +4543,7 @@ function runODataAnnotationTests() {
 		});
 
 		var fnCachedModelTest = function() {
-			var oModel2 = fnCreateModel(assert, iModelVersion, mTest.service, mTest.annotations);
+			var oModel2 = fnCreateModel(iModelVersion, mTest.service, mTest.annotations);
 
 			oModel2.attachAnnotationsLoaded(function() {
 				// All annotations should be there from cache
@@ -4554,7 +4551,7 @@ function runODataAnnotationTests() {
 
 				var oAnnotations = oModel2.getServiceAnnotations();
 
-				deepContains(assert,
+				deepContains(
 					oAnnotations["ui5.test.Annotation"],
 					{
 						"ui5.test.SimpleAnnotation": {
@@ -4576,7 +4573,7 @@ function runODataAnnotationTests() {
 	QUnit.test("V2: Cached Value Lists", fnTestCachedValueLists.bind(this, 2));
 
 
-	var fnTestCachedMetadataValueLists = function(iModelVersion, assert) {
+	var fnTestCachedMetadataValueLists = function(iModelVersion) {
 		var done = assert.async();
 		assert.expect(14);
 
@@ -4584,14 +4581,14 @@ function runODataAnnotationTests() {
 		var sServiceUrl1 = mTest.service + "?sap-value-list=1";
 		var sServiceUrl2 = mTest.service + "?sap-value-list=2";
 
-		var oModel = fnCreateModel(assert, iModelVersion, sServiceUrl1, mTest.annotations);
+		var oModel = fnCreateModel(iModelVersion, sServiceUrl1, mTest.annotations);
 		oModel.attachAnnotationsLoaded(function() {
 			// Model3 should now have the value-lists "1"
 			assert.ok(true, "Annotations for Model loaded.");
 
 			var oAnnotations = oModel.getServiceAnnotations();
 
-			deepContains(assert,
+			deepContains(
 				oAnnotations["ui5.test.Annotation"],
 				{
 					"ui5.test.SimpleAnnotation": {
@@ -4605,7 +4602,7 @@ function runODataAnnotationTests() {
 			);
 
 
-			var oModel2 = fnCreateModel(assert, iModelVersion, sServiceUrl2, mTest.annotations);
+			var oModel2 = fnCreateModel(iModelVersion, sServiceUrl2, mTest.annotations);
 
 			oModel2.attachAnnotationsLoaded(function() {
 				// Model4 should now have the value lists "2"
@@ -4613,7 +4610,7 @@ function runODataAnnotationTests() {
 
 				var oAnnotations = oModel2.getServiceAnnotations();
 
-				deepContains(assert,
+				deepContains(
 					oAnnotations["ui5.test.Annotation"],
 					{
 						"ui5.test.SimpleAnnotation": {
@@ -4638,7 +4635,7 @@ function runODataAnnotationTests() {
 	QUnit.test("V1: Cached Value Lists with Service-URL-Parameters", fnTestCachedMetadataValueLists.bind(this, 1));
 	QUnit.test("V2: Cached Value Lists with Service-URL-Parameters", fnTestCachedMetadataValueLists.bind(this, 2));
 
-	var fnTestCachedMetadataValueListsAdditionParameters = function(iModelVersion, assert) {
+	var fnTestCachedMetadataValueListsAdditionParameters = function(iModelVersion) {
 		var done = assert.async();
 		assert.expect(14);
 
@@ -4650,7 +4647,7 @@ function runODataAnnotationTests() {
 			"sap-value-list": "2"
 		};
 
-		var oModel = fnCreateModel(assert, iModelVersion, mTest.service, mTest.annotations, mMetadataUrlParams1);
+		var oModel = fnCreateModel(iModelVersion, mTest.service, mTest.annotations, mMetadataUrlParams1);
 
 		new Promise(function(fnResolve) {
 			// Only react to annotationsLoaded once...
@@ -4661,7 +4658,7 @@ function runODataAnnotationTests() {
 
 			var oAnnotations = oModel.getServiceAnnotations();
 
-			deepContains(assert,
+			deepContains(
 				oAnnotations["ui5.test.Annotation"],
 				{
 					"ui5.test.SimpleAnnotation": {
@@ -4675,7 +4672,7 @@ function runODataAnnotationTests() {
 			);
 
 
-			var oModel2 = fnCreateModel(assert, iModelVersion, mTest.service, mTest.annotations, mMetadataUrlParams2);
+			var oModel2 = fnCreateModel(iModelVersion, mTest.service, mTest.annotations, mMetadataUrlParams2);
 
 			oModel2.attachAnnotationsLoaded(function() {
 				// Model4 should now have the value lists "2"
@@ -4683,7 +4680,7 @@ function runODataAnnotationTests() {
 
 				var oAnnotations = oModel2.getServiceAnnotations();
 
-				deepContains(assert,
+				deepContains(
 					oAnnotations["ui5.test.Annotation"],
 					{
 						"ui5.test.SimpleAnnotation": {
@@ -4710,13 +4707,13 @@ function runODataAnnotationTests() {
 
 
 
-	var fnTestOverwritingOnTermLevel = function(iModelVersion, assert) {
+	var fnTestOverwritingOnTermLevel = function(iModelVersion) {
 		var done = assert.async();
 		assert.expect(3);
 
 		cleanOdataCache();
 		var mTest = mAdditionalTestsServices["Overwrite on Term Level"];
-		var oModel = fnCreateModel(assert, iModelVersion, mTest.service, mTest.annotations);
+		var oModel = fnCreateModel(iModelVersion, mTest.service, mTest.annotations);
 
 
 		oModel.attachAnnotationsLoaded(function() {
@@ -4803,12 +4800,12 @@ function runODataAnnotationTests() {
 
 
 
-	var fnTestOverwritingOnTermLevel2 = function(iModelVersion, assert) {
+	var fnTestOverwritingOnTermLevel2 = function(iModelVersion) {
 		var done = assert.async();
 		assert.expect(6);
 
 		var mTest = mAdditionalTestsServices["Overwrite on Term Level"];
-		var oModel = fnCreateModel(assert, iModelVersion, mTest.service);
+		var oModel = fnCreateModel(iModelVersion, mTest.service);
 
 		oModel.addAnnotationUrl(mTest.annotations[0]).then(function() {
 			var oAnnotations = oModel.getServiceAnnotations();
@@ -4958,12 +4955,12 @@ function runODataAnnotationTests() {
 	QUnit.test("V1: Overwrite on Term Level 2", fnTestOverwritingOnTermLevel2.bind(this, 1));
 	QUnit.test("V2: Overwrite on Term Level 2", fnTestOverwritingOnTermLevel2.bind(this, 2));
 
-	var fnTestAceptHeader = function(iModelVersion, assert) {
+	var fnTestAceptHeader = function(iModelVersion) {
 		var done = assert.async();
 		assert.expect(12);
-		var oModel = fnCreateModel(assert, iModelVersion, "fakeService://testdata/odata/northwind/");
-		var oModel2 = fnCreateModel(assert, iModelVersion, "fakeService://testdata/odata/northwind/");
-		var oModel3 = fnCreateModel(assert, iModelVersion, "fakeService://testdata/odata/northwind/");
+		var oModel = fnCreateModel(iModelVersion, "fakeService://testdata/odata/northwind/");
+		var oModel2 = fnCreateModel(iModelVersion, "fakeService://testdata/odata/northwind/");
+		var oModel3 = fnCreateModel(iModelVersion, "fakeService://testdata/odata/northwind/");
 
 		sap.ui.getCore().getConfiguration().setLanguage("en-US");
 		oModel.addAnnotationUrl("fakeService://replay-headers").then(function() {
@@ -5040,11 +5037,11 @@ function runODataAnnotationTests() {
 	QUnit.test("V2: Send Accept-Language Header", fnTestAceptHeader.bind(this, 2));
 
 
-	var fnTestEdmTypeForNavigationProperties = function(iModelVersion, assert) {
+	var fnTestEdmTypeForNavigationProperties = function(iModelVersion) {
 		var done = assert.async();
 		cleanOdataCache();
 		var mTest = mAdditionalTestsServices["EDMType for NavigationProperties"];
-		var oModel = fnCreateModel(assert, iModelVersion, mTest.service);
+		var oModel = fnCreateModel(iModelVersion, mTest.service);
 
 		oModel.attachMetadataLoaded(function() {
 			var oAnnotations = oModel.getServiceAnnotations();
@@ -5054,7 +5051,7 @@ function runODataAnnotationTests() {
 			oModel.addAnnotationUrl(mTest.annotations[0]).then(function() {
 				var oAnnotations = oModel.getServiceAnnotations();
 
-				deepContains(assert, oAnnotations["NorthwindModel.Supplier"], {
+				deepContains(oAnnotations["NorthwindModel.Supplier"], {
 					"com.sap.vocabularies.UI.v1.LineItem": [{
 							"Label": {
 								"String": "Product Supplier ID"
@@ -5085,7 +5082,7 @@ function runODataAnnotationTests() {
 					}]
 				}, "Product EDM types are correctly set");
 
-				deepContains(assert, oAnnotations["NorthwindModel.Product"], {
+				deepContains(oAnnotations["NorthwindModel.Product"], {
 					 "com.sap.vocabularies.UI.v1.LineItem": [{
 							"Label": {
 								 "String": "Product ID"
@@ -5144,13 +5141,13 @@ function runODataAnnotationTests() {
 	QUnit.test("V2: EDMType for NavigationProperties", fnTestEdmTypeForNavigationProperties.bind(this, 2));
 
 
-	var fnTestNestedAnnotations = function(iModelVersion, assert) {
+	var fnTestNestedAnnotations = function(iModelVersion) {
 		var done = assert.async();
 		assert.expect(150);
 
 		cleanOdataCache();
 		var mTest = mAdditionalTestsServices["Nested Annotations"];
-		var oModel = fnCreateModel(assert, iModelVersion, mTest.service);
+		var oModel = fnCreateModel(iModelVersion, mTest.service);
 
 		oModel.attachMetadataLoaded(function() {
 			var oAnnotations = oModel.getServiceAnnotations();
@@ -5160,7 +5157,7 @@ function runODataAnnotationTests() {
 			oModel.addAnnotationUrl(mTest.annotations[0]).then(function() {
 				var oAnnotations = oModel.getServiceAnnotations();
 
-				deepContains(assert, oAnnotations["NorthwindModel.Product"], {
+				deepContains(oAnnotations["NorthwindModel.Product"], {
 					"com.sap.vocabularies.UI.v1.LineItem" : [{
 						"Label" : {
 							"String" : "Business Partner"

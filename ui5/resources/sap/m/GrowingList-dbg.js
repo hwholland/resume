@@ -1,12 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.GrowingList.
-sap.ui.define(['./List', './library', './GrowingListRenderer'],
-	function(List, library, GrowingListRenderer) {
+sap.ui.define(['./List', './library'],
+	function(List, library) {
 	"use strict";
 
 
@@ -22,7 +22,7 @@ sap.ui.define(['./List', './library', './GrowingListRenderer'],
 	 * @extends sap.m.List
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public

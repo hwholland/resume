@@ -26,13 +26,6 @@
       &lt;li&gt;&lt;code&gt;onAfterExitOverflow(oControl)&lt;/code&gt; - A callback function that will be invoked after taking the control out of the overflow menu (before moving it back to the toolbar itself). The control instance will be passed as an argument.
 
       &lt;b&gt;Note:&lt;/b&gt; See: &lt;code&gt;onBeforeEnterOverflow&lt;/code&gt; for details about the function's context.&lt;/li&gt;
-
-      &lt;li&gt;&lt;code&gt;getCustomImportance()&lt;/code&gt; - A function that, if provided, will be called to determine the priority of the control.
-      This function must return a value of type &lt;code&gt;sap.m.OverflowToolbarPriority&lt;/code&gt;. The string &quot;Medium&quot; is also accepted and interpreted as priority between &lt;code&gt;Low&lt;/code&gt; and &lt;code&gt;High&lt;code&gt;.
-
-      &lt;b&gt;Note:&lt;/b&gt; Normally priority in &lt;code&gt;sap.m.OverflowToolbar&lt;/code&gt; is managed with the &lt;code&gt;priority&lt;/code&gt; property of &lt;code&gt;sap.m.OverflowToolbarLayoutData&lt;/code&gt;.
-      However, some controls may have other means of defining priority, such as dedicated properties or other types of layout data for that purpose.
-      In summary, implementing this function allows a control to override the default priority logic (&lt;code&gt;sap.m.OverflowToolbarLayoutData&lt;/code&gt;) by providing its own.&lt;/li&gt;
   &lt;/ul&gt;
 
   &lt;b&gt;Important:&lt;/b&gt; In addition, the control can implement a CSS class, scoped with the &lt;code&gt;.sapMOverflowToolbarMenu-CTX&lt;/code&gt; context selector, that will be applied whenever the control is inside the overflow menu.

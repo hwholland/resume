@@ -6,8 +6,8 @@
 <meta name="abstract" content="This section outlines the main differences between the OData V2 and OData V4 models."/>
 <meta name="description" content="This section outlines the main differences between the OData V2 and OData V4 models."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5495090116919557"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5495090116919557"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6445733180393585"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6445733180393585"/>
 <title>Changes Compared to OData V2 Model</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -55,12 +55,12 @@
 				
 				<thead class="thead" align="left">
 					<tr class="row">
-						<th class="entry" valign="top" width="50%" id="d9469217e52">
+						<th class="entry" valign="top" width="50%" id="d9668371e52">
 							<p class="p">Change</p>
 
 						</th>
 
-						<th class="entry" valign="top" width="50%" id="d9469217e58">
+						<th class="entry" valign="top" width="50%" id="d9668371e58">
 							<p class="p">Reason</p>
 
 						</th>
@@ -71,7 +71,7 @@
 
 				<tbody class="tbody">
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d9469217e52 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e52 ">
 							<p class="p">Binding parameter names: The binding parameter name for an OData system query option is
 								identical to the system query option name: <samp class="ph codeph">$expand</samp>,
 									<samp class="ph codeph">$select</samp>, ... (V2 uses <samp class="ph codeph">expand</samp>,
@@ -79,7 +79,7 @@
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d9469217e58 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e58 ">
 							<p class="p">Simplification: The OData V4 model simplifies the binding parameter structure to just one
 								map where all entries in the map are OData query options, with the
 								exception of entries that have a key starting with "$$"
@@ -92,7 +92,7 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d9469217e52 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e52 ">
 							<p class="p">The model does not support the methods <samp class="ph codeph">getData</samp>,
 									<samp class="ph codeph">getObject</samp>,
 								<samp class="ph codeph">getOriginalProperty</samp>, <samp class="ph codeph">getProperty</samp>.
@@ -101,7 +101,7 @@
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d9469217e58 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e58 ">
 							<p class="p">OData requires asynchronous data retrieval: Synchronous data access requires that data has
 								already been loaded from the server. This means there is no way of
 								knowing whether this already happened, meaning the result of a
@@ -118,7 +118,7 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d9469217e52 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e52 ">
 							<p class="p">Minimize APIs required for batch control: Model does not support the methods
 									<samp class="ph codeph">getChangeBatchGroups</samp>,
 									<samp class="ph codeph">getChangeGroups</samp>,
@@ -131,7 +131,7 @@
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d9469217e58 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e58 ">
 							<p class="p">Simplification: Batch groups are solely defined via binding parameters with the
 								corresponding parameters on the model as default. Application groups
 								are by default deferred; there is no need to set or get deferred
@@ -146,13 +146,13 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d9469217e52 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e52 ">
 							<p class="p">OData operations executed via binding: Model does not support the method
 									<samp class="ph codeph">callFunction</samp>.</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d9469217e58 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e58 ">
 							<p class="p">Simplification: Use an operation binding instead; it is now much easier to bind operation
 								execution results to controls.</p>
 
@@ -161,14 +161,14 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d9469217e52 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e52 ">
 							<p class="p">No CRUD methods on model: Model does not support the methods <samp class="ph codeph">create</samp>,
 									<samp class="ph codeph">read</samp>, <samp class="ph codeph">remove</samp>,
 									<samp class="ph codeph">update</samp>.</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d9469217e58 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e58 ">
 							<p class="p">Simplification: <samp class="ph codeph">read</samp>, <samp class="ph codeph">update</samp>, <samp class="ph codeph">create</samp>
 								and <samp class="ph codeph">remove</samp> operations are available implicitly via
 								the bindings, so that changes are bound to controls. It is not
@@ -179,7 +179,7 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d9469217e52 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e52 ">
 							<p class="p">No metadata access via model: Model does not support methods
 									<samp class="ph codeph">getServiceAnnotations</samp>,
 									<samp class="ph codeph">getServiceMetadata</samp>,
@@ -189,7 +189,7 @@
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d9469217e58 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e58 ">
 							<p class="p">Simplification: Metadata is only accessed via <samp class="ph codeph">ODataMetaModel</samp>. Metadata is
 								only loaded when needed (e.g. for type detection or to compute URLs
 								for write requests); the corresponding methods on the
@@ -201,14 +201,14 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d9469217e52 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e52 ">
 							<p class="p"><a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.AnnotationHelper.html" alt="../../docs/api/symbols/sap.ui.model.odata.AnnotationHelper.html" title="../../docs/api/symbols/sap.ui.model.odata.AnnotationHelper.html">sap.ui.model.odata.AnnotationHelper</a> is not supported for
 								OData V4.</p>
 
 							
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d9469217e58 ">
+						<td class="entry" valign="top" width="50%" headers="d9668371e58 ">
 							<p class="p">Simplification: Much
 								of the functionality in <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.AnnotationHelper.html" alt="../../docs/api/symbols/sap.ui.model.odata.AnnotationHelper.html" title="../../docs/api/symbols/sap.ui.model.odata.AnnotationHelper.html">sap.ui.model.odata.AnnotationHelper</a> is provided by <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v4.ODataMetaModel.html" alt="../../docs/api/symbols/sap.ui.model.odata.v4.ODataMetaModel.html" title="../../docs/api/symbols/sap.ui.model.odata.v4.ODataMetaModel.html">sap.ui.model.odata.v4.ODataMetaModel </a>and <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v4.ODataModel.html" alt="../../docs/api/symbols/sap.ui.model.odata.v4.ODataModel.html" title="../../docs/api/symbols/sap.ui.model.odata.v4.ODataModel.html">sap.ui.model.odata.v4.ODataModel</a>.</p>
 

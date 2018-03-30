@@ -1,34 +1,17 @@
 /*
  * ! UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.QuickView.
 sap.ui.define([
-	'./library',
-	'sap/ui/Device',
-	'sap/ui/core/IconPool',
-	'./QuickViewBase',
-	'./ResponsivePopover',
-	'./NavContainer',
-	'./Page',
-	'./Bar',
-	'./Button',
-	'./QuickViewRenderer'
-],
-	function(
-	library,
-	Device,
-	IconPool,
-	QuickViewBase,
-	ResponsivePopover,
-	NavContainer,
-	Page,
-	Bar,
-	Button,
-	QuickViewRenderer
-	) {
+		'./library', 'sap/ui/Device', 'sap/ui/core/IconPool',
+		'./QuickViewBase', './ResponsivePopover', './NavContainer',
+		'./Page', './Bar', './Button'],
+	function(library, Device, IconPool,
+			QuickViewBase, ResponsivePopover, NavContainer,
+			Page, Bar, Button) {
 	"use strict";
 
 	// shortcut for sap.m.PlacementType
@@ -62,7 +45,7 @@ sap.ui.define([
 	 * @extends sap.m.QuickViewBase
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -94,7 +77,6 @@ sap.ui.define([
 					},
 					aggregations: {
 					},
-					designtime: "sap/m/designtime/QuickView.designtime",
 					events: {
 						/**
 						 * This event fires after the QuickView is opened.
@@ -225,7 +207,7 @@ sap.ui.define([
 
 		var oPopupControl = this._oPopover.getAggregation("_popup");
 		oPopupControl.addEventDelegate({
-			onBeforeRendering: this._initializeQuickView,
+			onBeforeRendering: this.onBeforeRenderingPopover,
 			onAfterRendering: this._setLinkWidth,
 			onkeydown: this._onPopupKeyDown
 		}, this);
@@ -246,11 +228,7 @@ sap.ui.define([
 		this._oPopover.addStyleClass("sapMQuickView");
 	};
 
-	/**
-	 * Initialize the QuickView.
-	 * @private
-	 */
-	QuickView.prototype._initializeQuickView = function() {
+	QuickView.prototype.onBeforeRenderingPopover = function() {
 
 		this._bRendered = true;
 
@@ -444,16 +422,7 @@ sap.ui.define([
 		"removeAggregation", "removeAllAggregation", "destroyAggregation"].forEach(function (sFuncName) {
 			QuickView.prototype["_" + sFuncName + "Old"] = QuickView.prototype[sFuncName];
 			QuickView.prototype[sFuncName] = function () {
-				var newArgs,
-					result;
-
-				if (["removeAggregation", "removeAllAggregation", "destroyAggregation"].indexOf(sFuncName) !== -1) {
-					newArgs = [arguments[0], true];
-				} else {
-					newArgs = [arguments[0], arguments[1], true];
-				}
-
-				result = QuickView.prototype["_" + sFuncName + "Old"].apply(this, newArgs);
+				var result = QuickView.prototype["_" + sFuncName + "Old"].apply(this, arguments);
 
 				// Marks items aggregation as changed and invalidate popover to trigger rendering
 				this._bItemsChanged = true;
@@ -464,7 +433,7 @@ sap.ui.define([
 					}
 
 					if (this._bRendered) {
-						this._initializeQuickView();
+						this._oPopover.invalidate();
 					}
 				}
 

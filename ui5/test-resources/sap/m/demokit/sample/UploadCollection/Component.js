@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.UploadCollection.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.UploadCollection.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.UploadCollection.Page",
 			dependencies : {
 				libs : [ "sap.m", "sap.ui.layout" ]
 			},

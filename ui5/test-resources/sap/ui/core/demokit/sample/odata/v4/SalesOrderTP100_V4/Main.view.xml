@@ -18,7 +18,9 @@
 			selectionChange="onSalesOrdersSelect">
 			<headerToolbar>
 				<Toolbar>
-					<Title id="SalesOrdersTitle" text="{$count} Sales Orders" titleStyle="H2"/>
+					<content>
+						<Title id="SalesOrdersTitle" text="{$count} Sales Orders" titleStyle="H2"/>
+					</content>
 				</Toolbar>
 			</headerToolbar>
 			<columns>
@@ -32,18 +34,28 @@
 					<Text text="OverallStatus"/>
 				</Column>
 			</columns>
-			<ColumnListItem>
-				<Text text="{SalesOrder}"/>
-				<Text text="{Customer}"/>
-				<Text text="{OverallStatus}"/>
-			</ColumnListItem>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{SalesOrder}"/>
+					</cells>
+					<cells>
+						<Text text="{Customer}"/>
+					</cells>
+					<cells>
+						<Text text="{OverallStatus}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
 		</Table>
 		<Table growing="true" growingThreshold="5" id="SalesOrderItems"
 			items="{_Item}"
 			mode="SingleSelectMaster">
 			<headerToolbar>
 				<Toolbar>
-					<Title text="Sales Order Items" titleStyle="H2"/>
+					<content>
+						<Title text="Sales Order Items" titleStyle="H2"/>
+					</content>
 				</Toolbar>
 			</headerToolbar>
 			<columns>
@@ -60,12 +72,22 @@
 					<Text text="GrossAmount"/>
 				</Column>
 			</columns>
-			<ColumnListItem>
-				<Text text="{SalesOrder}"/>
-				<Text text="{SalesOrderItem}"/>
-				<Text text="{Product}"/>
-				<Text text="{GrossAmount}"/>
-			</ColumnListItem>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{SalesOrder}"/>
+					</cells>
+					<cells>
+						<Text text="{SalesOrderItem}"/>
+					</cells>
+					<cells>
+						<Text text="{Product}"/>
+					</cells>
+					<cells>
+						<Text text="{GrossAmount}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
 		</Table>
 	</VBox>
 </mvc:View>

@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.StandardMarginsSingleSided.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.StandardMarginsSingleSided.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.StandardMarginsSingleSided.Page",
 			dependencies : {
 				libs : [
 					"sap.m"

@@ -6,11 +6,7 @@ sap.ui.define([
 
 	var Component = UIComponent.extend("sap.f.sample.FlexibleColumnLayoutSimple.Component", {
 		metadata: {
-			rootView: {
-				"viewName": "sap.f.sample.FlexibleColumnLayoutSimple.FlexibleColumnLayout",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.f.sample.FlexibleColumnLayoutSimple.FlexibleColumnLayout",
 			dependencies: {
 				libs: [
 					"sap.m",

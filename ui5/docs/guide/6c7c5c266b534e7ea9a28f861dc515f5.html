@@ -6,8 +6,8 @@
 <meta name="abstract" content="Now we want to do something with that newly generated list. In most cases you will use a list to allow the selection of an item and then show the details of that item elsewhere. In order to achieve this, we use a form with relatively bound controls and bind it to the selected entity via element binding."/>
 <meta name="description" content="Now we want to do something with that newly generated list. In most cases you will use a list to allow the selection of an item and then show the details of that item elsewhere. In order to achieve this, we use a form with relatively bound controls and bind it to the selected entity via element binding."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4277005995307719"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4277005995307719"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=05549334281169416"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=05549334281169416"/>
 <title>Step 13: Element Binding</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -29,7 +29,7 @@
 			<div class="fig fignone" id="loio6c7c5c266b534e7ea9a28f861dc515f5__fig_r1j_pst_mr"><div class="figcontainer">
 				
 				<img class="image" id="loio6c7c5c266b534e7ea9a28f861dc515f5__image_cjk_xwz_1t" src="loio872d2ed3f9144fbfb82e028b17c52ce3_HiRes.png"/>
-			<div class="figcap">Element binding implemented, product details displayed per item</div></div></div>
+			<div class="figcap">Figure 1: Element binding implemented, product details displayed per item</div></div></div>
 
 		</div></div>
 
@@ -100,11 +100,9 @@
 
 		<div class="section"><div class="section_title">webapp/controller/App.controller.js</div><div type="webapp/controller/App.controller.js">
 			
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
-	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/type/Currency"
-], function (Controller, Currency) {
-	"use strict";
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define(["sap/ui/core/mvc/Controller","sap/ui/model/type/Currency"],
+	function (Controller, Currency) {
+		"use strict";
  
 	return Controller.extend("sap.ui.demo.db.controller.App", {
 		formatMail: function(sFirstName, sLastName) {
@@ -114,7 +112,6 @@
 				oBundle.getText("mailSubject", [sFirstName]),
 				oBundle.getText("mailBody"));
 		},
-
 		formatStockValue: function(fUnitPrice, iStockLevel, sCurrCode) {
 			var sBrowserLocale = sap.ui.getCore().getConfiguration().getLanguage();
 			var oLocale = new sap.ui.core.Locale(sBrowserLocale);
@@ -122,7 +119,6 @@
 			var oCurrency = new Currency(oLocaleData.mData.currencyFormat);
 			return oCurrency.formatValue([fUnitPrice * iStockLevel, sCurrCode], "string");
 		}<span class="ph emphasis emphasis">,
-
 		onItemSelected: function(oEvent) {
 			var oSelectedItem = oEvent.getSource();
 			var oContext = oSelectedItem.getBindingContext("products");
@@ -204,14 +200,14 @@ Discontinued=Eingestellt</span></pre></div>
 <strong>Parent topic: </strong><a class="link" href="e5310932a71f42daa41f3a6143efca9c.html" title="In this tutorial, we will explain the concepts of data binding in OpenUI5.">Data Binding</a><br/>
 </div>
 <div class="previouslink"><br/>
-<strong>Previous: </strong><a class="link" href="97830de2d7314e93b5c1ee3878a17be9.html" title="Aggregation binding (or &#34;list binding&#34;) allows a control to be bound to a list within the model data and allows relative binding to the list entries by its child controls.">Step 12: Aggregation Binding Using Templates</a><br/>
+<strong>Previous: </strong><a class="link" href="97830de2d7314e93b5c1ee3878a17be9.html" title="Aggregation binding allows a control to be bound to a list within the model data and allows relative binding to the list entries by its child controls.">Step 12: Aggregation Binding Using Templates</a><br/>
 </div>
 <div class="nextlink"><br/>
 <strong>Next: </strong><a class="link" href="5cff8d1c3fb84c5db7a00f2daca125af.html" title="Expression binding allows you to display a value on the screen that has been calculated from values found in some model object. This way simple formatting or calculations can be inserted directly into the data binding string. In this example, we will change the color of the price depending on whether it is above or below some arbitrary threshold. The threshold value is also stored in the JSON model.">Step 14: Expression Binding</a><br/>
 </div>
 </div>
 <div class="relinfo"><div class="relinfotitle ">Related Information</div>
-<div><a class="link" href="91f05e8b6f4d1014b6dd926db0e91070.html" title="Context binding (or element binding) allows you to bind elements to a specific object in the model data, which will create a binding context and allow relative binding within the control and all of its children. This is especially helpful in master-detail scenarios.">Context Binding (Element Binding)</a></div>
+<div><a class="link" href="91f05e8b6f4d1014b6dd926db0e91070.html" title="Element binding allows you to bind elements to a specific object in the model data, which will create a binding context and allow relative binding within the control and all of its children. This is especially helpful in master-detail scenarios.">Element Binding</a></div>
 </div>
 </div>
 </div></div>

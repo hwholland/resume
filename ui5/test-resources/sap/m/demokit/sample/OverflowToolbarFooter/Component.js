@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.OverflowToolbarFooter.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.OverflowToolbarFooter.OverflowToolbar",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.OverflowToolbarFooter.OverflowToolbar",
 			dependencies : {
 				libs : [
 					"sap.m"

@@ -1,33 +1,12 @@
 /*!
 * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
 */
 
 // Provides control sap.m.MessageStrip.
-sap.ui.define([
-	"jquery.sap.global",
-	"./library",
-	"sap/ui/core/Control",
-	"./MessageStripUtilities",
-	"./Text",
-	"./Link",
-	"./FormattedText",
-	"sap/ui/core/library",
-	"sap/ui/Device",
-	"./MessageStripRenderer"
-], function(
-	jQuery,
-	library,
-	Control,
-	MSUtils,
-	Text,
-	Link,
-	FormattedText,
-	coreLibrary,
-	Device,
-	MessageStripRenderer
-) {
+sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Control", "./MessageStripUtilities",
+	"./Text", "./Link", "./FormattedText", "sap/ui/core/library", "sap/ui/Device"], function(jQuery, library, Control, MSUtils, Text, Link, FormattedText, coreLibrary, Device) {
 	"use strict";
 
 	// shortcut for sap.ui.core.MessageType
@@ -65,7 +44,7 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -76,7 +55,6 @@ sap.ui.define([
 	var MessageStrip = Control.extend("sap.m.MessageStrip", /** @lends sap.m.MessageStrip.prototype */ {
 		metadata: {
 			library: "sap.m",
-			designtime: "sap/m/designtime/MessageStrip.designtime",
 			properties: {
 
 				/**
@@ -241,7 +219,7 @@ sap.ui.define([
 
 	/**
 	 * Handles mobile touch events
-	 * @param {jQuery.Event} oEvent The event object
+	 * @returns void
 	 * @private
 	 */
 	MessageStrip.prototype.ontouchmove = function (oEvent) {
@@ -253,6 +231,7 @@ sap.ui.define([
 	 * Closes the MessageStrip.
 	 * This method sets the visible property of the MessageStrip to false.
 	 * The MessageStrip can be shown again by setting the visible property to true.
+	 * @returns void
 	 * @public
 	 */
 	MessageStrip.prototype.close = function () {

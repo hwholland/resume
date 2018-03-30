@@ -10,9 +10,9 @@
       <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="abstract" content="Control metadata consists of properties, events, as well as aggregations and associations.">
+      <meta name="abstract" content="Control metadata consist of properties, events, as well as aggregations and associations.">
       
-      <meta name="description" content="Control metadata consists of properties, events, as well as aggregations and associations.">
+      <meta name="description" content="Control metadata consist of properties, events, as well as aggregations and associations.">
       <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"91f29fea6f4d1014b6dd926db0e91070.html","previousTopicHref":"c78c07c094e04ccfaab659378a1707c7.html"}</script>
       <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
       <script type="text/javascript">
@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -117,12 +117,12 @@
                      <h1 class="title topictitle1" hidden>Defining the Control Metadata</h1>
                      
                      <div class="body conbody">
-                        <p class="shortdesc" hidden>Control metadata consists of properties, events, as well as aggregations and
+                        <p class="shortdesc" hidden>Control metadata consist of properties, events, as well as aggregations and
                            		associations.
                         </p>
                         
                         		
-                        <p class="p">The control metadata is defined as follows:</p>
+                        <p class="p">The control metadata are defined as follows:</p>
                         
                         		
                         <ul class="ul" id="loio7b52540d9d8c4e00b9723151622bbb64__ul_gqc_fgp_zm">
@@ -196,7 +196,8 @@
                               				
                               <p class="p">It is defined by its name only.</p>
                               
-                              				<pre class="pre codeblock prettyprint lang-js">events: {
+                              				<pre class="pre codeblock prettyprint lang-js">
+events: {
    &quot;logout&quot;: {}
 }</pre>
                               
@@ -214,7 +215,8 @@
                                  					event:
                               </p>
                               
-                              				<pre class="pre codeblock prettyprint lang-js">events: {
+                              				<pre class="pre codeblock prettyprint lang-js">
+events: {
    &quot;close&quot;: {allowPreventDefault : true}  
 }</pre>
                               
@@ -296,11 +298,12 @@
                               				
                               <p class="p">One example: </p>
                               
-                              				<pre class="pre codeblock prettyprint lang-js">aggregations: {
-   &quot;acceptButton&quot; : &quot;sap.m.Button&quot;, // if only type is given, no object is required
+                              				<pre class="pre codeblock prettyprint lang-js">
+aggregations: {
+   &quot;acceptButton&quot; : &quot;sap.ui.commons.Button&quot;, // if only type is given, no object is required
    &quot;content&quot; : {singularName: &quot;content&quot;},    // default type is &quot;sap.ui.core.Control&quot;, 
                                              // which is appropriate for generic containers
-   &quot;toolbarItems&quot; : {type : &quot;sap.m.Button&quot;, multiple : true, singularName : &quot;toolbarItem&quot;}
+   &quot;worksetItems&quot; : {type : &quot;sap.ui.ux3.NavigationItem&quot;, multiple : true, singularName : &quot;worksetItem&quot;} 
                                              // a fully specified aggregation
 }</pre>
                               
@@ -320,7 +323,8 @@
                                  					as shown in the following code snippet:
                               </p>
                               
-                              				<pre class="pre codeblock prettyprint lang-js">aggregations: {
+                              				<pre class="pre codeblock prettyprint lang-js">
+aggregations: {
    &quot;content&quot;: {singularName: &quot;content&quot;} // default type is &quot;sap.ui.core.Control&quot;, multiple is &quot;true&quot;
 
 },

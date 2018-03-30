@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.FlexBoxNav.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.FlexBoxNav.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.FlexBoxNav.V",
 			dependencies : {
 				libs : [
 					"sap.m",

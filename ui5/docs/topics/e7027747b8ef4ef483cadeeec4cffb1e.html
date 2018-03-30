@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -134,7 +134,9 @@
                            <h2 class="exampletitle">Example</h2>
                            <p class="p">In this example, only products from the selected category are displayed. </p>
                            <img class="inline  " id="loioe7027747b8ef4ef483cadeeec4cffb1e__image_xq2_wnj_qn" src="loio1f47e6058f5747b687d1822040e46b1f_LowRes.png"><pre class="pre codeblock prettyprint lang-js">
-var oCategoriesModel = new sap.ui.model.odata.v2.ODataModel(&quot;/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc&quot;);
+var oCategoriesModel = new sap.ui.model.odata.ODataModel(
+&quot;/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc&quot;, 
+true);
 
 var oCategoriesFFL = new sap.m.FacetFilterList({ // create the categories facet list
     title : &quot;Categories&quot;,
@@ -151,7 +153,9 @@ var oCategoriesFFL = new sap.m.FacetFilterList({ // create the categories facet 
 oCategoriesFFL.setModel(oCategoriesModel); // set the data model
 
 // create the data model for the products facet list
-var oProductsModel = new sap.ui.model.odata.v2.ODataModel(&quot;/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc&quot;);
+var oProductsModel = new sap.ui.model.odata.ODataModel(
+    &quot;/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc&quot;,
+    true);
 
 var oProductsFFL = new sap.m.FacetFilterList({
     title : &quot;Products&quot;,

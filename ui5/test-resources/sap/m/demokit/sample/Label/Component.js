@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.Label.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.Label.LabelGroup",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.Label.LabelGroup",
 			dependencies : {
 				libs : [
 					"sap.m",

@@ -114,10 +114,6 @@ xhr.onCreate = function(request) {
 				[200, oXMLHeaders, sCategoriesXML],
 			"Products(2)/Category":
 				[200, oXMLHeaders, sCategories2XML],
-      "Products(1)/Category?$select=CategoryID":
-				[200, oJSONHeaders, sCategorySelect2JSON],
-      "Products(1)/Category":
-				[200, oJSONHeaders, sCategory1JSON],
 			"Products(1)/Supplier":
 				[200, oXMLHeaders, sProducts1SupplierXML],
 			"Suppliers(1)/Products/$count":
@@ -199,6 +195,8 @@ xhr.onCreate = function(request) {
 			"Categories?$skip=0&$top=100&$filter=(((CategoryName%20eq%20%27Beverages%27%20or%20CategoryName%20eq%20%27Dairy%20Products%27%20or%20CategoryName%20eq%20%27Grains%2fCereals%27)%20or%20CategoryID%20eq%203)%20and%20endswith(Description,%27s%27))":
 				[200, oXMLHeaders, sCategoriesFilter8XML],
 			"Categories(7)/Products?$skip=0&$top=5":
+				[200, oXMLHeaders, sProductsXML],
+			"Categories(7)/Products":
 				[200, oXMLHeaders, sProductsXML],
 			"Categories(7)/Products?$skip=0&$top=100":
 				[200, oXMLHeaders, sProductsXML],

@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.MultiInputDatabinding.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.MultiInputDatabinding.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.MultiInputDatabinding.Page",
 			dependencies : {
 				libs : [
 					"sap.m",

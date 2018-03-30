@@ -6,8 +6,8 @@
 <meta name="abstract" content="The XML model allows to bind controls to XML data. It is a client-side model intended for small datasets, which are completely available on the client. The XML model does not contain mechanisms for server-based paging or loading of deltas. It supports two-way binding."/>
 <meta name="description" content="The XML model allows to bind controls to XML data. It is a client-side model intended for small datasets, which are completely available on the client. The XML model does not contain mechanisms for server-based paging or loading of deltas. It supports two-way binding."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=08518034101805338"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=08518034101805338"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7469413832515575"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7469413832515575"/>
 <title>XML Model</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -45,11 +45,6 @@
 
 	</div>
 
-	<div class="related-links"> 
-<div class="relinfo"><div class="relinfotitle ">Related Information</div>
-<div><a class="link" href="../../docs/api/symbols/sap.ui.model.xml.XMLModel.html" alt="../../docs/api/symbols/sap.ui.model.xml.XMLModel.html" title="../../docs/api/symbols/sap.ui.model.xml.XMLModel.html">API Reference: <samp class="ph codeph">sap.ui.model.xml.XMLModel</samp></a></div>
-</div>
-</div>
 <div class="topic concept nested1" lang="en-US" id="loioab8ed73c5bbd4a2b9c9840401ebf25cf">
 	<h2 class="title topictitle2">Sorting and Filtering in XML Models</h2>
 
@@ -118,7 +113,7 @@ oTable.bindRows("/e:entry");</pre></div>
 	
 	<div class="body conbody"><p class="shortdesc">XML models differentiate between attributes and content. XML has no arrays and defines
 		lists as multiple elements with the same name instead. This makes the binding path syntax
-		for XML models more difficult than for JSON or OData models.</p>
+		for XML models more difficult than for JSON or OData models. </p>
 
 		<p class="p">For attributes, a special selector using the "@" character exists and "text()" can be used to
 			reference the content text of an element. Lists are referenced by using the path to the
@@ -149,7 +144,8 @@ oTable.bindRows("/e:entry");</pre></div>
 		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">@name
 info/employees/text()</pre></div>
 
-		<p class="p">Relative binding paths within a list binding of <samp class="ph codeph">/company/contact</samp>: </p>
+		<p class="p">Relative binding paths within an aggregation binding of
+			<samp class="ph codeph">/company/contact</samp>: </p>
 
 		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">text()
 @phone</pre></div>

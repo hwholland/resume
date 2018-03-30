@@ -5,7 +5,7 @@
     <author>SAP SE</author>
     <documentation>A container that arranges same-size tiles nicely on carousel pages.</documentation>
     <since>1.12</since>
-    <deprecation since="1.50">replaced by a container of your choice with {@link sap.m.GenericTile} instances</deprecation>
+    <deprecation since="1.50">instead, use a container of your choice with {@link sap.m.GenericTile} instances</deprecation>
     <baseType>sap.ui.core/Control</baseType>
     <properties>
         <property group="Dimension" defaultValue="100%" type="sap.ui.core/CSSSize" name="width">
@@ -75,7 +75,7 @@ Optionally this can be done animated or not. With IE9 the scroll is never animat
                 <parameter type="sap.ui.core/boolean" name="animated">
                     <documentation>Whether the scroll should be animated</documentation>
                 </parameter>
-                <parameter type="sap.m/Tile[]" name="visibleTiles">
+                <parameter type="any" name="visibleTiles">
                     <documentation>optional list of visible tiles in order to avoid filtering them again.</documentation>
                 </parameter>
             </parameters>

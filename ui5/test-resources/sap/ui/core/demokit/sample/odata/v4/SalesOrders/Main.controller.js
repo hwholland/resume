@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.define([
@@ -10,8 +10,8 @@ sap.ui.define([
 		'sap/ui/core/format/DateFormat',
 		'sap/ui/core/Item',
 		'sap/ui/core/mvc/Controller',
-		'sap/ui/model/Filter',
-		'sap/ui/model/FilterOperator',
+		"sap/ui/model/Filter",
+		"sap/ui/model/FilterOperator",
 		'sap/ui/model/json/JSONModel',
 		'sap/ui/model/Sorter'
 ], function (Dialog, MessageBox, MessageToast, DateFormat, Item, Controller, Filter, FilterOperator,
@@ -30,8 +30,9 @@ sap.ui.define([
 
 	return Controller.extend("sap.ui.core.sample.odata.v4.SalesOrders.Main", {
 		_setSalesOrderBindingContext : function (oSalesOrderContext) {
-			var oSalesOrdersTable = this.byId("SalesOrders"),
-				oUIModel = this.getView().getModel("ui");
+			var oView = this.getView(),
+				oSalesOrdersTable = oView.byId("SalesOrders"),
+				oUIModel = oView.getModel("ui");
 
 			oUIModel.setProperty("/bSalesOrderSelected", !!oSalesOrderContext);
 			oUIModel.setProperty("/bSelectedSalesOrderTransient",
@@ -45,22 +46,23 @@ sap.ui.define([
 				// unless it is persisted in backend
 				oSalesOrderContext = undefined;
 			}
-			this.byId("ObjectPage").setBindingContext(oSalesOrderContext);
+			oView.byId("ObjectPage").setBindingContext(oSalesOrderContext);
 
 			oUIModel.setProperty("/bLineItemSelected", false);
-			this.byId("SupplierContactData").setBindingContext(undefined);
-			this.byId("SupplierDetailsForm").setBindingContext(undefined);
-			this.byId("SalesOrderLineItemsTitle").setBindingContext(
-				this.byId("SalesOrderLineItems").getBinding("items").getHeaderContext(),
+			oView.byId("SupplierContactData").setBindingContext(undefined);
+			oView.byId("SupplierDetailsForm").setBindingContext(undefined);
+			oView.byId("SalesOrderLineItemsTitle").setBindingContext(
+				oView.byId("SalesOrderLineItems").getBinding("items").getHeaderContext(),
 				"headerContext");
-			this.byId("SalesOrderSchedulesTitle").setBindingContext(
-				this.byId("SalesOrderSchedules").getBinding("items").getHeaderContext(),
+			oView.byId("SalesOrderSchedulesTitle").setBindingContext(
+				oView.byId("SalesOrderSchedules").getBinding("items").getHeaderContext(),
 				"headerContext");
 		},
 
 		_setSalesOrderLineItemBindingContext : function (oSalesOrderLineItemContext) {
-			var oSalesOrderLineItemsTable = this.byId("SalesOrderLineItems"),
-				oUIModel = this.getView().getModel("ui");
+			var oView = this.getView(),
+				oSalesOrderLineItemsTable = oView.byId("SalesOrderLineItems"),
+				oUIModel = oView.getModel("ui");
 
 			oUIModel.setProperty("/bLineItemSelected", !!oSalesOrderLineItemContext);
 
@@ -72,8 +74,8 @@ sap.ui.define([
 				// unless it is persisted in backend (see: CPOUI5UISERVICESV3-649)
 				oSalesOrderLineItemContext = undefined;
 			}
-			this.byId("SupplierContactData").setBindingContext(oSalesOrderLineItemContext);
-			this.byId("SupplierDetailsForm").setBindingContext(oSalesOrderLineItemContext);
+			oView.byId("SupplierContactData").setBindingContext(oSalesOrderLineItemContext);
+			oView.byId("SupplierDetailsForm").setBindingContext(oSalesOrderLineItemContext);
 		},
 
 		_setNextSortOrder : function (bDescending) {
@@ -94,8 +96,10 @@ sap.ui.define([
 		},
 
 		onBeforeRendering : function () {
-			this.byId("SalesOrdersTitle").setBindingContext(
-				this.byId("SalesOrders").getBinding("items").getHeaderContext());
+			var oView = this.getView();
+
+			oView.byId("SalesOrdersTitle").setBindingContext(
+				oView.byId("SalesOrders").getBinding("items").getHeaderContext());
 		},
 
 		onCancelSalesOrderChanges : function (oEvent) {
@@ -107,12 +111,12 @@ sap.ui.define([
 		},
 
 		onCloseSalesOrderSchedules : function (oEvent) {
-			this.byId("SalesOrderSchedulesDialog").close();
+			this.getView().byId("SalesOrderSchedulesDialog").close();
 		},
 
 		onConfirmSalesOrder : function () {
 			var oModel = this.getView().getModel(),
-				oTable = this.byId("SalesOrders"),
+				oTable = this.getView().byId("SalesOrders"),
 				oSalesOrderContext = oTable.getSelectedItem().getBindingContext(),
 				oAction = oModel.bindContext(sServiceNamespace + "SalesOrder_Confirm(...)",
 					oSalesOrderContext),
@@ -122,7 +126,7 @@ sap.ui.define([
 				function () {
 					MessageToast.show("Sales order "
 						+ oSalesOrderContext.getProperty("SalesOrderID") + " confirmed");
-					that.refresh(that.byId("SalesOrders").getBinding("items"),
+					that.refresh(that.getView().byId("SalesOrders").getBinding("items"),
 						"all sales orders");
 				},
 				function (oError) {
@@ -133,14 +137,16 @@ sap.ui.define([
 		},
 
 		onCloseSalesOrderDialog : function (oEvent) {
-			this.byId("CreateSalesOrderDialog").close();
+			var oView = this.getView();
+
+			oView.byId("CreateSalesOrderDialog").close();
 			// move the focus to the row of the newly created sales order
-			this.byId("SalesOrders").getItems()[0].focus();
+			oView.byId("SalesOrders").getItems()[0].focus();
 		},
 
 		onCreateSalesOrder : function (oEvent) {
-			var oBPListBinding = this.byId("NewBuyerID").getBinding("suggestionItems"),
-				oContext = this.byId("SalesOrders").getBinding("items")
+			var oView = this.getView(),
+				oContext = oView.byId("SalesOrders").getBinding("items")
 					.create({
 						// TODO where to get initial values from to avoid "failed to drill-down"
 						// and "Not all properties provided while creation or update was executed."
@@ -155,49 +161,43 @@ sap.ui.define([
 						"GrossAmount" : "0.00",
 						"LifecycleStatus" : "N",
 						"LifecycleStatusDesc" : "New",
-						"Note" : "A new Sales Order: " + new Date().toLocaleString(),
+						"Note" : null, // set to null to provoke server error if no note is entered
 						"NoteLanguage" : "E",
 						// navigation property
 						"SO_2_BP" : null
 					}),
-				oCreateSalesOrderDialog = this.byId("CreateSalesOrderDialog"),
-				oUiModel = this.getView().getModel("ui"),
+				oCreateSalesOrderDialog = oView.byId("CreateSalesOrderDialog"),
 				that = this;
 
-			oUiModel.setProperty("/bCreateSalesOrderPending", true);
+			oView.getModel("ui").setProperty("/bCreateSalesOrderPending", true);
 
 			// select the newly created one
-			this.byId("SalesOrders").setSelectedItem(
-				this.byId("SalesOrders").getItems()[oContext.getIndex()]);
+			oView.byId("SalesOrders").setSelectedItem(
+				oView.byId("SalesOrders").getItems()[oContext.getIndex()]);
 			this._setSalesOrderBindingContext(oContext);
 
-			// resume binding to BusinessPartnerList to trigger request when dialog is opened
-			if (oBPListBinding.isSuspended()) {
-				oBPListBinding.resume();
-			}
 			oCreateSalesOrderDialog.setBindingContext(oContext);
 			oCreateSalesOrderDialog.open();
 
 			// Note: this promise fails only if the transient entity is deleted
 			oContext.created().then(function () {
 				that._setSalesOrderBindingContext(oContext);
-				oUiModel.setProperty("/bCreateSalesOrderPending", false);
-				MessageBox.success("SalesOrder created: " + oContext.getProperty("SalesOrderID")
-					+ ", " + oContext.getProperty("SO_2_BP/CompanyName"));
+				oView.getModel("ui").setProperty("/bCreateSalesOrderPending", false);
+				MessageBox.success("SalesOrder created: " + oContext.getProperty("SalesOrderID"));
 			}, function (oError) {
 				// delete of transient entity
-				oUiModel.setProperty("/bCreateSalesOrderPending", false);
+				oView.getModel("ui").setProperty("/bCreateSalesOrderPending", false);
 			});
 		},
 
 		onCreateSalesOrderLineItem : function (oEvent) {
 			var oContext,
 				oDeliveryDate = new Date(),
-				oUiModel = this.getView().getModel("ui");
+				oView = this.getView();
 
 			oDeliveryDate.setFullYear(oDeliveryDate.getFullYear() + 1);
 			oDeliveryDate.setMilliseconds(0);
-			oContext = this.byId("SalesOrderLineItems").getBinding("items").create({
+			oContext = oView.byId("SalesOrderLineItems").getBinding("items").create({
 				// keys
 				"ItemPosition" : "",
 				"SalesOrderID" : "",
@@ -214,20 +214,21 @@ sap.ui.define([
 				"SOITEM_2_PRODUCT" : null
 			});
 
-			// select the newly created one
-			this.byId("SalesOrderLineItems").setSelectedItem(
-				this.byId("SalesOrderLineItems").getItems()[oContext.getIndex()]);
 			this._setSalesOrderLineItemBindingContext(oContext);
-			oUiModel.setProperty("/bCreateItemPending", true);
-			this.byId("SalesOrderLineItems").getItems()[0].focus();
+			oView.getModel("ui").setProperty("/bCreateItemPending", true);
 
 			// Note: this promise fails only if the transient entity is deleted
-			this.oSalesOrderLineItemCreated = oContext.created().then(function () {
-				oUiModel.setProperty("/bCreateItemPending", false);
+			oContext.created().then(function () {
+				// TODO: we can't set the oContext for dependent BusinessPartner/Contact data form
+				// because it would produce a new request (without expand for BP_2_CONTACT).
+				// What we need would be a complete refresh for the selected sales order and all its
+				// dependents
+				// that._setSalesOrderLineItemBindingContext(oContext);
+				oView.getModel("ui").setProperty("/bCreateItemPending", false);
 				MessageBox.success("Line item created: " + oContext.getProperty("ItemPosition"));
 			}, function (oError) {
 				// delete of transient entity
-				oUiModel.setProperty("/bCreateItemPending", false);
+				oView.getModel("ui").setProperty("/bCreateItemPending", false);
 			});
 		},
 
@@ -257,7 +258,7 @@ sap.ui.define([
 		},
 
 		onDeleteBusinessPartner: function () {
-			var oContext = this.byId("BusinessPartner").getBindingContext();
+			var oContext = this.getView().byId("BusinessPartner").getBindingContext();
 
 			oContext["delete"](oContext.getModel().getGroupId()).then(function () {
 				MessageBox.success("Deleted Business Partner");
@@ -269,7 +270,7 @@ sap.ui.define([
 		onDeleteSalesOrder : function () {
 			var sMessage,
 				sOrderID,
-				oTable = this.byId("SalesOrders"),
+				oTable = this.getView().byId("SalesOrders"),
 				oSalesOrderContext = oTable.getSelectedItem().getBindingContext();
 
 			function onConfirm(sCode) {
@@ -296,7 +297,7 @@ sap.ui.define([
 		onDeleteSalesOrderLineItem : function () {
 			var sMessage,
 				sSalesOrderLineItem,
-				oTable = this.byId("SalesOrderLineItems"),
+				oTable = this.getView().byId("SalesOrderLineItems"),
 				oSOLineItemContext = oTable.getSelectedItem().getBindingContext();
 
 			function onConfirm(sCode) {
@@ -320,10 +321,10 @@ sap.ui.define([
 		},
 
 		onDeleteSalesOrderSchedules : function (oEvent) {
-			var sGroupId = this.getView().getModel().getGroupId(),
+			var oView = this.getView(),
+				sGroupId = oView.getModel().getGroupId(),
 				aPromises = [],
-				oTable = this.byId("SalesOrderSchedules"),
-				oUiModel = this.getView().getModel("ui");
+				oTable = oView.byId("SalesOrderSchedules");
 
 			// Special case: Delete entities deeply nested in the cache
 			oTable.getSelectedContexts().forEach(function (oContext) {
@@ -331,7 +332,7 @@ sap.ui.define([
 			});
 			Promise.all(aPromises).then(function () {
 				oTable.removeSelections();
-				oUiModel.setProperty("/bScheduleSelected", false);
+				oView.getModel("ui").setProperty("/bScheduleSelected", false);
 				MessageBox.success("Deleted " + aPromises.length + " Sales Order Schedule(s)");
 			}, function (oError) {
 				MessageBox.error("Could not delete a Sales Order Schedule: " + oError.message);
@@ -339,9 +340,9 @@ sap.ui.define([
 		},
 
 		onFilter : function (oEvent) {
-			var oBinding = this.byId("SalesOrders").getBinding("items"),
-				// TODO validation
-				sQuery = this.getView().getModel("ui").getProperty("/filterValue");
+			var oView = this.getView(),
+				oBinding = oView.byId("SalesOrders").getBinding("items"),
+				sQuery = oView.getModel("ui").getProperty("/filterValue"); // TODO validation
 
 			if (oBinding.hasPendingChanges()) {
 				MessageBox.error("Cannot filter due to unsaved changes"
@@ -354,8 +355,9 @@ sap.ui.define([
 		},
 
 		onFilterItems : function (oEvent) {
-			var oBinding = this.byId("SalesOrderLineItems").getBinding("items"),
-				sQuery = this.getView().getModel("ui").getProperty("/filterProductID");
+			var oView = this.getView(),
+				oBinding = oView.byId("SalesOrderLineItems").getBinding("items"),
+				sQuery = oView.getModel("ui").getProperty("/filterProductID");
 
 			if (oBinding.hasPendingChanges()) {
 				MessageBox.error("Cannot filter due to unsaved changes"
@@ -406,37 +408,34 @@ sap.ui.define([
 		},
 
 		onRefreshAll : function () {
-			var oModel = this.getView().getModel();
+			var oView = this.getView(),
+				oModel = oView.getModel();
 
 			this.refresh(oModel, "everything",
 				[oModel.getUpdateGroupId(), "SalesOrderUpdateGroup"]);
 		},
 
 		onRefreshFavoriteProduct : function (oEvent) {
-			this.refresh(this.byId("FavoriteProduct").getBinding("value"),
+			this.refresh(this.getView().byId("FavoriteProduct").getBinding("value"),
 				"the favorite product");
 		},
 
+//		onRefreshSalesOrderDetails : function (oEvent) {
+//			this.refresh(this.getView().byId("ObjectPage").getElementBinding(),
+//				"the sales order");
+//		},
+
 		onRefreshSalesOrdersList : function (oEvent) {
-			this.refresh(this.byId("SalesOrders").getBinding("items"),
+			this.refresh(this.getView().byId("SalesOrders").getBinding("items"),
 				"all sales orders");
 		},
 
-		onRefreshSelectedSalesOrder : function () {
-			var oSelectedSalesOrder = this.byId("SalesOrders").getSelectedItem(),
-				oSalesOrderContext;
-
-			if (oSelectedSalesOrder) {
-				oSalesOrderContext = oSelectedSalesOrder.getBindingContext();
-				this.refresh(oSalesOrderContext,
-					"sales order " + oSalesOrderContext.getProperty("SalesOrderID"));
-			}
-		},
-
 		onSalesOrderSchedules : function (oEvent) {
-			this.byId("SalesOrderSchedules").removeSelections();
-			this.getView().getModel("ui").setProperty("/bScheduleSelected", false);
-			this.byId("SalesOrderSchedulesDialog").open();
+			var oView = this.getView();
+
+			oView.byId("SalesOrderSchedules").removeSelections();
+			oView.getModel("ui").setProperty("/bScheduleSelected", false);
+			oView.byId("SalesOrderSchedulesDialog").open();
 		},
 
 		onSalesOrdersSelect : function (oEvent) {
@@ -450,30 +449,14 @@ sap.ui.define([
 		},
 
 		onSalesOrderScheduleSelect : function (oEvent) {
-			this.getView().getModel("ui").setProperty("/bScheduleSelected",
-				this.byId("SalesOrderSchedules").getSelectedContexts().length > 0);
+			var oView = this.getView();
+
+			oView.getModel("ui").setProperty("/bScheduleSelected",
+				oView.byId("SalesOrderSchedules").getSelectedContexts().length > 0);
 		},
 
 		onSaveSalesOrder : function () {
-			var that = this;
-
-			this.submitBatch("SalesOrderUpdateGroup").then(function () {
-				// wait until created handler (if any) is processed
-				return that.oSalesOrderLineItemCreated;
-			}).then(function () {
-				var oObjectPage = that.byId("ObjectPage"),
-					oSelectedSalesOrderContext =
-						oObjectPage.getObjectBinding().getContext();
-
-				if (oSelectedSalesOrderContext.hasPendingChanges()) {
-					MessageToast.show("Cannot refresh due to unsaved changes"
-							+ ", reset changes before refresh");
-				} else {
-					// Trigger refresh for the corresponding entry in the SalesOrderList to get
-					// the new ETag also there. This refreshes also all dependent bindings.
-					oSelectedSalesOrderContext.refresh();
-				}
-			});
+			this.submitBatch("SalesOrderUpdateGroup");
 		},
 
 		onSaveSalesOrderList : function () {
@@ -481,18 +464,20 @@ sap.ui.define([
 		},
 
 		onSetBindingContext : function () {
-			var oInput = this.byId("FavoriteProductID"),
+			var oView = this.getView(),
+				oInput = oView.byId("FavoriteProductID"),
 				oBindingContext = oInput.getModel().createBindingContext("/ProductList('HT-1000')");
 
 			oInput.setBindingContext(oBindingContext);
 			oInput.bindProperty("value", "ProductID");
 			oInput.bindProperty("tooltip", "ProductID");
-			this.byId("FavoriteProductID").focus();
+			oView.byId("FavoriteProductID").focus();
 		},
 
 		onSortByGrossAmount : function () {
-			var oBinding = this.byId("SalesOrders").getBinding("items"),
-				oUIModel = this.getView().getModel("ui"),
+			var oView = this.getView(),
+				oBinding = oView.byId("SalesOrders").getBinding("items"),
+				oUIModel = oView.getModel("ui"),
 				bDescending = oUIModel.getProperty("/bSortGrossAmountDescending"),
 				oSortOrder;
 
@@ -514,14 +499,15 @@ sap.ui.define([
 
 			// reset contexts for Supplier Details and remove Sales Oder Line Items selection
 			oUIModel.setProperty("/bLineItemSelected", false);
-			this.byId("SalesOrderLineItems").removeSelections();
-			this.byId("SupplierContactData").setBindingContext(undefined);
-			this.byId("SupplierDetailsForm").setBindingContext(undefined);
+			oView.byId("SalesOrderLineItems").removeSelections();
+			oView.byId("SupplierContactData").setBindingContext(undefined);
+			oView.byId("SupplierDetailsForm").setBindingContext(undefined);
 		},
 
 		onSortBySalesOrderID : function () {
-			var oBinding = this.byId("SalesOrders").getBinding("items"),
-				oUIModel = this.getView().getModel("ui"),
+			var oView = this.getView(),
+				oBinding = oView.byId("SalesOrders").getBinding("items"),
+				oUIModel = oView.getModel("ui"),
 				bDescending = oUIModel.getProperty("/bSortSalesOrderIDDescending"),
 				oParameters = {},
 				oSortOrder;
@@ -550,13 +536,13 @@ sap.ui.define([
 		 * frequently, but not too many backend requests.
 		 */
 		onUpdateFavoriteProduct : function (/*oEvent*/) {
-			var oBinding = this.byId("FavoriteProduct").getBinding("value");
+			var oBinding = this.getView().byId("FavoriteProduct").getBinding("value");
 
 			oBinding.setValue(oDateFormat.format(new Date()));
 		},
 
 		produceTechnicalError : function () {
-			var oViewElement = this.byId("FavoriteProduct");
+			var oViewElement = this.getView().byId("FavoriteProduct");
 
 			oViewElement.bindProperty("value", {path : "/ProductList('HT-1000')/Unknown"});
 		},
@@ -602,9 +588,6 @@ sap.ui.define([
 		 *
 		 * @param {string} sGroupId
 		 *   the group ID
-		 * @returns {Promise}
-		 *   A Promise which is resolved after the Promise returned by
-		 *   {@link sap.ui.model.odata.v4.ODataModel#submitBatch} is either resolved or rejected
 		 */
 		submitBatch : function (sGroupId) {
 			var oView = this.getView();
@@ -614,7 +597,7 @@ sap.ui.define([
 			}
 
 			oView.setBusy(true);
-			return oView.getModel().submitBatch(sGroupId).then(resetBusy, resetBusy);
+			oView.getModel().submitBatch(sGroupId).then(resetBusy, resetBusy);
 		}
 	});
 

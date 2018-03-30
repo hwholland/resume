@@ -10,9 +10,9 @@
       <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="abstract" content="The contents of the subsections in the ObjectPageLayout control are organized into blocks.">
+      <meta name="abstract" content="The contents of the sections and subsections of the ObjectPageLayout control are organized into blocks.">
       
-      <meta name="description" content="The contents of the subsections in the ObjectPageLayout control are organized into blocks.">
+      <meta name="description" content="The contents of the sections and subsections of the ObjectPageLayout control are organized into blocks.">
       <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"2978f6064742456ebed31c5ccf4d051d.html","previousTopicHref":"370b67986497463187336fa130aebbf1.html"}</script>
       <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
       <script type="text/javascript">
@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -117,50 +117,52 @@
                      <h1 class="title topictitle1" hidden>Object Page Blocks</h1>
                      
                      <div class="body conbody">
-                        <p class="shortdesc" hidden>The contents of the subsections in the <samp class="ph codeph">ObjectPageLayout</samp> control are
-                           		organized into blocks.
+                        <p class="shortdesc" hidden>The contents of the sections and subsections of the <samp class="ph codeph">ObjectPageLayout</samp>
+                           		control are organized into blocks.
                         </p>
                         
                         		
-                        <p class="p">The blocks are used to group the app content that is displayed in the sections and
-                           			subsections of the <samp class="ph codeph">ObjectPageLayout</samp>.
-                        </p>
-                        
-                        		
-                        <div xmlns="http://www.w3.org/1999/xhtml" class="fig fignone" id="loio4527729576cb4a4888275b6935aad03a__fig_cr1_qh1_4cb">
-                           <div class="figbody">
-                              			
-                              			<img xmlns="" class="inline  " id="loio4527729576cb4a4888275b6935aad03a__image_dr1_qh1_4cb" src="loioda91fe47966e4c43bd5fd1a318756c7d_HiRes.png">
-                              		
-                           </div><span class="figcap">Object Page content grouped in Blocks</span></div>
-                        
-                        		
-                        <div class="p">To add blocks, use the <samp class="ph codeph">blocks</samp> aggregation of
-                           				<samp class="ph codeph">sap.uxap.ObjectPageSubSection</samp>:<pre class="pre codeblock prettyprint lang-xml"> &lt;ObjectPageLayout id=&quot;ObjectPageLayout&quot; subSectionLayout=&quot;titleOnTop&quot;&gt;
-        &lt;sections&gt;
-            &lt;ObjectPageSection title=&quot;Payroll&quot; &gt;
-                &lt;subSections&gt;
-                    &lt;ObjectPageSubSection title=&quot;sub payroll title&quot;&gt;
-                        &lt;blocks&gt;
-                            &lt;myNameSpace:myBlock/&gt;
-                            &lt;myNameSpace:myBlock/&gt;
-                            &lt;myNameSpace:myBlock/&gt;
-                        &lt;/blocks&gt;
-                    &lt;/ObjectPageSubSection&gt;
-                &lt;/subSections&gt;
-            &lt;/ObjectPageSection&gt;
-        &lt;/sections&gt;
-    &lt;/ObjectPageLayout&gt;</pre>
-                           </div>
-                        
-                        		
-                        <div class="p">Any control can be a block. However, the blocks that extend
-                           				<samp class="ph codeph">sap.uxap.BlockBase</samp> provide additional features:
-                           <ul class="ul" id="loio4527729576cb4a4888275b6935aad03a__ul_wwm_q31_4cb">
+                        <div class="p">Blocks are composite <span class="ph"><span class="ph pname">OpenUI5</span></span>
+                           			controls that have the following purpose:
+                           <ul class="ul" id="loio4527729576cb4a4888275b6935aad03a__ul_f5t_m2j_ls">
                               				
                               <li class="li">
                                  					
-                                 <p class="p">Lazy loading: Only the blocks that are currently displayed and those in their
+                                 <p class="p">Support multiple display modes</p>
+                                 
+                                 				
+                              </li>
+                              
+                              				
+                              <li class="li">
+                                 					
+                                 <p class="p">Promote reuse</p>
+                                 
+                                 				
+                              </li>
+                              
+                              				
+                              <li class="li">
+                                 					
+                                 <p class="p">Are the means of holding section/subsection contents</p>
+                                 
+                                 				
+                              </li>
+                              
+                              			
+                           </ul>
+                           
+                        </div>
+                        
+                        		
+                        <div class="p">Blocks are not strictly dedicated to the <samp class="ph codeph">ObjectPageLayout</samp>, they can also be
+                           			used outside of it. However, using them within this control provides additional
+                           				features:
+                           <ul class="ul" id="loio4527729576cb4a4888275b6935aad03a__ul_kt2_1fj_ls">
+                              				
+                              <li class="li">
+                                 					
+                                 <p class="p">Lazy Loading: Only the blocks that are currently displayed and those in their
                                     						direct proximity are instantiated
                                  </p>
                                  
@@ -170,7 +172,7 @@
                               				
                               <li class="li">
                                  					
-                                 <p class="p">Column layout: Blocks provide information to the subsection only on the width
+                                 <p class="p">Column Layout: Blocks provide information to the subsection only on the width
                                     						they should be using for an optimal experience
                                  </p>
                                  
@@ -194,16 +196,7 @@
                                     					
                                     <li class="li">
                                        						
-                                       <p class="p">Extend <samp class="ph codeph">sap.uxap.BlockBase</samp></p>
-                                       
-                                       						
-                                       <div class="p">
-                                          							<pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.uxap.BlockBase.extend</span>(&quot;&lt;BlockName&gt;&quot;, {
-        metadata: {
-         }
-     });</pre>
-                                          
-                                          						</div>
+                                       <p class="p">Extend <samp class="ph codeph">BlockBase.js</samp></p>
                                        
                                        					
                                     </li>
@@ -211,31 +204,24 @@
                                     					
                                     <li class="li">
                                        						
-                                       <p class="p">Support the modes described in <samp class="ph codeph">sap.uxap.ObjectPageSubSectionMode.type</samp> -
-                                          								<samp class="ph codeph">Collapsed</samp> and <samp class="ph codeph">Expanded</samp>. For each
-                                          							mode, declare its associated view. It is recommended you use the XML
-                                          							view if no templating is needed:
-                                       </p>
+                                       <p class="p">Declare their expected data model</p>
                                        
+                                       					
+                                    </li>
+                                    
+                                    					
+                                    <li class="li">
                                        						
-                                       <div class="p">
-                                          							<pre class="pre codeblock prettyprint lang-js">sap.uxap.BlockBase.extend(&quot;&lt;BlockName&gt;&quot;, {
-        metadata: {
-            views: {
-                <span class="ph emphasis emphasis">Collapsed: {
-                    viewName: &quot;&lt;collapsedViewName&gt;&quot;,
-                    type: &quot;XML&quot;
-                },
-                Expanded: {
-                    viewName: &quot;&lt;expendedViewName&gt;&quot;,
-                    type: &quot;XML&quot;
-</span>
-                }
-            }
-         }
-     });</pre>
-                                          
-                                          						</div>
+                                       <p class="p">Support the Modes described in <samp class="ph codeph">sap.uxap.ObjectPageSubSectionMode.type</samp> -
+                                          								<samp class="ph codeph">Collapsed</samp> and <samp class="ph codeph">Expanded</samp></p>
+                                       
+                                       					
+                                    </li>
+                                    
+                                    					
+                                    <li class="li">
+                                       						
+                                       <p class="p">Implement a different rendering for each of the layout modes</p>
                                        
                                        					
                                     </li>
@@ -244,9 +230,9 @@
                                     <li class="li">
                                        						
                                        <p class="p">Come with their own controller (if needed). This controller should just
-                                          							react to the internal events of the block, as the
-                                          								<samp class="ph codeph">ObjectPageLayout</samp>&apos;s own controller should only
-                                          							manage the page and its sections and subsections.
+                                          							react to the internal events of the block. The
+                                          								<samp class="ph codeph">ObjectPageLayout</samp> controller manages only the page,
+                                          							the sections and subsections.
                                        </p>
                                        
                                        					
@@ -255,18 +241,7 @@
                                     					
                                     <li class="li">
                                        						
-                                       <p class="p">Follow the <span class="ph"><span class="ph pname">OpenUI5</span></span> naming
-                                          							guidelines: see <cite class="cite">Related Information</cite></p>
-                                       
-                                       					
-                                    </li>
-                                    
-                                    					
-                                    <li class="li">
-                                       						
-                                       <p class="p">Use the <samp class="ph codeph">modelMapping</samp> mechanism to declare distinct model
-                                          							per logical entity.
-                                       </p>
+                                       <p class="p">Follow <span class="ph"><span class="ph pname">OpenUI5</span></span> naming guidelines: see <cite class="cite">Related Information</cite></p>
                                        
                                        					
                                     </li>
@@ -277,69 +252,70 @@
                               </div>
                               
                               			
-                              <aside class="note sap-example example  insertion"><span class="title">Example</span> 
-                                 				
-                                 <p class="p">Let&#x2019;s consider an <span class="ph uicontrol">Employee Goals</span> block that displays an employee
-                                    					together with his or her goals.
-                                 </p>
-                                 
-                                 				
-                                 <div class="p">One <span class="ph uicontrol">Employee</span> model for the employee entity:
-                                    					<pre class="pre codeblock prettyprint lang-xml">&lt;Text text=&quot;{Employee&gt;FirstName}&quot;&gt;&lt;/Text&gt;</pre>
-                                    </div>
-                                 
-                                 				
-                                 <div class="p">One <span class="ph uicontrol">Goals</span> model for the goal collections:
-                                    					<pre class="pre codeblock prettyprint lang-xml">&lt;List items=&quot;{Goals&gt;}&quot;&gt;</pre>
-                                    </div>
-                                 
-                                 			
-                              </aside>
-                              
-                              			
-                              <p class="p">In one backend service, goals may be a navigation property of employees, but in
-                                 				another this may not be the case. For this reason, when implementing the
-                                 					<span class="ph uicontrol">Employee Goals</span> block, you should use two distinct models
-                                 				in the block views.
+                              <p class="p">Blocks should be implemented with views (one view, or one view per mode). We recommend using
+                                 				the XML view if no templating is needed. Furthermore, Block views should use one
+                                 				distinct model per expected logical entity. As a second step, you could consider
+                                 				using a tool to automatically parse the view and detect the models used (and their
+                                 				properties) and generate documentation.
                               </p>
                               
                               			
-                              <aside class="note sap-example example  insertion"><span class="title">Example</span> 
-                                 				
-                                 <div class="p">An app wants to use the <span class="ph uicontrol">Employee Goals</span> blocks described above. These
-                                    					are therefore embedded into a page that has a model named
-                                    						<samp class="ph codeph">ApplicationModel</samp>, in which <samp class="ph codeph">Goals</samp> are a
-                                    					navigation property of
-                                    					employees:<pre class="pre codeblock prettyprint lang-xml">&lt;EmployeeGoals&gt;
-    &lt;mappings&gt;
-        &lt;uxap:ModelMapping externalModelName=&quot;ApplicationModel&quot; externalPath=&quot;/Employee(&apos;121&apos;)&quot; internalModelName=&quot;Employee&quot; /&gt;
-        &lt;uxap:ModelMapping externalModelName=&quot;ApplicationModel&quot; externalPath=&quot;<span class="ph emphasis emphasis">/Employee(&apos;121&apos;)</span>/Goals&quot; internalModelName=&quot;Goals&quot; /&gt;
-    &lt;/mappings&gt;
-&lt;/EmployeeGoals&gt;</pre>
-                                    </div>
+                              <div class="p">You should always use relative binding<samp class="ph codeph">{MyEntity&gt;MyProperty}</samp>.  This will
+                                 				also make reuse easier as the Blocks can then be used with any kind of <span class="ph"><span class="ph pname">OpenUI5</span></span> model
+                                 					(<samp class="ph codeph">ODataModel, JSONModel, XMLModel, UxAPModel</samp>).
+                                 <aside class="note sap-example example  insertion"><span class="title">Example</span> 
+                                    					
+                                    <p class="p">Let&#x2019;s consider an <span class="ph uicontrol">Employee Goals</span> block which displays
+                                       						an employee together with his or her goals. In one backend service, goals
+                                       						may be a navigation property of employees, but in another this may not be
+                                       						the case. For this reason, when implementing the <span class="ph uicontrol">Employee
+                                          							Goals</span> block, you should use 2 distinct models in the block
+                                       						views.
+                                    </p>
+                                    
+                                    					
+                                    <div class="p">One <span class="ph uicontrol">Employee</span> model for the employee entity:
+                                       						<pre class="pre codeblock prettyprint">&lt;Text text=&quot;{Employee&gt;FirstName}&quot;&gt;&lt;/Text&gt;</pre>
+                                       </div>
+                                    
+                                    					
+                                    <div class="p">One <span class="ph uicontrol">Goals</span> model for the goal collections:
+                                       						<pre class="pre codeblock prettyprint">&lt;List items=&quot;{Goals&gt;}&quot;&gt;</pre>
+                                       </div>
+                                    
+                                    				
+                                 </aside>
                                  
-                                 				
-                                 <div class="p">A second app uses the same blocks, but in its service, <samp class="ph codeph">Goals</samp> and
-                                    						<samp class="ph codeph">Employees</samp> are unrelated
-                                    					entities:<pre class="pre codeblock prettyprint lang-xml">&lt;EmployeeGoals&gt;
-    &lt;mappings&gt;
-        &lt;uxap:ModelMapping externalModelName=&quot;ApplicationModel2&quot; externalPath=&quot;/Employee(&apos;121&apos;)&quot; internalModelName=&quot;Employee&quot; /&gt;
-        &lt;uxap:ModelMapping externalModelName=&quot;ApplicationModel2&quot; externalPath=&quot;/Goals&quot; internalModelName=&quot;Goals&quot; /&gt;
-    &lt;/mappings&gt;
-&lt;/EmployeeGoals&gt;</pre>
-                                    </div>
-                                 
-                                 			
-                              </aside>
+                              </div>
+                              
+                              		
+                           </section>
+                        </div>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="Model Mapping">
+                              <h2 class="section_title" style="font-size: 1.15em;">Model Mapping</h2>
+                              			
+                              			
+                              <p class="p"><samp class="ph codeph">BlockBase</samp> implements a mechanism to allow model mapping - mapping a block
+                                 				model (corresponding to an expected logical entity) to an inherited model and a
+                                 				path/context in this model. The syntax for this is as follows:
+                              </p>
                               
                               			
-                              <div class="p"><samp class="ph codeph">BlockBase</samp> interprets this in the following order:
-                                 <ol class="ol" id="loio4527729576cb4a4888275b6935aad03a__ol_drj_ym1_4cb">
+                              				<pre class="pre codeblock prettyprint">&lt;mappings&gt;
+    &lt;uxap:ModelMapping externalModelName=&quot;&#xE2;&#x20AC;&#xA6;&quot; externalPath=&quot;/Employee&quot; internalModelName=&quot;Contact&quot; /&gt;
+&lt;/mappings&gt;</pre>
+                              
+                              			
+                              			<div class="p"><samp class="ph codeph">BlockBase</samp> interprets this in the following order:
+                                 <ol class="ol" id="loio4527729576cb4a4888275b6935aad03a__ol_s1m_fpj_ls">
                                     					
                                     <li class="li">
                                        						
-                                       <p class="p">Looks for a model with the name specified in the
-                                          								<samp class="ph codeph">externalModelName</samp>.
+                                       <p class="p">Look for a model with name <samp class="ph codeph">ModelName</samp> (in the propagated
+                                          							models)
                                        </p>
                                        
                                        					
@@ -348,8 +324,7 @@
                                     					
                                     <li class="li">
                                        						
-                                       <p class="p">Sets this model on itself with the name specified in the
-                                          							<samp class="ph codeph">internalModelName</samp>.
+                                       <p class="p">Set this model on itself with <samp class="ph codeph">MyBlockEntity</samp> name
                                        </p>
                                        
                                        					
@@ -358,7 +333,7 @@
                                     					
                                     <li class="li">
                                        						
-                                       <p class="p">Creates a context corresponding to the path.</p>
+                                       <p class="p">Create a context corresponding to the path</p>
                                        
                                        					
                                     </li>
@@ -366,12 +341,44 @@
                                     				
                                  </ol>
                                  
+                                 				
                                  <aside class="note note  insertion"><span class="title">Note</span> This model mapping is not mandatory as models used in a view can also be
                                     					provided by standard <span class="ph"><span class="ph pname">OpenUI5</span></span> techniques
                                     					(model inheritance, setModel).
                                  </aside>
                                  
                               </div>
+                              
+                              			
+                              <aside class="note sap-example example  insertion"><span class="title">Example</span> 
+                                 				
+                                 <div class="p">An application wants to use the <span class="ph uicontrol">Employee Goals</span> blocks described above.
+                                    					These are therefore embedded into a page that has a model named
+                                    						<samp class="ph codeph">ApplicationModel</samp> in which <samp class="ph codeph">Goals</samp> are a
+                                    					navigation property of employees:
+                                    					<pre class="pre codeblock prettyprint">&lt;EmployeeGoals&gt;
+    &lt;mappings&gt;
+        &lt;uxap:ModelMapping externalModelName=&quot;ApplicationModel&quot; externalPath=&quot;/Employee(&apos;121&apos;)&quot; internalModelName=&quot;Employee&quot; /&gt;
+        &lt;uxap:ModelMapping externalModelName=&quot;ApplicationModel&quot; externalPath=&quot;<span class="ph emphasis emphasis">/Employee(&apos;121&apos;)</span>/Goals&quot; internalModelName=&quot;Goals&quot; /&gt;
+    &lt;/mappings&gt;
+&lt;/EmployeeGoals&gt;</pre>
+                                    
+                                    				</div>
+                                 
+                                 				
+                                 <div class="p">A second application uses the same blocks, but in its service, <samp class="ph codeph">Goals</samp> and
+                                    						<samp class="ph codeph">Employees</samp> are unrelated entities:
+                                    					<pre class="pre codeblock prettyprint">&lt;EmployeeGoals&gt;
+    &lt;mappings&gt;
+        &lt;uxap:ModelMapping externalModelName=&quot;ApplicationModel2&quot; externalPath=&quot;/Employee(&apos;121&apos;)&quot; internalModelName=&quot;Employee&quot; /&gt;
+        &lt;uxap:ModelMapping externalModelName=&quot;ApplicationModel2&quot; externalPath=&quot;/Goals&quot; internalModelName=&quot;Goals&quot; /&gt;
+    &lt;/mappings&gt;
+&lt;/EmployeeGoals&gt;</pre>
+                                    
+                                    				</div>
+                                 
+                                 			
+                              </aside>
                               
                               		
                            </section>
@@ -383,10 +390,10 @@
                               <h2 class="section_title" style="font-size: 1.15em;">Standard Block Implementation</h2>
                               			
                               			
-                              <p class="p">The standard block implementation is to extend the <samp class="ph codeph">sap.uxap.BlockBase</samp> control
-                                 				and inherit the default implementation of <samp class="ph codeph">setMode</samp> and rendering.
-                                 					<samp class="ph codeph">setMode</samp> in <samp class="ph codeph">BlockBase</samp> supports two different
-                                 				ways of building blocks:
+                              <p class="p">The standard block implementation is to just extend the <samp class="ph codeph">BlockBase</samp> control of
+                                 				the <samp class="ph codeph">sap.uxap</samp> library and inherit the default implementation of
+                                 					<samp class="ph codeph">setMode</samp> and rendering. <samp class="ph codeph">setMode</samp> in
+                                 					<samp class="ph codeph">BlockBase</samp> supports two different ways of building blocks:
                               </p>
                               
                               			
@@ -396,8 +403,8 @@
                                     					
                                     <li class="li">
                                        						
-                                       <p class="p">Single view blocks: A single XML view is used for all layout modes. This XML view should be
-                                          							named <span class="ph filepath">&lt;name&gt;.view.xml</span>.
+                                       <p class="p">Single view blocks: Here, a single XML view is used for all layout modes. This XML view
+                                          							should be named <span class="ph filepath">&lt;name&gt;.view.xml</span>.
                                        </p>
                                        
                                        					
@@ -406,14 +413,16 @@
                                     					
                                     <li class="li">
                                        						
-                                       <p class="p">Multiple view blocks: Different views are provided for the different layout modes.</p>
+                                       <p class="p">Multiple view blocks: Here, different views are provided for the
+                                          							different layout modes.
+                                       </p>
                                        
                                        						
                                        <ul class="ul" id="loio4527729576cb4a4888275b6935aad03a__ul_hpy_xqj_ls">
                                           							
                                           <li class="li">
                                              								
-                                             <p class="p">These views should be added in the <samp class="ph codeph">views</samp> section of the block metadata
+                                             <p class="p">These views should be added in the <samp class="ph codeph">views</samp> section of the Block metadata
                                                 									(this section is added by the <samp class="ph codeph">BlockBase</samp>
                                                 									class).
                                              </p>

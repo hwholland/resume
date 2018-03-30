@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
@@ -537,19 +537,52 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 			"/test/$metadata" :  {headers : mHeaders, message : sTestMetadata},
 			"/test/annotations" : {headers : mHeaders, message : sTestAnnotations}
 		},
-		oModuleHooks = {
-			beforeEach : function () {
-				TestUtils.useFakeServer(this._oSandbox, "sap/ui/core/qunit/model", mFixture);
-				this.oLogMock = this.mock(jQuery.sap.log);
-				this.oLogMock.expects("warning").never();
-				this.oLogMock.expects("error").never();
-			},
-			afterEach : function () {
-				ODataModel.mServiceData = {}; // clear cache
-			}
-		};
+		oGlobalSandbox; // global sandbox for async tests
 
 	oCIRCULAR.circle = oCIRCULAR; // some circular structure
+
+	/**
+	 * Override QUnit's original <code>module</code> function in order to automatically provide a
+	 * properly configured sandbox.
+	 *
+	 * @param {string} sTitle
+	 *   the module's title
+	 * @param {object} [oEnvironment]
+	 *   the test environment
+	 * @param {function} [oEnvironment.afterEach]
+	 *   setup
+	 * @param {function} [oEnvironment.beforeEach]
+	 *   teardown
+	 */
+	function module(sTitle, oEnvironment) {
+		var fnAfterEach, fnBeforeEach;
+
+		oEnvironment = oEnvironment || {};
+		fnAfterEach = oEnvironment.afterEach;
+		fnBeforeEach = oEnvironment.beforeEach;
+
+		oEnvironment.beforeEach = function () {
+			oGlobalSandbox = sinon.sandbox.create();
+			TestUtils.useFakeServer(oGlobalSandbox, "sap/ui/core/qunit/model", mFixture);
+			this.oLogMock = oGlobalSandbox.mock(jQuery.sap.log);
+			this.oLogMock.expects("warning").never();
+			this.oLogMock.expects("error").never();
+			if (fnBeforeEach) {
+				fnBeforeEach.apply(this, arguments);
+			}
+		};
+		oEnvironment.afterEach = function () {
+			if (fnAfterEach) {
+				fnAfterEach.apply(this, arguments);
+			}
+			ODataModel.mServiceData = {}; // clear cache
+			// I would consider this an API,
+			// see https://github.com/cjohansen/Sinon.JS/issues/614
+			oGlobalSandbox.verifyAndRestore();
+		};
+
+		QUnit.module(sTitle, oEnvironment);
+	}
 
 	/**
 	 * Formats the value using the AnnotationHelper. Provides access to the given current context.
@@ -716,7 +749,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 	}
 
 	//*********************************************************************************************
-	QUnit.module("sap.ui.model.odata.AnnotationHelper.format", oModuleHooks);
+	module("sap.ui.model.odata.AnnotationHelper.format");
 
 	//*********************************************************************************************
 	[true, false].forEach(function (bWithRawValue) {
@@ -726,9 +759,9 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 				},
 				oRawValue = {},
 				sResult = {},
-				oGetObjectMock = this.mock(oInterface).expects("getObject");
+				oGetObjectMock = oGlobalSandbox.mock(oInterface).expects("getObject");
 
-			this.mock(Expression).expects("getExpression")
+			oGlobalSandbox.mock(Expression).expects("getExpression")
 				.withExactArgs(sinon.match.same(oInterface), sinon.match.same(oRawValue), true)
 				.returns(sResult);
 
@@ -766,8 +799,6 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 
 	//*********************************************************************************************
 	QUnit.test("forward to getExpression: raw value automatically determined", function (assert) {
-		var that = this;
-
 		return withGwsampleModel(assert, function (oMetaModel) {
 			var sMetaPath = sPath2Product
 				+ "/com.sap.vocabularies.UI.v1.FieldGroup#Dimensions/Data/0/Label",
@@ -775,7 +806,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 			sString = "{path : 'foo'}",
 			oRawValue = oMetaModel.getProperty(sMetaPath);
 
-			that.mock(Expression).expects("getExpression")
+			oGlobalSandbox.mock(Expression).expects("getExpression")
 				.withExactArgs(sinon.match.same(oCurrentContext), sinon.match.same(oRawValue), true)
 				.returns(sString);
 
@@ -957,7 +988,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 		var sError = "Unsupported: " + Basics.toErrorString(oApply);
 
 		QUnit.test("14.5.3 Expression edm:Apply: " + sError, function (assert) {
-			this.mock(Basics).expects("error").throws(new SyntaxError());
+			oGlobalSandbox.mock(Basics).expects("error").throws(new SyntaxError());
 
 			return withGwsampleModel(assert, function (oMetaModel) {
 				var sPath = sPath2Contact + "/com.sap.vocabularies.UI.v1.HeaderInfo/Title/Value",
@@ -986,7 +1017,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 
 	//*********************************************************************************************
 	QUnit.test("14.5.3.1.1 Function odata.concat: escaping & unsupported type", function (assert) {
-		this.mock(Basics).expects("error").throws(new SyntaxError());
+		oGlobalSandbox.mock(Basics).expects("error").throws(new SyntaxError());
 
 		return withGwsampleModel(assert, function (oMetaModel) {
 			var sPath = sPath2Contact + "/com.sap.vocabularies.UI.v1.HeaderInfo/Title/Value",
@@ -1008,7 +1039,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 
 	//*********************************************************************************************
 	QUnit.test("14.5.3.1.1 Function odata.concat: null parameter", function (assert) {
-		this.mock(Basics).expects("error").throws(new SyntaxError());
+		oGlobalSandbox.mock(Basics).expects("error").throws(new SyntaxError());
 
 		return withGwsampleModel(assert, function (oMetaModel) {
 			var sPath = sPath2Contact + "/com.sap.vocabularies.UI.v1.HeaderInfo/Title/Value",
@@ -1099,7 +1130,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 		QUnit.test("14.5.3.1.3 Function odata.uriEncode: " + JSON.stringify(oFixture.type),
 			function (assert) {
 				if (oFixture.error) {
-					this.mock(Basics).expects("error").throws(new SyntaxError());
+					oGlobalSandbox.mock(Basics).expects("error").throws(new SyntaxError());
 				}
 
 				return withGwsampleModel(assert, function (oMetaModel) {
@@ -1227,7 +1258,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 	//*********************************************************************************************
 	QUnit.test("14.5.3 Nested apply (odata.fillUriTemplate & invalid uriEncode)",
 		function (assert) {
-			this.mock(Basics).expects("error").throws(new SyntaxError());
+			oGlobalSandbox.mock(Basics).expects("error").throws(new SyntaxError());
 
 			return withGwsampleModel(assert, function (oMetaModel) {
 				var sMetaPath = sPath2BusinessPartner + "/com.sap.vocabularies.UI.v1."
@@ -1282,19 +1313,16 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 
 	//*********************************************************************************************
 	QUnit.test("14.5.1 Comparison and Logical Operators: part 1, comparison", function (assert) {
-		var that = this;
-
 		return withGwsampleModelAndTestAnnotations(assert, function (oMetaModel) {
 			var sMetaPath = sPath2BusinessPartner
 					+ "/com.sap.vocabularies.UI.v1.Identification/6/Value",
 				oCurrentContext = oMetaModel.getContext(sMetaPath),
 				oRawValue = oMetaModel.getObject(sMetaPath);
 
-			that.mock(Expression).expects("path").atLeast(1)
-				.callsFake(function (oInterface, oPathValue) {
-					// do not try to "determine type for property"
-					return {result : "binding", value : oPathValue.value, type : "Edm.String"};
-				});
+			oGlobalSandbox.stub(Expression, "path", function (oInterface, oPathValue) {
+				// do not try to "determine type for property"
+				return {result : "binding", value : oPathValue.value, type : "Edm.String"};
+			});
 
 			assert.strictEqual(format(oRawValue, oCurrentContext),
 				"{=((${p1}<${p2})===(${p4}>${p5}))&&((${p6}>=${p7})!==(${p8}<=${p9}))}");
@@ -1303,19 +1331,16 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 
 	//*********************************************************************************************
 	QUnit.test("14.5.1 Comparison and Logical Operators: part 2, logical", function (assert) {
-		var that = this;
-
 		return withGwsampleModelAndTestAnnotations(assert, function (oMetaModel) {
 			var sMetaPath = sPath2BusinessPartner
 					+ "/com.sap.vocabularies.UI.v1.Identification/7/Value",
 				oCurrentContext = oMetaModel.getContext(sMetaPath),
 				oRawValue = oMetaModel.getObject(sMetaPath);
 
-			that.mock(Expression).expects("path").atLeast(1)
-				.callsFake(function (oInterface, oPathValue) {
-					// do not try to "determine type for property"
-					return {result : "binding", value : oPathValue.value};
-				});
+			oGlobalSandbox.stub(Expression, "path", function (oInterface, oPathValue) {
+				// do not try to "determine type for property"
+				return {result : "binding", value : oPathValue.value};
+			});
 
 			assert.strictEqual(format(oRawValue, oCurrentContext),
 				"{=(!(${p1}===${p2}))||((${p3}===${p4})&&(${p5}===${p6}))}");
@@ -1375,19 +1400,16 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 
 	//*********************************************************************************************
 	QUnit.test("14.5.6 Expression edm:If: types", function (assert) {
-		var that = this;
-
 		return withGwsampleModelAndTestAnnotations(assert, function (oMetaModel) {
 			var sMetaPath = sPath2BusinessPartner
 					+ "/com.sap.vocabularies.UI.v1.Identification/8/Value",
 				oCurrentContext = oMetaModel.getContext(sMetaPath),
 				oRawValue = oMetaModel.getObject(sMetaPath);
 
-			that.mock(Expression).expects("path").atLeast(1)
-				.callsFake(function (oInterface, oPathValue) {
-					// do not try to "determine type for property"
-					return {result : "binding", value : oPathValue.value, type : "Edm.Boolean"};
-				});
+			oGlobalSandbox.stub(Expression, "path", function (oInterface, oPathValue) {
+				// do not try to "determine type for property"
+				return {result : "binding", value : oPathValue.value, type : "Edm.Boolean"};
+			});
 
 			assert.strictEqual(format(oRawValue, oCurrentContext),
 				"{=${p1}?${path:'p2',type:'sap.ui.model.odata.type.Boolean'}"
@@ -1410,7 +1432,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 	});
 
 	//*********************************************************************************************
-	QUnit.module("sap.ui.model.odata.AnnotationHelper.simplePath", oModuleHooks);
+	module("sap.ui.model.odata.AnnotationHelper.simplePath");
 
 	//*********************************************************************************************
 	[true, false].forEach(function (bWithRawValue) {
@@ -1420,9 +1442,9 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 				},
 				oRawValue = {},
 				sResult = {},
-				oGetObjectMock = this.mock(oInterface).expects("getObject");
+				oGetObjectMock = oGlobalSandbox.mock(oInterface).expects("getObject");
 
-			this.mock(Expression).expects("getExpression")
+			oGlobalSandbox.mock(Expression).expects("getExpression")
 				.withExactArgs(sinon.match.same(oInterface), sinon.match.same(oRawValue), false)
 				.returns(sResult);
 
@@ -1475,7 +1497,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 	});
 
 	//*********************************************************************************************
-	QUnit.module("sap.ui.model.odata.AnnotationHelper.followPath", oModuleHooks);
+	module("sap.ui.model.odata.AnnotationHelper.followPath");
 
 	//*********************************************************************************************
 	[{
@@ -1788,7 +1810,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 	// property which is most probably "String", "Path" or "Value"
 
 	//*********************************************************************************************
-	QUnit.module("sap.ui.model.odata.AnnotationHelper.gotoEntityType", oModuleHooks);
+	module("sap.ui.model.odata.AnnotationHelper.gotoEntityType");
 
 	//*********************************************************************************************
 	QUnit.test("gotoEntityType called directly on the entity type's qualified name",
@@ -1825,7 +1847,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 	});
 
 	//*********************************************************************************************
-	QUnit.module("sap.ui.model.odata.AnnotationHelper.gotoEntitySet", oModuleHooks);
+	module("sap.ui.model.odata.AnnotationHelper.gotoEntitySet");
 
 	//*********************************************************************************************
 	QUnit.test("gotoEntitySet called directly on the entity set's name", function (assert) {
@@ -1859,7 +1881,7 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 	});
 
 	//*********************************************************************************************
-	QUnit.module("sap.ui.model.odata.AnnotationHelper.gotoFunctionImport", oModuleHooks);
+	module("sap.ui.model.odata.AnnotationHelper.gotoFunctionImport");
 
 	//*********************************************************************************************
 	QUnit.test("gotoFunctionImport", function (assert) {
@@ -1891,24 +1913,19 @@ $filter=Boolean+eq+{Bool}+and+Date+eq+{Date}+and+DateTimeOffset+eq+{DateTimeOffs
 	});
 
 	//*********************************************************************************************
-	QUnit.module("sap.ui.model.odata.AnnotationHelper.createPropertySetting", {
+	module("sap.ui.model.odata.AnnotationHelper.createPropertySetting", {
 		afterEach : function afterEach() {
 			delete window.foo;
-			oModuleHooks.afterEach.apply(this, arguments);
 		},
 
 		beforeEach : function beforeEach() {
-			var oControl, oModel;
-
-			oModuleHooks.beforeEach.apply(this, arguments);
-
-			oModel = new JSONModel({bar : "world", foo : "hello"});
-			oControl = new TestControl({
-				models : {
-					"undefined" : oModel,
-					"model" : oModel
-				}
-			});
+			var oModel = new JSONModel({bar : "world", foo : "hello"}),
+				oControl = new TestControl({
+					models : {
+						"undefined" : oModel,
+						"model" : oModel
+					}
+				});
 
 			// control instance for integration-like tests
 			this.oControl = oControl;

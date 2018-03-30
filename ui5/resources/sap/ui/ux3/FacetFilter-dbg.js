@@ -1,17 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.ux3.FacetFilter.
-sap.ui.define([
-    'jquery.sap.global',
-    'sap/ui/core/Control',
-    './library',
-    "./FacetFilterRenderer"
-],
-	function(jQuery, Control, library, FacetFilterRenderer) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', './library'],
+	function(jQuery, Control, library) {
 	"use strict";
 
 
@@ -27,11 +22,11 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
-	 * @deprecated as of version 1.38, replaced by {@link sap.m.FacetFilter}
+	 * @deprecated Since version 1.38. Instead, use the <code>sap.m.FacetFilter</code> control.
 	 * @alias sap.ui.ux3.FacetFilter
 	 * @ui5-metamodel This control/element also will be described in the UI5 (legacy) designtime metamodel
 	 */

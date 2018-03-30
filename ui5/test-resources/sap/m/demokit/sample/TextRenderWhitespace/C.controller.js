@@ -10,15 +10,17 @@ sap.ui.define(['sap/ui/core/mvc/Controller','sap/ui/model/json/JSONModel'],
 		},
 		onSliderMoved: function (event) {
 			var value = event.getParameter("value");
-			this.byId("containerLayout").setWidth(value + "%");
+			this.getView().byId("containerLayout").setWidth(value + "%");
 		},
-		onWrappingChange: function(oEvent) {
-			var text = this.byId("text");
+		onWrappingPressed: function(oEvent) {
+			var text = this.getView().byId("textSample");
 			text.setWrapping(!text.getWrapping());
+			this.getView().byId("btn1").setText(text.getWrapping() ? "Turn Off Wrapping" : "Turn On Wrapping");
 		},
-		onRenderWhitespaceChange: function(oEvent) {
-			var text = this.byId("text");
+		onWhiteSpacePressed: function(oEvent) {
+			var text = this.getView().byId("textSample");
 			text.setRenderWhitespace(!text.getRenderWhitespace());
+			this.getView().byId("btn2").setText(text.getRenderWhitespace() ? "Turn Off RenderWhitespace" : "Turn On RenderWhitespace");
 		}
 	});
 

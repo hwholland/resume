@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -23,8 +23,6 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/m/T
 	// shortcut for sap.m.GenericTileMode
 	var GenericTileMode = library.GenericTileMode;
 
-	var DEVICE_SET = "GenericTileDeviceSet";
-
 	/**
 	 * Constructor for a new sap.m.GenericTile control.
 	 *
@@ -36,7 +34,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/m/T
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @since 1.34.0
 	 *
 	 * @public
@@ -172,9 +170,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/m/T
 		this._oRb = sap.ui.getCore().getLibraryResourceBundle("sap.m");
 
 		// Defines custom screen range set: smaller than or equal to 449px defines 'small' and bigger than 449px defines 'large' screen
-		if (!Device.media.hasRangeSet(DEVICE_SET)) {
-			Device.media.initRangeSet(DEVICE_SET, [450], "px", ["small", "large"]);
-		}
+		Device.media.initRangeSet("GenericTileDeviceSet", [450], "px", ["small", "large"]);
 
 		this._oTitle = new Text(this.getId() + "-title");
 		this._oTitle.addStyleClass("sapMGTTitle");
@@ -275,7 +271,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/m/T
 			this._sParentResizeListenerId = null;
 		}
 
-		Device.media.detachHandler(this._handleMediaChange, this, DEVICE_SET);
+		Device.media.detachHandler(this._handleMediaChange, this, "GenericTileDeviceSet");
 
 		if (this._$RootNode) {
 			this._$RootNode.off(this._getAnimationEvents());
@@ -322,7 +318,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/m/T
 			this._sParentResizeListenerId = null;
 		}
 
-		Device.media.detachHandler(this._handleMediaChange, this, DEVICE_SET);
+		Device.media.detachHandler(this._handleMediaChange, this, "GenericTileDeviceSet");
 
 		if (this._$RootNode) {
 			this._$RootNode.off(this._getAnimationEvents());
@@ -364,7 +360,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/m/T
 
 		if (sMode === library.GenericTileMode.LineMode) {
 			// attach handler in order to check the device type based on width and invalidate on change
-			Device.media.attachHandler(this._handleMediaChange, this, DEVICE_SET);
+			Device.media.attachHandler(this._handleMediaChange, this, "GenericTileDeviceSet");
 		}
 
 	};
@@ -1149,7 +1145,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/m/T
 	 * @private
 	 */
 	GenericTile.prototype._isScreenLarge = function() {
-		return this._getCurrentMediaContainerRange(DEVICE_SET).name === "large";
+		return this._getCurrentMediaContainerRange("GenericTileDeviceSet").name === "large";
 	};
 
 	/**

@@ -2,11 +2,7 @@ jQuery.sap.declare("sap.m.sample.MenuButton.Component");
 
 sap.ui.core.UIComponent.extend("sap.m.sample.MenuButton.Component", {
 	metadata : {
-		rootView : {
-			"viewName": "sap.m.sample.MenuButton.MB",
-			"type": "XML",
-			"async": true
-		},
+		rootView : "sap.m.sample.MenuButton.MB",
 		dependencies : {
 			libs : [
 				"sap.m"

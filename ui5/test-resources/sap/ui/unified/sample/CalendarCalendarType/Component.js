@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.ui.unified.sample.CalendarCalendarType.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.unified.sample.CalendarCalendarType.CalendarCalendarType",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.unified.sample.CalendarCalendarType.CalendarCalendarType",
 			dependencies : {
 				libs : [
 					"sap.ui.unified"

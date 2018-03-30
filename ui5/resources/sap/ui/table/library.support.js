@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 /**
@@ -177,7 +177,8 @@ sap.ui.define(["jquery.sap.global", "sap/ui/support/library", "sap/ui/support/su
 		id : "AnalyticsNoDeviatingUnits",
 		categories: [Categories.Bindings],
 		title : "Analytical Binding reports 'No deviating units found...'",
-		description : "The analytical service returns duplicate IDs. This could also lead to many requests, but the analytical service expects to receive just one record",
+		description : "The analytical service returns duplicate IDs. This could also lead to many requests because the analytical binding " +
+						"will request the measures without deviating units again and expects to receive just one record, but again gets several ones ...",
 		resolution : "Adjust the service implementation.",
 		check : function(oIssueManager, oCoreFacade, oScope) {
 			var aTables = SupportHelper.find(oScope, true, "sap/ui/table/AnalyticalTable");
@@ -222,10 +223,10 @@ sap.ui.define(["jquery.sap.global", "sap/ui/support/library", "sap/ui/support/su
 		resolution : "Check whether content densities are correctly used, and only the supported controls are used as column templates, with their"
 					 + " wrapping property set to \"false\"",
 		resolutionurls: [
-			SupportHelper.createDocuRef("Documentation: Content Densities", "#/topic/e54f729da8e3405fae5e4fe8ae7784c1"),
-			SupportHelper.createDocuRef("Documentation: Supported controls", "#/topic/148892ff9aea4a18b912829791e38f3e"),
-			SupportHelper.createDocuRef("API Reference: sap.ui.table.Column#getTemplate", "#/api/sap.ui.table.Column/methods/getTemplate"),
-			{text: "SAP Fiori Design Guidelines: Grid Table", href: "https://experience.sap.com/fiori-design-web/grid-table/"}
+			SupportHelper.createDocuRef("Documentation: Content Densities", "#docs/guide/e54f729da8e3405fae5e4fe8ae7784c1.html"),
+			SupportHelper.createDocuRef("Documentation: Supported controls", "#docs/guide/148892ff9aea4a18b912829791e38f3e.html"),
+			{text: "SAP Fiori Design Guidelines: Grid Table", href: "https://experience.sap.com/fiori-design-web/grid-table/"}/*,
+			SupportHelper.createDocuRef("API Reference: Column #setTemplate", "#docs/api/symbols/sap.ui.table.Column.html#setTemplate")*/
 		],
 		check: function(oIssueManager, oCoreFacade, oScope) {
 			var aTables = SupportHelper.find(oScope, true, "sap/ui/table/Table");

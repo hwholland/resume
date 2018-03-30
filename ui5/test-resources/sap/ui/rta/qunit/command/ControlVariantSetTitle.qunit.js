@@ -68,13 +68,13 @@ function(
 					"author": "SAP",
 					"key": "variantMgmtId1",
 					"layer": "VENDOR",
-					"visible": true,
+					"readOnly": true,
 					"title": "Standard"
 				}, {
 					"author": "Me",
 					"key": "variant0",
 					"layer": "CUSTOMER",
-					"visible": true,
+					"readOnly": false,
 					"title": "variant A"
 				}
 			]
@@ -86,14 +86,12 @@ function(
 	var oVariant = {
 		"content": {
 			"fileName":"variant0",
-			"content": {
-				"title": "variant A"
-			},
+			"title":"variant A",
 			"layer":"CUSTOMER",
 			"variantReference":"variant00",
 			"reference": "Dummy.Component"
 		},
-		"controlChanges" : [
+		"changes" : [
 			{
 				"fileName":"change44",
 				"layer":"CUSTOMER"
@@ -107,7 +105,6 @@ function(
 
 	sinon.stub(oModel, "getVariant").returns(oVariant);
 	sinon.stub(oModel.oVariantController, "_setVariantData").returns(1);
-	sinon.stub(oModel.oVariantController, "_updateChangesForVariantManagementInMap");
 
 	QUnit.module("Given a variant management control ...", {
 		beforeEach : function(assert) {
@@ -122,26 +119,22 @@ function(
 	QUnit.test("when calling command factory for setTitle and undo", function(assert) {
 		var done = assert.async();
 
-		var oDummyOverlay = {
-			getVariantManagement : function(){
-				return "idMain1--variantManagementOrdersTable";
-			}
-		};
-		sinon.stub(OverlayRegistry, "getOverlay").returns(oDummyOverlay);
+		var oOverlay = new ElementOverlay();
+		sinon.stub(OverlayRegistry, "getOverlay").returns(oOverlay);
+		sinon.stub(oOverlay, "getVariantManagement").returns("idMain1--variantManagementOrdersTable");
 
 		var oDesignTimeMetadata = new ElementDesignTimeMetadata({ data : {} });
 		var mFlexSettings = {layer: "CUSTOMER"};
 		var sNewText = "Test";
 
 		var oControlVariantSetTitleCommand = CommandFactory.getCommandFor(this.oVariantManagement, "setTitle", {
+			renamedElement : this.oVariantManagement,
 			newText : sNewText
 		}, oDesignTimeMetadata, mFlexSettings);
 
-		assert.ok(oControlVariantSetTitleCommand, "control variant setTitle command exists for element");
+		assert.ok(oControlVariantSetTitleCommand, "control variant duplicate command exists for element");
 		oControlVariantSetTitleCommand.execute().then(function() {
 			var oTitleChange = oControlVariantSetTitleCommand.getVariantChange();
-			var oPreparedChange = oControlVariantSetTitleCommand.getPreparedChange();
-			assert.equal(oPreparedChange, oTitleChange, "then the prepared change is available");
 			assert.equal(oTitleChange.getText("title"), sNewText, "then title is correctly set in change");
 			var oData = oControlVariantSetTitleCommand.oModel.getData();
 			assert.equal(oData["variantMgmtId1"].variants[1].title, sNewText, "then title is correctly set in model");
@@ -150,8 +143,6 @@ function(
 
 			oControlVariantSetTitleCommand.undo().then( function() {
 				oTitleChange = oControlVariantSetTitleCommand.getVariantChange();
-				oPreparedChange = oControlVariantSetTitleCommand.getPreparedChange();
-				assert.notOk(oPreparedChange, "then no prepared change is available after undo");
 				oData = oControlVariantSetTitleCommand.oModel.getData();
 				assert.equal(oData["variantMgmtId1"].variants[1].title, "variant A", "then title is correctly reverted in model");
 				assert.equal(this.oVariantManagement.getTitle().getText(), "variant A", "then title is correctly set in variant management control");

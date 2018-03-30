@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -269,33 +269,17 @@ sap.ui.define([
 				}
 				oVersionInfoData = {
 					versionGav: oVersionInfo.gav,
-					versionName: oVersionInfo.name,
-					version: jQuery.sap.Version(sVersion).getMajor() + "." + jQuery.sap.Version(sVersion).getMinor() + "." + jQuery.sap.Version(sVersion).getPatch(),
-					fullVersion: sVersion,
-					openUi5Version: sap.ui.version,
+					version: jQuery.sap.Version(sap.ui.version).getMajor() + "." + jQuery.sap.Version(sap.ui.version).getMinor(),
+					fullVersion: sap.ui.version,
 					isOpenUI5: oVersionInfo && oVersionInfo.gav && /openui5/i.test(oVersionInfo.gav),
 					isSnapshotVersion: oVersionInfo && oVersionInfo.gav && /snapshot/i.test(oVersionInfo.gav),
 					isDevVersion: sVersion.indexOf("SNAPSHOT") > -1 || (sVersion.split(".").length > 1 && parseInt(sVersion.split(".")[1], 10) % 2 === 1),
-					isBetaVersion: false,
 					isInternal: bIsInternal,
 					libraries: oVersionInfo.libraries,
 					allowedMembers: this.aAllowedMembers
 				};
 
-				if (!oVersionInfoData.isOpenUI5 && !oVersionInfoData.isSnapshotVersion) {
-					jQuery.ajax({
-						url: "versionoverview.json"
-					}).done(function(data) {
-						if (data.versions && data.versions[0] && data.versions[0].beta && data.versions[0].beta.indexOf(oVersionInfoData.openUi5Version) > -1) {
-							oVersionInfoData.isBetaVersion = true;
-						}
-						this.getModel("versionData").setData(oVersionInfoData, false /* mo merge with previous data */);
-					}.bind(this)).fail(function () {
-						this.getModel("versionData").setData(oVersionInfoData, false /* mo merge with previous data */);
-					}.bind(this));
-				} else {
-					this.getModel("versionData").setData(oVersionInfoData, false /* mo merge with previous data */);
-				}
+				this.getModel("versionData").setData(oVersionInfoData, false /* mo merge with previous data */);
 			}
 		});
 	}

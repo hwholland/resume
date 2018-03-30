@@ -492,50 +492,6 @@
 				oDP = null;
 			});
 
-			// BCP: 1880065660
-			QUnit.test("setMinDate with iframe's JS date object should set properly the min date value", function (assert) {
-				// arrange
-				var oDP = new sap.m.DatePicker(),
-						iframe = document.createElement('iframe');
-				document.body.appendChild(iframe);
-				var oWindow = iframe.contentWindow;
-				oWindow.dateObj = new oWindow.Date(2017, 11, 12);
-
-				// act
-				oDP.setMinDate(oWindow.dateObj);
-
-				// assert
-				assert.ok(true, "setMinDate did not throw an expection with date object from an iframe");
-
-				// cleanup
-				oDP.destroy();
-				document.body.removeChild(iframe);
-				iframe = null;
-				oDP = null;
-			});
-
-			// BCP: 1880065660
-			QUnit.test("setMaxDate with iframe's JS date object should set properly the max date value", function (assert) {
-				// arrange
-				var oDP = new sap.m.DatePicker(),
-						iframe = document.createElement('iframe');
-				document.body.appendChild(iframe);
-				var oWindow = iframe.contentWindow;
-				oWindow.dateObj = new oWindow.Date(2017, 11, 12);
-
-				// act
-				oDP.setMaxDate(oWindow.dateObj);
-
-				// assert
-				assert.ok(true, "setMaxDate did not throw an expection with date object from an iframe");
-
-				// cleanup
-				oDP.destroy();
-				document.body.removeChild(iframe);
-				iframe = null;
-				oDP = null;
-			});
-
 			QUnit.test("set(Date)Value to (null)empty string", function(assert) {
 				var oDP1 = new sap.m.DatePicker({
 						value: "20170101",
@@ -566,68 +522,6 @@
 				oDP1.destroy();
 				oDP2.destroy();
 			});
-
-			QUnit.module("initialFocusedDate property", {
-				beforeEach: function () {
-					this.oDp = new sap.m.DatePicker();
-					this.oDp.placeAt("qunit-fixture");
-					sap.ui.getCore().applyChanges();
-				},
-
-				afterEach: function () {
-					this.oDp.destroy();
-					this.oDp = null;
-				}
-			});
-
-			QUnit.test("_fillDateRange should call Calendar's focusDate method with initialFocusedDateValue if no value is set", function (assert) {
-				// prepare
-				var oExpectedDateValue = new Date(2017, 4, 5, 6, 7, 8);
-				this.oDp._oCalendar = { focusDate: this.spy(), destroy: function () {} };
-				this.oDp._oDateRange = { getStartDate: function () { return false; } };
-
-				// act
-				this.oDp.setInitialFocusedDateValue(oExpectedDateValue);
-				this.oDp._fillDateRange();
-
-				// assert
-
-				assert.ok(this.oDp._oCalendar.focusDate.calledWith(oExpectedDateValue), "focusDate should be called with initialFocusedDateValue");
-				assert.equal(this.oDp._oCalendar.focusDate.getCall(0).args[0].toString(), oExpectedDateValue.toString(), "focusDate should be called with " + oExpectedDateValue);
-			});
-
-			QUnit.test("_fillDateRange should call Calendar's focusDate method with current date if initialFocusedDateValue and value are not set", function (assert) {
-				// prepare
-				var oExpectedDateValue = new Date(2017, 4, 5, 6, 7, 8);
-				this.oDp._oCalendar = { focusDate: this.spy(), destroy: function () {} };
-				this.oDp._oDateRange = { getStartDate: function () { return false; } };
-
-				// act
-				this.oDp._fillDateRange();
-
-				// assert
-				assert.equal(this.oDp._oCalendar.focusDate.calledWith(oExpectedDateValue), false, "focusDate should not be called with initialFocusedDateValue");
-				assert.notEqual(this.oDp._oCalendar.focusDate.getCall(0).args[0].toString(), oExpectedDateValue.toString(), "focusDate should be called with " + oExpectedDateValue);
-			});
-
-			QUnit.test("_fillDateRange should call Calendar's focusDate method with dateValue", function (assert) {
-				// prepare
-				var oExpectedDateValue = new Date(2017, 4, 5, 6, 7, 8),
-					oGetDateValue = this.stub(this.oDp, "getDateValue", function () { return oExpectedDateValue; });
-				this.oDp._oCalendar = { focusDate: this.spy(), destroy: function () {} };
-				this.oDp._oDateRange = { setStartDate: function () {}, getStartDate: function () {} };
-
-				// act
-				this.oDp._fillDateRange();
-
-				// assert
-				assert.ok(this.oDp._oCalendar.focusDate.calledWith(oExpectedDateValue), "focusDate should be called with dateValue");
-				assert.equal(this.oDp._oCalendar.focusDate.getCall(0).args[0].toString(), oExpectedDateValue.toString(), "focusDate should be called with " + oExpectedDateValue);
-
-				// cleanup
-				oGetDateValue.restore();
-			});
-
 
 			QUnit.module("interaction");
 
@@ -896,7 +790,7 @@
 
 				//Act - set min & max date to whatsoever
 				var oNewMinDate = new Date(2014,0,1);
-				var oNewMaxDate = new Date(2014,11,31, 23, 59, 59, 999);
+				var oNewMaxDate = new Date(2014,11, 31, 23, 59, 59, 999);
 				oDP3.setMinDate(oNewMinDate);
 				oDP3.setMaxDate(oNewMaxDate);
 				sap.ui.getCore().applyChanges();

@@ -3,11 +3,10 @@ sap.ui.define([
 	'sap/ui/test/matchers/PropertyStrictEquals',
 	'sap/ui/test/actions/Press',
 	'sap/ui/test/matchers/Properties'
-], function (
-	Opa5,
-	PropertyStrictEquals,
-	Press,
-	Properties) {
+], function (Opa5,
+			 PropertyStrictEquals,
+			 Press,
+			 Properties) {
 	"use strict";
 
 	Opa5.createPageObjects({
@@ -79,17 +78,7 @@ sap.ui.define([
                         },
                         errorMessage: "The Smartphone Alpha page was not displayed"
                     });
-                },
-				iShouldSeeTheRightProduct: function () {
-					return this.waitFor({
-						controlType: "sap.m.ObjectHeader",
-						matchers: new PropertyStrictEquals({name: "title", value: "Bending Screen 21HD"}),
-						success: function () {
-							Opa5.assert.ok(true, "The 'Bending Screen 21HD' product is bookmarakbel");
-						},
-						errorMessage: "The'Bending Screen 21HD' product was not found"
-					});
-				}
+                }
 			}
 		}
 	});

@@ -7,13 +7,13 @@
 		<link type="image/x-icon" href="resources/sap/ui/core/mimes/logo/txtonly_16x16.ico" rel="shortcut icon" >
 		<link type="image/x-icon" href="resources/sap/ui/core/mimes/logo/txtonly_16x16.ico" rel="icon" >
 
-		<script
+		<script 
 			id="sap-ui-bootstrap"
 			src="resources/sap-ui-core.js"
 			data-sap-ui-theme="sap_bluecrystal"
 			data-sap-ui-preload="async"
 			data-sap-ui-libs="sap.ui.commons, sap.ui.ux3, sap.ui.demokit"
-			data-sap-ui-bindingSyntax="complex"
+			data-sap-ui-bindingSyntax="complex" 
 			data-sap-ui-xx-supportedLanguages="default"
 			data-sap-ui-xx-waitForTheme="true" >
 		</script>
@@ -25,9 +25,9 @@
 		<script src="js/Config.js"></script>
 
 		<script>
-
+		
 			var oDemokit;
-
+			
 			sap.ui.getCore().attachInit(function() {
 
 				// determine the version to display
@@ -40,7 +40,7 @@
 				}
 
 				var oConfig = window["sap-ui-demokit-config"] || {};
-
+				
 				// init the UI
 				oDemokit = new sap.ui.demokit.DemokitApp("UI development toolkit for HTML5 - Demo Kit", sVersion, oConfig.supportedThemes || undefined);
 				oDemokit.createUI(isDynamicInstallation(), oDemokit.getInitialPage("docs/guide/Documentation.html"));
@@ -48,18 +48,18 @@
 
 				// now define content
 				oDemokit.addIndex("devguidekm", {
-					caption : "Developer Guide",
+					caption : "Developer Guide", 
 					url : "docs/guide/index.json"
 				});
-
+				
 				(function() {
-
+					
 					function transformer(oResponse) {
 
 						var oIndexData = oResponse;
-
+						
 						function transformNode(sPath, oNode) {
-
+							
 							if ( !oNode.alias && oNode.ref ) {
 								var sAlias = oNode.ref.split('/').slice(-1)[0];
 								if ( sAlias == "index.html" ) {
@@ -72,7 +72,7 @@
 								}
 							}
 
-							// Icon URL is computed automatically: e.g. DropDownBox -> /ValueHolders/images/ctrls/dropdownbox-icon.png
+							// Icon URL is computed automatically: e.g. DropDownBox -> /ValueHolders/images/ctrls/dropdownbox-icon.png 
 							// With the ico property it is possible to define an alternative icon.
 							// If no icon is available please add "ico:false"
 							if ( oNode.ico !== false && oNode.ref ) {
@@ -82,26 +82,26 @@
 							}
 
 							if ( typeof oNode.controls === "string" ) {
-								oNode.controls = oNode.controls.split(/,/);
+								oNode.controls = oNode.controls.split(/,/); 
 							}
 							if ( jQuery.isArray(oNode.controls) ) {
 								oDemokit.registerPageForType(oNode.ref, oNode.controls);
 							}
-
+							
 							if ( oNode.links ) {
-								for(var i=0; i<oNode.links.length; i++) {
+								for(var i=0; i<oNode.links.length; i++) { 
 									transformNode(sPath + oNode.text + "/", oNode.links[i]);
 								}
 							}
 						}
-
+						
 						oIndexData.text = "content";
 						transformNode("", oIndexData);
 						oIndexData.ref = "content/Controls/index.html"; // TODO determine default from index.json
 						return oIndexData;
 					}
-
-
+					
+ 
 					oDemokit.addIndex("explored", {
 						caption : "Explored",
 						newWindow : true,
@@ -116,9 +116,9 @@
 				}());
 
 				(function() {
-
+					
 					function transformer(oResponse) {
-
+						
 						var oJSDocLinks = {
 							ref: "docs/api/symbols/sap.ui.html",
 							links: []
@@ -205,10 +205,10 @@
 
 						return oJSDocLinks;
 					}
-
+					
 					oDemokit.addIndex("api", {
-						caption: "API Reference",
-						url : "docs/api/index.xml",
+						caption: "API Reference", 
+						url : "docs/api/index.xml", 
 						transformer: transformer,
 						extend: oConfig.extendAPIReference
 					});
@@ -224,26 +224,26 @@
 						]
 					}
 				});
-
+				
 				oDemokit.addIndex("iconExplorer", {
 					caption : "Icons",
 					newWindow : true,
 					index : {
-						ref: "test-resources/sap/m/demokit/iconExplorer/webapp/index.html",
+						ref: "iconExplorer.html",
 						links : [
-							{text: "Icons", ref: "test-resources/sap/m/demokit/iconExplorer/webapp/index.html"}
+							{text: "Icons", ref: "iconExplorer.html"}
 						]
 					}
 				});
-
+				
 (function() {
-
+					
 					function transformer(oResponse) {
 
 						var oIndexData = oResponse;
-
+						
 						function transformNode(sPath, oNode) {
-
+							
 							if ( !oNode.alias && oNode.ref ) {
 								var sAlias = oNode.ref.split('/').slice(-1)[0];
 								if ( sAlias == "index.html" ) {
@@ -256,7 +256,7 @@
 								}
 							}
 
-							// Icon URL is computed automatically: e.g. DropDownBox -> /ValueHolders/images/ctrls/dropdownbox-icon.png
+							// Icon URL is computed automatically: e.g. DropDownBox -> /ValueHolders/images/ctrls/dropdownbox-icon.png 
 							// With the ico property it is possible to define an alternative icon.
 							// If no icon is available please add "ico:false"
 							if ( oNode.ico !== false && oNode.ref ) {
@@ -266,25 +266,25 @@
 							}
 
 							if ( typeof oNode.controls === "string" ) {
-								oNode.controls = oNode.controls.split(/,/);
+								oNode.controls = oNode.controls.split(/,/); 
 							}
 							if ( jQuery.isArray(oNode.controls) ) {
 								oDemokit.registerPageForType(oNode.ref, oNode.controls);
 							}
-
+							
 							if ( oNode.links ) {
-								for(var i=0; i<oNode.links.length; i++) {
+								for(var i=0; i<oNode.links.length; i++) { 
 									transformNode(sPath + oNode.text + "/", oNode.links[i]);
 								}
 							}
 						}
-
+						
 						oIndexData.text = "content";
 						transformNode("", oIndexData);
 						oIndexData.ref = "content/Controls/index.html"; // TODO determine default from index.json
 						return oIndexData;
 					}
-
+					
 
 					oDemokit.addIndex("controls", {
 						caption: "Controls",
@@ -293,7 +293,7 @@
 						transformer : transformer
 					});
 				}());
-
+				
 				if ( oConfig.onCreateContent ) {
 					oConfig.onCreateContent(oDemokit);
 				}

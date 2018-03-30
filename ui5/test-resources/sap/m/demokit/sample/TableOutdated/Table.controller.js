@@ -19,7 +19,7 @@ sap.ui.define([
 	        });
 	        oComp.setModel(this.getView().getModel());
 	        this._oTable = oComp.getTable();
-	        this.byId("tableLayout").insertContent(this._oTable);
+	        this.getView().byId("tableLayout").insertContent(this._oTable);
 	        // update table
 	        this._oTable.getHeaderToolbar().setVisible(false);
 	    },

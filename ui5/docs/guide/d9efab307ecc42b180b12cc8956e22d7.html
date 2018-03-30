@@ -6,8 +6,8 @@
 <meta name="abstract" content="In this step, you will learn more about targets and how to display a target from the routing configuration manually."/>
 <meta name="description" content="In this step, you will learn more about targets and how to display a target from the routing configuration manually."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=42492468564102404"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=42492468564102404"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9625861870343657"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9625861870343657"/>
 <title>Step 5: Display a Target Without Changing the Hash</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -38,7 +38,7 @@
 			<div class="fig fignone" id="loiod9efab307ecc42b180b12cc8956e22d7__fig_r1j_pst_mr"><div class="figcontainer">
 				
 				<img class="image" id="loiod9efab307ecc42b180b12cc8956e22d7__image_fgl_3vh_ns" src="loio64fc7de39bed41d48d01e08244f201ab_LowRes.png"/>
-			<div class="figcap">The new <span class="ph uicontrol">Home</span> page with a navigation button</div></div></div>
+			<div class="figcap">Figure 1: The new <span class="ph uicontrol">Home</span> page with a navigation button</div></div></div>
 
 		</div></div>
 
@@ -165,6 +165,7 @@
 		}<span class="ph emphasis emphasis">,
 		// override the parent's onNavBack (inherited from BaseController)
 		onNavBack : function (oEvent){
+			var oHistory, sPreviousHash, oRouter;
 			// in some cases we could display a certain target when the back button is pressed
 			if (this._oData &amp;&amp; this._oData.fromTarget) {
 				this.getRouter().getTargets().display(this._oData.fromTarget);

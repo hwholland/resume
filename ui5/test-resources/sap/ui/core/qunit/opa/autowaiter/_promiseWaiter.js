@@ -1,8 +1,7 @@
 sap.ui.define([
 	"jquery.sap.global",
-	"unitTests/utils/loggerInterceptor",
-	"sap/ui/test/Opa5"
-], function ($, loggerInterceptor, Opa5) {
+	"unitTests/utils/loggerInterceptor"
+], function ($, loggerInterceptor) {
 	"use strict";
 
 	$.sap.unloadResources("sap/ui/test/autowaiter/_promiseWaiter.js", false, true, true);
@@ -38,7 +37,7 @@ sap.ui.define([
 			sinon.assert.calledWithMatch(oDebugSpy, "\nPromise: Function: " + sPromiseFunction + " Args: ['test', '");
 			sinon.assert.calledWithMatch(oDebugSpy, "function fnPromiseArg");
 			sinon.assert.calledWithMatch(oDebugSpy, "', {\"a\":2,\"b\":\"foo\"}] Stack: ");
-			sinon.assert.calledWithMatch(oDebugSpy, new Error().stack ? "callingFunction" : "No stack trace available");
+			sinon.assert.calledWithMatch(oDebugSpy, "callingFunction");
 		});
 	});
 
@@ -92,22 +91,23 @@ sap.ui.define([
 			assert.ok(promiseWaiter.hasPending(), "Has pending promise");
 			sinon.assert.calledWithMatch(oDebugSpy, /There are [2-4] pending promises/);
 			sinon.assert.calledWithMatch(oDebugSpy, "Args: {\"foo\":\"bar\",\"foo2\":[1]} Stack: ");
-			sinon.assert.calledWithMatch(oDebugSpy, new Error().stack ? "callingFunction" : "No stack trace available");
+			sinon.assert.calledWithMatch(oDebugSpy, "callingFunction");
 		});
 	});
 
 	QUnit.test("Should have configurable max promise delay", function (assert) {
-		promiseWaiter.extendConfig({timeoutWaiter: {maxDelay: 10}});
-		var fnDone = assert.async();
+		promiseWaiter.extendConfig({maxDelay: 400});
 		var oPromise = new Promise(function (fnResolve) {
-			setTimeout(fnResolve, 20);
+			setTimeout(fnResolve, 900);
 		});
 
 		Promise.resolve(oPromise);
+		assert.ok(promiseWaiter.hasPending(), "Has pending promise");
 		setTimeout(function () {
 			assert.ok(!promiseWaiter.hasPending(), "Has no pending promise");
 			sinon.assert.calledWithMatch(oTraceSpy, "Long-running promise is ignored:\nPromise: Function: resolve Args:");
-			fnDone();
-		}, 30);
+		}, 900);
+
+		return oPromise;
 	});
 });

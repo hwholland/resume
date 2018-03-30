@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="sap.ui.layout" xmlns:n1="sap.ui.layout" xmlns:n0="sap.ui.core">
 <xsd:import namespace="sap.ui.core"/>
+<xsd:element name="BlockLayout" type="n1:_BlockLayoutType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>The BlockLayout is used to display several objects in a section-based manner.
+&lt;h3&gt;Overview&lt;/h3&gt;
+The BlockLayout uses horizontal and vertical subdivisions, and full-width banners to display a set of elements.
+By placing pictorial and textual elements side-by-side in different blocks, you can establish a visual connection between blocks and between similar elements.
+&lt;h3&gt;Structure&lt;/h3&gt;
+The BlockLayout comes in five predefined types for background colors:
+&lt;ul&gt;
+&lt;li&gt;Layout only (default) - a layout scheme and no background colors&lt;/li&gt;
+&lt;li&gt;Bright - a layout scheme with bright colors&lt;/li&gt;
+&lt;li&gt;Accent - a layout scheme with four pre-defined color sets&lt;/li&gt;
+&lt;li&gt;Dashboard - a layout scheme with additional borders and no background colors&lt;/li&gt;
+&lt;li&gt;Mixed - a layout scheme with a mix of light and dark colors&lt;/li&gt;
+&lt;/ul&gt;
+Background colors are attached directly to the blocks of the layout.
+
+Special full-width sections of the BlockLayout allow horizontal scrolling through a set of blocks.
+
+&lt;b&gt;Note:&lt;/b&gt; With version 1.48 colors can be set for each individual {@link sap.ui.layout.BlockLayoutCell cell}. There are 10 pre-defined color sets, each with 4 different shades.
+The main colors of the sets can be changed in Theme Designer. To change the background of a particular cell, set &lt;code&gt;backgroundColorSet&lt;/code&gt; (main color)
+and &lt;code&gt;backgroundColorShade&lt;/code&gt; (shade).
+
+&lt;h3&gt;Usage&lt;/h3&gt;
+&lt;h4&gt;When to use&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;You want to create a catalogue-like page with sections of blocks.&lt;/li&gt;
+&lt;li&gt;The BlockLayout is intended for developing administrative tools and applications.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;When not to use&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;You want to display properties or features of one content item. Use a {@link sap.uxap.ObjectPageLayout object page} or {@link sap.f.DynamicPage dynamic page} instead.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Responsive Behavior&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;The breakpoints of the block layout react to the width of the control itself and not to the actual screen size.&lt;/li&gt;
+&lt;li&gt; On small screens all blocks will wrap to a single scrollable column&lt;/li&gt;
+&lt;/ul&gt;</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
 <xsd:element name="BlockLayoutCell" type="n1:_BlockLayoutCellType" substitutionGroup="n0:Control">
 <xsd:annotation>
 <xsd:documentation>The BlockLayoutCell is used as an aggregation of the BlockLayoutRow. It contains Controls.
@@ -98,8 +138,7 @@ dynamically and is not directly set as style property.)</xsd:documentation>
 </xsd:element>
 <xsd:element name="Form" type="n1:_FormType" substitutionGroup="n0:Control">
 <xsd:annotation>
-<xsd:documentation>A &lt;code&gt;Form&lt;/code&gt; control arranges labels and fields (like input fields) into groups and rows.
-There are different ways to visualize forms for different screen sizes.
+<xsd:documentation>A &lt;code&gt;Form&lt;/code&gt; control arranges labels and fields (like input fields) into groups and rows. There are different ways to visualize forms for different screen sizes.
 
 A &lt;code&gt;Form&lt;/code&gt; is structured into &lt;code&gt;FormContainers&lt;/code&gt;. Each &lt;code&gt;FormContainer&lt;/code&gt; consists of &lt;code&gt;FormElements&lt;/code&gt;.
 The &lt;code&gt;FormElements&lt;/code&gt; consists of a label and the form fields.
@@ -112,12 +151,8 @@ For the content of a &lt;code&gt;Form&lt;/code&gt;, &lt;code&gt;VariantLayoutDat
 The &lt;code&gt;Form&lt;/code&gt; (and its sub-controls) automatically add label and field assignment to enable screen reader support.
 It also adds keyboard support to navigate between the fields and groups inside the form.
 
-&lt;b&gt;Warning:&lt;/b&gt; Do not put any layout or other container controls into the &lt;code&gt;FormElement&lt;/code&gt;.
-Views are also not supported. This could damage the visual layout, keyboard support and screen-reader support.
-
-If editable controls are used as content, the &lt;code&gt;editable&lt;/code&gt; property must be set to &lt;code&gt;true&lt;/code&gt;,
-otherwise to &lt;code&gt;false&lt;/code&gt;. If the &lt;code&gt;editable&lt;/code&gt; property is set incorrectly, there will be visual issues
-like wrong label alignment or wrong spacing between the controls.</xsd:documentation>
+&lt;b&gt;Note:&lt;/b&gt; Do not put any layout controls into the &lt;code&gt;FormElements&lt;/code&gt;. This could destroy the visual layout,
+keyboard support and screen-reader support.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="FormContainer" type="n1:_FormContainerType" substitutionGroup="n0:Element">
@@ -212,6 +247,38 @@ Use &lt;code&gt;LayoutData&lt;/code&gt; to influence the layout for special case
 &lt;b&gt;Note:&lt;/b&gt; If a more complex form is needed, use &lt;code&gt;Form&lt;/code&gt; instead.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
+<!--type definition for UIElement 'sap.ui.layout.BlockLayout'-->
+<xsd:complexType name="_BlockLayoutType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<!--default aggregation 'content'-->
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n1:BlockLayoutRow"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="content" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The Rows to be included in the content of the control</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n1:BlockLayoutRow"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="background" type="n1:_BlockBackgroundTypeType">
+<xsd:annotation>
+<xsd:documentation>Determines the background used for the Layout</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
 <!--type definition for UIElement 'sap.ui.layout.BlockLayoutCell'-->
 <xsd:complexType name="_BlockLayoutCellType">
 <xsd:complexContent>
@@ -942,8 +1009,10 @@ as its responsiveness allows the available space to be used in the best way poss
 </xsd:attribute>
 <xsd:attribute name="editable" type="xsd:boolean">
 <xsd:annotation>
-<xsd:documentation>Applies a device-specific and theme-specific line height and label alignment to the form rows if the form has editable content.
+<xsd:documentation>Applies a device-specific and theme-specific line-height to the form rows if the form has editable content.
 If set, all (not only the editable) rows of the form will get the line height of editable fields.
+
+The accessibility &lt;code&gt;aria-readonly&lt;/code&gt; attribute is set according to this property.
 
 &lt;b&gt;Note:&lt;/b&gt; The setting of the property has no influence on the editable functionality of the form's content.</xsd:documentation>
 </xsd:annotation>
@@ -1059,9 +1128,8 @@ DOM representation in the used &lt;code&gt;FormLayout&lt;/code&gt;.</xsd:documen
 <xsd:annotation>
 <xsd:documentation>Label of the fields. Can either be a &lt;code&gt;Label&lt;/code&gt; control or a string.
 If a &lt;code&gt;Label&lt;/code&gt; control is used, the properties of the &lt;code&gt;Label&lt;/code&gt; can be set.
-If no assignment between &lt;code&gt;Label&lt;/code&gt; and the fields is set via (&lt;code&gt;labelFor&lt;/code&gt; property of the &lt;code&gt;Label&lt;/code&gt;),
-it will be done automatically by the &lt;code&gt;FormElement&lt;/code&gt;.
-In this case the &lt;code&gt;Label&lt;/code&gt; is assigned to the fields of the &lt;code&gt;FormElement&lt;/code&gt;.</xsd:documentation>
+If no assignment between &lt;code&gt;Label&lt;/code&gt; and the fields is set via (&lt;code&gt;labelFor&lt;/code&gt; property of the &lt;code&gt;Label&lt;/code&gt;), it will be done automatically by the
+&lt;code&gt;FormElement&lt;/code&gt;. In this case the &lt;code&gt;Label&lt;/code&gt; is assigned to the fields of the &lt;code&gt;FormElement&lt;/code&gt;.</xsd:documentation>
 </xsd:annotation>
 <xsd:complexType>
 <xsd:sequence>
@@ -1075,12 +1143,10 @@ In this case the &lt;code&gt;Label&lt;/code&gt; is assigned to the fields of the
 </xsd:element>
 <xsd:element name="fields" minOccurs="0">
 <xsd:annotation>
-<xsd:documentation>Form controls that belong together to be displayed in one row of a &lt;code&gt;Form&lt;/code&gt;.
+<xsd:documentation>Formular controls that belong together to be displayed in one row of a &lt;code&gt;Form&lt;/code&gt;.
 
-&lt;b&gt;Warning:&lt;/b&gt; Do not put any layout or other container controls in here.
-This could damage the visual layout, keyboard support and screen-reader support.
-Only form controls are allowed. Views are also not supported.
-Allowed controls implement the interface &lt;code&gt;sap.ui.core.IFormContent&lt;/code&gt;.</xsd:documentation>
+&lt;b&gt;Note:&lt;/b&gt; Do not put any layout controls in here. This could destroy the visual layout,
+keyboard support and screen-reader support.</xsd:documentation>
 </xsd:annotation>
 <xsd:complexType>
 <xsd:sequence>
@@ -1302,13 +1368,9 @@ In all other cases the &lt;code&gt;FormContainer&lt;/code&gt; is displayed in th
 &lt;li&gt;Add a &lt;code&gt;Label&lt;/code&gt; control to start a new row (&lt;code&gt;FormElement&lt;/code&gt;).&lt;/li&gt;
 &lt;li&gt;Add controls as input fields, text fields or other as needed.&lt;/li&gt;
 &lt;li&gt;Use &lt;code&gt;LayoutData&lt;/code&gt; to influence the layout for special cases in the single controls.
-For example, if a &lt;code&gt;ResponsiveLayout&lt;/code&gt; is used as a layout,
-the form content is weighted using weight 3 for the labels and weight 5 for the fields part.
-By default the label column is 192 pixels wide.
-If your input controls should influence their width, you can add &lt;code&gt;sap.ui.layout.ResponsiveFlowLayoutData&lt;/code&gt;
-to them via &lt;code&gt;setLayoutData&lt;/code&gt; method.
-Ensure that the sum of the weights in the &lt;code&gt;ResponsiveFlowLayoutData&lt;/code&gt; is not more than 5,
-as this is the total width of the input control part of each form row.&lt;/li&gt;
+For example, if a &lt;code&gt;ResponsiveLayout&lt;/code&gt; is used as a layout, the form content is weighted using weight 3 for the labels and weight 5 for the fields part. By default the label column is 192 pixels wide.
+If your input controls should influence their width, you can add &lt;code&gt;sap.ui.layout.ResponsiveFlowLayoutData&lt;/code&gt; to them via &lt;code&gt;setLayoutData&lt;/code&gt; method.
+Ensure that the sum of the weights in the &lt;code&gt;ResponsiveFlowLayoutData&lt;/code&gt; is not more than 5, as this is the total width of the input control part of each form row.&lt;/li&gt;
 &lt;/ul&gt;
 Example for a row where the &lt;code&gt;Input&lt;/code&gt; weight 4 and the second &lt;code&gt;Input&lt;/code&gt; weight 1 (using &lt;code&gt;ResponsiveLayout&lt;/code&gt;):
 &lt;pre&gt;
@@ -1317,28 +1379,20 @@ new sap.m.Input({value:"Weight 4", layoutData: new sap.ui.layout.ResponsiveFlowL
 new sap.m.Input({value:"Weight 1", layoutData: new sap.ui.layout.ResponsiveFlowLayoutData({weight:1})}),
 &lt;/pre&gt;
 
-For example, if a &lt;code&gt;ResponsiveGridLayout&lt;/code&gt; is used as a layout, there are 12 cells in one row.
-Depending on the screen size the labels use the defined &lt;code&gt;labelSpan&lt;/code&gt;.
-The remaining cells are used for the fields (and &lt;code&gt;emptySpan&lt;/code&gt; if defined).
-The available cells are distributed to all fields in the row. If one field should use a fixed number of cells
+For example, if a &lt;code&gt;ResponsiveGridLayout&lt;/code&gt; is used as a layout, there are 12 cells in one row. Depending on the screen size the labels use the defined &lt;code&gt;labelSpan&lt;/code&gt;.
+The remaining cells are used for the fields (and &lt;code&gt;emptySpan&lt;/code&gt; if defined). The available cells are distributed to all fields in the row. If one field should use a fixed number of cells
 you can add &lt;code&gt;sap.ui.layout.GridData&lt;/code&gt; to them via &lt;code&gt;setLayoutData&lt;/code&gt; method.
 If there are additional fields in the row they will get the remaining cells.
 &lt;/ul&gt;
-Example for a row with two &lt;code&gt;Input&lt;/code&gt; controls where one uses four cells on small screens,
-one cell on medium screens and 2 cells on larger screens (using &lt;code&gt;ResponsiveGridLayout&lt;/code&gt;):
+Example for a row with two &lt;code&gt;Input&lt;/code&gt; controls where one uses four cells on small screens, one cell on medium screens and 2 cells on larger screens (using &lt;code&gt;ResponsiveGridLayout&lt;/code&gt;):
 &lt;pre&gt;
 new sap.m.Label({text:"Label"});
 new sap.m.Input({value:"auto size"}),
 new sap.m.Input({value:"fix size", layoutData: new sap.ui.layout.GridData({span: "XL1 L1 M2 S4"})}),
 &lt;/pre&gt;
 
-&lt;b&gt;Warning:&lt;/b&gt; Do not put any layout or other container controls in here. This could damage the visual layout,
-keyboard support and screen-reader support. Only labels, titles, toolbars and form controls are allowed.
-Views are also not supported. Allowed form controls implement the interface &lt;code&gt;sap.ui.core.IFormContent&lt;/code&gt;.
-
-If editable controls are used as content, the &lt;code&gt;editable&lt;/code&gt; property must be set to &lt;code&gt;true&lt;/code&gt;,
-otherwise to &lt;code&gt;false&lt;/code&gt;. If the &lt;code&gt;editable&lt;/code&gt; property is set incorrectly, there will be visual issues
-like wrong label alignment or wrong spacing between the controls.</xsd:documentation>
+&lt;b&gt;Note:&lt;/b&gt; Do not put any layout controls in here. This could destroy the visual layout,
+keyboard support and screen-reader support.</xsd:documentation>
 </xsd:annotation>
 <xsd:complexType>
 <xsd:sequence>
@@ -1407,8 +1461,10 @@ irrespective of whether a &lt;code&gt;width&lt;/code&gt; is reached or the avail
 </xsd:attribute>
 <xsd:attribute name="editable" type="xsd:boolean">
 <xsd:annotation>
-<xsd:documentation>Applies a device-specific and theme-specific line height and label alignment to the form rows if the form has editable content.
+<xsd:documentation>Applies a device-specific and theme-specific line-height to the form rows if the form has editable content.
 If set, all (not only the editable) rows of the form will get the line height of editable fields.
+
+The accessibility &lt;code&gt;aria-readonly&lt;/code&gt; attribute is set according to this property.
 
 &lt;b&gt;Note:&lt;/b&gt; The setting of the property has no influence on the editable functionality of the form's content.</xsd:documentation>
 </xsd:annotation>

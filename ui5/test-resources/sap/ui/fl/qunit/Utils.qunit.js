@@ -1,26 +1,12 @@
-/*global QUnit*/
+/*global QUnit,sinon*/
 
-QUnit.config.autostart = false;
+jQuery.sap.require("sap.ui.fl.Utils");
+jQuery.sap.require("sap.ui.layout.VerticalLayout");
+jQuery.sap.require("sap.ui.layout.HorizontalLayout");
+jQuery.sap.require("sap.m.Button");
 
-sap.ui.require([
-	'sap/ui/fl/Utils',
-	'sap/ui/layout/VerticalLayout',
-	'sap/ui/layout/HorizontalLayout',
-	'sap/m/Button',
-	'sap/ui/thirdparty/hasher',
-	// should be last:
-	'sap/ui/thirdparty/sinon'
-],
-function(
-	Utils,
-	VerticalLayout,
-	HorizontalLayout,
-	Button,
-	hasher,
-	sinon
-){
+(function (Utils, HorizontalLayout, VerticalLayout, Button) {
 	"use strict";
-	QUnit.start();
 
 	var sandbox = sinon.sandbox.create();
 
@@ -32,7 +18,6 @@ function(
 			aControls.forEach(function (oControl) {
 				oControl.destroy();
 			});
-			sandbox.restore();
 		}
 	});
 
@@ -61,8 +46,8 @@ function(
 				return sEntryKey === "sap.ui5" ? {} : undefined;
 			}
 		};
-		var oGetComponentIdForControlStub = sandbox.stub(Utils, "_getComponentIdForControl").returns("testId");
-		var oGetComponentStub = sandbox.stub(Utils, "_getComponent").returns(oComponentMock);
+		var oGetComponentIdForControlStub = this.stub(Utils, "_getComponentIdForControl").returns("testId");
+		var oGetComponentStub = this.stub(Utils, "_getComponent").returns(oComponentMock);
 
 		assert.equal(Utils.getComponentClassName(oControl), sComponentName);
 
@@ -98,8 +83,8 @@ function(
 				};
 			}
 		};
-		var oGetComponentIdForControlStub = sandbox.stub(Utils, "_getComponentIdForControl").returns("testId");
-		var oGetComponentStub = sandbox.stub(Utils, "_getComponent").returns(oComponentMock);
+		var oGetComponentIdForControlStub = this.stub(Utils, "_getComponentIdForControl").returns("testId");
+		var oGetComponentStub = this.stub(Utils, "_getComponent").returns(oComponentMock);
 
 		assert.equal(Utils.getComponentClassName(oControl), sAppVariantName);
 
@@ -141,8 +126,8 @@ function(
 				return oComponentMock;
 			}
 		};
-		var oGetComponentIdForControlStub = sandbox.stub(Utils, "_getComponentIdForControl").returns("testId");
-		var oGetComponentStub = sandbox.stub(Utils, "_getComponent").returns(oSmartTemplateCompMock);
+		var oGetComponentIdForControlStub = this.stub(Utils, "_getComponentIdForControl").returns("testId");
+		var oGetComponentStub = this.stub(Utils, "_getComponent").returns(oSmartTemplateCompMock);
 
 		assert.equal(Utils.getComponentClassName(oControl), sAppVariantName);
 
@@ -155,8 +140,8 @@ function(
 
 	QUnit.test("isVariantByStartupParameter can detect a variant by the startup parameter", function (assert) {
 
-		sandbox.stub(Utils, "getAppComponentForControl").returns({});
-		sandbox.stub(Utils, "_getComponentStartUpParameter").returns("someId");
+		this.stub(Utils, "getAppComponentForControl").returns({});
+		this.stub(Utils, "_getComponentStartUpParameter").returns("someId");
 
 		var bIsStartupParameterBasedVariant = Utils.isVariantByStartupParameter({});
 
@@ -165,8 +150,8 @@ function(
 
 	QUnit.test("isVariantByStartupParameter returns false if no variant by the startup parameter is present", function (assert) {
 
-		sandbox.stub(Utils, "getAppComponentForControl").returns({});
-		sandbox.stub(Utils, "_getComponentStartUpParameter").returns();
+		this.stub(Utils, "getAppComponentForControl").returns({});
+		this.stub(Utils, "_getComponentStartUpParameter").returns();
 
 		var bIsStartupParameterBasedVariant = Utils.isVariantByStartupParameter({});
 
@@ -181,7 +166,7 @@ function(
 				]
 			}
 		};
-		var getUriParametersStub = sandbox.stub(Utils, "_getUriParameters").returns(oUriParams);
+		var getUriParametersStub = this.stub(Utils, "_getUriParameters").returns(oUriParams);
 		var sLayer = Utils.getCurrentLayer();
 		assert.equal(sLayer, "VENDOR");
 		getUriParametersStub.restore();
@@ -195,7 +180,7 @@ function(
 				]
 			}
 		};
-		var getUriParametersStub = sandbox.stub(Utils, "_getUriParameters").returns(oUriParams);
+		var getUriParametersStub = this.stub(Utils, "_getUriParameters").returns(oUriParams);
 		var sLayer = Utils.getCurrentLayer(true);
 		assert.equal(sLayer, "USER");
 		assert.ok(true);
@@ -206,7 +191,7 @@ function(
 		var oUriParams = {
 			mParams: {}
 		};
-		var getUriParametersStub = sandbox.stub(Utils, "_getUriParameters").returns(oUriParams);
+		var getUriParametersStub = this.stub(Utils, "_getUriParameters").returns(oUriParams);
 		var sLayer = Utils.getCurrentLayer(false);
 		assert.equal(sLayer, "CUSTOMER");
 		assert.ok(true);
@@ -221,8 +206,7 @@ function(
 				]
 			}
 		};
-		var getUriParametersStub = sandbox.stub(Utils, "_getUriParameters").returns(oUriParams);
-		assert.equal(Utils.isLayerAboveCurrentLayer(""), -1, "then with VENDOR layer -1 is returned");
+		var getUriParametersStub = this.stub(Utils, "_getUriParameters").returns(oUriParams);
 		assert.equal(Utils.isLayerAboveCurrentLayer("VENDOR"), -1, "then with VENDOR layer -1 is returned");
 		assert.equal(Utils.isLayerAboveCurrentLayer("CUSTOMER"), 0, "then with CUSTOMER layer 0 is returned");
 		assert.equal(Utils.isLayerAboveCurrentLayer("USER"), 1, "then with USER layer 1 is returned");
@@ -232,7 +216,7 @@ function(
 
 	QUnit.test("doesSharedVariantRequirePackageCustomer", function (assert) {
 		var bDoesSharedVariantRequirePackage;
-		sandbox.stub(Utils, "getCurrentLayer").returns("CUSTOMER");
+		this.stub(Utils, "getCurrentLayer").returns("CUSTOMER");
 
 		// Call CUT
 		bDoesSharedVariantRequirePackage = Utils.doesSharedVariantRequirePackage();
@@ -243,7 +227,7 @@ function(
 
 	QUnit.test("doesSharedVariantRequirePackageCustomerBase", function (assert) {
 		var bDoesSharedVariantRequirePackage;
-		sandbox.stub(Utils, "getCurrentLayer").returns("CUSTOMER_BASE");
+		this.stub(Utils, "getCurrentLayer").returns("CUSTOMER_BASE");
 
 		// Call CUT
 		bDoesSharedVariantRequirePackage = Utils.doesSharedVariantRequirePackage();
@@ -260,7 +244,7 @@ function(
 				]
 			}
 		};
-		var getUriParametersStub = sandbox.stub(Utils, "_getUriParameters").returns(oUriParams);
+		var getUriParametersStub = this.stub(Utils, "_getUriParameters").returns(oUriParams);
 		var sClient = Utils.getClient();
 		assert.equal(sClient, "123");
 		assert.ok(true);
@@ -276,7 +260,7 @@ function(
 
 	QUnit.test("_getComponentIdForControl shall return the result of getOwnerIdForControl", function (assert) {
 		var sComponentId;
-		sandbox.stub(Utils, "_getOwnerIdForControl").returns('Rumpelstilzchen');
+		this.stub(Utils, "_getOwnerIdForControl").returns('Rumpelstilzchen');
 		// Call CUT
 		sComponentId = Utils._getComponentIdForControl(null);
 		assert.equal(sComponentId, 'Rumpelstilzchen');
@@ -287,13 +271,13 @@ function(
 		var sComponentId, oControl1, oControl2, oControl3, fnGetOwnerIdForControl;
 		oControl1 = {};
 		oControl2 = {
-			getParent: sandbox.stub().returns(oControl1)
+			getParent: this.stub().returns(oControl1)
 		};
 		oControl3 = {
-			getParent: sandbox.stub().returns(oControl2)
+			getParent: this.stub().returns(oControl2)
 		};
 
-		fnGetOwnerIdForControl = sandbox.stub(Utils, "_getOwnerIdForControl");
+		fnGetOwnerIdForControl = this.stub(Utils, "_getOwnerIdForControl");
 		fnGetOwnerIdForControl.withArgs(oControl3).returns("");
 		fnGetOwnerIdForControl.withArgs(oControl2).returns("");
 		fnGetOwnerIdForControl.withArgs(oControl1).returns("sodimunk");
@@ -322,7 +306,7 @@ function(
 		}
 		/*eslint-enable no-loop-func */
 
-		fnGetOwnerIdForControl = sandbox.stub(Utils, "_getOwnerIdForControl").returns("");
+		fnGetOwnerIdForControl = this.stub(Utils, "_getOwnerIdForControl").returns("");
 
 		// Call CUT
 		sComponentId = Utils._getComponentIdForControl(aControls[199]);
@@ -392,7 +376,7 @@ function(
 			getModel: function () {
 			}
 		};
-		fStub = sandbox.stub(Utils, "_getXSRFTokenFromModel").returns("abc");
+		fStub = this.stub(Utils, "_getXSRFTokenFromModel").returns("abc");
 
 		// Call CUT
 		sXSRFToken = Utils.getXSRFTokenFromControl(oControl);
@@ -461,7 +445,7 @@ function(
 				]
 			}
 		};
-		var getUriParametersStub = sandbox.stub(Utils, "_getUriParameters").returns(oUriParams);
+		var getUriParametersStub = this.stub(Utils, "_getUriParameters").returns(oUriParams);
 		var bIsHotfix = Utils.isHotfixMode();
 		assert.strictEqual(bIsHotfix, true);
 		getUriParametersStub.restore();
@@ -471,7 +455,7 @@ function(
 		var oUriParams = {
 			mParams: {}
 		};
-		var getUriParametersStub = sandbox.stub(Utils, "_getUriParameters").returns(oUriParams);
+		var getUriParametersStub = this.stub(Utils, "_getUriParameters").returns(oUriParams);
 		var bIsHotfix = Utils.isHotfixMode();
 		assert.strictEqual(bIsHotfix, false);
 		getUriParametersStub.restore();
@@ -610,8 +594,8 @@ function(
 				};
 			}
 		};
-		var oGetComponentIdForControlStub = sandbox.stub(Utils, "_getComponentIdForControl").returns("testId");
-		var oGetComponentStub = sandbox.stub(Utils, "_getComponent").returns(oComponentMock);
+		var oGetComponentIdForControlStub = this.stub(Utils, "_getComponentIdForControl").returns("testId");
+		var oGetComponentStub = this.stub(Utils, "_getComponent").returns(oComponentMock);
 
 		// Call CUT
 		assert.equal(Utils.getAppDescriptor(oControl), oAppDescriptor);
@@ -646,8 +630,8 @@ function(
 				};
 			}
 		};
-		var oGetComponentIdForControlStub = sandbox.stub(Utils, "_getComponentIdForControl").returns("testId");
-		var oGetComponentStub = sandbox.stub(Utils, "_getComponent").returns(oComponentMock);
+		var oGetComponentIdForControlStub = this.stub(Utils, "_getComponentIdForControl").returns("testId");
+		var oGetComponentStub = this.stub(Utils, "_getComponent").returns(oComponentMock);
 
 		// Call CUT
 		assert.equal(Utils.getSiteId(oControl), sSiteId);
@@ -732,8 +716,8 @@ function(
 			return sParameter === "sap.app" ? oSapAppEntry : undefined;
 		};
 
-		var oStub = sandbox.stub(Utils, "getAppComponentForControl");
-		sandbox.stub(Utils, "_getComponentForControl").returns(oParentComponent);
+		var oStub = this.stub(Utils, "getAppComponentForControl");
+		this.stub(Utils, "_getComponentForControl").returns(oParentComponent);
 
 		Utils._getAppComponentForComponent(oComponent);
 
@@ -797,7 +781,7 @@ function(
 			}
 		};
 
-			var oGetComponentForControlStub = sandbox.stub(Utils, "_getComponentForControl").onFirstCall().returns(oComponentMockComp).onSecondCall().returns(oComponentMockApp);
+			var oGetComponentForControlStub = this.stub(Utils, "_getComponentForControl").onFirstCall().returns(oComponentMockComp).onSecondCall().returns(oComponentMockApp);
 
 		assert.equal(Utils.getComponentClassName(oControl), sComponentNameApp, "Check that the type of the component is 'application'");
 
@@ -823,200 +807,11 @@ function(
 			}
 		};
 
-		var oGetComponentForControlStub = sandbox.stub(Utils, "_getComponentForControl").onFirstCall().returns(oComponentMockComp).onSecondCall().returns(null);
+		var oGetComponentForControlStub = this.stub(Utils, "_getComponentForControl").onFirstCall().returns(oComponentMockComp).onSecondCall().returns(null);
 
 		assert.equal(Utils.getComponentClassName(oControl), "", "Check that empty string is returned.");
 
 		oGetComponentForControlStub.stub.restore();
-	});
-
-	QUnit.module("get/set URL Technical Parameter values", {
-
-		beforeEach : function(){
-			this.originalUShell = sap.ushell;
-		},
-
-		afterEach : function(){
-			sap.ushell = this.originalUShell;
-			sandbox.restore();
-		}
-
-	});
-
-	QUnit.test("when calling 'getTechnicalParametersForComponent' with a Component containing a valid URL parameter", function(assert){
-		var mParameters = {
-			"first-tech-parameter" : ["value1, value2"],
-			"second-tech-parameter" : ["value3"]
-		};
-
-		var oComponentMock = {
-			getComponentData: function(){
-				return {
-					technicalParameters: mParameters
-				};
-			}
-		};
-
-		assert.deepEqual(Utils.getTechnicalParametersForComponent(oComponentMock),
-			mParameters,
-			"then the function returns the variant reference in the URL parameter");
-	});
-
-	QUnit.test("when calling 'getTechnicalParametersForComponent' with technical parameters not existing", function(assert){
-		var oComponentMock = {
-			getComponentData: function(){
-				return {
-					technicalParameters: {}
-				};
-			}
-		};
-
-		assert.deepEqual(Utils.getTechnicalParametersForComponent(oComponentMock),
-			{},
-			"then the function returns the variant reference in the URL parameter");
-	});
-
-	QUnit.test("when calling 'getTechnicalParametersForComponent' with an invalid component", function(assert){
-		var oComponentMock = {};
-		assert.notOk(Utils.getTechnicalParametersForComponent(oComponentMock), "then the function returns undefined");
-	});
-
-	QUnit.test("when calling 'setTechnicalURLParameterValues' with a component, parameter name and some values", function(assert){
-		var oMockedURLParser = {
-			getHash : function(){
-				return "";
-			},
-			parseShellHash : function(sHash){
-				return {
-					semanticObject : "Action",
-					action : "somestring",
-					params : {
-						"sap-ui-fl-max-layer" : ["CUSTOMER"]
-					}
-				};
-			},
-			constructShellHash : function(oParsedHash){
-				assert.equal(hasher.changed.active, false, "then the 'active' flag of the hasher is first set to false (to avoid navigation)");
-				assert.deepEqual(oParsedHash.params["sap-ui-fl-max-layer"][0], "CUSTOMER", "then the previous parameters are still present for the hash");
-				assert.deepEqual(oParsedHash.params["testParameter"][0], "testValue", "then the new parameter is properly added to the hash");
-				assert.deepEqual(oParsedHash.params["testParameter"][1], "testValue2", "then the new parameter is properly added to the hash");
-				return "hashValue";
-			}
-		};
-
-		var oMockComponent = {
-			oComponentData : {
-				technicalParameters: {}
-			},
-			getComponentData : function () {
-				return this.oComponentData;
-			}
-		};
-
-		// this overrides the ushell globally => it gets restored in afterEach
-		sap.ushell = jQuery.extend(sap.ushell, {
-			Container : {
-				getService : function() {
-					return oMockedURLParser;
-				}
-			}
-		});
-
-		sandbox.stub(hasher, "setHash", function(sHash){
-			assert.equal(sHash, "hashValue", "then the 'setHash' function of the hasher is called with the proper parameter");
-		});
-
-		Utils.setTechnicalURLParameterValues(oMockComponent, "testParameter", ["testValue", "testValue2"]);
-
-		assert.equal(hasher.changed.active, true, "then the 'active' flag of the hasher is restored to true");
-		assert.equal(oMockComponent.getComponentData().technicalParameters["testParameter"][0], "testValue", "then the new parameter is properly added to the technical parameter");
-		assert.equal(oMockComponent.getComponentData().technicalParameters["testParameter"][1], "testValue2", "then the new parameter is properly added to the technical parameter");
-	});
-
-	QUnit.test("when calling 'setTechnicalURLParameterValues' with an invalid component, parameter name and some values", function(assert){
-		var oMockedURLParser = {
-			getHash : function(){
-				return "";
-			},
-			parseShellHash : function(sHash){
-				return {
-					semanticObject : "Action",
-					action : "somestring",
-					params : {
-						"sap-ui-fl-max-layer" : ["CUSTOMER"]
-					}
-				};
-			},
-			constructShellHash : function(oParsedHash){
-				assert.equal(hasher.changed.active, false, "then the 'active' flag of the hasher is first set to false (to avoid navigation)");
-				assert.deepEqual(oParsedHash.params["sap-ui-fl-max-layer"][0], "CUSTOMER", "then the previous parameters are still present for the hash");
-				assert.deepEqual(oParsedHash.params["testParameter"][0], "testValue", "then the new parameter is properly added to the hash");
-				assert.deepEqual(oParsedHash.params["testParameter"][1], "testValue2", "then the new parameter is properly added to the hash");
-				return "hashValue";
-			}
-		};
-
-		// this overrides the ushell globally => it gets restored in afterEach
-		sap.ushell = jQuery.extend(sap.ushell, {
-			Container : {
-				getService : function() {
-					return oMockedURLParser;
-				}
-			}
-		});
-		sandbox.stub(Utils.log, "error");
-		Utils.setTechnicalURLParameterValues({}, "testParameter", ["testValue", "testValue2"]);
-
-		assert.ok(Utils.log.error.calledWith("Component instance not provided, so technical parameters in component data would remain unchanged"), "then error produced as component is invalid");
-		assert.equal(hasher.changed.active, true, "then the 'active' flag of the hasher is restored to true");
-	});
-
-	QUnit.test("when calling 'setTechnicalURLParameterValues' with a component, parameter name (having previously existing values) and no values", function(assert){
-		var oMockedURLParser = {
-			getHash : function(){
-				return "";
-			},
-			parseShellHash : function(sHash){
-				return {
-					semanticObject : "Action",
-					action : "somestring",
-					params : {
-						"sap-ui-fl-max-layer" : ["CUSTOMER"],
-						"testParameter" : ["testValue", "testValue2"]
-					}
-				};
-			},
-			constructShellHash : function(oParsedHash){
-				assert.equal(hasher.changed.active, false, "then the 'active' flag of the hasher is first set to false (to avoid navigation)");
-				assert.deepEqual(oParsedHash.params["sap-ui-fl-max-layer"][0], "CUSTOMER", "then the previous parameters are still present for the hash");
-				assert.notOk(oParsedHash.params["testParameter"], "then the parameter name no longer exists for the hash");
-				return "hashValue";
-			}
-		};
-
-		var oMockComponent = {
-			oComponentData : {
-				technicalParameters: {
-					"testParameter" : ["testValue", "testValue2"]
-				}
-			},
-			getComponentData : function () {
-				return this.oComponentData;
-			}
-		};
-
-		// this overrides the ushell globally => it gets restored in afterEach
-		sap.ushell = jQuery.extend(sap.ushell, {
-			Container : {
-				getService : function() {
-					return oMockedURLParser;
-				}
-			}
-		});
-		assert.equal(oMockComponent.getComponentData().technicalParameters["testParameter"].length, 2, "then initially the parameter exists in technical parameters with 2 values");
-		Utils.setTechnicalURLParameterValues(oMockComponent, "testParameter", []);
-		assert.notOk(oMockComponent.getComponentData().technicalParameters["testParameter"], "then the parameter no longer exists as a technical parameter");
-		assert.equal(hasher.changed.active, true, "then the 'active' flag of the hasher is restored to true");
 	});
 
 	QUnit.module("checkControlId and hasLocalIdSuffix", {
@@ -1032,7 +827,6 @@ function(
 			this.oControlWithGeneratedId.destroy();
 			this.oControlWithPrefix.destroy();
 			this.oControlWithoutPrefix.destroy();
-			sandbox.restore();
 		}
 	});
 
@@ -1041,13 +835,13 @@ function(
 	});
 
 	QUnit.test("checkControlId shall throw an error if the id was generated", function (assert) {
-		var spyLog = sandbox.spy(jQuery.sap.log, "warning");
+		var spyLog = this.spy(jQuery.sap.log, "warning");
 		Utils.checkControlId(this.oControlWithGeneratedId, this.oComponent);
 		assert.ok(spyLog.calledOnce);
 	});
 
 	QUnit.test("checkControlId does not throw an error if the id was generated but the logging was suppressed", function (assert) {
-		var spyLog = sandbox.spy(jQuery.sap.log, "warning");
+		var spyLog = this.spy(jQuery.sap.log, "warning");
 		Utils.checkControlId(this.oControlWithGeneratedId, this.oComponent, true);
 		assert.equal(spyLog.callCount, 0);
 	});
@@ -1218,21 +1012,20 @@ function(
 		},
 		afterEach: function () {
 			window["sap-ui-debug"] = this.sWindowSapUiDebug;
-			sandbox.restore();
 		}
 	});
 
 
 	QUnit.test("can determine the general debug settings", function (assert) {
 		var oConfig = sap.ui.getCore().getConfiguration();
-		sandbox.stub(oConfig, "getDebug").returns(true);
+		this.stub(oConfig, "getDebug").returns(true);
 
 		assert.ok(Utils.isDebugEnabled(), "the debugging is detected");
 	});
 
 	QUnit.test("can determine the fl library debugging is set as the only library", function (assert) {
 		var oConfig = sap.ui.getCore().getConfiguration();
-		sandbox.stub(oConfig, "getDebug").returns(false);
+		this.stub(oConfig, "getDebug").returns(false);
 		window["sap-ui-debug"] = "sap.ui.fl";
 
 		assert.ok(Utils.isDebugEnabled(), "the debugging is detected");
@@ -1240,7 +1033,7 @@ function(
 
 	QUnit.test("can determine the fl library debugging is set as part of other libraries", function (assert) {
 		var oConfig = sap.ui.getCore().getConfiguration();
-		sandbox.stub(oConfig, "getDebug").returns(false);
+		this.stub(oConfig, "getDebug").returns(false);
 		window["sap-ui-debug"] = "sap.ui.core,sap.m,sap.ui.fl,sap.ui.rta";
 
 		assert.ok(Utils.isDebugEnabled(), "the debugging is detected");
@@ -1248,14 +1041,14 @@ function(
 
 	QUnit.test("can determine no 'sap.ui.fl'-library debugging is set", function (assert) {
 		var oConfig = sap.ui.getCore().getConfiguration();
-		sandbox.stub(oConfig, "getDebug").returns(false);
+		this.stub(oConfig, "getDebug").returns(false);
 		window["sap-ui-debug"] = "sap.ui.rta, sap.m";
 		assert.ok(!Utils.isDebugEnabled(), "no debugging is detected");
 	});
 
 	QUnit.test("can determine no library debugging is set", function (assert) {
 		var oConfig = sap.ui.getCore().getConfiguration();
-		sandbox.stub(oConfig, "getDebug").returns(false);
+		this.stub(oConfig, "getDebug").returns(false);
 		window["sap-ui-debug"] = "";
 		assert.ok(!Utils.isDebugEnabled(), "no debugging is detected");
 	});
@@ -1380,7 +1173,7 @@ function(
 			this.aPromisesResolveAfterReject = [this.fnPromise4, this.fnPromise1];
 
 			this.fnExecPromiseQueueSpy = sandbox.spy(Utils, "execPromiseQueueSequentially");
-			sandbox.spyLog = sandbox.spy(jQuery.sap.log, "error");
+			this.spyLog = sandbox.spy(jQuery.sap.log, "error");
 		},
 
 		afterEach: function () {
@@ -1389,12 +1182,12 @@ function(
 	});
 
 	QUnit.test("when called with a empty array and async 'false' as parameters", function(assert) {
-		var vResult = Utils.execPromiseQueueSequentially([], false, false);
+		var vResult = Utils.execPromiseQueueSequentially([], false);
 		assert.ok(vResult instanceof Utils.FakePromise, "then synchronous FakePromise is retured");
 	});
 
 	QUnit.test("when called with a empty array and async 'true' as parameters", function(assert) {
-		var vResult = Utils.execPromiseQueueSequentially([], false, true);
+		var vResult = Utils.execPromiseQueueSequentially([], true);
 		assert.ok(vResult instanceof Promise, "then asynchronous Promise is retured");
 		return vResult;
 	});
@@ -1416,7 +1209,7 @@ function(
 		Utils.execPromiseQueueSequentially(this.aPromisesWithoutReject).then( function() {
 			assert.strictEqual(this.fnExecPromiseQueueSpy.callCount, 4, "then execPromiseQueueSequentially called four times");
 			sinon.assert.callOrder(this.fnPromise1, this.fnPromise2, this.fnPromise3);
-			assert.strictEqual(sandbox.spyLog.callCount, 0, "then error log not called");
+			assert.strictEqual(this.spyLog.callCount, 0, "then error log not called");
 			done();
 		}.bind(this));
 	});
@@ -1425,7 +1218,7 @@ function(
 		return Utils.execPromiseQueueSequentially(this.aPromisesWithReject).then( function() {
 			assert.strictEqual(this.fnExecPromiseQueueSpy.callCount, 3, "then execPromiseQueueSequentially called three times");
 			sinon.assert.callOrder(this.fnPromise1, this.fnPromise4);
-			assert.strictEqual(sandbox.spyLog.callCount, 1, "then error log called once inside catch block, for the rejected promise without return");
+			assert.strictEqual(this.spyLog.callCount, 1, "then error log called once inside catch block, for the rejected promise without return");
 		}.bind(this));
 	});
 
@@ -1433,7 +1226,7 @@ function(
 		return Utils.execPromiseQueueSequentially(this.aPromisesWithObj).then( function() {
 			assert.strictEqual(this.fnExecPromiseQueueSpy.callCount, 3, "then execPromiseQueueSequentially called three times");
 			sinon.assert.callOrder(this.fnPromise1);
-			assert.strictEqual(sandbox.spyLog.callCount, 1, "then error log called once, as one element (object) was not a function");
+			assert.strictEqual(this.spyLog.callCount, 1, "then error log called once, as one element (object) was not a function");
 		}.bind(this));
 	});
 
@@ -1441,7 +1234,7 @@ function(
 		return Utils.execPromiseQueueSequentially(this.aPromisesResolveAfterReject).then( function() {
 			assert.strictEqual(this.fnExecPromiseQueueSpy.callCount, 3, "then execPromiseQueueSequentially called three times");
 			sinon.assert.callOrder(this.fnPromise4, this.fnPromise1);
-			assert.strictEqual(sandbox.spyLog.callCount, 1, "then error log called once inside catch block, for the rejected promise without return");
+			assert.strictEqual(this.spyLog.callCount, 1, "then error log called once inside catch block, for the rejected promise without return");
 		}.bind(this));
 	});
 
@@ -1550,4 +1343,4 @@ function(
 		assert.equal(Utils.getChangeFromChangesMap(this.mChanges, this.oChange1.getId() + "foo"), undefined, "then no change is returned");
 	});
 
-});
+}(sap.ui.fl.Utils, sap.ui.layout.HorizontalLayout, sap.ui.layout.VerticalLayout, sap.m.Button));

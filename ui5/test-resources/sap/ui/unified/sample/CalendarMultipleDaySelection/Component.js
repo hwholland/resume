@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.ui.unified.sample.CalendarMultipleDaySelection.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.unified.sample.CalendarMultipleDaySelection.CalendarMultipleDaySelection",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.unified.sample.CalendarMultipleDaySelection.CalendarMultipleDaySelection",
 			dependencies : {
 				libs : [
 					"sap.ui.unified"

@@ -1,6 +1,6 @@
 /*
  * ! UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -9,15 +9,8 @@ sap.ui.define([
 	'jquery.sap.global',
 	'sap/ui/dt/OverlayUtil',
 	'sap/ui/dt/ElementUtil',
-	'sap/ui/base/ManagedObject',
-	'sap/ui/dt/DOMUtil'
-], function(
-	jQuery,
-	OverlayUtil,
-	ElementUtil,
-	ManagedObject,
-	DOMUtil
-) {
+	'sap/ui/base/ManagedObject'
+], function(jQuery, OverlayUtil, ElementUtil, ManagedObject) {
 	"use strict";
 
 	/**
@@ -28,7 +21,7 @@ sap.ui.define([
 	 * @class The MutationObserver observes changes of a ManagedObject and propagates them via events.
 	 * @extends sap.ui.base.ManagedObject
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @constructor
 	 * @private
 	 * @since 1.30
@@ -79,7 +72,6 @@ sap.ui.define([
 
 		window.addEventListener("scroll", this._onScroll, true);
 		this._aIgnoredMutations = [];
-		this._aWhiteList = [];
 	};
 
 	/**
@@ -109,38 +101,6 @@ sap.ui.define([
 		this._aIgnoredMutations.push(mParams);
 	};
 
-	MutationObserver.prototype.addToWhiteList = function (sId) {
-		this._aWhiteList.push(sId);
-	};
-
-	MutationObserver.prototype.removeFromWhiteList = function (sId) {
-		this._aWhiteList = this._aWhiteList.filter(function (sCurrentId) {
-			return sCurrentId !== sId;
-		});
-	};
-
-	MutationObserver.prototype.isRelevantNode = function (oNode) {
-		return (
-			// 1. Mutation happened in Node which is still in actual DOM Tree
-			document.body.contains(oNode)
-
-			// 2. Node is not part of preserve area
-			&& !DOMUtil.contains('sap-ui-preserve', oNode)
-
-			// 3. Node must be white listed OR meet certain criterias
-			&& (
-				this._aWhiteList.some(function (sId) {
-					return (
-						// 3.1. Target Node is inside one of the white listed element
-						DOMUtil.contains(sId, oNode)
-						// 3.2. Target Node is an ancestor of one of the white listed element
-						|| oNode.contains(document.getElementById(sId))
-					);
-				})
-			)
-		);
-	};
-
 	/**
 	 * @private
 	 */
@@ -149,7 +109,7 @@ sap.ui.define([
 			return;
 		}
 
-		var MutationObserver = window.MutationObserver;
+		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 		if (MutationObserver) {
 			this._oMutationObserver = new MutationObserver(function(aMutations) {
 				var aTargetNodes = [];
@@ -162,28 +122,37 @@ sap.ui.define([
 						oTarget = oMutation.target.parentNode;
 					}
 
-					if (this.isRelevantNode(oTarget)) {
+					// TODO: ignore all RTA dom elements (dialogs, context menus, toolbars etc.)
+					var bIsFromRTA = OverlayUtil.isInOverlayContainer(oTarget)
+						|| jQuery(oTarget).closest(".sapUiDtContextMenu").length > 0
+						|| jQuery(oTarget).closest(".sapUiRtaToolbar").length > 0;
+
+					var bRelevantNode = jQuery.contains(document, oTarget)
+						&& oTarget.id !== "sap-ui-static"
+						&& jQuery(oTarget).closest("#sap-ui-preserve").length === 0;
+
+					if (bRelevantNode && !bIsFromRTA) {
 						var bIgnore = this._aIgnoredMutations.some(function(oIgnoredMutation, iIndex, aSource) {
-							if (
-								oIgnoredMutation.target === oMutation.target
-								&& (!oIgnoredMutation.type || oIgnoredMutation.type === oMutation.type)
-							) {
+							if (oIgnoredMutation.target === oMutation.target
+									&& (oIgnoredMutation.type ? oIgnoredMutation.type === oMutation.type : true)) {
 								aSource.splice(iIndex, 1);
 								return true;
 							}
 						});
+
 
 						if (!bIgnore) {
 							aTargetNodes.push(oTarget);
 
 							// define closest element to notify it's overlay about the dom mutation
 							var oOverlay = OverlayUtil.getClosestOverlayForNode(oTarget);
-							var sElementId = oOverlay ? oOverlay.getElement().getId() : undefined;
+							var sElementId = oOverlay ? oOverlay.getElementInstance().getId() : undefined;
 							if (sElementId) {
 								aElementIds.push(sElementId);
 							}
 						}
 					}
+
 				}.bind(this));
 
 				if (aTargetNodes.length) {
@@ -225,13 +194,10 @@ sap.ui.define([
 	 */
 	MutationObserver.prototype._fireDomChangeOnScroll = function(oEvent) {
 		var oTarget = oEvent.target;
-		if (
-			this.isRelevantNode(oTarget)
-			&& !OverlayUtil.getClosestOverlayForNode(oTarget)
-			// The line below is required to avoid double scrollbars on the browser
-			// when the document is scrolled to negative values (relevant for Mac)
-			&& oTarget !== document
-		) {
+		if (!OverlayUtil.isInOverlayContainer(oTarget) &&
+			!OverlayUtil.getClosestOverlayForNode(oTarget) &&
+			oTarget !== document) {
+
 			this.fireDomChanged({
 				type : "scroll"
 			});

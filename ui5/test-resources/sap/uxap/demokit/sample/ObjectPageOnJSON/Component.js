@@ -4,11 +4,7 @@ sap.ui.define(["sap/ui/core/UIComponent"], function (UIComponent) {
 	var Component = UIComponent.extend("sap.uxap.sample.ObjectPageOnJSON.Component", {
 
 		metadata: {
-			rootView: {
-				"viewName": "sap.uxap.sample.ObjectPageOnJSON.ObjectPageOnJSON",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.uxap.sample.ObjectPageOnJSON.ObjectPageOnJSON",
 			dependencies: {
 				libs: ["sap.m"]
 			},

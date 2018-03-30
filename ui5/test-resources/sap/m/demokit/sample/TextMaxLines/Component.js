@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.TextMaxLines.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.TextMaxLines.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.TextMaxLines.V",
 			includes : [ "style.css" ],
 			dependencies : {
 				libs : [

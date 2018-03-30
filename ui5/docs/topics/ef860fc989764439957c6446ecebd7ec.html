@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -130,15 +130,16 @@
                            <section class="section" type="Variants">
                               <h2 class="section_title" style="font-size: 1.15em;">Variants</h2>
                               <p class="p">An application can support the personalization of settings and
-                                 allow the user to save the facet filter list selections as well as other properties
-                                 by means of a variant. For example, you can use <samp class="ph codeph">getSelectedKeys</samp> to
-                                 retrieve an object containing all selected items and use JSON.stringify to marshall
-                                 and JSON.parse to unmarshall. After unmarshalling, you can use
-                                 <samp class="ph codeph">setSelectedKeys</samp> to apply the selections to the list. The
-                                 following figure and code snippet give an example.
+                                 				allow the user to save the facet filter list selections as well as other properties
+                                 				by means of a variant. For example, you can use <samp class="ph codeph">getSelectedKeys</samp> to
+                                 				retrieve an object containing all selected items and use JSON.stringify to marshall
+                                 				and JSON.parse to unmarshall. After unmarshalling, you can use
+                                 					<samp class="ph codeph">setSelectedKeys</samp> to apply the selections to the list. The
+                                 				following figure and code snippet give an example.
                               </p>
                               <img class="inline  " id="loioef860fc989764439957c6446ecebd7ec__image_awj_1nj_qn" src="loioce923dff09294b65b51609d2ec1f1718_LowRes.png"><pre class="pre codeblock prettyprint lang-js">
-var oDataModel = new sap.ui.model.odata.v2.ODataModel(&quot;/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc&quot;);
+var oDataModel = new sap.ui.model.odata.ODataModel(
+    &quot;/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc&quot;, true);
 
 // create the FacetFilterList and bind the filter items
 var oFacetFilterList = new sap.m.FacetFilterList({

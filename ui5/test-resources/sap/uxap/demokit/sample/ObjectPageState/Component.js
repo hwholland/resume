@@ -3,11 +3,7 @@ sap.ui.define(["sap/ui/core/UIComponent"], function (UIComponent) {
 
 	var Component = UIComponent.extend("sap.uxap.sample.ObjectPageState.Component", {
 		metadata: {
-			rootView: {
-				"viewName": "sap.uxap.sample.ObjectPageState.ObjectPageState",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.uxap.sample.ObjectPageState.ObjectPageState",
 			dependencies: {
 				libs: [
 					"sap.m"

@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -542,7 +542,9 @@ Press tab to list possible options.
                                     				
                                     <div class="itemgroup info">
                                        					
-                                       <div class="p">You can create an object that configures the adapter with any of the <span class="ph"><span class="ph pname">OpenUI5</span></span> configuration options like in the following example:<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+                                       <div class="p">You can create an object that configures the adapter with any of the <span class="ph"><span class="ph pname">OpenUI5</span></span>
+                                          						configuration options like in the following
+                                          						example:<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
   config.set({
     [...]
     <span class="ph emphasis emphasis">client: {
@@ -551,8 +553,8 @@ Press tab to list possible options.
           theme: &apos;sap_belize&apos;,
           language: &apos;EN&apos;,
           resourceroots: {
-            &apos;my.own.application&apos;: &apos;./base&apos;,
-            &apos;test&apos;: &apos;./base/test&apos;
+            &apos;my.own.application&apos;: &apos;./&apos;,
+            &apos;test&apos;: &apos;./test&apos;
           }
         }
       }
@@ -725,13 +727,14 @@ Press tab to list possible options.
                               </p>
                               
                               			
-                              <div class="p">Add the proxy settings to the <span class="ph filepath">karma.conf.js</span> file:<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+                              <div class="p">Add the proxy settings to the <span class="ph filepath">karma.conf.js</span>
+                                 				file:<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
   config.set({
     [...]
     // map of path-proxy pairs
     <span class="ph emphasis emphasis">proxies: {
       &apos;/resources&apos;: &apos;http://&lt;<var class="keyword varname">&lt;server&gt;</var>&gt;:&lt;<var class="keyword varname">&lt;port&gt;</var>&gt;/resources&apos;,
-      &apos;/test-resources&apos;: &apos;http://&lt;<var class="keyword varname">&lt;server&gt;</var>&gt;:&lt;<var class="keyword varname">&lt;port&gt;</var>&gt;/test-resources&apos;
+      &apos;/test-resources&apos;: &apos;http://&lt;<var class="keyword varname">&lt;server&gt;</var>&gt;:&lt;<var class="keyword varname">&lt;port&gt;</var>&gt;/resources&apos;
     },</span>
     [...]
   });

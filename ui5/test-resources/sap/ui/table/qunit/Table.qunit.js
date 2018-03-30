@@ -15,11 +15,11 @@ sap.ui.require([
 	'sap/ui/table/library',
 	"sap/ui/Device", "sap/ui/model/json/JSONModel", "sap/ui/model/Sorter", "sap/ui/model/Filter", "sap/ui/model/type/Float",
 	"sap/m/Text", "sap/m/Input", "sap/m/Label", "sap/m/CheckBox", "sap/m/Button", "sap/m/Link", "sap/m/RatingIndicator", "sap/m/Image",
-	"sap/m/Toolbar", "sap/m/ToolbarDesign", "sap/ui/unified/Menu", "sap/ui/unified/MenuItem", "sap/m/Menu", "sap/m/MenuItem"
+	"sap/m/Toolbar", "sap/m/ToolbarDesign", "sap/ui/unified/Menu", "sap/ui/unified/MenuItem"
 ], function(qutils, Table, Column, ColumnMenu, ColumnMenuRenderer, AnalyticalColumnMenuRenderer, TablePersoController, RowAction, RowActionItem,
 			RowSettings, TableUtils, TableLibrary,
 			Device, JSONModel, Sorter, Filter, FloatType,
-			Text, Input, Label, CheckBox, Button, Link, RatingIndicator, Image, Toolbar, ToolbarDesign, Menu, MenuItem, MenuM, MenuItemM) {
+			Text, Input, Label, CheckBox, Button, Link, RatingIndicator, Image, Toolbar, ToolbarDesign, Menu, MenuItem) {
 	"use strict";
 
 	// Shortcuts
@@ -65,34 +65,6 @@ sap.ui.require([
 	for (var i = 0, l = aData.length; i < l; i++) {
 		aData[i].lastName += " - " + i;
 	}
-
-	var DummyControl = sap.ui.core.Control.extend("sap.ui.table.test.DummyControl", {
-		metadata: {
-			properties: {
-				height: "string"
-			}
-		},
-		renderer: function(oRm, oControl) {
-			oRm.write("<div");
-			oRm.addStyle("height", oControl.getHeight() || "10px");
-			oRm.addStyle("width", "100px");
-			oRm.addStyle("background-color", "orange");
-			oRm.addStyle("box-sizing", "border-box");
-			oRm.addStyle("border-top", "2px solid blue");
-			oRm.addStyle("border-bottom", "2px solid blue");
-			oRm.writeStyles();
-			oRm.writeControlData(oControl);
-			oRm.write("></div>");
-		},
-		setHeight: function(sHeight) {
-			this.setProperty("height", sHeight, true);
-
-			var oDomRef = this.getDomRef();
-			if (oDomRef != null) {
-				oDomRef.style.height = sHeight;
-			}
-		}
-	});
 
 	function createTable(oConfig, fnCreateColumns, sModelName) {
 		var sBindingPrefix = (sModelName ? sModelName + ">" : "");
@@ -215,12 +187,6 @@ sap.ui.require([
 				title: "TABLEHEADER",
 				footer: "Footer",
 				selectionMode: SelectionMode.Single,
-				contextMenu: new MenuM({
-					items: [
-						new MenuItemM({text: "{lastName}"}),
-						new MenuItemM({text: "{name}"})
-					]
-				}),
 				toolbar: new Toolbar({
 					content: [
 						new Button({
@@ -236,7 +202,7 @@ sap.ui.require([
 	});
 
 	QUnit.test("Properties", function(assert) {
-		assert.expect(9);
+		assert.expect(8);
 		assert.equal(oTable.$().find(".sapUiTableHdr").text(), "TABLEHEADER", "Title of Table is correct!");
 		assert.equal(jQuery.sap.byId("__toolbar0").find("button").text(), "Modify Table Properties...", "Toolbar and toolbar button are correct!");
 		assert.equal(oTable.$().find(".sapUiTableFtr").text(), "Footer", "Title of Table is correct!");
@@ -245,7 +211,6 @@ sap.ui.require([
 		assert.equal(jQuery(".sapUiTableCtrl tr.sapUiTableTr").length, oTable.getVisibleRowCount(), "Visible Row Count correct!");
 		assert.equal(jQuery(".sapUiTableRowHdr").length, oTable.getVisibleRowCount(), "Visible Row Count correct!");
 		assert.equal(oTable.getFirstVisibleRow(), 5, "First Visible Row correct!");
-		assert.ok(oTable.getContextMenu() instanceof MenuM, "Context menu created as specified by the application");
 	});
 
 	QUnit.test("Filter", function(assert) {
@@ -433,26 +398,6 @@ sap.ui.require([
 		fnError.restore(); // restoring original jQuery.sap.log.error() method, else exception is thrown
 	});
 
-	QUnit.test("MinAutoRowCount", function(assert) {
-		var oErrorLogSpy = sinon.spy(jQuery.sap.log, "error");
-
-		assert.strictEqual(oTable.getMinAutoRowCount(), 5, "The default value is correct");
-
-		oTable.setMinAutoRowCount(-1);
-		assert.ok(oErrorLogSpy.callCount === 1, "Setting to -1: Error was logged");
-		assert.strictEqual(oTable.getMinAutoRowCount(), 1, "Setting to -1: Property was set to the default value");
-
-		oTable.setMinAutoRowCount("0");
-		assert.ok(oErrorLogSpy.callCount === 2, "Setting to \"0\": Error was logged");
-		assert.strictEqual(oTable.getMinAutoRowCount(), 1, "Setting to \"0\": Value did not change");
-
-		oTable.setMinAutoRowCount(2);
-		assert.ok(oErrorLogSpy.callCount === 2, "Setting to 2: Error was not logged");
-		assert.strictEqual(oTable.getMinAutoRowCount(), 2, "Setting to 2: New value is set");
-
-		oErrorLogSpy.restore();
-	});
-
 	QUnit.test("EnableColumnReordering", function(assert) {
 		assert.expect(1);
 		oTable.setEnableColumnReordering(true);
@@ -497,134 +442,14 @@ sap.ui.require([
 		assert.equal(oTable.$().find(".sapUiTableColHdrCnt").is(":visible"), true, "ColumnHeaderVisible ok");
 	});
 
-	QUnit.test("Row Height", function(assert) {
-		var oBody = document.body;
-		var aDensities = ["sapUiSizeCozy", "sapUiSizeCompact", "sapUiSizeCondensed", undefined];
-		var sequence = Promise.resolve();
-		var iAssertionDelay = Device.browser.msie ? 50 : 0;
-		var done = assert.async();
-
-		oTable.removeAllColumns();
-		oTable.addColumn(new Column({template: new DummyControl({height: "1px"})}));
-		oTable.addColumn(new Column({template: new DummyControl({height: "1px"})}));
-		oTable.setFixedColumnCount(1);
-		oTable.setRowActionCount(1);
-		oTable.setRowActionTemplate(new RowAction());
-
-		function test(mTestSettings) {
-			sequence = sequence.then(function() {
-				return new Promise(function(resolve) {
-					oTable.setVisibleRowCountMode(mTestSettings.visibleRowCountMode);
-					oTable.setRowHeight(mTestSettings.rowHeight || 0);
-					oTable.getColumns()[1].setTemplate(new DummyControl({height: (mTestSettings.templateHeight || 1) + "px"}));
-					oBody.classList.remove("sapUiSizeCozy");
-					oBody.classList.remove("sapUiSizeCompact");
-					oBody.classList.remove("sapUiSizeCondensed");
-					if (mTestSettings.density != null) {
-						oBody.classList.add(mTestSettings.density);
-					}
-
-					window.setTimeout(function() {
-						var sDensity = mTestSettings.density ? mTestSettings.density.replace("sapUiSize", "") : "undefined";
-						mTestSettings.title += " (VisibleRowCountMode=\"" + mTestSettings.visibleRowCountMode + "\""
-											   + ", Density=\"" + sDensity + "\")";
-
-						var aRowDomRefs = oTable.getRows()[0].getDomRefs();
-						assert.strictEqual(aRowDomRefs.rowSelector.getBoundingClientRect().height, mTestSettings.expectedHeight,
-							mTestSettings.title + ": Selector height is ok");
-						assert.strictEqual(aRowDomRefs.rowFixedPart.getBoundingClientRect().height, mTestSettings.expectedHeight,
-							mTestSettings.title + ": Fixed part height is ok");
-						assert.strictEqual(aRowDomRefs.rowScrollPart.getBoundingClientRect().height, mTestSettings.expectedHeight,
-							mTestSettings.title + ": Scrollable part height is ok");
-						assert.strictEqual(aRowDomRefs.rowAction.getBoundingClientRect().height, mTestSettings.expectedHeight,
-							mTestSettings.title + ": Action height is ok");
-
-						resolve();
-					}, iAssertionDelay);
-				});
-			});
-		}
-
-		[VisibleRowCountMode.Fixed, VisibleRowCountMode.Interactive, VisibleRowCountMode.Auto].forEach(function(sVisibleRowCountMode) {
-			aDensities.forEach(function(sDensity) {
-				test({
-					title: "Application defined height",
-					visibleRowCountMode: sVisibleRowCountMode,
-					density: sDensity,
-					rowHeight: 55,
-					expectedHeight: 56
-				});
-			});
-		});
-
-		[VisibleRowCountMode.Fixed, VisibleRowCountMode.Interactive].forEach(function(sVisibleRowCountMode) {
-			aDensities.forEach(function(sDensity) {
-				test({
-					title: "Application defined height with large content",
-					visibleRowCountMode: sVisibleRowCountMode,
-					density: sDensity,
-					rowHeight: 55,
-					templateHeight: 87,
-					expectedHeight: 88
-				});
-			});
-		});
-
-		aDensities.forEach(function(sDensity) {
-			test({
-				title: "Application defined height with large content",
-				visibleRowCountMode: VisibleRowCountMode.Auto,
-				density: sDensity,
-				rowHeight: 55,
-				templateHeight: 87,
-				expectedHeight: 56
-			});
-		});
-
-		[VisibleRowCountMode.Fixed, VisibleRowCountMode.Interactive, VisibleRowCountMode.Auto].forEach(function(sVisibleRowCountMode) {
-			test({
-				title: "Default height",
-				visibleRowCountMode: sVisibleRowCountMode,
-				density: "sapUiSizeCozy",
-				expectedHeight: 49
-			});
-
-			test({
-				title: "Default height",
-				visibleRowCountMode: sVisibleRowCountMode,
-				density: "sapUiSizeCompact",
-				expectedHeight: 33
-			});
-
-			test({
-				title: "Default height",
-				visibleRowCountMode: sVisibleRowCountMode,
-				density: "sapUiSizeCondensed",
-				expectedHeight: 25
-			});
-
-			test({
-				title: "Default height",
-				visibleRowCountMode: sVisibleRowCountMode,
-				density: undefined,
-				expectedHeight: 33
-			});
-
-			aDensities.forEach(function(sDensity) {
-				test({
-					title: "Default height with large content",
-					visibleRowCountMode: sVisibleRowCountMode,
-					density: sDensity,
-					templateHeight: 87,
-					expectedHeight: 88
-				});
-			});
-		});
-
-		sequence.then(function() {
-			oBody.classList.add("sapUiSizeCozy");
-			done();
-		});
+	QUnit.test("RowHeight", function(assert) {
+		assert.expect(2);
+		oTable.setRowHeight(50);
+		sap.ui.getCore().applyChanges();
+		assert.equal(oTable.$().find("tr[data-sap-ui-rowindex]").height(), 50, "RowHeight ok");
+		oTable.setRowHeight(0);
+		sap.ui.getCore().applyChanges();
+		assert.ok(oTable.$().find("tr[data-sap-ui-rowindex]").height() < 100, "RowHeight ok");
 	});
 
 	QUnit.test("test min-width", function(assert) {
@@ -1065,7 +890,7 @@ sap.ui.require([
 			"NavigationMode defaulted to Scrollbar after explicitly setting it to Paginator");
 	});
 
-	QUnit.module("VisibleRowCountMode Auto", {
+		QUnit.module("VisibleRowCountMode Auto", {
 		beforeEach: function() {
 			createTable({
 				visibleRowCountMode: VisibleRowCountMode.Auto
@@ -1082,8 +907,7 @@ sap.ui.require([
 
 		oTable.attachEvent("_rowsUpdated", function(oEvent) {
 			if (oEvent.getParameter("reason") === TableUtils.RowsUpdateReason.Render) {
-				var iExpectedVisibleRowCount = Device.browser.msie ? 18 : 19;
-				assert.strictEqual(oTable.getVisibleRowCount(), iExpectedVisibleRowCount, "The visible row count after initialization is correct");
+				assert.strictEqual(oTable.getVisibleRowCount(), 18, "The visible row count after initialization is correct");
 				done();
 			}
 		});
@@ -1094,7 +918,7 @@ sap.ui.require([
 
 		oTable.attachEvent("_rowsUpdated", function(oEvent) {
 			if (oEvent.getParameter("reason") === TableUtils.RowsUpdateReason.Render) {
-				document.getElementById("qunit-fixture").style.height = "756px";
+				document.getElementById("qunit-fixture").style.height = "800px";
 			}
 
 			if (oEvent.getParameter("reason") === TableUtils.RowsUpdateReason.Resize) {
@@ -1211,6 +1035,27 @@ sap.ui.require([
 				firstVisibleRow: 1
 			});
 
+			var DummyControl = sap.ui.core.Control.extend("sap.ui.table.test.DummyControl", {
+				metadata: {
+					properties: {
+						height: "string"
+					}
+				},
+				renderer: function(oRm, oControl) {
+					oRm.write("<div style='height: " + (oControl.getHeight() || "10px") + "; width: 100px; background-color: orange'");
+					oRm.writeControlData(oControl);
+					oRm.write("></div>");
+				},
+				setHeight: function(sHeight) {
+					this.setProperty("height", sHeight, true);
+
+					var oDomRef = this.getDomRef();
+					if (oDomRef != null) {
+						oDomRef.style.height = sHeight;
+					}
+				}
+			});
+
 			oTable.removeAllColumns();
 			oTable.addColumn(new Column({
 				label: new Label({text: "Variable Row Heights"}),
@@ -1285,26 +1130,20 @@ sap.ui.require([
 		oTable.placeAt("qunit-fixture");
 		sap.ui.getCore().applyChanges();
 
-		var oScrollExtension = oTable._getScrollExtension();
-		var iDefaultRowHeight = oTable._getDefaultRowHeight();
-
 		window.setTimeout(function() {
-			var oVsb = oScrollExtension.getVerticalScrollbar();
+			var iRowHeightsDelta = oTable._getScrollExtension()._iInnerVerticalScrollRange;
+			var oVsb = oTable._getScrollExtension().getVerticalScrollbar();
 
-			assert.equal(oTable.getFirstVisibleRow(), 1, "Initial firstVisibleRow is correct");
-			assert.equal(oScrollExtension.getVerticalScrollPosition(), iDefaultRowHeight, "Initial scroll position is correct");
-			assert.equal(oVsb.scrollTop, iDefaultRowHeight, "Initial scrollTop is correct");
-			assert.strictEqual(oTable.getDomRef("tableCCnt").scrollTop, 0, "Initial inner scroll position is correct");
+			assert.equal(oTable.getFirstVisibleRow(), 1, "Initial FirstVisibleRow is correct");
+			assert.strictEqual(iRowHeightsDelta, 8321, "RowHeightsDelta is correct");
 
 			oVsb.scrollTop = 1000000;
 
 			window.setTimeout(function() {
-				assert.equal(oTable.getFirstVisibleRow(), 39, "After setting scrollTop, firstVisibleRow is correct");
-				assert.equal(oScrollExtension.getVerticalScrollPosition(), iDefaultRowHeight * 31,
-					"After setting scrollTop, the scroll position is correct");
-				assert.equal(oVsb.scrollTop, iDefaultRowHeight * 31, "After setting scrollTop, scrollTop is correct");
-				assert.strictEqual(oTable.getDomRef("tableCCnt").scrollTop, 8321,
-					"After setting scrollTop, the inner scroll position is correct");
+				assert.equal(oTable.getFirstVisibleRow(), 29, "FirstVisibleRow is correct");
+				var iScrollRange = oTable._getTotalRowCount() * oTable._getDefaultRowHeight();
+				assert.equal(oVsb.scrollTop, iScrollRange - oVsb.clientHeight, "ScrollTop is at maximum and correct");
+				assert.equal(jQuery(".sapUiTableCCnt").scrollTop(), iRowHeightsDelta, "Table Correction is equal to RowHeightsDelta");
 				done();
 			}, 500);
 		}, 500);
@@ -1685,18 +1524,6 @@ sap.ui.require([
 
 		assert.strictEqual(ToolbarDesign.Solid, oToolbar.getDesign(), "Design property of the Toolbar is Solid");
 		assert.strictEqual(ToolbarDesign.Solid, oToolbar.getActiveDesign(), "Active design of the Toolbar is Solid as well");
-
-		oTable.destroy();
-	});
-
-	QUnit.test("Toolbar has style class sapMTBHeader-CTX", function(assert) {
-		var oToolbar = new Toolbar();
-		var oTable = new Table({
-			toolbar: oToolbar
-		}).placeAt("qunit-fixture");
-		sap.ui.getCore().applyChanges();
-
-		assert.ok(oToolbar.hasStyleClass("sapMTBHeader-CTX"), "Toolbar has style class sapMTBHeader-CTX");
 
 		oTable.destroy();
 	});
@@ -3141,47 +2968,6 @@ sap.ui.require([
 		oGetBindingLength.restore();
 	});
 
-	QUnit.test("NoData Rerendering", function(assert) {
-		oTable.setShowNoData(true);
-		sap.ui.getCore().applyChanges();
-		var bRendered = false;
-		oTable.addEventDelegate({
-			onAfterRendering: function() {
-				bRendered = true;
-			}
-		});
-
-		oTable.setNoData("Hello");
-		sap.ui.getCore().applyChanges();
-		assert.ok(!bRendered, "Table not rendered when changing text from default to custom text");
-		bRendered = false;
-
-		oTable.setNoData("Hello2");
-		sap.ui.getCore().applyChanges();
-		assert.ok(!bRendered, "Table not rendered when changing text from custom text 1 to custom text 2");
-		bRendered = false;
-
-		var oText1 = new Text();
-		oTable.setNoData(oText1);
-		sap.ui.getCore().applyChanges();
-		assert.ok(bRendered, "Table rendered when changing text from text to control");
-		bRendered = false;
-
-		var oText2 = new Text();
-		oTable.setNoData(oText2);
-		sap.ui.getCore().applyChanges();
-		assert.ok(bRendered, "Table rendered when changing text from control to control");
-		bRendered = false;
-
-		oTable.setNoData("Hello2");
-		sap.ui.getCore().applyChanges();
-		assert.ok(bRendered, "Table rendered when changing text from control to text");
-		bRendered = false;
-
-		oText1.destroy();
-		oText2.destroy();
-	});
-
 	QUnit.test("test setGroupBy function", function(assert) {
 		oTable.setEnableGrouping(false);
 		assert.ok(!oTable.getEnableGrouping(), "Grouping not enabled");
@@ -3197,7 +2983,7 @@ sap.ui.require([
 		assert.equal(oTable.getThreshold(), 3, "Threshold set to 3");
 	});
 
-	QUnit.test("Table Resize", function(assert) {
+	QUnit.test("test _onTableResize function", function(assert) {
 		oTable.setVisibleRowCountMode(VisibleRowCountMode.Auto);
 		sap.ui.getCore().applyChanges();
 
@@ -3220,46 +3006,6 @@ sap.ui.require([
 				done();
 			}, 500);
 		}, 500);
-	});
-
-	QUnit.test("Window Resize", function(assert) {
-		var done = assert.async();
-		var oUpdateTableSizesStub = sinon.spy(oTable, "_updateTableSizes");
-
-		function fireResizeEvent() {
-			return new Promise(function(resolve) {
-				var oEvent;
-
-				if (Device.browser.msie) {
-					oEvent = document.createEvent("CustomEvent");
-					oEvent.initCustomEvent("resize", true, true, true);
-				} else {
-					oEvent = new Event("resize");
-				}
-
-				window.dispatchEvent(oEvent);
-
-				window.setTimeout(function() {
-					resolve();
-				}, 150);
-			});
-		}
-
-		fireResizeEvent().then(function() {
-			assert.ok(oUpdateTableSizesStub.notCalled, "Zoom factor did not change -> _updateTableSizes was not called");
-
-			oTable._nDevicePixelRatio = 1.15; // Default should be 1.
-			return fireResizeEvent();
-		}).then(function() {
-			if (Device.browser.chrome) {
-				assert.ok(oUpdateTableSizesStub.calledOnce, "Chrome and zoom factor did change -> _updateTableSizes was called once");
-				assert.ok(oUpdateTableSizesStub.calledWith(TableUtils.RowsUpdateReason.Zoom), "_updateTableSizes called with reason \"Zoom\"");
-			} else {
-				assert.ok(oUpdateTableSizesStub.notCalled, "Not Chrome -> _updateTableSizes was not called");
-			}
-
-			done();
-		});
 	});
 
 	QUnit.test("test setSelectionInterval function", function(assert) {
@@ -3300,29 +3046,28 @@ sap.ui.require([
 	});
 
 	QUnit.test("_getDefaultRowHeight", function(assert) {
-		var oBody = document.body;
+		document.getElementsByTagName("body")[0].classList.remove("sapUiSizeCozy");
 
-		oTable.setRowHeight(98);
-		assert.strictEqual(oTable._getDefaultRowHeight(), 99, "The default row height is application defined (99)");
+		oTable.getDomRef().classList.add("sapUiSizeCozy");
+		oTable.setRowHeight(99);
+		assert.strictEqual(oTable._getDefaultRowHeight(), 99, "The default row height is the value of the rowHeight property (99)");
 
-		oTable.setRowHeight(9);
-		assert.strictEqual(oTable._getDefaultRowHeight(), 10, "The default row height is application defined (10)");
+		oTable.setRowHeight(10);
+		assert.strictEqual(oTable._getDefaultRowHeight(), 10, "The default row height is the value of the rowHeight property (10)");
 
 		oTable.setRowHeight(0);
 		assert.strictEqual(oTable._getDefaultRowHeight(), 49, "The default row height is correct in cozy size (49)");
 
-		oBody.classList.remove("sapUiSizeCozy");
-		oBody.classList.add("sapUiSizeCompact");
+		oTable.getDomRef().classList.remove("sapUiSizeCozy");
+		oTable.getDomRef().classList.add("sapUiSizeCompact");
 		assert.strictEqual(oTable._getDefaultRowHeight(), 33, "The default row height is correct in compact size (33)");
 
-		oBody.classList.remove("sapUiSizeCompact");
-		oBody.classList.add("sapUiSizeCondensed");
+		oTable.getDomRef().classList.remove("sapUiSizeCompact");
+		oTable.getDomRef().classList.add("sapUiSizeCondensed");
 		assert.strictEqual(oTable._getDefaultRowHeight(), 25, "The default row height is correct in condensed size (25)");
 
-		oBody.classList.remove("sapUiSizeCondensed");
-		assert.strictEqual(oTable._getDefaultRowHeight(), 33, "The default row height is correct in undefined size (33)");
-
-		oBody.classList.add("sapUiSizeCozy");
+		oTable.getDomRef().classList.remove("sapUiSizeCondensed");
+		assert.strictEqual(oTable._getDefaultRowHeight(), 33, "The default row height is correct in default size (33)");
 	});
 
 	QUnit.module("Performance", {

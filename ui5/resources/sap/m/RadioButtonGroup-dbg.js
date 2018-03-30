@@ -1,26 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.RadioButtonGroup.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/delegate/ItemNavigation',
-	'sap/ui/core/library',
-	'./RadioButtonGroupRenderer'
-],
-	function(
-		jQuery,
-		library,
-		Control,
-		ItemNavigation,
-		coreLibrary,
-		RadioButtonGroupRenderer
-		) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/ui/core/delegate/ItemNavigation', 'sap/ui/core/library'],
+		function(jQuery, library, Control, ItemNavigation, coreLibrary) {
 			"use strict";
 
 			// shortcut for sap.ui.core.TextDirection
@@ -57,7 +43,7 @@ sap.ui.define([
 			 * @implements sap.ui.core.IFormContent
 			 *
 			 * @author SAP SE
-			 * @version 1.54.2
+			 * @version 1.52.5
 			 *
 			 * @constructor
 			 * @public
@@ -69,7 +55,6 @@ sap.ui.define([
 
 				interfaces : ["sap.ui.core.IFormContent"],
 				library : "sap.m",
-				designtime: "sap/m/designtime/RadioButtonGroup.designtime",
 				properties : {
 
 					/**

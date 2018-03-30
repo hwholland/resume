@@ -6,8 +6,8 @@
 <meta name="abstract" content="To use OpenUI5 features in your HTML page, you have to load and initialize the SAPUI5 library."/>
 <meta name="description" content="To use OpenUI5 features in your HTML page, you have to load and initialize the SAPUI5 library."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=21127732975760183"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=21127732975760183"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7208219007670638"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7208219007670638"/>
 <title>Bootstrapping: Loading and Initializing</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -19,26 +19,26 @@
 	<h1 class="title topictitle1">Bootstrapping: Loading and Initializing </h1>
 
 	
-	<div class="body conbody"><p class="shortdesc">To use <span class="ph"><span class="ph pname">OpenUI5</span></span> features
-		in your HTML page, you have to load and initialize the SAPUI5 library.</p>
+	<div class="body conbody"><p class="shortdesc">To use <span class="ph"><span class="ph pname">OpenUI5</span></span> features in
+		your HTML page, you have to load and initialize the SAPUI5 library.</p>
 
-		<p class="p">You can use the <span class="ph"><span class="ph pname">OpenUI5</span></span>
-			bootstrap script in your page to initialize <span class="ph"><span class="ph pname">OpenUI5</span></span> runtime
-			automatically as soon as the script is loaded and executed by the browser. For simple
-			use cases as well as the default <span class="ph"><span class="ph pname">OpenUI5</span></span> installation, this
-			is sufficient to build and run UIs. In addition to this, you can specify the set of <span class="ph"><span class="ph pname">OpenUI5</span></span> libraries and the
-			theme used for your application in the configuration settings.</p>
+		<p class="p">You can use the <span class="ph"><span class="ph pname">OpenUI5</span></span> bootstrap script in your page to initialize <span class="ph"><span class="ph pname">OpenUI5</span></span> runtime automatically
+			as soon as the script is loaded and executed by the browser. For simple use cases as
+			well as the default <span class="ph"><span class="ph pname">OpenUI5</span></span> installation, this is sufficient to build and run UIs. In
+			addition to this, you can specify the set of <span class="ph"><span class="ph pname">OpenUI5</span></span> libraries and the theme used for
+			your application in the configuration settings.</p>
 
 		<div class="note note"><span class="notetitle">Note</span> 
-			<p class="p">If you run your app standalone, the bootstrap is added to your HTML page. In an SAP
-				Fiori launchpad environment, the launchpad executes the bootstrap and no additional
-				HTML page is needed to display the app.</p>
+			<p class="p">If you run your app standalone, the bootstrap is added to your HTML page. In an SAP Fiori
+				launchpad environment, the launchpad executes the bootstrap and no additional HTML
+				page is needed to display the app.</p>
 
 		</div>
 
 		<p class="p">The following code snippet shows a typical bootstrap script tag:</p>
 
-		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;script id="sap-ui-bootstrap" 
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">
+&lt;script id="sap-ui-bootstrap" 
      type="text/javascript"
      src="resources/sap-ui-core.js"
      data-sap-ui-theme="sap_belize"
@@ -46,9 +46,7 @@
      data-sap-ui-compatVersion="edge"&gt;
 &lt;/script&gt;</pre></div>
 
-		<p class="p">The attributes <samp class="ph codeph">data-sap-ui-theme="sap_belize"</samp> and
-				<samp class="ph codeph">data-sap-ui-libs="sap.m"</samp> already provide examples of how <span class="ph"><span class="ph pname">OpenUI5</span></span> runtime can be
-			configured to the needs of an application.</p>
+		<p class="p">The attributes <samp class="ph codeph">data-sap-ui-theme="sap_belize"</samp> and <samp class="ph codeph">data-sap-ui-libs="sap.m"</samp> already provide examples of how <span class="ph"><span class="ph pname">OpenUI5</span></span> runtime can be configured to the needs of an application.</p>
 
 		<div class="section"><div class="section_title">Overview of Bootstrap Files</div><div type="Overview of Bootstrap Files">
 			
@@ -59,57 +57,84 @@
 				The actual base URL depends on your platform and administrative setup.</p>
 
 			<div class="table-wrapper"><table summary="" id="loioa04b0d10fb494d1cb722b9e341b584ba__simpletable_ksy_xsg_ps" border="1" class="simpletable"><tr class="sthead">
-					<th valign="bottom" align="left" id="d8580696e87" class="stentry">Resource</th>
+					<th valign="bottom" align="left" id="d8682614e87" class="stentry">Resource</th>
 
-					<th valign="bottom" align="left" id="d8580696e90" class="stentry">Description</th>
+					<th valign="bottom" align="left" id="d8682614e90" class="stentry">Description</th>
 
 				</tr>
 <tr class="strow">
-					<td valign="top" headers="d8580696e87" class="stentry"><samp class="ph codeph">sap-ui-core.js</samp></td>
+					<td valign="top" headers="d8682614e87" class="stentry"><samp class="ph codeph">sap-ui-core.js</samp></td>
 
-					<td valign="top" headers="d8580696e90" class="stentry">
-						<p class="p">This is the standard bootstrap file, which we recommend to use for
-							typical use cases. It already contains jQuery,
-								<samp class="ph codeph">jquery-ui-position</samp> and only the minimum required
-							parts of the core library (<samp class="ph codeph">sap.ui.core</samp>). Required files
-							are loaded dynamically using XMLHttpRequest (XHR).</p>
+					<td valign="top" headers="d8682614e90" class="stentry">
+						<p class="p">This is the standard bootstrap file, which we recommend to use for typical use cases. It
+							already contains jQuery, <samp class="ph codeph">jquery-ui-position</samp> and only
+							the minimum required parts of the core library
+								(<samp class="ph codeph">sap.ui.core</samp>). Required files are loaded
+							dynamically using XMLHttpRequest (XHR).</p>
 
-						<p class="p">For more information, see <a class="xref" href="91f1f4536f4d1014b6dd926db0e91070.html" title="Self-contained variant that includes the sap-ui-core.js file in the HTML page">Standard Variant for Bootstrapping</a>. </p>
+						<p class="p">For more information, see <a class="xref" href="91f1f4536f4d1014b6dd926db0e91070.html" title="Self-contained variant that includes the sap-ui-core.js file in the HTML page">Standard Variant
+								for Bootstrapping</a>. </p>
 
 					</td>
 
 				</tr>
 <tr class="strow">
-					<td valign="top" headers="d8580696e87" class="stentry">
+					<td valign="top" headers="d8682614e87" class="stentry">
 						<p class="p">Content Delivery Network (CDN)</p>
 
 					</td>
 
-					<td valign="top" headers="d8580696e90" class="stentry">
-						<p class="p">You can access the libraries externally from a CDN. For more information
-							see <a class="xref" href="2d3eb2f322ea4a82983c1c62a33ec4ae.html" title="OpenUI5 can either be loaded locally with a relative path from a Web server or externally from a Content Delivery Network (CDN).">Variant for Bootstrapping from Content Delivery Network</a>.</p>
+					<td valign="top" headers="d8682614e90" class="stentry">
+						<p class="p">You can access the libraries externally from a CDN. For more information see <a class="xref" href="2d3eb2f322ea4a82983c1c62a33ec4ae.html" title="OpenUI5 can either be loaded locally with a relative path from a Web server or externally from a Content Delivery Network (CDN).">Variant for Bootstrapping from Content Delivery Network</a>.</p>
 
 					</td>
 
 				</tr>
 <tr class="strow">
-					<td valign="top" headers="d8580696e87" class="stentry"><samp class="ph codeph">sap-ui-core-nojQuery.js</samp></td>
+					<td valign="top" headers="d8682614e87" class="stentry"><samp class="ph codeph">sap-ui-core-nojQuery.js</samp></td>
 
-					<td valign="top" headers="d8580696e90" class="stentry">
+					<td valign="top" headers="d8682614e90" class="stentry">
 						<p class="p">You use this bootstrap file for applications with their own jQuery
 							version. It also contains the minimum required parts of the core
 							library, but <strong class="ph b">not</strong> jQuery and
 							<samp class="ph codeph">jquery-ui-position</samp>.</p>
 
-						<p class="p">For more information, see <a class="xref" href="91f1dd0c6f4d1014b6dd926db0e91070.html" title="The noJQuery variant supports bootstrapping for an application that already integrates jQuery or uses a different jQuery version than OpenUI5.">noJQuery Variant for Bootstrapping</a>. </p>
+						<p class="p">For more information, see <a class="xref" href="91f1dd0c6f4d1014b6dd926db0e91070.html" title="The noJQuery variant supports bootstrapping for an application that already integrates jQuery or uses a different jQuery version than OpenUI5.">noJQuery Variant
+								for Bootstrapping</a>. </p>
 
 					</td>
 
 				</tr>
 <tr class="strow">
-					<td valign="top" headers="d8580696e87" class="stentry"><samp class="ph codeph">sap/ui/core/library-preload.js</samp></td>
+					<td valign="top" headers="d8682614e87" class="stentry"><samp class="ph codeph">sap-ui-core-all.js</samp></td>
 
-					<td valign="top" headers="d8580696e90" class="stentry">
+					<td valign="top" headers="d8682614e90" class="stentry">
+						<p class="p">This bootstrap file contains almost all resources of the
+								<samp class="ph codeph">sap.ui.core</samp> library. Only a few duplicates, such as
+							multiple jQuery versions, testing resources, and so on, are omitted. If
+							you use this file for bootstrapping, the <samp class="ph codeph">*-all.js</samp> file
+							is also loaded for all other libraries. This reduces the number of
+							JavaScript requests to the number of libraries (typically 1..4). </p>
+
+						<div class="note note" id="loioa04b0d10fb494d1cb722b9e341b584ba__note_N10080_N1006D_N10066_N1001F_N10013_N10001"><span class="notetitle">Note</span> To ensure proper
+							encapsulation, the <samp class="ph codeph">*-all.js</samp> files will be renamed in
+							future versions of <span class="ph"><span class="ph pname">OpenUI5</span></span>. The
+								<samp class="ph codeph">sap-ui-core-all.js</samp> file remains as is, but for the
+							files for other libraries a name relative to the library will be used,
+							for example <samp class="ph codeph">sap/ui/commons/library-all.js</samp>. Applications
+							must <strong class="ph b">not</strong> address these files directly as <span class="ph"><span class="ph pname">OpenUI5</span></span>
+							runtime loads them. Only <samp class="ph codeph">sap-ui-core-all.js</samp> can be
+							directly referenced in the bootstrap tag.</div>
+
+						<div class="note note"><span class="notetitle">Note</span> This function is deprecated.</div>
+
+					</td>
+
+				</tr>
+<tr class="strow">
+					<td valign="top" headers="d8682614e87" class="stentry"><samp class="ph codeph">sap/ui/core/library-preload.js</samp></td>
+
+					<td valign="top" headers="d8682614e90" class="stentry">
 						<p class="p">This bootstrap file is similar to the <samp class="ph codeph">sap-ui-core-all.js</samp>
 							file, but the modules are parsed and executed only on demand, and not
 							immediately.</p>
@@ -119,15 +144,16 @@
 							set to <samp class="ph codeph">preload</samp>, <span class="ph"><span class="ph pname">OpenUI5</span></span>
 							automatically loads the file.</div>
 
-						<p class="p">For more information, see <a class="xref" href="91f1e3626f4d1014b6dd926db0e91070.html" title="The preload variant for bootstrapping (library-preload.js) is used if you want to load all JavaScript modules of a library in advance with one single request for performance reasons. It provides the auto, sync and async parameters for synchronous or asynchronous loading of the modules.">Preload Variant for Bootstrapping</a>. </p>
+						<p class="p">For more information, see <a class="xref" href="91f1e3626f4d1014b6dd926db0e91070.html" title="The preload variant for bootstrapping (library-preload.js) is used if you want to load all JavaScript modules of a library in advance with one single request for performance reasons. It provides the auto, sync and async parameters for synchronous or asynchronous loading of the modules.">Preload Variant for
+								Bootstrapping</a>. </p>
 
 					</td>
 
 				</tr>
 <tr class="strow">
-					<td valign="top" headers="d8580696e87" class="stentry"><samp class="ph codeph">sap-ui-core-lean.js</samp></td>
+					<td valign="top" headers="d8682614e87" class="stentry"><samp class="ph codeph">sap-ui-core-lean.js</samp></td>
 
-					<td valign="top" headers="d8580696e90" class="stentry">
+					<td valign="top" headers="d8682614e90" class="stentry">
 						<p class="p">This bootstrap file is similar to the <samp class="ph codeph">sap-ui-core.js</samp>
 							file, but in this use case only the jQuery and one <span class="ph"><span class="ph pname">OpenUI5</span></span> file
 							are loaded immediately and the other files are loaded dynamically.</p>
@@ -142,9 +168,33 @@
 
 				</tr>
 <tr class="strow">
-					<td valign="top" headers="d8580696e87" class="stentry"><samp class="ph codeph">sap-ui-custom*.js</samp></td>
+					<td valign="top" headers="d8682614e87" class="stentry"><samp class="ph codeph">sap-ui5.js</samp></td>
 
-					<td valign="top" headers="d8580696e90" class="stentry">
+					<td valign="top" headers="d8682614e90" class="stentry">
+						<p class="p">This bootstrap file contains all JavaScript modules from the
+								<samp class="ph codeph">sap.ui.core</samp>, <samp class="ph codeph">sap.ui.commons</samp>,
+								<samp class="ph codeph">sap.ui.table</samp> and <samp class="ph codeph">sap.ui.ux3</samp>
+							libraries. If you use this file for bootstrapping, you only need one
+							single request, but the loading time may be longer as the loading time
+							for other use cases. Another drawback of this use case is the fixed set
+							of libraries.</p>
+
+						<p class="p">This file is only available on platforms based on the
+								<samp class="ph codeph">sapui5.war</samp> or <samp class="ph codeph">sapui5-static.zip</samp>
+							artifacts. The OSGi/Eclipse versions
+								(<samp class="ph codeph">com.sap.ui5.core.jar</samp>), for example, do <strong class="ph b">not</strong>
+							contain this file.</p>
+
+						<p class="p">For more information, see <a class="xref" href="91f1eba86f4d1014b6dd926db0e91070.html" title="The sap-ui5 variant loads all classes and controls of OpenUI5 standard libraries with one single request and is a predecessor of the preload variant.">sap-ui5 Variant for
+								Bootstrapping</a>. </p>
+
+					</td>
+
+				</tr>
+<tr class="strow">
+					<td valign="top" headers="d8682614e87" class="stentry"><samp class="ph codeph">sap-ui-custom*.js</samp></td>
+
+					<td valign="top" headers="d8682614e90" class="stentry">
 						<p class="p">This bootstrap file is reserved for custom merged files created by the
 							application.</p>
 
@@ -170,6 +220,8 @@
 <div><strong><a class="link" href="91f1dd0c6f4d1014b6dd926db0e91070.html" title="The noJQuery variant supports bootstrapping for an application that already integrates jQuery or uses a different jQuery version than OpenUI5.">noJQuery Variant for Bootstrapping</a></strong><br/>
 </div>
 <div><strong><a class="link" href="91f1e3626f4d1014b6dd926db0e91070.html" title="The preload variant for bootstrapping (library-preload.js) is used if you want to load all JavaScript modules of a library in advance with one single request for performance reasons. It provides the auto, sync and async parameters for synchronous or asynchronous loading of the modules.">Preload Variant for Bootstrapping</a></strong><br/>
+</div>
+<div><strong><a class="link" href="91f1eba86f4d1014b6dd926db0e91070.html" title="The sap-ui5 variant loads all classes and controls of OpenUI5 standard libraries with one single request and is a predecessor of the preload variant.">sap-ui5 Variant for Bootstrapping</a></strong><br/>
 </div>
 <div><strong><a class="link" href="91f2c9076f4d1014b6dd926db0e91070.html#loio91f2c9076f4d1014b6dd926db0e91070" title="The initialization process starts after OpenUI5 runtime is loaded.">Initialization Process</a></strong><br/>
 </div>

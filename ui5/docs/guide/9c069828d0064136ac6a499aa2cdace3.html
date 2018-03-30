@@ -6,8 +6,8 @@
 <meta name="abstract" content="The structure of JS fragments is similar to the structure of the respective views: They have a name and an object with a createContent() function."/>
 <meta name="description" content="The structure of JS fragments is similar to the structure of the respective views: They have a name and an object with a createContent() function."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=14439903845225166"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=14439903845225166"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=971063011471752"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=971063011471752"/>
 <title>JS Fragments</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -19,15 +19,16 @@
 	<h1 class="title topictitle1">JS Fragments</h1>
 
 	
-	<div class="body conbody"><p class="shortdesc">The structure of JS fragments is similar to the structure of the respective views:
-		They have a name and an object with a <samp class="ph codeph">createContent()</samp> function.</p>
+	<div class="body conbody"><p class="shortdesc">The structure of JS fragments is similar to the structure of the respective views: They
+		have a name and an object with a <samp class="ph codeph">createContent()</samp> function.</p>
 
-		<p class="p">You define a simple JS fragment named <samp class="ph codeph">my.useful.UiPartX</samp> as shown in the
+		<p class="p">You  define a simple JS fragment named <samp class="ph codeph">my.useful.UiPartX</samp> as shown in the
 			following code snippet:</p>
 
-		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.jsfragment("my.useful.UiPartX", { 
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+sap.ui.jsfragment("my.useful.UiPartX", { 
 	createContent: function(oController ) {
-		var oButton = new sap.m.Button({ 
+		var oButton = new sap.ui.commons.Button({ 
 			text:"Hello World", 
 			press:oController.doSomething 
 		}); 
@@ -35,14 +36,14 @@
 	} 
 });</pre></div>
 
-		<p class="p">The <samp class="ph codeph">createContent()</samp> function is responsible for the UI definition and
-			has to return a control. The definition can be created either inline or in a separate
-			file, for instance in <span class="ph filepath">…/my/useful/UiPartX.fragment.js</span>. The
+		<p class="p">The <samp class="ph codeph">createContent()</samp> function is responsible for the UI definition and has to
+			return a control. The definition can be created either inline or in a separate file, for
+			instance in <span class="ph filepath">…/my/useful/UiPartX.fragment.js</span>. The
 				<samp class="ph codeph">oController</samp> is either already defined or it is null. In the first
 			case, its methods can be used for the event handlers of controls.</p>
 
-		<p class="p">Despite the many similarities to views, there are also differences: First of all, there
-			is no <samp class="ph codeph">getControllerName()</samp> method. Fragments cannot specify whether they
+		<p class="p">Despite the many similarities to views, there are also differences: First of all, there is no
+				<samp class="ph codeph">getControllerName()</samp> method. Fragments cannot specify whether they
 			have a controller. Whether <samp class="ph codeph">oController</samp> is defined or not is not a
 			decision of the fragment itself. Instead, it is decided by the code instantiating the
 			fragment. If that code is part of a controller, it can pass a reference to itself to the

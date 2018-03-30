@@ -6,8 +6,8 @@
 <meta name="abstract" content="Declarative programming allows you to define the UI within the HTML document as elements."/>
 <meta name="description" content="Declarative programming allows you to define the UI within the HTML document as elements."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3185280791190842"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3185280791190842"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8267750282739905"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8267750282739905"/>
 <title>Declarative Support</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -43,22 +43,24 @@
 		  an alert box: 
 		</p>
  
-		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;!Doctype HTML&gt;
-&lt;html&gt;
-&lt;head&gt;
-	&lt;title&gt;Declarative Programming for SAPUI5 - sample01&lt;/title&gt;
-	&lt;script id="sap-ui-bootstrap"
-	     type="text/javascript"
-	     src="resources/sap-ui-core.js"
-	     data-sap-ui-theme="sap_belize"
-	     data-sap-ui-libs="sap.m"
-	     data-sap-ui-modules="sap.ui.core.plugin.DeclarativeSupport"
-	     &gt;
-	&lt;/script&gt;
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">
+&lt;!Doctype HTML&gt;
+&lt;html&gt;  &lt;title&gt;Declarative Programming for SAPUI5 - sample01&lt;/title&gt;
+&lt;script id="sap-ui-bootstrap"
+     type="text/javascript"
+     src="resources/sap-ui-core.js"
+     data-sap-ui-theme="sap_belize"
+     data-sap-ui-libs="sap.ui.commons"
+     data-sap-ui-modules="sap.ui.core.plugin.DeclarativeSupport"
+     &gt;
+  &lt;/script&gt;
+
 &lt;/head&gt;
 &lt;body class="sapUiBody"&gt;
-  &lt;div data-sap-ui-type="sap.m.Input" id="message" class="my-button" data-value="Hello World"&gt;&lt;/div&gt;
-  &lt;div data-sap-ui-type="sap.m.Button" data-text="Click me!" data-press="handlePress"&gt;&lt;/div&gt;
+
+  &lt;div data-sap-ui-type="sap.ui.commons.TextField" id="message" class="my-button" data-value="Hello World"&gt;&lt;/div&gt;
+  &lt;div data-sap-ui-type="sap.ui.commons.Button" data-text="Click me!" data-press="handlePress"&gt;&lt;/div&gt;
+
 &lt;/body&gt;
 &lt;/html&gt;</pre></div>
  
@@ -69,42 +71,50 @@
 		  declarative support and gives examples. 
 		</p>
  
-		<div class="table-wrapper"><table summary="" border="1" class="simpletable"><tr class="sthead"><th valign="bottom" align="left" id="d7103673e67" class="stentry">Attribute</th>
-<th valign="bottom" align="left" id="d7103673e69" class="stentry">Description</th>
-<th valign="bottom" align="left" id="d7103673e71" class="stentry">Example</th>
+		<div class="table-wrapper"><table summary="" border="1" class="simpletable"><tr class="sthead"><th valign="bottom" align="left" id="d7170130e67" class="stentry">Attribute</th>
+<th valign="bottom" align="left" id="d7170130e69" class="stentry">Description</th>
+<th valign="bottom" align="left" id="d7170130e71" class="stentry">Example</th>
 </tr>
-<tr class="strow"><td valign="top" headers="d7103673e67" class="stentry"><samp class="ph codeph">data-sap-ui-type</samp></td>
-<td valign="top" headers="d7103673e69" class="stentry">Type of control</td>
-<td valign="top" headers="d7103673e71" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.m.Button"&gt;&lt;/div&gt;</samp></td>
+<tr class="strow"><td valign="top" headers="d7170130e67" class="stentry"><samp class="ph codeph">data-sap-ui-type</samp></td>
+<td valign="top" headers="d7170130e69" class="stentry">Type of control</td>
+<td valign="top" headers="d7170130e71" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.ui.commons.Button"&gt;&lt;/div&gt;</samp></td>
 </tr>
-<tr class="strow"><td valign="top" headers="d7103673e67" class="stentry"><samp class="ph codeph">data-sap-ui-aggregation</samp></td>
-<td valign="top" headers="d7103673e69" class="stentry">Defines the aggregation that shall be used for the
+<tr class="strow"><td valign="top" headers="d7170130e67" class="stentry"><samp class="ph codeph">data-sap-ui-aggregation</samp></td>
+<td valign="top" headers="d7170130e69" class="stentry">Defines the aggregation that shall be used for the
 				element or child element</td>
-<td valign="top" headers="d7103673e71" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.m.Panel"&gt;&lt;div data-sap-ui-aggregation="content"
-							data-sap-ui-type="sap.m.Button" data-text="My
-							Button"&gt;&lt;/div&gt;&lt;/div&gt;</samp></td>
+<td valign="top" headers="d7170130e71" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.ui.commons.Panel"&gt;&lt;div
+							data-sap-ui-aggregation="title" data-sap-ui-type="sap.ui.commons.Title"
+							data-text="My Panel"&gt;&lt;/div&gt;&lt;/div&gt;</samp></td>
 </tr>
-<tr class="strow"><td valign="top" headers="d7103673e67" class="stentry"><samp class="ph codeph">data-sap-ui.default-aggregation</samp></td>
-<td valign="top" headers="d7103673e69" class="stentry">Sets or overrides the default aggregation of a
+<tr class="strow"><td valign="top" headers="d7170130e67" class="stentry"><samp class="ph codeph">data-sap-ui.default-aggregation</samp></td>
+<td valign="top" headers="d7170130e69" class="stentry">Sets or overrides the default aggregation of a
 				control</td>
-<td valign="top" headers="d7103673e71" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.m.Panel"
-							data-sap-ui-default-aggregation="headerToolbar"&gt;&lt;div
-							data-sap-ui-type="sap.m.Toolbar"&gt;&lt;/div&gt;&lt;/div&gt;</samp>
+<td valign="top" headers="d7170130e71" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.ui.commons.Panel"
+							data-sap-ui-default-aggregation="title"&gt;&lt;div
+							data-sap-ui-type="sap.ui.commons.Title" data-text="My
+							Panel"&gt;&lt;/div&gt;&lt;/div&gt;</samp>
 					</td>
 </tr>
-<tr class="strow"><td valign="top" headers="d7103673e67" class="stentry"><samp class="ph codeph">id</samp></td>
-<td valign="top" headers="d7103673e69" class="stentry">Defines the ID property of a control</td>
-<td valign="top" headers="d7103673e71" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.m.Button" id="myButton"&gt;&lt;/div&gt;</samp>
+<tr class="strow"><td valign="top" headers="d7170130e67" class="stentry"><samp class="ph codeph">id</samp></td>
+<td valign="top" headers="d7170130e69" class="stentry">Defines the ID property of a control</td>
+<td valign="top" headers="d7170130e71" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.ui.commons.Button" id="myButton"&gt;&lt;/div&gt;</samp>
 					</td>
 </tr>
-<tr class="strow"><td valign="top" headers="d7103673e67" class="stentry"><samp class="ph codeph">class</samp></td>
-<td valign="top" headers="d7103673e69" class="stentry">Adds a style class to the control</td>
-<td valign="top" headers="d7103673e71" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.m.Button" class="myButton"&gt;&lt;/div&gt;</samp>
+<tr class="strow"><td valign="top" headers="d7170130e67" class="stentry"><samp class="ph codeph">class</samp></td>
+<td valign="top" headers="d7170130e69" class="stentry">Adds a style class to the control</td>
+<td valign="top" headers="d7170130e71" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.ui.commons.Button"
+							class="myButton"&gt;&lt;/div&gt;</samp>
 					</td>
 </tr>
 </table></div>
  
 	 </div></div>
+
+		<div class="section"><div class="section_title">More Information</div><div type="More Information">
+			
+			<p class="p"><span class="ph">You can find a complete sample under "<a class="xref" href="../../test-resources/testsuite/testframe.html" alt="../../test-resources/testsuite/testframe.html" title="../../test-resources/testsuite/testframe.html">Testsuite</a></span><span class="ph menucascade"><img src="images/navstart.gif" alt="Start of the navigation path" title="Start of the navigation path"/><span class="ph uicontrol">sap.ui.core</span> <img src="images/navstep.gif" alt="Next navigation step" title="Next navigation step"/> <span class="ph uicontrol">DeclarativeSupport</span><img src="images/navend.gif" alt="End of the navigation path" title="End of the navigation path"/></span>.</p>
+
+		</div></div>
 </div>
 <div class="related-links"> <br/>
 <div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">

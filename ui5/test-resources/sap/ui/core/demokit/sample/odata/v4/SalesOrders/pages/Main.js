@@ -1,10 +1,9 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
-	"sap/m/MessageBox",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"sap/ui/model/odata/ODataUtils",
@@ -14,11 +13,9 @@ sap.ui.require([
 	"sap/ui/test/matchers/Interactable",
 	"sap/ui/test/matchers/Properties"
 ],
-function (MessageBox, Filter, FilterOperator, ODataUtils, Opa5, EnterText, Press, Interactable,
-		Properties) {
+function (Filter, FilterOperator, ODataUtils, Opa5, EnterText, Press, Interactable, Properties) {
 	"use strict";
-	var COMPANY_NAME_COLUMN_INDEX = 1,
-		GROSS_AMOUNT_COLUMN_INDEX = 2,
+	var GROSS_AMOUNT_COLUMN_INDEX = 2,
 		ID_COLUMN_INDEX = 0,
 		ITEM_COLUMN_INDEX = 1,
 		NOTE_COLUMN_INDEX = 4,
@@ -53,26 +50,6 @@ function (MessageBox, Filter, FilterOperator, ODataUtils, Opa5, EnterText, Press
 				aControls[0].getButtons()[bConfirm ? 0 : 1].$().tap();
 				Opa5.assert.ok(true, sLog || (bConfirm ? 'Confirm ' : 'Cancel ') + sTitle);
 			}
-		});
-	}
-
-	function selectSalesOrder(oOpa, iIndex, bRememberGrossAmount) {
-		return oOpa.waitFor({
-			controlType : "sap.m.Table",
-			id : "SalesOrders",
-			success : function (oTable) {
-				var oItem = oTable.getItems()[iIndex],
-					oControl = oItem.getCells()[ID_COLUMN_INDEX];
-				oControl.$().tap();
-				Opa5.assert.ok(true, "Sales Order selected: " +
-					oControl.getText());
-				if (bRememberGrossAmount) {
-					sap.ui.test.Opa.getContext().GrossAmount =
-						oItem.getCells()[GROSS_AMOUNT_COLUMN_INDEX]
-							.getBinding("text").getValue();
-				}
-			},
-			viewName : sViewName
 		});
 	}
 
@@ -181,17 +158,6 @@ function (MessageBox, Filter, FilterOperator, ODataUtils, Opa5, EnterText, Press
 						viewName : sViewName
 					});
 				},
-				changeNoteInDetails : function (sValue) {
-					return this.waitFor({
-						actions : new EnterText({ clearTextFirst : true, text : sValue }),
-						controlType : "sap.m.Input",
-						id : "Note",
-						success : function (oInput) {
-							Opa5.assert.ok(true, "Details Note text set to " + sValue);
-						},
-						viewName : sViewName
-					});
-				},
 				changeSalesOrderLineItemNote : function (iRow, sNewNoteValue) {
 					return this.waitFor({
 						controlType : "sap.m.Table",
@@ -215,35 +181,7 @@ function (MessageBox, Filter, FilterOperator, ODataUtils, Opa5, EnterText, Press
 
 							oRow.getCells()[SOITEM_QUANTITY_COLUMN_INDEX].setValue(sNewQuantity);
 							Opa5.assert.ok(true,
-								"SO Item Quantity of row " + iRow + " set to " + sNewQuantity);
-						},
-						viewName : sViewName
-					});
-				},
-				createInvalidSalesOrderViaAPI : function () {
-					return this.waitFor({
-						controlType : "sap.m.Table",
-						id : "SalesOrders",
-						success : function (oTable) {
-							var oNewContext = oTable.getBinding("items").create({
-								"SalesOrderID" : "",
-								// properties
-								"BuyerID" : "0100000000",
-								"ChangedAt" : "1970-01-01T00:00:00Z",
-								"CreatedAt" : "1970-01-01T00:00:00Z",
-								"CurrencyCode" : "EUR",
-								"GrossAmount" : "0.00",
-								"LifecycleStatus" : "N",
-								"LifecycleStatusDesc" : "New",
-								"Note" : "RAISE_ERROR",
-								"NoteLanguage" : "E",
-								// navigation property
-								"SO_2_BP" : null
-							});
-						oNewContext.created().then(function() {
-							MessageBox.success("SalesOrder created: " +
-								oNewContext.getProperty("SalesOrderID"));
-							});
+								"SO Item Note of row " + iRow + " set to " + sNewQuantity);
 						},
 						viewName : sViewName
 					});
@@ -459,7 +397,7 @@ function (MessageBox, Filter, FilterOperator, ODataUtils, Opa5, EnterText, Press
 						actions : new Press(),
 						controlType : "sap.m.Button",
 						id : "refreshAll",
-						success : function () {
+						success : function (aControls) {
 							Opa5.assert.ok(true, "Refresh All pressed");
 						},
 						viewName : sViewName
@@ -470,33 +408,17 @@ function (MessageBox, Filter, FilterOperator, ODataUtils, Opa5, EnterText, Press
 						actions : new Press(),
 						controlType : "sap.m.Button",
 						id : "refreshSalesOrders",
-						success : function () {
+						success : function (aControls) {
 							Opa5.assert.ok(true, "Refresh Sales Orders pressed");
 						},
 						viewName : sViewName
 					});
 				},
-
-				pressRefreshSelectedSalesOrdersButton : function () {
-					return this.waitFor({
-						actions : new Press(),
-						controlType : "sap.m.Button",
-						id : "refreshSelectedSalesOrder",
-						success : function () {
-							Opa5.assert.ok(true, "Refresh selected Sales Order pressed");
-						},
-						viewName : sViewName
-					});
-				},
-
 				pressSaveSalesOrderButton : function () {
 					return this.waitFor({
 						actions : new Press(),
 						controlType : "sap.m.Button",
 						id : "saveSalesOrder",
-						success : function () {
-							Opa5.assert.ok(true, "Save Sales Order pressed");
-						},
 						viewName : sViewName
 					});
 				},
@@ -505,9 +427,6 @@ function (MessageBox, Filter, FilterOperator, ODataUtils, Opa5, EnterText, Press
 						actions : new Press(),
 						controlType : "sap.m.Button",
 						id : "saveSalesOrders",
-						success : function () {
-							Opa5.assert.ok(true, "Save Sales Orders pressed");
-						},
 						viewName : sViewName
 					});
 				},
@@ -560,9 +479,7 @@ function (MessageBox, Filter, FilterOperator, ODataUtils, Opa5, EnterText, Press
 							if (!sap.ui.test.Opa.getContext().aOrderIds) {
 								sap.ui.test.Opa.getContext().aOrderIds = [];
 							}
-							if (sap.ui.test.Opa.getContext().aOrderIds.indexOf(sSalesOrderId) < 0) {
-								sap.ui.test.Opa.getContext().aOrderIds.push(sSalesOrderId);
-							}
+							sap.ui.test.Opa.getContext().aOrderIds.push(sSalesOrderId);
 
 							Opa5.assert.ok(true, "SalesOrderID remembered:" + sSalesOrderId);
 						}
@@ -579,11 +496,24 @@ function (MessageBox, Filter, FilterOperator, ODataUtils, Opa5, EnterText, Press
 						viewName : sViewName
 					});
 				},
-				selectFirstSalesOrder : function ( bRememberGrossAmount) {
-					return selectSalesOrder(this, 0, bRememberGrossAmount);
-				},
-				selectSalesOrder : function (iIndex) {
-					return selectSalesOrder(this, iIndex);
+				selectFirstSalesOrder : function (bRememberGrossAmount) {
+					return this.waitFor({
+						controlType : "sap.m.Table",
+						id : "SalesOrders",
+						success : function (oTable) {
+							var oFirstItem = oTable.getItems()[0],
+								oControl = oFirstItem.getCells()[ID_COLUMN_INDEX];
+							oControl.$().tap();
+							Opa5.assert.ok(true, "First Sales Order selected: " +
+								oControl.getText());
+							if (bRememberGrossAmount) {
+								sap.ui.test.Opa.getContext().GrossAmount =
+									oFirstItem.getCells()[GROSS_AMOUNT_COLUMN_INDEX]
+										.getBinding("text").getValue();
+							}
+						},
+						viewName : sViewName
+					});
 				},
 				selectSalesOrderItemWithPosition : function (sPosition) {
 					return this.waitFor({
@@ -769,19 +699,6 @@ function (MessageBox, Filter, FilterOperator, ODataUtils, Opa5, EnterText, Press
 
 							Opa5.assert.strictEqual(oRow.getCells()[3].getText(),
 								sExpectProductName, "Product name of new created SOItem");
-						},
-						viewName : sViewName
-					});
-				},
-				checkCompanyName : function (iRow, sExpectedCompanyName) {
-					return this.waitFor({
-						controlType : "sap.m.Table",
-						id : "SalesOrders",
-						success : function (oSalesOrderTable) {
-							Opa5.assert.strictEqual(oSalesOrderTable.getItems()[iRow].getCells()
-								[COMPANY_NAME_COLUMN_INDEX].getText(), sExpectedCompanyName,
-								"CompanyName of row " + iRow + " as expected "
-									+ sExpectedCompanyName);
 						},
 						viewName : sViewName
 					});

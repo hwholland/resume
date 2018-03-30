@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.define([ 'sap/ui/rta/command/BaseCommand',
@@ -16,7 +16,7 @@ sap.ui.define([ 'sap/ui/rta/command/BaseCommand',
 	 * @extends sap.ui.rta.command.BaseCommand
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @private
@@ -42,30 +42,14 @@ sap.ui.define([ 'sap/ui/rta/command/BaseCommand',
 	/**
 	 * Execute this composite command
 	 *
-	 * @returns {Promise} empty resolved promise or rejected promise
+	 * @returns {promise} empty promise
 	 */
 	CompositeCommand.prototype.execute = function() {
 		var aPromises = [];
 		this._forEachCommand(function(oCommand){
 			aPromises.push(oCommand.execute.bind(oCommand));
 		});
-		return flUtils.execPromiseQueueSequentially(aPromises, true)
-
-		.catch(function(e) {
-			// if a command has a restoreState function but no state, undoing it could cause errors.
-			// this happens when such a command didn't get executed yet (a command before failed)
-			var aCommands = this.getCommands();
-			aCommands.forEach(function(oCommand) {
-				if (oCommand instanceof sap.ui.rta.command.FlexCommand) {
-					if (oCommand.getFnRestoreState() && !oCommand.getState() || !oCommand._aRecordedUndo) {
-						this.removeCommand(oCommand);
-					}
-				}
-			}.bind(this));
-
-			this.undo();
-			return Promise.reject(e);
-		}.bind(this));
+		return flUtils.execPromiseQueueSequentially(aPromises);
 	};
 
 	CompositeCommand.prototype.undo = function() {

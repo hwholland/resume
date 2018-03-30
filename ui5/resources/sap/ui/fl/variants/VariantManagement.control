@@ -10,29 +10,43 @@
         <property group="Misc" defaultValue="false" type="sap.ui.core/boolean" name="showExecuteOnSelection">
             <documentation>Indicates that Execute on Selection is visible in the Save Variant and the Manage Variants dialogs.</documentation>
         </property>
+        <property group="Misc" defaultValue="false" type="sap.ui.core/boolean" name="showShare">
+            <documentation>Indicates that Share is visible in the Save Variant and the Manage Variants dialogs. Share allows you to share variants with other
+users.</documentation>
+        </property>
         <property group="Misc" defaultValue="true" type="sap.ui.core/boolean" name="showSetAsDefault">
             <documentation>Indicates that set as default is visible in the Save Variant and the Manage Variants dialogs.</documentation>
+        </property>
+        <property group="Misc" defaultValue="false" type="sap.ui.core/boolean" name="showFavorites">
+            <documentation>Indicates if favorites can be created.</documentation>
+        </property>
+        <property group="Misc" defaultValue="false" type="sap.ui.core/boolean" name="industrySolutionMode">
+            <documentation>If set to&lt;code&gt;true&lt;/code&gt;, the scenario is an industry-specific solution.&lt;br&gt;
+&lt;b&gt;Node:&lt;/b&gt;This flag is only used internally in the app variant scenarios.</documentation>
+        </property>
+        <property group="Misc" defaultValue="false" type="sap.ui.core/boolean" name="vendorLayer">
+            <documentation>Indicates if the vendor layer is active.&lt;br&gt;
+&lt;b&gt;Node:&lt;/b&gt;This flag is only used internally in the app variant scenarios.</documentation>
         </property>
         <property group="Misc" defaultValue="false" type="sap.ui.core/boolean" name="manualVariantKey">
             <documentation>If set to&lt;code&gt;true&lt;/code&gt;, the key for a vendor variant will be added manually.&lt;br&gt;
 &lt;b&gt;Node:&lt;/b&gt;This flag is only used internally in the app variant scenarios.</documentation>
         </property>
+        <property group="Misc" defaultValue="true" type="sap.ui.core/boolean" name="showSave">
+            <documentation>Determine the visibility of the 'Save' button in the variant list control.</documentation>
+        </property>
+        <property group="Misc" defaultValue="true" type="sap.ui.core/boolean" name="showSaveAs">
+            <documentation>Determine the visibility of the 'Save As' button in the variant list control.</documentation>
+        </property>
+        <property group="Misc" defaultValue="true" type="sap.ui.core/boolean" name="showManage">
+            <documentation>Determine the visibility of the 'Manage' button in the variant list control.</documentation>
+        </property>
+        <property group="Misc" defaultValue="true" type="sap.ui.core/boolean" name="showVariantListFooter">
+            <documentation>Determine the visibility of the footer of the variant list.</documentation>
+        </property>
         <property group="Misc" defaultValue="false" type="sap.ui.core/boolean" name="inErrorState">
             <documentation>Indicates that the control is in error state. If set to &lt;code&gt;true&lt;/code&gt; error message will be displayed whenever the variant is
 opened.</documentation>
-        </property>
-        <property group="Misc" defaultValue="true" type="sap.ui.core/boolean" name="editable">
-            <documentation>Indicates that the control is in edit state. If set to &lt;code&gt;false&lt;/code&gt; the footer of the views list will be hidden.</documentation>
-        </property>
-        <property group="Misc" type="sap.ui.core/string" name="modelName">
-            <documentation>Determines the name of the model. The binding context will be defined by the current ID.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; In a UI adaptation scenario, this property is not used at all because the model name is &lt;i&gt;$FlexVariants&lt;/i&gt;</documentation>
-        </property>
-        <property group="Misc" defaultValue="false" type="sap.ui.core/boolean" name="updateVariantInURL">
-            <documentation>Determines the intention of setting the current variant based on passed information.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; The VariantManagement control does not react in any way to this property.</documentation>
         </property>
     </properties>
     <events>
@@ -54,13 +68,19 @@ opened.</documentation>
                 <parameter type="sap.ui.core/boolean" name="def">
                     <documentation>The default variant indicator</documentation>
                 </parameter>
+                <parameter type="sap.ui.core/boolean" name="global">
+                    <documentation>The shared variant indicator</documentation>
+                </parameter>
+                <parameter type="sap.ui.core/string" name="lifecyclePackage">
+                    <documentation>The package name</documentation>
+                </parameter>
+                <parameter type="sap.ui.core/string" name="lifecycleTransportId">
+                    <documentation>The transport ID</documentation>
+                </parameter>
             </parameters>
         </event>
         <event allowPreventDefault="false" name="manage">
             <documentation>This event is fired when users apply changes to variants in the Manage Variants dialog.</documentation>
-        </event>
-        <event allowPreventDefault="false" name="initialized">
-            <documentation>This event is fired when the model and context are set.</documentation>
         </event>
     </events>
     <associations>

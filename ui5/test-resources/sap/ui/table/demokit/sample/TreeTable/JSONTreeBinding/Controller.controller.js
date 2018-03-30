@@ -1,33 +1,27 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel"
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/json/JSONModel"
 ], function(Controller, JSONModel) {
-	"use strict";
+    "use strict";
 
-	return Controller.extend("sap.ui.table.sample.TreeTable.JSONTreeBinding.Controller", {
-		onInit: function() {
-			var oModel = new JSONModel("test-resources/sap/ui/table/demokit/sample/TreeTable/JSONTreeBinding/Clothing.json");
-			this.getView().setModel(oModel);
-		},
+    return Controller.extend("sap.ui.table.sample.TreeTable.JSONTreeBinding.Controller", {
 
-		onCollapseAll: function() {
-			var oTreeTable = this.byId("TreeTableBasic");
-			oTreeTable.collapseAll();
-		},
+        onInit : function () {
+            var oModel = new JSONModel("test-resources/sap/ui/table/demokit/sample/TreeTable/JSONTreeBinding/Clothing.json");
 
-		onCollapseSelection: function() {
-			var oTreeTable = this.byId("TreeTableBasic");
-			oTreeTable.collapse(oTreeTable.getSelectedIndices());
-		},
+            this.getView().setModel(oModel);
+        },
 
-		onExpandFirstLevel: function() {
-			var oTreeTable = this.byId("TreeTableBasic");
-			oTreeTable.expandToLevel(1);
-		},
+        onCollapseAll: function () {
+            var oTreeTable = this.getView().byId("TreeTableBasic");
+            oTreeTable.collapseAll();
+        },
 
-		onExpandSelection: function() {
-			var oTreeTable = this.byId("TreeTableBasic");
-			oTreeTable.expand(oTreeTable.getSelectedIndices());
-		}
-	});
+        onExpandFirstLevel: function () {
+            var oTreeTable = this.getView().byId("TreeTableBasic");
+            oTreeTable.expandToLevel(1);
+        }
+    });
+
 });
+

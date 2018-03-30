@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.StepInput.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.StepInput.StepInput",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.StepInput.StepInput",
 			dependencies : {
 				libs : [
 					"sap.m"

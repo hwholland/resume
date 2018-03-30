@@ -22,8 +22,7 @@ sap.ui.define([
 		Then.onTheObjectPage.iShouldSeeTheObjectViewsBusyIndicator().
 			and.theObjectViewsBusyIndicatorDelayIsRestored().
 			and.iShouldSeeTheRememberedObject().
-			and.theObjectViewShouldContainOnlyFormattedUnitNumbers().
-			and.iTeardownMyAppFrame();
+			and.theObjectViewShouldContainOnlyFormattedUnitNumbers().and.iTeardownMyAppFrame();
 	});
 
 });

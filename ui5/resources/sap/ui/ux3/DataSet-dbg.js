@@ -1,18 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.ux3.DataSet.
-sap.ui.define([
-    'jquery.sap.global',
-    'sap/ui/core/Control',
-    'sap/ui/core/ResizeHandler',
-    './library',
-    "./DataSetRenderer"
-],
-	function(jQuery, Control, ResizeHandler, library, DataSetRenderer) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/core/ResizeHandler', './library'],
+	function(jQuery, Control, ResizeHandler, library) {
 	"use strict";
 
 
@@ -26,11 +20,11 @@ sap.ui.define([
 	 * @class
 	 * DataSet
 	 * @extends sap.ui.core.Control
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
-	 * @deprecated as of version 1.38. Use a container by choice from the {@link sap.m} library, instead.
+	 * @deprecated Since version 1.38.
 	 * @alias sap.ui.ux3.DataSet
 	 * @ui5-metamodel This control/element also will be described in the UI5 (legacy) designtime metamodel
 	 */

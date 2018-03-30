@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
@@ -33,7 +33,7 @@ sap.ui.require([
 	 */
 	function testConversion(assert, sXmlSnippet, oExpected) {
 		var oXML = xml(assert, sEdmx + sXmlSnippet + "</edmx:Edmx>"),
-			oResult = new _V4MetadataConverter().convertXMLMetadata(oXML);
+			oResult = _V4MetadataConverter.convertXMLMetadata(oXML);
 
 		oExpected.$Version = "4.0";
 		assert.deepEqual(oResult, oExpected);
@@ -54,10 +54,15 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.module("sap.ui.model.odata.v4.lib._V4MetadataConverter", {
 		beforeEach : function () {
-			TestUtils.useFakeServer(this._oSandbox, "sap/ui/core/qunit/odata/v4/data", mFixture);
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oSandbox = sinon.sandbox.create();
+			TestUtils.useFakeServer(this.oSandbox, "sap/ui/core/qunit/odata/v4/data", mFixture);
+			this.oLogMock = this.oSandbox.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
+		},
+
+		afterEach : function () {
+			this.oSandbox.verifyAndRestore();
 		}
 	});
 
@@ -338,7 +343,7 @@ sap.ui.require([
 			if (vExpectedValue !== undefined) {
 				oExpectedResult["$" + sProperty] = vExpectedValue;
 			}
-			new _V4MetadataConverter().processFacetAttributes(oXml.documentElement, oResult);
+			_V4MetadataConverter.processFacetAttributes(oXml.documentElement, oResult);
 			assert.deepEqual(oResult, oExpectedResult);
 		}
 
@@ -513,7 +518,7 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("convertXMLMetadata: TypeDefinition", function (assert) {
-		this.mock(_V4MetadataConverter.prototype).expects("processFacetAttributes")
+		this.mock(_V4MetadataConverter).expects("processFacetAttributes")
 			.withExactArgs(
 				sinon.match.has("localName", "TypeDefinition"),
 				{
@@ -1065,9 +1070,8 @@ sap.ui.require([
 			oXML = xml(assert, '<foo xmlns="http://docs.oasis-open.org/odata/ns/edmx"/>');
 
 		assert.throws(function () {
-			new _V4MetadataConverter().convertXMLMetadata(oXML, sUrl);
-		}, new Error(sUrl
-			+ ": expected <Edmx> in namespace 'http://docs.oasis-open.org/odata/ns/edmx'"));
+			_V4MetadataConverter.convertXMLMetadata(oXML, sUrl);
+		}, new Error(sUrl + " is not a valid OData V4 metadata document"));
 	});
 
 	//*********************************************************************************************
@@ -1076,9 +1080,8 @@ sap.ui.require([
 			oXML = xml(assert, '<Edmx xmlns="http://schemas.microsoft.com/ado/2007/06/edmx"/>');
 
 		assert.throws(function () {
-			new _V4MetadataConverter().convertXMLMetadata(oXML, sUrl);
-		}, new Error(sUrl
-			+ ": expected <Edmx> in namespace 'http://docs.oasis-open.org/odata/ns/edmx'"));
+			_V4MetadataConverter.convertXMLMetadata(oXML, sUrl);
+		}, new Error(sUrl + " is not a valid OData V4 metadata document"));
 	});
 
 	//*********************************************************************************************
@@ -1088,28 +1091,8 @@ sap.ui.require([
 				'<Edmx Version="4.01" xmlns="http://docs.oasis-open.org/odata/ns/edmx"/>');
 
 		assert.throws(function () {
-			new _V4MetadataConverter().convertXMLMetadata(oXML, sUrl);
+			_V4MetadataConverter.convertXMLMetadata(oXML, sUrl);
 		}, new Error(sUrl + ": Unsupported OData version 4.01"));
-	});
-
-	//*********************************************************************************************
-	QUnit.test("ignore foreign namespaces", function (assert) {
-		testConversion(assert, '\
-				<edmx:DataServices>\
-					<Schema Namespace="foo" Alias="f" xmlns:foo="http://foo.bar">\
-						<ComplexType Name="Worker" foo:OpenType="true"/>\
-						<foo:ComplexType Name="Ignore"/>\
-					</Schema>\
-				</edmx:DataServices>',
-			{
-				"foo." : {
-					"$kind" : "Schema"
-				},
-				"foo.Worker" : {
-					"$kind" : "ComplexType"
-					// no $OpenType
-				}
-			});
 	});
 
 	//*********************************************************************************************
@@ -1118,7 +1101,7 @@ sap.ui.require([
 			Promise.resolve(
 					jQuery.ajax("/sap/opu/odata4/IWBEP/TEA/default/IWBEP/TEA_BUSI/0001/$metadata"))
 				.then(function (oXML) {
-					return new _V4MetadataConverter().convertXMLMetadata(oXML);
+					return _V4MetadataConverter.convertXMLMetadata(oXML);
 				}),
 			jQuery.ajax("/sap/opu/odata4/IWBEP/TEA/default/IWBEP/TEA_BUSI/0001/metadata.json")
 		]).then(function (aResults) {

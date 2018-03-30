@@ -3,11 +3,7 @@ sap.ui.define(["sap/ui/core/UIComponent"], function (UIComponent) {
 
 	var Component = UIComponent.extend("sap.uxap.sample.BlockBaseBlockInBlock.Component", {
 		metadata: {
-			rootView: {
-				"viewName": "sap.uxap.sample.BlockBaseBlockInBlock.BlockInBlock",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.uxap.sample.BlockBaseBlockInBlock.BlockInBlock",
 			dependencies: {
 				libs: [
 					"sap.m"

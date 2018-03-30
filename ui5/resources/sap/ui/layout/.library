@@ -4,9 +4,9 @@
   <name>sap.ui.layout</name>
   <vendor>SAP SE</vendor>
   <copyright>UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.</copyright>
-  <version>1.54.2</version>
+  <version>1.52.5</version>
 
   <documentation>SAPUI5 library with layout controls.</documentation>
 
@@ -19,6 +19,13 @@
   <appData>
     <!-- package name for selenium -->
     <selenium xmlns="http://www.sap.com/ui5/buildext/selenium" package="com.sap.ui5.selenium.layout" />
+    <!-- excludes for the all-in-one file -->
+    <packaging xmlns="http://www.sap.com/ui5/buildext/packaging" version="2.0" >
+        <all-in-one>
+            <!-- exclude support rules -->
+            <exclude name="**/*.support.js" />
+        </all-in-one>
+    </packaging>
     <!-- excludes for the JSDoc -->
     <jsdoc xmlns="http://www.sap.com/ui5/buildext/jsdoc" >
         <exclude name="sap.ui.layout.js." />

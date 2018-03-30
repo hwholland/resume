@@ -1,32 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.Button.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/EnabledPropagator',
-	'sap/ui/core/IconPool',
-	'sap/ui/Device',
-	'sap/ui/core/ContextMenuSupport',
-	'sap/ui/core/library',
-	'./ButtonRenderer',
-	'jquery.sap.keycodes'
-], function(
-	jQuery,
-	library,
-	Control,
-	EnabledPropagator,
-	IconPool,
-	Device,
-	ContextMenuSupport,
-	coreLibrary,
-	ButtonRenderer
-) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/ui/core/EnabledPropagator', 'sap/ui/core/IconPool', 'sap/ui/Device', 'sap/ui/core/ContextMenuSupport', 'sap/ui/core/library', 'sap/ui/core/InvisibleText', 'jquery.sap.keycodes'],
+	function(jQuery, library, Control, EnabledPropagator, IconPool, Device, ContextMenuSupport, coreLibrary, InvisibleText) {
 	"use strict";
 
 	// shortcut for sap.ui.core.TextDirection
@@ -67,7 +47,7 @@ sap.ui.define([
 	 * @mixes sap.ui.core.ContextMenuSupport
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -148,7 +128,7 @@ sap.ui.define([
 
 			/**
 			 * Fired when the user taps the control.
-			 * @deprecated as of version 1.20, replaced by <code>press</code> event
+			 * @deprecated As of version 1.20, use the press event instead
 			 */
 			tap : {deprecated: true},
 
@@ -157,7 +137,7 @@ sap.ui.define([
 			 */
 			press : {}
 		},
-		designtime: "sap/m/designtime/Button.designtime"
+		designTime: true
 	}});
 
 
@@ -579,6 +559,47 @@ sap.ui.define([
 		}
 
 		return sTooltip;
+	};
+
+	Button.prototype.setType = function(sType) {
+
+		this.setProperty("type", sType);
+
+		// Aria desciption for type
+		var sTypeText = "";
+		var oRb;
+
+		switch (sType) {
+		case ButtonType.Accept:
+			if (!Button._oStaticAcceptText) {
+				oRb = sap.ui.getCore().getLibraryResourceBundle("sap.m");
+				sTypeText = oRb.getText("BUTTON_ARIA_TYPE_ACCEPT");
+				Button._oStaticAcceptText = new InvisibleText({text: sTypeText});
+				Button._oStaticAcceptText.toStatic(); //Put to Static UiArea
+			}
+			break;
+		case ButtonType.Reject:
+			if (!Button._oStaticRejectText) {
+				oRb = sap.ui.getCore().getLibraryResourceBundle("sap.m");
+				sTypeText = oRb.getText("BUTTON_ARIA_TYPE_REJECT");
+				Button._oStaticRejectText = new InvisibleText({text: sTypeText});
+				Button._oStaticRejectText.toStatic(); //Put to Static UiArea
+			}
+			break;
+		case ButtonType.Emphasized:
+			if (!Button._oStaticEmphasizedText) {
+				oRb = sap.ui.getCore().getLibraryResourceBundle("sap.m");
+				sTypeText = oRb.getText("BUTTON_ARIA_TYPE_EMPHASIZED");
+				Button._oStaticEmphasizedText = new InvisibleText({text: sTypeText});
+				Button._oStaticEmphasizedText.toStatic(); //Put to Static UiArea
+			}
+			break;
+		default: // No need to do anything for other button types
+			break;
+		}
+
+		return this;
+
 	};
 
 	/**

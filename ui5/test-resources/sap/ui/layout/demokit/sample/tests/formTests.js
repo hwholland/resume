@@ -2,9 +2,8 @@
 
 sap.ui.define([
 	"sap/ui/test/Opa5",
-	"sap/ui/test/opaQunit",
-	"sap/ui/test/matchers/PropertyStrictEquals"
-], function (Opa5, opaTest, PropertyStrictEquals) {
+	"sap/ui/test/opaQunit"
+], function (Opa5, opaTest) {
 	"use strict";
 
 	QUnit.module("EditSave");
@@ -63,7 +62,6 @@ sap.ui.define([
 			_pressOnButton : function (sId) {
 				return this.waitFor({
 					id : sId,
-					matchers: new PropertyStrictEquals({name: "enabled", value: true}),
 					success : function (oButton) {
 						oButton.$().trigger("tap");
 					},

@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -117,31 +117,29 @@
                      <h1 class="title topictitle1" hidden>Cache Buster for <span class="ph"><span class="ph pname">OpenUI5</span></span></h1>
                      
                      <div class="body">
-                        <p class="shortdesc" hidden>A cache buster allows <span class="ph"><span class="ph pname">OpenUI5</span></span> to notify the browser to
-                           		refresh the resources only when the <span class="ph"><span class="ph pname">OpenUI5</span></span> resources have been
-                           		changed. As long as they are not changed, the resources can always be fetched from the
-                           		browser&apos;s cache.
+                        <p class="shortdesc" hidden>A cache buster allows <span class="ph"><span class="ph pname">OpenUI5</span></span> to notify the browser to refresh the resources only when
+                           		the <span class="ph"><span class="ph pname">OpenUI5</span></span> resources have been changed. As long as they are not changed, the resources can
+                           		always be fetched from the browser&apos;s cache.
                         </p>
                         
                         		
                         <aside class="note note  insertion"><span class="title">Note</span> 
                            			
-                           <p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> supports the
-                              				cache buster concept for Java and ABAP servers and for <span class="ph pname">SAP Cloud Platform</span>. <span class="ph pname">SAP HANA</span> XS does
+                           <p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> supports the cache buster
+                              				concept for Java and ABAP servers and for <span class="ph pname">SAP Cloud Platform</span>. <span class="ph pname">SAP HANA</span> XS does
                               					<span class="ph emphasis emphasis">not</span> support the cache buster concept.
                            </p>
                            
                            		
                         </aside>
                         
-                        		
-                        <p class="p">When you want to cache your resources permanently, you simply need to change the URL in
-                           			the <span class="ph"><span class="ph pname">OpenUI5</span></span> bootstrap tag
-                           			from <samp class="ph codeph">resources/sap-ui-core.js</samp> to
-                           				<samp class="ph codeph">resources/sap-ui-cachebuster/sap-ui-core.js</samp>. 
+                        <p class="p">When you want to cache your resources permanently, you simply need to
+                           			change the URL in the <span class="ph"><span class="ph pname">OpenUI5</span></span> bootstrap tag from 
+                           		<samp class="ph codeph">resources/sap-ui-core.js</samp> to 
+                           		<samp class="ph codeph">resources/sap-ui-cachebuster/sap-ui-core.js</samp>. 
+                           		
                         </p>
                         
-                        		
                         <p class="p">The cache buster mechanism allows to always put the <span class="ph"><span class="ph pname">OpenUI5</span></span> resources into the
                            			browsers cache until a UI library or a web application has been changed. The default
                            			behavior of the <span class="ph"><span class="ph pname">OpenUI5</span></span>
@@ -153,35 +151,33 @@
                            			explicitly decide to use it. 
                         </p>
                         
-                        		
-                        <p class="p">The cache buster mechanism is part of the resource servlet. In general, requests to
-                           			JavaScript resources can be handled via the cache buster mechanism. Typically this is
-                           			used for the initial request for the bootstrap JavaScript: 
+                        <p class="p">The cache buster mechanism is part of the resource servlet. In general, requests to JavaScript resources can be handled via
+                           the cache buster mechanism.
+                           			Typically this is used for the initial request for the bootstrap JavaScript: 
                         </p>
-                        
-                        		<pre class="pre codeblock prettyprint nocode">  &lt;script type=&quot;text/javascript&quot; 
+                        <pre class="pre codeblock prettyprint nocode">  &lt;script type=&quot;text/javascript&quot; 
   	id=&quot;sap-ui-bootstrap&quot;
   	src=&quot;resources/sap-ui-cachebuster/sap-ui-core.js&quot;
-  	data-sap-ui-libs=&quot;sap.ui.core,sap.m,sap.ui.table&quot;
+  	data-sap-ui-libs=&quot;sap.ui.core,sap.ui.commons,sap.ui.table&quot;
 	data-sap-ui-theme=&quot;sap_belize&quot;&gt;&lt;/script&gt;</pre>
-                        
-                        		<p class="p">The bootstrap JavaScript will be included via the URL
-                           				<samp class="ph codeph">resources/sap-ui-cachebuster/sap-ui-core.js</samp> instead of
-                           				<samp class="ph codeph">resources/sap-ui-core.js</samp>. 
+                        <p class="p">The bootstrap JavaScript will be included via the URL 
+                           		<samp class="ph codeph">resources/sap-ui-cachebuster/sap-ui-core.js</samp> instead of 
+                           		<samp class="ph codeph">resources/sap-ui-core.js</samp>. 
+                           	 
                         </p>
                         
-                        		
                         <div class="section" id="loio91f080966f4d1014b6dd926db0e91070__section_854964900D904B06AC93A9948B313E31">
                            <section class="section" type="Mechanism">
-                              <h2 class="section_title" style="font-size: 1.15em;">Mechanism</h2>
-                              			
-                              			
-                              <p class="p">The basic mechanism is implemented in the <samp class="ph codeph">ResourceServlet</samp>. For the
-                                 				request to the bootstrap JavaScript it now serves a JavaScript file with the
-                                 				following content: 
+                              <h2 class="section_title" style="font-size: 1.15em;">Mechanism</h2> 
+                              		 
+                              		
+                              <p class="p">The basic mechanism is implemented in the 
+                                 		  <samp class="ph codeph">ResourceServlet</samp>. For the request to the bootstrap
+                                 		  JavaScript it now serves a JavaScript file with the following content: 
+                                 		
                               </p>
-                              
-                              			<pre class="pre codeblock prettyprint lang-js">(function() {
+                               
+                              		<pre class="pre codeblock prettyprint lang-js">(function() {
   var sTimeStamp = &apos;~20120716-0201~&apos;;
   var sScriptPath = &apos;sap\x2dui\x2dcore.js&apos;;
   var aScriptTags = document.getElementsByTagName(&apos;script&apos;);
@@ -200,8 +196,8 @@
     }
   }
 })();</pre>
-                              
-                              			<p class="p">This script basically ensures that the global <span class="ph"><span class="ph pname">OpenUI5</span></span> configuration
+                               
+                              	 	<p class="p">This script basically ensures that the global <span class="ph"><span class="ph pname">OpenUI5</span></span> configuration
                                  				variable (<samp class="ph codeph">window[&quot;sap-ui-config&quot;]</samp>) exists, without modifying any
                                  				existing values. It defines the resource root of <span class="ph"><span class="ph pname">OpenUI5</span></span> (the location
                                  				where <span class="ph"><span class="ph pname">OpenUI5</span></span> loads all
@@ -211,82 +207,81 @@
                                  				timestamp. Additionally the cache headers of the responses now look like the
                                  				following: 
                               </p>
-                              
-                              			<pre class="pre codeblock prettyprint">Date: Mon, 16 Jul 2012 05:17:54 GMT
+                               
+                              		<pre class="pre codeblock prettyprint">Date: Mon, 16 Jul 2012 05:17:54 GMT
 Expires: Thu, 14 Jul 2022 05:17:54 GMT
 Cache-Control: max-age=315360000, public</pre>
-                              
-                              			<p class="p">By default all cache buster resources will be cached for one year. </p>
-                              
-                              		
+                               
+                              		<p class="p">By default all cache buster resources will be cached for one year. 
+                                 		
+                              </p>
+                               
+                              	 
                            </section>
                         </div>
                         
-                        		
                         <div class="section" id="loio91f080966f4d1014b6dd926db0e91070__section_CE7E0979C4904BAB8D627BDBF74DC262">
                            <section class="section" type="Request Flow">
-                              <h2 class="section_title" style="font-size: 1.15em;">Request Flow</h2>
-                              			
-                              			
-                              <p class="p">When using the cache buster mechanism, the first request must never be cached because
-                                 				it is being used to determine the timestamp / and to finally redirect to the correct
-                                 				script. The following list explains the flow: 
+                              <h2 class="section_title" style="font-size: 1.15em;">Request Flow</h2> 
+                              		 
+                              		
+                              <p class="p">When using the cache buster mechanism, the first request must never be
+                                 		  cached because it is being used to determine the timestamp / and to finally
+                                 		  redirect to the correct script. The following list explains the flow: 
+                                 		
                               </p>
-                              
-                              			
+                               
+                              		
                               <ul class="ul">
-                                 				
-                                 <li class="li">
-                                    					
-                                    <p class="p"><samp class="ph codeph">resources/sap-ui-cachebuster/sap-ui-core.js</samp> =&gt; NO_CACHE
-                                       					
+                                 <li class="li"> 
+                                    			 
+                                    <p class="p"><samp class="ph codeph">resources/sap-ui-cachebuster/sap-ui-core.js</samp> =&gt; NO_CACHE 
                                     </p>
-                                    
-                                    				
+                                     
+                                    		  
                                  </li>
                                  
-                                 				
-                                 <li class="li">
-                                    					
+                                 <li class="li"> 
+                                    			 
                                     <p class="p"><samp class="ph codeph">resources/~201106210204~/sap-ui-core.js</samp> =&gt;CACHE 
                                     </p>
-                                    
-                                    				
+                                     
+                                    		  
                                  </li>
                                  
-                                 			
                               </ul>
-                              
-                              		
+                               
+                              	 
                            </section>
                         </div>
                         
-                        		
                         <div class="section" id="loio91f080966f4d1014b6dd926db0e91070__section_EA1BCA523C48462CB21AC33F705872FA">
                            <section class="section" type="Timestamp">
-                              <h2 class="section_title" style="font-size: 1.15em;">Timestamp</h2>
-                              			
-                              			
-                              <p class="p">If you are interested in the timestamp of the cache buster, you can grab it with the
-                                 				following request: 
-                              </p>
-                              
-                              			
-                              <p class="p"><samp class="ph codeph">resources/sap-ui-cachebuster </samp>
-                                 			
-                              </p>
-                              
-                              			
-                              <p class="p">The response is <samp class="ph codeph">text/plain</samp> with such value:
-                                 					<samp class="ph codeph">~20120716-0201~</samp>
-                                 			
-                              </p>
-                              
+                              <h2 class="section_title" style="font-size: 1.15em;">Timestamp</h2> 
+                              		 
                               		
+                              <p class="p">If you are interested in the timestamp of the cache buster, you can
+                                 		  grab it with the following request: 
+                                 		
+                              </p>
+                               
+                              		
+                              <p class="p"><samp class="ph codeph">resources/sap-ui-cachebuster 
+                                    		  </samp> 
+                                 		
+                              </p>
+                               
+                              		
+                              <p class="p">The response is 
+                                 		  <samp class="ph codeph">text/plain</samp> with such value: 
+                                 		  <samp class="ph codeph">~20120716-0201~</samp> 
+                                 		
+                              </p>
+                               
+                              	 
                            </section>
                         </div>
                         
-                        	
                      </div>
                      
                   </div>

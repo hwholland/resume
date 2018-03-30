@@ -5,14 +5,14 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Extending Input Rendering</title>
+      <title>Extending TextField Rendering</title>
       <link rel="icon" href="themes/sap-default/img/favicon.ico" type="image/x-icon">
       <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="abstract" content="Example of an Input control with changed rendering.">
+      <meta name="abstract" content="Example of a TextField control with a changed rendering.">
       
-      <meta name="description" content="Example of an Input control with changed rendering.">
+      <meta name="description" content="Example of a TextField control with a changed rendering.">
       <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"91f393916f4d1014b6dd926db0e91070.html","previousTopicHref":"d5b756bf4e9a4d67961fa21e1ba12c9e.html"}</script>
       <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
       <script type="text/javascript">
@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -114,47 +114,47 @@
                   <div id="content-toolbar" class="toolbar hide-for-small"></div>
                   <div class="page topic  - topic-topic " id="loiobcee26a4801748f39bf5698d83d903aa">
                      
-                     <h1 class="title topictitle1" hidden>Extending Input Rendering</h1>
+                     <h1 class="title topictitle1" hidden>Extending TextField Rendering</h1>
                      
                      <div class="body">
-                        <p class="shortdesc" hidden>Example of an <samp class="ph codeph">Input</samp> control with changed rendering.
+                        <p class="shortdesc" hidden>Example of a <samp class="ph codeph">TextField</samp> control with a changed rendering.
                         </p>
                         
                         		
                         <p class="p">The following code snippet creates a control type that inherits from
-                           				<samp class="ph codeph">sap.m.Input</samp>. The new control has all features from the
-                           				<samp class="ph codeph">Input</samp> control, but the rendering is changed to be highlighted with
+                           			<samp class="ph codeph">TextField</samp>. The new control has all features from the
+                           				<samp class="ph codeph">TextField</samp> control, but the rendering is changed to highlighted with
                            			yellow background.
                         </p>
                         
                         		
                         <p class="p">The control API and the <samp class="ph codeph">render</samp> method can be inherited as it is and the
-                           				<samp class="ph codeph">renderInnerAttributes</samp> method of the <samp class="ph codeph">InputRenderer</samp>
-                           			is overwritten: 
+                           				<samp class="ph codeph">renderInnerAttributes</samp> method of the
+                           				<samp class="ph codeph">TextFieldRenderer</samp> is overwritten: 
                         </p>
                         
                         		<pre class="pre codeblock prettyprint lang-js">  
-sap.m.Input.extend(&quot;HighlightInput&quot;, { // call the new Control type &quot;HighlightInput&quot; 
-                                                      // and let it inherit from sap.m.Input
+sap.ui.commons.TextField.extend(&quot;HighlightField&quot;, { // call the new Control type &quot;HighlightField&quot; 
+                                                      // and let it inherit from sap.ui.commons.TextField
      
 
       renderer: {
-          // note that no render() function is given here. The Input&apos;s render() function is used. 
+          // note that NO render() function is given here! The TextField&apos;s render() function is used. 
           // But one function is overwritten:
           
-          renderInnerAttributes : function(oRm, oInput) {
-              oRm.addStyle(&apos;background-color&apos;, &apos;#ffff00&apos;);  // this change could also be done with plain CSS. 
+          renderInnerAttributes : function(oRm, oTextField) {
+              oRm.addStyle(&apos;background-color&apos;, &apos;#ffff00&apos;);  // this change could also be done with plain CSS!! 
                                                             // But you get the idea...
           }
       }
   });</pre>
                         
-                        		<p class="p">The <samp class="ph codeph">HighlightInput</samp> control can be used in an application in the same way
-                           			as <samp class="ph codeph">Input</samp>:
+                        		<p class="p">The <samp class="ph codeph">HighlightField</samp> control can be used in an application in the same way as
+                           				<samp class="ph codeph">TextField</samp>:
                         </p>
                         
                         		<pre class="pre codeblock prettyprint lang-js">
-var myControl = new HighlightInput({value:&quot;Highlighted editing&quot;});
+var myControl = new HighlightField({value:&quot;Highlighted editing&quot;});
 myControl.placeAt(&quot;content&quot;);</pre>
                         
                         	</div>

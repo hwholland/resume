@@ -35,36 +35,7 @@ Alternate row coloring is not available for the High Contrast Black/White themes
             <documentation>Defines the layout in which the table pop-in rows are rendered.
 &lt;b&gt;Note:&lt;/b&gt; The &lt;code&gt;demandPopin&lt;/code&gt; and &lt;code&gt;minScreenWidth&lt;/code&gt; properties of the &lt;code&gt;Column&lt;/code&gt; control must be configured appropriately.</documentation>
         </property>
-        <property since="1.54" group="Appearance" defaultValue="None" type="sap.m/Sticky" name="sticky">
-            <documentation>Defines the section of the &lt;code&gt;sap.m.Table&lt;/code&gt; control that remains fixed at the top of the page during vertical scrolling as long as the table is in the viewport.
-
-&lt;b&gt;Note:&lt;/b&gt; There is limited browser support, hence the API is in experimental state.
-Browsers that currently support this feature are Chrome (desktop and mobile), Safari (desktop and mobile) and Edge 41.
-
-There are also some known issues with respect to the scrolling behavior and focus handling. A few are given below:
-
-If the table is placed in certain layout containers, for example, the &lt;code&gt;sap.ui.layout.Grid&lt;/code&gt; control,
-the column headers are not fixed at the top of the viewport. Similar behavior is also observed with the &lt;code&gt;sap.m.ObjectPage&lt;/code&gt; control.
-
-This API should not be used in a productive environment.</documentation>
-            <developmentState since="1.54" state="experimental"></developmentState>
-        </property>
     </properties>
-    <events>
-        <event allowPreventDefault="true" since="1.54" name="beforeOpenContextMenu">
-            <documentation>Fired when the context menu is opened.
-When the context menu is opened, the binding context of the item is set to the given &lt;code&gt;contextMenu&lt;/code&gt;.</documentation>
-            <parameters>
-                <parameter type="sap.m/ColumnListItem" name="listItem">
-                    <documentation>Item in which the context menu was opened.</documentation>
-                </parameter>
-                <parameter type="sap.m/Column" name="column">
-                    <documentation>Column in which the context menu was opened.
-&lt;b&gt;Note:&lt;/b&gt; This parameter might be undefined for the items that are not part of a column definition.</documentation>
-                </parameter>
-            </parameters>
-        </event>
-    </events>
     <aggregations>
         <aggregation cardinality="0..n" type="sap.m/Column" name="columns">
             <documentation>Defines the columns of the table.</documentation>

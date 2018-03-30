@@ -6,8 +6,8 @@
 <meta name="abstract" content="OpenUI5 provides several expressions and helpers for HTML templating."/>
 <meta name="description" content="OpenUI5 provides several expressions and helpers for HTML templating."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9853594857406179"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9853594857406179"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5369008868257963"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5369008868257963"/>
 <title>Expressions and Helpers for HTML Templating</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -32,7 +32,8 @@
 					created. The following example shows how you can use plain handlebars
 					expressions and helpers.</p>
 
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;h3&gt;{{title}}&lt;/h3&gt;
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">
+&lt;h3&gt;{{title}}&lt;/h3&gt;
 &lt;ul&gt;
 {{#each persons}}
     &lt;li&gt;{{firstName}} {{lastName}}&lt;/li&gt;
@@ -86,7 +87,8 @@
 						<p class="p">Example for use with editable DOM elements for two-way binding (binding
 							the value of an input field against a model property): </p>
 
-						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">{{element tag="input" value="{/title}"}}
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">
+{{element tag="input" value="{/title}"}}
 {{element tag="textarea" text="{/title}"}}</pre></div>
 
 						<p class="p">DOM elements have the advantage that you can update them individually
@@ -98,12 +100,12 @@
 					<li class="li">
 						<p class="p"><samp class="ph codeph">{{control}}</samp></p>
 
-						<p class="p">You use the <samp class="ph codeph">control</samp> helper to create or embed <span class="ph"><span class="ph pname">OpenUI5</span></span>
+						<p class="p">You use the <samp class="ph codeph">control</samp> helper to creat or embed <span class="ph"><span class="ph pname">OpenUI5</span></span>
 							controle intro a template instance. It is aligned with declarative
-							support. The following example shows how you embed an
-								<samp class="ph codeph">sap.m.Input</samp> control in a template:</p>
+							support. The following example shows how you embed a
+								<samp class="ph codeph">sap.ui.commons.TextField</samp> in a template:</p>
 
-						<p class="p"><samp class="ph codeph">{{control sap-ui-type="sap.m.Input" value="{/title}"}}</samp></p>
+						<p class="p"><samp class="ph codeph">{{control sap-ui-type="sap.ui.commons.TextField" value="{/title}"}}</samp></p>
 
 					</li>
 
@@ -111,9 +113,10 @@
 						<p class="p"><samp class="ph codeph">{{each}}</samp></p>
 
 						<p class="p">You can use the <samp class="ph codeph">each</samp> helper together with <span class="ph"><span class="ph pname">OpenUI5</span></span> data
-							binding by specifying the <samp class="ph codeph">path</samp> attribute:</p>
+							binding by specifiying the path attribute:</p>
 
-						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">{{#each path="/persons"}}
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">
+{{#each path="/persons"}}
   {{element text="firstName"}}
 {{/each}}
 </pre></div>

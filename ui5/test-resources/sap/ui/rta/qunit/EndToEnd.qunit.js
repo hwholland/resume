@@ -38,7 +38,6 @@ sap.ui.require([
 	QUnit.module("Given RTA is started...", {
 		beforeEach : function(assert) {
 			this._oCompCont = RtaQunitUtils.renderTestAppAt("test-view");
-
 			var that = this;
 			FakeLrepLocalStorage.deleteChanges();
 			assert.equal(FakeLrepLocalStorage.getNumChanges(), 0, "Local storage based LREP is empty");
@@ -51,9 +50,6 @@ sap.ui.require([
 			});
 
 			return Promise.all([
-				new Promise(function (fnResolve) {
-					this._oCompCont.getComponentInstance().oView.getModel().attachEventOnce('metadataLoaded', fnResolve);
-				}.bind(this)),
 				new Promise(function (fnResolve) {
 					this.oRta.attachStart(function () {
 						this.oFieldOverlay = OverlayRegistry.getOverlay(that.oField);
@@ -143,33 +139,25 @@ sap.ui.require([
 				assert.strictEqual($editableField.length, 1, " then the rename input field is rendered");
 				assert.strictEqual($editableField.find(document.activeElement).length, 1, " and focus is in it");
 
-				Promise.all([
-					new Promise(function (fnResolve) {
-						var oCommandStack = this.oRta.getCommandStack();
-						oCommandStack.attachModified(function(oEvent) {
-							var oFirstExecutedCommand = oCommandStack.getAllExecutedCommands()[0];
-							if (oFirstExecutedCommand &&
-								oFirstExecutedCommand.getName() === "rename") {
-								fnWaitForLrepSerialization.call(this).then(function() {
-									assert.strictEqual(this.oGroup.getLabel(), "Test", "then title of the group is Test");
-									assert.equal(oChangePersistence.getDirtyChanges().length, 1, "then there is 1 dirty change in the FL ChangePersistence");
-									fnResolve();
-								}.bind(this));
-							}
+				var oCommandStack = this.oRta.getCommandStack();
+				oCommandStack.attachModified(function(oEvent) {
+					var oFirstExecutedCommand = oCommandStack.getAllExecutedCommands()[0];
+					if (oFirstExecutedCommand &&
+						oFirstExecutedCommand.getName() === "rename") {
+						fnWaitForLrepSerialization.call(this).then(function() {
+							assert.strictEqual(this.oGroup.getLabel(), "Test", "then title of the group is Test");
+							assert.equal(oChangePersistence.getDirtyChanges().length, 1, "then there is 1 dirty change in the FL ChangePersistence");
+
+							sap.ui.getCore().getEventBus().subscribeOnce('sap.ui.rta', 'plugin.Rename.stopEdit', function (sChannel, sEvent, mParams) {
+								if (mParams.overlay === this.oGroupOverlay) {
+									assert.strictEqual(this.oGroupOverlay.getDomRef(), document.activeElement, " and focus is on group overlay");
+									$editableField = $groupOverlay.find(".sapUiRtaEditableField");
+									assert.strictEqual($editableField.length, 0, " and the editable field is removed from dom");
+									this.oRta.stop().then(done);
+								}
+							}, this);
 						}.bind(this));
-					}.bind(this)),
-					new Promise(function (fnResolve) {
-						sap.ui.getCore().getEventBus().subscribeOnce('sap.ui.rta', 'plugin.Rename.stopEdit', function (sChannel, sEvent, mParams) {
-							if (mParams.overlay === this.oGroupOverlay) {
-								assert.strictEqual(this.oGroupOverlay.getDomRef(), document.activeElement, " and focus is on group overlay");
-								$editableField = $groupOverlay.find(".sapUiRtaEditableField");
-								assert.strictEqual($editableField.length, 0, " and the editable field is removed from dom");
-								fnResolve();
-							}
-						}, this);
-					}.bind(this))
-				]).then(function () {
-					this.oRta.stop().then(done);
+					}
 				}.bind(this));
 
 				document.activeElement.innerHTML = "Test";
@@ -203,32 +191,24 @@ sap.ui.require([
 				assert.strictEqual($editableField.length, 1, " then the rename input field is rendered");
 				assert.strictEqual($editableField.find(document.activeElement).length, 1, " and focus is in it");
 
-				Promise.all([
-					new Promise(function (fnResolve) {
-						var oCommandStack = this.oRta.getCommandStack();
-						oCommandStack.attachModified(function(oEvent) {
-							var oFirstExecutedCommand = oCommandStack.getAllExecutedCommands()[0];
-							if (oFirstExecutedCommand && oFirstExecutedCommand.getName() === "rename") {
-								fnWaitForLrepSerialization.call(this).then(function() {
-									assert.strictEqual(this.oField._getLabel().getText(), "Test", "then label of the group element is Test");
-									assert.equal(oChangePersistence.getDirtyChanges().length, 1, "then there is 1 dirty change in the FL ChangePersistence");
-									fnResolve();
-								}.bind(this));
-							}
+				var oCommandStack = this.oRta.getCommandStack();
+				oCommandStack.attachModified(function(oEvent) {
+					var oFirstExecutedCommand = oCommandStack.getAllExecutedCommands()[0];
+					if (oFirstExecutedCommand && oFirstExecutedCommand.getName() === "rename") {
+						fnWaitForLrepSerialization.call(this).then(function() {
+							assert.strictEqual(this.oField._getLabel().getText(), "Test", "then label of the group element is Test");
+							assert.equal(oChangePersistence.getDirtyChanges().length, 1, "then there is 1 dirty change in the FL ChangePersistence");
+
+							sap.ui.getCore().getEventBus().subscribeOnce('sap.ui.rta', 'plugin.Rename.stopEdit', function (sChannel, sEvent, mParams) {
+								if (mParams.overlay === this.oFieldOverlay) {
+									assert.strictEqual(document.activeElement, this.oFieldOverlay.getDomRef(), " and focus is on field overlay");
+									$editableField = $fieldOverlay.find(".sapUiRtaEditableField");
+									assert.strictEqual($editableField.length, 0, " and the editable field is removed from dom");
+									this.oRta.stop().then(done);
+								}
+							}, this);
 						}.bind(this));
-					}.bind(this)),
-					new Promise(function (fnResolve) {
-						sap.ui.getCore().getEventBus().subscribeOnce('sap.ui.rta', 'plugin.Rename.stopEdit', function (sChannel, sEvent, mParams) {
-							if (mParams.overlay === this.oFieldOverlay) {
-								assert.strictEqual(document.activeElement, this.oFieldOverlay.getDomRef(), " and focus is on field overlay");
-								$editableField = $fieldOverlay.find(".sapUiRtaEditableField");
-								assert.strictEqual($editableField.length, 0, " and the editable field is removed from dom");
-								fnResolve();
-							}
-						}, this);
-					}.bind(this))
-				]).then(function () {
-					this.oRta.stop().then(done);
+					}
 				}.bind(this));
 
 				document.activeElement.innerHTML = "Test";

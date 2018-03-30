@@ -2,11 +2,7 @@ sap.ui.define(['sap/ui/core/UIComponent'], function(UIComponent) {
 	"use strict";
 	var Component = UIComponent.extend("sap.m.sample.NumericContentDifColors.Component", {
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.NumericContentDifColors.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.NumericContentDifColors.Page",
 			dependencies : {
 				libs : ["sap.m"]
 			},

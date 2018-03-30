@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 		return UIComponent.extend("sap.f.sample.DynamicPageFreeStyle.Component", {
 
 			metadata: {
-				rootView: {
-					"viewName": "sap.f.sample.DynamicPageFreeStyle.DynamicPageFreeStyle",
-					"type": "XML",
-					"async": true
-				},
+				rootView: "sap.f.sample.DynamicPageFreeStyle.DynamicPageFreeStyle",
 				dependencies: {
 					libs: [
 						"sap.f",

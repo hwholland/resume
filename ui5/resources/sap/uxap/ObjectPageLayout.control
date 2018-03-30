@@ -3,49 +3,7 @@
     <name>ObjectPageLayout</name>
     <derived/>
     <author>SAP SE</author>
-    <documentation>A layout that allows apps to easily display information related to a business object.
-
-&lt;h3&gt;Overview&lt;/h3&gt;
-
-The &lt;code&gt;ObjectPageLayout&lt;/code&gt; layout is composed of a header (title and content),
-an optional anchor bar and block content wrapped in sections and subsections that
-structure the information.
-
-&lt;h3&gt;Structure&lt;/h3&gt;
-
-An &lt;code&gt;ObjectPageLayout&lt;/code&gt; control is used to put together all parts of an Object page
-- Header, optional Anchor Bar and Sections/Subsections.
-
-&lt;h4&gt;Header&lt;/h4&gt;
-The &lt;code&gt;ObjectPageLayout&lt;/code&gt; implements the snapping header concept. This means that
-the upper part of the header (Header Title) always stays visible, while the lower part
-(Header Content) can scroll out of view.
-
-Header Title is displayed at the top of the header and always remains visible above the
-scrollable content of the page. It contains the title and most prominent details of the object.
-
-The Header Content scrolls along with the content of the page until it disappears (collapsed header).
-When scrolled back to the top it becomes visible again (expanded header). It contains all the
-additional information of the object.
-
-&lt;h4&gt;Anchor Bar&lt;/h4&gt;
-The Anchor Bar is an automatically generated internal menu that shows the titles of the sections
-and subsections and allows the user to scroll to the respective section and subsection content.
-
-&lt;h4&gt;Sections, Subsections, Blocks&lt;/h4&gt;
-The content of the page that appears bellow the header is composed of blocks structured into
-sections and subsections.
-
-&lt;h3&gt;Usage&lt;/h3&gt;
-Use the &lt;code&gt;ObjectPageLayout&lt;/code&gt; if:
-&lt;ul&gt;
-&lt;li&gt;The users need to see, edit, or create an item with all its details.&lt;/li&gt;
-&lt;li&gt;Users need to get an overview of an object and interact with different parts of the object.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3&gt;Responsive behavior&lt;/h3&gt;
-
-The &lt;code&gt;ObjectPageLayout&lt;/code&gt; is responsive and adapts to all screen sizes.</documentation>
+    <documentation>An ObjectPageLayout is the layout control, used to put together all parts of an Object page - Header, Navigation bar and Sections/Subsections.</documentation>
     <since>1.26</since>
     <baseType>sap.ui.core/Control</baseType>
     <properties>
@@ -113,13 +71,13 @@ In this case the value of this property will be ignored.
 Child pages have an additional (darker/lighter) stripe on the left side of their header content area.
 
 &lt;b&gt;Note&lt;/b&gt;: This property is only taken into account if an instance of
-&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt; is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</documentation>
+&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt;is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</documentation>
         </property>
         <property since="1.34.0" group="Behavior" defaultValue="false" type="sap.ui.core/boolean" name="alwaysShowContentHeader">
             <documentation>Determines whether Header Content will always be expanded on desktop.
 
 &lt;b&gt;Note&lt;/b&gt;: This property is only taken into account if an instance of
-&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt; is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</documentation>
+&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt;is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</documentation>
         </property>
         <property since="1.52" group="Behavior" defaultValue="true" type="sap.ui.core/boolean" name="headerContentPinnable">
             <documentation>Determines whether the Header Content area can be pinned.
@@ -138,14 +96,14 @@ If set to &lt;code&gt;false&lt;/code&gt;, the &lt;code&gt;sap.uxap.ObjectPageDyn
 must provide other means for expanding/collapsing the &lt;code&gt;sap.uxap.ObjectPageDynamicHeaderContent&lt;/code&gt;, if necessary.
 
 &lt;b&gt;Note:&lt;/b&gt; This property is only taken into account if an instance of
-&lt;code&gt;sap.uxap.ObjectPageDynamicHeaderTitle&lt;/code&gt; is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</documentation>
+&lt;code&gt;sap.uxap.ObjectPageDynamicHeaderTitle&lt;/code&gt;is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</documentation>
         </property>
         <property since="1.52" group="Behavior" defaultValue="false" type="sap.ui.core/boolean" name="preserveHeaderStateOnScroll">
             <documentation>Preserves the current header state when scrolling.
 For example, if the user expands the header by clicking on the title and then scrolls down the page, the header will remain expanded.
 
 &lt;b&gt;Notes:&lt;/b&gt;
-&lt;ul&gt;&lt;li&gt;This property is only taken into account if an instance of &lt;code&gt;sap.uxap.ObjectPageDynamicHeaderTitle&lt;/code&gt; is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.&lt;/li&gt;
+&lt;ul&gt;&lt;li&gt;This property is only taken into account if an instance of &lt;code&gt;sap.uxap.ObjectPageDynamicHeaderTitle&lt;/code&gt;is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.&lt;/li&gt;
 &lt;li&gt;Based on internal rules, the value of the property is not always taken into account - for example,
 when the control is rendered on tablet or mobile and the control`s title and header
 are with height larger than the given threshold.&lt;/li&gt;&lt;/ul&gt;</documentation>
@@ -154,7 +112,7 @@ are with height larger than the given threshold.&lt;/li&gt;&lt;/ul&gt;</document
             <documentation>Determines whether an Edit button will be displayed in Header Content.
 
 &lt;b&gt;Note&lt;/b&gt;: This property is only taken into account if an instance of
-&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt; is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</documentation>
+&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt;is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</documentation>
         </property>
         <property since="1.34.0" group="Misc" defaultValue="false" type="sap.ui.core/boolean" name="flexEnabled">
             <documentation>Specifies whether the object page enables flexibility features, such as hiding and adding sections.&lt;br&gt;
@@ -181,9 +139,6 @@ For more information about SAPUI5 flexibility, refer to the Developer Guide.</do
             <parameters>
                 <parameter type="sap.uxap/ObjectPageSection" name="section">
                     <documentation>The selected section object.</documentation>
-                </parameter>
-                <parameter type="sap.uxap/ObjectPageSubSection" name="subSection">
-                    <documentation>The selected subsection object.</documentation>
                 </parameter>
             </parameters>
         </event>

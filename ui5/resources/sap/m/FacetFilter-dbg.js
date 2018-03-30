@@ -1,39 +1,12 @@
 /*!
 * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
 */
 
 // Provides control sap.m.FacetFilter.
-sap.ui.define([
-	'jquery.sap.global',
-	'./NavContainer',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/IconPool',
-	'sap/ui/core/delegate/ItemNavigation',
-	'sap/ui/core/InvisibleText',
-	'sap/ui/Device',
-	'sap/ui/base/ManagedObject',
-	'sap/ui/core/Icon',
-	'sap/ui/model/Filter',
-	'./FacetFilterRenderer',
-	'jquery.sap.keycodes'
-],
-	function(
-	jQuery,
-	NavContainer,
-	library,
-	Control,
-	IconPool,
-	ItemNavigation,
-	InvisibleText,
-	Device,
-	ManagedObject,
-	Icon,
-	Filter,
-	FacetFilterRenderer
-	) {
+sap.ui.define(['jquery.sap.global', './NavContainer', './library', 'sap/ui/core/Control', 'sap/ui/core/IconPool', 'sap/ui/core/delegate/ItemNavigation', 'sap/ui/core/InvisibleText', 'sap/ui/Device', 'sap/ui/base/ManagedObject', 'sap/ui/core/Icon', 'sap/ui/model/Filter', 'jquery.sap.keycodes'],
+	function(jQuery, NavContainer, library, Control, IconPool, ItemNavigation, InvisibleText, Device, ManagedObject, Icon, Filter) {
 	"use strict";
 
 
@@ -125,7 +98,7 @@ sap.ui.define([
 	 *
 	 * @extends sap.ui.core.Control
 	 * @implements sap.ui.core.IShrinkable
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -428,6 +401,7 @@ sap.ui.define([
 		this._pageSize = 5;
 		this._addDelegateFlag = false;
 		this._invalidateFlag = false;
+		this._closePopoverFlag = false;
 		this._lastCategoryFocusIndex = 0;
 		this._aDomRefs = null;
 		this._previousTarget = null;
@@ -571,6 +545,8 @@ sap.ui.define([
 			}
 		}
 		// After each rendering the delegate needs to be initialized as well.
+
+		//set the root dom node that surrounds the items
 		this.oItemNavigation.setRootDomRef(oFocusRef);
 
 		//set the array of dom nodes representing the items.
@@ -659,6 +635,14 @@ sap.ui.define([
 			this.focus();
 			this._invalidateFlag = false;
 		}
+
+	//keep entering tab and expect the focus will return to reset or add button instead of list category
+		if ( this._closePopoverFlag == true) {
+			this.oItemNavigation.setFocusedIndex(-1);
+			this.focus();
+			this._closePopoverFlag = false;
+		}
+
 	};
 
 	/**
@@ -932,6 +916,7 @@ sap.ui.define([
 				afterClose: function(oEvent) {
 
 					that._addDelegateFlag = true;
+					that._closePopoverFlag = true;
 
 
 					// The facet button will not be removed when the remove icon is pressed if we don't delay hiding the icon in ie 9.
@@ -1829,7 +1814,14 @@ sap.ui.define([
 				}
 			});
 
+			var sFacetFilterText = sap.ui.getCore().getLibraryResourceBundle("sap.m").getText("FACETFILTER_ARIA_FACET_FILTER"),
+				sInvisibleLabelId = new InvisibleText({text: sFacetFilterText}).toStatic().getId();
+
+			this._aOwnedLabels.push(sInvisibleLabelId);
+
 			oSummaryBar._setRootAccessibilityRole("button");
+			oSummaryBar._sInternalAriaLabelId = sInvisibleLabelId;
+
 			this.setAggregation("summaryBar", oSummaryBar);
 		}
 		return oSummaryBar;

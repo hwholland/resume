@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.IconTabBarOverflowSelectList.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.IconTabBarOverflowSelectList.IconTabBarOverflowSelectList",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.IconTabBarOverflowSelectList.IconTabBarOverflowSelectList",
 			dependencies : {
 				libs : [
 					"sap.m"

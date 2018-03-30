@@ -1,38 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.Page.
-sap.ui.define([
-	"jquery.sap.global",
-	"./library",
-	"sap/ui/core/Control",
-	"sap/ui/core/delegate/ScrollEnablement",
-	"sap/m/Title",
-	"sap/m/Button",
-	"sap/m/Bar",
-	"sap/ui/core/ContextMenuSupport",
-	"sap/ui/core/library",
-	"sap/ui/Device",
-	"sap/ui/core/Element",
-	"./PageRenderer"
-],
-function(
-	jQuery,
-	library,
-	Control,
-	ScrollEnablement,
-	Title,
-	Button,
-	Bar,
-	ContextMenuSupport,
-	coreLibrary,
-	Device,
-	Element,
-	PageRenderer
-	) {
+sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Control", "sap/ui/core/delegate/ScrollEnablement", "sap/m/Title", "sap/m/Button", "sap/m/Bar", "sap/ui/core/ContextMenuSupport", "sap/ui/core/library", "sap/ui/Device", "sap/ui/core/Element"],
+	function(jQuery, library, Control, ScrollEnablement, Title, Button, Bar, ContextMenuSupport, coreLibrary, Device, Element) {
 		"use strict";
 
 
@@ -81,7 +55,7 @@ function(
 		 * @extends sap.ui.core.Control
 		 * @mixes sap.ui.core.ContextMenuSupport
 		 * @author SAP SE
-		 * @version 1.54.2
+		 * @version 1.52.5
 		 *
 		 * @public
 		 * @alias sap.m.Page
@@ -222,7 +196,7 @@ function(
 					 * Controls to be added to the right side of the page header. Usually an application would use Button controls and limit the number to one when the application needs to run on smartphones. There is no automatic overflow handling when the space is insufficient.
 					 * When a customHeader is used, this aggregation will be ignored.
 					 */
-					headerContent: {type: "sap.ui.core.Control", multiple: true, singularName: "headerContent", forwarding: {getter: "_getInternalHeader", aggregation: "contentRight"}},
+					headerContent: {type: "sap.ui.core.Control", multiple: true, singularName: "headerContent"},
 
 					/**
 					 * Accessible landmark settings to be applied on the containers of the <code>sap.m.Page</code> control.
@@ -251,7 +225,7 @@ function(
 					 */
 					navButtonPress: {}
 				},
-				designtime: "sap/m/designtime/Page.designtime"
+				designTime: true
 			}
 		});
 
@@ -574,7 +548,7 @@ function(
 		 *
 		 * @param {sap.m.PageAccessibleLandmarkInfo} oLandmarkInfo Page LandmarkInfo
 		 * @param {string} sPartName part of the page
-		 * @returns {sap.m.PageAccessibleLandmarkInfo} The formatted landmark info
+		 * @returns {object}
 		 * @private
 		 */
 		Page.prototype._formatLandmarkInfo = function (oLandmarkInfo, sPartName) {
@@ -599,7 +573,7 @@ function(
 		 * Returns HTML tag of the page header.
 		 *
 		 * @param {sap.m.PageAccessibleLandmarkInfo} oLandmarkInfo Page LandmarkInfo
-		 * @returns {string} The HTMLtag of the page header.
+		 * @returns {string}
 		 * @private
 		 */
 		Page.prototype._getHeaderTag = function (oLandmarkInfo) {
@@ -614,7 +588,7 @@ function(
 		 * Returns HTML tag of the page sub-header.
 		 *
 		 * @param {sap.m.PageAccessibleLandmarkInfo} oLandmarkInfo Page LandmarkInfo
-		 * @returns {string} The HTML tag of the page sub-header.
+		 * @returns {string}
 		 * @private
 		 */
 		Page.prototype._getSubHeaderTag = function (oLandmarkInfo) {
@@ -629,7 +603,7 @@ function(
 		 * Returns HTML tag of the page footer.
 		 *
 		 * @param {sap.m.PageAccessibleLandmarkInfo} oLandmarkInfo Page LandmarkInfo
-		 * @returns {string} The HTML tag of the page footer.
+		 * @returns {string}
 		 * @private
 		 */
 		Page.prototype._getFooterTag = function (oLandmarkInfo) {
@@ -683,6 +657,37 @@ function(
 			this.$().toggleClass("sapMPageBusyCoversAll", !bContentOnly);
 			return this;
 		};
+
+		//*** Methods forwarding the "headerContent" pseudo-aggregation calls ***
+
+		Page.prototype.getHeaderContent = function () {
+			return this._getInternalHeader().getContentRight();
+		};
+
+		Page.prototype.indexOfHeaderContent = function (oControl) {
+			return this._getInternalHeader().indexOfContentRight(oControl);
+		};
+
+		Page.prototype.insertHeaderContent = function (oControl, iIndex) {
+			return this._getInternalHeader().insertContentRight(oControl, iIndex);
+		};
+
+		Page.prototype.addHeaderContent = function (oControl) {
+			return this._getInternalHeader().addContentRight(oControl);
+		};
+
+		Page.prototype.removeHeaderContent = function (oControl) {
+			return this._getInternalHeader().removeContentRight(oControl);
+		};
+
+		Page.prototype.removeAllHeaderContent = function () {
+			return this._getInternalHeader().removeAllContentRight();
+		};
+
+		Page.prototype.destroyHeaderContent = function () {
+			return this._getInternalHeader().destroyContentRight();
+		};
+
 
 		Page.prototype.setCustomHeader = function(oHeader) {
 

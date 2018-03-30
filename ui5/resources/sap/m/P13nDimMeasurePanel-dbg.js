@@ -1,13 +1,13 @@
 /*
  * ! UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.P13nDimMeasurePanel.
 sap.ui.define([
-	'jquery.sap.global', './ColumnListItem', './P13nPanel', './P13nDimMeasureItem', './SearchField', './Table', './library', 'sap/ui/model/ChangeReason', 'sap/ui/model/json/JSONModel', 'sap/ui/model/BindingMode', 'sap/ui/core/ResizeHandler', 'sap/ui/core/Item', 'sap/ui/core/InvisibleText', 'sap/ui/core/IconPool', 'sap/m/ScrollContainer'
-], function(jQuery, ColumnListItem, P13nPanel, P13nDimMeasureItem, SearchField, Table, library, ChangeReason, JSONModel, BindingMode, ResizeHandler, Item, InvisibleText, IconPool, ScrollContainer) {
+	'jquery.sap.global', './ColumnListItem', './P13nPanel', './P13nDimMeasureItem', './SearchField', './Table', './library', 'sap/ui/model/ChangeReason', 'sap/ui/model/json/JSONModel', 'sap/ui/model/BindingMode', 'sap/ui/core/ResizeHandler', 'sap/chart/library', 'sap/ui/core/Item', 'sap/ui/core/InvisibleText', 'sap/ui/core/IconPool'
+], function(jQuery, ColumnListItem, P13nPanel, P13nDimMeasureItem, SearchField, Table, library, ChangeReason, JSONModel, BindingMode, ResizeHandler, chartLibrary, Item, InvisibleText, IconPool) {
 	"use strict";
 
 	// shortcut for sap.m.OverflowToolbarPriority
@@ -25,6 +25,9 @@ sap.ui.define([
 	// shortcut for sap.m.ListMode
 	var ListMode = library.ListMode;
 
+	// shortcut for sap.chart.api
+	var api = chartLibrary.api;
+
 	// shortcut for sap.m.P13nPanelType
 	var P13nPanelType = library.P13nPanelType;
 
@@ -37,7 +40,7 @@ sap.ui.define([
 	 *        dimensions and measures for table personalization.
 	 * @extends sap.m.P13nPanel
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @constructor
 	 * @public
 	 * @since 1.34.0
@@ -92,7 +95,7 @@ sap.ui.define([
 				// TODO
 				/**
 				 * Event raised when one or more <code>DimMeasureItems</code> has been updated.
-				 * Aggregation <code>DimMeasureItems</code> should be updated outside...
+                 * Aggregation <code>DimMeasureItems</code> should be updated outside...
 				 * @since 1.50.0
 				 */
 				changeDimMeasureItems: {},
@@ -197,7 +200,7 @@ sap.ui.define([
 		this._createToolbar();
 
 		this.setVerticalScrolling(false);
-		var oScrollContainer = new ScrollContainer({
+		var oScrollContainer = new sap.m.ScrollContainer({
 			horizontal: false,
 			vertical: true,
 			content: [
@@ -313,11 +316,6 @@ sap.ui.define([
 		// destroy model and its data
 		if (this._getInternalModel()) {
 			this._getInternalModel().destroy();
-		}
-
-		if (this.oInvisibleChartTypeText) {
-			this.oInvisibleChartTypeText.destroy();
-			this.oInvisibleChartTypeText = null;
 		}
 
 		window.clearTimeout(this._iLiveChangeTimer);
@@ -491,7 +489,7 @@ sap.ui.define([
 		sap.ui.getCore().loadLibrary("sap.chart");
 		var oResult;
 		try {
-			oResult = sap.chart.api.getChartTypeLayout(sChartType, aDimensionItems, aMeasureItems);
+			oResult = api.getChartTypeLayout(sChartType, aDimensionItems, aMeasureItems);
 		} catch (oException) {
 			return false;
 		}
@@ -612,10 +610,6 @@ sap.ui.define([
 		var oInvisibleChartTypeText = new InvisibleText({
 			text: oRb.getText('COLUMNSPANEL_CHARTTYPE')
 		});
-
-		// set a reference on the instance so it can be later destroyed
-		this.oInvisibleChartTypeText = oInvisibleChartTypeText;
-
 		var oChartTypeComboBox = new sap.m.ComboBox({
 			placeholder: oInvisibleChartTypeText.getText(),
 			selectedKey: {
@@ -630,7 +624,7 @@ sap.ui.define([
 					text: "{text}"
 				})
 			},
-			selectionChange: jQuery.proxy(this._onChartTypeChange, this),
+            selectionChange: jQuery.proxy(this._onChartTypeChange, this),
 			layoutData: new sap.m.OverflowToolbarLayoutData({
 				moveToOverflow: false,
 				stayInOverflow: false
@@ -1191,8 +1185,8 @@ sap.ui.define([
 			}
 		}, this);
 
-		this._switchVisibilityOfUnselectedModelItems();
-		this._filterModelItemsBySearchText();
+        this._switchVisibilityOfUnselectedModelItems();
+        this._filterModelItemsBySearchText();
 
 		var aMItems = this._getInternalModel().getProperty("/items");
 		// Sort the table items only by persistentIndex

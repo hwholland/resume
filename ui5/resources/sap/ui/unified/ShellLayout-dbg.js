@@ -1,31 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.unified.ShellLayout.
-sap.ui.define([
-    'jquery.sap.global',
-    'sap/ui/Device',
-    'sap/ui/core/Control',
-    'sap/ui/core/Popup',
-    'sap/ui/core/theming/Parameters',
-    './SplitContainer',
-    './library',
-    "./ShellLayoutRenderer",
-    'jquery.sap.dom',
-    'jquery.sap.script'
-], function(
-	jQuery,
-	Device,
-	Control,
-	Popup,
-	Parameters,
-	SplitContainer,
-	library,
-	ShellLayoutRenderer
-) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/core/Control', 'sap/ui/core/Popup', 'sap/ui/core/theming/Parameters', './SplitContainer', './library', 'jquery.sap.dom', 'jquery.sap.script'],
+	function(jQuery, Device, Control, Popup, Parameters, SplitContainer, library/* , jQuerySap1, jQuerySap */) {
 	"use strict";
 
 
@@ -44,7 +25,7 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -79,12 +60,12 @@ sap.ui.define([
 			/**
 			 * The content to appear in the main canvas.
 			 */
-			content : {type : "sap.ui.core.Control", multiple : true, singularName : "content", forwarding: {idSuffix: "-container", aggregation: "content"}},
+			content : {type : "sap.ui.core.Control", multiple : true, singularName : "content"},
 
 			/**
 			 * The content to appear in the pane area.
 			 */
-			paneContent : {type : "sap.ui.core.Control", multiple : true, singularName : "paneContent", forwarding: {idSuffix: "-container", aggregation: "secondaryContent"}},
+			paneContent : {type : "sap.ui.core.Control", multiple : true, singularName : "paneContent"},
 
 			/**
 			 * The control to appear in the header area.
@@ -311,6 +292,58 @@ sap.ui.define([
 	/*Not public, deprecated*/
 	ShellLayout.prototype.getShowCurtain = function(){
 		return this._showCurtain;
+	};
+
+
+	ShellLayout.prototype.getContent = function() {
+		return this._cont.getContent();
+	};
+	ShellLayout.prototype.insertContent = function(oContent, iIndex) {
+		this._cont.insertContent(oContent, iIndex);
+		return this;
+	};
+	ShellLayout.prototype.addContent = function(oContent) {
+		this._cont.addContent(oContent);
+		return this;
+	};
+	ShellLayout.prototype.removeContent = function(vIndex) {
+		return this._cont.removeContent(vIndex);
+	};
+	ShellLayout.prototype.removeAllContent = function() {
+		return this._cont.removeAllContent();
+	};
+	ShellLayout.prototype.destroyContent = function() {
+		this._cont.destroyContent();
+		return this;
+	};
+	ShellLayout.prototype.indexOfContent = function(oContent) {
+		return this._cont.indexOfContent(oContent);
+	};
+
+
+	ShellLayout.prototype.getPaneContent = function() {
+		return this._cont.getSecondaryContent();
+	};
+	ShellLayout.prototype.insertPaneContent = function(oContent, iIndex) {
+		this._cont.insertSecondaryContent(oContent, iIndex);
+		return this;
+	};
+	ShellLayout.prototype.addPaneContent = function(oContent) {
+		this._cont.addSecondaryContent(oContent);
+		return this;
+	};
+	ShellLayout.prototype.removePaneContent = function(vIndex) {
+		return this._cont.removeSecondaryContent(vIndex);
+	};
+	ShellLayout.prototype.removeAllPaneContent = function() {
+		return this._cont.removeAllSecondaryContent();
+	};
+	ShellLayout.prototype.destroyPaneContent = function() {
+		this._cont.destroySecondaryContent();
+		return this;
+	};
+	ShellLayout.prototype.indexOfPaneContent = function(oContent) {
+		return this._cont.indexOfSecondaryContent(oContent);
 	};
 
 

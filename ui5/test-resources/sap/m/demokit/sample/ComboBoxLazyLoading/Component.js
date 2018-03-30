@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ComboBoxLazyLoading.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.ComboBoxLazyLoading.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.ComboBoxLazyLoading.Page",
 			dependencies : {
 				libs : [
 					"sap.m"

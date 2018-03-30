@@ -11,7 +11,7 @@ sap.ui.define([
 		onInit: function () {
 
 			var oIconTabFilter,
-				oIconTabBar = this.byId("idIconTabBar");
+				oIconTabBar = this.getView().byId("idIconTabBar");
 
 			for (var i = 1; i <= 30; i++) {
 				oIconTabFilter = new IconTabFilter({

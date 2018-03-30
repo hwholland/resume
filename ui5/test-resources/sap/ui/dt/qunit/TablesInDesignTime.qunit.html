@@ -49,10 +49,6 @@
 						width : "200px"
 					});
 
-					this.oTable.placeAt("content");
-
-					sap.ui.getCore().applyChanges();
-
 					this.oColumn = new sap.ui.table.Column({
 						label: new sap.m.Label({text: "Last Name"}),
 						width: "200px",
@@ -80,9 +76,13 @@
 						template: "dummy"
 					}));
 
+					this.oTable.placeAt("content");
+
 					this.oDesignTime = new sap.ui.dt.DesignTime({
 						rootElements : [this.oTable]
 					});
+
+					sap.ui.getCore().applyChanges();
 
 					this.oDesignTime.attachEventOnce("synced", function() {
 						sap.ui.getCore().applyChanges();
@@ -115,7 +115,7 @@
 					oColumnsOverlay.$().off("scroll", fnCallback);
 					done();
 				}.bind(this);
-				oColumnsOverlay.$().scroll(fnCallback);
+				oColumnsOverlay.$().on("scroll", fnCallback);
 
 				oScrollOverlay.$().scrollLeft(20);
 			});
@@ -131,10 +131,6 @@
 						visibleRowCount: 5,
 						width : "200px"
 					});
-
-					this.oTable.placeAt("content");
-
-					sap.ui.getCore().applyChanges();
 
 					this.oColumn = new sap.ui.table.AnalyticalColumn({
 						label: new sap.m.Label({text: "Last Name"}),
@@ -162,6 +158,10 @@
 						width: "75px",
 						template: "dummy"
 					}));
+
+					this.oTable.placeAt("content");
+
+					sap.ui.getCore().applyChanges();
 
 					this.oDesignTime = new sap.ui.dt.DesignTime({
 						rootElements : [this.oTable]
@@ -199,7 +199,7 @@
 					done();
 				}.bind(this);
 
-				oColumnsOverlay.$().scroll(fnCallback);
+				oColumnsOverlay.$().on("scroll", fnCallback);
 
 				oScrollOverlay.$().scrollLeft(20);
 			});

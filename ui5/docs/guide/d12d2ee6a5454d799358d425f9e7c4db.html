@@ -6,8 +6,8 @@
 <meta name="abstract" content="In this step, we are going to extend the functionality of OpenUI5 with a custom control. We want to rate the product shown on the detail page, so we create a composition of multiple standard controls using the OpenUI5 extension mechanism and add some glue code to make them work nicely together. This way, we can reuse the control across the app and keep all related functionality in one module."/>
 <meta name="description" content="In this step, we are going to extend the functionality of OpenUI5 with a custom control. We want to rate the product shown on the detail page, so we create a composition of multiple standard controls using the OpenUI5 extension mechanism and add some glue code to make them work nicely together. This way, we can reuse the control across the app and keep all related functionality in one module."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9155169774575551"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9155169774575551"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3403036467470948"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3403036467470948"/>
 <title>Step 34: Custom Controls</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -30,7 +30,7 @@
 			<div class="fig fignone" id="loiod12d2ee6a5454d799358d425f9e7c4db__fig_r1j_pst_mr"><div class="figcontainer">
 				
 				<img class="image" id="loiod12d2ee6a5454d799358d425f9e7c4db__image_o4x_vzm_yr" src="loioe3e163a7b93d498595586d5043f77ddb_HiRes.png"/>
-			<div class="figcap">A custom product rating control is added to the detail page</div></div></div>
+			<div class="figcap">Figure 1: A custom product rating control is added to the detail page</div></div></div>
 
 		</div></div>
 
@@ -127,33 +127,23 @@
 			}));
 			this.setAggregation("_label", new Label({
 				text: "{i18n&gt;productRatingLabelInitial}"
-			}).addStyleClass("sapUiSmallMargin"));
+			}).addStyleClass("sapUiTinyMargin"));
 			this.setAggregation("_button", new Button({
 				text: "{i18n&gt;productRatingButton}",
 				press: this._onSubmit.bind(this)
-			}).addStyleClass("sapUiTinyMarginTopBottom"));
+			}));
 		},
 
-		setValue: function (fValue) {
-			this.setProperty("value", fValue, true);
-			this.getAggregation("_rating").setValue(fValue);
-		},
-
-		reset: function () {
-			var oResourceBundle = this.getModel("i18n").getResourceBundle();
-
-			this.setValue(0);
-			this.getAggregation("_label").setDesign("Standard");
-			this.getAggregation("_rating").setEnabled(true);
-			this.getAggregation("_label").setText(oResourceBundle.getText("productRatingLabelInitial"));
-			this.getAggregation("_button").setEnabled(true);
+		setValue: function (iValue) {
+			this.setProperty("value", iValue, true);
+			this.getAggregation("_rating").setValue(iValue);
 		},
 
 		_onRate : function (oEvent) {
 			var oRessourceBundle = this.getModel("i18n").getResourceBundle();
 			var fValue = oEvent.getParameter("value");
 
-			this.setProperty("value", fValue, true);
+			this.setValue(fValue);
 
 			this.getAggregation("_label").setText(oRessourceBundle.getText("productRatingLabelIndicator", [fValue, oEvent.getSource().getMaxValue()]));
 			this.getAggregation("_label").setDesign("Bold");
@@ -346,17 +336,13 @@
 				the placeholder values is read from the <samp class="ph codeph">i18n</samp> model that is assigned
 				to the control automatically.</p>
 
-			<p class="p">Next, we have the <samp class="ph codeph">press</samp> handler for the rating button that submits our
-				rating. We assume that rating a product is a one-time action and first disable the
-				rating and the button so that the user is not allowed to submit another rating. We
-				also update the label to show a "Thank you for your rating!" message, then we fire
-				the change event of the control and pass in the current value as a parameter so that
+			<p class="p">And last but not least, we have the press handler for the rating button that submits
+				our rating. We assume that rating a product is a one-time action and first disable
+				the rating and the button so that the user is not allowed to submit another rating.
+				We also update the label to show a "Thank You" message, then we fire the change
+				event of the control and pass in the current value as a parameter so that
 				applications that are listening to this event can react on the rating
 				interaction.</p>
-
-			<p class="p">We define the <samp class="ph codeph">reset</samp> method to be able to revert the state of the
-				control on the UI to its initial state so that the user can again submit a
-				rating.</p>
 
 		</div>
 
@@ -374,7 +360,7 @@
 		&lt;ObjectHeader
 			intro="{invoice&gt;ShipperName}"
 			title="{invoice&gt;ProductName}"/&gt;
-		<span class="ph emphasis emphasis">&lt;wt:ProductRating id="rating" class="sapUiSmallMarginBeginEnd" change="onRatingChange"/&gt;</span>
+		<span class="ph emphasis emphasis">&lt;wt:ProductRating class="sapUiSmallMarginBeginEnd" change="onRatingChange"/&gt;</span>
 	&lt;/Page&gt;
 &lt;/mvc:View&gt;
 </pre></div>
@@ -397,13 +383,6 @@
 	use strict;
 	return Controller.extend(sap.ui.demo.walkthrough.controller.Detail, {
 		…
-		_onObjectMatched: function (oEvent) {
-			<span class="ph emphasis emphasis">this.byId("rating").reset();</span>
-			this.getView().bindElement({
-				path: "/" + oEvent.getParameter("arguments").invoicePath,
-				model: "invoice"
-			});
-		},
 		onNavBack: function () {
 			…
 		}<span class="ph emphasis emphasis">,
@@ -421,10 +400,6 @@
 				handler <samp class="ph codeph">onRatingChange</samp> reads the value of our custom change event
 				that is fired when the rating has been submitted. We then display a confirmation
 				message with the value in a <samp class="ph codeph">MessageToast</samp> control.</p>
-
-			<p class="p">In the <samp class="ph codeph">onObjectMatched</samp> private method, we call the
-					<samp class="ph codeph">reset</samp> method to make it possible to submit another rating as
-				soon as the detail view is displayed for a different item.</p>
 
 		</div></div>
 
@@ -463,7 +438,7 @@ detailPageTitle=Walkthrough - Details
 # Product Rating
 productRatingLabelInitial=Please rate this product
 productRatingLabelIndicator=Your rating: {0} out of {1}
-productRatingLabelFinal=Thank you for your rating!
+productRatingLabelFinal=Thank you!
 productRatingButton=Rate</span></pre></div>
 
 			<p class="p">The resource bundle is extended with the confirmation message and the strings that we
@@ -500,8 +475,8 @@ productRatingButton=Rate</span></pre></div>
 </div>
 </div>
 <div class="relinfo"><div class="relinfotitle ">Related Information</div>
-<div><a class="link" href="8dcab0011d274051808f959800cabf9f.html" title="You can create own content for OpenUI5. To develop controls in JavaScript, you can either extend existing controls or create new ones.">Developing Controls</a></div>
-<div><a class="link" href="7b52540d9d8c4e00b9723151622bbb64.html" title="Control metadata consists of properties, events, as well as aggregations and associations.">Defining the Control Metadata</a></div>
+<div><a class="link" href="91f1703b6f4d1014b6dd926db0e91070.html" title="For developing controls for OpenUI5 in JavaScript, you can either extend existing controls or create new controls.">Developing OpenUI5 Controls</a></div>
+<div><a class="link" href="7b52540d9d8c4e00b9723151622bbb64.html" title="Control metadata consist of properties, events, as well as aggregations and associations.">Defining the Control Metadata</a></div>
 <div><a class="link" href="../../docs/api/symbols/sap.m.RatingIndicator.html" alt="../../docs/api/symbols/sap.m.RatingIndicator.html" title="../../docs/api/symbols/sap.m.RatingIndicator.html">API Reference: <samp class="ph codeph">sap.m.RatingIndicator</samp></a></div>
 <div><a class="link" target="_blank" href="../../explored.html#/entity/sap.m.RatingIndicator/samples" alt="../../explored.html#/entity/sap.m.RatingIndicator/samples" title="../../explored.html#/entity/sap.m.RatingIndicator/samples">Samples: <samp class="ph codeph">sap.m.RatingIndicator</samp>
 			</a></div>

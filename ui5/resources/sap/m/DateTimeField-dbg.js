@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -12,18 +12,8 @@ sap.ui.define([
 	'./InputBase',
 	'sap/ui/core/LocaleData',
 	'sap/ui/core/library',
-	'sap/ui/core/format/DateFormat',
-	'./DateTimeFieldRenderer'
-], function(
-	jQuery,
-	SimpleDateType,
-	ODataType,
-	InputBase,
-	LocaleData,
-	coreLibrary,
-	DateFormat,
-	DateTimeFieldRenderer
-) {
+	'sap/ui/core/format/DateFormat'
+], function (jQuery, SimpleDateType, ODataType, InputBase, LocaleData, coreLibrary, DateFormat) {
 	"use strict";
 
 	// shortcut for sap.ui.core.CalendarType
@@ -37,14 +27,13 @@ sap.ui.define([
 	 *
 	 * @class
 	 * The <code>sap.m.DateTimeField</code> control provides a basic functionality for date/time input controls.
-	 *
-	 * To be extended by date and time picker controls. For internal use only.
 	 * @abstract
+	 * To be extended by date and time picker controls. For internal use only.
 	 *
 	 * @extends sap.m.InputBase
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -74,22 +63,7 @@ sap.ui.define([
 				 * the <code>dateValue</code> will be instantiated according to the parsed
 				 * <code>value</code>.
 				 */
-				dateValue: {type: "object", group: "Data", defaultValue: null},
-
-				/**
-				 * Holds a reference to a JavaScript Date Object to define the initially focused
-				 * date/time when the picker popup is opened.
-				 *
-				 * <b>Notes:</b>
-				 * <ul>
-				 * <li>Setting this property does not change the <code>value</code> property.</li>
-				 * <li>Depending on the context this property is used in ({@link sap.m.TimePicker},
-				 * {@link sap.m.DatePicker} or {@link sap.m.DateTimePicker}), it takes into account only the time part, only
-				 * the date part or both parts of the JavaScript Date Object.</li>
-				 * </ul>
-				 * @since 1.54
-				 */
-				initialFocusedDateValue: {type: "object", group: "Data", defaultValue: null}
+				dateValue: {type: "object", group: "Data", defaultValue: null}
 			}
 		}
 	});
@@ -142,7 +116,13 @@ sap.ui.define([
 
 	DateTimeField.prototype.setDateValue = function (oDate) {
 
-		if (this._isValidDate(oDate)) {
+		// Cross frame check for a date should be performed here otherwise setDateValue would fail in OPA tests
+		// because Date object in the test is different than the Date object in the application (due to the iframe).
+		// We can use jQuery.type or this method:
+		// function isValidDate (date) {
+		//	return date && Object.prototype.toString.call(date) === "[object Date]" && !isNaN(date);
+		//}
+		if (oDate && jQuery.type(oDate) !== "date") {
 			throw new Error("Date must be a JavaScript date object; " + this);
 		}
 
@@ -225,7 +205,9 @@ sap.ui.define([
 			}
 
 			if (this._checkStyle(sPlaceholder)) {
-				sPlaceholder = this._getLocaleBasedPattern(sPlaceholder);
+				var oLocale = sap.ui.getCore().getConfiguration().getFormatSettings().getFormatLocale();
+				var oLocaleData = LocaleData.getInstance(oLocale);
+				sPlaceholder = this._getPlaceholderPattern(oLocaleData, sPlaceholder);
 			}
 		}
 
@@ -233,10 +215,8 @@ sap.ui.define([
 
 	};
 
-	DateTimeField.prototype._getLocaleBasedPattern = function (sPlaceholder) {
-		return LocaleData.getInstance(
-			sap.ui.getCore().getConfiguration().getFormatSettings().getFormatLocale()
-		).getDatePattern(sPlaceholder);
+	DateTimeField.prototype._getPlaceholderPattern = function (oLocaleData, sPlaceholder) {
+		return oLocaleData.getDatePattern(sPlaceholder);
 	};
 
 
@@ -335,19 +315,7 @@ sap.ui.define([
 	};
 
 	DateTimeField.prototype._getDisplayFormatPattern = function () {
-		var sPattern = this._getBoundValueTypePattern();
-
-		if (sPattern) {
-			return sPattern;
-		}
-
-		sPattern = this.getDisplayFormat();
-
-		if (this._checkStyle(sPattern)) {
-			sPattern = this._getLocaleBasedPattern(sPattern);
-		}
-
-		return sPattern;
+		return this._getBoundValueTypePattern() || this.getDisplayFormat();
 	};
 
 	DateTimeField.prototype._getBoundValueTypePattern = function () {
@@ -365,15 +333,6 @@ sap.ui.define([
 		return undefined;
 	};
 
-	// Cross frame check for a date should be performed here otherwise setDateValue would fail in OPA tests
-	// because Date object in the test is different than the Date object in the application (due to the iframe).
-	// We can use jQuery.type or this method:
-	// function isValidDate (date) {
-	//	return date && Object.prototype.toString.call(date) === "[object Date]" && !isNaN(date);
-	//}
-	DateTimeField.prototype._isValidDate = function (oDate) {
-		return oDate && jQuery.type(oDate) !== "date";
-	};
 
 	return DateTimeField;
 

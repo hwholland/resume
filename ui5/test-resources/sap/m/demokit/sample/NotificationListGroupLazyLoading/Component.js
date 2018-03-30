@@ -5,11 +5,7 @@ function(UIComponent) {
 	var Component = UIComponent.extend("sap.m.sample.NotificationListGroupLazyLoading.Component", {
 
 		metadata: {
-			rootView: {
-				"viewName": "sap.m.sample.NotificationListGroupLazyLoading.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.m.sample.NotificationListGroupLazyLoading.V",
 			dependencies: {
 				libs: [
 					"sap.m",

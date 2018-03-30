@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -117,24 +117,24 @@
                      <h1 class="title topictitle1" hidden>XML Templating</h1>
                      
                      <div class="body conbody">
-                        <p class="shortdesc" hidden>The XML templating concept enables you to use an XML view as a template. This
-                           		template is transformed by an XML preprocessor on the source level, the XML DOM, at runtime
-                           		just before an <span class="ph"><span class="ph pname">OpenUI5</span></span> control
-                           		tree is created from the XML source.
+                        <p class="shortdesc" hidden>The XML templating concept enables you to use an XML view as a template. This template
+                           		is transformed by an XML preprocessor on the source level, the XML DOM, at runtime just
+                           		before an <span class="ph"><span class="ph pname">OpenUI5</span></span> control tree
+                           		is created from the XML source.
                         </p>
                         
                         		
-                        <p class="p">The label texts and binding paths in the example below come from SAP Annotations for
-                           			OData Version 2.0 (<a class="xref" href="http://www.sap.com/Protocols/SAPData" target="_blank" alt="http://www.sap.com/Protocols/SAPData" title="http://www.sap.com/Protocols/SAPData">http://www.sap.com/Protocols/SAPData</a>) such as <samp class="ph codeph">sap:semantics</samp>, and from
+                        <p class="p">The label texts and binding paths in the example below come from SAP Annotations for OData
+                           			Version 2.0 (<a class="xref" href="http://www.sap.com/Protocols/SAPData" target="_blank" alt="http://www.sap.com/Protocols/SAPData" title="http://www.sap.com/Protocols/SAPData">http://www.sap.com/Protocols/SAPData</a>) such as <samp class="ph codeph">sap:semantics</samp>, and from
                            			OData Version 4.0 annotations such as <samp class="ph codeph">com.sap.vocabularies.UI.v1.Badge</samp>.
                            			Much more complex tasks than shown in this simple example are possible.
                         </p>
                         
                         		
-                        <p class="p">The transformation happens if a preprocessor for XML is called when the view is created,
-                           			see lines 2 and 3 in the <em class="ph i">Calling the XML Preprocessor</em> example. This preprocessor
-                           			can be given one or more models along with a corresponding binding context, see lines 4
-                           			and 7; this concept exists for any <span class="ph"><span class="ph pname">OpenUI5</span></span> control&apos;s
+                        <p class="p">The transformation happens if a preprocessor for XML is called when the view is created, see
+                           			lines 2 and 3 in the <em class="ph i">Calling the XML Preprocessor</em> example. This preprocessor can
+                           			be given one or more models along with a corresponding binding context, see lines 4 and
+                           			7; this concept exists for any <span class="ph"><span class="ph pname">OpenUI5</span></span> control&apos;s
                            			constructor. Typically, an OData model&apos;s meta model is given, along with the meta
                            			context corresponding to a data path. XML templating operates on meta data. It can
                            				<span class="ph emphasis emphasis">not</span> wait for data that is loaded asynchronously or any other
@@ -185,10 +185,10 @@
                                  					
                                  <li class="li">
                                     						
-                                    <p class="p">All XML attributes which represent an available binding, that is, a
-                                       							binding based only on models available to the preprocessor, are replaced
-                                       							by the result of that binding. Formatters and so on can be used as with
-                                       							any SAPUI5 binding.
+                                    <p class="p">All XML attributes which represent an available binding, that is, a binding based only on
+                                       							models available to the preprocessor, are replaced by the result of that
+                                       							binding. Formatters and so on can be used as with any SAPUI5
+                                       							binding.
                                     </p>
                                     
                                     					
@@ -231,8 +231,8 @@
                            			
                            <p class="p">
                               				<span class="ph">See sample
-                                 						<a class="xref" href="../../#/sample/sap.ui.core.sample.ViewTemplate.tiny/preview" target="_top" alt="#/sample/sap.ui.core.sample.ViewTemplate.tiny/preview" title="#/sample/sap.ui.core.sample.ViewTemplate.tiny/preview">sap.ui.core.sample.ViewTemplate.tiny</a>.</span> This sample is based on OData
-                              				Version 4.0 annotations. It consists of the following three pieces:
+                                 						<a class="xref" href="../../#/sample/sap.ui.core.sample.ViewTemplate.tiny/preview" target="_top" alt="#/sample/sap.ui.core.sample.ViewTemplate.tiny/preview" title="#/sample/sap.ui.core.sample.ViewTemplate.tiny/preview">sap.ui.core.sample.ViewTemplate.tiny</a>.</span> This sample is  based on
+                              				OData Version 4.0 annotations. It consists of the following three pieces:
                            </p>
                            
                            			
@@ -240,12 +240,12 @@
                               				
                               <li class="li">
                                  					
-                                 <p class="p">A component controller that creates an OData model (line 17), waits for the
-                                    						meta model to be loaded (line 28) and then creates a template view (line 29)
-                                    						as its content. A preprocessor for XML is requested (line 31) and settings
-                                    						are passed to it, namely the meta model and the binding context that
-                                    						identifies the starting point within that model. The resulting view is bound
-                                    						to the actual data (model and path).
+                                 <p class="p">A component controller that creates an OData model (line 17), waits for the meta model to be
+                                    						loaded (line 28) and then creates a template view (line 29) as its content.
+                                    						A preprocessor for XML is requested (line 31) and settings are passed to it,
+                                    						namely the meta model and the binding context that identifies the starting
+                                    						point within that model. The resulting view is bound to the actual data
+                                    						(model and path).
                                  </p>
                                  
                                  				
@@ -277,15 +277,12 @@
                            			
                            <aside class="note tip  insertion"><span class="title">Tip</span> 
                               				
-                              <p class="p"><span class="ph">You can
-                                    						find more elaborate XML templating samples here: <a class="xref" href="../../#/entity/sap.ui.core.mvc.XMLView" target="_top" alt="#/entity/sap.ui.core.mvc.XMLView" title="#/entity/sap.ui.core.mvc.XMLView">XMLView</a>.</span>
+                              <p class="p"><span class="ph">You can find more elaborate XML templating samples here: <a class="xref" href="../../#/entity/sap.ui.core.mvc.XMLView" target="_top" alt="#/entity/sap.ui.core.mvc.XMLView" title="#/entity/sap.ui.core.mvc.XMLView">XMLView</a>.</span>
                                  					
                               </p>
                               
                               				
-                              <p class="p">Take a look at the demo scenario for a complete overview of all OData v4
-                                 					notations.
-                              </p>
+                              <p class="p">Take a look at the demo scenario for a complete overview of all OData v4 notations.</p>
                               
                               			
                            </aside>
@@ -408,8 +405,8 @@
 15      &lt;/HBox&gt;
 16  &lt;/core:FragmentDefinition&gt;</pre>
                            
-                           			<p class="p">The result is equivalent to the following handwritten XML view. Any references to the
-                              				meta model are gone. Type information has been inserted into the bindings and an
+                           			<p class="p">The result is equivalent to the following handwritten XML view. Any references to the meta
+                              				model are gone. Type information has been inserted into the bindings and an
                               					<samp class="ph codeph">&quot;odata.concat&quot;</samp> expression for
                               					<samp class="ph codeph">badge&gt;MainInfo/Value</samp> has been processed by
                               					<samp class="ph codeph">sap.ui.model.odata.AnnotationHelper.format</samp>, concatenating the
@@ -539,6 +536,8 @@
                            <div class="relinfotitle ">Related Information</div>
                            
                            <div><a class="link" href="../../#/topic/6c47b2b39db9404582994070ec3d57a2.html#loio341823349ed04df1813197f2a0d71db2" title="The implementation sap.ui.model.odata.ODataMetaModel offers a unified access to both OData Version 2.0 metadata and Version 4.0 annotations." target="_top">Meta Model for OData V2</a></div>
+                           
+                           <div><a class="link" href="../../#/topic/333a9dac5a614b1590c61916c9cecbf5.html" title="OpenUI5 supports simple types that are used together with OData models." target="_top">OData Types</a></div>
                            
                            <div><a class="link" href="../../#/topic/daf6852a04b44d118963968a1239d2c0.html" title="Expression binding is an enhancement of the OpenUI5 binding syntax, which allows for providing expressions instead of custom formatter functions." target="_top">Expression Binding</a></div>
                            

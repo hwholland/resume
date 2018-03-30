@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.SemanticPageFullScreen.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.SemanticPageFullScreen.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.SemanticPageFullScreen.Page",
 			dependencies : {
 				libs : [
 					"sap.m"

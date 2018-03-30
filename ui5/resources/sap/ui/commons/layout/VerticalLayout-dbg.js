@@ -1,17 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.commons.layout.VerticalLayout.
-sap.ui.define([
- 'jquery.sap.global',
- 'sap/ui/commons/library',
- 'sap/ui/layout/VerticalLayout',
- "./VerticalLayoutRenderer"
-],
-	function(jQuery, library, VerticalLayout1, VerticalLayoutRenderer) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/commons/library', 'sap/ui/layout/VerticalLayout'],
+	function(jQuery, library, VerticalLayout1) {
 	"use strict";
 
 
@@ -27,7 +22,7 @@ sap.ui.define([
 	 * @extends sap.ui.layout.VerticalLayout
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public

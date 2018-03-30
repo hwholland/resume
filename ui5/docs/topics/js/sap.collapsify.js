@@ -165,7 +165,7 @@
 		var self = this, elemType = elem.prop('tagName');
 		// For elements have a generated wrapper, find the title relative to the wrapper
 		var wrapper = elem.parents('.col-wrapper');
-		if (typeof wrapper === 'undefined' || wrapper.length == 0) wrapper = elem;
+		if (typeof wrapper === 'undefined' || wrapper.size() == 0) wrapper = elem;
 
 		if (img.attr('class').lastIndexOf('expand') >= 1) {
 			img.attr({

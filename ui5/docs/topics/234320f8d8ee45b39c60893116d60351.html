@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -135,20 +135,28 @@
                               				fragments, that is an XML fragment, a JS fragment and an HTML fragment. Each type is
                               				instantiated once without a given ID and once with a given ID. These fragment
                               				references basically work like import statements including the fragment content
-                              				controls. 
+                              				controls.  
                            </p>
                            
-                           			<pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View xmlns:mvc=&quot;sap.ui.core.mvc&quot; xmlns:core=&quot;sap.ui.core&quot; controllerName=&quot;testdata.fragments.XMLViewController&quot; &gt;
+                           			<pre class="pre codeblock prettyprint lang-xml">
+&lt;mvc:View xmlns:mvc=&quot;sap.ui.core.mvc&quot; xmlns:core=&quot;sap.ui.core&quot; xmlns:commons=&quot;sap.ui.commons&quot; controllerName=&quot;testdata.fragments.XMLViewController&quot; &gt;
+    
+    &lt;commons:HorizontalDivider /&gt;
     
     &lt;core:Fragment               fragmentName=&quot;my.useful.SimpleUiPart&quot; type=&quot;XML&quot; /&gt;
     &lt;core:Fragment id=&quot;xmlInXml&quot; fragmentName=&quot;my.useful.SimpleUiPart&quot; type=&quot;XML&quot; /&gt;
     
+    &lt;commons:HorizontalDivider /&gt;
+    
     &lt;core:Fragment              fragmentName=&quot;my.useful.UiPartX&quot; type=&quot;JS&quot; /&gt;
     &lt;core:Fragment id=&quot;jsInXml&quot; fragmentName=&quot;my.useful.UiPartX&quot; type=&quot;JS&quot; /&gt;
+    
+    &lt;commons:HorizontalDivider /&gt;
     
     &lt;core:Fragment                fragmentName=&quot;my.useful.UiPartZ&quot; type=&quot;HTML&quot; /&gt;
     &lt;core:Fragment id=&quot;htmlInXml&quot; fragmentName=&quot;my.useful.UiPartZ&quot; type=&quot;HTML&quot; /&gt;
 
+        
 &lt;/mvc:View&gt;</pre>
                            
                            		</div>

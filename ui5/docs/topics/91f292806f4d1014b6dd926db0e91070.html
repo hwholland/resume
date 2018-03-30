@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -117,48 +117,49 @@
                      <h1 class="title topictitle1" hidden>XML View</h1>
                      
                      <div class="body conbody">
-                        <p class="shortdesc" hidden>The XML view type is defined in an XML file. The file name either ends with
-                           			<samp class="ph codeph">.view.xml</samp> or as an XML string. The file name and the folder structure
-                           		together specify the name of the view that equals the <span class="ph"><span class="ph pname">OpenUI5</span></span> module name. 
+                        <p class="shortdesc" hidden>The XML view type is defined in an XML file. The file name either ends with <samp class="ph codeph">.view.xml</samp> or as an XML string. The file name and the
+                           		folder structure together specify the name of the view that equals the <span class="ph"><span class="ph pname">OpenUI5</span></span> module name. 
                         </p>
                         
-                        		
-                        <aside class="note example  insertion" id="loio91f292806f4d1014b6dd926db0e91070__note_N1001C_N10013_N10001"><span class="title">Example</span> 
-                           			
-                           <p class="p">For <samp class="ph codeph">resources/sap/hcm/Address.view.xml</samp>, the view name is
-                              					<samp class="ph codeph">sap.hcm.Address</samp>. The application uses this view name for
-                              				displaying an instance of this view. If you define the XML view by means of an XML
-                              				string, no file or define/require is needed. 
+                        <aside class="note example  insertion" id="loio91f292806f4d1014b6dd926db0e91070__note_N1001C_N10013_N10001"><span class="title">Example</span>  
+                           		
+                           <p class="p">For 
+                              		  <samp class="ph codeph">resources/sap/hcm/Address.view.xml</samp>,
+                              		  the view name is 
+                              		  <samp class="ph codeph">sap.hcm.Address</samp>. The
+                              		  application uses this view name for displaying an instance of this view. If you
+                              		  define the XML view by means of an XML string, no file or define/require is
+                              		  needed. 
+                              		
                            </p>
-                           
-                           			
-                           <p class="p">The file looks as follows: </p>
-                           
-                           			<pre class="pre codeblock prettyprint lang-xml">
-&lt;mvc:View controllerName=&quot;sap.hcm.Address&quot; xmlns=&quot;sap.m&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;&gt;
+                            
+                           		
+                           <p class="p">The file looks as follows:
+                              		
+                           </p>
+                            
+                           		<pre class="pre codeblock prettyprint lang-xml">
+&lt;mvc:View controllerName=&quot;sap.hcm.Address&quot; xmlns=&quot;sap.ui.commons&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;&gt;
    &lt;Panel&gt;
       &lt;Image src=&quot;http://www.sap.com/global/ui/images/global/sap-logo.png&quot;/&gt;
       &lt;Button text=&quot;Press Me!&quot;/&gt;
    &lt;/Panel&gt;
 &lt;/mvc:View&gt;</pre>
-                           
-                           		</aside>
+                            
+                           	 </aside>
                         
-                        		
                         <p class="p">Nest the XML tags analogous to the nesting sequence of <span class="ph"><span class="ph pname">OpenUI5</span></span> controls and add the
                            			property values as attributes (see <a class="xref" href="../../#/topic/2421a2c9fa574b2e937461b5313671f0.html" title="The names of the OpenUI5 control libraries and the related subpackages are mapped to XML namespaces." target="_top">Namespaces in XML Views</a>).
                         </p>
                         
                         		
-                        <p class="p">Each control or element is represented by an XML tag with the name the control. If you, for
-                           			example, want to create an instance of a <samp class="ph codeph">sap.m.Button</samp>, you use tag
-                           				<samp class="ph codeph">&lt;Button&gt;</samp> with namespace <samp class="ph codeph">sap.m</samp>. You can
-                           			create a context binding for the control by using attribute
-                           				<samp class="ph codeph">obejctBinding</samp> or <samp class="ph codeph">Binding</samp>. For more information,
-                           			see <a class="xref" href="../../#/topic/91f05e8b6f4d1014b6dd926db0e91070.html" title="Context binding (or element binding) allows you to bind elements to a specific object in the model data, which will create a binding context and allow relative binding within the control and all of its children. This is especially helpful in master-detail scenarios." target="_top">Context Binding (Element Binding)</a>.
+                        <p class="p">Each control or element is represented by an XML tag with the name the control. If you,
+                           			for example, want to create an instance of a <samp class="ph codeph">sap.m.Button</samp>, you use tag
+                           				<samp class="ph codeph">&lt;Button&gt;</samp> with namespace <samp class="ph codeph">sap.m</samp>. You can create
+                           			an element binding for the control by using attribute <samp class="ph codeph">obejctBinding</samp> or
+                           			<samp class="ph codeph">Binding</samp>. For more information, see <a class="xref" href="../../#/topic/91f05e8b6f4d1014b6dd926db0e91070.html" title="Element binding allows you to bind elements to a specific object in the model data, which will create a binding context and allow relative binding within the control and all of its children. This is especially helpful in master-detail scenarios." target="_top">Element Binding</a>.
                         </p>
                         
-                        	
                      </div>
                      
                      <div class="related-links"> <br>
@@ -204,7 +205,7 @@
                         <div class="relinfo">
                            <div class="relinfotitle ">Related Information</div>
                            
-                           <div><a class="link" href="https://sapui5.hana.ondemand.com/sdk/#/api/sap.ui/methods/sap.ui.xmlview " target="_blank" alt="https://sapui5.hana.ondemand.com/sdk/#/api/sap.ui/methods/sap.ui.xmlview " title="https://sapui5.hana.ondemand.com/sdk/#/api/sap.ui/methods/sap.ui.xmlview ">API Reference: <samp class="ph codeph">sap.ui.html.xmlview </samp></a></div>
+                           <div><a class="link" href="../../#/api/sap.ui/methods/.xmlview " target="_top" alt="#/api/sap.ui/methods/.xmlview " title="#/api/sap.ui/methods/.xmlview ">API Reference: <samp class="ph codeph">sap.ui.html.xmlview </samp></a></div>
                            
                         </div>
                         

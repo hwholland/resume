@@ -9,20 +9,20 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/mvc/Controller', 'sap/ui/model/
 			this.getView().setModel(oImgModel, "img");
 		},
 		onBeforeRendering: function() {
-			this.byId("DSCWidthSlider").setVisible(!sap.ui.Device.system.phone);
+			this.getView().byId("DSCWidthSlider").setVisible(!sap.ui.Device.system.phone);
 		},
 		handleSliderChange: function (oEvent) {
 			var iValue = oEvent.getParameter("value");
 			this.updateControlWidth(iValue);
 		},
 		updateControlWidth: function (iValue) {
-			var $DSCContainer = this.byId("sideContentContainer").$();
+			var $DSCContainer = this.getView().byId("sideContentContainer").$();
 			if (iValue) {
 				$DSCContainer.width(iValue + "%");
 			}
 		},
 		updateToggleButtonState: function (oEvent) {
-			var oToggleButton = this.byId("equalSplitToggleButton"),
+			var oToggleButton = this.getView().byId("equalSplitToggleButton"),
 				sCurrentBreakpoint = oEvent.getParameter("currentBreakpoint");
 
 			if (sCurrentBreakpoint === "S") {
@@ -32,7 +32,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/mvc/Controller', 'sap/ui/model/
 			}
 		},
 		handleToggleClick: function (oEvent) {
-			this.byId("DynamicSideContent").toggle();
+			this.getView().byId("DynamicSideContent").toggle();
 		}
 	});
 

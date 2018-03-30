@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.ui.layout.sample.BlockLayoutDefault.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.layout.sample.BlockLayoutDefault.Block",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.layout.sample.BlockLayoutDefault.Block",
 			dependencies : {
 				libs : [
 					"sap.m",

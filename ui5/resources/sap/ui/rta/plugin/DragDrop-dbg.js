@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -10,16 +10,14 @@ sap.ui.define([
 	'sap/ui/dt/plugin/ControlDragDrop',
 	'sap/ui/rta/plugin/RTAElementMover',
 	'sap/ui/rta/plugin/Plugin',
-	'sap/ui/rta/Utils',
-	'sap/ui/dt/OverlayRegistry'
+	'sap/ui/rta/Utils'
 ],
 function(
 	jQuery,
 	ControlDragDrop,
 	RTAElementMover,
 	Plugin,
-	Utils,
-    OverlayRegistry
+	Utils
 ) {
 	"use strict";
 
@@ -34,7 +32,7 @@ function(
 	 * @extends sap.ui.dt.ControlDragDrop
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @private
@@ -88,7 +86,11 @@ function(
 	 * @override
 	 */
 	DragDrop.prototype._isEditable = function(oOverlay, mPropertyBag) {
-		return this.getElementMover().isEditable(oOverlay, mPropertyBag.onRegistration);
+		var bMovable = this.getElementMover().isEditable(oOverlay, mPropertyBag.onRegistration);
+		if (bMovable) {
+			this._attachMovableBrowserEvents(oOverlay);
+		}
+		return bMovable;
 	};
 
 	/**
@@ -141,7 +143,7 @@ function(
 
 		ControlDragDrop.prototype.onDragStart.apply(this, arguments);
 
-		this.getSelectedOverlays().forEach(function(oOverlay) {
+		this.getDesignTime().getSelection().forEach(function(oOverlay) {
 			oOverlay.setSelected(false);
 		});
 
@@ -184,7 +186,7 @@ function(
 	 * @private
 	 */
 	DragDrop.prototype._onMouseOver = function(oEvent) {
-		var oOverlay = OverlayRegistry.getOverlay(oEvent.currentTarget.id);
+		var oOverlay = sap.ui.getCore().byId(oEvent.currentTarget.id);
 		if (oOverlay !== this._oPreviousHoverTarget) {
 			if (this._oPreviousHoverTarget) {
 				this._oPreviousHoverTarget.$().removeClass("sapUiRtaOverlayHover");

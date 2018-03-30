@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -23,7 +23,7 @@ function(ManagedObject) {
 	 * @extends sap.ui.base.ManagedObject
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @private
@@ -43,7 +43,7 @@ function(ManagedObject) {
 				/**
 				 * DesignTime where this plugin will be used
 				 */
-				designTime: { // its defined as a property because spa.ui.dt.designTime is a managed object and UI5 only allows associations for elements
+				designTime : { // its defined as a property because spa.ui.dt.designTime is a managed object and UI5 only allows associations for elements
 					type : "object",
 					multiple : false
 				}
@@ -219,7 +219,7 @@ function(ManagedObject) {
 	 */
 	Plugin.prototype.getAction = function(oOverlay){
 		return oOverlay.getDesignTimeMetadata() ?
-			oOverlay.getDesignTimeMetadata().getAction(this.getActionName(), oOverlay.getElement())
+			oOverlay.getDesignTimeMetadata().getAction(this.getActionName(), oOverlay.getElementInstance())
 			: null;
 	};
 
@@ -229,25 +229,7 @@ function(ManagedObject) {
 	 * @return {Boolean} Returns true if there is no multiple selection active
 	 */
 	Plugin.prototype.isMultiSelectionInactive = function() {
-		return this.getNumberOfSelectedOverlays() < 2;
-	};
-
-	/**
-	 * Asks the DesignTime for the number of currently selected overlays.
-	 *
-	 * @return {integer} Returns the number of selected overlays as integer
-	 */
-	Plugin.prototype.getNumberOfSelectedOverlays = function() {
-		return this.getSelectedOverlays().length;
-	};
-
-	/**
-	 * Asks the Design Time which overlays are selected
-	 *
-	 * @return {sap.ui.dt.ElementOverlay[]} selected overlays
-	 */
-	Plugin.prototype.getSelectedOverlays = function() {
-		return this.getDesignTime().getSelectionManager().get();
+		return this.getDesignTime().getSelection().length < 2;
 	};
 
 	/**
@@ -261,7 +243,7 @@ function(ManagedObject) {
 		var vName = mAction.name;
 		if (vName){
 			if (typeof vName === "function") {
-				return vName.call(null, oOverlay.getElement());
+				return vName.call(null, oOverlay.getElementInstance());
 			} else {
 				return oOverlay.getDesignTimeMetadata() ? oOverlay.getDesignTimeMetadata().getLibraryText(vName) : "";
 			}
@@ -304,8 +286,6 @@ function(ManagedObject) {
 	 * @param  {object} mPropertyBag Additional properties for the menu item
 	 * @param  {string} mPropertyBag.pluginId The ID of the plugin
 	 * @param  {number} mPropertyBag.rank The rank deciding the position of the action in the context menu
-	 * @param  {string} mPropertyBag.icon an icon for the Button inside the context menu
-	 * @param  {string} mPropertyBag.group A group for buttons which should be grouped together in the MiniMenu
 	 * @return {object[]} Returns an array with the object containing the required data for a context menu item
 	 */
 	Plugin.prototype._getMenuItems = function(oOverlay, mPropertyBag){
@@ -321,9 +301,7 @@ function(ManagedObject) {
 				return this.handler(aOverlays, mPropertyBag);
 			}.bind(this),
 			enabled: this.isEnabled.bind(this),
-			rank: mPropertyBag.rank,
-			icon: mPropertyBag.icon,
-			group: mPropertyBag.group
+			rank: mPropertyBag.rank
 		}];
 	};
 

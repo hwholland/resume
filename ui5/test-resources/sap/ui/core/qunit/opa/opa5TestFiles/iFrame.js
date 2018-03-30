@@ -1,9 +1,8 @@
 sap.ui.define([
 		"sap/ui/test/Opa5",
 		"sap/ui/test/opaQunit",
-		"unitTests/utils/browser",
-		"sap/ui/test/actions/Press"
-	], function (Opa5, opaTest, browser, Press) {
+		"unitTests/utils/browser"
+	], function (Opa5, opaTest, browser) {
 
 		QUnit.module("IFrame utils");
 
@@ -163,47 +162,39 @@ sap.ui.define([
 			oOpa5.emptyQueue().done(done);
 		});
 
-		QUnit.test("Should throw error if the iFrame throws an error", function (assert) {
+		QUnit.test("Should throw error if the IFrame throws an error", function (assert) {
 			var done = assert.async();
 
-			jQuery("body").append('<iframe id="OpaFrame" src="../testdata/uncaughtError.html"></iframe>');
-
-			// browsers don't have a standard way of forming error message => ignore the prefix in error name (eg: IE: "TestUncaughtError"; Chrome: "Uncaught Error: TestUncaughtError")
+			// Arrange
+			jQuery("body").append('<iframe id="OpaFrame" src="../testdata/emptySite.html"></iframe>');
 			var $Frame = jQuery("#OpaFrame").on("load", function () {
-				var fnOnErrorSpy = sinon.spy();
-				$Frame[0].contentWindow.onerror = fnOnErrorSpy;
+				var fnSpy = sinon.spy();
+				$Frame[0].contentWindow.onerror = fnSpy;
 
-				var fnOriginalOnError = window.onerror;
-				window.onerror = function (sErrorMsg, sUrl, iLine, iColumn, oError) {
-					assert.ok(sErrorMsg.match(/Error in launched application iFrame:.* TestUncaughtError/));
-					assert.ok(sErrorMsg.match("uncaughtError.html\nline: 33\ncolumn: [0-9]*"));
-					if (oError) {
-						assert.ok(sErrorMsg.match("\niFrame error:.* TestUncaughtError"), "Should include error object if browser supports it");
-						assert.ok(sErrorMsg.match("onPress"), "Should contain iFrame stack trace");
-					}
-				};
-
+				// System under Test
 				var oOpa5 = new Opa5();
 
-				oOpa5.iStartMyAppInAFrame("../testdata/uncaughtError.html");
+				oOpa5.iStartMyAppInAFrame("../testdata/emptySite.html").done(function() {
+					// Act + Assert
+					var clock = sinon.useFakeTimers();
 
-				oOpa5.waitFor({
-					viewName: "myView",
-					id: "myButton",
-					// pressing the button will cause an uncaught error inside the iframe
-					actions: new Press()
+					assert.throws(function () {
+						Opa5.getWindow().onerror("Errormessage", "Url", 31);
+						// throws the actual exception in a delay
+						clock.tick(0);
+					},"OpaFrame error message: Errormessage,\nurl: Url line: 31,\nDid throw an error");
+
+					clock.restore();
+					assert.strictEqual(fnSpy.callCount, 1, "Did call the app onerror");
 				});
 
 				oOpa5.iTeardownMyAppFrame();
 
 				oOpa5.emptyQueue().done(function () {
-					sinon.assert.calledOnce(fnOnErrorSpy, "Should call iFrame onerror once");
-					sinon.assert.calledWithMatch(fnOnErrorSpy, "TestUncaughtError");
-					// restore window objects before test end
-					window.onerror = fnOriginalOnError;
 					done();
 				});
 			});
+
 		});
 
 		QUnit.module("IFrame navigation", {
@@ -487,9 +478,6 @@ sap.ui.define([
 		});
 
 		opaTest("Should wait for lazy stubs", function () {
-			var fnVisibleStub = sinon.stub(Opa5.getWindow().sap.ui.test.matchers.Visible.prototype, "isMatching");
-			fnVisibleStub.returns(true);
-
 			this.oOpa5.waitFor({
 				success: function () {
 					setTimeout(function () {
@@ -502,7 +490,6 @@ sap.ui.define([
 				controlType: "sap.ui.commons.Button",
 				success: function (aButtons) {
 					Opa5.assert.strictEqual(aButtons.length, 1, "Did find the button after a while");
-					fnVisibleStub.restore();
 				}
 			});
 
@@ -592,11 +579,10 @@ sap.ui.define([
 				success: function ($Messages) {
 					QUnit.assert.strictEqual($Messages.eq(0).text(), "Test timed out");
 					var sOpaMessage = $Messages.eq(1).text();
-					QUnit.assert.contains(sOpaMessage, /QUnit timeout after 4 seconds/);
+					QUnit.assert.contains(sOpaMessage, /QUnit timeout/);
 					QUnit.assert.contains(sOpaMessage, /This is what Opa logged/);
-					QUnit.assert.contains(sOpaMessage, /Executing OPA check function on controls null/);
-					QUnit.assert.contains(sOpaMessage, /Check function is:/);
-					QUnit.assert.contains(sOpaMessage, /Result of check function is: false/);
+					QUnit.assert.contains(sOpaMessage, /Opa is executing the check:/);
+					QUnit.assert.contains(sOpaMessage, /Opa check was false/);
 					QUnit.assert.contains(sOpaMessage, /Callstack:/);
 					if (browser.supportsStacktraces()) {
 						QUnit.assert.contains(sOpaMessage, /failingOpaTest/);
@@ -629,8 +615,8 @@ sap.ui.define([
 				success: function ($Messages) {
 					QUnit.assert.strictEqual($Messages.eq(0).text(), "Test timed out");
 					var sOpaMessage = $Messages.eq(1).text();
-					QUnit.assert.contains(sOpaMessage, "QUnit timeout after 4 seconds");
-					QUnit.assert.contains(sOpaMessage, "global ID 'myGlobalId'");
+					QUnit.assert.contains(sOpaMessage, "QUnit timeout");
+					QUnit.assert.contains(sOpaMessage, "global id: 'myGlobalId'");
 					QUnit.assert.doesNotContain(sOpaMessage, "Log message that should not appear in the error");
 				}
 			});
@@ -641,9 +627,9 @@ sap.ui.define([
 				}),
 				success: function ($Messages) {
 					var sOpaMessage = $Messages.eq(0).text();
-					QUnit.assert.contains(sOpaMessage, "Opa timeout after 1 seconds");
+					QUnit.assert.contains(sOpaMessage, "Opa timeout");
 					QUnit.assert.contains(sOpaMessage, "This is what Opa logged");
-					QUnit.assert.contains(sOpaMessage, "global ID 'myGlobalId'");
+					QUnit.assert.contains(sOpaMessage, "global id: 'myGlobalId'");
 					QUnit.assert.contains(sOpaMessage, "Callstack:");
 					QUnit.assert.doesNotContain(sOpaMessage, "Log message that should not appear in the error");
 				}
@@ -655,10 +641,10 @@ sap.ui.define([
 				}),
 				success: function ($Messages) {
 					var sOpaMessage = $Messages.eq(0).text();
-					QUnit.assert.contains(sOpaMessage, "Opa timeout after 1 seconds");
+					QUnit.assert.contains(sOpaMessage, "Opa timeout");
 					QUnit.assert.contains(sOpaMessage, "bad luck no button was found");
 					QUnit.assert.contains(sOpaMessage, "This is what Opa logged");
-					QUnit.assert.contains(sOpaMessage, "global ID 'myGlobalId'");
+					QUnit.assert.contains(sOpaMessage, "global id: 'myGlobalId'");
 					QUnit.assert.contains(sOpaMessage, "Callstack:");
 					QUnit.assert.doesNotContain(sOpaMessage, "Log message that should not appear in the error");
 				}
@@ -743,7 +729,7 @@ sap.ui.define([
 
 		opaTest("Should write log messages from an iFrame startup", function (oOpa) {
 			var qunitversion = parseInt(QUnit.version, 10) || 1;
-			startApp(oOpa, "../testdata/failingOpaTest.html?sap-ui-qunitversion=" + qunitversion + "&sap-ui-qunittimeout=90000&module=IFrame");
+			startApp(oOpa, "../testdata/failingOpaTest.html?sap-ui-qunitversion=" + qunitversion + "&sap-ui-qunittimeout=8000&module=IFrame");
 
 			oOpa.waitFor({
 				matchers: createMatcherForTestMessage({
@@ -751,9 +737,8 @@ sap.ui.define([
 				}),
 				success: function (aMessages) {
 					var sOpaMessage = aMessages.eq(0).text();
-					QUnit.assert.contains(sOpaMessage, "Opa timeout after 1 seconds");
-					QUnit.assert.contains(sOpaMessage, "0 out of 1 controls met the matchers pipeline requirements -  sap.ui.test.pipelines.MatcherPipeline");
-					QUnit.assert.contains(sOpaMessage, "Matchers found no controls so check function will be skipped -  sap.ui.test.Opa5");
+					QUnit.assert.contains(sOpaMessage, "Opa timeout");
+					QUnit.assert.contains(sOpaMessage, "all results were filtered out by the matchers - skipping the check -  sap.ui.test.pipelines.MatcherPipeline");
 				}
 			});
 
@@ -763,7 +748,7 @@ sap.ui.define([
 				}),
 				success: function (aMessages) {
 					var sOpaMessage = aMessages.eq(0).text();
-					QUnit.assert.contains(sOpaMessage, "Opa timeout after 2 seconds");
+					QUnit.assert.contains(sOpaMessage, "Opa timeout");
 					QUnit.assert.contains(sOpaMessage, "There are 0 open XHRs and 1 open FakeXHRs.");
 					QUnit.assert.doesNotContain(sOpaMessage, "Should not happen");
 				}
@@ -775,11 +760,27 @@ sap.ui.define([
 				}),
 				success: function (aMessages) {
 					var sOpaMessage = aMessages.eq(0).text();
-					QUnit.assert.contains(sOpaMessage, "Opa timeout after 2 seconds");
-					QUnit.assert.contains(sOpaMessage, "Control 'Element sap.m.Button#__xmlview0--myButton' is busy -  sap.ui.test.matchers.Interactable");
-					QUnit.assert.contains(sOpaMessage, "0 out of 1 controls met the matchers pipeline requirements -  sap.ui.test.pipelines.MatcherPipeline");
-					QUnit.assert.contains(sOpaMessage, "Matchers found no controls so check function will be skipped -  sap.ui.test.Opa5");
+					QUnit.assert.contains(sOpaMessage, "Opa timeout");
+					QUnit.assert.contains(sOpaMessage, "The control Element sap.m.Button#__xmlview0--myButton is busy so it is filtered out -  sap.ui.test.matchers.Interactable");
+					QUnit.assert.contains(sOpaMessage, "all results were filtered out by the matchers - skipping the check -  sap.ui.test.pipelines.MatcherPipeline");
 					QUnit.assert.doesNotContain(sOpaMessage, "Should not happen");
+				}
+			});
+
+			oOpa.iTeardownMyApp();
+		});
+
+		opaTest("Should write trace logs when max log level is trace", function (oOpa) {
+			var qunitversion = parseInt(QUnit.version, 10) || 1;
+			startApp(oOpa, "../testdata/failingOpaTest.html?opaLogLevel=TRACE&sap-ui-qunitversion=" + qunitversion + "&sap-ui-qunittimeout=8000&module=IFrame");
+
+			oOpa.waitFor({
+				matchers: createMatcherForTestMessage({
+					passed: false
+				}),
+				success: function (aMessages) {
+					var sOpaMessage = aMessages.eq(0).text();
+					QUnit.assert.contains(sOpaMessage, "TraceLog -  sap.ui.test.TestComponent");
 				}
 			});
 

@@ -1,12 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides class sap.ui.core.ThemeCheck
-sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/ui/thirdparty/URI', 'jquery.sap.script'],
-	function(jQuery, Device, BaseObject, URI/* , jQuerySapScript */) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/Global', 'sap/ui/base/Object', 'sap/ui/thirdparty/URI', 'jquery.sap.script'],
+	function(jQuery, Device, Global, BaseObject, URI/* , jQuerySap */) {
 	"use strict";
 
 
@@ -37,7 +37,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/
 			this._themeCheckedForCustom = null;
 			this._sFallbackTheme = null;
 			this._mThemeFallback = {};
-			this._oThemeMetaDataCheckElement = null;
 		},
 
 		getInterface : function() {
@@ -59,36 +58,15 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/
 
 	ThemeCheck.themeLoaded = false;
 
-	function safeAccessSheetCssRules(sheet) {
-		try {
-			return sheet.cssRules;
-		} catch (e) {
-			// Firefox throws a SecurityError or InvalidAccessError if "sheet.cssRules"
-			// is accessed on a stylesheet with 404 response code.
-			// Most browsers also throw when accessing from a different origin (CORS).
-
-			// Only rethrow if the error is different
-			if (e.name !== 'SecurityError' && e.name !== 'InvalidAccessError') {
-				throw e;
-			} else {
-				return null;
-			}
-		}
-	}
-	function hasSheetCssRules(sheet) {
-		var aCssRules = safeAccessSheetCssRules(sheet);
-		return !!aCssRules && aCssRules.length > 0;
-	}
-
 	ThemeCheck.checkStyle = function(sId, bLog) {
 		var oStyle = document.getElementById(sId);
 
 		try {
 
 			var bNoLinkElement = false,
-				bLinkElementFinishedLoading = false,
-				bSheet = false,
-				bInnerHtml = false;
+			    bLinkElementFinishedLoading = false,
+			    bSheet = false,
+			    bInnerHtml = false;
 
 			// Check if <link> element is missing (e.g. misconfigured library)
 			bNoLinkElement = !oStyle;
@@ -97,7 +75,16 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/
 			bLinkElementFinishedLoading = !!(oStyle && (oStyle.getAttribute("data-sap-ui-ready") === "true" || oStyle.getAttribute("data-sap-ui-ready") === "false"));
 
 			// Check for "sheet" object and if rules are available
-			bSheet = !!(oStyle && oStyle.sheet && oStyle.sheet.href === oStyle.href && hasSheetCssRules(oStyle.sheet));
+			try {
+				bSheet = !!(oStyle && oStyle.sheet && oStyle.sheet.href === oStyle.href && oStyle.sheet.cssRules && oStyle.sheet.cssRules.length > 0);
+			} catch (e) {
+				// Firefox throws a SecurityError or InvalidAccessError if "oStyle.sheet.cssRules"
+				// is accessed on a stylesheet with 404 response code or from a different origin (CORS).
+				// Only rethrow if the error is different
+				if (e.name !== 'SecurityError' && e.name !== 'InvalidAccessError') {
+					throw e;
+				}
+			}
 
 			// Check for "innerHTML" content
 			bInnerHtml = !!(oStyle && oStyle.innerHTML && oStyle.innerHTML.length > 0);
@@ -128,10 +115,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/
 			oThemeCheck._iCount = 0;
 			oThemeCheck._sFallbackTheme = null;
 			oThemeCheck._mThemeFallback = {};
-			if (oThemeCheck._oThemeMetaDataCheckElement && oThemeCheck._oThemeMetaDataCheckElement.parentNode) {
-				oThemeCheck._oThemeMetaDataCheckElement.parentNode.removeChild(oThemeCheck._oThemeMetaDataCheckElement);
-				oThemeCheck._oThemeMetaDataCheckElement = null;
-			}
 		}
 	}
 
@@ -139,7 +122,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/
 		var mLibs = oThemeCheck._oCore.getLoadedLibraries();
 		var sThemeName = oThemeCheck._oCore.getConfiguration().getTheme();
 		var sPath = oThemeCheck._oCore._getThemePath("sap.ui.core", sThemeName) + "custom.css";
-		var bIsStandardTheme = sThemeName.indexOf("sap_") === 0 || sThemeName === "base";
 		var res = true;
 
 		var aFailedLibs = [];
@@ -173,8 +155,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/
 				 * if this has not been checked successfully before for the same theme
 				 */
 				if (oThemeCheck._themeCheckedForCustom != sThemeName) {
-					// custom css is supported for custom themes, so this check is skipped for standard themes
-					if (!bIsStandardTheme && checkCustom(oThemeCheck, lib)) {
+					if (checkCustom(oThemeCheck, lib)) {
 						// load custom css available at sap/ui/core/themename/custom.css
 						var sCustomCssPath = sPath;
 
@@ -203,17 +184,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/
 				}
 			}
 
-			// Collect all libs that failed to load and no fallback has been applied, yet.
-			// The fallback relies on custom theme metadata, so it is not done for standard themes
-			if (!bIsStandardTheme && currentRes && !oThemeCheck._mThemeFallback[lib]) {
+			// Collect all libs that failed to load and no fallback has been applied, yet
+			if (currentRes && !oThemeCheck._mThemeFallback[lib]) {
 				var oStyle = document.getElementById(sStyleId);
-				// Check for error marker (data-sap-ui-ready=false) and that there are no rules
-				// to be sure the stylesheet couldn't be loaded at all.
-				// E.g. in case an @import within the stylesheet fails, the error marker will
-				// also be set, but in this case no fallback should be done as there is a (broken) theme
-				if (oStyle && oStyle.getAttribute("data-sap-ui-ready") === "false" &&
-					!(oStyle.sheet && hasSheetCssRules(oStyle.sheet))
-				) {
+				if (oStyle && oStyle.getAttribute("data-sap-ui-ready") === "false") {
 					aFailedLibs.push(lib);
 				}
 			}
@@ -227,17 +201,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/
 
 			// Only retrieve the fallback theme once per ThemeCheck cycle
 			if (!oThemeCheck._sFallbackTheme) {
-				if (!oThemeCheck._oThemeMetaDataCheckElement) {
-					// Create dummy element to retrieve custom theme metadata which is applied
-					// via background-image data-uri
-					oThemeCheck._oThemeMetaDataCheckElement = document.createElement("style");
-					jQuery.each(mLibs, function(sLib) {
-						var sClassName = "sapThemeMetaData-UI5-" + sLib.replace(/\./g, "-");
-						oThemeCheck._oThemeMetaDataCheckElement.classList.add(sClassName);
-					});
-					document.head.appendChild(oThemeCheck._oThemeMetaDataCheckElement);
-				}
-				oThemeCheck._sFallbackTheme = getFallbackTheme(oThemeCheck._oThemeMetaDataCheckElement);
+				oThemeCheck._sFallbackTheme = getFallbackTheme(mLibs);
 			}
 
 			if (oThemeCheck._sFallbackTheme) {
@@ -271,9 +235,15 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/
 		return res;
 	}
 
-	function getFallbackTheme(oThemeMetaDataCheckElement) {
-		function getThemeMetaData() {
-			var sDataUri = window.getComputedStyle(oThemeMetaDataCheckElement).getPropertyValue("background-image");
+	function getFallbackTheme(mLibs) {
+		function getThemeMetaDataForLibrary(sLibraryName) {
+			var sThemeMetaDataClassName = "sapThemeMetaData-UI5-" + sLibraryName.replace(/\./g, "-");
+
+			// Applying the class to the <html> element to be able to get the "background-image"
+			var html = document.documentElement;
+			html.classList.add(sThemeMetaDataClassName);
+			var sDataUri = window.getComputedStyle(html).getPropertyValue("background-image");
+			html.classList.remove(sThemeMetaDataClassName);
 
 			var aDataUriMatch = /\(["']?data:text\/plain;utf-8,(.*?)['"]?\)/i.exec(sDataUri);
 			if (!aDataUriMatch || aDataUriMatch.length < 2) {
@@ -304,12 +274,17 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/
 			}
 		}
 
-		var oThemeMetaData = getThemeMetaData();
-		if (oThemeMetaData && oThemeMetaData.Extends && oThemeMetaData.Extends[0]) {
-			return oThemeMetaData.Extends[0];
-		} else {
-			return null;
+		for (var sLibraryName in mLibs) {
+			if (mLibs.hasOwnProperty(sLibraryName)) {
+				var oThemeMetaData = getThemeMetaDataForLibrary(sLibraryName);
+				if (oThemeMetaData && oThemeMetaData.Extends && oThemeMetaData.Extends[0]) {
+					// Just return the first match as all libraries extend the same theme.
+					return oThemeMetaData.Extends[0];
+				}
+			}
 		}
+
+		return null;
 	}
 
 	/* checks if a particular class is available
@@ -374,9 +349,22 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/Device', 'sap/ui/base/Object', 'sap/
 		 * checks if a particular class is available at the beginning of the stylesheet
 		*/
 
-		var aRules = cssFile.sheet ? safeAccessSheetCssRules(cssFile.sheet) : null;
+		var aRules;
 
-		if (!aRules || aRules.length === 0) {
+		try {
+			if (cssFile.sheet && cssFile.sheet.cssRules) {
+				aRules = cssFile.sheet.cssRules;
+			}
+		} catch (e) {
+			// Firefox throws a SecurityError or InvalidAccessError if "cssFile.sheet.cssRules"
+			// is accessed on a stylesheet with 404 response code or from a different origin (CORS).
+			// Only rethrow if the error is different
+			if (e.name !== 'SecurityError' && e.name !== 'InvalidAccessError') {
+				throw e;
+			}
+		}
+
+		if (!aRules || aRules.length == 0) {
 			jQuery.sap.log.warning("Custom check: Failed retrieving a CSS rule from stylesheet " + lib);
 			return false;
 		}

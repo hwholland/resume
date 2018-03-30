@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 		return UIComponent.extend("sap.f.sample.DynamicPageAnalyticalTable.Component", {
 
 			metadata: {
-				rootView: {
-					"viewName": "sap.f.sample.DynamicPageAnalyticalTable.DynamicPageAnalyticalTable",
-					"type": "XML",
-					"async": true
-				},
+				rootView: "sap.f.sample.DynamicPageAnalyticalTable.DynamicPageAnalyticalTable",
 				dependencies: {
 					libs: [
 						"sap.f",
@@ -23,8 +19,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 					sample : {
 						stretch : true,
 						files : [
-							"DynamicPageAnalyticalTable.view.xml",
-							"DynamicPageAnalyticalTable.controller.js"
+							"DynamicPageAnalyticalTable.view.xml"
 						]
 					}
 				}

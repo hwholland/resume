@@ -741,33 +741,6 @@ and displayed in both expanded and collapsed (snapped) states.</xsd:documentatio
 &lt;b&gt;Note:&lt;/b&gt; The primary area is shrinking at lower rate, remaining visible as much as it can.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute name="areaShrinkRatio" type="n3:_DynamicPageTitleShrinkRatioType">
-<xsd:annotation>
-<xsd:documentation>Assigns shrinking ratio to the &lt;code&gt;DynamicPageTitle&lt;/code&gt; areas (Heading, Content, Actions).
-The greater value a section has the faster it shrinks when the screen size is being reduced.
-
-The value must be set in &lt;code&gt;Heading:Content:Actions&lt;/code&gt; format where Title, Content and Actions
-are numbers greater than or equal to 0. If set to 0, the respective area will not shrink.
-
-For example, if &lt;code&gt;2:7:1&lt;/code&gt; is set, the Content area will shrink seven times faster than
-the Actions area. So, when all three areas have width of 500px and the available space is reduced by 100px
-the Title area will reduced by 20px, the Content area - by 70px and the Actions area - by 10px.
-
-If all the areas have assigned values greater than 1, the numbers are scaled so that at least one of them
-is equal to 1. For example, value of &lt;code&gt;2:4:8&lt;/code&gt; is equal to &lt;code&gt;1:2:4&lt;/code&gt;.
-
-&lt;Note:&gt; When this property is set the &lt;code&gt;primaryArea&lt;/code&gt; property has no effect.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="stateChange" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Fired when the title state (expanded/collapsed) is toggled by user interaction.
-For example, scrolling, title clicking/tapping, using expand/collapse button.
-
-Also fired when the developer toggles the title state by programmatically
-changing the scroll position of the scrollbar of &lt;code&gt;DynamicPage&lt;/code&gt;.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 </xsd:extension>
 </xsd:complexContent>
 </xsd:complexType>
@@ -851,11 +824,6 @@ transition to use. The default is &lt;code&gt;slide&lt;/code&gt;, other options 
 <xsd:annotation>
 <xsd:documentation>Determines the type of the transition/animation to apply for the &lt;code&gt;End&lt;/code&gt; column when &lt;code&gt;to()&lt;/code&gt; is called without defining the
 transition to use. The default is &lt;code&gt;slide&lt;/code&gt;, other options are &lt;code&gt;fade&lt;/code&gt;, &lt;code&gt;flip&lt;/code&gt;, &lt;code&gt;show&lt;/code&gt;, and the names of any registered custom transitions.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="backgroundDesign" type="n2:_BackgroundDesignType">
-<xsd:annotation>
-<xsd:documentation>Specifies the background color of the content. The visualization of the different options depends on the used theme.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="initialBeginColumnPage" type="xsd:string">
@@ -1714,21 +1682,16 @@ Font size - 2.75rem</xsd:documentation>
 <xsd:restriction base="xsd:string">
 <xsd:enumeration value="Begin">
 <xsd:annotation>
-<xsd:documentation>The area includes the &lt;code&gt;heading&lt;/code&gt;, &lt;code&gt;expandedContent&lt;/code&gt; and &lt;code&gt;snappedContent&lt;/code&gt; aggregations,
+<xsd:documentation>The area includes the &lt;code&gt;heading&lt;code&gt;, &lt;code&gt;expandedContent&lt;code&gt; and &lt;code&gt;snappedContent&lt;code&gt; aggregations,
 positioned in the beginning area of the {@link sap.f.DynamicPageTitle}.</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 <xsd:enumeration value="Middle">
 <xsd:annotation>
-<xsd:documentation>The area includes the &lt;code&gt;content&lt;/code&gt; aggregation,
+<xsd:documentation>The area includes the &lt;code&gt;content&lt;code&gt; aggregation,
 positioned in the middle part of the {@link sap.f.DynamicPageTitle}.</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:simpleType name="_DynamicPageTitleShrinkRatioType">
-<xsd:restriction base="xsd:string">
-<xsd:pattern value="([0-9]\d*)(\.\d)?:([0-9]\d*)(\.\d)?:([0-9]\d*)(\.\d)?"/>
 </xsd:restriction>
 </xsd:simpleType>
 <xsd:simpleType name="_LayoutTypeType">

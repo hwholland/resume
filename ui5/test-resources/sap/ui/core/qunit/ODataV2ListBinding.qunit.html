@@ -29,6 +29,12 @@ data-sap-ui-theme="sap_bluecrystal" data-sap-ui-libs="sap.ui.commons"></script>
 	var sURI = "http://services.odata.org/V3/Northwind/Northwind.svc/";
 		sURI = "../../../../../proxy/http/" + sURI.replace("http://","");
 
+	// create a dummy AMD fdefine to check if shim works for datajs
+	window.define = function() {
+		throw Error("define should not be called");
+	};
+	window.define.amd = { vendor : "SAPUI5 QUnit Test" };
+
 	function removeSharedMetadata() {
 		var sServiceURI = sURI.replace(/\/$/, "");
 		if (sap.ui.model.odata.v2.ODataModel.mServiceData
@@ -2295,64 +2301,6 @@ data-sap-ui-theme="sap_bluecrystal" data-sap-ui-libs="sap.ui.commons"></script>
 				};
 				executeRequests({createPreliminaryContext: true, usePreliminaryContext: true}, {preliminaryContext: true}, fnCompleted, this);
 
-			});
-
-			QUnit.test("Batch: ListBinding - create/use preliminary context with existing element context", function(assert) {
-				var done = assert.async();
-				var oPanel = new Panel();
-				var oList = new List();
-
-				oModel = new sap.ui.model.odata.v2.ODataModel(sURI, {
-					useBatch: true
-				});
-
-				oPanel.setModel(oModel);
-				oPanel.addContent(oList);
-
-				oModel.read("/Products(1)", {
-					success: function() {
-						oPanel.bindElement({
-							path:"/Products(1)",
-							parameters: {
-								createPreliminaryContext: true
-							}
-						});
-
-						// check if element context exists and if it is not set to preliminary
-						if (oPanel.getElementBinding().getBoundContext()) {
-							var oContext = oPanel.getElementBinding().getBoundContext();
-							assert.notOk(oContext.isPreliminary(), "ElementContext should not be preliminary");
-						}
-
-						oModel.attachBatchRequestCompleted(function(oEvent) {
-							var aRequests = oEvent.getParameter("requests");
-							assert.equal(aRequests.length, 1, "Only one batch request should be completed.");
-							done();
-						});
-					}
-				});
-			});
-
-			QUnit.test("Batch: ListBinding - create preliminary context for non existing entity", function(assert) {
-				var done = assert.async();
-
-				//the change event should be called exactly twice as the preliminary context is created for a non-existing entity
-				var i = 0;
-				var fnCompleted = function(event) {
-					assert.ok(event.oSource);
-					i++;
-					if(i === 2) {
-						done();
-					}
-				};
-
-				oModel = new ODataModel(sURI, {});
-
-				var oPanel = new Panel();
-				this.aRegisteredControls.push(oPanel);
-				oPanel.setModel(oModel);
-
-				oPanel.bindElement({path: "/Products(121231)", events: {change: fnCompleted}, parameters: {createPreliminaryContext: true}});
 			});
 
 			QUnit.test("Batch: ListBinding - create/use preliminary Context (parameter variant 1)", function(assert) {

@@ -1,21 +1,13 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides useful string operations not available in pure JavaScript.
-sap.ui.define([
-	'jquery.sap.global',
-	'sap/base/strings/endsWithIgnoreCase',
-	'sap/base/strings/startsWithIgnoreCase',
-	'sap/base/strings/charToUpperCase',
-	'sap/base/strings/camelCase',
-	'sap/base/strings/hyphen',
-	'sap/base/strings/escapeRegExp',
-	'sap/base/strings/formatMessage'
-], function(jQuery, endsWithIgnoreCase, startsWithIgnoreCase, charToUpperCase, camelCase, hyphen, escapeRegExp, formatMessage) {
-		"use strict";
+sap.ui.define(['jquery.sap.global'],
+	function(jQuery) {
+	"use strict";
 
 	/**
 	 * Checks whether a given <code>sString</code> ends with <code>sEndString</code>
@@ -27,11 +19,12 @@ sap.ui.define([
 	 * @see jQuery.sap.endsWithIgnoreCase
 	 * @public
 	 */
-	jQuery.sap.endsWith = function(sString, sEndString) {
+	jQuery.sap.endsWith = function endsWith(sString, sEndString) {
 		if (typeof (sEndString) != "string" || sEndString == "") {
 			return false;
 		}
-		return sString.endsWith(sEndString);
+		var iPos = sString.lastIndexOf(sEndString);
+		return iPos >= 0 && iPos == sString.length - sEndString.length;
 	};
 
 	/**
@@ -43,9 +36,15 @@ sap.ui.define([
 	 * @returns {boolean} Whether <code>sString</code> ends with <code>sEndString</code>
 	 * @see jQuery.sap.endsWith
 	 * @public
-	 * @function
 	 */
-	jQuery.sap.endsWithIgnoreCase = endsWithIgnoreCase;
+	jQuery.sap.endsWithIgnoreCase = function endsWithIgnoreCase(sString, sEndString) {
+		if (typeof (sEndString) != "string" || sEndString == "") {
+			return false;
+		}
+		sString = sString.toUpperCase();
+		sEndString = sEndString.toUpperCase();
+		return jQuery.sap.endsWith(sString,sEndString);
+	};
 
 	/**
 	 * Checks whether a given <code>sString</code> starts with <code>sStartString</code>
@@ -57,11 +56,14 @@ sap.ui.define([
 	 * @see jQuery.sap.startsWithIgnoreCase
 	 * @public
 	 */
-	jQuery.sap.startsWith = function(sString, sStartString) {
+	jQuery.sap.startsWith = function startsWith(sString, sStartString) {
 		if (typeof (sStartString) != "string" || sStartString == "") {
 			return false;
 		}
-		return sString.startsWith(sStartString);
+		if (sString == sStartString) {
+			return true;
+		}
+		return sString.indexOf(sStartString) == 0;
 	};
 
 	/**
@@ -73,9 +75,15 @@ sap.ui.define([
 	 * @returns {boolean} Whether <code>sString</code> starts with <code>sStartString</code>
 	 * @see jQuery.sap.startsWith
 	 * @public
-	 * @function
 	 */
-	jQuery.sap.startsWithIgnoreCase = startsWithIgnoreCase;
+	jQuery.sap.startsWithIgnoreCase = function startsWithIgnoreCase(sString, sStartString) {
+		if (typeof (sStartString) != "string" || sStartString == "") {
+			return false;
+		}
+		sString = sString.toUpperCase();
+		sStartString = sStartString.toUpperCase();
+		return jQuery.sap.startsWith(sString,sStartString);
+	};
 
 	/**
 	 * Converts one character of the string to upper case, at a given position.
@@ -89,9 +97,20 @@ sap.ui.define([
 	 * @returns {string} String with the converted character
 	 * @public
 	 * @SecPassthrough {0|return}
-	 * @function
 	 */
-	jQuery.sap.charToUpperCase = charToUpperCase;
+	jQuery.sap.charToUpperCase = function charToUpperCase(sString,iPos) {
+		if (!sString) {
+			return sString;
+		}
+		if (!iPos || isNaN(iPos) || iPos <= 0 || iPos >= sString.length) {
+			iPos = 0;
+		}
+		var sChar = sString.charAt(iPos).toUpperCase();
+		if (iPos > 0) {
+			return sString.substring(0,iPos) + sChar + sString.substring(iPos + 1);
+		}
+		return sChar + sString.substring(iPos + 1);
+	};
 
 	/**
 	 * Pads a string on the left side until is has at least the given length.
@@ -107,15 +126,11 @@ sap.ui.define([
 	 * @public
 	 * @SecPassthrough {0 1|return}
 	 */
-	jQuery.sap.padLeft = function (sString, sPadChar, iLength) {
+	jQuery.sap.padLeft = function padLeft(sString, sPadChar, iLength) {
 		jQuery.sap.assert(typeof sPadChar === 'string' && sPadChar, "padLeft: sPadChar must be a non-empty string");
 		if (!sString) {
 			sString = "";
 		}
-		if (sPadChar && sPadChar.length === 1){
-			return sString.padStart(iLength, sPadChar);
-		}
-
 		while (sString.length < iLength) {
 			sString = sPadChar + sString;
 		}
@@ -136,20 +151,19 @@ sap.ui.define([
 	 * @public
 	 * @SecPassthrough {0 1|return}
 	 */
-	jQuery.sap.padRight = function (sString, sPadChar, iLength) {
+	jQuery.sap.padRight = function padRight(sString, sPadChar, iLength) {
 		jQuery.sap.assert(typeof sPadChar === 'string' && sPadChar, "padRight: sPadChar must be a non-empty string");
 		if (!sString) {
 			sString = "";
 		}
-		if (sPadChar && sPadChar.length === 1){
-			return sString.padEnd(iLength, sPadChar);
-		}
-
 		while (sString.length < iLength) {
 			sString = sString + sPadChar;
 		}
 		return sString;
 	};
+
+
+	var rCamelCase = /-(.)/ig;
 
 	/**
 	 * Transforms a hyphen separated string to a camel case string.
@@ -159,10 +173,15 @@ sap.ui.define([
 	 * @since 1.7.0
 	 * @public
 	 * @SecPassthrough {0|return}
-	 * @function
 	 */
-	jQuery.sap.camelCase = camelCase;
+	jQuery.sap.camelCase = function camelCase(sString) {
+		return sString.replace( rCamelCase, function( sMatch, sChar ) {
+			return sChar.toUpperCase();
+		});
+	};
 
+
+	var rHyphen = /([A-Z])/g;
 
 	/**
 	 * Transforms a camel case string into a hyphen separated string.
@@ -172,9 +191,15 @@ sap.ui.define([
 	 * @since 1.15.0
 	 * @public
 	 * @SecPassthrough {0|return}
-	 * @function
 	 */
-	jQuery.sap.hyphen = hyphen;
+	jQuery.sap.hyphen = function hyphen(sString) {
+		return sString.replace( rHyphen, function(sMatch, sChar) {
+			return "-" + sChar.toLowerCase();
+		});
+	};
+
+
+	var rEscapeRegExp = /[[\]{}()*+?.\\^$|]/g;
 
 	/**
 	 * Escapes all characters that would have a special meaning in a regular expression.
@@ -196,11 +221,12 @@ sap.ui.define([
 	 * @since 1.9.3
 	 * @public
 	 * @SecPassthrough {0|return}
-	 * @function
 	 */
-	jQuery.sap.escapeRegExp = escapeRegExp;
+	jQuery.sap.escapeRegExp = function escapeRegExp(sString) {
+		return sString.replace(rEscapeRegExp, "\\$&");
+	};
 
-/**
+	/**
 	 * Creates a string from a pattern by replacing placeholders with concrete values.
 	 *
 	 * The syntax of the pattern is inspired by (but not fully equivalent to) the
@@ -243,9 +269,49 @@ sap.ui.define([
 	 * @since 1.12.5
 	 * @SecPassthrough {*|return}
 	 * @public
-	 * @function
 	 */
-	jQuery.sap.formatMessage = formatMessage;
+	jQuery.sap.formatMessage = function formatMessage(sPattern, aValues) {
+		jQuery.sap.assert(typeof sPattern === "string" || sPattern instanceof String, "pattern must be string");
+		if (arguments.length > 2 || (aValues != null && !Array.isArray(aValues))) {
+			aValues = Array.prototype.slice.call(arguments,1);
+		}
+		aValues = aValues || [];
+		return sPattern.replace(rMessageFormat, function($0,$1,$2,$3,offset) {
+			if ( $1 ) {
+				// a doubled single quote in a normal string fragment
+				//   --> emit a single quote
+				return "'";
+			} else if ( $2 ) {
+				// a quoted sequence of chars, potentially containing doubled single quotes again
+				//   --> emit with doubled single quotes replaced by a single quote
+				return $2.replace(/''/g, "'");
+			} else if ( $3 ) {
+				// a welformed curly brace
+				//   --> emit the argument but ignore other parameters
+				return String(aValues[parseInt($3, 10)]);
+			}
+			// e.g. malformed curly braces
+			//   --> throw Error
+			throw new Error("formatMessage: pattern syntax error at pos. " + offset);
+		});
+	};
+
+	/**
+	 * Pattern to analyze MessageFormat strings.
+	 *
+	 * Group 1: captures doubled single quotes within the string
+	 * Group 2: captures quoted fragments within the string.
+	 *            Note that java.util.MessageFormat silently forgives a missing single quote at
+	 *            the end of a pattern. This special case is handled by the RegEx as well.
+	 * Group 3: captures placeholders
+	 *            Checks only for numerical argument index, any remainder is ignored up to the next
+	 *            closing curly brace. Nested placeholdes are not accepted!
+	 * Group 4: captures any remaining curly braces and indicates syntax errors
+	 *
+	 *                    [-1] [----- quoted string -----] [------ placeholder ------] [--]
+	 * @private
+	 */
+	var rMessageFormat = /('')|'([^']+(?:''[^']*)*)(?:'|$)|\{([0-9]+(?:\s*,[^{}]*)?)\}|[{}]/g;
 
 	return jQuery;
 

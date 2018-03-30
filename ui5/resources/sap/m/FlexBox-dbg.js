@@ -1,29 +1,15 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.FlexBox.
-sap.ui.define([
-	'jquery.sap.global',
-	'./FlexBoxStylingHelper',
-	'./FlexItemData',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/RenderManager',
-	'./FlexBoxRenderer'
-],
-function(
-	jQuery,
-	FlexBoxStylingHelper,
-	FlexItemData,
-	library,
-	Control,
-	RenderManager,
-	FlexBoxRenderer
-) {
-	"use strict";
+sap.ui.define(['jquery.sap.global', './FlexBoxStylingHelper', './FlexItemData', './library', 'sap/ui/core/Control', 'sap/ui/core/RenderManager'],
+	function(jQuery, FlexBoxStylingHelper, FlexItemData, library, Control, RenderManager) {
+		"use strict";
+
+
 
 	// shortcut for sap.m.BackgroundDesign
 	var BackgroundDesign = library.BackgroundDesign;
@@ -64,13 +50,11 @@ function(
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
 	 * @alias sap.m.FlexBox
-	 * @see https://www.w3.org/TR/css-flexbox-1/
-	 * @see https://www.w3schools.com/css/css3_flexbox.asp
 	 * @ui5-metamodel This control/element also will be described in the UI5 (legacy) designtime metamodel
 	 */
 	var FlexBox = Control.extend("sap.m.FlexBox", /** @lends sap.m.FlexBox.prototype */ { metadata : {
@@ -163,11 +147,11 @@ function(
 			 */
 			items : {type : "sap.ui.core.Control", multiple : true, singularName : "item"}
 		},
-		designtime: "sap/m/designtime/FlexBox.designtime"
+		designTime : true
 	}});
 
 	/**
-	 * Initializes the control.
+	 * Initiates the control.
 	 *
 	 * @name sap.m.FlexBox.init
 	 * @method
@@ -194,7 +178,7 @@ function(
 	 * @method
 	 * @public
 	 * @param {object} oItem Added item.
-	 * @returns {sap.m.FlexBox} <code>this</code> FlexBox reference for chaining.
+	 * @returns {sap.m.FlexBox} this FlexBox reference for chaining.
 	 */
 	FlexBox.prototype.addItem = function(oItem) {
 		this.addAggregation("items", oItem);
@@ -211,7 +195,7 @@ function(
 	 * @public
 	 * @param {object} oItem Inserted item.
 	 * @param {int} iIndex Index of the inserted item.
-	 * @returns {sap.m.FlexBox} <code>this</code> FlexBox reference for chaining.
+	 * @returns {sap.m.FlexBox} this FlexBox reference for chaining.
 	 */
 	FlexBox.prototype.insertItem = function(oItem, iIndex) {
 		this.insertAggregation("items", oItem, iIndex);
@@ -343,7 +327,7 @@ function(
 	 * @method
 	 * @public
 	 * @param {string} sValue Render type in string format.
-	 * @returns {sap.m.FlexBox} <code>this</code> FlexBox reference for chaining.
+	 * @returns {sap.m.FlexBox} this FlexBox reference for chaining.
 	 */
 	FlexBox.prototype.setRenderType = function(sValue) {
 		var sOldValue = this.getRenderType(),
@@ -373,7 +357,7 @@ function(
 	 * @method
 	 * @public
 	 * @param {boolean} bInline Indication for display inline.
-	 * @returns {sap.m.FlexBox} <code>this</code> FlexBox reference for chaining.
+	 * @returns {sap.m.FlexBox} this FlexBox reference for chaining.
 	 */
 	FlexBox.prototype.setDisplayInline = function(bInline) {
 		this.setProperty("displayInline", bInline, true);
@@ -389,7 +373,7 @@ function(
 	 * @method
 	 * @public
 	 * @param {string} sValue FlexBox direction in string format.
-	 * @returns {sap.m.FlexBox} <code>this</code> FlexBox reference for chaining.
+	 * @returns {sap.m.FlexBox} this FlexBox reference for chaining.
 	 */
 	FlexBox.prototype.setDirection = function(sValue) {
 		this.setProperty("direction", sValue, true);
@@ -409,13 +393,13 @@ function(
 	};
 
 	/**
-	 * Sets <code>fitContainer</code> so you can have nested FlexBox containers in columns or rows.
+	 * Sets fitContainer so you can have nested FlexBox containers in columns or rows.
 	 *
 	 * @name sap.m.FlexBox.setFitContainer
 	 * @method
 	 * @public
 	 * @param {string} sValue Fit container in string format.
-	 * @returns {sap.m.FlexBox} <code>this</code> FlexBox reference for chaining.
+	 * @returns {sap.m.FlexBox} this FlexBox reference for chaining.
 	 */
 	FlexBox.prototype.setFitContainer = function(sValue) {
 		this.setProperty("fitContainer", sValue, true);
@@ -431,7 +415,7 @@ function(
 	 * @method
 	 * @public
 	 * @param {string} sValue Wrapping in the flexbox.
-	 * @returns {sap.m.FlexBox} <code>this</code> FlexBox reference for chaining.
+	 * @returns {sap.m.FlexBox} this FlexBox reference for chaining.
 	 */
 	FlexBox.prototype.setWrap = function(sValue) {
 		var sOldValue = this.getWrap();
@@ -442,7 +426,7 @@ function(
 	};
 
 	/**
-	 * Sets the <code>justifyContent</code> - it can be flex-start, flex-end, center, space-between, space-around, space-evenly.
+	 * Sets the justifyContent - it can be flex-start, flex-end, center, space-between, space-around, space-evenly.
 	 *
 	 * @name sap.m.FlexBox.setJustifyContent
 	 * @method

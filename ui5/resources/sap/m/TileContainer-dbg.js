@@ -1,28 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.TileContainer.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/IconPool',
-	'sap/ui/Device',
-	'sap/ui/core/ResizeHandler',
-	'./TileContainerRenderer'
-],
-function(
-	jQuery,
-	library,
-	Control,
-	IconPool,
-	Device,
-	ResizeHandler,
-	TileContainerRenderer
-	) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/ui/core/IconPool', 'sap/ui/Device', 'sap/ui/core/ResizeHandler'],
+	function(jQuery, library, Control, IconPool, Device, ResizeHandler) {
 	"use strict";
 
 
@@ -38,12 +22,12 @@ function(
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
 	 * @since 1.12
-	 * @deprecated as of version 1.50, replaced by a container of your choice with {@link sap.m.GenericTile} instances
+	 * @deprecated As of version 1.50, instead, use a container of your choice with {@link sap.m.GenericTile} instances
 	 * @alias sap.m.TileContainer
 	 * @ui5-metamodel This control/element also will be described in the UI5 (legacy) designtime metamodel
 	 */
@@ -471,13 +455,13 @@ function(
 				},
 				oldCurrentPageIsLast: function() {
 					if (isNaN(iOldCurrentPage)) {
-						return false;
+						return;
 					}
 					return bRtl ? (iOldCurrentPage === 0) : (iOldCurrentPage === iOldCount - 1);
 				},
 				oldCurrentPageIsFirst: function() {
 					if (isNaN(iOldCurrentPage)) {
-						return false;
+						return;
 					}
 					return bRtl ? (iOldCurrentPage === iOldCount - 1) : (iOldCurrentPage === 0);
 				},
@@ -558,11 +542,7 @@ function(
 			this._bRenderFirstPage = false;
 			aVisibleTiles = this._getVisibleTiles();
 			this._updateTileDimensionInfoAndPageSize(aVisibleTiles);
-			if (this.getTiles().length === 1) {
-				// in case of only one tile, it was rendered
-				// but still needs it's position and visibility to be updated
-				this._update(false, aVisibleTiles);
-			} else if (this._iMaxTiles !== Infinity && this._iMaxTiles ) {
+			if (this._iMaxTiles !== Infinity && this._iMaxTiles ) {
 				this._renderTiles(aVisibleTiles, 0, this._iMaxTiles - 1);
 			}
 		} else {
@@ -734,7 +714,7 @@ function(
 	/**
 	 * Updates all Tiles.
 	 * @param {boolean} bAnimated to apply animation during update
-	 * @param {sap.m.Tile[]} [aVisibleTiles] optional list of visible tiles in order to avoid filtering them again.
+	 * @param {[sap.m.Tile[]]} aVisibleTiles optional list of visible tiles in order to avoid filtering them again.
 	 * @return {void}
 	 * @private
 	 */
@@ -1102,7 +1082,7 @@ function(
 	 *
 	 * @param {sap.m.Tile|int} vTile The Tile or tile index to be scrolled into view
 	 * @param {boolean} bAnimated Whether the scroll should be animated
-	 * @param {sap.m.Tile[]} [aVisibleTiles] optional list of visible tiles in order to avoid filtering them again.
+	 * @param {[sap.m.Tile[]]} aVisibleTiles optional list of visible tiles in order to avoid filtering them again.
 	 * @public
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
 	 */
@@ -1140,8 +1120,7 @@ function(
 	};
 
 	/**
-	 * Updates the tile positions only of the rendered tiles.
-	 * Tile property _rendered is set inside Tile.js onAfterRendering.
+	 * Updates the tile positions.
 	 *
 	 * @private
 	 */
@@ -1402,7 +1381,7 @@ function(
 	 * Applies the start index of the pages' first Tile according to the given index.
 	 *
 	 * @param {int} iIndex The index of the tile that should be visible
-	 * @param {sap.m.Tile[]} [aVisibleTiles] optional list of visible tiles in order to avoid filtering them again.
+	 * @param {[sap.m.Tile[]]} aVisibleTiles optional list of visible tiles in order to avoid filtering them again.
 	 * @private
 	 */
 	TileContainer.prototype._applyPageStartIndex = function (iIndex, aVisibleTiles) {
@@ -2024,7 +2003,7 @@ function(
 	/**
 	 * Finds given tile amongst visible tiles list
 	 * @param {sap.m.Tile} oTile the tile to look for
-	 * @param {sap.m.Tile[]} [aTiles] optional list of visible tiles in order to avoid filtering them again.
+	 * @param {[sap.m.Tile[]]} aTiles optional list of visible tiles in order to avoid filtering them again.
 	 * @returns {number} the index of the visible tile. If tile is not found, -1 will be returned
 	 * @private
 	 */
@@ -2046,7 +2025,7 @@ function(
 
 	/**
 	 * Updates the information about the dimension of a tile and the page size.
-	 * @param {sap.m.Tile[]} [aVisibleTiles] optional list of visible tiles in order to avoid filtering them again.
+	 * @param {[sap.m.Tile[]]} tiles optional list of visible tiles in order to avoid filtering them again.
 	 * @private
 	 */
 	TileContainer.prototype._updateTileDimensionInfoAndPageSize = function(aVisibleTiles) {
@@ -2141,7 +2120,7 @@ function(
 	 * Handles the WAI ARIA property aria-posinset after a change in the TileContainer.
 	 * @param {int} iStartIndex The index of the Tile to start with
 	 * @param {int} iEndIndex The index of the Tile to complete with
-	 * @param {sap.m.Tile[]} [aVisibleTiles] optional list of visible tiles in order to avoid filtering them again.
+	 * @param {[sap.m.Tile[]]} visibleTiles optional list of visible tiles in order to avoid filtering them again.
 	 * @private
 	 */
 	function handleAriaPositionInSet(iStartIndex, iEndIndex, aVisibleTiles) {

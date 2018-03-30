@@ -3,7 +3,7 @@
 describe("sap.m.TimePicker", function() {
 	"use strict";
 
-	var sSutId = "TP1",
+	var sSutId = "__picker0",
 		sSutIconClass = ".sapMInputValHelpInner",
 		sSutPickerId,
 		sSutPickerSliderId = sSutId + "-sliders-listSecs";

@@ -5,11 +5,7 @@ sap.ui.define([
 
 	return UIComponent.extend("sap.ui.table.sample.Basic.Component", {
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.table.sample.Basic.View",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.table.sample.Basic.View",
 			dependencies : {
 				libs : [
 					"sap.ui.table",

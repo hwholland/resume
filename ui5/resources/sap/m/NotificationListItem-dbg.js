@@ -1,27 +1,11 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-sap.ui.define([
-	'./library',
-	'./NotificationListBase',
-	'sap/ui/core/InvisibleText',
-	'sap/ui/core/IconPool',
-	'sap/ui/core/ResizeHandler',
-	'sap/m/Button',
-	'./NotificationListItemRenderer'
-],
-function(
-	library,
-	NotificationListBase,
-	InvisibleText,
-	IconPool,
-	ResizeHandler,
-	Button,
-	NotificationListItemRenderer
-	) {
+sap.ui.define(['./library', './NotificationListBase', 'sap/ui/core/InvisibleText', 'sap/ui/core/IconPool', 'sap/ui/core/ResizeHandler', 'sap/m/Button'],
+	function (library, NotificationListBase, InvisibleText, IconPool, ResizeHandler, Button) {
 	'use strict';
 
 	// shortcut for sap.m.ButtonType
@@ -46,7 +30,7 @@ function(
 	 * @extends sap.m.NotificationListBase
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public

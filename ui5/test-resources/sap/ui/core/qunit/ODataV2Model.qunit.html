@@ -90,6 +90,12 @@
 	oPanel2.addContent(oTable);
 	oPanel2.placeAt("target2");
 
+	// create a dummy AMD fdefine to check if shim works for datajs
+	window.define = function() {
+		throw Error("define should not be called");
+	}
+	window.define.amd = { vendor : "SAPUI5 QUnit Test" } ;
+
 	function removeSharedServicedata(sURI){
 		var aParts = sURI.split('?');
 		var sServiceURI = aParts[0].replace(/\/$/, "");
@@ -138,6 +144,13 @@
 		bDataReceived = true;
 		assert.ok(bChanged && bDataRequested, "dataRecieved fired");
 	};
+
+	QUnit.test("check datajs AMD shim", function(assert) {
+		assert.ok(typeof define === "function" && define.amd, "precondition: AMD like define exists");
+		jQuery.sap.require("sap.ui.thirdparty.datajs");
+		assert.ok(!!window.datajs, "global datajs object should exist");
+		assert.ok(!!window.OData, "global OData object should exist");
+	});
 
 	QUnit.test("test oDataModel - oMetadata shared across models", function(assert){
 		var done = assert.async();
@@ -406,51 +419,6 @@
 		oBinding.attachChange(handler1);
 		// fire first loading...getContexts might be empty the first time...then when data is loaded the handler will be called
 		oBinding.getContexts();
-	});
-
-	QUnit.test("test create binding context with optional parameters", function(assert){
-		var done = assert.async();
-		var oModel = initModel(sURI);
-		sap.ui.getCore().setModel(oModel);
-
-		oModel.metadataLoaded().then(function() {
-			// old behavior with passing null context
-			oModel.createBindingContext("/Categories(1)", null, {select : "CategoryID" }, function(oContext){
-				assert.equal(oModel.getProperty("/Categories(1)").CategoryID, 1, "test select property");
-				assert.equal(oModel.getProperty("/Categories(1)").Description, undefined, "other property not available");
-				assert.equal(oModel.getProperty("/Categories(1)").Picture, undefined, "other property not available");
-				oModel.removeData();
-				// no context
-				oModel.createBindingContext("/Categories(1)", {select : "CategoryID" }, function(oContext){
-					assert.equal(oModel.getProperty("/Categories(1)").CategoryID, 1, "test select property");
-					assert.equal(oModel.getProperty("/Categories(1)").Description, undefined, "other property not available");
-					assert.equal(oModel.getProperty("/Categories(1)").Picture, undefined, "other property not available");
-					oModel.removeData();
-					// with context
-					oModel.createBindingContext("Category", oModel.getContext("/Products(1)"), {select : "CategoryID" }, function(oContext){
-						assert.equal(oModel.getProperty("/Categories(1)").CategoryID, 1, "test select property");
-						assert.equal(oModel.getProperty("/Categories(1)").Description, undefined, "other property not available");
-						assert.equal(oModel.getProperty("/Categories(1)").Picture, undefined, "other property not available");
-						oModel.removeData();
-						// with context no parameters
-						oModel.createBindingContext("Category", oModel.getContext("/Products(1)"), function(oContext){
-							assert.equal(oModel.getProperty("/Categories(1)").CategoryID, 1, "property available");
-							assert.equal(oModel.getProperty("/Categories(1)").Description, "Soft drinks, coffees, teas, beers, and ales", "property available");
-							assert.equal(oModel.getProperty("/Categories(1)").Picture, "", "property available");
-							oModel.removeData();
-							// only callback function
-							oModel.createBindingContext("/Categories(1)", function(oContext){
-								assert.equal(oModel.getProperty("/Categories(1)").CategoryID, 1, "property available");
-								assert.equal(oModel.getProperty("/Categories(1)").Description, "Soft drinks, coffees, teas, beers, and ales", "property available");
-								assert.equal(oModel.getProperty("/Categories(1)").Picture, "", "property available");
-								done(); // resume normal testing
-							}, true);
-						}, true);
-					}, true);
-				}, true);
-			});
-
-		});
 	});
 
 	QUnit.test("test expand", function(assert){
@@ -1551,7 +1519,7 @@
 			ok(!oModel.oData["Products(3)"][''], "no empty property created");
 			oLabel.getElementBinding().detachDataReceived(fnHandler);
 			oLabel.unbindElement();
-			oLabel.setBindingContext();
+			oLabel.setBindingContext(null);
 			oPanel.unbindElement();
 			done();
 		}
@@ -1572,7 +1540,7 @@
 			assert.equal(oLabel.getBindingContext().getPath(), "/Categories(2)", "context must be set in change handler");
 			oLabel.getElementBinding().detachChange(fnHandler);
 			oLabel.unbindElement();
-			oLabel.setBindingContext();
+			oLabel.setBindingContext(null);
 			done();
 		}
 		oLabel.getElementBinding().attachChange(fnHandler);
@@ -1591,7 +1559,7 @@
 			assert.equal(oLabel.getBindingContext().getPath(), "/Categories(2)", "context must be set in change handler");
 			oLabel.getElementBinding().detachChange(fnHandler);
 			oLabel.unbindElement();
-			oLabel.setBindingContext();
+			oLabel.setBindingContext(null);
 			done();
 		}
 		oLabel.getElementBinding().attachChange(fnHandler);
@@ -1610,14 +1578,14 @@
 			assert.equal(oLabel.getBindingContext().getPath(), "/Categories(2)", "context must be set in change handler");
 			oLabel.getElementBinding().detachChange(fnHandler);
 			oLabel.getElementBinding().attachChange(fnHandler2);
-			oLabel.setBindingContext();
+			oLabel.setBindingContext(null);
 		}
 		var fnHandler2 = function() {
 			assert.ok(!oLabel.getBindingContext(), "no bindingContext");
 			assert.ok(!oLabel.getElementBinding().getBoundContext(), "element context must be reset");
 			assert.ok(!oLabel.getElementBinding().getBoundContext(), "parent context must be reset");
 			oLabel.getElementBinding().detachChange(fnHandler2);
-			oLabel.setBindingContext();
+			oLabel.setBindingContext(null);
 			oLabel.unbindElement();
 			done();
 		}
@@ -1632,11 +1600,11 @@
 		oLabel.bindElement("Category");
 		var oTestContext = oModel.getContext("/Products(2)");
 		oLabel.setBindingContext(oTestContext);
-		assert.ok(oLabel.getBindingContext() == null, "Context should be null until the data from bindElement is loaded");
+		assert.ok(oLabel.getBindingContext() == oTestContext, "bindElement must not reset context");
 		var fnHandler = function() {
 			assert.equal(oLabel.getBindingContext().getPath(), "/Categories(2)", "context must be set in change handler");
 			oLabel.getElementBinding().detachChange(fnHandler);
-			oLabel.setBindingContext();
+			oLabel.setBindingContext(null);
 			oLabel.unbindElement();
 			done();
 		}
@@ -1654,7 +1622,7 @@
 		assert.ok(oLabel.getBindingContext() == oTestContext, "bindElement must not reset context");
 		var fnHandler = function() {
 			assert.equal(oLabel.getBindingContext().getPath(), "/Categories(2)", "context must be set in change handler");
-			oLabel.setBindingContext();
+			oLabel.setBindingContext(null);
 			oLabel.getElementBinding().detachChange(fnHandler);
 			oLabel.unbindElement();
 			done();
@@ -1684,7 +1652,7 @@
 			assert.ok(sUrl.indexOf('Products(1)/Category') > -1, "Parent context should be Products(1)");
 			oLabel.getElementBinding().detachChange(fnHandler2);
 			oLabel.unbindElement();
-			oLabel.setBindingContext();
+			oLabel.setBindingContext(null);
 			done();
 		}
 		oLabel.getElementBinding().attachChange(fnHandler);
@@ -1713,7 +1681,7 @@
 			assert.ok(sUrl.indexOf('Products(1)/Category') > -1, "Parent context should be Products(1)");
 			oLabel.getElementBinding().detachChange(fnHandler2);
 			oLabel.unbindElement();
-			oLabel.setBindingContext();
+			oLabel.setBindingContext(null);
 			done();
 		}
 		oLabel.getElementBinding().attachChange(fnHandler);
@@ -1745,7 +1713,7 @@
 			assert.equal(oLabel.getBindingContext().getPath(), "/Categories(7)", "context must be set in change handler");
 			oLabel.getElementBinding().detachChange(fnHandler2);
 			oLabel.unbindElement();
-			oLabel.setBindingContext();
+			oLabel.setBindingContext(null);
 			done();
 		}
 	});
@@ -1900,7 +1868,7 @@
 		oLabel.bindElement("/Categories(2)", {batchGroupId:"test"});
 		var fnHandler = function() {
 			assert.equal(oLabel.getBindingContext().getPath(), "/Categories(2)", "context must be set in change handler");
-			oLabel.setBindingContext();
+			oLabel.setBindingContext(null);
 			oLabel.getElementBinding().detachChange(fnHandler);
 			oLabel.unbindElement();
 			done();

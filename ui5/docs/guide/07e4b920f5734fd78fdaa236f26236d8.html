@@ -3,12 +3,12 @@
 <html lang="en-us">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta name="abstract" content="Data that is presented on the UI often has to be converted so that is human readable and fits to the locale of the user. On the other hand, data entered by the user has to be parsed and validated to be understood by the data source. For this purpose, you use formatters and data types."/>
-<meta name="description" content="Data that is presented on the UI often has to be converted so that is human readable and fits to the locale of the user. On the other hand, data entered by the user has to be parsed and validated to be understood by the data source. For this purpose, you use formatters and data types."/>
+<meta name="abstract" content="OpenUI5 supports the definition of custom formatters."/>
+<meta name="description" content="OpenUI5 supports the definition of custom formatters."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8562350135181784"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8562350135181784"/>
-<title>Formatting, Parsing, and Validating Data</title>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=24262895709715326"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=24262895709715326"/>
+<title>Custom Formatter Functions</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
     <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
@@ -16,152 +16,69 @@
 <body class="" id="loio07e4b920f5734fd78fdaa236f26236d8">
 <div id="wrapper"><div id="container">
 
-	<h1 class="title topictitle1">Formatting, Parsing, and Validating Data</h1>
+	<h1 class="title topictitle1">Custom Formatter Functions</h1>
 
     
-	<div class="body conbody"><p class="shortdesc">Data that is presented on the UI often has to be converted so that is human readable and fits to the locale of the user. On the other hand, data entered by the user has to be parsed and validated to be understood by the data source. For this purpose, you use formatters and data types.</p>
+	<div class="body"><p class="shortdesc"><span class="ph"><span class="ph pname">OpenUI5</span></span> supports the definition of custom formatters.</p>
 
-        <div class="section" id="loio07e4b920f5734fd78fdaa236f26236d8__section_fpq_1bv_xcb"><div class="sectiondiv imagemap-wrapper imagemap_tooltips" id="loio07e4b920f5734fd78fdaa236f26236d8__im_overall1"><div class="fig imagemap" id="loio07e4b920f5734fd78fdaa236f26236d8____im_imagemap1"><div class="note note"><span class="insertion notetitle">Note</span>The following image contains links to more information.</div><img usemap="#d382631e19" border="0" class="image" id="loio07e4b920f5734fd78fdaa236f26236d8__image_rdh_cbv_xcb" src="loio40f0541313154bb0b5de72e2bd1c9207_LowRes.png"/>
-<map name="d382631e19" id="d382631e19">
-<area href="e1b625940c104b558e52f47afe5ddb4f.html" id="im1" alt="A model in the Model View Controller concept holds the data and provides methods to retrieve the data from the database and to set and update data." title="A model in the Model View Controller concept holds the data and provides methods to retrieve the data from the database and to set and update data." shape="rect" coords="1,53,225,217"/>
-<area href="91f27e3e6f4d1014b6dd926db0e91070.html" id="im2" alt="The view in the Model View Controller concept is responsible for defining and rendering the UI. OpenUI5 supports predefined view types." title="The view in the Model View Controller concept is responsible for defining and rendering the UI. OpenUI5 supports predefined view types." shape="poly" coords="446,82,448,194,567,220,672,196,675,85,562,51,562,51"/>
-</map></div></div><p class="p">Formatters are used to define the formatting of data on the UI while data types work in both directions: they format the data on the UI and parse and validate user input that is entered.</p>
-<p class="p">You can either use standard formatters and data types or define your own custom objects. <span class="ph"><span class="ph pname">OpenUI5</span></span> provides standard formatter classes that can be used to define custom data types and custom formatters.</p>
-<p class="p">If an error occurs during formatting or parsing, the following exception occurs: <samp class="ph codeph">sap.ui.model.FormatException</samp> / <samp class="ph codeph">sap.ui.model.ParseException</samp>.</p>
-<div class="note note"><span class="notetitle">Note</span> <p class="p">For some controls like <samp class="ph codeph">sap.m.Input</samp> you can also use API properties that define
-                    the data type and add additional features like restricted input options, for
-                    example, <samp class="ph codeph">&lt;Input <span class="ph emphasis emphasis">type="Number"</span>/&gt;</samp>.</p>
-</div>
-</div>
+		<p class="p">The examples for constructor declaration and bind property declaration (see <a class="xref" href="a2fe8e763014477e87990ff50657a0d0.html" title="Calculated fields enable the binding of multiple properties in different models to a single property of a control.">Calculated Fields for Data
+                Binding</a>) do <strong class="ph b">not</strong> contain a formatter function. In this case, all values
+            of the various parts are joined together as a string with a space separator. To specify
+            your own formatter, proceed as shown in the following example:</p>
 
-        <div class="section" id="loio07e4b920f5734fd78fdaa236f26236d8__section_rgn_hc5_xcb"><div class="section_title">Formatters</div><div type="Formatters">
-            
-        </div></div>
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+oTxt.bindValue({
+                parts: [
+                    {path: "/firstName", type: new sap.ui.model.type.String()},
+                    {path: "/lastName", type: new sap.ui.model.type.String()},
+                    {path: "/amount", type: new sap.ui.model.type.Float()},
+                    {path: "/currency", type: new sap.ui.model.type.String()}
+                    ],
+               formatter: function(firstName, lastName, amount, currency){ // all parameters are strings
+                   if (firstName &amp;&amp; lastName) {
+                          return "Dear " + firstName + " " + lastName + ". Your current balance is: " + amount + " " + currency; 
+                   } else {
+                          return null;
+                   }
+               }
+}); </pre></div>
 
-        <div class="section" id="loio07e4b920f5734fd78fdaa236f26236d8__section_gpy_rxt_xcb">
-            <div class="p">A simple formatter can be defined directly in the controller. For example, you can
-                format name data with the first letter in upper
-                case:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">myFormatter: function(sName) {
-    return sName.charAt(0).toUpperCase() + sName.slice(1);
-}</pre></div>
-</div>
+		<p class="p">The values provided in the parameters of the formatter function are already formatted to the
+            output type of the control, which is a string in this case (that is, the value property
+            of text field is a string).</p>
 
-            <div class="note note"><span class="notetitle">Note</span> 
-                <p class="p">We recommend to use a separate <span class="ph filepath">formatter.js</span> file that groups
-                    the formatters and makes them globally available in your app. You can then load
-                    the formatters in any controller by defining a dependency and instantiating the
-                    formatter file in a <samp class="ph codeph">formatter</samp> variable. For more information,
-                    see <a class="xref" href="0f8626ed7b7542ffaa44601828db20de.html" title="If we want to do a more complex logic for formatting properties of our data model, we can also write a custom formatting function. We will now add a localized status with a custom formatter, because the status in our data model is in a rather technical format.">Step 23: Custom Formatters</a> in the
-                        <span class="ph uicontrol">Walkthrough</span> tutorial.</p>
+		<div class="section" id="loio07e4b920f5734fd78fdaa236f26236d8__section_N1002A_N10011_N10001"><div class="section_title">Custom Formatter Function with Raw Values</div><div type="Custom Formatter Function with Raw Values">
+			
+			<p class="p">If you do not want the provided values in the formatter function being already
+				formatted according to their type, you can set a flag to get the raw unformatted
+				values. These values are also stored in the model. In this case, the types of the
+				parts are ignored: </p>
 
-            </div>
-
-            <div class="p">When the formatter is defined in the controller, you can use it, for example, in an
-                XML
-                view:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;Text text="{
-    path : 'person/name',
-    <span class="ph emphasis emphasis">formatter : '.myFormatter'</span>
-}" /&gt;</pre></div>
-</div>
-
-            <div class="note note"><span class="notetitle">Note</span> 
-                <p class="p">You can also use predefined formatter functions for standard uses cases, like
-                        <samp class="ph codeph">jQuery.sap.formatMessage</samp>.<span class="ph"> For
-                        more information, see <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fui5.sap.com%2F%23%2Fapi%2FjQuery.sap%2Fmethods%2FjQuery.sap.formatMessage" alt="http://ui5.sap.com/#/api/jQuery.sap/methods/jQuery.sap.formatMessage" title="http://ui5.sap.com/#/api/jQuery.sap/methods/jQuery.sap.formatMessage">the API Reference<img src="images/sap_link.png" class="link-sap" alt="Information published on SAP site" title="Information published on SAP site" border="0"/></a>.</span></p>
-
-            </div>
-
-        </div>
-
-        <div class="section" id="loio07e4b920f5734fd78fdaa236f26236d8__section_a5r_sb5_xcb"><div class="section_title">Data Types</div><div type="Data Types"><div class="sectiondiv subsection">
-                <p class="p subsectiontitle">Simple Types</p>
-
-                <p class="p">If you also want to validate and parse input values, you use data types. All data types inherit from the abstract <samp class="ph codeph">sap.ui.model.Type</samp> class.</p>
-
-                <p class="p">A subclass of this class is <samp class="ph codeph">sap.ui.model.SimpleType</samp>. The
-                    currently available types inherit from <samp class="ph codeph">SimpleType</samp> class.</p>
-
-                <div class="p">For simple data types, you can generate the following parameters in the
-                    constructor: <ul class="ul" id="loio07e4b920f5734fd78fdaa236f26236d8__ul_s2k_vd5_xcb">
-                        <li class="li">
-                            <p class="p"><samp class="ph codeph">formatOptions</samp>: Format options define how a value is
-                                formatted and displayed in the UI. </p>
-
-                        </li>
-
-                        <li class="li">
-                            <p class="p"> <samp class="ph codeph">constraints</samp>: Constraints are optional and define how an input value entered in the UI should look like. During parsing the value is validated against these constraints. For example, an <samp class="ph codeph">Integer</samp> type has a constraint for <samp class="ph codeph">maximum</samp> that is automatically validated when parsing the input values.</p>
-
-                        </li>
-
-                    </ul>
-<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Input value="{
-    path: '/number',
-    type: 'sap.ui.model.type.Integer',
-    <span class="ph emphasis emphasis">formatOptions</span>: {
-        minIntegerDigits: 3
-    },
-        <span class="ph emphasis emphasis">constraints</span>: {
-    maximum: 1000
-    }
-}" /&gt;</pre></div>
-</div>
-
-                <p class="p"><span class="ph">For a
-                        complete list of all simple types, see <a class="xref" href="https://ui5.sap.com/#/api/sap.ui.model.type/overview" alt="https://ui5.sap.com/#/api/sap.ui.model.type/overview" title="https://ui5.sap.com/#/api/sap.ui.model.type/overview">API Reference:
-                                <samp class="ph codeph">sap.ui.model.Type</samp></a>.</span>
-                    </p>
-
-            </div><div class="sectiondiv subsection">
-                <p class="p subsectiontitle">OData Types</p>
-
-                <p class="p">These types support OData V2 and V4 including relevant property facets as
-                    constraints. The OData types represent the OData EDM primitive types. For more
-                    information, see <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fwww.odata.org%2Fdocumentation%2Fodata-version-2-0%2Foverview%2F" alt="http://www.odata.org/documentation/odata-version-2-0/overview/" title="http://www.odata.org/documentation/odata-version-2-0/overview/">Primitive Data Types in the OData
-                        documentation<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a>.</p>
-
-                <p class="p"><span class="ph">For a
-                        complete list of all OData types, see <a class="xref" href="https://ui5.sap.com/#/api/sap.ui.model.odata.type" alt="https://ui5.sap.com/#/api/sap.ui.model.odata.type" title="https://ui5.sap.com/#/api/sap.ui.model.odata.type">API Reference:
-                                <samp class="ph codeph">sap.ui.model.odata.type</samp></a>.</span>
-                    </p>
-
-            </div><div class="sectiondiv subsection">
-                <p class="p subsectiontitle">Custom Data Types</p>
-
-                <div class="p">You can also define a custom data type based on
-                        <samp class="ph codeph">sap.ui.model.SimpleType</samp> by specifying a custom
-                    implementation for <samp class="ph codeph">formatValue</samp>, <samp class="ph codeph">parseValue</samp>,
-                    and
-                    <samp class="ph codeph">validateValue</samp>:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap.ui.define([
-    "sap/ui/model/SimpleType"
-], function (SimpleType) {
-    "use strict";
-    return SimpleType.extend("sap.ui.demo.myCustomType", {
-
-        formatValue: ...
-
-        parseValue: ...
-
-        validateValue: ...
-
-    });
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+oTxt.bindValue({
+        parts: [
+            {path: "/firstName", type: new sap.ui.model.type.String()},
+            {path: "/lastName", type: new sap.ui.model.type.String()},
+            {path: "/amount", type: new sap.ui.model.type.Float()},
+            {path: "/model2&gt;debts", type: new sap.ui.model.type.Float()}
+            ],
+        formatter: function(firstName, lastName, amount, debt){ // string, string, float, float
+            if (firstName &amp;&amp; lastName) {
+                    return "Dear " + firstName + " " + lastName + ". Your current balance is: " + (amount - debts); 
+            } else {
+                    return null;
+            }
+        },
+        useRawValues : true
 });</pre></div>
-</div>
 
-                <div class="note example"><span class="exampletitle">Example</span> 
-                    <p class="p"><a class="xref" href="69a25bf2f8a2478cbda4b8bbe64039de.html" title="Now that we have implemented the conversion tests, we add the corresponding functionality and show the button to flag a post in the app. The design team has specified that the flag feature should be implemented with a toggle button that has a flag icon.">Step 5: Adding a Flag Button</a> of the
-                            <span class="ph uicontrol">Testing</span> tutorial shows how to implement a custom
-                        data type.</p>
+		</div></div>
 
-                </div>
-
-            </div></div></div>
-
-    </div>
+	</div>
 
     <div class="related-links"> 
 <div class="relinfo"><div class="relinfotitle ">Related Information</div>
-<div><a class="link" href="e2e6f4127fe4450ab3cf1339c42ee832.html" title="You bind UI elements to data of a data source by defining a binding path to the model that represents the data source in the app.">Binding Syntax</a></div>
+<div><a class="link" href="a2fe8e763014477e87990ff50657a0d0.html" title="Calculated fields enable the binding of multiple properties in different models to a single property of a control.">Calculated Fields for Data Binding</a></div>
 </div>
 </div>
 </div></div>

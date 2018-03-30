@@ -20,7 +20,7 @@ sap.ui.define(['sap/m/MessageToast','sap/ui/core/mvc/Controller'],
 		},
 
 		handleUploadPress: function(oEvent) {
-			var oFileUploader = this.byId("fileUploader");
+			var oFileUploader = this.getView().byId("fileUploader");
 			oFileUploader.upload();
 		}
 	});

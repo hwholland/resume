@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -166,21 +166,6 @@ sap.ui.define([
 								this.dataObject.ExploredLength++;
 							} else if (sNavURL.indexOf("docs/api/symbols/") === 0) {
 								sNavURL = sNavURL.substring("docs/api/symbols/".length, sNavURL.lastIndexOf(".html"));
-								sNavURL = "api/" + sNavURL;
-								bShouldAddToSearchResults = true;
-								sCategory = "API Reference";
-								this.dataObject.dataAPI.push({
-									index: this.dataObject.APILength,
-									title: oDoc.title ? oDoc.title : "Untitled",
-									path: sNavURL,
-									summary: oDoc.summary ? (oDoc.summary + "...") : "",
-									score: oDoc.score,
-									modified: sModified,
-									category: sCategory
-								});
-								this.dataObject.APILength++;
-							} else if (sNavURL.indexOf("docs/api/modules/") === 0) {
-								sNavURL = sNavURL.substring("docs/api/modules/".length, sNavURL.lastIndexOf(".html")).replace(/_/g, ".");
 								sNavURL = "api/" + sNavURL;
 								bShouldAddToSearchResults = true;
 								sCategory = "API Reference";

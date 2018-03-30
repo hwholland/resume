@@ -1,45 +1,13 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 //Provides control sap.ui.unified.Calendar.
-sap.ui.define([
-	'jquery.sap.global',
-	'sap/ui/core/Control',
-	'sap/ui/core/LocaleData',
-	'sap/ui/unified/calendar/CalendarUtils',
-	'./calendar/Header',
-	'./calendar/TimesRow',
-	'./calendar/DatesRow',
-	'./calendar/MonthPicker',
-	'./calendar/YearPicker',
-	'sap/ui/core/date/UniversalDate',
-	'./library',
-	'sap/ui/core/format/DateFormat',
-	'sap/ui/Device',
-	'sap/ui/core/Locale',
-	'sap/ui/core/library',
-	"./CalendarTimeIntervalRenderer"
-], function(
-	jQuery,
-	Control,
-	LocaleData,
-	CalendarUtils,
-	Header,
-	TimesRow,
-	DatesRow,
-	MonthPicker,
-	YearPicker,
-	UniversalDate,
-	library,
-	DateFormat,
-	Device,
-	Locale,
-	coreLibrary,
-	CalendarTimeIntervalRenderer
-) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/core/LocaleData', 'sap/ui/unified/calendar/CalendarUtils',
+               './calendar/Header', './calendar/TimesRow', './calendar/DatesRow', './calendar/MonthPicker', './calendar/YearPicker', 'sap/ui/core/date/UniversalDate', './library', 'sap/ui/core/format/DateFormat', 'sap/ui/Device', 'sap/ui/core/Locale', 'sap/ui/core/library'],
+               function(jQuery, Control, LocaleData, CalendarUtils, Header, TimesRow, DatesRow, MonthPicker, YearPicker, UniversalDate, library, DateFormat, Device, Locale, coreLibrary) {
 	"use strict";
 
 	// shortcut for sap.ui.core.CalendarType
@@ -59,7 +27,7 @@ sap.ui.define([
 	 * @class
 	 * Calendar with granularity of time items displayed in one line.
 	 * @extends sap.ui.core.Control
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public

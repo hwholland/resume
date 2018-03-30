@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.ui.unified.sample.FileUploaderComplex.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.unified.sample.FileUploaderComplex.View",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.unified.sample.FileUploaderComplex.View",
 			dependencies : {
 				libs : [
 					"sap.ui.unified"

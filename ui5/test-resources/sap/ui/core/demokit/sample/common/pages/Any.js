@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
@@ -157,19 +157,7 @@ function (Helper, Opa5, Properties) {
 					});
 				}
 			},
-			assertions : {
-				checkMessage : function (rMessage) {
-					return this.waitFor({
-						controlType : "sap.m.Dialog",
-						matchers : new Properties({icon : "sap-icon://message-success"}),
-						success : function (aControls) {
-							var sText = aControls[0].getContent()[0].getText();
-							Opa5.assert.ok(rMessage.test(sText),
-								"Message text '" + sText + "' matches " + rMessage);
-						}
-					})
-				}
-			}
+			assertions : {}
 		}
 	});
 });

@@ -1,36 +1,13 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 //Provides control sap.ui.unified.Calendar.
-sap.ui.define([
-	'jquery.sap.global',
-	'sap/ui/core/Control',
-	'sap/ui/Device',
-	'sap/ui/core/delegate/ItemNavigation',
-	'sap/ui/unified/calendar/CalendarUtils',
-	'sap/ui/unified/calendar/CalendarDate',
-	'sap/ui/core/date/UniversalDate',
-	'sap/ui/unified/library',
-	'sap/ui/core/format/DateFormat',
-	'sap/ui/core/library',
-	"./YearPickerRenderer",
-	'jquery.sap.keycodes'
-], function(
-	jQuery,
-	Control,
-	Device,
-	ItemNavigation,
-	CalendarUtils,
-	CalendarDate,
-	UniversalDate,
-	library,
-	DateFormat,
-	coreLibrary,
-	YearPickerRenderer
-) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/Device', 'sap/ui/core/delegate/ItemNavigation',
+		'sap/ui/unified/calendar/CalendarUtils', 'sap/ui/unified/calendar/CalendarDate', 'sap/ui/core/date/UniversalDate', 'sap/ui/unified/library', 'sap/ui/core/format/DateFormat', 'sap/ui/core/library', 'jquery.sap.keycodes'],
+	function(jQuery, Control, Device, ItemNavigation, CalendarUtils, CalendarDate, UniversalDate, library, DateFormat, coreLibrary) {
 	"use strict";
 
 	// shortcut for sap.ui.core.CalendarType
@@ -51,7 +28,7 @@ sap.ui.define([
 	 * renders a YearPicker with ItemNavigation
 	 * This is used inside the calendar. Not for stand alone usage
 	 * @extends sap.ui.core.Control
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -67,7 +44,7 @@ sap.ui.define([
 			/**
 			 * The year is initial focused and selected
 			 * The value must be between 0 and 9999
-			 * @deprecated as of version 1.34.0, replaced by <code>date</code> property
+			 * @deprecated Since version 1.34.0 Use <code>date</code> instead
 			 */
 			year : {type : "int", group : "Data", defaultValue : 2000},
 

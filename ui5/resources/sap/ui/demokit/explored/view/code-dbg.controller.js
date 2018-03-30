@@ -1,11 +1,10 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-/*global JSZip, URI */
-
+/*global JSZip, URI *///declare unusual global vars for JSLint/SAPUI5 validation
 sap.ui.define(['jquery.sap.global',
 	'sap/ui/core/routing/History',
 	'sap/ui/core/Component', 'sap/ui/core/UIComponent', 'sap/ui/core/mvc/Controller',
@@ -16,7 +15,7 @@ sap.ui.define(['jquery.sap.global',
 
 	return Controller.extend("sap.ui.demokit.explored.view.code", {
 
-		_aMockFiles : ["products.json", "supplier.json", "img.json", "countriesCollection.json"],
+		_aMockFiles : ["products.json", "supplier.json", "img.json"],
 
 		onInit : function () {
 			this.router = UIComponent.getRouterFor(this);
@@ -94,7 +93,7 @@ sap.ui.define(['jquery.sap.global',
 			oJSONModel.refresh(true);
 
 			// scroll to top of page
-			var page = this.byId("page");
+			var page = this.getView().byId("page");
 			page.scrollTo(0);
 		},
 

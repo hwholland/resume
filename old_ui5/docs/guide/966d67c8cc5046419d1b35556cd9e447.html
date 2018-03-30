@@ -1,0 +1,151 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="This section lists some of the most important issues that should be avoided to improve performance in OpenUI5 applications."/>
+<meta name="description" content="This section lists some of the most important issues that should be avoided to improve performance in OpenUI5 applications."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=1794269908247037"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=1794269908247037"/>
+<title>Performance Issues</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio966d67c8cc5046419d1b35556cd9e447">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Performance Issues</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">This section lists some of the most important issues that should be avoided to improve
+		performance in <span class="ph"><span class="ph pname">OpenUI5</span></span>
+		applications.</p>
+
+		<div class="section" id="loio966d67c8cc5046419d1b35556cd9e447__1"><div class="section_title">Don't use visibility for lazy instantiation</div><div type="Don't use visibility for lazy instantiation">
+			
+			<p class="p">When an application has areas that are not visible initially, or if only one of multiple options is visible at a time, <span class="ph emphasis emphasis">do
+					not</span> create all UI controls and set most of them to non-visible! If you do, <span class="ph"><span class="ph pname">OpenUI5</span></span> will instantiate and initialize all of those controls, which consumes
+				unnecessary time and memory, even when they are not rendered. On top of this, the data binding will also be initialized, which may trigger
+				back-end requests that are not needed at this stage. The impact is particularly big when the parts of the UI that are not visible initially are
+				complex or numerous.</p>
+
+			<p class="p">Please note that lazy loading of views can be achieved with routing. For more information, see <a class="xref" href="3d18f20bd2294228acb6910d8e8a5fb5.html" title="OpenUI5 offers hash-based navigation, which allows you to build single-page apps where the navigation is done by changing the hash. In this way the browser does not have to reload the page; instead there is a callback to which the app and especially the affected view can react. A hash string is parsed and matched against patterns which will then inform the handlers.">Routing and Navigation</a> and <a class="xref" href="cdab0a1123514cc08cf2c8deb22f312e.html" title="In the previous steps, we have implemented a Resume view that uses tabs to display data. The complete content of the tabs is loaded once, no matter which tab is currently displayed. We can increase the performance of our app by avoiding to load content that is not visible. Therefore, we implement a “lazy loading” feature that only loads the view and data when requested by the user.">Step 10: Implement "Lazy Loading"</a> of the Navigation and Routing
+				tutorial.</p>
+
+			<div class="note example"><span class="exampletitle">Example</span> 
+				<p class="p">An application needs to display a <samp class="ph codeph">Panel</samp> containing a <samp class="ph codeph">Table</samp> in <span class="ph emphasis emphasis">display mode</span>, but the
+					user can switch to <span class="ph emphasis emphasis">edit mode</span> to modify data, in which case a different <samp class="ph codeph">Panel</samp> needs to be shown.
+					Especially when using XML views, it is tempting for application developers to specify two panels in the view XML and set the
+						<samp class="ph codeph">Panel</samp> with the editable table to <samp class="ph codeph">visible="false"</samp>. The <span class="ph uicontrol">Edit</span> button could then
+					just toggle visibility of both panels.</p>
+
+			</div>
+
+			<p class="p">The following XML view is easy to handle, but leads to suboptimal performance when the <samp class="ph codeph">editPanel</samp> has a lot of content.</p>
+
+			<p class="p">View:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="my.own.controller"&gt;
+	&lt;Page&gt;
+                        
+		&lt;Panel id="displayPanel" headerText="Display Data"&gt;
+			&lt;Table...&gt;
+		&lt;/Panel&gt;
+                        
+		&lt;!-- edit panel is initially hidden, but still instantiated --&gt;
+		&lt;Panel id="editPanel" headerText="Edit Data" visible="false"&gt;
+			&lt;Table...&gt; 
+		&lt;/Panel&gt;
+                        
+		&lt;Button text="Edit" press="toEditMode"/&gt;
+	&lt;/Page&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">Controller code:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">toEditMode: function() {
+	this.byId("displayPanel").setVisible(false);
+	this.byId("editPanel").setVisible(true);
+}</pre></div>
+
+			<p class="p">The following code is better in terms of initial performance because the second table is created lazily when the user switches to edit mode.</p>
+
+			<p class="p">View:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="my.own.controller"&gt;
+	&lt;Page&gt;
+            
+		&lt;!—only the initially needed display panel --&gt;
+		&lt;Panel id="displayPanel" headerText="Display Data"&gt;
+			&lt;Table...&gt;
+		&lt;/Panel&gt;
+      
+		&lt;Button text="Edit" press="toEditMode"/&gt;
+	&lt;/Page&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">Additional fragment named <samp class="ph codeph">EditPanel.fragment.xml</samp> for content that is initially hidden:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;Panel xmlns="sap.m" id="editPanel" headerText="Edit Data" visible="false"&gt;
+	&lt;Table...&gt;
+&lt;/Panel&gt;</pre></div>
+
+			<p class="p">Controller code:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">toEditMode: function() {
+	this.byId("displayPanel").setVisible(false);
+                  
+	var oEditPanel = this.byId("editPanel");
+	if (!oEditPanel) { // load and instantiate the edit panel lazily
+		// instantiate the Fragment:
+		// giving the View ID as ID will prefix the IDs in the Fragment and allows using this.byId(…) in the Controller
+		// giving “this” (the Controller) allows using controller methods from within the Fragment
+		oEditPanel = sap.ui.xmlfragment(this.getView().getId(), "myApp.EditPanel", this); 
+		this.byId("myPage").insertContent(oEditPanel, 0); // for sake of simplicity inserts at position 0
+	}
+	oEditPanel.setVisible(true);
+}</pre></div>
+
+			<p class="p">In other scenarios, at the time of developing you may not know which UI part is displayed initially. In this case, you can define that the UI is
+				empty (showing none of the panels) in the view definition, and the controller’s <samp class="ph codeph">onInit()</samp> method decides which fragment to
+				instantiate and display initially:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">onInit: function() {
+	var oPanel;
+	if (bEditMode) { 
+		oPanel = sap.ui.xmlfragment("myApp.EditPanel");
+	} else {
+		oPanel = sap.ui.xmlfragment("myApp.DisplayPanel");
+	}
+	this.byId("myPage").insertContent(oPanel, 0);
+}</pre></div>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">Although the example above shows an XML view and an XML fragment, the problem and the solution apply to all view types.</p>
+
+				<p class="p">Please also note that this guideline is not set in stone: If the hidden UI elements are just small or few in number, using fragments would
+					not help but add additional overhead instead. Having said that, creating several big tables and displaying only one of them is
+						<span class="ph emphasis emphasis">not</span> a good idea. There is no definite rule where to draw the line, it depends on many factors like application
+					size, number of libraries being loaded, and additional data requested by those hidden controls. If in doubt, you can test the performance
+					using the performance tracing tools in the browser’s developer console with the controls in question being hidden, against them being
+					removed.</p>
+
+			</div>
+
+			<p class="p">See also: <a class="xref" href="36a5b130076e4b4aac2c27eebf324909.html" title="Fragments are light-weight UI parts (UI sub-trees) which can be reused, defined similar to views, but do not have any controller or other behavior code involved.">Reusing UI Parts: Fragments</a>.</p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="408b40efed3c416681e1bd8cdd8910d4.html" title="If a web app has performance issues, finding the cause can be both a time-consuming and nerve-consuming task. To help you avoid and solve performance issues in your app, here are some good practices we've discovered while dealing with OpenUI5 apps.">Performance: Speed Up Your App</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

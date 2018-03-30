@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ListUnread.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.ListUnread.List",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.ListUnread.List",
 			dependencies : {
 				libs : [
 					"sap.m",

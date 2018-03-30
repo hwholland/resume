@@ -1,0 +1,102 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The object page offers different ways to handle specific scrolling scenarios."/>
+<meta name="description" content="The object page offers different ways to handle specific scrolling scenarios."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6627867663382482"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6627867663382482"/>
+<title>Object Page Scrolling</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiobc410e94e46540efa02857e15aae583f">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Object Page Scrolling</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The object page offers different ways to handle specific scrolling scenarios. </p>
+
+		<div class="section"><div class="section_title">General Scrolling Behavior</div><div type="General Scrolling Behavior">
+			
+			<p class="p">By default, the <samp class="ph codeph">headerContent</samp> of the <samp class="ph codeph">ObjectPage</samp> snaps to the
+					<samp class="ph codeph">headerTitle</samp> when scrolling a longer section. Some of the
+				contents of the <samp class="ph codeph">headerContent</samp> move to the
+					<samp class="ph codeph">headerTitle</samp> and thus always remain visible. You can see an
+				example of this behavior in the screenshot below. </p>
+
+			<div class="fig fignone" id="loiobc410e94e46540efa02857e15aae583f__fig_hnb_cgm_cv"><div class="figcontainer">
+				
+				<img class="image" id="loiobc410e94e46540efa02857e15aae583f__image_aml_mgm_cv" src="loio1106798cda9a4eda858c4322b933579d_HiRes.png"/>
+			<div class="figcap">Object Page Header: Expanded (left) / Snapped (right)</div></div></div>
+
+			<div class="p">This behavior can be altered. Setting the property <samp class="ph codeph">alwaysShowContentHeader</samp> to
+					<samp class="ph codeph">true</samp> will prevent the <samp class="ph codeph">headerContent</samp> from
+				snapping. <div class="note note"><span class="notetitle">Note</span> This property only affects desktop environments.</div>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Selected Section</div><div type="Selected Section">
+			<p class="p">As the user scrolls through the sections, the currently scrolled section is internally set to
+				the <samp class="ph codeph">selectedSection</samp> association of
+					<samp class="ph codeph">ObjectPageLayout</samp>. The app can also modify its value:</p>
+
+			<ul class="ul" id="loiobc410e94e46540efa02857e15aae583f__ul_kyh_bp1_4cb">
+				<li class="li">
+					<p class="p">The app can set which section the page should scroll to upon initial
+						display:</p>
+
+					<div class="p">
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml"> &lt;ObjectPageLayout id="ObjectPageLayout" <span class="ph emphasis emphasis">selectedSection="mySectionId"</span>&gt;
+        &lt;sections&gt;
+            &lt;ObjectPageSection title="Payroll" <span class="ph emphasis emphasis">id="mySectionId"</span>&gt;
+                &lt;subSections&gt;
+                    &lt;ObjectPageSubSection title="sub payroll title"&gt;
+                        &lt;blocks&gt;
+                            &lt;myNameSpace:myBlock/&gt;
+                            &lt;myNameSpace:myBlock/&gt;
+                            &lt;myNameSpace:myBlock/&gt;
+                        &lt;/blocks&gt;
+                    &lt;/ObjectPageSubSection&gt;
+                &lt;/subSections&gt;
+            &lt;/ObjectPageSection&gt;
+        &lt;/sections&gt;
+    &lt;/ObjectPageLayout&gt;</pre></div>
+
+					</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">The app can also change the currently scrolled section at runtime:</p>
+
+					<div class="p">
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">//navigate to a specific section on open
+this.oObjectPageLayout = this.getView().byId("ObjectPageLayout");
+this.oTargetSection = this.getView().byId("empl");
+this.oObjectPageLayout.<span class="ph emphasis emphasis">setSelectedSection</span>(this.oTargetSection)</pre></div>
+
+					</div>
+
+				</li>
+
+			</ul>
+
+			</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" target="_blank" href="../../explored.html#/sample/sap.uxap.sample.ObjectPageState/preview" alt="../../explored.html#/sample/sap.uxap.sample.ObjectPageState/preview" title="../../explored.html#/sample/sap.uxap.sample.ObjectPageState/preview">Sample: <samp class="ph codeph">sap.uxap.sample.ObjectPageState</samp></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

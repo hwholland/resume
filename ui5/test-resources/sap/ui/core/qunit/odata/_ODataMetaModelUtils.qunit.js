@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
@@ -441,13 +441,14 @@ sap.ui.require([
 			this.iOldLogLevel = jQuery.sap.log.getLevel(sLoggingModule);
 			// do not rely on ERROR vs. DEBUG due to minified sources
 			jQuery.sap.log.setLevel(jQuery.sap.log.Level.ERROR, sLoggingModule);
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oLogMock = sinon.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
-		},
 
+		},
 		afterEach : function () {
 			jQuery.sap.log.setLevel(this.iOldLogLevel, sLoggingModule);
+			this.oLogMock.verify();
 		}
 	});
 	//*********************************************************************************************
@@ -640,12 +641,6 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	[{
-		semantics : "fiscalyear",
-		term : "com.sap.vocabularies.Common.v1.IsFiscalYear"
-	}, {
-		semantics : "fiscalyearperiod",
-		term : "com.sap.vocabularies.Common.v1.IsFiscalYearPeriod"
-	}, {
 		semantics : "year",
 		term : "com.sap.vocabularies.Common.v1.IsCalendarYear"
 	}, {
@@ -654,12 +649,6 @@ sap.ui.require([
 	}, {
 		semantics : "yearmonthday",
 		term : "com.sap.vocabularies.Common.v1.IsCalendarDate"
-	}, {
-		semantics : "yearquarter",
-		term : "com.sap.vocabularies.Common.v1.IsCalendarYearQuarter"
-	}, {
-		semantics : "yearweek",
-		term : "com.sap.vocabularies.Common.v1.IsCalendarYearWeek"
 	}].forEach(function (oFixture) {
 		var sSemantics = oFixture.semantics,
 			sTerm = oFixture.term;
@@ -1175,9 +1164,9 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("addUnitAnnotations", function (assert) {
-		var oAnnotationHelperBasicsMock = this.mock(_AnnotationHelperBasics),
+		var oAnnotationHelperBasicsMock = sinon.mock(_AnnotationHelperBasics),
 			oMetaModel = { getProperty : function () {}},
-			oMetaModelMock = this.mock(oMetaModel),
+			oMetaModelMock = sinon.mock(oMetaModel),
 			sPathToEntity0 = "/dataServices/schema/0/entityType/0",
 			sPathToEntity1 = "/dataServices/schema/1/entityType/0",
 			sTargetEntityPath = "/dataServices/schema/0/entityType/1",
@@ -1319,62 +1308,8 @@ sap.ui.require([
 		assert.deepEqual(
 			aSchemas[1].entityType[0].property[1]["Org.OData.Measures.V1.Unit"],
 			{Path :"AnnotationsWidthUnit"});
-	});
 
-	//*********************************************************************************************
-	QUnit.test("addNavigationFilterRestriction", function (assert) {
-		var oEntitySet = {},
-			oNavigationRestrictions,
-			oProperty0 = {
-				"name" : "Bar"
-				// "sap:filterable" : "false"
-			},
-			oProperty1 = {
-				"name" : "Foo"
-				// "sap:filterable" : "false"
-			};
-
-		// code under test
-		Utils.addNavigationFilterRestriction(oProperty0, oEntitySet);
-		Utils.addNavigationFilterRestriction(oProperty1, oEntitySet);
-
-		oNavigationRestrictions = oEntitySet["Org.OData.Capabilities.V1.NavigationRestrictions"];
-
-		assert.deepEqual(oNavigationRestrictions, {
-			"RestrictedProperties" : [{
-				"NavigationProperty" : {
-					"NavigationPropertyPath" : "Bar"
-				},
-				"FilterRestrictions" : {
-					"Filterable": {"Bool" : "false"}
-				}
-			}, {
-				"NavigationProperty" : {
-					"NavigationPropertyPath" : "Foo"
-				},
-				"FilterRestrictions" : {
-					"Filterable": {"Bool" : "false"}
-				}
-			}]
-		});
-	});
-
-	//*********************************************************************************************
-	QUnit.test("calculateEntitySetAnnotations: calls addNavigationFilterRestriction",
-			function (assert) {
-		var oEntitySet = {},
-			oEntityType = {
-				navigationProperty : [
-					{"sap:filterable" : "false"},
-					{"sap:filterable" : "true"}
-				]
-			};
-
-		this.mock(Utils).expects("addNavigationFilterRestriction")
-			.withExactArgs(sinon.match.same(oEntityType.navigationProperty[0]),
-				sinon.match.same(oEntitySet));
-
-		// code under test
-		Utils.calculateEntitySetAnnotations(oEntitySet, oEntityType);
+		oAnnotationHelperBasicsMock.verify();
+		oMetaModelMock.verify();
 	});
 });

@@ -142,9 +142,12 @@ sap.ui.base.EventProvider, and sap.ui.base.Object.</xsd:documentation>
 </xsd:element>
 <xsd:element name="UIComponent" type="n0:_UIComponentType" substitutionGroup="n0:Control">
 <xsd:annotation>
-<xsd:documentation>Base Class for UIComponent.
+<xsd:documentation>Creates and initializes a new UIComponent with the given &lt;code&gt;sId&lt;/code&gt; and
+settings.
 
-If you are extending a UIComponent make sure you read the {@link #.extend} documentation since the metadata is special.</xsd:documentation>
+The set of allowed entries in the &lt;code&gt;mSettings&lt;/code&gt; object depends on
+the concrete subclass and is described there. See {@link sap.ui.core.Component}
+for a general description of this argument.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="VariantLayoutData" type="n0:_VariantLayoutDataType" substitutionGroup="n0:LayoutData">
@@ -199,7 +202,7 @@ This feature enables a native HTML5 drag-and-drop API for the controls, therefor
 <xsd:annotation>
 <xsd:documentation>A base class for Views.
 
-Introduces the relationship to a Controller, some basic visual appearance settings like width and height,
+Introduces the relationship to a Controller, some basic visual appearance settings like width and height
 and provides lifecycle events.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
@@ -265,9 +268,7 @@ control's dependents aggregation or add it by using {@link sap.ui.core.mvc.XMLVi
 </xsd:attribute>
 <xsd:attribute name="async" type="xsd:boolean">
 <xsd:annotation>
-<xsd:documentation>Flag whether the component should be created sync (default) or async. The default
-will be async when initially the property &lt;code&gt;manifest&lt;/code&gt; is set to a truthy
-value and for the property &lt;code&gt;async&lt;/code&gt; no value has been specified.
+<xsd:documentation>Flag whether the component should be created sync (default) or async.
 This property can only be applied initially.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -313,7 +314,7 @@ This property must only be applied before a component instance is created.</xsd:
 </xsd:attribute>
 <xsd:attribute name="autoPrefixId" type="xsd:boolean">
 <xsd:annotation>
-<xsd:documentation>Flag, whether to auto-prefix the ID of the nested Component or not. If
+<xsd:documentation>Flag, whether to autoprefix the id of the nested Component or not. If
 this property is set to true the ID of the Component will be prefixed
 with the ID of the ComponentContainer followed by a single dash.
 This property can only be applied initially.</xsd:documentation>
@@ -324,17 +325,6 @@ This property can only be applied initially.</xsd:documentation>
 <xsd:documentation>The component usage. If the ComponentContainer is used inside a
 Component, this Component can define a usage which will be used for creating
 the Component.
-This property can only be applied initially.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="manifest" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Controls when and from where to load the manifest for the Component.
-When set to any truthy value, the manifest will be loaded asynchronously by default
-and evaluated before the Component controller, if it is set to a falsy value
-other than &lt;code&gt;undefined&lt;/code&gt;, the manifest will be loaded after the controller.
-A non-empty string value will be interpreted as the URL location from where to load the manifest.
-A non-null object value will be interpreted as manifest content.
 This property can only be applied initially.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -364,16 +354,6 @@ ComponentContainer.</xsd:documentation>
 <xsd:attribute name="busyIndicatorDelay" type="xsd:int">
 <xsd:annotation>
 <xsd:documentation>The delay in milliseconds, after which the busy indicator will show up for this control.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="busyIndicatorSize" type="n0:_BusyIndicatorSizeType">
-<xsd:annotation>
-<xsd:documentation>The size of the BusyIndicator. For controls with a width smaller 3rem a
-&lt;code&gt;sap.ui.core.BusyIndicatorSize.Small&lt;/code&gt; should be used.
-If the size could vary in width and the width could get smaller than 3rem, the
-&lt;code&gt;sap.ui.core.BusyIndicatorSize.Auto&lt;/code&gt; option could be used.
-The default is set to &lt;code&gt;sap.ui.core.BusyIndicatorSize.Medium&lt;/code&gt;
-For a full screen BusyIndicator use &lt;code&gt;sap.ui.core.BusyIndicatorSize.Large&lt;/code&gt;.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="visible" type="xsd:boolean">
@@ -1679,33 +1659,9 @@ Supplement to the normal tooltip processing of the user agent.</xsd:documentatio
 </xsd:enumeration>
 </xsd:restriction>
 </xsd:simpleType>
-<xsd:simpleType name="_BusyIndicatorSizeType">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="Auto">
-<xsd:annotation>
-<xsd:documentation>Type: automatic size detection</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-<xsd:enumeration value="Small">
-<xsd:annotation>
-<xsd:documentation>Type: small size</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-<xsd:enumeration value="Medium">
-<xsd:annotation>
-<xsd:documentation>Type: Medium size</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-<xsd:enumeration value="Large">
-<xsd:annotation>
-<xsd:documentation>Type: Large size</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-</xsd:restriction>
-</xsd:simpleType>
 <xsd:simpleType name="_CSSColorType">
 <xsd:restriction base="xsd:string">
-<xsd:pattern value="#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})|rgb\(\s*((1?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))|([0-9]?[0-9](\.[0-9]+)?|100(\.0+)?)%)\s*(,\s*((1?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))|([0-9]?[0-9](\.[0-9]+)?|100(\.0+)?)%)\s*){2}\)|rgba\((\s*((1?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))|([0-9]?[0-9](\.[0-9]+)?|100(\.0+)?)%)\s*,){3}\s*(0(\.[0-9]+)?|1(\.0+)?)\s*\)|hsl\(\s*([0-2]?[0-9]?[0-9]|3([0-5][0-9]|60))\s*(,\s*(([0-9]?[0-9](\.[0-9]+)?|100(\.0+)?)%)\s*){2}\)|hsla\(\s*([0-2]?[0-9]?[0-9]|3([0-5][0-9]|60))\s*,(\s*(([0-9]?[0-9](\.[0-9]+)?|100(\.0+)?)%)\s*,){2}\s*(0(\.[0-9]+)?|1(\.0+)?)\s*\)|aliceblue|antiquewhite|aqua|aquamarine|azure|beige|bisque|black|blanchedalmond|blue|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|darkblue|darkcyan|darkgoldenrod|darkgray|darkgrey|darkgreen|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|fuchsia|gainsboro|ghostwhite|gold|goldenrod|gray|grey|green|greenyellow|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgrey|lightgreen|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|lime|limegreen|linen|magenta|maroon|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|navy|oldlace|olive|olivedrab|orange|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|purple|red|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|silverskyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|teal|thistle|tomato|turquoise|violet|wheat|white|whitesmoke|yellow|yellowgreen|transparent|inherit|"/>
+<xsd:pattern value="#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})|rgb\(\s*((1?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))|([0-9]?[0-9](\.[0-9]+)?|100(\.0+)?)%)\s*(,\s*((1?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))|([0-9]?[0-9](\.[0-9]+)?|100(\.0+)?)%)\s*){2}\)|rgba\((\s*((1?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))|([0-9]?[0-9](\.[0-9]+)?|100(\.0+)?)%)\s*,){3}\s*(0(\.[0-9]+)?|1(\.0+)?)\s*\)|hsl\(\s*([0-2]?[0-9]?[0-9]|3([0-5][0-9]|60))\s*(,\s*(([0-9]?[0-9](\.[0-9]+)?|100(\.0+)?)%)\s*){2}\)|hsla\(\s*([0-2]?[0-9]?[0-9]|3([0-5][0-9]|60))\s*,(\s*(([0-9]?[0-9](\.[0-9]+)?|100(\.0+)?)%)\s*,){2}\s*(0(\.[0-9]+)?|1(\.0+)?)\s*\)|aliceblue|antiquewhite|aqua|aquamarine|azure|beige|bisque|black|blanchedalmond|blue|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coralcornflowerblue|cornsilk|crimson|cyan|darkblue|darkcyan|darkgoldenrod|darkgray|darkgrey|darkgreen|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|fuchsia|gainsboro|ghostwhite|gold|goldenrod|gray|grey|green|greenyellow|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgrey|lightgreen|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|lime|limegreen|linen|magenta|maroon|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|navy|oldlace|olive|olivedrab|orange|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|purple|red|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|silverskyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|teal|thistle|tomato|turquoise|violet|wheat|white|whitesmoke|yellow|yellowgreen|transparent|inherit|"/>
 </xsd:restriction>
 </xsd:simpleType>
 <xsd:simpleType name="_CSSSizeType">

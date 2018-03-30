@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -117,25 +117,25 @@
                      <h1 class="title topictitle1" hidden>IDs in JS Fragments</h1>
                      
                      <div class="body conbody">
-                        <p class="shortdesc" hidden>The fragment logic of JS fragments cannot influence the IDs of controls that are
-                           		created in the <samp class="ph codeph">createContent()</samp> method.
+                        <p class="shortdesc" hidden>The fragment logic of JS fragments cannot influence the IDs of controls that are created
+                           		in the <samp class="ph codeph">createContent()</samp> method.
                         </p>
                         
                         		
-                        <p class="p">This behavior is similar to how JS views behave regarding IDs. When a stable ID is given
-                           			within a JS fragment, the <samp class="ph codeph">this.createId()</samp> method should be used: 
+                        <p class="p">This behavior is similar to how JS views behave regarding IDs. When a stable ID is given within
+                           			a JS fragment, the <samp class="ph codeph">this.createId()</samp> method should be used: 
                         </p>
                         
                         		<pre class="pre codeblock prettyprint lang-js">createContent: function(oController ) {
-	var oButton  = new sap.m.Button(this.createId(&quot;btnInJsFragment&quot;), { 
+	var oButton  = new sap.ui.commons.Button(this.createId(&quot;btnInJsFragment&quot;), { 
 	// use createId() to let the fragment influence the ID
 	    text: &quot;Hello JS World&quot;
 	}); 
 	return oButton ; 
 }</pre>
                         
-                        		<p class="p">If an ID is given when the fragment is instantiated, <samp class="ph codeph">createId()</samp> will add
-                           			it as prefix. Else, <samp class="ph codeph">createId()</samp> will leave the given ID untouched.
+                        		<p class="p">If an ID is given when the fragment is instantiated, <samp class="ph codeph">createId()</samp> will add it as
+                           			prefix. Else, <samp class="ph codeph">createId()</samp> will leave the given ID untouched.
                         </p>
                         
                         		

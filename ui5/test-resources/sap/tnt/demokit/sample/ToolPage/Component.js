@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.tnt.sample.ToolPage.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.tnt.sample.ToolPage.ToolPage",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.tnt.sample.ToolPage.ToolPage",
 			dependencies : {
 				libs : [
 					"sap.m",

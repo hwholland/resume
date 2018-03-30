@@ -1,12 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.layout.form.FormLayout.
-sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/library', './FormLayoutRenderer'],
-	function(jQuery, Control, library, FormLayoutRenderer) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', './Form', 'sap/ui/layout/library'],
+	function(jQuery, Control, Form, library) {
 	"use strict";
 
 	// shortcut for sap.ui.layout.BackgroundDesign
@@ -27,7 +27,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -82,16 +82,18 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 
 		var oLayoutData = oElement.getLayoutData();
 
+		var oClass = jQuery.sap.getObject(sType);
+
 		if (!oLayoutData) {
 			return undefined;
-		} else if (_isLazyInstance(oLayoutData, sType)) {
+		} else if (oLayoutData instanceof oClass) {
 			return oLayoutData;
-		} else if (_isLazyInstance(oLayoutData, "sap/ui/core/VariantLayoutData")) {
+		} else if (oLayoutData.getMetadata().getName() == "sap.ui.core.VariantLayoutData") {
 			// multiple LayoutData available - search here
 			var aLayoutData = oLayoutData.getMultipleLayoutData();
 			for ( var i = 0; i < aLayoutData.length; i++) {
 				var oLayoutData2 = aLayoutData[i];
-				if (_isLazyInstance(oLayoutData2, sType)) {
+				if (oLayoutData2 instanceof oClass) {
 					return oLayoutData2;
 				}
 			}
@@ -146,9 +148,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 			var oRoot = this.findElement(oControl);
 			var oElement = oRoot.element;
 			oControl = oRoot.rootControl;
-			if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormElement")) {
+			if (oElement && oElement instanceof sap.ui.layout.form.FormElement) {
 				oNewDomRef = this.findFieldBelow(oControl, oElement);
-			} else if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+			} else if (oElement && oElement instanceof sap.ui.layout.form.FormContainer) {
 				// current control is not inside an Element - maybe a title or expander?
 				oNewDomRef = this.findFirstFieldOfNextElement(oElement, 0);
 			}
@@ -170,9 +172,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 			var oRoot = this.findElement(oControl);
 			var oElement = oRoot.element;
 			oControl = oRoot.rootControl;
-			if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormElement")) {
+			if (oElement && oElement instanceof sap.ui.layout.form.FormElement) {
 				oNewDomRef = this.findFieldAbove(oControl, oElement);
-			} else if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+			} else if (oElement && oElement instanceof sap.ui.layout.form.FormContainer) {
 				// current control is not inside an Element - maybe a title or expander?
 				var oForm = oElement.getParent();
 				iCurrentIndex = oForm.indexOfFormContainer(oElement);
@@ -219,9 +221,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 			var oNewDomRef;
 			var oContainer;
 
-			if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormElement")) {
+			if (oElement && oElement instanceof sap.ui.layout.form.FormElement) {
 				oContainer = oElement.getParent();
-			} else if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+			} else if (oElement && oElement instanceof sap.ui.layout.form.FormContainer) {
 				// current control is not inside an Element - maybe a title or expander?
 				oContainer = oElement;
 			}
@@ -268,9 +270,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 			var oNewDomRef;
 			var oContainer;
 
-			if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormElement")) {
+			if (oElement && oElement instanceof sap.ui.layout.form.FormElement) {
 				oContainer = oElement.getParent();
-			} else if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+			} else if (oElement && oElement instanceof sap.ui.layout.form.FormContainer) {
 				// current control is not inside an Element - maybe a title or expander?
 				oContainer = oElement;
 			}
@@ -296,7 +298,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 		var oElement = oRoot.element;
 		var oContainer;
 
-		if (_isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+		if (oElement instanceof sap.ui.layout.form.FormContainer) {
 			oContainer = oElement; // e.g. expand button
 		} else {
 			oContainer = oElement.getParent();
@@ -315,7 +317,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 		var oElement = oRoot.element;
 		var oContainer;
 
-		if (_isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+		if (oElement instanceof sap.ui.layout.form.FormContainer) {
 			oContainer = oElement; // e.g. expand button
 		} else {
 			oContainer = oElement.getParent();
@@ -336,9 +338,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 		var oNewDomRef;
 		var oContainer;
 
-		if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormElement")) {
+		if (oElement && oElement instanceof sap.ui.layout.form.FormElement) {
 			oContainer = oElement.getParent();
-		} else if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+		} else if (oElement && oElement instanceof sap.ui.layout.form.FormContainer) {
 			// current control is not inside an Element - maybe a title or expander?
 			oContainer = oElement;
 		}
@@ -364,9 +366,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 		var oNewDomRef;
 		var oContainer;
 
-		if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormElement")) {
+		if (oElement && oElement instanceof sap.ui.layout.form.FormElement) {
 			oContainer = oElement.getParent();
-		} else if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+		} else if (oElement && oElement instanceof sap.ui.layout.form.FormContainer) {
 			// current control is not inside an Element - maybe a title or expander?
 			oContainer = oElement;
 		}
@@ -414,9 +416,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 		var oElement = oControl.getParent();
 		var oRootControl = oControl;
 
-		while (oElement && !(_isLazyInstance(oElement, "sap/ui/layout/form/FormElement")) &&
-				!(oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) &&
-				!(oElement && _isLazyInstance(oElement, "sap/ui/layout/form/Form"))) {
+		while (oElement && !(oElement instanceof sap.ui.layout.form.FormElement) &&
+				!(oElement && oElement instanceof sap.ui.layout.form.FormContainer) &&
+				!(oElement && oElement instanceof Form)) {
 			oRootControl = oElement;
 			oElement = oElement.getParent();
 		}
@@ -434,7 +436,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 		var oElement = oRoot.element;
 		oControl = oRoot.rootControl;
 
-		if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormElement")) {
+		if (oElement && oElement instanceof sap.ui.layout.form.FormElement) {
 			if (oControl == oElement.getLabelControl()) {
 				iCurrentIndex = -1;
 			} else {
@@ -455,7 +457,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 					oNewDomRef = this.findFirstFieldOfFirstElementInNextContainer(oForm, iCurrentIndex + 1);
 				}
 			}
-		} else if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+		} else if (oElement && oElement instanceof sap.ui.layout.form.FormContainer) {
 			// current control is not inside an Element - maybe a title or expander?
 			oNewDomRef = this.findFirstFieldOfNextElement(oElement, 0);
 		}
@@ -477,7 +479,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 		var oElement = oRoot.element;
 		oControl = oRoot.rootControl;
 
-		if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormElement")) {
+		if (oElement && oElement instanceof sap.ui.layout.form.FormElement) {
 			if (oControl == oElement.getLabelControl()) {
 				iCurrentIndex = -1;
 			} else {
@@ -498,7 +500,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 					oNewDomRef = this.findFirstFieldOfFirstElementInNextContainer(oForm, iCurrentIndex + 1, true);
 				}
 			}
-		} else if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+		} else if (oElement && oElement instanceof sap.ui.layout.form.FormContainer) {
 			// current control is not inside an Element - maybe a title or expander?
 			oNewDomRef = this.findFirstFieldOfNextElement(oElement, 0, true);
 			if (!oNewDomRef) {
@@ -649,7 +651,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 		var oElement = oRoot.element;
 		oControl = oRoot.rootControl;
 
-		if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormElement")) {
+		if (oElement && oElement instanceof sap.ui.layout.form.FormElement) {
 			if (oControl == oElement.getLabelControl()) {
 				iCurrentIndex = 0;
 			} else {
@@ -670,7 +672,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 					oNewDomRef = this.findLastFieldOfLastElementInPrevContainer(oForm, iCurrentIndex - 1);
 				}
 			}
-		} else if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+		} else if (oElement && oElement instanceof sap.ui.layout.form.FormContainer) {
 			// current control is not inside an Element - maybe a title or expander?
 			oForm = oElement.getParent();
 			iCurrentIndex = oForm.indexOfFormContainer(oElement);
@@ -694,7 +696,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 		var oElement = oRoot.element;
 		oControl = oRoot.rootControl;
 
-		if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormElement")) {
+		if (oElement && oElement instanceof sap.ui.layout.form.FormElement) {
 			if (oControl == oElement.getLabelControl()) {
 				iCurrentIndex = 0;
 			} else {
@@ -720,7 +722,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 					}
 				}
 			}
-		} else if (oElement && _isLazyInstance(oElement, "sap/ui/layout/form/FormContainer")) {
+		} else if (oElement && oElement instanceof sap.ui.layout.form.FormContainer) {
 			// current control is not inside an Element - maybe a title or expander?
 			oForm = oElement.getParent();
 			iCurrentIndex = oForm.indexOfFormContainer(oElement);
@@ -899,13 +901,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/layout/librar
 		}
 
 	};
-
-	function _isLazyInstance(oObj, sModule) {
-
-		var fnClass = sap.ui.require(sModule);
-		return oObj && typeof fnClass === 'function' && (oObj instanceof fnClass);
-
-	}
 
 	return FormLayout;
 

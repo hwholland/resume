@@ -6,8 +6,8 @@
 <meta name="abstract" content="Example how helpers for HTML templating can be used."/>
 <meta name="description" content="Example how helpers for HTML templating can be used."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=007315249919895517"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=007315249919895517"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9442791390199057"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9442791390199057"/>
 <title>Example: Use of HTML Templating in OpenUI5</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -21,7 +21,8 @@
 	
 	<div class="body"><p class="shortdesc">Example how helpers for HTML templating can be used.</p>
 
-		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;!DOCTYPE HTML&gt;
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">
+&lt;!DOCTYPE HTML&gt;
 &lt;html&gt;
 &lt;head&gt;
 
@@ -32,8 +33,8 @@
 
     &lt;script id="sap-ui-bootstrap"
             type="text/javascript"
-            src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
-            data-sap-ui-libs="sap.m"
+            src="resources/sap-ui-core.js"
+            data-sap-ui-libs="sap.ui.commons"
             data-sap-ui-theme="sap_belize"
             data-sap-ui-xx-bindingSyntax="complex"
             &gt;
@@ -49,13 +50,13 @@
                 title: "Persons",
                 persons: [{
                     firstName: "Peter",
-                    lastName: "Matschig"
+                    lastName: "Muessig"
                 }, {
                     firstName: "Tim",
-                    lastName: "Beck"
+                    lastName: "Back"
                 }, {
                     firstName: "Christoph",
-                    lastName: "Krummer"
+                    lastName: "Kraemer"
                 }]
             });
             sap.ui.getCore().setModel(oModel);
@@ -109,10 +110,10 @@
     &lt;div id="myControlTemplate" data-type="text/x-handlebars-template"&gt;
     
         &lt;h3&gt;Control Template (using "control" expression)&lt;/h3&gt;
-        {{control sap-ui-type="sap.m.Label" design="Bold" text="{/title}"}}
+        {{control sap-ui-type="sap.ui.commons.Label" design="Bold" text="{/title}"}}
         &lt;ul&gt;
         {{#each path="/persons"}}
-            &lt;li&gt;{{control sap-ui-type="sap.m.Text" text="{lastName}, {firstName}"}}&lt;/li&gt;
+            &lt;li&gt;{{control sap-ui-type="sap.ui.commons.TextView" text="{lastName}, {firstName}"}}&lt;/li&gt;
         {{/each}}
         &lt;/ul&gt;
     
@@ -121,10 +122,10 @@
     &lt;div id="myControlEditTemplate" data-type="text/x-handlebars-template"&gt;
     
         &lt;h3&gt;Advanced Control Template (using editable "control" expression)&lt;/h3&gt;
-        {{control sap-ui-type="sap.m.TextArea" value="{/title}" rows="2" cols="40"}}
+        {{control sap-ui-type="sap.ui.commons.TextArea" value="{/title}" rows="2" cols="40"}}
         &lt;ul&gt;
         {{#each path="/persons"}}
-            &lt;li&gt;{{control sap-ui-type="sap.m.Input" width="12rem" value="{lastName}"}}, {{control sap-ui-type="sap.m.Input" width="12rem" value="{firstName}"}}&lt;/li&gt;
+            &lt;li&gt;{{control sap-ui-type="sap.ui.commons.TextField" value="{lastName}"}}, {{control sap-ui-type="sap.ui.commons.TextField" value="{firstName}"}}&lt;/li&gt;
         {{/each}}
         &lt;/ul&gt;
     

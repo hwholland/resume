@@ -6,8 +6,8 @@
 <meta name="abstract" content="How content densities are set and how they can be used in the SAP Fiori launchpad is explained and shown in the following code samples (using the Compact density as an example)."/>
 <meta name="description" content="How content densities are set and how they can be used in the SAP Fiori launchpad is explained and shown in the following code samples (using the Compact density as an example)."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8500651879206763"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8500651879206763"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4043205363145844"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4043205363145844"/>
 <title>How to Use Densities for Controls</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -63,27 +63,35 @@
 			
 			<p class="p">XML view definition - Example:</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View class="sapUiSizeCompact" xmlns=....&gt;
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;mvc:View class="sapUiSizeCompact" xmlns=....&gt;
    ...
-&lt;/mvc:View&gt;</pre></div>
+&lt;/mvc:View&gt;
+</pre></div>
 
 			<p class="p">JS view definition - Example:</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">createContent: function(oController) {
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+createContent: function(oController) {
    ...
    this.addStyleClass("sapUiSizeCompact"); // make everything inside this View appear in Compact density
    ...
-}</pre></div>
+}
+</pre></div>
 
 			<p class="p">JavaScript opening a dialog - Example:</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var myDialog = new sap.m.Dialog({.....}).addStyleClass("sapUiSizeCompact");
-myDialog.open();</pre></div>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+var myDialog = new sap.ui.commons.Dialog({.....}).addStyleClass("sapUiSizeCompact");
+myDialog.open();
+</pre></div>
 
 			<p class="p">JavaScript instantiating a view - Example:</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var myView = sap.ui.view(...);
-myView.addStyleClass("sapUiSizeCompact");</pre></div>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+var myView = sap.ui.view(...);
+myView.addStyleClass("sapUiSizeCompact");
+</pre></div>
 
 			<div class="note note"><span class="notetitle">Note</span> 
 				<p class="p">It is also possible to apply the relevant density only under certain
@@ -91,12 +99,14 @@ myView.addStyleClass("sapUiSizeCompact");</pre></div>
 					touch interaction. In this case, add the class dynamically to the UI instead of
 					statically. You can do this, for example, in the view controller:</p>
 
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.controller("my.controller", {
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+sap.ui.controller("my.controller", {
    onInit: function() {
       // apply compact density if touch is not supported, the standard cozy design otherwise
       this.getView().addStyleClass(sap.ui.Device.support.touch ? "sapUiSizeCozy" : "sapUiSizeCompact");
    }
-});</pre></div>
+});
+</pre></div>
 
 			</div>
 
@@ -116,14 +126,16 @@ myView.addStyleClass("sapUiSizeCompact");</pre></div>
 				accepts the following parameters: Name of the style class, source element, and
 				destination element. The following code snippet shows an example:</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;mvc:View
     controllerName="mycontroller"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"&gt;
     &lt;Button text="Show Dialog" press="onOpenDialog" /&gt;
 &lt;/mvc:View&gt;</pre></div>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"&gt;
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"&gt;
     &lt;Dialog title="Alert" type="Message"&gt;
         &lt;Text text="Lorem ipsum dolor sit amet" /&gt;
         &lt;beginButton&gt;
@@ -132,7 +144,8 @@ myView.addStyleClass("sapUiSizeCompact");</pre></div>
     &lt;/Dialog&gt;
 &lt;/core:FragmentDefinition&gt;</pre></div>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.controller("mycontroller", {
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+sap.ui.controller("mycontroller", {
     onOpenDialog: function (oEvent) {
         if (! this._oDialog) {
             this._oDialog = sap.ui.xmlfragment("mydialog", this);
@@ -143,7 +156,8 @@ myView.addStyleClass("sapUiSizeCompact");</pre></div>
         jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialog);
         this._oDialog.open();
     }
-});</pre></div>
+});
+</pre></div>
 
 			<p class="p">When calling <samp class="ph codeph">jQuery.sap.syncStyleClass</samp>, the source element can be a
 				jQuery object, a <span class="ph"><span class="ph pname">OpenUI5</span></span>
@@ -159,7 +173,8 @@ myView.addStyleClass("sapUiSizeCompact");</pre></div>
 				element, you can use the <samp class="ph codeph">closest</samp> function from jQuery as shown in
 				the following example:</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var btn = new sap.m.Button({
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+var btn = new sap.m.Button({
     text: "Hello World",
     press: function(){
         var dialog = new sap.m.Dialog({
@@ -191,7 +206,8 @@ myView.addStyleClass("sapUiSizeCompact");</pre></div>
 				for example, for the <span class="ph uicontrol">Compact</span> density. The following code
 				snippet shows you an example:</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">.myOwnControl { /* the standard (big) style */
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+.myOwnControl { /* the standard (big) style */
    ...
    height: 3rem;
    ...
@@ -199,7 +215,9 @@ myView.addStyleClass("sapUiSizeCompact");</pre></div>
 
 .sapUiSizeCompact .myOwnControl { /* reduce the height in compact density */
    height: 2rem;
-}</pre></div>
+}
+
+</pre></div>
 
 		</div></div>
 

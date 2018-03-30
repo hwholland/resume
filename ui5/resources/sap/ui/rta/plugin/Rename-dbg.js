@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -39,7 +39,7 @@ sap.ui.define([
 	 * @extends sap.ui.rta.plugin.Plugin
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @private
@@ -86,19 +86,13 @@ sap.ui.define([
 	};
 
 	Rename.prototype.startEdit = function (oOverlay) {
-		this._bPreventMenu = true;
-		var oElement = oOverlay.getElement(),
+		var oElement = oOverlay.getElementInstance(),
 			oDesignTimeMetadata = oOverlay.getDesignTimeMetadata(),
 			vDomRef = oDesignTimeMetadata.getAction("rename", oElement).domRef;
-		RenameHandler.startEdit.call(this, {
-			overlay: oOverlay,
-			domRef: vDomRef,
-			pluginMethodName: "plugin.Rename.startEdit"
-		});
+		RenameHandler.startEdit.call(this, oOverlay, vDomRef, "plugin.Rename.startEdit");
 	};
 
 	Rename.prototype.stopEdit = function (bRestoreFocus) {
-		this._bPreventMenu = false;
 		RenameHandler._stopEdit.call(this, bRestoreFocus, "plugin.Rename.stopEdit");
 	};
 
@@ -137,7 +131,7 @@ sap.ui.define([
 
 		if (bIsEnabled && typeof oAction.isEnabled !== "undefined") {
 			if (typeof oAction.isEnabled === "function") {
-				bIsEnabled = oAction.isEnabled(oOverlay.getElement());
+				bIsEnabled = oAction.isEnabled(oOverlay.getElementInstance());
 			} else {
 				bIsEnabled = oAction.isEnabled;
 			}
@@ -145,7 +139,7 @@ sap.ui.define([
 
 		if (bIsEnabled) {
 			var oDesignTimeMetadata = oOverlay.getDesignTimeMetadata();
-			if (!oDesignTimeMetadata.getAssociatedDomRef(oOverlay.getElement(), oAction.domRef)) {
+			if (!oDesignTimeMetadata.getAssociatedDomRef(oOverlay.getElementInstance(), oAction.domRef)) {
 				bIsEnabled = false;
 			}
 		}
@@ -169,7 +163,11 @@ sap.ui.define([
 	 */
 	Rename.prototype._isEditable = function(oOverlay) {
 		var bEditable = false;
-		var oElement = oOverlay.getElement();
+		var oElement = oOverlay.getElementInstance();
+
+		if (!Utils.getRelevantContainerDesigntimeMetadata(oOverlay)) {
+			return false;
+		}
 
 		var oRenameAction = this.getAction(oOverlay);
 		if (oRenameAction && oRenameAction.changeType) {
@@ -205,7 +203,7 @@ sap.ui.define([
 			this._$oEditableControlDomRef.text(sText);
 			try {
 				var oRenameCommand;
-				var oRenamedElement = this._oEditedOverlay.getElement();
+				var oRenamedElement = this._oEditedOverlay.getElementInstance();
 				var oDesignTimeMetadata = this._oEditedOverlay.getDesignTimeMetadata();
 				var oRenameAction = this.getAction(this._oEditedOverlay);
 				var sVariantManagementReference = this.getVariantManagementReference(this._oEditedOverlay, oRenameAction);
@@ -229,7 +227,7 @@ sap.ui.define([
 	 * @return {object[]}          Returns array containing the items with required data
 	 */
 	Rename.prototype.getMenuItems = function(oOverlay){
-		return this._getMenuItems(oOverlay, {pluginId : "CTX_RENAME", rank : 10, icon: "sap-icon://edit"});
+		return this._getMenuItems(oOverlay, {pluginId : "CTX_RENAME", rank : 10});
 	};
 
 	/**
@@ -238,14 +236,6 @@ sap.ui.define([
 	 */
 	Rename.prototype.getActionName = function(){
 		return "rename";
-	};
-
-	/**
-	 * Indicates whether the Plugin is busy
-	 * @return {boolean} true if Plugin is busy
-	 */
-	Rename.prototype.isBusy = function(){
-		return this._bPreventMenu;
 	};
 
 	return Rename;

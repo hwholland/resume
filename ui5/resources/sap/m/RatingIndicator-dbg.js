@@ -1,19 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.RatingIndicator.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/theming/Parameters',
-	'./RatingIndicatorRenderer',
-	'jquery.sap.keycodes'
-],
-	function(jQuery, library, Control, Parameters, RatingIndicatorRenderer) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/ui/core/theming/Parameters', 'jquery.sap.keycodes'],
+	function(jQuery, library, Control, Parameters) {
 	"use strict";
 
 
@@ -50,7 +43,7 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -154,7 +147,7 @@ sap.ui.define([
 				}
 			}
 		},
-		designtime: "sap/m/designtime/RatingIndicator.designtime"
+		designTime: true
 	}});
 
 	///**
@@ -228,7 +221,7 @@ sap.ui.define([
 	/**
 	 * Sets the icon size value. The method automatically updates the UI components if the control has been rendered before.
 	 *
-	 * @param {sap.ui.core.CSSSize} sIconSize The size of the icon
+	 * @param {sap.ui.core.CSSSize} sIconSize
 	 * @returns {sap.m.RatingIndicator} Returns <code>this</code> to facilitate method chaining.
 	 * @override
 	 * @public
@@ -322,7 +315,7 @@ sap.ui.define([
 
 	/**
 	 * get the form factor (Cozy/Compact/Condensed)
-	 * @returns {string} The form factor
+	 *
 	 * @private
 	 */
 	RatingIndicator.prototype._getDensityMode = function () {
@@ -343,8 +336,7 @@ sap.ui.define([
 
 	/**
 	 * Get icon size label
-	 * @param {number} iPxIconSize The size of the icon in pixels
-	 * @returns {string} The icon size
+	 *
 	 * @private
 	 */
 	RatingIndicator.prototype._getIconSizeLabel = function (iPxIconSize) {
@@ -431,7 +423,7 @@ sap.ui.define([
 
 	/**
 	 * Updates the ARIA values.
-	 * @param {string} newValue The new ARIA value
+	 *
 	 * @private
 	 */
 	RatingIndicator.prototype._updateAriaValues = function (newValue) {
@@ -745,7 +737,7 @@ sap.ui.define([
 	/**
 	 * Keyboard navigation event when the user presses Home.
 	 *
-	 * @param {jQuery.Event} oEvent oEvent The event object.
+	 * @param {jQuery.Event} oEvent
 	 * @private
 	 */
 	RatingIndicator.prototype.onsaphome = function (oEvent) {
@@ -756,7 +748,7 @@ sap.ui.define([
 	/**
 	 * Keyboard navigation event when the user presses End.
 	 *
-	 * @param {jQuery.Event} oEvent oEvent The event object.
+	 * @param {jQuery.Event} oEvent
 	 * @private
 	 */
 	RatingIndicator.prototype.onsapend = function (oEvent) {
@@ -785,8 +777,7 @@ sap.ui.define([
 	/**
 	 * Keyboard handling event when the user presses number keys.
 	 *
-	 * @param {jQuery.Event} oEvent oEvent The event object.
-	 * @returns {boolean} False, if the control is in read-only mode
+	 * @param {jQuery.Event} oEvent
 	 * @private
 	 */
 	RatingIndicator.prototype.onkeyup = function (oEvent) {
@@ -870,7 +861,6 @@ sap.ui.define([
 	/* =========================================================== */
 
 	/**
- 	 * @returns {sap.m.RatingIndicator} this instance for method chaining
 	 * @see sap.ui.core.Control#getAccessibilityInfo
 	 * @protected
 	 */

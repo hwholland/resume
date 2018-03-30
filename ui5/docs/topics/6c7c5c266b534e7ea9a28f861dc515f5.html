@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -121,7 +121,7 @@
                         </div>
                         
                         <div class="previouslink"><br>
-                           <strong>Previous: </strong><a class="link" href="../../#/topic/97830de2d7314e93b5c1ee3878a17be9.html" title="Aggregation binding (or &quot;list binding&quot;) allows a control to be bound to a list within the model data and allows relative binding to the list entries by its child controls." target="_top">Step 12: Aggregation Binding Using Templates</a><br>
+                           <strong>Previous: </strong><a class="link" href="../../#/topic/97830de2d7314e93b5c1ee3878a17be9.html" title="Aggregation binding allows a control to be bound to a list within the model data and allows relative binding to the list entries by its child controls." target="_top">Step 12: Aggregation Binding Using Templates</a><br>
                            
                         </div>
                         
@@ -155,7 +155,7 @@
                                     				
                                     				<img xmlns="" class="inline  " id="loio6c7c5c266b534e7ea9a28f861dc515f5__image_cjk_xwz_1t" src="loio872d2ed3f9144fbfb82e028b17c52ce3_HiRes.png">
                                     			
-                                 </div><span class="figcap">Element binding implemented, product details displayed per item</span></div>
+                                 </div><span class="figcap"><span class="enumeration fig-enumeration">Figure 65: </span>Element binding implemented, product details displayed per item</span></div>
                               
                               		
                            </section>
@@ -249,11 +249,9 @@
                            <section class="section" type="webapp/controller/App.controller.js">
                               <h2 class="section_title" style="font-size: 1.15em;">webapp/controller/App.controller.js</h2>
                               			
-                              			<pre class="pre codeblock prettyprint lang-js">sap.ui.define([
-	&quot;sap/ui/core/mvc/Controller&quot;,
-	&quot;sap/ui/model/type/Currency&quot;
-], function (Controller, Currency) {
-	&quot;use strict&quot;;
+                              			<pre class="pre codeblock prettyprint lang-js">sap.ui.define([&quot;sap/ui/core/mvc/Controller&quot;,&quot;sap/ui/model/type/Currency&quot;],
+	function (Controller, Currency) {
+		&quot;use strict&quot;;
  
 	return Controller.extend(&quot;sap.ui.demo.db.controller.App&quot;, {
 		formatMail: function(sFirstName, sLastName) {
@@ -263,7 +261,6 @@
 				oBundle.getText(&quot;mailSubject&quot;, [sFirstName]),
 				oBundle.getText(&quot;mailBody&quot;));
 		},
-
 		formatStockValue: function(fUnitPrice, iStockLevel, sCurrCode) {
 			var sBrowserLocale = sap.ui.getCore().getConfiguration().getLanguage();
 			var oLocale = new sap.ui.core.Locale(sBrowserLocale);
@@ -271,7 +268,6 @@
 			var oCurrency = new Currency(oLocaleData.mData.currencyFormat);
 			return oCurrency.formatValue([fUnitPrice * iStockLevel, sCurrCode], &quot;string&quot;);
 		}<span class="ph emphasis emphasis">,
-
 		onItemSelected: function(oEvent) {
 			var oSelectedItem = oEvent.getSource();
 			var oContext = oSelectedItem.getBindingContext(&quot;products&quot;);
@@ -376,7 +372,7 @@ Discontinued=Eingestellt</span></pre>
                            </div>
                            
                            <div class="previouslink"><br>
-                              <strong>Previous: </strong><a class="link" href="../../#/topic/97830de2d7314e93b5c1ee3878a17be9.html" title="Aggregation binding (or &quot;list binding&quot;) allows a control to be bound to a list within the model data and allows relative binding to the list entries by its child controls." target="_top">Step 12: Aggregation Binding Using Templates</a><br>
+                              <strong>Previous: </strong><a class="link" href="../../#/topic/97830de2d7314e93b5c1ee3878a17be9.html" title="Aggregation binding allows a control to be bound to a list within the model data and allows relative binding to the list entries by its child controls." target="_top">Step 12: Aggregation Binding Using Templates</a><br>
                               
                            </div>
                            
@@ -390,7 +386,7 @@ Discontinued=Eingestellt</span></pre>
                         <div class="relinfo">
                            <div class="relinfotitle ">Related Information</div>
                            
-                           <div><a class="link" href="../../#/topic/91f05e8b6f4d1014b6dd926db0e91070.html" title="Context binding (or element binding) allows you to bind elements to a specific object in the model data, which will create a binding context and allow relative binding within the control and all of its children. This is especially helpful in master-detail scenarios." target="_top">Context Binding (Element Binding)</a></div>
+                           <div><a class="link" href="../../#/topic/91f05e8b6f4d1014b6dd926db0e91070.html" title="Element binding allows you to bind elements to a specific object in the model data, which will create a binding context and allow relative binding within the control and all of its children. This is especially helpful in master-detail scenarios." target="_top">Element Binding</a></div>
                            
                         </div>
                         

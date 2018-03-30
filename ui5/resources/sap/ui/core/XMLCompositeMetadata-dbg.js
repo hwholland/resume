@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -24,8 +24,6 @@ sap.ui.define([
 		None: false
 	};
 
-	var mFragmentCache = {};
-
 	/*
 	 *
 	 * Creates a new metadata object that describes a subclass of XMLComposite.
@@ -34,7 +32,7 @@ sap.ui.define([
 	 * @param {object} oClassInfo static info to construct the metadata from
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @since 1.50.0
 	 * @alias sap.ui.core.XMLCompositeMetadata
 	 * @private
@@ -58,13 +56,7 @@ sap.ui.define([
 			}
 			if (!this._fragment && oClassInfo.fragment) {
 				try {
-					this._fragment = mFragmentCache[oClassInfo.fragment];
-					if (!this._fragment) {
-						this._fragment
-							= XMLTemplateProcessor.loadTemplate(oClassInfo.fragment, "control");
-						mFragmentCache[oClassInfo.fragment] = this._fragment;//cache the fragments similar to XMLPreprocessor
-						this.requireFor(this._fragment);
-					}
+					this._fragment = XMLTemplateProcessor.loadTemplate(oClassInfo.fragment, "control");
 				} catch (e) {
 					if (!oClassInfo.fragmentUnspecified) {
 						// fragment xml was explicitly specified so we expect to find something !
@@ -162,13 +154,6 @@ sap.ui.define([
 			this._mMandatoryAggregations = mMandatory;
 		}
 		return this._mMandatoryAggregations;
-	};
-
-	XMLCompositeMetadata.prototype.requireFor = function (oElement) {
-		var sModuleNames = oElement.getAttribute("template:require");
-		if (sModuleNames) {
-			jQuery.sap.require.apply(jQuery.sap, sModuleNames.split(" "));
-		}
 	};
 
 	return XMLCompositeMetadata;

@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -10,9 +10,8 @@ sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"sap/ui/core/routing/History",
 		"sap/ui/Device",
-		"sap/m/library",
-		"sap/ui/documentation/sdk/controller/util/APIInfo"
-	], function (library, Controller, History, Device, mobileLibrary, APIInfo) {
+		"sap/m/library"
+	], function (library, Controller, History, Device, mobileLibrary) {
 		"use strict";
 
 		// shortcut for sap.m.SplitAppMode
@@ -94,11 +93,7 @@ sap.ui.define([
 
 				if (sPreviousHash !== undefined) {
 					// The history contains a previous entry
-					if (sPreviousHash.indexOf("search/") === 0) {
-						this.getRouter().navTo("search", {searchParam: sPreviousHash.split("/")[1]}, false);
-					} else {
-						history.go(-1);
-					}
+					history.go(-1);
 				} else {
 					var sCurrentHash = window.location.hash;
 
@@ -172,23 +167,7 @@ sap.ui.define([
 			 */
 			handleLandingImageLoad: function () {
 				this.getView().byId("landingImageHeadline").setVisible(true);
-			},
-			/**
-			 * Checks if a control has API Reference
-			 * @param {string} sControlName
-			 * @return {Promise} A promise that resolves to {boolean}
-			 */
-            getAPIReferenceCheckPromise: function (sControlName) {
-				return APIInfo.getIndexJsonPromise().then(function (result) {
-					var aFilteredResult;
-
-					aFilteredResult = result.filter(function (element) {
-						return element.name === sControlName;
-					});
-
-					return aFilteredResult && aFilteredResult.length > 0;
-				});
 			}
 		});
-	}
+}
 );

@@ -1,0 +1,63 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="When the UI of an application is changing or loading information, these state transitions and updates need to be passed on to the screen reader as well. You need to set the correct ARIA attributes (for example, aria-live or aria-busy) for the corresponding areas in your application."/>
+<meta name="description" content="When the UI of an application is changing or loading information, these state transitions and updates need to be passed on to the screen reader as well. You need to set the correct ARIA attributes (for example, aria-live or aria-busy) for the corresponding areas in your application."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=302790490473001"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=302790490473001"/>
+<title>ARIA Event Handling</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio79a9c51057864e7abc3faf0e7c3073c6">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">ARIA Event Handling</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">When the UI of an application is changing or loading information, these state
+		transitions and updates need to be passed on to the screen reader as well. You need to set
+		the correct ARIA attributes (for example, aria-live or aria-busy) for the corresponding
+		areas in your application. </p>
+
+		<div class="section"><div class="section_title">UI Updates</div><div type="UI Updates">
+			
+			<p class="p">In some cases an app needs to stay non-responsive for longer periods of time. This may be
+				caused by the app fetching data or updating the UI. In these cases, busy indicators
+				are shown to inform the user that the app is processing data.</p>
+
+			<p class="p">The affected regions of the UI should have the property <samp class="ph codeph">aria-live</samp> set to
+					<samp class="ph codeph">true</samp>. This informs the screen reader that the region's DOM
+				structure is currently subject to change and therefore internal processing should be
+				applied.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Event Handling</div><div type="Event Handling">
+			
+			<p class="p">Accessible events are designed as a signaling mechanism for screen readers. An example for
+				this is when parts of the UI update, either as a result of a direct user action
+				(such as performing a selection) or by software (such as <span class="q">“<cite class="cite">incoming
+						mail</cite>”</span> messages or popups). Events like a dialog showing up or
+				content updates of parts of the screen are handled by assigning specific roles and
+				properties of the UI elements (for example, an HTML <samp class="ph codeph">&lt;input type=checkbox&gt;</samp> element, would need
+					<samp class="ph codeph">role=<span class="q">“dialog”</span></samp> or property <samp class="ph codeph">aria-live</samp> set
+				accordingly). Screen readers then listen to accessible events raised by browsers for
+				these UI parts and react accordingly.</p>
+
+			<p class="p">When the app is loading or fetching information, the ARIA property
+						<samp class="ph codeph">aria-busy=<span class="q">“true”</span></samp> should be set for the corresponding
+				region.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

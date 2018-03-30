@@ -267,55 +267,6 @@
 		oFileUploader.destroy();
 	});
 
-	QUnit.test("Test setTooltip", function (assert) {
-		//Set up
-		var sTooltip = "this is \"the\" file uploader";
-		var oFileUploader = createFileUploader({
-			tooltip: "MyFileUploader"
-		});
-
-
-		oFileUploader.placeAt("qunit-fixture");
-		sap.ui.getCore().applyChanges();
-
-		// act
-		oFileUploader.setTooltip(sTooltip);
-		sap.ui.getCore().applyChanges();
-
-		// assert
-		assert.equal(oFileUploader.oFileUpload.getAttribute("title"), sTooltip, "FileUploader tooltip is correct");
-		assert.equal(oFileUploader.$().find(".sapUiFupInputMask")[0].getAttribute("title"), sTooltip, "FileUploader mask tooltip is correct");
-
-		// cleanup
-		oFileUploader.destroy();
-	});
-
-	QUnit.test("Test associated label interaction", function (assert) {
-		//Set up
-		var oFileUploader = createFileUploader({}),
-			oSpy,
-			FUEl;
-
-		// override onclick handler to prevent file dialog opening, causing the test execution to stop
-		oFileUploader.onclick = function (oEvent) {
-			oEvent.preventDefault();
-		};
-
-		oFileUploader.placeAt("qunit-fixture");
-		sap.ui.getCore().applyChanges();
-
-		//act
-		FUEl = oFileUploader.getDomRef("fu");
-		oSpy = this.spy(FUEl, "click");
-		qutils.triggerEvent("click", oFileUploader.oBrowse.getId());
-
-		// assert
-		assert.strictEqual(oSpy.callCount, 1, "Clicking on browse button should trigger click on the input");
-
-		// cleanup
-		oFileUploader.destroy();
-	});
-
 	QUnit.module("File validation");
 	QUnit.test("Test file type validation - handlechange()", function (assert){
 		//setup
@@ -465,7 +416,7 @@
 	QUnit.module("private functions");
 	QUnit.test("Testing sending passed files with XHR", function (assert) {
 		var oFileUploader = createFileUploader(),
-			bIsExecutedInFireFox = sap.ui.Device.browser.firefox,
+			bIsExecutedInFireFox = sap.ui.Device.browser.firefox;
 			aFiles = {
 				"0": createFakeFile({
 					name:"FileUploader.qunit.html",
@@ -489,73 +440,6 @@
 		assert.ok(oSpy.called, "XHR request is made");
 
 		//cleanup
-		oFileUploader.destroy();
-	});
-
-	QUnit.test("BCP: 1770523801 - FormData.append called with third argument fails under Safari browser if passed file " +
-			"is not a Blob", function (assert) {
-		// Arrange
-		var oFileUploader = createFileUploader(),
-			sExpectedFileName = "FileUploader.qunit.html",
-			oFormData = new window.FormData(),
-			oBlob,
-			oMSBlobBuilder,
-			aFiles,
-			oFile = createFakeFile({
-				name: "FileUploader.qunit.html",
-				type: "text/html",
-				size: 404450
-			}, false /* In this test we always pass a Blob object */),
-			oAppendFileSpy = this.spy(oFileUploader, "_appendFileToFormData"),
-			oAppendSpy = this.spy(oFormData, "append");
-
-		// NOTE: To create a Blob in Internet Explorer we have to use MSBlobBuilder when available because
-		// normal window.Blob constructor will fail.
-		if (window.MSBlobBuilder) {
-			oMSBlobBuilder = new window.MSBlobBuilder();
-			oMSBlobBuilder.append(oFile);
-			oBlob = oMSBlobBuilder.getBlob();
-		} else {
-			oBlob = new window.Blob([oFile]);
-		}
-
-		// Mock array like object with file as a Blob
-		aFiles = {
-			"0": oBlob,
-			"length" : 1
-		};
-
-		oFileUploader.placeAt("qunit-fixture");
-		sap.ui.getCore().applyChanges();
-
-		// Act - send files to make sure _appendFileToFormData method is used
-		oFileUploader._sendFilesWithXHR(aFiles);
-
-		// Assert
-		assert.strictEqual(oAppendFileSpy.callCount, 1, "_sendFilesWithXHR calls internally _appendFileToFormData.");
-
-		// Act - Send a Blob object without a name
-		oFileUploader._appendFileToFormData(oFormData, 'test', oBlob);
-
-		// Assert
-		assert.strictEqual(oAppendSpy.getCall(0).args.length, 2,
-				"FormData.append method is called with only two parameters when the Blob object has no 'name' property");
-
-		// Act - add name property to the oBlob object
-		oAppendSpy.reset();
-		oBlob.name = sExpectedFileName;
-		oFileUploader._appendFileToFormData(oFormData, 'test', oBlob);
-
-		// Assert
-		assert.strictEqual(oAppendSpy.getCall(0).args.length, 3,
-				"FormData.append method is called with three parameters");
-
-		assert.strictEqual(oAppendSpy.getCall(0).args[2], sExpectedFileName,
-				"The third parameter passed to FormData.append equals the expected file name.");
-
-		// Cleanup
-		oAppendFileSpy.restore();
-		oAppendSpy.restore();
 		oFileUploader.destroy();
 	});
 

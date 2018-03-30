@@ -1,19 +1,15 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 sap.ui.define([
-	"sap/ui/support/library",
 	"sap/ui/model/json/JSONModel"
-], function (library, JSONModel) {
+], function (JSONModel) {
 	"use strict";
 
-	var Audiences = library.Audiences,
-		Categories = library.Categories,
-		Severity = library.Severity,
-		executionScopes = {
+	var executionScopes = {
 			global: {
 				key: "global",
 				displayName: "Global",
@@ -49,17 +45,17 @@ sap.ui.define([
 		updateRuleStringified: "",
 		subtreeExecutionContextId: "",
 		availableComponents: [],
-		audiences: Audiences,
-		categories: Categories,
-		severities: Severity,
-		audiencesFilter : ["All"].concat(Object.keys(Audiences)),
-		categoriesFilter : ["All"].concat(Object.keys(Categories)),
-		severitiesFilter : ["All"].concat(Object.keys(Severity)),
+		audiences: sap.ui.support.Audiences,
+		categories: sap.ui.support.Categories,
+		severities: sap.ui.support.Severity,
+		audiencesFilter : ["All"].concat(Object.keys(sap.ui.support.Audiences)),
+		categoriesFilter : ["All"].concat(Object.keys(sap.ui.support.Categories)),
+		severitiesFilter : ["All"].concat(Object.keys(sap.ui.support.Severity)),
 		newEmptyRule: {
 			libName: "",
 			id: "",
-			categories: [Categories.Other],
-			audiences: [Audiences.Internal],
+			categories: [sap.ui.support.Categories.Other],
+			audiences: [sap.ui.support.Audiences.Internal],
 			title: "",
 			description: "",
 			resolution: "",
@@ -88,10 +84,11 @@ sap.ui.define([
 		selectedRules: true,
 		filteredIssues: null,
 		issuesCount: 0,
-		visibleRowCount: 5,
+		visibleRowCountMode:"Auto",
+		visibleRowCount: 10,
+		heightDetailsArea: "inherit",
 		supportAssistantOrigin: "",
-		supportAssistantVersion: "",
-		initialRulesLoading: true
+		supportAssistantVersion: ""
 	});
 
 	return model;

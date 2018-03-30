@@ -1,15 +1,15 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
 	"jquery.sap.global",
-	"sap/ui/base/SyncPromise",
 	"sap/ui/model/Context",
 	"sap/ui/model/odata/v4/Context",
-	"sap/ui/model/odata/v4/lib/_Helper"
-], function (jQuery, SyncPromise, BaseContext, Context, _Helper) {
+	"sap/ui/model/odata/v4/lib/_Helper",
+	"sap/ui/model/odata/v4/lib/_SyncPromise"
+], function (jQuery, BaseContext, Context, _Helper, _SyncPromise) {
 	/*global QUnit, sinon */
 	/*eslint no-warning-comments: 0 */
 	"use strict";
@@ -17,9 +17,13 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.module("sap.ui.model.odata.v4.Context", {
 		beforeEach : function () {
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oLogMock = sinon.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
+		},
+
+		afterEach : function () {
+			this.oLogMock.verify();
 		}
 	});
 
@@ -132,10 +136,10 @@ sap.ui.require([
 
 			this.mock(_Helper).expects("buildPath").withExactArgs("/foo", sPath).returns("/~");
 			this.mock(oBinding).expects("fetchValue")
-				.withExactArgs("/~", sinon.match.same(oListener), "group")
+				.withExactArgs("/~", sinon.match.same(oListener))
 				.returns(oResult);
 
-			assert.strictEqual(oContext.fetchValue(sPath, oListener, "group"), oResult);
+			assert.strictEqual(oContext.fetchValue(sPath, oListener), oResult);
 		});
 	});
 
@@ -150,10 +154,10 @@ sap.ui.require([
 			sPath = "/bar";
 
 		this.mock(oBinding).expects("fetchValue")
-			.withExactArgs(sPath, sinon.match.same(oListener), "group")
+			.withExactArgs(sPath, sinon.match.same(oListener))
 			.returns(oResult);
 
-		assert.strictEqual(oContext.fetchValue(sPath, oListener, "group"), oResult);
+		assert.strictEqual(oContext.fetchValue(sPath, oListener), oResult);
 	});
 
 	//*********************************************************************************************
@@ -184,38 +188,19 @@ sap.ui.require([
 	});
 
 	//*********************************************************************************************
-	[
-		{aBindingHasPendingChanges : [true], bResult : true},
-		{aBindingHasPendingChanges : [false, true], bResult : true},
-		{aBindingHasPendingChanges : [false, false], bResult : false}
-	].forEach(function (oFixture, i) {
-		QUnit.test("hasPendingChanges: " + i, function (assert) {
-			var oModel = {
-					getDependentBindings : function () {}
-				},
-				oBinding0 = {
-					hasPendingChanges : function () {}
-				},
-				oBinding1 = {
-					hasPendingChanges : function () {}
-				},
-				oParentBinding = {},
-				oContext = Context.create(oModel, oParentBinding, "/EMPLOYEES('42')", 13);
+	QUnit.test("hasPendingChangesForPath", function (assert) {
+		var oBinding = {
+				hasPendingChangesForPath : function () {}
+			},
+			oContext = Context.create(null, oBinding, "/foo", 42),
+			oResult = {},
+			sPath = "bar";
 
-			this.mock(oModel).expects("getDependentBindings")
-				.withExactArgs(sinon.match.same(oContext))
-				.returns([oBinding0, oBinding1]);
-			this.mock(oBinding0).expects("hasPendingChanges")
-				.withExactArgs()
-				.returns(oFixture.aBindingHasPendingChanges[0]);
-			this.mock(oBinding1).expects("hasPendingChanges")
-				.withExactArgs()
-				.exactly(oFixture.aBindingHasPendingChanges[0] ? 0 : 1)
-				.returns(oFixture.aBindingHasPendingChanges[1]);
+		this.mock(_Helper).expects("buildPath").withExactArgs(42, sPath).returns("~bar~");
+		this.mock(oBinding).expects("hasPendingChangesForPath")
+			.withExactArgs("~bar~").returns(oResult);
 
-			// code under test
-			assert.strictEqual(oContext.hasPendingChanges(), oFixture.bResult);
-		});
+		assert.strictEqual(oContext.hasPendingChangesForPath(sPath), oResult);
 	});
 
 	//*********************************************************************************************
@@ -236,23 +221,33 @@ sap.ui.require([
 		assert.ok(oContext.isTransient(), "unresolved created Promise -> transient");
 
 		fnResolve();
-		return oContext.created().then(function () {
+		oContext.created().then(function () {
 			// code under test
 			assert.notOk(oContext.isTransient(), "resolved -> not transient");
 		});
 	});
 
 	//*********************************************************************************************
+	QUnit.test("resetChangesForPath", function (assert) {
+		var oBinding = {
+				resetChangesForPath : function () {}
+			},
+			oContext = Context.create(null, oBinding, "/foo", 42),
+			sPath = "bar";
+
+		this.mock(_Helper).expects("buildPath").withExactArgs(42, sPath).returns("~bar~");
+		this.mock(oBinding).expects("resetChangesForPath").withExactArgs("~bar~");
+
+		oContext.resetChangesForPath(sPath);
+	});
+
+	//*********************************************************************************************
 	[{value : 42}, undefined].forEach(function (oData) {
 		QUnit.test("requestObject " + JSON.stringify(oData), function (assert) {
-			var oBinding = {
-					checkSuspended : function () {}
-				},
-				oContext = Context.create(null, oBinding, "/foo"),
+			var oContext = Context.create(null, null, "/foo"),
 				oPromise,
-				oSyncPromise = SyncPromise.resolve(Promise.resolve(oData));
+				oSyncPromise = _SyncPromise.resolve(Promise.resolve(oData));
 
-			this.mock(oBinding).expects("checkSuspended").withExactArgs();
 			this.mock(oContext).expects("fetchValue").withExactArgs("bar")
 				.returns(oSyncPromise);
 
@@ -275,7 +270,7 @@ sap.ui.require([
 		QUnit.test("getObject: " + JSON.stringify(oData), function (assert) {
 			var oContext = Context.create(null, null, "/foo"),
 				oResult,
-				oSyncPromise = SyncPromise.resolve(oData);
+				oSyncPromise = _SyncPromise.resolve(oData);
 
 			this.mock(oContext).expects("fetchValue").withExactArgs("bar")
 				.returns(oSyncPromise);
@@ -293,7 +288,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("getObject: unresolved", function (assert) {
 		var oContext = Context.create(null, null, "/foo"),
-			oSyncPromise = SyncPromise.resolve(Promise.resolve(42));
+			oSyncPromise = _SyncPromise.resolve(Promise.resolve(42));
 
 		this.mock(oContext).expects("fetchValue").withExactArgs("bar")
 			.returns(oSyncPromise);
@@ -306,7 +301,7 @@ sap.ui.require([
 	[42, null].forEach(function (vResult) {
 		QUnit.test("getProperty: primitive result " + vResult, function (assert) {
 			var oContext = Context.create(null, null, "/foo"),
-				oSyncPromise = SyncPromise.resolve(vResult);
+				oSyncPromise = _SyncPromise.resolve(vResult);
 
 			this.mock(oContext).expects("fetchValue").withExactArgs("bar")
 				.returns(oSyncPromise);
@@ -319,7 +314,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("getProperty: structured result", function (assert) {
 		var oContext = Context.create(null, null, "/foo", 1),
-			oSyncPromise = SyncPromise.resolve({});
+			oSyncPromise = _SyncPromise.resolve({});
 
 		this.mock(oContext).expects("getPath").withExactArgs("bar").returns("~");
 		this.mock(oContext).expects("fetchValue").withExactArgs("bar")
@@ -334,7 +329,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("getProperty: unresolved", function (assert) {
 		var oContext = Context.create(null, null, "/foo"),
-			oSyncPromise = SyncPromise.resolve(Promise.resolve(42));
+			oSyncPromise = _SyncPromise.resolve(Promise.resolve(42));
 
 		this.mock(oContext).expects("fetchValue").withExactArgs("bar")
 			.returns(oSyncPromise);
@@ -346,14 +341,11 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("getProperty: rejected", function (assert) {
 		var oContext = Context.create(null, null, "/foo"),
-			sMessage = "read error",
-			oPromise = Promise.reject(new Error(sMessage)),
-			oSyncPromise = SyncPromise.resolve(oPromise);
+			oPromise = Promise.reject("read error"),
+			oSyncPromise = _SyncPromise.resolve(oPromise);
 
 		this.mock(oContext).expects("fetchValue").withExactArgs("bar")
 			.returns(oSyncPromise);
-		this.oLogMock.expects("warning")
-			.withExactArgs(sMessage, "bar", "sap.ui.model.odata.v4.Context");
 
 		return oPromise["catch"](function () {
 			//code under test
@@ -377,8 +369,8 @@ sap.ui.require([
 				},
 				oContext = Context.create(oModel, null, "/foo", 42),
 				oResolvedType = bTypeIsResolved ? oType : Promise.resolve(oType),
-				oSyncPromiseType = SyncPromise.resolve(oResolvedType),
-				oSyncPromiseValue = SyncPromise.resolve(1234);
+				oSyncPromiseType = _SyncPromise.resolve(oResolvedType),
+				oSyncPromiseValue = _SyncPromise.resolve(1234);
 
 			this.mock(oContext).expects("getPath").withExactArgs("bar").returns("~");
 			this.mock(oContext).expects("fetchValue").withExactArgs("bar")
@@ -399,13 +391,9 @@ sap.ui.require([
 	//*********************************************************************************************
 	[42, null].forEach(function (vResult) {
 		QUnit.test("requestProperty: primitive result " + vResult, function (assert) {
-			var oBinding = {
-					checkSuspended : function () {}
-				},
-				oContext = Context.create(null, oBinding, "/foo"),
-				oSyncPromise = SyncPromise.resolve(Promise.resolve(vResult));
+			var oContext = Context.create(null, null, "/foo"),
+				oSyncPromise = _SyncPromise.resolve(Promise.resolve(vResult));
 
-			this.mock(oBinding).expects("checkSuspended").withExactArgs();
 			this.mock(oContext).expects("fetchValue").withExactArgs("bar")
 				.returns(oSyncPromise);
 
@@ -418,11 +406,8 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("requestProperty: structured result", function (assert) {
-		var oBinding = {
-				checkSuspended : function () {}
-			},
-			oContext = Context.create(null, oBinding, "/foo", 1),
-			oSyncPromise = SyncPromise.resolve(Promise.resolve({}));
+		var oContext = Context.create(null, null, "/foo", 1),
+			oSyncPromise = _SyncPromise.resolve(Promise.resolve({}));
 
 		this.mock(oContext).expects("fetchValue").withExactArgs("bar")
 			.returns(oSyncPromise);
@@ -437,10 +422,7 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("requestProperty: external", function (assert) {
-		var oBinding = {
-				checkSuspended : function () {}
-			},
-			oMetaModel = {
+		var oMetaModel = {
 				fetchUI5Type : function () {}
 			},
 			oModel = {
@@ -451,9 +433,9 @@ sap.ui.require([
 			oType = {
 				formatValue : function () {}
 			},
-			oContext = Context.create(oModel, oBinding, "/foo", 42),
-			oSyncPromiseType = SyncPromise.resolve(Promise.resolve(oType)),
-			oSyncPromiseValue = SyncPromise.resolve(1234);
+			oContext = Context.create(oModel, null, "/foo", 42),
+			oSyncPromiseType = _SyncPromise.resolve(Promise.resolve(oType)),
+			oSyncPromiseValue = _SyncPromise.resolve(1234);
 
 		this.mock(oContext).expects("fetchValue").withExactArgs("bar")
 			.returns(oSyncPromiseValue);
@@ -493,7 +475,7 @@ sap.ui.require([
 	QUnit.test("requestCanonicalPath", function (assert) {
 		var oContext = Context.create(null, null, "/EMPLOYEES/42"),
 			oPromise,
-			oSyncPromise = SyncPromise.resolve(Promise.resolve("/EMPLOYEES('1')"));
+			oSyncPromise = _SyncPromise.resolve(Promise.resolve("/EMPLOYEES('1')"));
 
 		this.mock(oContext).expects("fetchCanonicalPath").withExactArgs().returns(oSyncPromise);
 
@@ -510,7 +492,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("getCanonicalPath: success", function (assert) {
 		var oContext = Context.create(null, null, "/EMPLOYEES/42"),
-			oSyncPromise = SyncPromise.resolve("/EMPLOYEES('1')");
+			oSyncPromise = _SyncPromise.resolve("/EMPLOYEES('1')");
 
 		this.mock(oContext).expects("fetchCanonicalPath").withExactArgs().returns(oSyncPromise);
 
@@ -521,7 +503,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("getCanonicalPath: unresolved", function (assert) {
 		var oContext = Context.create(null, null, "/EMPLOYEES/42"),
-			oSyncPromise = SyncPromise.resolve(Promise.resolve("/EMPLOYEES('1')"));
+			oSyncPromise = _SyncPromise.resolve(Promise.resolve("/EMPLOYEES('1')"));
 
 		this.mock(oContext).expects("fetchCanonicalPath").withExactArgs().returns(oSyncPromise);
 
@@ -535,7 +517,7 @@ sap.ui.require([
 	QUnit.test("getCanonicalPath: failure", function (assert) {
 		var oContext = Context.create(null, null, "/EMPLOYEES/42"),
 			oError = new Error("Intentionally failed"),
-			oSyncPromise = SyncPromise.resolve().then(function () {throw oError;});
+			oSyncPromise = _SyncPromise.resolve().then(function () {throw oError;});
 
 		this.mock(oContext).expects("fetchCanonicalPath").withExactArgs().returns(oSyncPromise);
 
@@ -591,15 +573,13 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("delete: success", function (assert) {
 		var oBinding = {
-				_delete : function () {},
-				checkSuspended : function () {}
+				_delete : function () {}
 			},
 			oModel = {},
 			oContext = Context.create(oModel, oBinding, "/EMPLOYEES/42", 42);
 
-		this.mock(oBinding).expects("checkSuspended").withExactArgs();
 		this.mock(oContext).expects("fetchCanonicalPath")
-			.withExactArgs().returns(SyncPromise.resolve("/EMPLOYEES('1')"));
+			.withExactArgs().returns(_SyncPromise.resolve("/EMPLOYEES('1')"));
 		this.mock(oBinding).expects("_delete")
 			.withExactArgs("myGroup", "EMPLOYEES('1')", sinon.match.same(oContext))
 			.returns(Promise.resolve());
@@ -615,8 +595,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("delete: transient", function (assert) {
 		var oBinding = {
-				_delete : function () {},
-				checkSuspended : function () {}
+				_delete : function () {}
 			},
 			oModel = {},
 			oContext = Context.create(oModel, oBinding, "/EMPLOYEES/-1", -1,
@@ -637,15 +616,14 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("delete: failure", function (assert) {
 		var oBinding = {
-				_delete : function () {},
-				checkSuspended : function () {}
+				_delete : function () {}
 			},
 			oError = new Error(),
 			oModel = {},
 			oContext = Context.create(oModel, oBinding, "/EMPLOYEES/42", 42);
 
 		this.mock(oContext).expects("fetchCanonicalPath")
-			.withExactArgs().returns(SyncPromise.resolve("/EMPLOYEES('1')"));
+			.withExactArgs().returns(_SyncPromise.resolve("/EMPLOYEES('1')"));
 		this.mock(oBinding).expects("_delete")
 			.withExactArgs(undefined, "EMPLOYEES('1')", sinon.match.same(oContext))
 			.returns(Promise.reject(oError));
@@ -664,14 +642,11 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("delete: failure in fetchCanonicalPath", function (assert) {
-		var oBinding = {
-				checkSuspended : function () {}
-			},
-			oError = new Error(),
-			oContext = Context.create(null, oBinding, "/EMPLOYEES/42", 42);
+		var oError = new Error(),
+			oContext = Context.create(null, null, "/EMPLOYEES/42", 42);
 
 		this.mock(oContext).expects("fetchCanonicalPath")
-			.withExactArgs().returns(SyncPromise.reject(oError));
+			.withExactArgs().returns(_SyncPromise.reject(oError));
 
 		// code under test
 		return oContext.delete().then(function () {
@@ -735,78 +710,9 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("setIndex", function (assert) {
-		var oContext = Context.create({/*oModel*/}, {/*oBinding*/}, "/EMPLOYEES('42')", 42);
+		var oContext = Context.create(this.oModel, {/*oBinding*/}, "/EMPLOYEES('42')", 42);
 
 		oContext.setIndex(23);
 		assert.strictEqual(oContext.getIndex(), 23);
-	});
-
-	//*********************************************************************************************
-	QUnit.test("refresh", function (assert) {
-		var oBinding = {
-				refreshSingle : function () {}
-			},
-			oContext = Context.create({}, oBinding, "/EMPLOYEES/42", 42);
-
-		this.mock(oBinding).expects("refreshSingle")
-			.withExactArgs(sinon.match.same(oContext), "myGroup");
-
-		// code under test
-		oContext.refresh("myGroup");
-	});
-
-	//*********************************************************************************************
-	QUnit.test("refresh, error, no list binding", function (assert) {
-		assert.throws(function () {
-			// code under test
-			Context.create({}, {}, "/EMPLOYEES/42", 42).refresh();
-		}, new Error("Refresh is only supported for contexts of a list binding"));
-	});
-
-	//*********************************************************************************************
-	QUnit.test("withCache: absolute path", function (assert) {
-		var oBinding = {
-				withCache : function () {}
-			},
-			fnCallback = {},
-			oContext = Context.create({/*oModel*/}, oBinding, "/EMPLOYEES('42')", 42),
-			oResult = {};
-
-		this.mock(oBinding).expects("withCache")
-			.withExactArgs(sinon.match.same(fnCallback), "/foo").returns(oResult);
-
-		assert.strictEqual(oContext.withCache(fnCallback, "/foo"), oResult);
-	});
-
-	//*********************************************************************************************
-	QUnit.test("withCache: relative path", function (assert) {
-		var oBinding = {
-				withCache : function () {}
-			},
-			fnCallback = {},
-			oContext = Context.create({/*oModel*/}, oBinding, "/EMPLOYEES('42')", 42),
-			oResult = {};
-
-		this.mock(_Helper).expects("buildPath").withExactArgs("/EMPLOYEES('42')", "foo")
-			.returns("~");
-		this.mock(oBinding).expects("withCache")
-			.withExactArgs(sinon.match.same(fnCallback), "~").returns(oResult);
-
-		assert.strictEqual(oContext.withCache(fnCallback, "foo"), oResult);
-	});
-
-	//*********************************************************************************************
-	QUnit.test("withCache: virtual context", function (assert) {
-		var oBinding = {},
-			oContext = Context.create({/*oModel*/}, oBinding, "/EMPLOYEES/-2", -2),
-			oResult;
-
-		this.mock(_Helper).expects("buildPath").never();
-
-		// code under test
-		oResult = oContext.withCache();
-
-		assert.strictEqual(oResult.isFulfilled(), true);
-		assert.strictEqual(oResult.getResult(), undefined);
 	});
 });

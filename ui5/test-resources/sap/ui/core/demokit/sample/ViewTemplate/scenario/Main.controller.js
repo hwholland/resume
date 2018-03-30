@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.define([
@@ -81,7 +81,7 @@ sap.ui.define([
 		onSourceCode : function (oEvent) {
 			var oView = this.getView(),
 				sSource,
-				bVisible = this.byId("toggleSourceCode").getPressed();
+				bVisible = oView.byId("toggleSourceCode").getPressed();
 
 			oView.getModel("ui").setProperty("/codeVisible", bVisible);
 			if (bVisible) {
@@ -95,7 +95,7 @@ sap.ui.define([
 
 		_bindSelectInstance : function () {
 			var oBinding,
-				oControl = this.byId("selectInstance");
+				oControl = this.getView().byId("selectInstance");
 
 			oControl.bindAggregation("items", {
 				path : "/" + this._getSelectedSet(),
@@ -115,7 +115,7 @@ sap.ui.define([
 		},
 
 		_getDetailView : function () {
-			return this.byId("detailBox").getContent()[0];
+			return this.getView().byId("detailBox").getContent()[0];
 		},
 
 		_getSelectedSet : function () {
@@ -127,7 +127,7 @@ sap.ui.define([
 				that = this;
 
 			oMetaModel.loaded().then(function () {
-				var oDetailBox = that.byId("detailBox"),
+				var oDetailBox = that.getView().byId("detailBox"),
 					oDetailView,
 					sMetadataPath = oMetaModel.getODataEntitySet(that._getSelectedSet(), true),
 					iStart;

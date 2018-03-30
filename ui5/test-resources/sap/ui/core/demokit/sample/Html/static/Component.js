@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
   var Component = UIComponent.extend("sap.ui.core.sample.Html.static.Component", {
 
     metadata : {
-      rootView : {
-      	"viewName": "sap.ui.core.sample.Html.static.Html",
-      	"type": "XML",
-      	"async": true
-      },
+      rootView : "sap.ui.core.sample.Html.static.Html",
       dependencies : {
         libs : [
           "sap.ui.layout"
@@ -19,8 +15,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
         sample : {
           stretch : true,
           files : [
-            "Html.view.xml",
-            "Html.controller.js"
+            "Html.view.xml"
           ]
         }
       }

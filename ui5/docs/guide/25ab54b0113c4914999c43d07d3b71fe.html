@@ -3,12 +3,12 @@
 <html lang="en-us">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta name="abstract" content="Examples how complex syntax can be used for calculated fields in XML, HTML, and JS views."/>
-<meta name="description" content="Examples how complex syntax can be used for calculated fields in XML, HTML, and JS views."/>
+<meta name="abstract" content="Example, how complex syntax can be used for calculated fields in XML and HTML views and in JS views."/>
+<meta name="description" content="Example, how complex syntax can be used for calculated fields in XML and HTML views and in JS views."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9678173267210376"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9678173267210376"/>
-<title>Examples for Data Binding in Different View Types</title>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=730317618537466"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=730317618537466"/>
+<title>Using Complex Syntax in XML and HTML Views</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
     <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
@@ -16,16 +16,14 @@
 <body class="" id="loio25ab54b0113c4914999c43d07d3b71fe">
 <div id="wrapper"><div id="container">
 
-	<h1 class="title topictitle1">Examples for Data Binding in Different View Types</h1>
+	<h1 class="title topictitle1">Using Complex Syntax in XML and HTML Views</h1>
 
 	
-	<div class="body conbody"><p class="shortdesc">Examples how complex syntax can be used for calculated fields in XML, HTML, and JS
-        views.</p>
+	<div class="body"><p class="shortdesc">Example, how complex syntax can be used for calculated fields in XML and HTML views and in JS views.</p>
 
-        <div class="section" id="loio25ab54b0113c4914999c43d07d3b71fe__section_yqd_24p_rcb"><div class="section_title">XML View (Recommended)</div><div type="XML View (Recommended)">
-            
-            <div class="p">
-                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+		<p class="p">In XML views, you use complex syntax for calculated fields as follows:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 &lt;mvc:View controllerName="testdata.complexsyntax" xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc" xmlns="sap.ui.commons" xmlns:table="sap.ui.table"
     xmlns:html="http://www.w3.org/1999/xhtml"&gt;
@@ -54,14 +52,9 @@
 &lt;/mvc:View&gt;
 </pre></div>
 
-            </div>
+        <p class="p">In HTML views, you use complex syntax for calculated fields as follows:</p>
 
-        </div></div>
-
-        <div class="section" id="loio25ab54b0113c4914999c43d07d3b71fe__section_fgl_f4p_rcb"><div class="section_title">HTML View</div><div type="HTML View">
-            
-            <div class="p">
-                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 &lt;template data-controller-name="testdata.complexsyntax"&gt;
     &lt;div&gt;
         &lt;h2&gt;&lt;div data-sap-ui-type="sap.ui.core.HTML" id="MyHTMLControl" data-content="&lt;div&gt;Hello Mr. {/singleEntry/firstName}, {/singleEntry/lastName}&lt;/div&gt;"&gt;&lt;/div&gt;&lt;/h2&gt;
@@ -86,15 +79,10 @@
 &lt;/template&gt;
 </pre></div>
 
-            </div>
+		<p class="p">Example of the JSView. It is not declarative view, but you may use the same syntax as in XML- and HTMLView, just do not forget to pass a controller
+            instance as a parameter:</p>
 
-        </div></div>
-
-        <div class="section" id="loio25ab54b0113c4914999c43d07d3b71fe__section_gqr_g4p_rcb"><div class="section_title">JS View</div><div type="JS View">
-            
-            <div class="p">A JS view is not declarative view, but you may use the same syntax as in XML- and
-                HTMLView, just do not forget to pass a controller instance as a
-                parameter:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 sap.ui.jsview("testdata.complexsyntax", {
     
     getControllerName: function() {
@@ -126,9 +114,6 @@ sap.ui.jsview("testdata.complexsyntax", {
     }
 });
 </pre></div>
-</div>
-
-        </div></div>
 
 	</div>
 

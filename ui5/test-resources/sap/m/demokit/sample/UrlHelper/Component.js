@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.UrlHelper.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.UrlHelper.List",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.UrlHelper.List",
 			dependencies : {
 				libs : [
 					"sap.m",

@@ -72,6 +72,12 @@ if (!SCSearch) SCSearch = {};
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
     results = regex.exec(location.search);
 
+    if(navigator.userAgent.toLowerCase().indexOf("chrome")>=0){
+
+          return results = decodeURIComponent(decodeURIComponent(results[1]));
+
+     }
+     
     return results == null ? "" : decodeURIComponent(decodeURIComponent(results[1].replace(/\+/g, " ")));
 
 	}
@@ -175,12 +181,12 @@ var getParams = function() {
 	// The search input in the topic body, if it exists
 	var searchQField = document.getElementById('search-q');
 	if (searchQField) {
-	  searchQField.value=decodeURIComponent(params);
+	  searchQField.value=params;
 	  if (txtSearchTermsInput) txtSearchTermsInput.value='';
 	} else if (txtSearchTermsInput) {
-	  txtSearchTermsInput.value=decodeURIComponent(params);
+	  txtSearchTermsInput.value=params;
 	}
-	SCSearch.searchString(decodeURIComponent(params));
+	SCSearch.searchString(params);
 }
 
 

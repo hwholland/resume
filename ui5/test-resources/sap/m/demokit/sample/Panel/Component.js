@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.Panel.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.Panel.Panel",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.Panel.Panel",
 			dependencies : {
 				libs : [
 					"sap.m",
@@ -19,8 +15,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 			config : {
 				sample : {
 					files : [
-						"Panel.view.xml",
-						"Panel.controller.js"
+						"Panel.view.xml"
 					]
 				}
 			}

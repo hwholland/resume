@@ -127,18 +127,18 @@
 		var iPercentTest = 120;
 		oProgInd.setPercentValue(iPercentTest);
 		var iPercentAfter = oProgInd.getPercentValue();
-		assert.equal(iPercentAfter, 100, "the value should be set to the mximum one");
+		assert.equal(iPercentAfter, 0, "the value should be set to the default one");
 	});
 
 	QUnit.test("setPercentValue wrong input (int out of range, too small)", function(assert) {
 		var iPercentTest = -20;
 		oProgInd.setPercentValue(iPercentTest);
 		var iPercentAfter = oProgInd.getPercentValue();
-		assert.equal(iPercentAfter, 0, "the value should be set to the minimum one");
+		assert.equal(iPercentAfter, 0, "the value should be set to the default one");
 	});
 
 
-	QUnit.test("setPercentValue to various values", function(assert) {
+	QUnit.test("setPercentValue with various values", function(assert) {
 		var oProgressIndicator = new sap.m.ProgressIndicator({
 			percentValue: 0
 		}),
@@ -151,11 +151,9 @@
 			{value: 1, expectedClass: "sapMPIValueNormal"},
 			{value: 0.1, expectedClass: "sapMPIValueNormal"},
 			{value: 0.255, expectedClass: "sapMPIValueNormal"},
-			{value: 101, expectedClass: "sapMPIValueMax"},
+			{value: 101, expectedClass: "sapMPIValueMin"},
 			{value: 0, expectedClass: "sapMPIValueMin"},
-			{value: -1, expectedClass: "sapMPIValueMin"},
-			{value: null, expectedClass: "sapMPIValueMin"}, // null is normalized to 0 by the framework
-			{value: undefined, expectedClass: "sapMPIValueMin"} // null is normalized to 0 by the framework
+			{value: -1, expectedClass: "sapMPIValueMin"}
 		],
 		fnTestForClassesToValuesMapping = function (fPercentValueToSet, sExpectedClass){
 			oProgressIndicator.setPercentValue(fPercentValueToSet);
@@ -169,31 +167,6 @@
 
 		aTestCases.forEach(function (oTestCase){
 			fnTestForClassesToValuesMapping(oTestCase.value, oTestCase.expectedClass);
-		});
-
-		oProgressIndicator.destroy();
-	});
-
-	QUnit.test("setPercentValue to not valid type of values", function(assert) {
-		var oProgressIndicator = new sap.m.ProgressIndicator({percentValue: 0}),
-				$progressIndicator,
-				aNotValidTypes = ["110", "110abc", {}, []],
-				fnTestPercentValue = function (fPercentValueToSet){
-
-					assert.throws(
-							function() {
-								oProgressIndicator.setPercentValue(fPercentValueToSet);
-							},
-							"throws error: expected type 'float' for property 'percentValue'"
-					);
-				};
-
-		oProgressIndicator.placeAt("qunit-fixture");
-		sap.ui.getCore().applyChanges();
-		$progressIndicator = oProgressIndicator.$();
-
-		aNotValidTypes.forEach(function (vValue){
-			fnTestPercentValue(vValue);
 		});
 
 		oProgressIndicator.destroy();

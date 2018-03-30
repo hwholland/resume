@@ -1,0 +1,1087 @@
+<!DOCTYPE html> <html xml:lang="en" lang="en"><head><meta charset="UTF-8" ><meta name="generator" content="JsDoc + OpenUI5/SAPUI5 template" ><title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.ui.core.routing.Route</title><link rel="stylesheet" href="../default.css" ><link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" /><link rel="stylesheet" href="../../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" /><script src="../../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script></head><body><div id="main"><div id="content"><h1 class="classTitle static">Class <span class="package">sap.ui.core.routing.</span>Route<span class="module"><span>Module: </span><a href="../modules/sap_ui_core_routing_Route.html">sap/ui/core/routing/Route</a></span></h1><div class="classRelation extends"><span class="caption">extends </span><a title="sap.ui.base.EventProvider" href="sap.ui.base.EventProvider.html">EventProvider</a></div><hr><div class="full-description"></div><div class="summary section"><div class="sectionTitle">Constructor Summary</div><div class="sectionItems"><div class="sectionItem classConstructor static"><div class="itemName"><b class="icon" title="Instantiates an SAPUI5 Route">new <a href="sap.ui.core.routing.Route.html#constructor">sap.ui.core.routing.Route</a></b><span class='signature'>(<span title="(sap.ui.core.routing.Router) router instance, the route will be added to.">The</span>, <span title="(object) configuration object for the route">oConfig</span>, <span title="(sap.ui.core.routing.Route) The parent route - if a parent route is given, the routeMatched event of this route will also trigger the route matched of the parent and it will also create the view of the parent(if provided).">oParent</span><i class="help" title="Optional parameter">?</i>)</span><span class='description'>Instantiates an SAPUI5 Route</span></div></div></div></div><div class="summary section"><div class="sectionTitle">Event Summary</div><div class="sectionItems"><div class="sectionItem classMethod"><b class="icon" title="The 'beforeMatched' event is fired before the corresponding target is loaded and placed, when the current URL hash matches:  a."><a href="sap.ui.core.routing.Route.html#event:beforeMatched">beforeMatched</a></b><span class='signature'>(<span title="(sap.ui.base.Event) sap.ui.base.Event">oEvent</span>)</span><span class='description'>The 'beforeMatched' event is fired before the corresponding target is loaded and placed, when the current URL hash matches: <pre class="prettyprint"> a.</span>
+			</div>
+		
+			<div class="sectionItem classMethod">
+				<b class="icon" title="The 'matched' event is fired, when the current URL hash matches:  a."><a href="sap.ui.core.routing.Route.html#event:matched">matched</a></b><span class='signature'>(<span title="(sap.ui.base.Event) sap.ui.base.Event">oEvent</span>)</span>
+				<span class='description'>The 'matched' event is fired, when the current URL hash matches: <pre class="prettyprint"> a.</span>
+			</div>
+		
+			<div class="sectionItem classMethod">
+				<b class="icon" title="The 'patternMatched' event is fired, only when the current URL hash matches the pattern of the route."><a href="sap.ui.core.routing.Route.html#event:patternMatched">patternMatched</a></b><span class='signature'>(<span title="(sap.ui.base.Event) sap.ui.base.Event">oEvent</span>)</span>
+				<span class='description'>The 'patternMatched' event is fired, only when the current URL hash matches the pattern of the route.</span>
+			</div>
+		
+		</div>
+	</div>
+
+
+
+	<div class="summary section">
+		<div class="sectionTitle">Method Summary</div>
+		<div class="sectionItems">
+		
+			<div class="sectionItem classMethod static">
+				<b class="icon" title="Creates a new subclass of class sap.ui.core.routing.Route with name sClassName and enriches it with the information contained in oClassInfo."><a href="sap.ui.core.routing.Route.html#.extend"><span class="package">sap.ui.core.routing.Route.</span>extend</a></b><span class='signature'>(<span title="(string) Name of the class being created">sClassName</span>, <span title="(object) Object literal with information about the class">oClassInfo</span><i class="help" title="Optional parameter">?</i>, <span title="(function) Constructor function for the metadata object; if not given, it defaults to sap.ui.core.ElementMetadata">FNMetaImpl</span><i class="help" title="Optional parameter">?</i>)</span>
+				<span class='description'>Creates a new subclass of class sap.ui.core.routing.Route with name <code>sClassName</code> and enriches it with the information contained in <code>oClassInfo</code>.</span>
+			</div>
+		
+			<div class="sectionItem classMethod static">
+				<b class="icon" title="Returns a metadata object for class sap.ui.core.routing.Route."><a href="sap.ui.core.routing.Route.html#.getMetadata"><span class="package">sap.ui.core.routing.Route.</span>getMetadata</a></b><span class='signature'>()</span>
+				<span class='description'>Returns a metadata object for class sap.ui.core.routing.Route.</span>
+			</div>
+		
+			<div class="sectionItem classMethod">
+				<b class="icon" title="Attach event-handler fnFunction to the 'beforeMatched' event of this sap.ui.core.routing.Route."><a href="sap.ui.core.routing.Route.html#attachBeforeMatched">attachBeforeMatched</a></b><span class='signature'>(<span title="(object) The object, that should be passed along with the event-object when firing the event.">oData</span><i class="help" title="Optional parameter">?</i>, <span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which to call the given function.">oListener</span><i class="help" title="Optional parameter">?</i>)</span>
+				<span class='description'>Attach event-handler <code>fnFunction</code> to the 'beforeMatched' event of this <code>sap.ui.core.routing.Route</code>.</span>
+			</div>
+		
+			<div class="sectionItem classMethod">
+				<b class="icon" title="Attach event-handler fnFunction to the 'matched' event of this sap.ui.core.routing.Route."><a href="sap.ui.core.routing.Route.html#attachMatched">attachMatched</a></b><span class='signature'>(<span title="(object) The object, that should be passed along with the event-object when firing the event.">oData</span><i class="help" title="Optional parameter">?</i>, <span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which to call the given function.">oListener</span><i class="help" title="Optional parameter">?</i>)</span>
+				<span class='description'>Attach event-handler <code>fnFunction</code> to the 'matched' event of this <code>sap.ui.core.routing.Route</code>.</span>
+			</div>
+		
+			<div class="sectionItem classMethod">
+				<b class="icon" title="Attach event-handler fnFunction to the 'patternMatched' event of this sap.ui.core.routing.Route."><a href="sap.ui.core.routing.Route.html#attachPatternMatched">attachPatternMatched</a></b><span class='signature'>(<span title="(object) The object, that should be passed along with the event-object when firing the event.">oData</span><i class="help" title="Optional parameter">?</i>, <span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which to call the given function.">oListener</span><i class="help" title="Optional parameter">?</i>)</span>
+				<span class='description'>Attach event-handler <code>fnFunction</code> to the 'patternMatched' event of this <code>sap.ui.core.routing.Route</code>.</span>
+			</div>
+		
+			<div class="sectionItem classMethod">
+				<b class="icon" title="Destroys a route"><a href="sap.ui.core.routing.Route.html#destroy">destroy</a></b><span class='signature'>()</span>
+				<span class='description'>Destroys a route</span>
+			</div>
+		
+			<div class="sectionItem classMethod">
+				<b class="icon" title="Detach event-handler fnFunction from the 'beforeMatched' event of this sap.ui.core.routing.Route."><a href="sap.ui.core.routing.Route.html#detachBeforeMatched">detachBeforeMatched</a></b><span class='signature'>(<span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which the given function had to be called.">oListener</span>)</span>
+				<span class='description'>Detach event-handler <code>fnFunction</code> from the 'beforeMatched' event of this <code>sap.ui.core.routing.Route</code>.</span>
+			</div>
+		
+			<div class="sectionItem classMethod">
+				<b class="icon" title="Detach event-handler fnFunction from the 'matched' event of this sap.ui.core.routing.Route."><a href="sap.ui.core.routing.Route.html#detachMatched">detachMatched</a></b><span class='signature'>(<span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which the given function had to be called.">oListener</span>)</span>
+				<span class='description'>Detach event-handler <code>fnFunction</code> from the 'matched' event of this <code>sap.ui.core.routing.Route</code>.</span>
+			</div>
+		
+			<div class="sectionItem classMethod">
+				<b class="icon" title="Detach event-handler fnFunction from the 'patternMatched' event of this sap.ui.core.routing.Route."><a href="sap.ui.core.routing.Route.html#detachPatternMatched">detachPatternMatched</a></b><span class='signature'>(<span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which the given function had to be called.">oListener</span>)</span>
+				<span class='description'>Detach event-handler <code>fnFunction</code> from the 'patternMatched' event of this <code>sap.ui.core.routing.Route</code>.</span>
+			</div>
+		
+			<div class="sectionItem classMethod protected">
+				<b class="icon protected" title="Fire event beforeMatched to attached listeners."><a href="sap.ui.core.routing.Route.html#fireBeforeMatched">fireBeforeMatched</a></b><span class='signature'>(<span title="(object) the arguments to pass along with the event.">mArguments</span><i class="help" title="Optional parameter">?</i>)</span>
+				<span class='description'>Fire event beforeMatched to attached listeners.</span>
+			</div>
+		
+			<div class="sectionItem classMethod">
+				<b class="icon" title="Return the pattern of the route."><a href="sap.ui.core.routing.Route.html#getPattern">getPattern</a></b><span class='signature'>()</span>
+				<span class='description'>Return the pattern of the route.</span>
+			</div>
+		
+			<div class="sectionItem classMethod">
+				<b class="icon" title="Returns the URL for the route and replaces the placeholders with the values in oParameters"><a href="sap.ui.core.routing.Route.html#getURL">getURL</a></b><span class='signature'>(<span title="(object) Parameters for the route">oParameters</span>)</span>
+				<span class='description'>Returns the URL for the route and replaces the placeholders with the values in oParameters</span>
+			</div>
+		
+		</div>
+	</div>
+
+	<div class="summary section">
+		<div class="sectionTitle">Methods borrowed from class <a href="sap.ui.base.EventProvider.html">sap.ui.base.EventProvider</a></div>
+		<div class="sectionItems">
+		<a href="sap.ui.base.EventProvider.html#attachEvent">attachEvent</a>, <a href="sap.ui.base.EventProvider.html#attachEventOnce">attachEventOnce</a>, <a href="sap.ui.base.EventProvider.html#detachEvent">detachEvent</a>, <a href="sap.ui.base.EventProvider.html#fireEvent">fireEvent</a>, <a href="sap.ui.base.EventProvider.html#getEventingParent">getEventingParent</a>, <a href="sap.ui.base.EventProvider.html#hasListeners">hasListeners</a>, <a href="sap.ui.base.EventProvider.html#toString">toString</a>
+		</div>
+	</div>
+
+	<div class="summary section">
+		<div class="sectionTitle">Methods borrowed from class <a href="sap.ui.base.Object.html">sap.ui.base.Object</a></div>
+		<div class="sectionItems">
+		<a href="sap.ui.base.Object.html#getInterface">getInterface</a>, <a href="sap.ui.base.Object.html#getMetadata">getMetadata</a>
+		</div>
+	</div>
+
+
+
+
+
+	<div class="section details">
+		<div class="sectionTitle">Constructor Detail</div>
+		<div class="sectionItems">
+			
+
+<div id="constructor" class='sectionItem classItem itemName static'>
+	<div class="itemTitle icon">
+		new 
+		sap.ui.core.routing.Route<span class="signature">(<span title="(sap.ui.core.routing.Router) router instance, the route will be added to.">The</span>, <span title="(object) configuration object for the route">oConfig</span>, <span title="(sap.ui.core.routing.Route) The parent route - if a parent route is given, the routeMatched event of this route will also trigger the route matched of the parent and it will also create the view of the parent(if provided).">oParent</span><i class="help" title="Optional parameter">?</i>)</span>
+		
+		
+	</div>
+	<div class="full-description">
+		Instantiates an SAPUI5 Route
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Router.html">sap.ui.core.routing.Router</a></td>
+				<td class="methodItemName">The</td>
+				<td class="methodItemDesc">router instance, the route will be added to.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oConfig</td>
+				<td class="methodItemDesc">configuration object for the route</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oConfig.name</td>
+				<td class="methodItemDesc">the name of the route - it will be used to retrieve the route from the router, it needs to be unique per router instance.</li></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oConfig.pattern<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc"><p>the url pattern where it needs to match again. A pattern may consist of the following:
+</p><ul>
+<li>
+hardcoded parts: "pattern" : "product/settings" - this pattern will only match if the hash of the browser is product/settings and no arguments will be passed to the events of the route.</br>
+</li>
+<li>
+mandatory parameters: "pattern" : "product/{id}" - {id} is a mandatory parameter, e. g. the following hashes would match: product/5, product/3. The pattenMatched event will get 5 or 3 passed as id in its arguments.The hash product/ will not match.</br>
+</li>
+<li>
+optional parameters: "pattern" : "product/{id}/detail/:detailId:" - :detailId: is an optional parameter, e. g. the following hashes would match: product/5/detail, product/3/detail/2</br>
+</li>
+<li>
+query parameters: "pattern" : "product{?query}" // {?query} allows you to pass queries with any parameters, e. g. the following hashes would match: product?first=firstValue, product?first=firstValue&second=secondValue</br>
+</li>
+<li>
+rest as string parameters: "pattern" : ":all*:" - this pattern will define an optional variable that will pass the whole hash as string to the routing events. It may be used to define a catchall route, e. g. the following hashes would match: foo, product/5/3, product/5/detail/3/foo. You can also combine it with the other variables but make sure a variable with a * is the last one.</br>
+</ul></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">boolean</td>
+				<td class="methodItemName">oConfig.greedy<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">@since 1.27: default: false - By default only the first route matching the hash, will fire events. If greedy is turned on for a route its events will be fired even if another route has already matched.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oConfig.parent<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">@since 1.32 This property contains the information about the route which nests this route in the form: "[componentName:]routeName". The nesting routes pattern will be prefixed to this routes pattern and hence the nesting route also matches if this one matches.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string|[object Object][]</td>
+				<td class="methodItemName">oConfig.target<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">one or multiple name of targets <a href="sap.ui.core.routing.Targets.html">sap.ui.core.routing.Targets</a>. As soon as the route matches, the target will be displayed. All the deprecated parameters are ignored, if a target is used.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oConfig.view<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">@deprecated since 1.28 - use target.viewName. The name of a view that will be created, the first time this route will be matched. To place the view into a Control use the targetAggregation and targetControl. Views will only be created once per Router.</li></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oConfig.viewType<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">@deprecated since 1.28 - use target.viewType. The type of the view that is going to be created. eg: "XML", "JS"</li></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oConfig.viewPath<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">@deprecated since 1.28 - use target.viewPath. A prefix that will be prepended in front of the view eg: view is set to "myView" and viewPath is set to "myApp" - the created view will be "myApp.myView".</li></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oConfig.targetParent<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">@deprecated since 1.28 - use config.rootView (only available in the config). the id of the parent of the targetControl - This should be the id view your targetControl is located in. By default, this will be the view created by a component, or if the Route is a subroute the view of the parent route is taken. You only need to specify this, if you are not using a router created by a component on your top level routes.</li></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oConfig.targetControl<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">@deprecated since 1.28 - use target.controlId. Views will be put into a container Control, this might be a <a href="sap.ui.ux3.Shell.html">sap.ui.ux3.Shell</a> control or a <a href="sap.m.NavContainer.html">sap.m.NavContainer</a> if working with mobile, or any other container. The id of this control has to be put in here.</li></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oConfig.targetAggregation<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">@deprecated since 1.28 - use target.controlAggregation. The name of an aggregation of the targetControl, that contains views. Eg: a <a href="sap.m.NavContainer.html">sap.m.NavContainer</a> has an aggregation "pages", another Example is the <a href="sap.ui.ux3.Shell.html">sap.ui.ux3.Shell</a> it has "content".</li></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">boolean</td>
+				<td class="methodItemName">oConfig.clearTarget<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">@deprecated since 1.28 - use target.clearControlAggregation. Default is false. Defines a boolean that can be passed to specify if the aggregation should be cleared before adding the View to it. When using a <a href="sap.ui.ux3.Shell.html">sap.ui.ux3.Shell</a> this should be true. For a <a href="sap.m.NavContainer.html">sap.m.NavContainer</a> it should be false.</li></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oConfig.subroutes<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">@deprecated since 1.28 - use targets.parent. one or multiple routeconfigs taking all of these parameters again. If a subroute is hit, it will fire tge routeMatched event for all its parents. The routePatternMatched event will only be fired for the subroute not the parents. The routing will also display all the targets of the subroutes and its parents.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></td>
+				<td class="methodItemName">oParent<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">The parent route - if a parent route is given, the routeMatched event of this route will also trigger the route matched of the parent and it will also create the view of the parent(if provided).</td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+	
+	
+	
+	
+	
+</div>
+
+		</div>
+	</div>
+
+
+
+
+
+	<div class="section details">
+		<div class="sectionTitle">Event Detail</div>
+		<div class="sectionItems">
+			
+
+<div id="event:beforeMatched" class='sectionItem classProperty'>
+	<div class="itemTitle icon">
+		
+		beforeMatched<span class="signature">(<span title="(sap.ui.base.Event) sap.ui.base.Event">oEvent</span>)</span>
+		
+		
+	</div>
+	<div class="full-description">
+		The 'beforeMatched' event is fired before the corresponding target is loaded and placed, when the current URL hash matches:
+<pre class="prettyprint">
+ a. the pattern of the route.
+ b. the pattern of its sub-route.
+ c. the pattern of its nested route. When this occurs, the 'nestedRoute' parameter is set with the instance of nested route.
+</pre>
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.base.Event.html">sap.ui.base.Event</a></td>
+				<td class="methodItemName">oEvent</td>
+				<td class="methodItemDesc"></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.base.EventProvider.html">sap.ui.base.EventProvider</a></td>
+				<td class="methodItemName">oEvent.getSource</td>
+				<td class="methodItemDesc"></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oEvent.getParameters</td>
+				<td class="methodItemDesc"></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oEvent.getParameters.name</td>
+				<td class="methodItemDesc">The name of the route</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oEvent.getParameters.arguments</td>
+				<td class="methodItemDesc">A key-value pair object which contains the arguments defined in the route
+ resolved with the corresponding information from the current URL hash</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oEvent.getParameters.config</td>
+				<td class="methodItemDesc">The configuration object of the route</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></td>
+				<td class="methodItemName">oEvent.getParameters.nestedRoute<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">The nested route instance of this route. The event
+ is fired on this route because the pattern in the nested route is matched with the current URL hash. This parameter can be
+ used to decide whether the current route is matched because of its nested child route. For more information about nested
+ child route please refer to the documentation of oConfig.parent in <a href="sap.ui.core.routing.Route.html#constructor">sap.ui.core.routing.Route</a></td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+	
+	
+	
+	
+		<dl class="detailList since">
+			<dt class="heading since">Since:</dt>
+			<dd>1.46.1</dd>
+		</dl>
+	
+	
+</div>
+
+
+<div id="event:matched" class='sectionItem classProperty'>
+	<div class="itemTitle icon">
+		
+		matched<span class="signature">(<span title="(sap.ui.base.Event) sap.ui.base.Event">oEvent</span>)</span>
+		
+		
+	</div>
+	<div class="full-description">
+		<p>The 'matched' event is fired, when the current URL hash matches:
+<pre class="prettyprint">
+ a. the pattern of the route.
+ b. the pattern of its sub-route.
+ c. the pattern of its nested route. When this occurs, the 'nestedRoute' parameter is set with the instance of nested route.
+</pre></p><p>Please refer to event <a href="sap.ui.core.routing.Route.html#event:patternMatched">patternMatched</a> for getting notified only when its own pattern is matched with the URL hash not its sub-routes or nested route.</p>
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.base.Event.html">sap.ui.base.Event</a></td>
+				<td class="methodItemName">oEvent</td>
+				<td class="methodItemDesc"></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.base.EventProvider.html">sap.ui.base.EventProvider</a></td>
+				<td class="methodItemName">oEvent.getSource</td>
+				<td class="methodItemDesc"></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oEvent.getParameters</td>
+				<td class="methodItemDesc"></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oEvent.getParameters.name</td>
+				<td class="methodItemDesc">The name of the route</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oEvent.getParameters.arguments</td>
+				<td class="methodItemDesc">A key-value pair object which contains the arguments defined in the route
+ resolved with the corresponding information from the current URL hash</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oEvent.getParameters.config</td>
+				<td class="methodItemDesc">The configuration object of the route</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></td>
+				<td class="methodItemName">oEvent.getParameters.nestedRoute<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">The nested route instance of this route. The event
+ is fired on this route because the pattern in the nested route is matched with the current URL hash. This parameter can be
+ used to decide whether the current route is matched because of its nested child route. For more information about nested
+ child route please refer to the documentation of oConfig.parent in <a href="sap.ui.core.routing.Route.html#constructor">sap.ui.core.routing.Route</a></td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+	
+	
+	
+	
+	
+</div>
+
+
+<div id="event:patternMatched" class='sectionItem classProperty'>
+	<div class="itemTitle icon">
+		
+		patternMatched<span class="signature">(<span title="(sap.ui.base.Event) sap.ui.base.Event">oEvent</span>)</span>
+		
+		
+	</div>
+	<div class="full-description">
+		The 'patternMatched' event is fired, only when the current URL hash matches the pattern of the route.
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.base.Event.html">sap.ui.base.Event</a></td>
+				<td class="methodItemName">oEvent</td>
+				<td class="methodItemDesc"></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.base.EventProvider.html">sap.ui.base.EventProvider</a></td>
+				<td class="methodItemName">oEvent.getSource</td>
+				<td class="methodItemDesc"></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oEvent.getParameters</td>
+				<td class="methodItemDesc"></td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">oEvent.getParameters.name</td>
+				<td class="methodItemDesc">The name of the route</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oEvent.getParameters.arguments</td>
+				<td class="methodItemDesc">A key-value pair object which contains the arguments defined in the route
+ resolved with the corresponding information from the current URL hash</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oEvent.getParameters.config</td>
+				<td class="methodItemDesc">The configuration object of the route</td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+	
+	
+	
+	
+	
+</div>
+
+		</div>
+	</div>
+
+
+
+	<div class="details section">
+		<div class="sectionTitle">Method Detail</div>
+		<div class="sectionItems">
+			
+
+<div id=".extend" class='sectionItem classMethod static'>
+	<div class="itemTitle icon">
+		
+		sap.ui.core.routing.Route.extend<span class="signature">(<span title="(string) Name of the class being created">sClassName</span>, <span title="(object) Object literal with information about the class">oClassInfo</span><i class="help" title="Optional parameter">?</i>, <span title="(function) Constructor function for the metadata object; if not given, it defaults to sap.ui.core.ElementMetadata">FNMetaImpl</span><i class="help" title="Optional parameter">?</i>)</span>
+		
+		<span class="light" title="returns function">: function</span>
+		
+		
+	</div>
+	<div class="full-description">
+		<p>Creates a new subclass of class sap.ui.core.routing.Route with name <code>sClassName</code>and enriches it with the information contained in <code>oClassInfo</code>.</p><p><code>oClassInfo</code> might contain the same kind of information as described in <a href="sap.ui.base.EventProvider.html#.extend">sap.ui.base.EventProvider.extend</a>.</p>
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemName">sClassName</td>
+				<td class="methodItemDesc">Name of the class being created</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oClassInfo<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">Object literal with information about the class</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">function</td>
+				<td class="methodItemName">FNMetaImpl<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code></td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light">function</td>
+				<td class="methodItemDesc">Created class / constructor function</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+	
+</div>
+
+
+<div id=".getMetadata" class='sectionItem classMethod static'>
+	<div class="itemTitle icon">
+		
+		sap.ui.core.routing.Route.getMetadata<span class="signature">()</span>
+		
+		<span class="light" title="returns sap.ui.base.Metadata">: <a href="sap.ui.base.Metadata.html">sap.ui.base.Metadata</a></span>
+		
+		
+	</div>
+	<div class="full-description">
+		Returns a metadata object for class sap.ui.core.routing.Route.
+		
+		
+	</div>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.base.Metadata.html">sap.ui.base.Metadata</a></td>
+				<td class="methodItemDesc">Metadata object describing this class</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+	
+</div>
+
+
+<div id="attachBeforeMatched" class='sectionItem classMethod'>
+	<div class="itemTitle icon">
+		
+		attachBeforeMatched<span class="signature">(<span title="(object) The object, that should be passed along with the event-object when firing the event.">oData</span><i class="help" title="Optional parameter">?</i>, <span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which to call the given function.">oListener</span><i class="help" title="Optional parameter">?</i>)</span>
+		
+		<span class="light" title="returns sap.ui.core.routing.Route">: <a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></span>
+		
+		
+	</div>
+	<div class="full-description">
+		Attach event-handler <code>fnFunction</code> to the 'beforeMatched' event of this <code>sap.ui.core.routing.Route</code>.<br/>
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oData<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">The object, that should be passed along with the event-object when firing the event.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">function</td>
+				<td class="methodItemName">fnFunction</td>
+				<td class="methodItemDesc">The function to call, when the event occurs. This function will be called on the
+           oListener-instance (if present) or in a 'static way'.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oListener<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">Object on which to call the given function. If empty, this route is used.</td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></td>
+				<td class="methodItemDesc"><code>this</code> to allow method chaining</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+		<dl class="detailList since">
+			<dt class="heading since">Since:</dt>
+			<dd>1.46.1</dd>
+		</dl>
+	
+	
+</div>
+
+
+<div id="attachMatched" class='sectionItem classMethod'>
+	<div class="itemTitle icon">
+		
+		attachMatched<span class="signature">(<span title="(object) The object, that should be passed along with the event-object when firing the event.">oData</span><i class="help" title="Optional parameter">?</i>, <span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which to call the given function.">oListener</span><i class="help" title="Optional parameter">?</i>)</span>
+		
+		<span class="light" title="returns sap.ui.core.routing.Route">: <a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></span>
+		
+		
+	</div>
+	<div class="full-description">
+		Attach event-handler <code>fnFunction</code> to the 'matched' event of this <code>sap.ui.core.routing.Route</code>.<br/>
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oData<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">The object, that should be passed along with the event-object when firing the event.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">function</td>
+				<td class="methodItemName">fnFunction</td>
+				<td class="methodItemDesc">The function to call, when the event occurs. This function will be called on the
+           oListener-instance (if present) or in a 'static way'.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oListener<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">Object on which to call the given function. If empty, this route is used.</td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></td>
+				<td class="methodItemDesc"><code>this</code> to allow method chaining</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+		<dl class="detailList since">
+			<dt class="heading since">Since:</dt>
+			<dd>1.25.1</dd>
+		</dl>
+	
+	
+</div>
+
+
+<div id="attachPatternMatched" class='sectionItem classMethod'>
+	<div class="itemTitle icon">
+		
+		attachPatternMatched<span class="signature">(<span title="(object) The object, that should be passed along with the event-object when firing the event.">oData</span><i class="help" title="Optional parameter">?</i>, <span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which to call the given function.">oListener</span><i class="help" title="Optional parameter">?</i>)</span>
+		
+		<span class="light" title="returns sap.ui.core.routing.Route">: <a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></span>
+		
+		
+	</div>
+	<div class="full-description">
+		Attach event-handler <code>fnFunction</code> to the 'patternMatched' event of this <code>sap.ui.core.routing.Route</code>.<br/>
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oData<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">The object, that should be passed along with the event-object when firing the event.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">function</td>
+				<td class="methodItemName">fnFunction</td>
+				<td class="methodItemDesc">The function to call, when the event occurs. This function will be called on the
+           oListener-instance (if present) or in a 'static way'.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oListener<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">Object on which to call the given function. If empty, this route is used.</td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></td>
+				<td class="methodItemDesc"><code>this</code> to allow method chaining</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+		<dl class="detailList since">
+			<dt class="heading since">Since:</dt>
+			<dd>1.25.1</dd>
+		</dl>
+	
+	
+</div>
+
+
+<div id="destroy" class='sectionItem classMethod'>
+	<div class="itemTitle icon">
+		
+		destroy<span class="signature">()</span>
+		
+		<span class="light" title="returns sap.ui.core.routing.Route">: <a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></span>
+		
+		
+	</div>
+	<div class="full-description">
+		Destroys a route
+		
+		
+	</div>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></td>
+				<td class="methodItemDesc">this for chaining.</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+	
+</div>
+
+
+<div id="detachBeforeMatched" class='sectionItem classMethod'>
+	<div class="itemTitle icon">
+		
+		detachBeforeMatched<span class="signature">(<span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which the given function had to be called.">oListener</span>)</span>
+		
+		<span class="light" title="returns sap.ui.core.routing.Route">: <a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></span>
+		
+		
+	</div>
+	<div class="full-description">
+		<p>Detach event-handler <code>fnFunction</code> from the 'beforeMatched' event of this <code>sap.ui.core.routing.Route</code>.<br/></p><p>The passed function and listener object must match the ones previously used for event registration.</p>
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light">function</td>
+				<td class="methodItemName">fnFunction</td>
+				<td class="methodItemDesc">The function to call, when the event occurs.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oListener</td>
+				<td class="methodItemDesc">Object on which the given function had to be called.</td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></td>
+				<td class="methodItemDesc"><code>this</code> to allow method chaining</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+		<dl class="detailList since">
+			<dt class="heading since">Since:</dt>
+			<dd>1.46.1</dd>
+		</dl>
+	
+	
+</div>
+
+
+<div id="detachMatched" class='sectionItem classMethod'>
+	<div class="itemTitle icon">
+		
+		detachMatched<span class="signature">(<span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which the given function had to be called.">oListener</span>)</span>
+		
+		<span class="light" title="returns sap.ui.core.routing.Route">: <a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></span>
+		
+		
+	</div>
+	<div class="full-description">
+		<p>Detach event-handler <code>fnFunction</code> from the 'matched' event of this <code>sap.ui.core.routing.Route</code>.<br/></p><p>The passed function and listener object must match the ones previously used for event registration.</p>
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light">function</td>
+				<td class="methodItemName">fnFunction</td>
+				<td class="methodItemDesc">The function to call, when the event occurs.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oListener</td>
+				<td class="methodItemDesc">Object on which the given function had to be called.</td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></td>
+				<td class="methodItemDesc"><code>this</code> to allow method chaining</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+		<dl class="detailList since">
+			<dt class="heading since">Since:</dt>
+			<dd>1.25.1</dd>
+		</dl>
+	
+	
+</div>
+
+
+<div id="detachPatternMatched" class='sectionItem classMethod'>
+	<div class="itemTitle icon">
+		
+		detachPatternMatched<span class="signature">(<span title="(function) The function to call, when the event occurs.">fnFunction</span>, <span title="(object) Object on which the given function had to be called.">oListener</span>)</span>
+		
+		<span class="light" title="returns sap.ui.core.routing.Route">: <a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></span>
+		
+		
+	</div>
+	<div class="full-description">
+		<p>Detach event-handler <code>fnFunction</code> from the 'patternMatched' event of this <code>sap.ui.core.routing.Route</code>.<br/></p><p>The passed function and listener object must match the ones previously used for event registration.</p>
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light">function</td>
+				<td class="methodItemName">fnFunction</td>
+				<td class="methodItemDesc">The function to call, when the event occurs.</td>
+			</tr>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oListener</td>
+				<td class="methodItemDesc">Object on which the given function had to be called.</td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Route.html">sap.ui.core.routing.Route</a></td>
+				<td class="methodItemDesc"><code>this</code> to allow method chaining</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+		<dl class="detailList since">
+			<dt class="heading since">Since:</dt>
+			<dd>1.25.1</dd>
+		</dl>
+	
+	
+</div>
+
+
+<div id="fireBeforeMatched" class='sectionItem classMethod protected'>
+	<div class="itemTitle icon protected">
+		
+		fireBeforeMatched<span class="signature">(<span title="(object) the arguments to pass along with the event.">mArguments</span><i class="help" title="Optional parameter">?</i>)</span>
+		
+		<span class="light" title="returns sap.ui.core.routing.Router">: <a href="sap.ui.core.routing.Router.html">sap.ui.core.routing.Router</a></span>
+		
+		
+	</div>
+	<div class="full-description">
+		Fire event beforeMatched to attached listeners.
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">mArguments<i class="help" title="Optional parameter">?</i></td>
+				<td class="methodItemDesc">the arguments to pass along with the event.</td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light"><a href="sap.ui.core.routing.Router.html">sap.ui.core.routing.Router</a></td>
+				<td class="methodItemDesc"><code>this</code> to allow method chaining</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+		<dl class="detailList since">
+			<dt class="heading since">Since:</dt>
+			<dd>1.46.1</dd>
+		</dl>
+	
+	
+</div>
+
+
+<div id="getPattern" class='sectionItem classMethod'>
+	<div class="itemTitle icon">
+		
+		getPattern<span class="signature">()</span>
+		
+		<span class="light" title="returns string">: string</span>
+		
+		
+	</div>
+	<div class="full-description">
+		Return the pattern of the route. If there are multiple patterns, the first pattern is returned
+		
+		
+	</div>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemDesc">the routes pattern</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+	
+</div>
+
+
+<div id="getURL" class='sectionItem classMethod'>
+	<div class="itemTitle icon">
+		
+		getURL<span class="signature">(<span title="(object) Parameters for the route">oParameters</span>)</span>
+		
+		<span class="light" title="returns string">: string</span>
+		
+		
+	</div>
+	<div class="full-description">
+		Returns the URL for the route and replaces the placeholders with the values in oParameters
+		
+		
+	</div>
+	
+		<div class="heading">Parameters:</div>
+		<table class="methodItem"><tbody>
+		
+			<tr>
+				<td class="methodItemType light">object</td>
+				<td class="methodItemName">oParameters</td>
+				<td class="methodItemDesc">Parameters for the route</td>
+			</tr>
+		
+		</tbody></table>
+	
+	
+		<div class="heading">Returns:</div>
+		<table class="methodItem"><tbody>
+			<tr>
+				<td class="methodItemType light">string</td>
+				<td class="methodItemDesc">the unencoded pattern with interpolated arguments</td>
+			</tr>
+		</tbody></table>
+	
+	
+	
+	
+	
+	
+</div>
+
+		</div>
+	</div>
+
+
+
+			</div>
+		</div>
+	</body>
+</html>

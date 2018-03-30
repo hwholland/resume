@@ -7,8 +7,7 @@ sap.ui.require([
 	"sap/ui/rta/plugin/DragDrop",
 	"sap/ui/dt/OverlayRegistry",
 	"sap/ui/dt/DesignTime",
-	"sap/ui/dt/ElementDesignTimeMetadata",
-	"sap/ui/dt/ElementOverlay",
+	"sap/ui/dt/ElementUtil",
 	"sap/ui/rta/command/CommandFactory",
 	"sap/ui/fl/registry/ChangeRegistry",
 	// controls
@@ -24,8 +23,7 @@ sap.ui.require([
 	DragDropPlugin,
 	OverlayRegistry,
 	DesignTime,
-	ElementDesignTimeMetadata,
-	ElementOverlay,
+	ElementUtil,
 	CommandFactory,
 	ChangeRegistry,
 	SmartForm,
@@ -296,22 +294,27 @@ sap.ui.require([
 			this.oLayout.placeAt("test-view");
 			sap.ui.getCore().applyChanges();
 
+			// stub designtime metadata
+			var oLayoutMetadata = fnBuildMetadataObject({
+				content: {
+					actions: {
+						move: "moveControls"
+					}
+				}
+			});
+			var oEmptyMetadata = fnBuildMetadataObject({});
+
+			var fnLoadDtMetadataStub = sandbox.stub(ElementUtil, "loadDesignTimeMetadata");
+			fnLoadDtMetadataStub.withArgs(this.oLayout).returns(Promise.resolve(oLayoutMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oMovedButton1).returns(Promise.resolve(oEmptyMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oButton2).returns(Promise.resolve(oEmptyMetadata.data));
+
 			// create designtime
 			this.oDesignTime = new DesignTime({
 				rootElements: [
 					this.oLayout
 				],
-				plugins: [this.oDragDropPlugin],
-				designTimeMetadata : {
-					"sap.m.Button" : {},
-					"sap.ui.layout.VerticalLayout" : {
-						content: {
-							actions: {
-								move: "moveControls"
-							}
-						}
-					}
-				}
+				plugins: [this.oDragDropPlugin]
 			});
 
 			var done = assert.async();
@@ -384,23 +387,29 @@ sap.ui.require([
 			this.oOuterLayout.placeAt("test-view");
 			sap.ui.getCore().applyChanges();
 
+			// stub designtime metadata
+			var oLayoutMetadata = fnBuildMetadataObject({
+				content: {
+					domRef: ":sap-domref",
+					actions: {
+						move: "moveControls"
+					}
+				}
+			});
+			var oEmptyMetadata = fnBuildMetadataObject({});
+
+			var fnLoadDtMetadataStub = sandbox.stub(ElementUtil, "loadDesignTimeMetadata");
+			fnLoadDtMetadataStub.withArgs(this.oInnerLayout).returns(Promise.resolve(oLayoutMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oOuterLayout).returns(Promise.resolve(oLayoutMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oMovedButton1).returns(Promise.resolve(oEmptyMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oButton2).returns(Promise.resolve(oEmptyMetadata.data));
+
 			// create designtime
 			this.oDesignTime = new DesignTime({
 				rootElements: [
 					this.oOuterLayout
 				],
-				plugins: [this.oDragDropPlugin],
-				designTimeMetadata : {
-					"sap.m.Button" : {},
-					"sap.ui.layout.VerticalLayout" : {
-						content: {
-							domRef: ":sap-domref",
-							actions: {
-								move: "moveControls"
-							}
-						}
-					}
-				}
+				plugins: [this.oDragDropPlugin]
 			});
 
 			var done = assert.async();
@@ -481,19 +490,25 @@ sap.ui.require([
 					}
 				}
 			});
+			var oEmptyMetadata = fnBuildMetadataObject({});
+
+			var fnLoadDtMetadataStub = sandbox.stub(ElementUtil, "loadDesignTimeMetadata");
+			fnLoadDtMetadataStub.withArgs(this.oSmartForm1).returns(Promise.resolve(oSmartFormMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oGroup1).returns(Promise.resolve(oGroupMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oGroup2).returns(Promise.resolve(oGroupMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oMovedGroupElement1).returns(Promise.resolve(oEmptyMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oGroupElement2).returns(Promise.resolve(oEmptyMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oMovedGroupElement1.getLabelControl()).returns(Promise.resolve(oEmptyMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oGroupElement2.getLabelControl()).returns(Promise.resolve(oEmptyMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oButton1).returns(Promise.resolve(oEmptyMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oButton2).returns(Promise.resolve(oEmptyMetadata.data));
 
 			// create designtime
 			this.oDesignTime = new DesignTime({
 				rootElements: [
 					this.oSmartForm1
 				],
-				plugins: [this.oDragDropPlugin],
-				designTimeMetadata : {
-					"sap.m.Button" : {},
-					"sap.ui.comp.smartform.SmartForm" : oSmartFormMetadata.data,
-					"sap.ui.comp.smartform.Group" : oGroupMetadata.data,
-					"sap.ui.comp.smartform.GroupElement" : {}
-				}
+				plugins: [this.oDragDropPlugin]
 			});
 
 			var done = assert.async();
@@ -555,35 +570,32 @@ sap.ui.require([
 			sap.ui.getCore().applyChanges();
 
 			// stub designtime metadata
-			var oBarMetadata = new ElementDesignTimeMetadata({
-				data: {
-					aggregations: {
-						contentLeft: {
-							actions: {
-								move: "moveControls"
-							}
-						},
-						contentMiddle: {
-						},
-						contentRight: {
-							actions: {
-								move: "moveControls"
-							}
-						}
+			var oEmptyMetadata = fnBuildMetadataObject({});
+			var oBarMetadata = fnBuildMetadataObject({
+				contentLeft: {
+					actions: {
+						move: "moveControls"
+					}
+				},
+				contentMiddle: {},
+				contentRight: {
+					actions: {
+						move: "moveControls"
 					}
 				}
 			});
+
+			var fnLoadDtMetadataStub = sandbox.stub(ElementUtil, "loadDesignTimeMetadata");
+			fnLoadDtMetadataStub.withArgs(this.oBar).returns(Promise.resolve(oBarMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oMovedButton1).returns(Promise.resolve(oEmptyMetadata.data));
+			fnLoadDtMetadataStub.withArgs(this.oButton2).returns(Promise.resolve(oEmptyMetadata.data));
 
 			// create designtime
 			this.oDesignTime = new DesignTime({
 				rootElements: [
 					this.oBar
 				],
-				plugins: [this.oDragDropPlugin],
-				designTimeMetadata : {
-					"sap.m.Bar" : oBarMetadata,
-					"sap.m.Button" : {}
-				}
+				plugins: [this.oDragDropPlugin]
 			});
 
 			var done = assert.async();
@@ -605,6 +617,7 @@ sap.ui.require([
 			this.oBarMiddleAggregationOverlay.destroy();
 			this.oDesignTime.destroy();
 			this.oBar.destroy();
+			sandbox.restore();
 		}
 	});
 
@@ -615,7 +628,7 @@ sap.ui.require([
 
 	QUnit.test("when DT is loaded and moving the movedButton to the middle bar aggregation without move action...", function(assert) {
 		this.oElementMover.setMovedOverlay(this.oMovedButton1Overlay);
-		assert.notOk(this.oElementMover.checkTargetZone(this.oBarMiddleAggregationOverlay), "then the middle bar aggregation is not a possible target zone");
+		assert.notOk(this.oElementMover.checkTargetZone(this.oBarMiddleAggregationOverlay), "then the right bar aggregation is not a possible target zone");
 	});
 
 });

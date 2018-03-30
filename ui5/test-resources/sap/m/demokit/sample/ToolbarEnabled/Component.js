@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ToolbarEnabled.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.ToolbarEnabled.Toolbar",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.ToolbarEnabled.Toolbar",
 			dependencies : {
 				libs : [
 					"sap.m"
@@ -19,8 +15,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 				sample : {
 					stretch : true,
 					files : [
-						"Toolbar.view.xml",
-						"Toolbar.controller.js"
+						"Toolbar.view.xml"
 					]
 				}
 			}

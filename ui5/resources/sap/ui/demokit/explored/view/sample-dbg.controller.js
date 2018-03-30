@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -63,7 +63,7 @@ function(jQuery, Device, Component, ComponentContainer, HTML, UIComponent, Histo
 			}
 
 			// set nav button visibility
-			var oPage = this.byId("page");
+			var oPage = this.getView().byId("page");
 			var oHistory = History.getInstance();
 			var oPrevHash = oHistory.getPreviousHash();
 			oModelData.showNavButton = Device.system.phone || !!oPrevHash;
@@ -223,7 +223,7 @@ function(jQuery, Device, Component, ComponentContainer, HTML, UIComponent, Histo
 		_loadRuntimeAuthoring : function() {
 			try {
 				sap.ui.require(["sap/ui/rta/RuntimeAuthoring"], function (RuntimeAuthoring) {
-					this.byId("toggleRTA").setVisible(true);
+					this.getView().byId("toggleRTA").setVisible(true);
 				}.bind(this));
 			} catch (oException) {
 				jQuery.sap.log.info("sap.ui.rta.RuntimeAuthoring could not be loaded, UI adaptation mode is disabled");
@@ -241,7 +241,7 @@ function(jQuery, Device, Component, ComponentContainer, HTML, UIComponent, Histo
 					this._oRTA = new RuntimeAuthoring({flexSettings: {
 						developerMode: false
 					}});
-					this._oRTA.setRootControl(this.byId("page").getContent()[0]);
+					this._oRTA.setRootControl(this.getView().byId("page").getContent()[0]);
 					this._oRTA.attachStop(function() {
 						this._oRTA.destroy();
 					}.bind(this));

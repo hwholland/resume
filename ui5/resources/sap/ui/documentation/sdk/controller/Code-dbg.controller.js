@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -110,13 +110,6 @@ sap.ui.define([
 					this._oData.fileName = sFileName;
 				}
 
-				// we need this property to navigate to API reference
-				this.entityId = oSample.entityId;
-
-				this.getAPIReferenceCheckPromise(oSample.entityId).then(function (bHasAPIReference) {
-					this.getView().byId("apiRefButton").setVisible(bHasAPIReference);
-				}.bind(this));
-
 				// set model data
 				this.oModel.setData(this._oData);
 
@@ -134,9 +127,8 @@ sap.ui.define([
 				this._getTabHeader().setSelectedKey(sFileName);
 
 				// scroll to the top of the page
-				var page = this.byId("page");
+				var page = this.getView().byId("page");
 				page.scrollTo(0);
-
 			},
 
 			fetchSourceFile : function (sRef, sFile) {
@@ -252,10 +244,6 @@ sap.ui.define([
 				return sMockData;
 			},
 
-			onAPIRefPress: function () {
-				this.getRouter().navTo("apiId", {id: this.entityId});
-			},
-
 			onNavBack : function () {
 				this.router.navTo("sample", { id : this._sId }, true);
 			},
@@ -355,7 +343,7 @@ sap.ui.define([
 
 			_getCodeEditor : function() {
 				if (!this.oCodeEditor) {
-					this.oCodeEditor = this.byId("codeEditor");
+					this.oCodeEditor = this.getView().byId("codeEditor");
 				}
 
 				return this.oCodeEditor;
@@ -363,7 +351,7 @@ sap.ui.define([
 
 			_getTabHeader : function() {
 				if (!this.oTabHeader) {
-					this.oTabHeader = this.byId("tabHeader");
+					this.oTabHeader = this.getView().byId("tabHeader");
 				}
 
 				return this.oTabHeader;

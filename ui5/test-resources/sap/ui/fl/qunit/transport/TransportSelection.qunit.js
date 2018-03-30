@@ -1,37 +1,18 @@
-/* global QUnit */
+/* global QUnit,sinon*/
 
-QUnit.config.autostart = false;
-sap.ui.require([
-	"sap/ui/fl/transport/TransportSelection",
-	"sap/m/Label",
-	"sap/ui/fl/LrepConnector",
-	"sap/ui/core/Control",
-	"sap/ui/fl/Change",
-	"sap/ui/fl/Utils",
-	// should be last
-	'sap/ui/thirdparty/sinon',
-	'sap/ui/thirdparty/sinon-ie',
-	'sap/ui/thirdparty/sinon-qunit'
-], function(
-	TransportSelection,
-	Label,
-	LrepConnector,
-	Control,
-	Change,
-	Utils,
-	sinon) {
+(function() {
 	"use strict";
 
-	QUnit.start();
-
-	var sandbox = sinon.sandbox.create();
+	jQuery.sap.require("sap.ui.fl.transport.TransportSelection");
+	jQuery.sap.require("sap.m.Label");
+	jQuery.sap.require("sap.ui.commons.ListBox");
 
 	QUnit.module("sap.ui.fl.transport.TransportSelection", {
 		beforeEach: function () {
-			this.oTransportSelection = new TransportSelection();
+			this.oTransportSelection = new sap.ui.fl.transport.TransportSelection();
 
 			this.oServer = sinon.fakeServer.create();
-			this.oLrepConnector = LrepConnector.createConnector();
+			this.oLrepConnector = sap.ui.fl.LrepConnector.createConnector();
 			this.mSampleDefaultHeader = {
 				type: "GET",
 				contentType: "application/json",
@@ -41,14 +22,13 @@ sap.ui.require([
 					"X-CSRF-Token": "ABCDEFGHIJKLMN123456789"
 				}
 			};
-			this.sendAjaxRequestStub = sandbox.stub(this.oLrepConnector, "_sendAjaxRequest").returns(Promise.resolve());
-			this.getDefaultOptionsStub = sandbox.stub(this.oLrepConnector, "_getDefaultOptions").returns(this.mSampleDefaultHeader);
+			this.sendAjaxRequestStub = sinon.stub(this.oLrepConnector, "_sendAjaxRequest");
+			this.getDefaultOptionsStub = sinon.stub(this.oLrepConnector, "_getDefaultOptions").returns(this.mSampleDefaultHeader);
 		},
 		afterEach: function () {
 			this.getDefaultOptionsStub.restore();
 			this.sendAjaxRequestStub.restore();
 			this.oServer.restore();
-			sandbox.restore();
 		}
 	});
 
@@ -106,81 +86,9 @@ sap.ui.require([
 		this.oTransportSelection.selectTransport(oObject, fOkay, fError);
 	});
 
-	QUnit.test("when preparing and checking changes for transport", function(assert) {
-		var oMockTransportInfo = {
-				packageName : "PackageName",
-				transport : "transportId"
-			},
-			oMockTransportInfoInvalid = {
-				packageName : "$TMP",
-				transport : "transportId"
-			},
-			oMockTransportedChange = {
-				packageName : "aPackage",
-				fileType : "change",
-				id : "changeId1",
-				namespace : "namespace",
-				getDefinition : function(){
-					return {
-						packageName : this.packageName,
-						fileType : this.fileType
-					};
-				},
-				getId : function(){
-					return this.id;
-				},
-				getNamespace : function(){
-					return this.namespace;
-				},
-				setResponse : function(oDefinition){
-					this.packageName = oDefinition.packageName;
-				},
-				getPackage : function(){
-					return this.packageName;
-				}
-			},
-			oMockNewChange = {
-				packageName : "$TMP",
-				fileType : "change",
-				id : "changeId2",
-				namespace : "namespace",
-				getDefinition : function(){
-					return {
-						packageName : this.packageName,
-						fileType : this.fileType
-					};
-				},
-				getId : function(){
-					return this.id;
-				},
-				getNamespace : function(){
-					return this.namespace;
-				},
-				setResponse : function(oDefinition){
-					this.packageName = oDefinition.packageName;
-				},
-				getPackage : function(){
-					return this.packageName;
-				}
-			},
-			aMockLocalChanges = [oMockTransportedChange, oMockNewChange];
-		sandbox.stub(Utils, "getClient").returns('');
-		sandbox.stub(LrepConnector, "createConnector").returns(this.oLrepConnector);
-
-		assert.ok(this.oTransportSelection.checkTransportInfo(oMockTransportInfo), "then true is returned for a valid transport info");
-		assert.notOk(this.oTransportSelection.checkTransportInfo(oMockTransportInfoInvalid), "then false is returned for an invalid transport info");
-
-		return this.oTransportSelection._prepareChangesForTransport(oMockTransportInfo, aMockLocalChanges).then(function(){
-			assert.equal(aMockLocalChanges[0].packageName, "aPackage", "then the transported local change is not updated");
-			assert.equal(aMockLocalChanges[1].packageName, oMockTransportInfo.packageName, "but the new local change is updated");
-		});
-	});
-
-
-
 	QUnit.module("sap.ui.fl.transport.TransportSelection", {
 		beforeEach: function () {
-			this.oTransportSelection = new TransportSelection();
+			this.oTransportSelection = new sap.ui.fl.transport.TransportSelection();
 		},
 		afterEach: function () {
 		}
@@ -255,18 +163,18 @@ sap.ui.require([
 
 
 	QUnit.test('setTransports should set the same transport for all (non-$TMP) changes after a transport popup', function (assert) {
-		var oRootControl = new Control();
-		var oChange = new Change({
+		var oRootControl = new sap.ui.core.Control();
+		var oChange = new sap.ui.fl.Change({
 			namespace: "testns",
 			fileName: "change1",
 			fileType: "change"
 		});
-		var oChange2 = new Change({
+		var oChange2 = new sap.ui.fl.Change({
 			namespace: "testns",
 			fileName: "change2",
 			fileType: "change"
 		});
-		var oChange3 = new Change({
+		var oChange3 = new sap.ui.fl.Change({
 			namespace: "testns",
 			fileName: "change3",
 			fileType: "change"
@@ -279,7 +187,7 @@ sap.ui.require([
 			fromDialog: true
 		};
 
-		var oTransportSelection = new TransportSelection();
+		var oTransportSelection = new sap.ui.fl.transport.TransportSelection();
 		this.sandbox.stub(oTransportSelection, "openTransportSelection").returns(Promise.resolve(oTransportInfo));
 
 		return oTransportSelection.setTransports(aChanges, oRootControl).then(function () {
@@ -290,8 +198,8 @@ sap.ui.require([
 	});
 
 	QUnit.test('setTransports should set a transport for non-$TMP changes without transport popup if a package name is already within the change', function (assert) {
-		var oRootControl = new Control();
-		var oChange = new Change({
+		var oRootControl = new sap.ui.core.Control();
+		var oChange = new sap.ui.fl.Change({
 			namespace: "testns",
 			fileName: "change1",
 			fileType: "change",
@@ -325,8 +233,8 @@ sap.ui.require([
 
 	QUnit.test('should open the transport dialog if a customer wants to transport a change which is not locked on any transport', function (assert) {
 		var done = assert.async();
-		var oRootControl = new Control();
-		var oChange = new Change({
+		var oRootControl = new sap.ui.core.Control();
+		var oChange = new sap.ui.fl.Change({
 			namespace: "testns",
 			fileName: "change1",
 			fileType: "change"
@@ -359,9 +267,9 @@ sap.ui.require([
 			fOkay(oResponse);
 		};
 
-		var oTransportSelection = new TransportSelection();
-		sandbox.stub(oTransportSelection.oTransports, "getTransports").returns(Promise.resolve(oTransportResponse));
-		var oOpenDialogStub = sandbox.stub(oTransportSelection, "_openDialog", fnSimulateDialogSelectionAndOk);
+		var oTransportSelection = new sap.ui.fl.transport.TransportSelection();
+		sinon.stub(oTransportSelection.oTransports, "getTransports").returns(Promise.resolve(oTransportResponse));
+		var oOpenDialogStub = sinon.stub(oTransportSelection, "_openDialog", fnSimulateDialogSelectionAndOk);
 
 		oTransportSelection.setTransports([oChange], oRootControl).then(function () {
 			assert.ok(oOpenDialogStub.calledOnce, "the dialog was opened");
@@ -374,18 +282,18 @@ sap.ui.require([
 	});
 
 	QUnit.test('setTransports should set a transport for all (non-$TMP) changes without transport popup if they are already locked within a open transport', function (assert) {
-		var oRootControl = new Control();
-		var oChange = new Change({
+		var oRootControl = new sap.ui.core.Control();
+		var oChange = new sap.ui.fl.Change({
 			namespace: "testns",
 			fileName: "change1",
 			fileType: "change"
 		});
-		var oChange2 = new Change({
+		var oChange2 = new sap.ui.fl.Change({
 			namespace: "testns",
 			fileName: "change2",
 			fileType: "change"
 		});
-		var oChange3 = new Change({
+		var oChange3 = new sap.ui.fl.Change({
 			namespace: "testns",
 			fileName: "change3",
 			fileType: "change"
@@ -422,19 +330,19 @@ sap.ui.require([
 	});
 
 	QUnit.test('setTransports should NOT set a transport for $TMP changes without transport popup', function (assert) {
-		var oRootControl = new Control();
-		var oChange = new Change({
+		var oRootControl = new sap.ui.core.Control();
+		var oChange = new sap.ui.fl.Change({
 			namespace: "testns",
 			fileName: "change1",
 			fileType: "change"
 		});
 
-		sandbox.stub(oChange, "getDefinition").returns({"packageName": "$TMP"});
-		var oSetRequestSpy = sandbox.stub(oChange, "setRequest");
+		this.sandbox.stub(oChange, "getDefinition").returns({"packageName": "$TMP"});
+		var oSetRequestSpy = this.sandbox.stub(oChange, "setRequest");
 
 		return this.oTransportSelection.setTransports([oChange], oRootControl).then(function () {
 			assert.ok(!oSetRequestSpy.called);
 		});
 	});
 
-});
+}());

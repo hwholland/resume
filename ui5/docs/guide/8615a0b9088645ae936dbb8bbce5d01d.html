@@ -6,8 +6,8 @@
 <meta name="abstract" content="OPA5 has a built-in actions parameter that can be used for simulating events. If you use an action, OPA5 will make sure that the UI is in a state that allows the action to be executed."/>
 <meta name="description" content="OPA5 has a built-in actions parameter that can be used for simulating events. If you use an action, OPA5 will make sure that the UI is in a state that allows the action to be executed."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=15068654407374382"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=15068654407374382"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8382758479807373"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8382758479807373"/>
 <title>Simulating User Interactions on Controls</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -24,7 +24,9 @@
 		executed.</p>
 
 		<p class="p">We recommend that you use actions and not success functions for user interactions as using
-            success functions will not execute the checks on the UI.</p>
+			success functions will not execute the checks on the UI. For more details, <span class="ph">see the <a class="xref" href="../../docs/api/symbols/sap.ui.test.matchers.Interactable.html" alt="../../docs/api/symbols/sap.ui.test.matchers.Interactable.html" title="../../docs/api/symbols/sap.ui.test.matchers.Interactable.html">interactable matcher</a> and
+					<a class="xref" href="../../docs/api/symbols/sap.ui.test.actions.html" alt="../../docs/api/symbols/sap.ui.test.actions.html" title="../../docs/api/symbols/sap.ui.test.actions.html">sap.ui.test.actions</a></span> API documentation in the Demo
+			Kit.</p>
 
 		<div class="section"><div class="section_title">Simulating a Press Event</div><div type="Simulating a Press Event">
 			
@@ -32,8 +34,8 @@
 				of <samp class="ph codeph">sap.m</samp> list item, such as a
 				<samp class="ph codeph">StandardListItem</samp>.</p>
 
-			<p class="p">Here's an example showing how to trigger a <samp class="ph codeph">press</samp> event on a button using the
-                OPA5 <samp class="ph codeph">waitFor</samp> function and the press action:</p>
+			<p class="p">Here's an example showing how to trigger a press event on a button using the OPA5
+					<samp class="ph codeph">waitFor</samp> function and the press action:</p>
 
 			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.require(["sap/ui/test/opaQUnit", "sap/ui/test/actions/Press"], function (opaTest, Press) {
 
@@ -51,13 +53,16 @@
 
 });</pre></div>
 
+			<p class="p">For more information and a list of supported controls, <span class="ph">see <a class="xref" href="../../docs/api/symbols/sap.ui.test.actions.Press.html" alt="../../docs/api/symbols/sap.ui.test.actions.Press.html" title="../../docs/api/symbols/sap.ui.test.actions.Press.html">sap.ui.test.actions.Press</a></span> in the <span class="ph uicontrol">API
+					Reference</span> in the Demo Kit.</p>
+
 		</div></div>
 
 		<div class="section"><div class="section_title">Choosing an Item from sap.m.Select</div><div type="Choosing an Item from sap.m.Select">
 			
 			<p class="p">Here's an example showing how to choose an item from <samp class="ph codeph">sap.m.Select</samp> or
-                    <samp class="ph codeph">sap.m.ComboBox</samp>, using the <samp class="ph codeph">waitFor</samp> function of
-                OPA5, and the <samp class="ph codeph">Press</samp> action:</p>
+					<samp class="ph codeph">sap.m.ComboBox</samp>, using the <samp class="ph codeph">waitFor</samp> function of
+				OPA5, and the press action:</p>
 
 			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.require([
     "sap/ui/test/opaQUnit",
@@ -92,6 +97,9 @@
 
 });</pre></div>
 
+			<p class="p">For more information and a list of supported controls, <span class="ph">see <a class="xref" href="../../docs/api/symbols/sap.ui.test.actions.Press.html" alt="../../docs/api/symbols/sap.ui.test.actions.Press.html" title="../../docs/api/symbols/sap.ui.test.actions.Press.html">sap.ui.test.actions.Press</a></span> in the <span class="ph uicontrol">API
+					Reference</span> in the Demo Kit.</p>
+
 		</div></div>
 
 		<div class="section"><div class="section_title">Entering Text into Input Fields</div><div type="Entering Text into Input Fields">
@@ -102,12 +110,12 @@
 					<samp class="ph codeph">sap.m.MultiInput</samp>, <samp class="ph codeph">sap.m.SearchField</samp>, or
 					<samp class="ph codeph">sap.m.TextArea</samp>.</p>
 
-			<p class="p">In the following example, the text of an input will be changed twice. First, the user types
-                    <kbd class="ph userinput">Hello</kbd>. The text will be set as a value of the input. In
-                the second action, the user types <kbd class="ph userinput">World</kbd> - the resulting text
-                in the input will be <samp class="ph systemoutput">Hello World</samp>. This means you can
-                use multiple actions on one control. You may also mix built-in actions with custom
-                actions.</p>
+			<p class="p">In the following example, the text of an input will be changed twice. First the user
+				types <kbd class="ph userinput">Hello</kbd>. The text will be set as a value of the input. In
+				the second action, the user types <kbd class="ph userinput">World</kbd> - the resulting text
+				in the input will be <samp class="ph systemoutput">Hello World</samp>. This means you can
+				use multiple actions on one control. You may also mix built-in actions with custom
+				actions.</p>
 
 			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.require(["sap/ui/test/opaQUnit", "sap/ui/test/actions/EnterText"], function (opaTest, EnterText) {
 
@@ -124,45 +132,6 @@
     });
 
 });</pre></div>
-
-		</div></div>
-
-		<div class="section" id="loio8615a0b9088645ae936dbb8bbce5d01d__section_tmf_bpm_2cb"><div class="section_title">Table Interaction</div><div type="Table Interaction">
-			
-			<p class="p">A Table consists of columns (<samp class="ph codeph">sap.m.Column</samp>) and rows. The rows,
-				defined as <samp class="ph codeph">sap.m.ColumnListItems</samp>, consist of cells. In order to
-				utilize a stable locator which is not expected to change frequently, you can use a
-				field/value combination to retrieve and interact with table items.</p>
-
-			<p class="p">The following example simulates a click on an item in a table. The name of the field
-				can be found in the $metadata file of your odata-service.</p>
-
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">iClickOnTableItemByFieldValue: function () {
-                    return this.waitFor({
-                        controlType: "sap.m.ColumnListItem",
-
-                        // Retrieve all list items in the table
-                        matchers: [function(oCandidateListItem) {
-                            var oTableLine = {};
-                            oTableLine = oCandidateListItem.getBindingContext().getObject();
-                            var sFound = false;
-
-                            // Iterate through the list items until the specified cell is found
-                            for (var sName in oTableLine) {
-                                if ((sName === "Field Name") &amp;&amp; (oTableLine[sName].toString() === "Cell Value")) {
-                                     QUnit.ok(true, "Cell has been found");
-                                    sFound = true;
-                                    break;
-                                }
-                            }
-                            return sFound;
-                        }],
-
-                        // Click on the specified item
-                        actions: new Press(),
-                        errorMessage: "Cell could not be found in the table"
-                     });
-                }</pre></div>
 
 		</div></div>
 
@@ -199,13 +168,6 @@
 
 	</div>
 
-    <div class="related-links"> 
-<div class="relinfo"><div class="relinfotitle ">Related Information</div>
-<div><a class="link" href="../../docs/api/symbols/sap.ui.test.matchers.Interactable.html" alt="../../docs/api/symbols/sap.ui.test.matchers.Interactable.html" title="../../docs/api/symbols/sap.ui.test.matchers.Interactable.html">API Reference: <samp class="ph codeph">sap.ui.test.matchers.Interactable</samp></a></div>
-<div><a class="link" href="../../docs/api/symbols/sap.ui.test.actions.html" alt="../../docs/api/symbols/sap.ui.test.actions.html" title="../../docs/api/symbols/sap.ui.test.actions.html">API Reference: <samp class="ph codeph">sap.ui.test.actions</samp></a></div>
-<div><a class="link" href="../../docs/api/symbols/sap.ui.test.actions.Press.html" alt="../../docs/api/symbols/sap.ui.test.actions.Press.html" title="../../docs/api/symbols/sap.ui.test.actions.Press.html">API Reference: <samp class="ph codeph">sap.ui.test.actions.Press</samp></a></div>
-</div>
-</div>
 </div></div>
 
 </body>

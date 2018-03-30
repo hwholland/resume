@@ -89,31 +89,16 @@ jQuery.sap.require("sap.ui.fl.Utils");
 
 		// decode
 		var oExtensionProvider = new PreprocessorImpl();
-
-		//check sync case
-		var spy = sandbox.spy(jQuery.sap.log, "warning");
-		var aEmptyCodeExtensionSync = oExtensionProvider.getControllerExtensions(sControllerName, "<component ID>", false);
-		//should return empty array and log warning
-		assert.ok(Array.isArray(aEmptyCodeExtensionSync), "Calling PreprocessorImpl in sync mode should return an array");
-		assert.equal(aEmptyCodeExtensionSync.length, 0, "Calling PreprocessorImpl in sync mode should return an empty array");
-		assert.equal(spy.callCount, 1, "Warning should be logged in sync case");
-
-		//check for error case, no component id
-		var oEmptyCodeExtensionPromise = oExtensionProvider.getControllerExtensions(sControllerName, "", true);
 		var oCodeExtensionsPromise = oExtensionProvider.getControllerExtensions(sControllerName, "<component ID>", true);
 
-		oEmptyCodeExtensionPromise.then(function(aEmpty) {
-			assert.equal(aEmpty.length, 0, "empty code extension returned empty array in promise");
-			assert.equal(spy.callCount, 2, "Warning should be logged in case no componentId was passed");
-			spy.restore();
-			oCodeExtensionsPromise.then(function (aCodeExtensions) {
-				assert.equal(aCodeExtensions.length, 1, "one code extension should be returned");
-				assert.ok(aCodeExtensions[0].onInit, "onInit is in the code extension");
-				assert.ok(typeof aCodeExtensions[0].onInit === "function", "onInit is a function");
-				assert.ok(aCodeExtensions[0].extHookOnInit, "extHookOnInit is in the code extension");
-				assert.ok(typeof aCodeExtensions[0].extHookOnInit === "function", "extHookOnInit is a function");
-				done();
-			});
+		oCodeExtensionsPromise.then(function (aCodeExtensions) {
+			assert.equal(aCodeExtensions.length, 1, "one code extension should be returned");
+			assert.ok(aCodeExtensions[0].onInit, "onInit is in the code extension");
+			assert.ok(typeof aCodeExtensions[0].onInit === "function", "onInit is a function");
+			assert.ok(aCodeExtensions[0].extHookOnInit, "extHookOnInit is in the code extension");
+			assert.ok(typeof aCodeExtensions[0].extHookOnInit === "function", "extHookOnInit is a function");
+
+			done();
 		});
 
 	});
@@ -153,7 +138,7 @@ jQuery.sap.require("sap.ui.fl.Utils");
 		var sCodeContent2 = "{onInit: function() { \nassert.ok(this.getView().getViewName() === \"sap.ui.fl.PreprocessorImpl.testResources.view2\", \"the extension of the second controller was applied and executed\"); \nthis.getView().callDone(); \n}}";
 		var sAsciiCodeContent2 = sap.ui.fl.Utils.stringToAscii(sCodeContent2);
 		var oCodingChange2 = {
-			fileName: "id_1436877480596_109",
+			fileName: "id_1436877480596_108",
 			namespace: "ui.s2p.mm.purchorder.approve.Component",
 			fileType: "change",
 			layer: "CUSTOMER",

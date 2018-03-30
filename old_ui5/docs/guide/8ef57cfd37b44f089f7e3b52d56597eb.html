@@ -1,0 +1,145 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Now we can navigate to our detail page and display an invoice, but we cannot go back to the overview page yet. We'll add a back button to the detail page and implement a function that shows our overview page again."/>
+<meta name="description" content="Now we can navigate to our detail page and display an invoice, but we cannot go back to the overview page yet. We'll add a back button to the detail page and implement a function that shows our overview page again."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8062603561333404"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8062603561333404"/>
+<title>Step 33: Routing Back and History</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio8ef57cfd37b44f089f7e3b52d56597eb">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 33: Routing Back and History</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Now we can navigate to our detail page and display an invoice, but we cannot go back to
+		the overview page yet. We'll add a back button to the detail page and implement a function
+		that shows our overview page again.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio8ef57cfd37b44f089f7e3b52d56597eb__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loio8ef57cfd37b44f089f7e3b52d56597eb__image_xvb_tym_yr" src="loio6e4426b30fae4b51bc540fdacbe4f16f_HiRes.png"/>
+			<div class="figcap">A back button is now displayed on the detail page</div></div></div>
+
+		</div></div>
+
+		<div class="section">
+			<div class="section_title">Coding</div>
+			<p class="p">You can view and download all files <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.walkthrough.33/preview" alt="../../explored.html#/sample/sap.m.tutorial.walkthrough.33/preview" title="../../explored.html#/sample/sap.m.tutorial.walkthrough.33/preview">Walkthrough - Step 33</a></span>.</p>
+
+			<div class="section_title">webapp/view/Detail.view.xml</div>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+	controllerName="sap.ui.demo.walkthrough.controller.Detail"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"&gt;
+	&lt;Page
+		title="{i18n&gt;detailPageTitle}"
+		<span class="ph emphasis emphasis">showNavButton="true"
+		navButtonPress="onNavBack"&gt;</span>
+		&lt;ObjectHeader
+			intro="{invoice&gt;ShipperName}"
+			title="{invoice&gt;ProductName}"/&gt;
+	&lt;/Page&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">On the detail page, we tell the control to display a back button by setting the
+				parameter <samp class="ph codeph">showNavButton</samp> to true and register an event handler that
+				is called when the back button is pressed.</p>
+
+		</div>
+
+		<div class="section"><div class="section_title">webapp/controller/Detail.controller.js</div><div type="webapp/controller/Detail.controller.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+	"sap/ui/core/mvc/Controller"<span class="ph emphasis emphasis">,
+	"sap/ui/core/routing/History"</span>
+], function (Controller<span class="ph emphasis emphasis">, History</span>) {
+	"use strict";
+	return Controller.extend("sap.ui.demo.walkthrough.controller.Detail", {
+		onInit: function () {
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.getRoute("detail").attachPatternMatched(this._onObjectMatched, this);
+		},
+		_onObjectMatched: function (oEvent) {
+			this.getView().bindElement({
+				path: "/" + oEvent.getParameter("arguments").invoicePath,
+				model: "invoice"
+			});
+		}<span class="ph emphasis emphasis">,
+		onNavBack: function () {
+			var oHistory = History.getInstance();
+			var sPreviousHash = oHistory.getPreviousHash();
+
+			if (sPreviousHash !== undefined) {
+				window.history.go(-1);
+			} else {
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.navTo("overview", {}, true);
+			}
+		}</span>
+	});
+});</pre></div>
+
+			<p class="p">We load a new dependency that helps us to manage the navigation history from the
+					<samp class="ph codeph">sap.ui.core.routing</samp> namespace and add the implementation for
+				the event handler to our detail page controller.</p>
+
+			<p class="p">In the event handler we access the navigation history and try to determine the previous hash. In contrast to the browser history, we will get a valid
+				result only if a navigation step inside our app has already happened. Then we will simply use the browser history to go back to the previous
+				page. If no navigation has happened before, we can tell the router to go to our overview page directly. The third parameter
+					<samp class="ph codeph">true</samp> tells the router to replace the current history state with the new one since we actually do a back navigation by
+				ourselves. The second parameter is an empty array (<samp class="ph codeph">{}</samp>) as we do not pass any additional parameters to this route.</p>
+
+			<p class="p">This implementation is a bit better than the browser’s back button for our use case.
+				The browser would simply go back one step in the history even though we were on
+				another page outside of the app. In the app, we always want to go back to the
+				overview page even if we came from another link or opened the detail page directly
+				with a bookmark. You can try it by loading the detail page in a new tab directly and
+				clicking on the back button in the app, it will still go back to the overview
+				page.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Conventions</div><div type="Conventions">
+			
+			<ul class="ul" id="loio8ef57cfd37b44f089f7e3b52d56597eb__ul_nh5_ybb_nr">
+				<li class="li">
+					<p class="p">Add a path to go back to the parent page when the history state is
+						unclear.</p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="3da5f4be63264db99f2e5b04c5e853db.html" title="In this tutorial we will introduce you to all major development paradigms of OpenUI5.">Walkthrough</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="2366345a94f64ec1a80f9d9ce50a59ef.html" title="We can now navigate between the overview and the detail page, but the actual item that we selected in the overview is not displayed on the detail page yet. A typical use case for our app is to show additional information for the selected item on the detail page.">Step 32: Routing with Parameters</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="d12d2ee6a5454d799358d425f9e7c4db.html" title="In this step, we are going to extend the functionality of OpenUI5 with a custom control. We want to rate the product shown on the detail page, so we create a composition of multiple standard controls using the OpenUI5 extension mechanism and add some glue code to make them work nicely together. This way, we can reuse the control across the app and keep all related functionality in one module.">Step 34: Custom Controls</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

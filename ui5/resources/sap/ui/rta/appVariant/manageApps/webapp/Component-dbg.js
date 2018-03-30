@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.define([
@@ -8,7 +8,7 @@ sap.ui.define([
 ], function(UIComponent) {
 	"use strict";
 
-	var _sIdRunningApp, _bKeyUser;
+	var _sIdRunningApp, _oRootControlRunningApp;
 
 	return UIComponent.extend("sap.ui.rta.appVariant.manageApps.webapp.Component", {
 
@@ -17,16 +17,18 @@ sap.ui.define([
 			"library": "sap.ui.rta",
 			"version": "0.9",
 			"properties": {
-				"idRunningApp" : "string",
-				isOverviewForKeyUser: {
-					type: "boolean"
+				idRunningApp : {
+					type: "string"
+				},
+				rootControlRunningApp : {
+					type: "object"
 				}
 			}
 		},
 
 		constructor: function() {
 			_sIdRunningApp = arguments[1].idRunningApp;
-			_bKeyUser = arguments[1].isOverviewForKeyUser;
+			_oRootControlRunningApp = arguments[1].rootControlRunningApp;
 			UIComponent.prototype.constructor.apply(this, arguments);
 		},
 
@@ -37,7 +39,7 @@ sap.ui.define([
 		 */
 		init: function() {
 			this.setIdRunningApp(_sIdRunningApp);
-			this.setIsOverviewForKeyUser(_bKeyUser);
+			this.setRootControlRunningApp(_oRootControlRunningApp);
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
 		}

@@ -5,15 +5,15 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Examples for Data Binding in Different View Types</title>
+      <title>Using Complex Syntax in XML and HTML Views</title>
       <link rel="icon" href="themes/sap-default/img/favicon.ico" type="image/x-icon">
       <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="abstract" content="Examples how complex syntax can be used for calculated fields in XML, HTML, and JS views.">
+      <meta name="abstract" content="Example, how complex syntax can be used for calculated fields in XML and HTML views and in JS views.">
       
-      <meta name="description" content="Examples how complex syntax can be used for calculated fields in XML, HTML, and JS views.">
-      <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"07e4b920f5734fd78fdaa236f26236d8.html","previousTopicHref":"f5aa4bb75c20445194494b264d3b3cd2.html"}</script>
+      <meta name="description" content="Example, how complex syntax can be used for calculated fields in XML and HTML views and in JS views.">
+      <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"f1ee7a8b2102415bb0d34268046cd3ea.html","previousTopicHref":"099f0a2851ad4118af36345f7dd13ea8.html"}</script>
       <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
       <script type="text/javascript">
       
@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -112,23 +112,17 @@
             <div id="d4h5-main-content" class="grid_8 alpha omega" style="margin: 0 0.5em;">
                <section>
                   <div id="content-toolbar" class="toolbar hide-for-small"></div>
-                  <div class="page concept  - topic-topic concept-concept " id="loio25ab54b0113c4914999c43d07d3b71fe">
+                  <div class="page topic  - topic-topic " id="loio25ab54b0113c4914999c43d07d3b71fe">
                      
-                     <h1 class="title topictitle1" hidden>Examples for Data Binding in Different View Types</h1>
+                     <h1 class="title topictitle1" hidden>Using Complex Syntax in XML and HTML Views</h1>
                      
-                     <div class="body conbody">
-                        <p class="shortdesc" hidden>Examples how complex syntax can be used for calculated fields in XML, HTML, and JS
-                           views.
-                        </p>
+                     <div class="body">
+                        <p class="shortdesc" hidden>Example, how complex syntax can be used for calculated fields in XML and HTML views and in JS views.</p>
                         
+                        		
+                        <p class="p">In XML views, you use complex syntax for calculated fields as follows:</p>
                         
-                        <div class="section" id="loio25ab54b0113c4914999c43d07d3b71fe__section_yqd_24p_rcb">
-                           <section class="section" type="XML View (Recommended)">
-                              <h2 class="section_title" style="font-size: 1.15em;">XML View (Recommended)</h2>
-                              
-                              
-                              <div class="p">
-                                 <pre class="pre codeblock prettyprint lang-js">
+                        		<pre class="pre codeblock prettyprint lang-js">
 &lt;mvc:View controllerName=&quot;testdata.complexsyntax&quot; xmlns:core=&quot;sap.ui.core&quot;
     xmlns:mvc=&quot;sap.ui.core.mvc&quot; xmlns=&quot;sap.ui.commons&quot; xmlns:table=&quot;sap.ui.table&quot;
     xmlns:html=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
@@ -156,21 +150,10 @@
     &lt;/html:h2&gt;
 &lt;/mvc:View&gt;
 </pre>
-                                 
-                                 </div>
-                              
-                              
-                           </section>
-                        </div>
                         
+                        <p class="p">In HTML views, you use complex syntax for calculated fields as follows:</p>
                         
-                        <div class="section" id="loio25ab54b0113c4914999c43d07d3b71fe__section_fgl_f4p_rcb">
-                           <section class="section" type="HTML View">
-                              <h2 class="section_title" style="font-size: 1.15em;">HTML View</h2>
-                              
-                              
-                              <div class="p">
-                                 <pre class="pre codeblock prettyprint lang-js">
+                        		<pre class="pre codeblock prettyprint lang-js">
 &lt;template data-controller-name=&quot;testdata.complexsyntax&quot;&gt;
     &lt;div&gt;
         &lt;h2&gt;&lt;div data-sap-ui-type=&quot;sap.ui.core.HTML&quot; id=&quot;MyHTMLControl&quot; data-content=&quot;&lt;div&gt;Hello Mr. {/singleEntry/firstName}, {/singleEntry/lastName}&lt;/div&gt;&quot;&gt;&lt;/div&gt;&lt;/h2&gt;
@@ -194,22 +177,13 @@
     &lt;/div&gt;
 &lt;/template&gt;
 </pre>
-                                 
-                                 </div>
-                              
-                              
-                           </section>
-                        </div>
                         
+                        		<p class="p">Example of the JSView. It is not declarative view, but you may use the same syntax as in XML- and HTMLView, just do not forget
+                           to pass a controller
+                           instance as a parameter:
+                        </p>
                         
-                        <div class="section" id="loio25ab54b0113c4914999c43d07d3b71fe__section_gqr_g4p_rcb">
-                           <section class="section" type="JS View">
-                              <h2 class="section_title" style="font-size: 1.15em;">JS View</h2>
-                              
-                              
-                              <div class="p">A JS view is not declarative view, but you may use the same syntax as in XML- and
-                                 HTMLView, just do not forget to pass a controller instance as a
-                                 parameter:<pre class="pre codeblock prettyprint lang-js">
+                        		<pre class="pre codeblock prettyprint lang-js">
 sap.ui.jsview(&quot;testdata.complexsyntax&quot;, {
     
     getControllerName: function() {
@@ -241,14 +215,8 @@ sap.ui.jsview(&quot;testdata.complexsyntax&quot;, {
     }
 });
 </pre>
-                                 </div>
-                              
-                              
-                           </section>
-                        </div>
                         
-                        	
-                     </div>
+                        	</div>
                      
                   </div>
                   

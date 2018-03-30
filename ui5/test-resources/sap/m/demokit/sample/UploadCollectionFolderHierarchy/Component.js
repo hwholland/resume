@@ -6,11 +6,7 @@ sap.ui.define([
 	var Component = UIComponent.extend("sap.m.sample.UploadCollectionFolderHierarchy.Component", {
 
 		metadata: {
-			rootView: {
-				"viewName": "sap.m.sample.UploadCollectionFolderHierarchy.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.m.sample.UploadCollectionFolderHierarchy.Page",
 			dependencies: {
 				libs: ["sap.m", "sap.ui.unified"]
 			},

@@ -7,6 +7,7 @@
 
     <script src="shared-config.js"></script>
     <script src="../../../resources/sap-ui-core.js"
+           
             id="sap-ui-bootstrap"
             data-sap-ui-libs="sap.m">
     </script>
@@ -44,24 +45,18 @@
                         enabled: true
                     })];
             },
-            oChangePositionInput = new sap.m.Input("changePosition", {
+            oChangePositionInput = new sap.m.Input({
                 liveChange: function (oEvent) {
                     oPagingButton.setPosition(+oEvent.getParameter("value"))
                 }
             }),
-            oChangePositionLabel = new sap.m.Label({
-				text: "Change position value",
-				labelFor: "changePosition"
-            }),
-            oChangeCountInput = new sap.m.Input("changeCount", {
+            oChangePositionLabel = new sap.m.Label({text: "Change position value"}),
+            oChangeCountInput = new sap.m.Input({
                 liveChange: function (oEvent) {
                     oPagingButton.setCount(+oEvent.getParameter("value"))
                 }
             }),
-            oChangeCountLabel = new sap.m.Label({
-				text: "Change count value",
-				labelFor: "changeCount"
-            }),
+            oChangeCountLabel = new sap.m.Label({text: "Change count value"}),
             page1 = new sap.m.Page("page1", {
                 title: "PagingButton",
                 headerContent: [getButtons(), oPagingButton, getButtons()],

@@ -12,7 +12,6 @@ sap.ui.define([
 	'sap/ui/rta/plugin/Split',
 	'sap/m/Button',
 	'sap/m/Panel',
-	'sap/ui/dt/SelectionManager',
 	// should be last:
 	'sap/ui/thirdparty/sinon',
 	'sap/ui/thirdparty/sinon-ie',
@@ -26,8 +25,7 @@ function(
 	Utils,
 	SplitPlugin,
 	Button,
-	Panel,
-	SelectionManager
+	Panel
 ) {
 	'use strict';
 
@@ -154,7 +152,7 @@ function(
 		};
 		fnSetOverlayDesigntimeMetadata(this.oButton1Overlay, oDesignTimeMetadata1);
 
-		sandbox.stub(SelectionManager.prototype, "get").returns([
+		sandbox.stub(this.oDesignTime, "getSelection").returns([
 			this.oButton1Overlay
 		]);
 
@@ -188,7 +186,7 @@ function(
 
 		fnSetOverlayDesigntimeMetadata(this.oButton2Overlay, oDesignTimeMetadata2);
 
-		sandbox.stub(SelectionManager.prototype, "get").returns([
+		sandbox.stub(this.oDesignTime, "getSelection").returns([
 			this.oButton2Overlay
 		]);
 
@@ -219,7 +217,7 @@ function(
 
 		fnSetOverlayDesigntimeMetadata(this.oButton2Overlay, oDesignTimeMetadata3);
 
-		sandbox.stub(SelectionManager.prototype, "get").returns([
+		sandbox.stub(this.oDesignTime, "getSelection").returns([
 			this.oButton2Overlay
 		]);
 
@@ -238,7 +236,7 @@ function(
 		fnSetOverlayDesigntimeMetadata(this.oButton1Overlay, DEFAULT_DTM);
 		fnSetOverlayDesigntimeMetadata(this.oButton3Overlay, DEFAULT_DTM);
 
-		sandbox.stub(SelectionManager.prototype, "get").returns([
+		sandbox.stub(this.oDesignTime, "getSelection").returns([
 			this.oButton1Overlay,
 			this.oButton3Overlay
 		]);
@@ -259,7 +257,7 @@ function(
 		var spy = sandbox.spy(this.oSplitPlugin, "fireElementModified");
 		fnSetOverlayDesigntimeMetadata(this.oButton1Overlay, DEFAULT_DTM);
 
-		sandbox.stub(SelectionManager.prototype, "get").returns([
+		sandbox.stub(this.oDesignTime, "getSelection").returns([
 			this.oButton1Overlay
 		]);
 
@@ -301,7 +299,7 @@ function(
 			return bIsAvailable;
 		}.bind(this));
 		sandbox.stub(this.oSplitPlugin, "handleSplit", function(oSelectedElement){
-			assert.deepEqual(oSelectedElement, this.oButton1Overlay.getElement(), "the 'handleSplit' method is called with the right element");
+			assert.deepEqual(oSelectedElement, this.oButton1Overlay.getElementInstance(), "the 'handleSplit' method is called with the right element");
 		}.bind(this));
 		sandbox.stub(this.oSplitPlugin, "isEnabled", function(oOverlay){
 			assert.equal(oOverlay, this.oButton1Overlay, "the 'enabled' function calls isEnabled with the correct overlay");

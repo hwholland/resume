@@ -6,233 +6,115 @@
 <xsd:import namespace="sap.m"/>
 <xsd:element name="AnchorBar" type="n4:_AnchorBarType" substitutionGroup="n2:Toolbar">
 <xsd:annotation>
-<xsd:documentation>Displays the titles of the sections and subsections in the {@link sap.uxap.ObjectPageLayout ObjectPageLayout}
-and allows the user to scroll to the respective content.
-
-&lt;h3&gt;Overview&lt;/h3&gt;
-
-The &lt;code&gt;AnchorBar&lt;/code&gt; is internally generated as a menu in the &lt;code&gt;ObjectPageLayout&lt;/code&gt;.
-It displays the sections and subsections and allows the user to directly scroll to the respective
-content by selecting them, while it remains visible at the top of the page (below the page header).</xsd:documentation>
+<xsd:documentation>Anchor bar is the navigation bar of an Object page. Its purpose is to provide links to all Sections and Subsections. Takes the form of a Select on phone.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="BlockBase" type="n4:_BlockBaseType" substitutionGroup="n0:Control">
 <xsd:annotation>
-<xsd:documentation>The main element that holds the content that is displayed in an
-{@link sap.uxap.ObjectPageLayout ObjectPageLayout}, but not necessarily only there.
+<xsd:documentation>A block is the main element that will be displayed, mainly in an object page, but not necessarily
+only there.
 
-&lt;h3&gt;Overview&lt;/h3&gt;
+A block is a control that use an XML view for storing its internal control tree.
+A block is a control that has modes and a view associated to each modes.
+At rendering time, the view associated to the mode is rendered.
 
-The blocks give the flexibility to combine different content types.
+&lt;b&gt;Note:&lt;/b&gt; The control supports only XML views.
 
-A block is a control that:
-&lt;ul&gt;
-&lt;li&gt;Has modes and a view associated to each mode. At rendering time, the view associated to the mode is rendered.&lt;/li&gt;
-&lt;li&gt;Can use all view types for storing its internal control tree (XML, JS, JSON, HTML)&lt;/li&gt;
-&lt;/ul&gt;
-
-As any UI5 view, the XML view can have a controller which automatically comes with a
-&lt;code&gt;this.oParentBlock&lt;/code&gt; attribute (so that the controller can interact with the block).
-If the controller implements the &lt;code&gt;onParentBlockModeChange&lt;/code&gt; method, this method will
-be called with the &lt;code&gt;sMode&lt;/code&gt; parameter when the view is used or reused by the block.</xsd:documentation>
+As any UI5 views, the XML view can have a controller which automatically comes a this.oParentBlock attribute (so that the controller can interacts with the block).
+If the controller implements the onParentBlockModeChange method, this method will get called with the sMode parameter when the view is used or re-used by the block.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="BreadCrumbs" type="n4:_BreadCrumbsType" substitutionGroup="n0:Control">
 <xsd:annotation>
-<xsd:documentation>Represents the navigation steps up to the current location in the app.
-
-&lt;h3&gt;Overview&lt;/h3&gt;
-
-The &lt;code&gt;BreadCrumbs&lt;/code&gt; control allows the users to quickly navigate to a previous
-location on the path that got them to the current location by choosing the displayed
-navigation steps.
-
-It has two main modes of operation:
-&lt;ul&gt;
-&lt;li&gt;A trail of links followed by separators, when there's enough space for the control to fit on one line.&lt;/li&gt;
-&lt;li&gt;A dropdown list with the links, when the trail of links wouldn't fit on one line.&lt;/li&gt;
-&lt;/ul&gt;</xsd:documentation>
+<xsd:documentation>The BreadCrumbs control represents the navigation steps up to the current location in the application and allows
+the user to quickly navigate to a previous location on the path that got him to the current location.
+It has two main modes of operation. One is a trail of links followed by separators (when there's enough space
+for the control to fit on one line), and the other is a dropdown list with the links (when the trail of links
+wouldn't fit on one line).</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="HierarchicalSelect" type="n4:_HierarchicalSelectType" substitutionGroup="n2:Select">
 <xsd:annotation>
-<xsd:documentation>A select that displays items on a hierarchy of 2 levels.
-
-If a provided item has a custom data named &lt;code&gt;secondLevel&lt;/code&gt;, then it will be displayed as a second level,
-otherwise it would be displayed as a first level.</xsd:documentation>
+<xsd:documentation>A select that display items on 2 level of hierarchy.
+If a provided item has a custom data named "secondLevel", then it will be displayed as a second level, otherwise it would be displayed as a first level.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ModelMapping" type="n4:_ModelMappingType" substitutionGroup="n0:Element">
 <xsd:annotation>
-<xsd:documentation>Defines the entity that will be passed to the {@link sap.uxap.ObjectPageLayout}.</xsd:documentation>
+<xsd:documentation>Define the entity that will be passed to the ObjectPageLayout.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectPageDynamicHeaderContent" type="n4:_ObjectPageDynamicHeaderContentType" substitutionGroup=":DynamicPageHeader">
 <xsd:annotation>
-<xsd:documentation>Header content for the dynamic header of the {@link sap.uxap.ObjectPageLayout}.
-
-&lt;h3&gt;Overview&lt;/h3&gt;
-
-The &lt;code&gt;ObjectPageDynamicHeaderContent&lt;/code&gt; represents the movable part of
-the &lt;code&gt;ObjectPageLayout&lt;/code&gt;'s dynamic header. It can contain any control and
-scrolls along with the content of the page until it disappears (collapsed header).
-When scrolled back to the top it becomes visible again (expanded header).
-It contains all the additional information of the object.
-
-Documentation links:
-&lt;ul&gt;
-&lt;li&gt;{@link topic:d2ef0099542d44dc868719d908e576d0 Object Page Headers}&lt;/li&gt;
-&lt;li&gt;{@link topic:6e340c119ddd4c778b315f65a0432420 Object Page Dynamic Header}&lt;/li&gt;
-&lt;/ul&gt;</xsd:documentation>
+<xsd:documentation>Dynamic header content for the {@link sap.uxap.ObjectPageLayout ObjectPage}.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectPageDynamicHeaderTitle" type="n4:_ObjectPageDynamicHeaderTitleType" substitutionGroup=":DynamicPageTitle">
 <xsd:annotation>
-<xsd:documentation>Represents the static part (header title) of the dynamic header of the {@link sap.uxap.ObjectPageLayout}.
-
-&lt;h3&gt;Overview&lt;/h3&gt;
-
-The &lt;code&gt;ObjectPageDynamicHeaderTitle&lt;/code&gt; is used to represent the most important details of
-the displayed business object, such as the object title and actions that the user can perform.
-
-&lt;b&gt;Note:&lt;/b&gt; The &lt;code&gt;ObjectPageDynamicHeaderTitle&lt;/code&gt; is meant to be used inside the &lt;code&gt;ObjectPageLayout&lt;/code&gt;
-control. Any other usage is not supported and can lead to unexpected behavior.</xsd:documentation>
+<xsd:documentation>Dynamic title for the {@link sap.uxap.ObjectPageLayout ObjectPage}.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectPageHeader" type="n4:_ObjectPageHeaderType" substitutionGroup="n0:Control">
 <xsd:annotation>
-<xsd:documentation>Represents the static part (header title) of the classic header of the {@link sap.uxap.ObjectPageLayout}.
-
-&lt;h3&gt;Overview&lt;/h3&gt;
-
-The &lt;code&gt;ObjectPageHeader&lt;/code&gt; is used to display the basic information about a business object,
-such as title/description/picture, as well as a list of common actions.
-
-&lt;b&gt;Note:&lt;/b&gt; The &lt;code&gt;ObjectPageHeader&lt;/code&gt; is meant to be used inside the &lt;code&gt;ObjectPageLayout&lt;/code&gt;
-control. Any other usage is not supported and can lead to unexpected behavior.</xsd:documentation>
+<xsd:documentation>ObjectPageHeader represents the static part of an Object page header.
+Typically used to display the basic information about a business object, such as title/description/picture, as well as a list of common actions.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectPageHeaderActionButton" type="n4:_ObjectPageHeaderActionButtonType" substitutionGroup="n2:Button">
 <xsd:annotation>
-<xsd:documentation>A Button that is used in the &lt;code&gt;actions&lt;/code&gt; aggregation of the {@link sap.uxap.ObjectPageHeader}.</xsd:documentation>
+<xsd:documentation>Button that can be used in the ObjectPageHeader action aggregation.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectPageHeaderContent" type="n4:_ObjectPageHeaderContentType" substitutionGroup="n0:Control">
 <xsd:annotation>
-<xsd:documentation>Header content for the classic header of the {@link sap.uxap.ObjectPageLayout}.
-
-&lt;h3&gt;Overview&lt;/h3&gt;
-
-The &lt;code&gt;ObjectPageHeaderContent&lt;/code&gt; represents the movable part of the
-&lt;code&gt;ObjectPageLayout&lt;/code&gt;'s classic header. It can contain any control and scrolls along with
-the content of the page until it disappears (collapsed header). When scrolled back to the
-top it becomes visible again (expanded header). It contains all the additional information of the object.
-
-Documentation links:
-&lt;ul&gt;
-&lt;li&gt;{@link topic:d2ef0099542d44dc868719d908e576d0 Object Page Headers}&lt;/li&gt;
-&lt;li&gt;{@link topic:0fecbce45e39406aa939bd25e89823f4 Object Page Classic Header}&lt;/li&gt;
-&lt;/ul&gt;</xsd:documentation>
+<xsd:documentation>ObjectPageHeaderContent represents the dynamic part of an Object page header. May contain any control.
+Unlike the Object page header title, the Object page header content is part of the scrolling area of the Object page.
+This enables it to hold any amount of information and still be usable on a mobile device.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectPageHeaderLayoutData" type="n4:_ObjectPageHeaderLayoutDataType" substitutionGroup="n0:LayoutData">
 <xsd:annotation>
-<xsd:documentation>A {@link sap.ui.core.LayoutData} element that can be added to controls used in the
-&lt;code&gt;headerContent&lt;/code&gt; aggregation of the &lt;code&gt;ObjectPageLayout&lt;/code&gt;.
-
+<xsd:documentation>This is a LayoutData Element that can be added to a control if this control is used within an ObjectPage headerContent aggregation.&lt;/br&gt;&lt;/br&gt;
 &lt;b&gt;Note:&lt;/b&gt; This element is only taken into account when the &lt;code&gt;sap.uxap.ObjectPageLayout&lt;/code&gt; control is used together with
 &lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt; as value of &lt;code&gt;headerTitle&lt;/code&gt;.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectPageLayout" type="n4:_ObjectPageLayoutType" substitutionGroup="n0:Control">
 <xsd:annotation>
-<xsd:documentation>A layout that allows apps to easily display information related to a business object.
-
-&lt;h3&gt;Overview&lt;/h3&gt;
-
-The &lt;code&gt;ObjectPageLayout&lt;/code&gt; layout is composed of a header (title and content),
-an optional anchor bar and block content wrapped in sections and subsections that
-structure the information.
-
-&lt;h3&gt;Structure&lt;/h3&gt;
-
-An &lt;code&gt;ObjectPageLayout&lt;/code&gt; control is used to put together all parts of an Object page
-- Header, optional Anchor Bar and Sections/Subsections.
-
-&lt;h4&gt;Header&lt;/h4&gt;
-The &lt;code&gt;ObjectPageLayout&lt;/code&gt; implements the snapping header concept. This means that
-the upper part of the header (Header Title) always stays visible, while the lower part
-(Header Content) can scroll out of view.
-
-Header Title is displayed at the top of the header and always remains visible above the
-scrollable content of the page. It contains the title and most prominent details of the object.
-
-The Header Content scrolls along with the content of the page until it disappears (collapsed header).
-When scrolled back to the top it becomes visible again (expanded header). It contains all the
-additional information of the object.
-
-&lt;h4&gt;Anchor Bar&lt;/h4&gt;
-The Anchor Bar is an automatically generated internal menu that shows the titles of the sections
-and subsections and allows the user to scroll to the respective section and subsection content.
-
-&lt;h4&gt;Sections, Subsections, Blocks&lt;/h4&gt;
-The content of the page that appears bellow the header is composed of blocks structured into
-sections and subsections.
-
-&lt;h3&gt;Usage&lt;/h3&gt;
-Use the &lt;code&gt;ObjectPageLayout&lt;/code&gt; if:
-&lt;ul&gt;
-&lt;li&gt;The users need to see, edit, or create an item with all its details.&lt;/li&gt;
-&lt;li&gt;Users need to get an overview of an object and interact with different parts of the object.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3&gt;Responsive behavior&lt;/h3&gt;
-
-The &lt;code&gt;ObjectPageLayout&lt;/code&gt; is responsive and adapts to all screen sizes.</xsd:documentation>
+<xsd:documentation>An ObjectPageLayout is the layout control, used to put together all parts of an Object page - Header, Navigation bar and Sections/Subsections.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectPageLazyLoader" type="n4:_ObjectPageLazyLoaderType" substitutionGroup="n0:Element">
 <xsd:annotation>
-<xsd:documentation>A helper element that enables a "stashed-based" lazy loading approach for the content of
-the {@link sap.uxap.ObjectPageSubSection} control.
+<xsd:documentation>ObjectPageLazyLoader is a helper element that enables a "stashed"-based lazy loading approach for the content of
+the sap.uxap.ObjectPageSubSection control. ObjectPageLazyLoader is intended to be used in a declarative way only
+(e.g. in a view) with the "stashed" property set to "true", and is recommended to be used only once per
+subsection as its sole content.
 
-&lt;code&gt;ObjectPageLazyLoader&lt;/code&gt; is intended to be used in a declarative way only
-(for example, in a view) with the &lt;code&gt;stashed&lt;/code&gt; property set to &lt;code&gt;true&lt;/code&gt;,
-and is recommended to be used only once per subsection as its sole content.
+ObjectPageLazyLoader utilizes UI5's stashing mechanism and is a lightweight alternative to the native block-based
+Lazy Loading of the Object Page. Wrapping the content of a subsection in an ObjectPageLazyLoader with "stashed=true"
+will make the said content unstash automatically as the user scrolls.
 
-&lt;code&gt;ObjectPageLazyLoader&lt;/code&gt; utilizes UI5's stashing mechanism and is a lightweight
-alternative to the native block-based Lazy Loading of the &lt;code&gt;ObjectPageLayout&lt;/code&gt;.
-Wrapping the content of a subsection in an &lt;code&gt;ObjectPageLazyLoader&lt;/code&gt; with
-&lt;code&gt;stashed=true&lt;/code&gt; will make the content unstash automatically as the user scrolls.
-
-&lt;b&gt;Note:&lt;/b&gt; Subsections are required to have an ID when used with &lt;code&gt;ObjectPageLazyLoader&lt;/code&gt;.</xsd:documentation>
+Note: Subsections are required to have an ID when used with ObjectPageLazyLoader.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectPageSection" type="n4:_ObjectPageSectionType" substitutionGroup="n4:ObjectPageSectionBase">
 <xsd:annotation>
-<xsd:documentation>Top-level information container of an {@link sap.uxap.ObjectPageLayout}.
-
-The &lt;code&gt;ObjectPageSection&lt;/code&gt;'s purpose is to aggregate subsections.
-
-&lt;b&gt;Note:&lt;/b&gt; This control is intended to be used only as part of the &lt;code&gt;ObjectPageLayout&lt;/code&gt;.</xsd:documentation>
+<xsd:documentation>An ObjectPageSection is the top-level information container of an Object page. Its purpose is to aggregate Subsections.
+Disclaimer: This control is intended to be used only as part of the Object page layout</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectPageSectionBase" type="n4:_ObjectPageSectionBaseType" substitutionGroup="n0:Control">
 <xsd:annotation>
-<xsd:documentation>An abstract container for sections and subsections in the {@link sap.uxap.ObjectPageLayout}.</xsd:documentation>
+<xsd:documentation>An abstract container for object page sections and subSections</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectPageSubSection" type="n4:_ObjectPageSubSectionType" substitutionGroup="n4:ObjectPageSectionBase">
 <xsd:annotation>
-<xsd:documentation>Second-level information container of an {@link sap.uxap.ObjectPageLayout}.
-
-An &lt;code&gt;ObjectPageSubSection&lt;/code&gt; may only be used within sections in the
-&lt;code&gt;ObjectPageLayout&lt;/code&gt;. Subsections are used to display primary information in
-the &lt;code&gt;blocks&lt;/code&gt; aggregation (always visible) and not-so-important information in
-the &lt;code&gt;moreBlocks&lt;/code&gt; aggregation. The content in the &lt;code&gt;moreBlocks&lt;/code&gt;
-aggregation is initially hidden, but may be accessed with a "See more" (...) button.
-
-&lt;b&gt;Note:&lt;/b&gt; This control is intended to be used only as part of the &lt;code&gt;ObjectPageLayout&lt;/code&gt;.</xsd:documentation>
+<xsd:documentation>An ObjectPageSubSection is the second-level information container of an Object page and may only be used within an Object page section.
+Subsections may display primary information in the so called blocks aggregation (always visible)
+and not-so-important information in the moreBlocks aggregation, whose content is initially hidden, but may be accessed via a See more (...) button.
+Disclaimer: This control is intended to be used only as part of the Object page layout</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <!--type definition for UIElement 'sap.uxap.AnchorBar'-->
@@ -291,7 +173,7 @@ The mode of the block is changed when SubSection mode changes.</xsd:documentatio
 </xsd:attribute>
 <xsd:attribute name="columnLayout" type="n4:_BlockBaseColumnLayoutType">
 <xsd:annotation>
-<xsd:documentation>Determines on how many columns the layout will be rendered.
+<xsd:documentation>Determines on how columns the layout will be rendered.
 Allowed values are integers from 1 to 4 and "auto".</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -852,7 +734,7 @@ In this case the value of this property will be ignored.
 Child pages have an additional (darker/lighter) stripe on the left side of their header content area.
 
 &lt;b&gt;Note&lt;/b&gt;: This property is only taken into account if an instance of
-&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt; is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</xsd:documentation>
+&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt;is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="alwaysShowContentHeader" type="xsd:boolean">
@@ -860,7 +742,7 @@ Child pages have an additional (darker/lighter) stripe on the left side of their
 <xsd:documentation>Determines whether Header Content will always be expanded on desktop.
 
 &lt;b&gt;Note&lt;/b&gt;: This property is only taken into account if an instance of
-&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt; is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</xsd:documentation>
+&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt;is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="headerContentPinnable" type="xsd:boolean">
@@ -883,7 +765,7 @@ If set to &lt;code&gt;false&lt;/code&gt;, the &lt;code&gt;sap.uxap.ObjectPageDyn
 must provide other means for expanding/collapsing the &lt;code&gt;sap.uxap.ObjectPageDynamicHeaderContent&lt;/code&gt;, if necessary.
 
 &lt;b&gt;Note:&lt;/b&gt; This property is only taken into account if an instance of
-&lt;code&gt;sap.uxap.ObjectPageDynamicHeaderTitle&lt;/code&gt; is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</xsd:documentation>
+&lt;code&gt;sap.uxap.ObjectPageDynamicHeaderTitle&lt;/code&gt;is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="preserveHeaderStateOnScroll" type="xsd:boolean">
@@ -892,7 +774,7 @@ must provide other means for expanding/collapsing the &lt;code&gt;sap.uxap.Objec
 For example, if the user expands the header by clicking on the title and then scrolls down the page, the header will remain expanded.
 
 &lt;b&gt;Notes:&lt;/b&gt;
-&lt;ul&gt;&lt;li&gt;This property is only taken into account if an instance of &lt;code&gt;sap.uxap.ObjectPageDynamicHeaderTitle&lt;/code&gt; is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.&lt;/li&gt;
+&lt;ul&gt;&lt;li&gt;This property is only taken into account if an instance of &lt;code&gt;sap.uxap.ObjectPageDynamicHeaderTitle&lt;/code&gt;is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.&lt;/li&gt;
 &lt;li&gt;Based on internal rules, the value of the property is not always taken into account - for example,
 when the control is rendered on tablet or mobile and the control`s title and header
 are with height larger than the given threshold.&lt;/li&gt;&lt;/ul&gt;</xsd:documentation>
@@ -903,7 +785,7 @@ are with height larger than the given threshold.&lt;/li&gt;&lt;/ul&gt;</xsd:docu
 <xsd:documentation>Determines whether an Edit button will be displayed in Header Content.
 
 &lt;b&gt;Note&lt;/b&gt;: This property is only taken into account if an instance of
-&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt; is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</xsd:documentation>
+&lt;code&gt;sap.uxap.ObjectPageHeader&lt;/code&gt;is used for the &lt;code&gt;headerTitle&lt;/code&gt; aggregation.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="flexEnabled" type="xsd:boolean">
@@ -1043,7 +925,7 @@ If you want to change some of the button properties, you would need to bind them
 <xsd:documentation>Determines the ARIA level of the &lt;code&gt;ObjectPageSectionBase&lt;/code&gt; title.
 The ARIA level is used by assisting technologies, such as screen readers, to create a hierarchical site map for faster navigation.
 
-&lt;b&gt;Note:&lt;/b&gt; Defining a &lt;code&gt;titleLevel&lt;/code&gt; will add &lt;code&gt;aria-level&lt;/code&gt; attribute from 1 to 6,
+&lt;br&gt;&lt;b&gt;Note:&lt;/b&gt; Defining a &lt;code&gt;titleLevel&lt;/code&gt; will add &lt;code&gt;aria-level&lt;/code&gt; attribute from 1 to 6,
 instead of changing the &lt;code&gt;ObjectPageSectionBase&lt;/code&gt; title HTML tag from H1 to H6.
 &lt;br&gt;For example: if &lt;code&gt;titleLevel&lt;/code&gt; is &lt;code&gt;TitleLevel.H1&lt;/code&gt;,
 it will result as aria-level of 1 added to the &lt;code&gt;ObjectPageSectionBase&lt;/code&gt; title.</xsd:documentation>
@@ -1152,17 +1034,17 @@ it will result as aria-level of 1 added to the &lt;code&gt;ObjectPageSectionBase
 <xsd:restriction base="xsd:string">
 <xsd:enumeration value="Low">
 <xsd:annotation>
-<xsd:documentation>Low importance of the content.</xsd:documentation>
+<xsd:documentation>Low importance of the content</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 <xsd:enumeration value="Medium">
 <xsd:annotation>
-<xsd:documentation>Medium importance of the content.</xsd:documentation>
+<xsd:documentation>Medium importance of the content</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 <xsd:enumeration value="High">
 <xsd:annotation>
-<xsd:documentation>High importance of the content.</xsd:documentation>
+<xsd:documentation>High importance of the content</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 </xsd:restriction>
@@ -1171,12 +1053,12 @@ it will result as aria-level of 1 added to the &lt;code&gt;ObjectPageSectionBase
 <xsd:restriction base="xsd:string">
 <xsd:enumeration value="JsonURL">
 <xsd:annotation>
-<xsd:documentation>Determines the JSON URL.</xsd:documentation>
+<xsd:documentation>Determines the JSON url</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 <xsd:enumeration value="JsonModel">
 <xsd:annotation>
-<xsd:documentation>Determines the JSON model.</xsd:documentation>
+<xsd:documentation>Determines the JSON model</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 </xsd:restriction>
@@ -1185,12 +1067,12 @@ it will result as aria-level of 1 added to the &lt;code&gt;ObjectPageSectionBase
 <xsd:restriction base="xsd:string">
 <xsd:enumeration value="Light">
 <xsd:annotation>
-<xsd:documentation>Light theme for the &lt;code&gt;ObjectPageHeader&lt;/code&gt;.</xsd:documentation>
+<xsd:documentation>Light theme for the ObjectPageHeader.</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 <xsd:enumeration value="Dark">
 <xsd:annotation>
-<xsd:documentation>Dark theme for the &lt;code&gt;ObjectPageHeader&lt;/code&gt;.</xsd:documentation>
+<xsd:documentation>Dark theme for the ObjectPageHeader.</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 </xsd:restriction>
@@ -1199,12 +1081,12 @@ it will result as aria-level of 1 added to the &lt;code&gt;ObjectPageSectionBase
 <xsd:restriction base="xsd:string">
 <xsd:enumeration value="Circle">
 <xsd:annotation>
-<xsd:documentation>Circle shape for the images in the &lt;code&gt;ObjectPageHeader&lt;/code&gt;.</xsd:documentation>
+<xsd:documentation>Circle shape for the images in the ObjectPageHeader.</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 <xsd:enumeration value="Square">
 <xsd:annotation>
-<xsd:documentation>Square shape for the images in the &lt;code&gt;ObjectPageHeader&lt;/code&gt;.</xsd:documentation>
+<xsd:documentation>Square shape for the images in the ObjectPageHeader.</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 </xsd:restriction>
@@ -1213,12 +1095,12 @@ it will result as aria-level of 1 added to the &lt;code&gt;ObjectPageSectionBase
 <xsd:restriction base="xsd:string">
 <xsd:enumeration value="TitleOnTop">
 <xsd:annotation>
-<xsd:documentation>Title and actions on top of the block area.</xsd:documentation>
+<xsd:documentation>TitleOnTop: title and actions on top of the block area.</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 <xsd:enumeration value="TitleOnLeft">
 <xsd:annotation>
-<xsd:documentation>Title and actions on the left, inside the block area.</xsd:documentation>
+<xsd:documentation>TitleOnLeft: title and actions on the left, inside the block area.</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 </xsd:restriction>
@@ -1227,12 +1109,12 @@ it will result as aria-level of 1 added to the &lt;code&gt;ObjectPageSectionBase
 <xsd:restriction base="xsd:string">
 <xsd:enumeration value="Collapsed">
 <xsd:annotation>
-<xsd:documentation>Collapsed mode of display of the &lt;code&gt;ObjectPageLayout&lt;/code&gt;.</xsd:documentation>
+<xsd:documentation>Collapsed mode of display of the ObjectPageLayout.</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 <xsd:enumeration value="Expanded">
 <xsd:annotation>
-<xsd:documentation>Expanded mode of displaying the &lt;code&gt;ObjectPageLayout&lt;/code&gt;.</xsd:documentation>
+<xsd:documentation>Expanded mode of displaying the ObjectPageLayout.</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 </xsd:restriction>

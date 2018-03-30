@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.MultiInputMultiLine.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.MultiInputMultiLine.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.MultiInputMultiLine.Page",
 			dependencies : {
 				libs : [
 					"sap.m",

@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -146,16 +146,17 @@
                                  					<samp class="ph codeph">$select</samp> parameters to read all data to be displayed in one
                                  				request, or create bindings dynamically to load only part of the data with one
                                  				request per binding. The application needs to decide whether to have less roundtrips
-                                 				with a bigger payload or more roundtrips with smaller payload. 
+                                 				with more payload or more roundtrips with smaller payload. 
                               </p>
                               
                               			
-                              <p class="p">To reduce payload, applications should only select properties that are needed using
-                                 					<samp class="ph codeph">$select</samp> (see the code sample in the
-                                 					<span class="ph emphasis emphasis">Parameters</span> section under Bindings<a class="xref" href="../../#/topic/54e0ddf695af4a6c978472cecb01c64d.html" title="Bindings connect OpenUI5 view elements to model data, allowing changes in the model to be reflected in the view element and vice versa." target="_top">Bindings</a>). Besides the properties needed
-                                 				on the UI, the binding must select key properties to support features such as read
-                                 				requests sent from a child binding, write requests, or bound operations on the
-                                 				respective entity.
+                              <p class="p">Base Class that introduces some basic concepts like state management or
+                                 				databinding.
+                              </p>
+                              
+                              			
+                              <p class="p">New subclasses of ManagedObject are created with a call to ManagedObject.extend and
+                                 				can make use of the following managed features:
                               </p>
                               
                               			

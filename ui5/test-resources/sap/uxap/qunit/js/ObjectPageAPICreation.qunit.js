@@ -239,17 +239,18 @@
 	QUnit.test("test selected section when hiding another one", function (assert) {
 		/* Arrange */
 		var oObjectPage = this.oObjectPage,
+			oThirdSection = this.oThirdSection,
 			oExpected = {
 				oSelectedSection: this.oSecondSection,
 				sSelectedTitle: this.oSecondSection.getSubSections()[0].getTitle()
 			},
 			done = assert.async();
 
-		/* Act: Hide the third section.
-		 /* which used to cause a failure, see BCP: 1770148914 */
-		this.oThirdSection.setVisible(false);
-
 		setTimeout(function () {
+			/* Act: Hide the third section.
+			 /* which used to cause a failure, see BCP: 1770148914 */
+			oThirdSection.setVisible(false);
+
 			/* Assert:
 			 /* The ObjectPage adjusts its layout, */
 			/* but the selected section should remain the same. */
@@ -257,21 +258,6 @@
 			done();
 		}, this.iLoadingDelay);
 
-	});
-
-	QUnit.module("test setSelectedSection functionality");
-
-	QUnit.test("test setSelectedSection with initially empty ObjectPage", function (assert) {
-		var oObjectPage = oFactory.getObjectPage(),
-			sSectionId = "section1";
-
-		// act
-		oObjectPage.setSelectedSection(sSectionId);
-
-		// assert
-		assert.strictEqual(oObjectPage.getSelectedSection(), sSectionId, "The given section should be the selected one");
-
-		oObjectPage.destroy();
 	});
 
 	QUnit.module("IconTabBar section selection", {
@@ -527,10 +513,8 @@
 					bSnapped: false
 				};
 
-				setTimeout(function() {
-					sectionIsSelected(oPage, assert, oExpected);
-					done();
-				}, 1000);
+				sectionIsSelected(oPage, assert, oExpected);
+				done();
 			};
 		oPage.attachEvent("onAfterRenderingDOMReady", fnOnDomReady);
 	});
@@ -560,10 +544,8 @@
 					bSnapped: false
 				};
 
-				setTimeout(function() {
-					sectionIsSelected(oPage, assert, oExpected);
-					done();
-				}, 1000);
+				sectionIsSelected(oPage, assert, oExpected);
+				done();
 			};
 		oPage.attachEvent("onAfterRenderingDOMReady", fnOnDomReady);
 	});
@@ -596,10 +578,8 @@
 					bSnapped: false
 				};
 
-				setTimeout(function() {
-					sectionIsSelected(oPage, assert, oExpected);
-					done();
-				}, 1000);
+				sectionIsSelected(oPage, assert, oExpected);
+				done();
 			};
 		oPage.attachEvent("onAfterRenderingDOMReady", fnOnDomReady);
 	});
@@ -921,17 +901,6 @@
 		assert.strictEqual(checkObjectExists("#objectPageViewSample--newHeader"), true);
 	});
 
-	QUnit.test("Should call ObjectPageHeader _toggleFocusableState", function (assert) {
-		var oObjectPage = this.oSampleView.byId("objectPage13"),
-			oHeader = oObjectPage.getHeaderTitle(),
-			oHeaderSpy = this.spy(oHeader, "_toggleFocusableState");
-
-		// act
-		oObjectPage.setToggleHeaderOnTitleClick(false);
-
-		// assert
-		assert.strictEqual(oHeaderSpy.callCount, 1, "ObjectPageHeader _toggleFocusableState is called");
-	});
 
 	QUnit.module("ObjectPage API", {
 		beforeEach: function () {
@@ -1124,25 +1093,6 @@
 		},  this.iDelay);
 	});
 
-	QUnit.test("applyLayout is not called on invalidated SubSection without parent ObjectPage", function (assert) {
-		var oObjectPage = this.oOP,
-			sNewTitle = "New SubSection Title",
-			oSectionToRemove = this.oSelectedSection,
-			oSubSectionToSpy = this.oSelectedSection.getSubSections()[0],
-			oSubSectionMethodSpy = this.spy(oSubSectionToSpy, "_applyLayout");
-
-		// Act: invalidate the SubSection and remove its parent Section
-		oSubSectionToSpy.setTitle(sNewTitle); // invalidate the SubSection
-		oObjectPage.removeSection(oSectionToRemove); // remove the Section
-
-		sap.ui.getCore().applyChanges();
-
-		// Assert
-		assert.equal(oSubSectionMethodSpy.callCount, 0,
-			"applyLayout is called: " + oSubSectionMethodSpy.callCount + " times.");
-	});
-
-
 	QUnit.test("test destroySections should reset selectedSection", function (assert) {
 		var oObjectPage = this.oOP,
 			done = assert.async();
@@ -1315,30 +1265,6 @@
 		assert.equal(oObjectPage._bHeaderExpanded, true, "After restoring toggleHeaderOnTitleClick to true, the header again expands on click");
 	});
 
-	QUnit.test("ObjectPage Header - expanding/collapsing by clicking the title", function (assert) {
-		// arrange
-		var oObjectPage = this.oObjectPage,
-			oObjectPageTitle = oObjectPage.getHeaderTitle(),
-			oStateChangeListener = this.spy(),
-			oFakeEvent = {
-				srcControl: oObjectPageTitle
-			};
-
-		oObjectPageTitle.attachEvent("stateChange", oStateChangeListener);
-
-		// act
-		oObjectPageTitle.ontap(oFakeEvent);
-
-		// assert
-		assert.ok(oStateChangeListener.calledOnce, "stateChange event was fired once");
-
-		// act
-		oObjectPageTitle.ontap(oFakeEvent);
-
-		// assert
-		assert.strictEqual(oStateChangeListener.callCount, 2, "stateChange event was fired twice");
-	});
-
 	QUnit.module("ObjectPage with alwaysShowContentHeader", {
 
 		beforeEach: function () {
@@ -1373,59 +1299,6 @@
 			assert.expect(3);
 			oObjectPage.attachEventOnce("onAfterRenderingDOMReady", fnOnDomReady);
 			helpers.renderObject(oObjectPage);
-	});
-
-	QUnit.module("Modifying hidden page", {
-
-		beforeEach: function () {
-			this.oObjectPage = helpers.generateObjectPageWithContent(oFactory, 5);
-		},
-		afterEach: function () {
-			this.oObjectPage.destroy();
-		}
-	});
-
-	QUnit.test("Should change selectedSection", function (assert) {
-		var oObjectPage = this.oObjectPage,
-			oSecondPage = new sap.m.Page(),
-			oNavContainer = new sap.m.App(),
-			oSecondSection = oObjectPage.getSections()[1],
-			iCompleteScrollTimeout = oObjectPage._iScrollToSectionDuration + 100,
-			iCompleteResizeCalculationTimeout = sap.uxap.ObjectPageLayout.HEADER_CALC_DELAY + 100,
-			oExpected,
-			done = assert.async(),
-			fnOnDomReady = function() {
-				oNavContainer.attachEventOnce("afterNavigate", fnOnHideObjectPage);
-				oNavContainer.to(oSecondPage.getId()); // nav to the second page to hide the object page
-			},
-			fnOnHideObjectPage = function() {
-				// act: change selectedSection while page is HIDDEN
-				oObjectPage.setSelectedSection(oSecondSection);
-				setTimeout(fnOnChangedSelection, iCompleteScrollTimeout);
-			},
-			fnOnChangedSelection = function() {
-				oNavContainer.attachEventOnce("afterNavigate", fnOnShowBackObjectPage);
-				oNavContainer.to(oObjectPage.getId()); // nav back to the object page
-			},
-			fnOnShowBackObjectPage = function() {
-				setTimeout(onResizeCheckCompleted, iCompleteResizeCalculationTimeout);
-			},
-			onResizeCheckCompleted = function() {
-				oExpected = {
-					oSelectedSection: oSecondSection,
-					sSelectedTitle: oSecondSection.getSubSections()[0].getTitle(), // the only subsection is promoted
-					bSnapped: true
-				};
-				//check
-				sectionIsSelected(oObjectPage, assert, oExpected);
-				done();
-			};
-
-		assert.expect(5);
-		oObjectPage.attachEventOnce("onAfterRenderingDOMReady", fnOnDomReady);
-		oNavContainer.addPage(oObjectPage);
-		oNavContainer.addPage(oSecondPage);
-		helpers.renderObject(oNavContainer);
 	});
 
 	function checkObjectExists(sSelector) {

@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.ui.core.sample.ControlBusyIndicator.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.core.sample.ControlBusyIndicator.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.core.sample.ControlBusyIndicator.Page",
 			dependencies : {
 				libs : [
 					"sap.m"

@@ -1,12 +1,11 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-sap.ui.define(["jquery.sap.global", "sap/ui/test/_LogCollector"], function ($, _LogCollector) {
+sap.ui.define([], function () {
 	"use strict";
-	var oLogger = $.sap.log.getLogger("sap.ui.test.matchers.Ancestor", _LogCollector.DEFAULT_LEVEL_FOR_OPA_LOGGERS);
 
 	/**
 	 * @class Ancestor - checks if a control has a defined ancestor
@@ -17,11 +16,9 @@ sap.ui.define(["jquery.sap.global", "sap/ui/test/_LogCollector"], function ($, _
 	 * @author SAP SE
 	 * @since 1.27
 	 */
-
-	return function (oAncestorControl, bDirect) {
+	return function(oAncestorControl, bDirect) {
 		return function (oControl) {
 			if (!oAncestorControl) {
-				oLogger.debug("No ancestor was defined so no controls will be filtered.");
 				return true;
 			}
 
@@ -31,11 +28,7 @@ sap.ui.define(["jquery.sap.global", "sap/ui/test/_LogCollector"], function ($, _
 				oParent = oParent.getParent();
 			}
 
-			var bResult = oParent === oAncestorControl;
-			if (!bResult) {
-				oLogger.debug("Control '" + oControl + "' does not have " + (bDirect ? "direct " : "") + "ancestor '" + oAncestorControl);
-			}
-			return bResult;
+			return oParent === oAncestorControl;
 		};
 	};
 

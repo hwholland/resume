@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -27,7 +27,7 @@ sap.ui.define(['jquery.sap.global', './Column', './library', 'sap/ui/core/Elemen
 	 * @extends sap.ui.table.Column
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -137,9 +137,16 @@ sap.ui.define(['jquery.sap.global', './Column', './library', 'sap/ui/core/Elemen
 					var oBinding = oParent.getBinding("rows");
 					if (oBinding) {
 						this._oBindingLabel = library.TableHelper.createLabel();
-						TableUtils.Binding.metadataLoaded(oParent).then(function() {
+						var oModel = oBinding.getModel();
+						// if the metadata of the underlying odatamodel is not yet loaded -> the setting of the text of the label must be delayed
+						if (oModel.oMetadata && oModel.oMetadata.isLoaded()) {
 							this._oBindingLabel.setText(oBinding.getPropertyLabel(this.getLeadingProperty()));
-						}.bind(this));
+						} else {
+							var that = this;
+							oModel.attachMetadataLoaded(function () {
+								that._oBindingLabel.setText(oBinding.getPropertyLabel(that.getLeadingProperty()));
+							});
+						}
 					}
 				}
 			}
@@ -324,20 +331,20 @@ sap.ui.define(['jquery.sap.global', './Column', './library', 'sap/ui/core/Elemen
 	};
 
 	/**
-	 * Returns the information whether the column is groupable.
+	 * This function checks whether a grouping column menu item will be created.
 	 *
-	 * The column is groupable only if the following conditions are fulfilled:
-	 * <ul>
-	 *   <li>The column must be child of an <code>AnalyticalTable</code>.</li>
-	 *   <li>The <code>rows</code> aggregation of the table must be bound.</li>
-	 *   <li>The metadata of the model must be loaded.</li>
-	 *   <li>The column's <code>leadingProperty</code> must be a sortable and filterable dimension.</li>
-	 * </ul>
+	 * Since a property of the table must be checked, this function will return false when the column is not a child of a table.
 	 *
-	 * @protected
-	 * @return {boolean} <code>true</code> if the column is groupable
+	 * For Columns the following applies:
+	 * - table must be bound
+	 * - column must be child of an AnalyticalTable
+	 * - metadata must be loaded
+	 * - leadingProperty must be sortable
+	 * - leadingProperty must be filterable
+	 *
+	 * @returns {boolean}
 	 */
-	AnalyticalColumn.prototype.isGroupable = function() {
+	AnalyticalColumn.prototype.isGroupableByMenu = function() {
 		var oParent = this.getParent();
 		if (isInstanceOfAnalyticalTable(oParent)) {
 			var oBinding = oParent.getBinding("rows");

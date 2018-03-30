@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.define([
@@ -16,7 +16,7 @@ sap.ui.define([
 	 * @class
 	 * @extends sap.ui.rta.command.BaseCommand
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @constructor
 	 * @private
 	 * @since 1.50
@@ -26,6 +26,9 @@ sap.ui.define([
 		metadata : {
 			library : "sap.ui.rta",
 			properties : {
+				renamedElement : {
+					type : "object"
+				},
 				oldText : {
 					type : "string"
 				},
@@ -48,20 +51,12 @@ sap.ui.define([
 		return true;
 	};
 
-	ControlVariantSetTitle.prototype.getPreparedChange = function() {
-		this._oPreparedChange = this.getVariantChange();
-		if (!this._oPreparedChange) {
-			jQuery.sap.log.error("No prepared change available for ControlVariantSetTitle");
-		}
-		return this._oPreparedChange;
-	};
-
 	/**
 	 * @public Template Method to implement execute logic, with ensure precondition Element is available
-	 * @returns {Promise} Returns resolve after execution
+	 * @returns {promise} Returns resolve after execution
 	 */
 	ControlVariantSetTitle.prototype.execute = function() {
-		var oVariantManagementControl = this.getElement(),
+		var oVariantManagementControl = this.getRenamedElement(),
 			oVariantManagementControlBinding = oVariantManagementControl.getTitle().getBinding("text");
 
 		this.oAppComponent = flUtils.getAppComponentForControl(oVariantManagementControl);
@@ -75,7 +70,6 @@ sap.ui.define([
 		var mPropertyBag = {
 			appComponent : this.oAppComponent,
 			variantReference : this.sCurrentVariant,
-			changeType : "setTitle",
 			title : this.getNewText(),
 			layer : this.sLayer
 		};
@@ -89,19 +83,18 @@ sap.ui.define([
 
 	/**
 	 * @public Template Method to implement undo logic
-	 * @returns {Promise} Returns resolve after undo
+	 * @returns {promise} Returns resolve after undo
 	 */
 	ControlVariantSetTitle.prototype.undo = function() {
-		var oVariantManagementControlBinding = this.getElement().getTitle().getBinding("text"),
+		var oVariantManagementControlBinding = this.getRenamedElement().getTitle().getBinding("text"),
 			mPropertyBag = {
 			variantReference : this.sCurrentVariant,
-			changeType : "setTitle",
 			title : this.getOldText(),
 			change: this._oVariantChange
 		};
 
 		return Promise.resolve(this.oModel._setVariantProperties(this.sVariantManagementReference, mPropertyBag, false))
-						.then(function(oChange) {
+						.then( function(oChange){
 								this._oVariantChange = oChange;
 								oVariantManagementControlBinding.checkUpdate(true); /*Force Update as binding key stays same*/
 						}.bind(this));

@@ -46,7 +46,6 @@
 		jQuery.sap.require("sap.ui.unified.calendar.CalendarDate");
 		jQuery.sap.require("sap.ui.unified.DateTypeRange");
 		jQuery.sap.require("sap.ui.unified.CalendarLegend");
-		jQuery.sap.require("sap.ui.unified.CalendarLegendRenderer");
 		jQuery.sap.require("sap.m.PlanningCalendarLegend");
 		jQuery.sap.require("sap.ui.unified.CalendarAppointment");
 		jQuery.sap.require("sap.ui.unified.CalendarLegendItem");
@@ -54,7 +53,6 @@
 		var CalendarDate = sap.ui.unified.calendar.CalendarDate,
 			DateTypeRange = sap.ui.unified.DateTypeRange,
 			CalendarLegend = sap.ui.unified.CalendarLegend,
-			CalendarLegendRenderer = sap.ui.unified.CalendarLegendRenderer,
 			PlanningCalendarLegend = sap.m.PlanningCalendarLegend,
 			CalendarLegendItem = sap.ui.unified.CalendarLegendItem,
 			CalendarAppointment = sap.ui.unified.CalendarAppointment,
@@ -446,11 +444,11 @@
 		};
 
 		var _formatDate = function(oDate) {
-			return sap.ui.core.format.DateFormat.getDateInstance({pattern: "dd.MM.yyyy"}).format(oDate);
+			return sap.ui.core.format.DateFormat.getDateInstance({pattern: "dd.MM.YYYY"}).format(oDate);
 		};
 
 		var _formatDateHour = function(oDate) {
-			return sap.ui.core.format.DateFormat.getDateInstance({pattern: "dd.MM.yyyy hh:mm"}).format(oDate);
+			return sap.ui.core.format.DateFormat.getDateInstance({pattern: "dd.MM.YYYY hh:mm"}).format(oDate);
 		};
 
 		var _padTo10 = function(i) {
@@ -984,7 +982,6 @@
 			assert.equal(this.oPC.$().outerWidth(), "1024", "width is set to 1024 px"); // this is only for check that width of the screen is set to 1024 px
 			assert.equal(jQuery("#PC3-OneMonthInt--Month0-days .sapUiCalItem").length , 31, "days are 31");
 		});
-
 
 		QUnit.module("Setters");
 
@@ -1621,189 +1618,6 @@
 			// cleanup
 			oPC.destroy();
 		});
-
-		QUnit.test("setCustomAppointmentsSorterCallback allows the app dev to custom sort the appointments via the setter", function
-				(assert) {
-			//arrange
-			var oPC = createPlanningCalendar("PC4", new sap.m.SearchField(), new sap.m.Button()),
-				fnCustom = function() {};
-
-			//assert
-			assert.notOk(oPC._fnCustomSortedAppointments, "there is not a custom sort");
-
-			//act
-			oPC.setCustomAppointmentsSorterCallback(fnCustom);
-
-			//assert
-			assert.deepEqual(oPC.getCustomAppointmentsSorterCallback(), oPC._fnCustomSortedAppointments, "there is a custom sort");
-			assert.deepEqual(fnCustom, oPC.getCustomAppointmentsSorterCallback(),
-					"getCustomAppointmentsSorterCallback() returns the given custom function");
-
-			//cleanup
-			oPC.destroy();
-		});
-
-		QUnit.test("setCustomAppointmentsSorterCallback(function) in the constructor", function (assert) {
-			//arrange & act
-			var fnCustom = function() {},
-				oPC = new sap.m.PlanningCalendar({
-				customAppointmentsSorterCallback: fnCustom
-			});
-
-			//assert
-			assert.deepEqual(oPC.getCustomAppointmentsSorterCallback(), oPC._fnCustomSortedAppointments, "when a fn is set to setCustomAppointmentsSorterCallback, the sort is custom");
-			assert.deepEqual(oPC.getCustomAppointmentsSorterCallback(), fnCustom, "getCustomAppointmentsSorterCallback() returns the given custom function");
-
-			//cleanup
-			oPC.destroy();
-		});
-
-		QUnit.test("setCustomAppointmentsSorterCallback(number) in the constructor", function (assert) {
-			//arrange & act
-			var oPC = new sap.m.PlanningCalendar({
-				customAppointmentsSorterCallback: 1
-			});
-
-			//assert
-			assert.deepEqual(oPC.getCustomAppointmentsSorterCallback(), undefined,
-					"when a number is set to setCustomAppointmentsSorterCallback, the sort is the default one");
-
-			//cleanup
-			oPC.destroy();
-		});
-
-		QUnit.test("setCustomAppointmentsSorterCallback(string) in the constructor", function (assert) {
-			//arrange & act
-			var oPC = new sap.m.PlanningCalendar({
-				customAppointmentsSorterCallback: "string is not allowed"
-			});
-
-			//assert
-			assert.deepEqual(oPC.getCustomAppointmentsSorterCallback(), undefined,
-					"when a string is set to setCustomAppointmentsSorterCallback, the sort is the default one");
-
-			//cleanup
-			oPC.destroy();
-		});
-
-		QUnit.test("setCustomAppointmentsSorterCallback(function) through the setter", function (assert) {
-			//arrange & act
-			var fnCustom = function() {},
-				oPC = new sap.m.PlanningCalendar({});
-
-			oPC.setCustomAppointmentsSorterCallback(fnCustom);
-
-			//assert
-			assert.deepEqual(oPC.getCustomAppointmentsSorterCallback(), oPC._fnCustomSortedAppointments, "when a fn is set to setCustomAppointmentsSorterCallback, the sort is custom");
-			assert.deepEqual(oPC.getCustomAppointmentsSorterCallback(), fnCustom, "getCustomAppointmentsSorterCallback() returns the given custom function");
-
-			//cleanup
-			oPC.destroy();
-		});
-
-		QUnit.test("setCustomAppointmentsSorterCallback(number) through the setter", function (assert) {
-			//arrange & act
-			var fnCustom = function() {},
-				oPC = new sap.m.PlanningCalendar({});
-
-			oPC.setCustomAppointmentsSorterCallback(1);
-
-			//assert
-			assert.deepEqual(oPC.getCustomAppointmentsSorterCallback(), undefined,
-					"when a number is set to setCustomAppointmentsSorterCallback, the sort is the default one");
-
-			//cleanup
-			oPC.destroy();
-		});
-
-		QUnit.test("setCustomAppointmentsSorterCallback(string) through the setter", function (assert) {
-			//arrange & act
-			var fnCustom = function() {},
-				oPC = new sap.m.PlanningCalendar({});
-
-			oPC.setCustomAppointmentsSorterCallback("string is not allowed");
-
-			//assert
-			assert.deepEqual(oPC.getCustomAppointmentsSorterCallback(), undefined,
-					"when a string is set to setCustomAppointmentsSorterCallback, the sort is the default one");
-
-			//cleanup
-			oPC.destroy();
-		});
-
-		QUnit.test("when sortAppointmentsCustomSemantic is set to undefined, the sort is the default one", function
-				(assert) {
-			//act
-			var oPC = new sap.m.PlanningCalendar({});
-			oPC.setCustomAppointmentsSorterCallback(undefined);
-
-			//assert
-			assert.equal(oPC._fnCustomSortedAppointments === undefined, true, "there is not a custom sort");
-
-			//cleanup
-			oPC.destroy();
-		});
-
-		QUnit.test("when a function is set to setCustomAppointmentsSorterCallback, it's called", function (assert) {
-			//arrange
-
-			var oPC = createPlanningCalendar("PC5", oSearchField1, oButton1),
-					oSortSpy = this.spy(),
-					iAppointments = _getAppointmentsCount(oPC);
-
-			//act
-			oPC.setCustomAppointmentsSorterCallback(oSortSpy);
-			oPC.placeAt('uiArea3');
-			sap.ui.getCore().applyChanges();
-
-			//assert
-			assert.ok (oSortSpy.callCount > iAppointments, "the custom sort function is called, appointments: " +
-			iAppointments + ", setCustomAppointmentsSorterCallback is called " + oSortSpy.callCount + " times");
-
-			//cleanup
-			oPC.destroy();
-		});
-
-		QUnit.test("Sticky header", function () {
-			// arrange
-			var oInfoToolbar,
-				oToolbar,
-				oPC = createPlanningCalendar(
-					"invalidationExample",
-					new sap.m.SearchField(),
-					new sap.m.Button(),
-					new Date(Date.UTC(2015, 0, 7)),
-					CalendarIntervalType.Week
-				);
-
-			// act
-			oPC.placeAt("uiArea2");
-			sap.ui.getCore().applyChanges();
-
-			// assert
-			assert.ok(!oPC.$("InfoToolbar").hasClass("sapMPlanCalStickyHeader"), "sticky class shouldn't be set on the info bar");
-			assert.ok(!oPC.$("Toolbar").hasClass("sapMPlanCalStickyHeader"), "sticky class shouldn't be set on the toolbar");
-
-			// act
-			oPC.setStickyHeader(true);
-			sap.ui.getCore().applyChanges();
-
-			// assert
-			assert.ok(oPC.$("InfoToolbar").hasClass("sapMPlanCalStickyHeader"), "sticky class should be set on the info bar");
-			assert.ok(oPC.$("Toolbar").hasClass("sapMPlanCalStickyHeader"), "sticky class should be set on the toolbar");
-
-			// act
-			oPC.setStickyHeader(false);
-			sap.ui.getCore().applyChanges();
-
-			// assert
-			assert.ok(!oPC.$("InfoToolbar").hasClass("sapMPlanCalStickyHeader"), "sticky class shouldn't be set on the info bar");
-			assert.ok(!oPC.$("Toolbar").hasClass("sapMPlanCalStickyHeader"), "sticky class shouldn't be set on the toolbar");
-
-			// cleanup
-			oPC.destroy();
-		});
-
 
 		QUnit.module("NonWorking Special Dates", {
 			beforeEach: function() {
@@ -2515,46 +2329,6 @@
 			}, 0);
 		});
 
-		QUnit.test("Navigation forward in week view where next week starts at 1st January (locale en_US)", function(assert) {
-			var $Days,
-				aDays,
-				oNextTarget,
-				oSelf = this,
-				fnDone = assert.async(),
-				oOriginalFormatLocale = sap.ui.getCore().getConfiguration().getFormatLocale();
-
-			//arrange
-			sap.ui.getCore().getConfiguration().setFormatLocale('en_US');
-			this.oPC2.setStartDate(new Date(2016, 11, 31));
-			this.oPC2.setViewKey(sap.ui.unified.CalendarIntervalType.Week);
-
-			$Days = this.oPC2IntervalRow.$("days");
-			aDays = $Days.children();
-			oNextTarget = aDays[aDays.length-1];
-
-			//act
-			aDays.eq(aDays.length-1).focus();
-			sap.ui.getCore().applyChanges();
-
-			_navFocusNext.call(this, oNextTarget);
-			setTimeout(function() {
-				//assert
-				_assertDatesAreVisible.call(oSelf, [
-					new Date(2017, 0, 1),
-					new Date(2017, 0, 2),
-					new Date(2017, 0, 3),
-					new Date(2017, 0, 4),
-					new Date(2017, 0, 5),
-					new Date(2017, 0, 6),
-					new Date(2017, 0, 7)
-				], oSelf.oPC2, "Navigated to 1st of January");
-
-				//clear
-				sap.ui.getCore().getConfiguration().setFormatLocale(oOriginalFormatLocale);
-				fnDone();
-			}, 0);
-		});
-
 		QUnit.test("Navigation backward and forward", function(assert) {
 			var i;
 			//act
@@ -3010,23 +2784,6 @@
 			assert.equal(this.oPC.getStartDate().getMonth(), 8, 'month is the same');
 		});
 
-		QUnit.test("checks for sapUiCalOneMonthInt class", function(assert) {
-			//Assert
-			assert.ok(this.oPCInterval.$().hasClass("sapUiCalOneMonthInt"), "sapUiCalOneMonthInt is rendered");
-		});
-
-		QUnit.test("Has sticky header on big size", function () {
-
-			//act
-			_switchToView.call(this, CalendarIntervalType.Month, this.oPC);
-			this.oPC.setStickyHeader(true);
-			sap.ui.getCore().applyChanges();
-
-			// assert
-			assert.ok(this.oPC.$("InfoToolbar").hasClass("sapMPlanCalStickyHeader"), "sticky class should be set on the info bar");
-			assert.ok(this.oPC.$("Toolbar").hasClass("sapMPlanCalStickyHeader"), "sticky class should be set on the toolbar");
-		});
-
 		QUnit.module("OneMonth view (size S)", {
 			beforeEach: function () {
 				this._simulateMobileEnvironment();
@@ -3234,50 +2991,14 @@
 			oSelectedAppointment = undefined;
 			qutils.triggerEvent("tap", "_oPC-R1A1");
 
-			//act & assert
+			//act
 			assert.equal(oSelectedAppointment.getId(), "_oPC-R1A1", "appointmentSelect event fired and appointment returned");
 			assert.ok(sap.ui.getCore().byId("_oPC-R1A1").getSelected(), "Appointment is selected");
-			qutils.triggerEvent("tap", "_oPC-R1A2");
-			assert.ok(!(sap.ui.getCore().byId("_oPC-R1A1").getSelected()),
-					"Appointment 1 is deselected because another one is selected");
-			assert.ok(sap.ui.getCore().byId("_oPC-R1A2").getSelected(), "Appointment 2 is selected");
-			assert.equal(this._oPC.getSelectedAppointments().length, 1, "One appointment is selected");
-			qutils.triggerEvent("tap", "_oPC-R1A2");
-			assert.ok(!(sap.ui.getCore().byId("_oPC-R1A1").getSelected()),
-					"Appointment 2 is deselected after a second click on it");
-			assert.equal(this._oPC.getSelectedAppointments().length, 0, "No appointment is selected");
-
-			//CTRL key included
-			qutils.triggerEvent("tap", "_oPC-R1A2");
-			sap.ui.test.qunit.triggerEvent("tap", sap.ui.getCore().byId("_oPC-R1A1").getDomRef(), {target :
-					sap.ui.getCore().byId("_oPC-R1A1").getDomRef(), ctrlKey: true});
-			assert.equal(this._oPC.getSelectedAppointments().length, 2, "Two appointments are selected");
-			sap.ui.test.qunit.triggerEvent("tap", sap.ui.getCore().byId("_oPC-R1A1").getDomRef(), {target :
-					sap.ui.getCore().byId("_oPC-R1A1").getDomRef(), ctrlKey: true});
-			assert.equal(this._oPC.getSelectedAppointments().length, 1,
-					"When deselecting an appointment while pressing CTRL key, only this particular appointment is deselected");
-			sap.ui.test.qunit.triggerEvent("tap", sap.ui.getCore().byId("_oPC-R1A1").getDomRef(), {target :
-					sap.ui.getCore().byId("_oPC-R1A1").getDomRef(), ctrlKey: true});
-			qutils.triggerEvent("tap", "_oPC-R1A2");
-			assert.equal(this._oPC.getSelectedAppointments().length, 0,
-					"When deselecting an appointment without pressing CTRL key all selections are gone");
 
 			// clean
 			oSelectedAppointment = undefined;
 		});
 
-		QUnit.test("No sticky header on phone size", function () {
-			//arrange
-			this._createCalendar();
-
-			//act
-			this._oPC.setStickyHeader(true);
-			sap.ui.getCore().applyChanges();
-
-			// assert
-			assert.ok(!this._oPC.$("InfoToolbar").hasClass("sapMPlanCalStickyHeader"), "sticky class shouldn't be set on the info bar");
-			assert.ok(!this._oPC.$("Toolbar").hasClass("sapMPlanCalStickyHeader"), "sticky class shouldn't be set on the toolbar");
-		});
 
 		QUnit.module("ARIA", {
 			beforeEach: function() {
@@ -3402,7 +3123,7 @@
 
 				this.assertAppointmentsWithoutConnectedLegendHaveDefaultAriaLabelledBy = function(aAppointmentsWithoutLegend, sMsgPref) {
 					aAppointmentsWithoutLegend.forEach(function (oApp) {
-						var sBuiltInTypeText = CalendarLegendRenderer.typeARIATexts[oApp.getType()].getText(),
+						var sBuiltInTypeText = CalendarLegend.typeARIATexts[oApp.getType()].getText(),
 							sAriaLabelledByText = oApp.$().find(".sapUiInvisibleText").text();
 
 						assert.ok(sAriaLabelledByText.indexOf(sBuiltInTypeText) >= 0, sMsgPref +
@@ -3449,7 +3170,7 @@
 
 						sAriaDescribedBy = $specialDate.attr("aria-describedby");
 
-						assert.ok(sAriaDescribedBy && sAriaDescribedBy.indexOf(CalendarLegendRenderer.typeARIATexts[oSpecialDate.getType()].getId()) >= 0,
+						assert.ok(sAriaDescribedBy && sAriaDescribedBy.indexOf(CalendarLegend.typeARIATexts[oSpecialDate.getType()].getId()) >= 0,
 							sMsgPref + ": Special date " + sSpecialDate + " of type CalendarDayType." + oSpecialDate.getType() +
 							" should be describedBy built-in text for this type. Current aria-describedby: " + sAriaDescribedBy);
 					});
@@ -3960,118 +3681,6 @@
 			//clean
 			oPC.destroy();
 		});
-
-		QUnit.module("Drag and Drop");
-
-		QUnit.test("_calcNewHoursAppPos: Calculate new position of the appointment in 'Hours' view", function(assert) {
-			//arrange
-			var oPCRow = new sap.m.PlanningCalendarRow(),
-				oRowStartDate = new Date(2017, 10, 13),
-				oAppStartDate = new Date(2017, 10, 13, 1, 0, 0),
-				oAppEndDate = new Date(2017, 10, 13, 2, 0, 0),
-				newAppPos;
-
-			//act
-			newAppPos = oPCRow._calcNewHoursAppPos(oRowStartDate, oAppStartDate, oAppEndDate, 10);
-
-			//assert
-			assert.deepEqual(newAppPos.startDate, new Date(2017, 10, 13, 5, 0, 0), "Correct new start position");
-			assert.deepEqual(newAppPos.endDate, new Date(2017, 10, 13, 6, 0, 0), "Correct new end position");
-
-			//act
-			newAppPos = oPCRow._calcNewHoursAppPos(oRowStartDate, oAppStartDate, oAppEndDate, 16);
-
-			//assert
-			assert.deepEqual(newAppPos.startDate, new Date(2017, 10, 13, 8, 0, 0), "Correct new start position");
-			assert.deepEqual(newAppPos.endDate, new Date(2017, 10, 13, 9, 0, 0), "Correct new end position");
-
-			//act
-			newAppPos = oPCRow._calcNewHoursAppPos(oRowStartDate, oAppStartDate, oAppEndDate, 8);
-
-			//assert
-			assert.deepEqual(newAppPos.startDate, new Date(2017, 10, 13, 4, 0, 0), "Correct new start position");
-			assert.deepEqual(newAppPos.endDate, new Date(2017, 10, 13, 5, 0, 0), "Correct new end position");
-
-			//clean
-			oPCRow.destroy();
-		});
-
-		QUnit.test("_calcNewDaysAppPos: Calculate new position of the appointment in 'Days' view", function(assert) {
-			//arrange
-			var oPCRow = new sap.m.PlanningCalendarRow(),
-				oRowStartDate = new Date(2017, 10, 13),
-				oAppStartDate = new Date(2017, 10, 15, 1, 0, 0),
-				oAppEndDate = new Date(2017, 10, 15, 2, 0, 0),
-				newAppPos;
-
-			//act
-			newAppPos = oPCRow._calcNewDaysAppPos(oRowStartDate, oAppStartDate, oAppEndDate, 4);
-
-			//assert
-			assert.deepEqual(newAppPos.startDate, new Date(2017, 10, 17, 1, 0, 0), "Correct new start position");
-			assert.deepEqual(newAppPos.endDate, new Date(2017, 10, 17, 2, 0, 0), "Correct new end position");
-
-			//act
-			newAppPos = oPCRow._calcNewDaysAppPos(oRowStartDate, oAppStartDate, oAppEndDate, 3);
-
-			//assert
-			assert.deepEqual(newAppPos.startDate, new Date(2017, 10, 16, 1, 0, 0), "Correct new start position");
-			assert.deepEqual(newAppPos.endDate, new Date(2017, 10, 16, 2, 0, 0), "Correct new end position");
-
-			//act
-			newAppPos = oPCRow._calcNewDaysAppPos(oRowStartDate, oAppStartDate, oAppEndDate, 6);
-
-			//assert
-			assert.deepEqual(newAppPos.startDate, new Date(2017, 10, 19, 1, 0, 0), "Correct new start position");
-			assert.deepEqual(newAppPos.endDate, new Date(2017, 10, 19, 2, 0, 0), "Correct new end position");
-
-			//clean
-			oPCRow.destroy();
-		});
-
-		QUnit.test("_calcNewMonthsAppPos: Calculate new position of the appointment in 'Months' view", function(assert) {
-			//arrange
-			var oPCRow = new sap.m.PlanningCalendarRow(),
-				oRowStartDate = new Date(2017, 10, 13),
-				oAppStartDate = new Date(2017, 11, 13, 1, 0, 0),
-				oAppEndDate = new Date(2017, 11, 13, 2, 0, 0),
-				newAppPos;
-
-			//act
-			newAppPos = oPCRow._calcNewMonthsAppPos(oRowStartDate, oAppStartDate, oAppEndDate, 3);
-
-			//assert
-			assert.deepEqual(newAppPos.startDate, new Date(2018, 1, 13, 1, 0, 0), "Correct new start position");
-			assert.deepEqual(newAppPos.endDate, new Date(2018, 1, 13, 2, 0, 0), "Correct new end position");
-
-			//act
-			newAppPos = oPCRow._calcNewMonthsAppPos(oRowStartDate, oAppStartDate, oAppEndDate, 1);
-
-			//assert
-			assert.deepEqual(newAppPos.startDate, new Date(2017, 11, 13, 1, 0, 0), "Correct new start position");
-			assert.deepEqual(newAppPos.endDate, new Date(2017, 11, 13, 2, 0, 0), "Correct new end position");
-
-			//act
-			newAppPos = oPCRow._calcNewMonthsAppPos(oRowStartDate, oAppStartDate, oAppEndDate, 2);
-
-			//assert
-			assert.deepEqual(newAppPos.startDate, new Date(2018, 0, 13, 1, 0, 0), "Correct new start position");
-			assert.deepEqual(newAppPos.endDate, new Date(2018, 0, 13, 2, 0, 0), "Correct new end position");
-
-			//clean
-			oPCRow.destroy();
-		});
-
-		function _getAppointmentsCount(oPC) {
-			var aRows = oPC.getRows(),
-				iAppointments = 0;
-
-			aRows.forEach(function(oRow){
-				iAppointments += oRow.getAppointments().length;
-			});
-
-			return iAppointments;
-		}
 	</script>
 
 </head>

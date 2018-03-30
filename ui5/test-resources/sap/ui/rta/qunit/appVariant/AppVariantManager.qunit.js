@@ -8,9 +8,7 @@ sap.ui.require([
 	"sap/ui/fl/descriptorRelated/api/DescriptorVariantFactory",
 	"sap/ui/thirdparty/sinon",
 	"sap/ui/fl/registry/Settings",
-	"sap/ui/rta/appVariant/S4HanaCloudBackend",
-	"sap/ui/rta/command/Stack",
-	"sap/ui/rta/command/LREPSerializer"
+	"sap/ui/rta/appVariant/S4HanaCloudBackend"
 ],
 function(
 	AppVariantManager,
@@ -18,10 +16,7 @@ function(
 	DescriptorVariantFactory,
 	sinon,
 	Settings,
-	S4HanaCloudBackend,
-	Stack,
-	LREPSerializer
-) {
+	S4HanaCloudBackend) {
 
 	"use strict";
 
@@ -30,15 +25,11 @@ function(
 
 	QUnit.module("Given an AppVariantManager is instantiated", {
 		beforeEach: function () {
-			var oRootControl = new sap.ui.core.Control();
-			var oRtaCommandStack = new Stack();
-			var oCommandSerializer = new LREPSerializer({commandStack: oRtaCommandStack, rootControl: oRootControl});
-			this.oAppVariantManager = new AppVariantManager({rootControl: oRootControl, commandSerializer: oCommandSerializer});
+			this.oAppVariantManager = new AppVariantManager();
 		},
 
 		afterEach: function () {
 			sandbox.restore();
-			this.oAppVariantManager.destroy();
 		}
 	}, function() {
 		QUnit.test("When _openDialog() method is called and create event is triggered", function (assert) {
@@ -79,6 +70,9 @@ function(
 					crossNavigation: {
 						inbounds: {}
 					}
+				},
+				"sap.ui5" : {
+					componentName: "TestIdBaseApp"
 				}
 			};
 
@@ -108,6 +102,7 @@ function(
 				assert.strictEqual(oAppVariantData.description, "App Variant Description", "then the description is correct");
 				assert.strictEqual(oAppVariantData.icon, "App Variant Icon", "then the icon is correct");
 				assert.strictEqual(oAppVariantData.idRunningApp, "TestId", "then the running app id is correct");
+				assert.strictEqual(oAppVariantData.idBaseApp, "TestIdBaseApp", "then the base app id is correct");
 				done();
 			});
 		});
@@ -117,11 +112,7 @@ function(
 
 	QUnit.module("Given an AppVariantManager is instantiated for different platforms", {
 		beforeEach: function () {
-			var oRootControl = new sap.ui.core.Control();
-			var oRtaCommandStack = new Stack();
-			var oCommandSerializer = new LREPSerializer({commandStack: oRtaCommandStack, rootControl: oRootControl});
-			this.oAppVariantManager = new AppVariantManager({rootControl: oRootControl, commandSerializer: oCommandSerializer});
-
+			this.oAppVariantManager = new AppVariantManager();
 			oServer = sinon.fakeServer.create();
 
 			sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "getInboundInfo").returns({
@@ -147,7 +138,6 @@ function(
 
 		afterEach: function () {
 			sandbox.restore();
-			this.oAppVariantManager.destroy();
 			oServer.restore();
 		}
 	}, function() {
@@ -281,7 +271,8 @@ function(
 
 			oServer.autoRespond = true;
 
-			sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "showRelevantDialog").returns(Promise.reject(false));
+			sandbox.stub(this.oAppVariantManager, "_showErrorMessage").returns(Promise.reject(false));
+
 			return this.oAppVariantManager.createDescriptor(this.oAppVariantData).catch(
 				function(bSuccess) {
 					assert.equal(bSuccess, false, "Error: An unexpected exception occured" );
@@ -293,12 +284,7 @@ function(
 
 	QUnit.module("Given an AppVariantManager is instantiated for different platforms", {
 		beforeEach: function () {
-			var oRootControl = new sap.ui.core.Control();
-			var oRtaCommandStack = new Stack();
-			var oCommandSerializer = new LREPSerializer({commandStack: oRtaCommandStack, rootControl: oRootControl});
-			sandbox.stub(oRtaCommandStack, "getAllExecutedCommands").returns(["testCommand"]);
-
-			this.oAppVariantManager = new AppVariantManager({rootControl: oRootControl, commandSerializer: oCommandSerializer});
+			this.oAppVariantManager = new AppVariantManager();
 			oServer = sinon.fakeServer.create();
 		},
 		afterEach: function () {
@@ -379,7 +365,7 @@ function(
 
 			oServer.autoRespond = true;
 
-			sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "showRelevantDialog").returns(Promise.reject(false));
+			sandbox.stub(this.oAppVariantManager, "_showErrorMessage").returns(Promise.reject(false));
 
 			return DescriptorVariantFactory.createNew({
 				id: "customer.TestId",
@@ -404,6 +390,8 @@ function(
 				})
 			));
 
+			var oRootControl = new sap.ui.core.Control();
+
 			sandbox.stub(sap.ui.fl.Utils, "getComponentClassName").returns("testComponent");
 
 			var oDescriptor = {
@@ -425,41 +413,9 @@ function(
 
 			sandbox.stub(sap.ui.fl.Utils, "getAppComponentForControl").returns(oComponent);
 
-			return this.oAppVariantManager.copyUnsavedChangesToLREP("AppVariantId", false).then(function() {
-				assert.ok("then the promise is resolved");
+			return this.oAppVariantManager.copyUnsavedChangesToLREP("AppVariantId", oRootControl, true).then(function(bSuccess) {
+				assert.ok(bSuccess, "then the promise is resolved");
 			});
-		});
-
-		QUnit.test("When copyUnsavedChangesToLREP() method is called, taking over dirty changes failed", function (assert) {
-			var fnTakeOverDirtyChanges = sandbox.stub(this.oAppVariantManager, "_takeOverDirtyChangesByAppVariant").returns(Promise.reject("Saving error"));
-			var fnDeleteAppVariant = sandbox.stub(this.oAppVariantManager, "_deleteAppVariantFromLREP").returns(Promise.resolve());
-			var fnShowRelevantDialog = sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "showRelevantDialog").returns(Promise.reject());
-
-			return new Promise(function(resolve, reject) {
-				return this.oAppVariantManager.copyUnsavedChangesToLREP("AppVariantId", true).then(reject, function () {
-					assert.ok(true, "a rejection took place");
-					assert.equal(fnTakeOverDirtyChanges.callCount, 1, "then the _takeOverDirtyChangesByAppVariant() method is called once");
-					assert.equal(fnDeleteAppVariant.callCount, 1, "then the _deleteAppVariantFromLREP() method is called once");
-					assert.equal(fnShowRelevantDialog.callCount, 1, "then the showRelevantDialog() method is called once");
-					resolve();
-				});
-			}.bind(this));
-		});
-
-		QUnit.test("When copyUnsavedChangesToLREP() method is called, taking over dirty changes failed and then the deleting of app variants is also failed", function (assert) {
-			var fnTakeOverDirtyChanges = sandbox.stub(this.oAppVariantManager, "_takeOverDirtyChangesByAppVariant").returns(Promise.reject("Saving error"));
-			var fnDeleteAppVariant = sandbox.stub(this.oAppVariantManager, "_deleteAppVariantFromLREP").returns(Promise.reject("Delete Error"));
-			var fnShowRelevantDialog = sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "showRelevantDialog").returns(Promise.reject());
-
-			return new Promise(function(resolve, reject) {
-				return this.oAppVariantManager.copyUnsavedChangesToLREP("AppVariantId", true).then(reject, function () {
-					assert.ok(true, "a rejection took place");
-					assert.equal(fnTakeOverDirtyChanges.callCount, 1, "then the _takeOverDirtyChangesByAppVariant() method is called once");
-					assert.equal(fnDeleteAppVariant.callCount, 1, "then the _deleteAppVariantFromLREP() method is called once");
-					assert.equal(fnShowRelevantDialog.callCount, 1, "then the showRelevantDialog() method is called once");
-					resolve();
-				});
-			}.bind(this));
 		});
 
 		QUnit.test("When triggerCatalogAssignment() method is called on S4/Hana Cloud", function (assert) {
@@ -558,7 +514,7 @@ function(
 
 			oServer.autoRespond = true;
 
-			sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "showRelevantDialog").returns(Promise.reject(false));
+			sandbox.stub(this.oAppVariantManager, "_showErrorMessage").returns(Promise.reject(false));
 
 			return DescriptorVariantFactory.createNew({
 				id: "customer.TestId",
@@ -614,14 +570,16 @@ function(
 				})
 			));
 
-			sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "showRelevantDialog").returns(Promise.resolve());
+			var oRootControl = new sap.ui.core.Control();
+
+			sandbox.stub(this.oAppVariantManager, "_showSaveSuccessMessage").returns(Promise.resolve());
 
 			return DescriptorVariantFactory.createNew({
 				id: "customer.TestId",
 				reference: "TestIdBaseApp"
 			}).then(function(oDescriptor) {
-				return this.oAppVariantManager.showSuccessMessageAndTriggerActionFlow(oDescriptor, true).then(function() {
-					assert.ok("then the promise is resolved and app is navigated to FLP Homepage");
+				return this.oAppVariantManager.showSuccessMessageAndTriggerActionFlow(oDescriptor, true, oRootControl).then(function(bSuccess) {
+					assert.ok(bSuccess, "then the app is navigated to FLP Homepage and the promise is resolved");
 					sap.ushell = originalUShell;
 					delete window.bUShellNavigationTriggered;
 					done();
@@ -669,14 +627,16 @@ function(
 				})
 			));
 
-			sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "showRelevantDialog").returns(Promise.resolve());
+			var oRootControl = new sap.ui.core.Control();
+
+			sandbox.stub(this.oAppVariantManager, "_showSaveSuccessMessage").returns(Promise.resolve());
 
 			return DescriptorVariantFactory.createNew({
 				id: "customer.TestId",
 				reference: "TestIdBaseApp"
 			}).then(function(oDescriptor) {
-				return this.oAppVariantManager.showSuccessMessageAndTriggerActionFlow(oDescriptor, true).then(function() {
-					assert.ok("then the promise is resolved and app is navigated to FLP Homepage");
+				return this.oAppVariantManager.showSuccessMessageAndTriggerActionFlow(oDescriptor, true, oRootControl).then(function(bSuccess) {
+					assert.ok(bSuccess, "then the app is navigated to FLP Homepage and the promise is resolved");
 					sap.ushell = originalUShell;
 					delete window.bUShellNavigationTriggered;
 					done();
@@ -696,7 +656,9 @@ function(
 				})
 			));
 
-			sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "showRelevantDialog").returns(Promise.resolve());
+			var oRootControl = new sap.ui.core.Control();
+
+			sandbox.stub(this.oAppVariantManager, "_showSaveSuccessMessage").returns(Promise.resolve());
 
 			var fnAppVariantFeatureSpy = sandbox.stub(RtaAppVariantFeature, "onGetOverview").returns(Promise.resolve(true));
 
@@ -704,7 +666,7 @@ function(
 				id: "customer.TestId",
 				reference: "TestIdBaseApp"
 			}).then(function(oDescriptor) {
-				return this.oAppVariantManager.showSuccessMessageAndTriggerActionFlow(oDescriptor, false).then(function(bSuccess) {
+				return this.oAppVariantManager.showSuccessMessageAndTriggerActionFlow(oDescriptor, false, oRootControl).then(function(bSuccess) {
 					assert.ok(bSuccess, "then the app variant overview list gets opened");
 					assert.ok(fnAppVariantFeatureSpy.calledOnce, "then the onGetOverview() method is called once");
 					done();
@@ -724,7 +686,9 @@ function(
 				})
 			));
 
-			sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "showRelevantDialog").returns(Promise.resolve());
+			var oRootControl = new sap.ui.core.Control();
+
+			sandbox.stub(this.oAppVariantManager, "_showSaveSuccessMessage").returns(Promise.resolve());
 
 			var fnAppVariantFeatureSpy = sandbox.stub(RtaAppVariantFeature, "onGetOverview").returns(Promise.resolve(true));
 
@@ -732,7 +696,7 @@ function(
 				id: "customer.TestId",
 				reference: "TestIdBaseApp"
 			}).then(function(oDescriptor) {
-				return this.oAppVariantManager.showSuccessMessageAndTriggerActionFlow(oDescriptor, false).then(function(bSuccess) {
+				return this.oAppVariantManager.showSuccessMessageAndTriggerActionFlow(oDescriptor, false, oRootControl).then(function(bSuccess) {
 					assert.ok(bSuccess, "then the app variant overview list gets opened");
 					assert.ok(fnAppVariantFeatureSpy.calledOnce, "then the onGetOverview() method is called once");
 					done();

@@ -1,19 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.StandardTile.
-sap.ui.define([
-	'./Tile',
-	'./library',
-	'sap/ui/core/IconPool',
-	'sap/ui/core/library',
-	'sap/ui/Device',
-	'./StandardTileRenderer'
-],
-	function(Tile, library, IconPool, coreLibrary, Device, StandardTileRenderer) {
+sap.ui.define(['./Tile', './library', 'sap/ui/core/IconPool', 'sap/ui/core/library', 'sap/ui/Device'],
+	function(Tile, library, IconPool, coreLibrary, Device) {
 	"use strict";
 
 
@@ -40,12 +33,12 @@ sap.ui.define([
 	 * @extends sap.m.Tile
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
 	 * @since 1.12
-	 * @deprecated as of version 1.50, replaced by {@link sap.m.GenericTile}
+	 * @deprecated As of version 1.50, use {@link sap.m.GenericTile} instead
 	 * @alias sap.m.StandardTile
 	 * @ui5-metamodel This control/element also will be described in the UI5 (legacy) designtime metamodel
 	 */

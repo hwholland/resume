@@ -1,29 +1,11 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 // Provides control sap.m.SelectionDetails.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/m/Button',
-	'sap/ui/base/Interface',
-	'sap/ui/Device',
-	'sap/ui/core/library',
-	'./SelectionDetailsRenderer'
-],
-function(
-	jQuery,
-	library,
-	Control,
-	Button,
-	Interface,
-	Device,
-	CoreLibrary,
-	SelectionDetailsRenderer
-	) {
+sap.ui.define([ 'jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/m/Button', 'sap/ui/base/Interface', 'sap/ui/Device', 'sap/ui/core/library' ],
+	function(jQuery, library, Control, Button, Interface, Device, CoreLibrary) {
 	"use strict";
 
 	/**
@@ -37,7 +19,7 @@ function(
 	 * <b><i>Note:</i></b>It is protected and should only be used within the framework itself.
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @extends sap.ui.core.Control
 	 * @constructor
@@ -104,7 +86,7 @@ function(
 					 */
 					direction: {type: "string"},
 					/**
-					 * The content of the currently viewed page that was previously added via {@link sap.m.SelectionDetailsFacade#navTo}.
+					 * The content of the currently viewed page that was previously added via {@link sap.m.SelectionDetails#navTo}.
 					 * This contains the content of the page before the navigation was triggered.
 					 * Can be null in case of first event triggering.
 					 */
@@ -531,7 +513,7 @@ function(
 		});
 		this.destroyAggregation("items", true);
 		for (var i = 0; i < aSelection.length; i++) {
-			oResult = fnFactory(aSelection[i].displayData, aSelection[i].data, aSelection[i].context, oData, aSelection[i].shapeString);
+			oResult = fnFactory(aSelection[i].displayData, aSelection[i].data, aSelection[i].context, oData);
 			if (oResult) {
 				oResult._sMarkerShapeString = aSelection[i].shapeString;
 				this.addAggregation("items", oResult, true);

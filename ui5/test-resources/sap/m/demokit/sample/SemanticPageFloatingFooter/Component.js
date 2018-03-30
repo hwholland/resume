@@ -4,11 +4,7 @@ sap.ui.define(['sap/ui/core/UIComponent'], function (UIComponent) {
 	var Component = UIComponent.extend("sap.m.sample.SemanticPageFloatingFooter.Component", {
 
 		metadata: {
-			rootView: {
-				"viewName": "sap.m.sample.SemanticPageFloatingFooter.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.m.sample.SemanticPageFloatingFooter.Page",
 			dependencies: {
 				libs: [
 					"sap.m"

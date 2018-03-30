@@ -1,0 +1,117 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="For many container controls in OpenUI5, such as a Dialog or a Page, you can define whether the container should have a padding within the content area. A padding clears the area between the container layout and the controls that are displayed in the content area."/>
+<meta name="description" content="For many container controls in OpenUI5, such as a Dialog or a Page, you can define whether the container should have a padding within the content area. A padding clears the area between the container layout and the controls that are displayed in the content area."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3580102930250296"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3580102930250296"/>
+<title>Using Container Content Padding CSS Classes</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc71f6df62dae47ca8284310a6f5fc80a">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Using Container Content Padding CSS Classes</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">For many container controls in <span class="ph"><span class="ph pname">OpenUI5</span></span>, such as a Dialog or a Page, you can define
+		whether the container should have a padding within the content area. A padding clears the
+		area between the container layout and the controls that are displayed in the content
+		area.</p>
+
+		<p class="p">You can either choose to have no padding, a small padding, or a responsive padding that is
+			based on the user’s screen size.</p>
+
+		<p class="p">The following CSS classes for content padding are provided by <span class="ph"><span class="ph pname">OpenUI5</span></span>:</p>
+
+		<div class="p">
+			<ul class="sl simple">
+				<li class="sli"><span class="keyword apiname">sapUiNoContentPadding</span></li>
+
+				<li class="sli"><span class="keyword apiname">sapUiContentPadding</span></li>
+
+				<li class="sli"><span class="keyword apiname">sapUiResponsiveContentPadding</span></li>
+
+			</ul>
+
+		</div>
+
+		<p class="p">The effects of these paddings will be different depending on the container that is being
+			used:</p>
+
+		<ul class="ul" id="loioc71f6df62dae47ca8284310a6f5fc80a__ul_egp_bzm_wq">
+			<li class="li">If the container is defining a padding on its content area by default, then setting
+					<span class="keyword apiname">sapUiNoContentPadding</span> in the application code will remove the
+				padding and thus not display any space between the container layout and the content
+				controls.</li>
+
+			<li class="li">If the container is defining no padding on its content by default, then setting
+					<span class="keyword apiname">sapUiContentPadding</span> will add 1rem (16px) of padding around
+				the content area to layout the content controls.</li>
+
+			<li class="li">Setting <span class="keyword apiname">sapUiResponsiveContentPadding</span> on the container control
+				will add a padding based on the user’s screen size. On small screen devices such as
+				smartphones, or when the browser window is resized to a small size, no padding is
+				displayed. On medium screen sizes and applications that are using a
+					<span class="keyword apiname">SplitApp</span>, the control will get 1rem (16px) of padding.
+				Finally, on large screen sizes in full-screen mode, the container control will get
+				2rem (32px) of padding to the left and right and 1rem (16px) of padding at the top
+				and bottom.</li>
+
+		</ul>
+
+		<p class="p">The following list shows examples of controls that support container content padding CSS
+			classes:</p>
+
+		<ul class="sl simple">
+			<li class="sli"><span class="keyword apiname">sap.m.Dialog</span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.m.IconTabBar</span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.m.Popover</span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.m.Page</span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.m.List</span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.m.Table</span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.m.Carousel</span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.m.Panel</span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.m.ScrollContainer</span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.ui.layout.BlockLayoutCell</span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.ui.layout.HorizontalLayout</span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.ui.layout.DynamicSideContent </span></li>
+
+			<li class="sli"><span class="keyword apiname">sap.ui.layout.VerticalLayout</span></li>
+
+		</ul>
+
+		<div class="example"><h2 class="exampletitle">Example</h2>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;Page class=”sapUiResponsivePadding”&gt;</pre></div>
+
+		</div>
+
+		<div class="section"><div class="section_title">Example</div><div type="Example">
+			
+			<p class="p">For a detailed example of how our container padding classes work, see the sample <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.core.ContainerPadding/samples" alt="../../explored.html#/entity/sap.ui.core.ContainerPadding/samples" title="../../explored.html#/entity/sap.ui.core.ContainerPadding/samples">sap.ui.core.ContainerPadding</a>.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

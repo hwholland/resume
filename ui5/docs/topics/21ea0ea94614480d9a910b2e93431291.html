@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -123,16 +123,13 @@
                         </p>
                         
                         		
-                        <div class="p">Compared to image-based icons, icon font is easily scalable and you can change the color and
-                           			apply various effects via CSS. <span class="ph"><span class="ph pname">OpenUI5</span></span> provides the
-                           				<samp class="ph codeph">sap.ui.core.icon</samp> control and a set of predefined icons is available
-                           			in <samp class="ph codeph">sap.ui.core.IconPool</samp>.
+                        <div class="p">Compared to image-based icons, icon font is easily scalable and you can change the color and apply various effects via CSS.
+                           <span class="ph"><span class="ph pname">OpenUI5</span></span> provides the <samp class="ph codeph">sap.ui.core.icon</samp> control and a set of predefined
+                           			icons is available in <samp class="ph codeph">sap.ui.core.IconPool</samp>.
                            <aside class="note note  insertion"><span class="title">Note</span> 
                               				
-                              <p class="p">The icon font will not work if Web fonts are blocked for the user&apos;s operating
-                                 					system, for example, by the <span class="ph uicontrol">Blocking Untrusted Fonts</span>
-                                 					feature in Microsoft Windows (see <a class="extlink" href="http://help.sap.com/disclaimer?site=https://technet.microsoft.com/en-us/itpro/windows/keep-secure/block-untrusted-fonts-in-enterprise" target="_blank" alt="https://technet.microsoft.com/en-us/itpro/windows/keep-secure/block-untrusted-fonts-in-enterprise" title="https://technet.microsoft.com/en-us/itpro/windows/keep-secure/block-untrusted-fonts-in-enterprise">Block untrusted fonts in an enterprise<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a> in the
-                                 					Microsoft Windows IT Center).
+                              <p class="p">The icon font will not work if Web fonts are blocked for the user&apos;s operating system, for example, by the <span class="ph uicontrol">Blocking Untrusted
+                                    						Fonts</span> feature in Microsoft Windows (see <a class="extlink" href="http://help.sap.com/disclaimer?site=https://technet.microsoft.com/en-us/itpro/windows/keep-secure/block-untrusted-fonts-in-enterprise" target="_blank" alt="https://technet.microsoft.com/en-us/itpro/windows/keep-secure/block-untrusted-fonts-in-enterprise" title="https://technet.microsoft.com/en-us/itpro/windows/keep-secure/block-untrusted-fonts-in-enterprise">Block untrusted fonts in an enterprise<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a> in the Microsoft Windows IT Center).
                               </p>
                               
                               			
@@ -169,7 +166,8 @@
                                     					
                                     <p class="p">Example for IE versions below IE9:</p>
                                     
-                                    					<pre class="pre codeblock prettyprint lang-html">&lt;style&gt;
+                                    					<pre class="pre codeblock prettyprint lang-html">
+&lt;style&gt;
 font-face {
     font-family: &apos;SAP-icons&apos;; /*Please replace &apos;SAP-icons&apos; with your font name which will be used when register in sap.ui.core.IconPool*/
     src: url(&apos;_PATH_TO_EOT_FILE_&apos;);
@@ -182,7 +180,8 @@ font-face {
                                     
                                     					<p class="p">Example for IE versions as of IE9:</p>
                                     
-                                    					<pre class="pre codeblock prettyprint lang-html">&lt;style&gt;
+                                    					<pre class="pre codeblock prettyprint lang-html">
+&lt;style&gt;
 @font-face {
     font-family: &apos;SAP-icons&apos;; /*Please replace &apos;SAP-icons&apos; with your font name which will be used when register in sap.ui.core.IconPool*/
     src: url(&apos;_PATH_TO_TTF_FILE_&apos;) format(&apos;truetype&apos;);
@@ -282,9 +281,8 @@ font-face {
                                     </p>
                                     
                                     					<pre class="pre codeblock prettyprint lang-js">
-sap.ui.require([&quot;sap.ui.core.IconPool&quot;], function(IconPool) {
-    var sURI = IconPool.getIconURI(&quot;accidental-leave&quot;);//please change the parameter to the name of your desired icon
-});</pre>
+jQuery.sap.require(&quot;sap.ui.core.IconPool&quot;);
+var sURI = sap.ui.core.IconPool.getIconURI(&quot;accidental-leave&quot;);//please change the parameter to the name of your desired icon</pre>
                                     
                                     				</li>
                                  
@@ -326,24 +324,22 @@ sap.ui.require([&quot;sap.ui.core.IconPool&quot;], function(IconPool) {
                                  				the instance.
                               </p>
                               
-                              			<pre class="pre codeblock prettyprint lang-js">sap.ui.define([&#x2026;, &apos;sap/ui/core/IconPool&apos;, ...], function(&#x2026;, IconPool, &#x2026;) {
-...    Dialog.prototype.setIcon = function(sURI){
-        this.setProperty(&quot;icon&quot;, sURI, true);
-        if(!jQuery.os.ios){
-           //icon is only shown in non iOS platform
-           if(this._iconImage){
-               this._iconImage.setSrc(sURI);
-           }else{
-               this._iconImage = IconPool.createControlByURI({
-                   src: sURI //src is mandatory
-                   /* other properties can be put here, such as id, ...*/
-               }, sap.m.Image);
-           }
+                              			<pre class="pre codeblock prettyprint lang-js">
+sap.m.Dialog.prototype.setIcon = function(sURI){
+    this.setProperty(&quot;icon&quot;, sURI, true);
+    if(!jQuery.os.ios){
+       //icon is only shown in non iOS platform
+       if(this._iconImage){
+           this._iconImage.setSrc(sURI);
+       }else{
+           this._iconImage = sap.ui.core.IconPool.createControlByURI({
+               src: sURI //src is mandatory
+               /* other properties can be put here, such as id, ...*/
+           }, sap.m.Image);
        }
-       return this;
-    };
-
-...</pre>
+   }
+   return this;
+};</pre>
                               
                               			<p class="p">If the <samp class="ph codeph">img</samp> tag is rendered directly in the control, and not by creating an
                                  				image control, use the <samp class="ph codeph">writeIcon</samp> method on
@@ -362,8 +358,9 @@ sap.ui.require([&quot;sap.ui.core.IconPool&quot;], function(IconPool) {
                                  				built in font face in your CSS. This is shown in the following code snippet:
                               </p>
                               
-                              			<pre class="pre codeblock prettyprint lang-js">sap.ui.require([&quot;sap/ui/core/IconPool&quot;], function(IconPool) {  IconPool.insertFontFaceStyle();
-});</pre>
+                              			<pre class="pre codeblock prettyprint lang-js">
+jQuery.sap.require(&quot;sap.ui.core.IconPool&quot;);
+sap.ui.core.IconPool.insertFontFaceStyle();</pre>
                               
                               		</section>
                         </div>

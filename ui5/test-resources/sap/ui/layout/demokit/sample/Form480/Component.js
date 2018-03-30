@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.ui.layout.sample.Form480.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.layout.sample.Form480.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.layout.sample.Form480.Page",
 			dependencies : {
 				libs : [
 					"sap.m",

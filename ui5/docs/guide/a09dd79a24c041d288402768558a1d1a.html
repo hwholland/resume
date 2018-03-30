@@ -6,8 +6,8 @@
 <meta name="abstract" content="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.50 to 1.52."/>
 <meta name="description" content="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.50 to 1.52."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=015402580853971393"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=015402580853971393"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6945451689967391"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6945451689967391"/>
 <title>What's New in OpenUI5 1.52</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -68,7 +68,7 @@
                 <div class="note caution"><span class="cautiontitle">Caution</span> 
                     <p class="p"><span class="ph emphasis emphasis">Incompatibility Due to a Bug Fix</span></p>
 
-                    <p class="p">If you call the <a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/getObject" alt="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/getObject" title="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/getObject">sap.ui.model.odata.v4.Context#getObject()</a> or the <a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/requestObject" alt="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/requestObject" title="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/requestObject">sap.ui.model.odata.v4.Context#requestObject()</a> methods without
+                    <p class="p">If you call the <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#getObject" alt="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#getObject" title="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#getObject">sap.ui.model.odata.v4.Context#getObject()</a> or the <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#requestObject" alt="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#requestObject" title="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#requestObject">sap.ui.model.odata.v4.Context#requestObject()</a> methods without
                         a parameter, the expected and documented behavior is that the same result is
                         returned as if the parameter <samp class="ph codeph">sPath=""</samp> had been specified.
                         However, due to a bug, the return value wraps the expected output and can
@@ -438,7 +438,20 @@
                 
                 
                 
-                
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.ui.richtexteditor.RichTextEditor</samp> now supports formatting
+                        functionality by adding the <samp class="ph codeph">styleselect</samp> or
+                            <samp class="ph codeph">formatselect</samp> button group for both toolbars
+                            (<span class="ph pname">TinyMCE</span> or <span class="ph"><span class="ph pname">OpenUI5</span></span>).
+                        Available formatting options are <samp class="ph codeph">heading 1</samp> to
+                            <samp class="ph codeph">heading 6</samp> and <samp class="ph codeph">paragraph</samp>. These changes
+                        won't affect applications already using an
+                            <samp class="ph codeph">sap.ui.richtexteditor.RichTextEditor</samp> with an added
+                            <samp class="ph codeph">styleselect</samp> or <samp class="ph codeph">formatselect</samp>
+                        option.</p>
+
+                </li>
+
                 <li class="li">
                     <p class="p"><samp class="ph codeph">sap.ui.table.Table</samp>: You can now use drag and drop for table
                         rows with aggregation <samp class="ph codeph">dragDropConfig</samp>. <span class="ph">For
@@ -689,26 +702,6 @@
 
         <div class="section collapsible expanded" id="loioa09dd79a24c041d288402768558a1d1a__section_vgc_dhg_x1b"><div class="section_title">Documentation and Templates</div><div type="Documentation and Templates">
             
-            <div class="p">Check out the following new and updated documentation topics:<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_m1y_rzg_4cb">
-                    <li class="li">
-                        <p class="p"><a class="xref" href="ae448243822448d8ba04b4784f4b09a0.html#loioae448243822448d8ba04b4784f4b09a0" title="To make sure that the code is always tested thoroughly before it is included in a productive app, you should use a test runner that automates tests. The test runner can be included in your project setup so that it is called whenever code changes are submitted.">Test Automation</a> that describes the
-                            setup for automated testing with <span class="ph uicontrol">Karma</span></p>
-
-                    </li>
-
-                    <li class="li">
-                        <p class="p"><a class="xref" href="fe7a158313af4590ad60f844e5b43b80.html" title="This section describes the setup of a development project where multiple developers work together on the same code.">Continuous Integration: Ensure Code Quality</a></p>
-
-                    </li>
-
-                    <li class="li">
-                        <p class="p"><a class="xref" href="408b40efed3c416681e1bd8cdd8910d4.html" title="If a web app has performance issues, finding the cause can be both a time-consuming and nerve-consuming task. To help you avoid and solve performance issues in your app, here are some good practices we've discovered while dealing with OpenUI5 apps.">Performance: Speed Up Your App</a></p>
-
-                    </li>
-
-                </ul>
-</div>
-
             <div class="p">Our tutorials and templates have been updated according to the latest
                     practices:
 <div class="table-wrapper tablenoborder"><table summary="" id="loioa09dd79a24c041d288402768558a1d1a__table_bqm_nv1_wbb" class="table" frame="void" border="1" rules="all">
@@ -718,12 +711,12 @@
                         
                         <thead class="thead" align="left">
                             <tr class="row">
-                                <th class="entry border_none" valign="top" width="50%" id="d8605217e1380">
+                                <th class="entry border_none" valign="top" width="50%" id="d8786233e1375">
                                     <p class="p">Change</p>
 
                                 </th>
 
-                                <th class="entry border_none" valign="top" width="50%" id="d8605217e1386">
+                                <th class="entry border_none" valign="top" width="50%" id="d8786233e1381">
                                     <p class="p">Why?</p>
 
                                 </th>
@@ -734,7 +727,7 @@
 
                         <tbody class="tbody">
                             <tr class="row">
-                                <td class="entry border_none" valign="top" width="50%" headers="d8605217e1380 ">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8786233e1375 ">
                                     <div class="p">IDs added: <ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_cdr_gw1_wbb">
                                             <li class="li">
                                                 <div class="p">Component ID in all HTML pages that instantiate a
@@ -763,7 +756,7 @@
 
                                 </td>
 
-                                <td class="entry border_none" valign="top" width="50%" headers="d8605217e1386 ">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8786233e1381 ">
                                     <p class="p">Unique IDs are necessary for many tools and testing
                                         scenarios. If there is no ID specified for an object, it
                                         gets a generated ID.</p>
@@ -780,7 +773,7 @@
                             </tr>
 
                             <tr class="row">
-                                <td class="entry border_none" valign="top" width="50%" headers="d8605217e1380 ">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8786233e1375 ">
                                     <div class="p">Asynchronous processing added:<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_o21_gw1_wbb">
                                             <li class="li">
                                                 <p class="p">In the routing configuration in the
@@ -815,7 +808,7 @@
 
                                 </td>
 
-                                <td class="entry border_none" valign="top" width="50%" headers="d8605217e1386 ">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8786233e1381 ">
                                     <p class="p">Asynchronous loading of views (or any resources) can be
                                         faster in modern browsers. The browser can load resources in
                                         parallel without freezing the UI. So this may improve the
@@ -832,13 +825,13 @@
                             </tr>
 
                             <tr class="row">
-                                <td class="entry border_none" valign="top" width="50%" headers="d8605217e1380 ">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8786233e1375 ">
                                     <p class="p"><samp class="ph codeph">getView().byId</samp> replaced by
                                             <samp class="ph codeph">byId</samp> on all controller files</p>
 
                                 </td>
 
-                                <td class="entry border_none" valign="top" width="50%" headers="d8605217e1386 ">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8786233e1381 ">
                                     <p class="p">It is shorter, hence easier to read and type. It even makes
                                         writing some unit tests easier because developers do not
                                         need to “stub” the <samp class="ph codeph">getView()</samp> method.</p>
@@ -848,13 +841,13 @@
                             </tr>
 
                             <tr class="row">
-                                <td class="entry border_none" valign="top" width="50%" headers="d8605217e1380 ">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8786233e1375 ">
                                     <p class="p">Namespace of the Walkthrough tutorial renamed from
                                             <samp class="ph codeph">walkthrough</samp> to <samp class="ph codeph">wt</samp></p>
 
                                 </td>
 
-                                <td class="entry border_none" valign="top" width="50%" headers="d8605217e1386 ">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8786233e1381 ">
                                     <p class="p">Long namespaces can make resource paths pretty long, so this
                                         is easier to understand.</p>
 

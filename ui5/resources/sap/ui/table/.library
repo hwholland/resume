@@ -4,9 +4,9 @@
   <name>sap.ui.table</name>
   <vendor>SAP SE</vendor>
   <copyright>UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.</copyright>
-  <version>1.54.2</version>
+  <version>1.52.5</version>
 
   <documentation>Table-like controls, mainly for desktop scenarios.</documentation>
 
@@ -21,6 +21,13 @@
 
   <appData>
     <selenium xmlns="http://www.sap.com/ui5/buildext/selenium" package="com.sap.ui5.selenium.table" />
+    <!-- excludes for the all-in-one file -->
+    <packaging xmlns="http://www.sap.com/ui5/buildext/packaging" version="2.0" >
+        <all-in-one>
+            <!-- exclude support rules -->
+            <exclude name="**/*.support.js" />
+        </all-in-one>
+    </packaging>
     <!-- excludes for the JSCoverage -->
     <jscoverage xmlns="http://www.sap.com/ui5/buildext/jscoverage" >
       <exclude name="sap.ui.table.js." />

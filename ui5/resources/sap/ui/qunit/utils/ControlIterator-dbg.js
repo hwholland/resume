@@ -1,14 +1,15 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-sap.ui.define(['jquery.sap.global', 'sap/ui/core/Core'],
-		function(jQuery, Core) {
+sap.ui.define([ 'jquery.sap.global', 'sap/ui/core/Core', 'sap/ui/base/Object', 'sap/ui/core/Control' ],
+		function(jQuery, Core, BaseObject, Control) {
 	"use strict";
 
 	/**
+	 * @namespace
 	 * <code>sap.ui.qunit.utils.ControlIterator</code> is a utility for collecting all available controls across libraries in order to e.g. run tests on each of them.
 	 *
 	 * It is used by calling the static <code>run</code> function with a callback function as parameter. This function will be called for each control
@@ -50,10 +51,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Core'],
 	 *
 	 * This module is independent from QUnit, so it could be used for other purposes than unit tests.
 	 *
-	 * @namespace
-	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @public
 	 * @since 1.48.0
@@ -72,6 +71,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Core'],
 		"sap.ui.core.mvc.TemplateView",
 		"sap.ui.core.mvc.View",
 		"sap.ui.core.tmpl.Template",
+		"sap.ui.commons.Menu",
 		"sap.m.FacetFilterItem",
 		"sap.m.LightBox",
 		"sap.m.Menu",
@@ -91,6 +91,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Core'],
 		"sap.ui.richtexteditor.RichTextEditor",
 		"sap.ui.richtexteditor.ToolbarWrapper",
 		"sap.ui.suite.TaskCircle",
+		"sap.ui.table.AnalyticalColumnMenu",
 		"sap.ui.table.ColumnMenu",
 		"sap.ui.unified.Menu",
 		"sap.ui.ux3.ActionBar",
@@ -156,9 +157,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Core'],
 			"sap.ui.mdc.FilterBar", //The control only runs in views with XML pre-processor. The test can't provide this environment
 			"sap.ui.mdc.Table", //The control only runs in views with XML pre-processor. The test can't provide this environment
 			"sap.ui.mdc.Field", //The control only runs in views with XML pre-processor. The test can't provide this environment
-			"sap.ui.mdc.XMLComposite", //The control only runs in views with XML pre-processor. The test can't provide this environment
-			"sap.ui.mdc.ValueHelpDialog", //The control only runs in views with XML pre-processor. The test can't provide this environment
-			"sap.ui.mdc.FilterField", //The control only runs in views with XML pre-processor. The test can't provide this environment
 			"sap.makit.Chart",
 			"sap.ui.rta.AddElementsDialog",
 			"sap.ui.rta.ContextMenu"
@@ -510,7 +508,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Core'],
 			var oLibrary = mLibraries[sLibName];
 			if (!oLibrary) { // in case removed from the map
 				resolve([0, false]);
-				return;
 			}
 
 			// we may need a concatenated array of Controls and Elements

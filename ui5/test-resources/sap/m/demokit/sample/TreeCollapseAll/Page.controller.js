@@ -11,11 +11,11 @@ sap.ui.define(['sap/ui/core/mvc/Controller', 'sap/ui/model/json/JSONModel'],
 
 		handleSelectChange: function(oEvent) {
 			var iLevel = oEvent.getParameter("selectedItem").getKey();
-			this.byId("Tree").expandToLevel(iLevel);
+			this.getView().byId("Tree").expandToLevel(iLevel);
 		},
 
 		onCollapseAllPress : function(evt) {
-			var oTree = this.byId("Tree");
+			var oTree = this.getView().byId("Tree");
 			oTree.collapseAll();
 		}
 	});

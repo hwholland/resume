@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ComboBoxSearchBoth.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.ComboBoxSearchBoth.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.ComboBoxSearchBoth.Page",
 			dependencies : {
 				libs : [
 					"sap.m"

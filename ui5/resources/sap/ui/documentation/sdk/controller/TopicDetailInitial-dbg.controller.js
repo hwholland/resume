@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -23,24 +23,6 @@ sap.ui.define([
 				// manually call the handler once at startup as device API won't do this for us
 				this._onOrientationChange({
 					landscape: Device.orientation.landscape
-				});
-
-				this.handleDocumentationDisclaimer();
-			},
-
-			/**
-			 * Documentation disclaimer handler. This method fetches the disclaimer json file and modify's the view
-			 * to show disclaimer message if such is available in the loaded json file.
-			 */
-			handleDocumentationDisclaimer: function () {
-				jQuery.ajax(this.getConfig().docuPath + "disclaimer.json", {dataType: "json"}).then(function (oData) {
-					var oView = this.getView();
-					if (oData.showDisclaimer && oData.message) {
-						oView.byId("disclaimerBlock").setVisible(true);
-						oView.byId("disclaimerMessage").setText(oData.message);
-					}
-				}.bind(this), function () {
-					// This functionality should fail silently
 				});
 			},
 

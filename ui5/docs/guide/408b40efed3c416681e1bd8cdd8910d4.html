@@ -6,8 +6,8 @@
 <meta name="abstract" content="If a web app has performance issues, finding the cause can be both a time-consuming and nerve-consuming task. To help you avoid and solve performance issues in your app, here are some good practices we've discovered while dealing with OpenUI5 apps."/>
 <meta name="description" content="If a web app has performance issues, finding the cause can be both a time-consuming and nerve-consuming task. To help you avoid and solve performance issues in your app, here are some good practices we've discovered while dealing with OpenUI5 apps."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=032441642537415216"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=032441642537415216"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=49096792575215586"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=49096792575215586"/>
 <title>Performance: Speed Up Your App</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -141,7 +141,7 @@
 					to use <span class="ph"><span class="ph pname">OpenUI5</span></span> from
 					the CDN instead of using a local installation.</p>
 
-				<p class="p">For more information, see <a class="xref" href="2d3eb2f322ea4a82983c1c62a33ec4ae.html" title="OpenUI5 can either be loaded locally with a relative path from a Web server or externally from a Content Delivery Network (CDN).">Variant for Bootstrapping from Content Delivery Network</a>.</p>
+				<p class="p">For more information, see<a class="xref" href="2d3eb2f322ea4a82983c1c62a33ec4ae.html" title="OpenUI5 can either be loaded locally with a relative path from a Web server or externally from a Content Delivery Network (CDN).">Variant for Bootstrapping from Content Delivery Network</a>.</p>
 
 			</div><div class="sectiondiv subsection">
 				<p class="p subsectiontitle">Make sure that all resources are available to avoid 404
@@ -213,11 +213,6 @@
 					</li>
 
 					<li class="li">
-						<p class="p">Optimize dependent binding as described here: <a class="xref" href="6c47b2b39db9404582994070ec3d57a2.html#loio62149734b5c24507868e722fe87a75db" title="The ODataModel V2 supports a flag called &#34;preliminaryContext&#34;. With this option set to true, the ODataModel is able to bundle the OData calls for dependent bindings together into fewer $batch requests.">Optimizing Dependent Bindings</a>.</p>
-
-					</li>
-
-					<li class="li">
 						<p class="p">Use the model preload feature: Components can preload models for which
 							modules are already loaded otherwise a warning will be shown. The
 							ODataModel V2 benefits especially because the metadata can be loaded in
@@ -232,11 +227,14 @@
 							combined with the usage of HTTP/2 or AMD-based packagers. It also
 							ensures proper dependency tracking between modules.</p>
 
-						<p class="p">But it isn't enough to write AMD modules. You also need to prevent access to <span class="ph"><span class="ph pname">OpenUI5</span></span>
+						<p class="p">But it isn't enough to write AMD modules. You also need to
+							avoid
+							access to <span class="ph"><span class="ph pname">OpenUI5</span></span>
 							classes via global names. Do not use <samp class="ph codeph">new
-							sap.m.Button()</samp>, but require the <samp class="ph codeph">Button</samp> and
-							call the constructor via the local AMD reference. For more information,
-							see the <span class="ph"><a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.ui/methods/sap.ui.define" alt="https://ui5.sap.com/sdk/#/api/sap.ui/methods/sap.ui.define" title="https://ui5.sap.com/sdk/#/api/sap.ui/methods/sap.ui.define"> API Reference for <samp class="ph codeph">sap.ui.define</samp></a> in the
+							sap.m.Button()</samp>, but
+							require
+							the <samp class="ph codeph">Button</samp> and call the constructor via the local AMD
+							reference. For more information, see the <span class="ph"><a class="xref" href="../../docs/api/symbols/sap.ui.html#.define" alt="../../docs/api/symbols/sap.ui.html#.define" title="../../docs/api/symbols/sap.ui.html#.define"> API Reference for <samp class="ph codeph">sap.ui.define</samp></a> in the
 								Demo Kit.</span></p>
 
 					</li>

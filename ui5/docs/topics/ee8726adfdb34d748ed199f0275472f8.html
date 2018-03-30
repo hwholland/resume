@@ -10,9 +10,9 @@
       <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="abstract" content="Used for modifying OpenUI5. The environment is based on Node.js, used as a server, with a build process that is based on Grunt. This section provides information for the initial setup, development workflow, and tests execution.">
+      <meta name="abstract" content="Used for modifying OpenUI5. The environment is based on Node.js, used as a server, with a build process that is based on Grunt. This section provides information for the initial setup, development roundtrip, and tests execution.">
       
-      <meta name="description" content="Used for modifying OpenUI5. The environment is based on Node.js, used as a server, with a build process that is based on Grunt. This section provides information for the initial setup, development workflow, and tests execution.">
+      <meta name="description" content="Used for modifying OpenUI5. The environment is based on Node.js, used as a server, with a build process that is based on Grunt. This section provides information for the initial setup, development roundtrip, and tests execution.">
       <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"98a4d1ded43945e5802dbffc53ffb7b8.html","previousTopicHref":"2d3f5fb63a2f4090942375df80abc39f.html"}</script>
       <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
       <script type="text/javascript">
@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -121,7 +121,7 @@
                      <div class="body conbody">
                         <p class="shortdesc" hidden>Used for modifying <span class="ph pname">OpenUI5</span>.
                            		The environment is based on Node.js, used as a server, with a build process that is based on
-                           		Grunt. This section provides information for the initial setup, development workflow, and
+                           		Grunt. This section provides information for the initial setup, development roundtrip, and
                            		tests execution.
                         </p>
                         
@@ -145,8 +145,8 @@
                                     <li class="li">
                                        						
                                        <p class="p">The Git repository path contains a folder with the same name as the respective control
-                                          							library (for example, <samp class="ph codeph">sap.m</samp>), which is omitted at
-                                          							runtime. The Node.js-based server is configured to map the
+                                          							library (for example, <samp class="ph codeph">sap.ui.commons</samp>), which is omitted
+                                          							at runtime. The Node.js-based server is configured to map the
                                           							locations.
                                        </p>
                                        
@@ -195,6 +195,19 @@
                               </p>
                               
                               			
+                              <aside class="note caution insertion"><span class="title">Caution</span> 
+                                 				
+                                 <p class="p">As the build infrastructure is still being migrated from the old Maven-based one, the Grunt
+                                    					build does not yet have all desired capabilities. This means that the build
+                                    					result is not currently completely optimized for size and performance. If you
+                                    					intend to use <span class="ph"><span class="ph pname">OpenUI5</span></span> for productive purposes, we recommend using the runtime binaries provided at
+                                    					<a class="extlink" href="http://help.sap.com/disclaimer?site=http://openui5.org" target="_blank" alt="http://openui5.org" title="http://openui5.org">http://openui5.org<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a>.
+                                 </p>
+                                 
+                                 			
+                              </aside>
+                              
+                              			
                               <p class="p">The build process is responsible for the following tasks:</p>
                               
                               			
@@ -232,7 +245,7 @@
                                     					
                                     <li class="li">
                                        						
-                                       <p class="p">Merging of the JavaScript modules of the libraries into into a single
+                                       <p class="p">Combination of JavaScript control files into a single
                                           								<span class="ph filepath">library-preload.json</span> file
                                        </p>
                                        
@@ -242,7 +255,7 @@
                                     					
                                     <li class="li">
                                        						
-                                       <p class="p">Merging of the most important <span class="ph"><span class="ph pname">OpenUI5</span></span> core
+                                       <p class="p">Combination of the most important <span class="ph"><span class="ph pname">OpenUI5</span></span> core
                                           							files into <span class="ph filepath">sap-ui-core.js</span> (not yet optimized;
                                           							minification missing)
                                        </p>
@@ -255,22 +268,6 @@
                                  
                                  			
                               </div>
-                              
-                              			
-                              <aside class="note note  insertion"><span class="title">Note</span> 
-                                 				
-                                 <div class="p">If you encounter errors like the one below, re-do the <samp class="ph codeph">npm
-                                       						install</samp> command. There might be new build tools required that need
-                                    					to be downloaded
-                                    					first.<pre class="pre codeblock prettyprint">jit-grunt: Plugin for the &quot;replace&quot; task not found.
-If you have installed the plugin already, please setting the static mapping.
-See https://github.com/shootaroo/jit-grunt#static-mappings
-
-Warning: Task &quot;replace:target&quot; not found. Use --force to continue.</pre>
-                                    </div>
-                                 
-                                 			
-                              </aside>
                               
                               		
                            </section>

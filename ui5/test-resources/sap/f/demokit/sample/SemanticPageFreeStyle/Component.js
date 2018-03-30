@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 		return UIComponent.extend("sap.f.sample.SemanticPageFreeStyle.Component", {
 
 			metadata: {
-				rootView: {
-					"viewName": "sap.f.sample.SemanticPageFreeStyle.V",
-					"type": "XML",
-					"async": true
-				},
+				rootView: "sap.f.sample.SemanticPageFreeStyle.V",
 				dependencies: {
 					libs: [
 						"sap.f",

@@ -564,9 +564,7 @@ If the highlight is set to {@link sap.ui.core.MessageType.None} (default), no hi
 </xsd:element>
 <xsd:element name="toolbar" minOccurs="0">
 <xsd:annotation>
-<xsd:documentation>Toolbar of the Table
-If not set, no toolbar area will be rendered.
-Note: The CSS class sapMTBHeader-CTX is applied on the given toolbar.</xsd:documentation>
+<xsd:documentation>Toolbar of the Table (if not set it will be hidden)</xsd:documentation>
 </xsd:annotation>
 <xsd:complexType>
 <xsd:sequence>
@@ -580,9 +578,7 @@ Note: The CSS class sapMTBHeader-CTX is applied on the given toolbar.</xsd:docum
 </xsd:element>
 <xsd:element name="extension" minOccurs="0">
 <xsd:annotation>
-<xsd:documentation>Extension section of the Table.
-If not set, no extension area will be rendered.
-Note: In case a &lt;code&gt;sap.m.Toolbar&lt;/code&gt; is used as header the CSS class sapMTBHeader-CTX should be applied on this toolbar via &lt;code&gt;addStyleClass&lt;/code&gt;.</xsd:documentation>
+<xsd:documentation>Extension section of the Table (if not set it will be hidden)</xsd:documentation>
 </xsd:annotation>
 <xsd:complexType>
 <xsd:sequence>
@@ -703,26 +699,6 @@ The following restrictions apply:
 </xsd:sequence>
 </xsd:complexType>
 </xsd:element>
-<xsd:element name="contextMenu" minOccurs="0">
-<xsd:annotation>
-<xsd:documentation>Defines the context menu for the table.
-
-&lt;b&gt;Note:&lt;/b&gt; The context menu will also be available for the row selectors as well as in the row actions cell of the table control.
-
-The custom context menu will not be shown in the group header rows and the sum row of the &lt;code&gt;AnalyticalTable&lt;/code&gt; control.
-
-If this aggregation is set, then the &lt;code&gt;enableCellFilter&lt;/code&gt; property will have no effect.</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType>
-<xsd:sequence>
-<xsd:choice minOccurs="0">
-<xsd:element ref="n0:Control"/>
-<xsd:element ref="n0:Fragment"/>
-<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
-</xsd:choice>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
 </xsd:sequence>
 <xsd:attribute name="width" type="n0:_CSSSizeType">
 <xsd:annotation>
@@ -731,8 +707,7 @@ If this aggregation is set, then the &lt;code&gt;enableCellFilter&lt;/code&gt; p
 </xsd:attribute>
 <xsd:attribute name="rowHeight" type="xsd:int">
 <xsd:annotation>
-<xsd:documentation>The height of the row content in pixel. The actual row height is also influenced by other factors, such as the border width.
-If no value is set, a default height is applied based on the content density configuration.</xsd:documentation>
+<xsd:documentation>Height of a row of the Table in pixel.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="columnHeaderHeight" type="xsd:int">
@@ -972,11 +947,6 @@ selection changes - to find out the selected rows you should better use the tabl
 <xsd:attribute name="cellContextmenu" type="xsd:string">
 <xsd:annotation>
 <xsd:documentation>fired when the user clicks a cell of the table.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="beforeOpenContextMenu" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Fired when the user requests the context menu for a table cell.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="columnFreeze" type="xsd:string">

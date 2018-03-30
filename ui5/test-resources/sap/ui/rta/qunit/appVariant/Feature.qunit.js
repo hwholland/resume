@@ -8,17 +8,14 @@ sap.ui.require([
 	"sap/ui/rta/appVariant/Utils",
 	"sap/ui/rta/appVariant/AppVariantUtils",
 	"sap/ui/rta/appVariant/AppVariantManager",
-	"sap/ui/fl/registry/Settings",
-	"sap/ui/rta/command/Stack"
+	"sap/ui/fl/registry/Settings"
 ], function(
 	sinon,
 	RtaAppVariantFeature,
 	AppVariantOverviewUtils,
 	AppVariantUtils,
 	AppVariantManager,
-	Settings,
-	Stack
-) {
+	Settings) {
 	"use strict";
 
 	QUnit.start();
@@ -33,13 +30,11 @@ sap.ui.require([
 
 		QUnit.test("when onGetOverview() is called,", function(assert) {
 			var done = assert.async();
-
 			var oMockedDescriptorData = {
 				"sap.app": {
 					id: "id1"
 				}
 			};
-
 			sandbox.stub(sap.ui.fl.Utils, "getAppDescriptor").returns(oMockedDescriptorData);
 
 			var aAppVariantOverviewAttributes = [
@@ -49,6 +44,7 @@ sap.ui.require([
 					subTitle : "subTitle1",
 					description : "description1",
 					icon : "sap-icon://history",
+					originalId : "id1",
 					isOriginal : true,
 					typeOfApp : "Original App",
 					descriptorUrl : "url1"
@@ -59,6 +55,7 @@ sap.ui.require([
 					subTitle : "subTitle2",
 					description : "description2",
 					icon : "sap-icon://history",
+					originalId : "id1",
 					isOriginal : false,
 					typeOfApp : "App Variant",
 					descriptorUrl : "url2"
@@ -69,6 +66,7 @@ sap.ui.require([
 					subTitle : "subTitle3",
 					description : "description3",
 					icon : "sap-icon://history",
+					originalId : "id1",
 					isOriginal : false,
 					typeOfApp : "App Variant",
 					descriptorUrl : "url3"
@@ -77,40 +75,60 @@ sap.ui.require([
 
 			sandbox.stub(AppVariantOverviewUtils, "getAppVariantOverview").returns(Promise.resolve(aAppVariantOverviewAttributes));
 
-			return RtaAppVariantFeature.onGetOverview(true).then(function(oAppVariantOverviewDialog) {
-				assert.ok(true, "the the promise got resolved and AppVariant Overview Dialog is opened");
-				oAppVariantOverviewDialog.fireCancel();
+			var oRootControl = new sap.ui.core.Control();
+
+			return RtaAppVariantFeature.onGetOverview(oRootControl).then(function(oManageAppsDialog) {
+				assert.ok(true, "the the promise got resolved and manageAppsDialog is opened");
+				oManageAppsDialog.fireCancel();
 				done();
 			});
 		});
 
-		QUnit.test("when isOverviewExtended() is called when the query parameter is given and is true,", function(assert) {
+		QUnit.test("when isPlatFormEnabled() is called for FLP apps on S/4 Hana platform with feature flag 'sap-ui-xx-rta-save-as' equal to true", function(assert) {
+			var oMockedDescriptorData = {
+				"sap.ui5": {
+					componentName: "BaseAppId"
+				},
+				"sap.app": {
+					title: "BaseAppTitle",
+					subTitle: "BaseAppSubtitle",
+					description: "BaseAppDescription",
+					id: "BaseAppId",
+					crossNavigation: {
+						inbounds: {}
+					}
+				},
+				"sap.ui": {
+					icons: {
+						icon: "sap-icon://history"
+					}
+				}
+			};
+
+			sandbox.stub(sap.ui.fl.Utils, "getAppDescriptor").returns(oMockedDescriptorData);
+
 			var oMockedUriParams = {
 				mParams: {
-					"sap-ui-xx-app-variant-overview-extended": ["true"]
+					"sap-ui-xx-rta-save-as": ["true"]
 				}
 			};
 
 			sandbox.stub(jQuery.sap, "getUriParameters").returns(oMockedUriParams);
-			assert.equal(RtaAppVariantFeature.isOverviewExtended(), true, "then the app variant overview is shown both for key user and SAP developer");
+
+			sandbox.stub(AppVariantUtils, "getManifirstSupport").returns(Promise.resolve({response: true}));
+
+			sandbox.stub(AppVariantUtils, "getInboundInfo").returns({currentRunningInbound: "testInboundId", addNewInboundRequired: true});
+
+			sandbox.stub(sap.ui.rta.Utils,"getUshellContainer").returns(true);
+
+			sandbox.stub(AppVariantUtils, "isStandAloneApp").returns(false);
+
+			return RtaAppVariantFeature.isPlatFormEnabled("CUSTOMER", true).then(function(bResult) {
+				assert.equal(bResult, true, "then the 'i' button is visible");
+			});
 		});
 
-		QUnit.test("when isOverviewExtended() is called when the query parameter is given and is false,", function(assert) {
-			var oMockedUriParams = {
-				mParams: {
-					"sap-ui-xx-app-variant-overview-extended": ["false"]
-				}
-			};
-
-			sandbox.stub(jQuery.sap, "getUriParameters").returns(oMockedUriParams);
-			assert.equal(RtaAppVariantFeature.isOverviewExtended(), false, "then the app variant overview is shown only for key user");
-		});
-
-		QUnit.test("when isOverviewExtended() is called when the query parameter is not given at all,", function(assert) {
-			assert.equal(RtaAppVariantFeature.isOverviewExtended(), false, "then the app variant overview is shown only for key user");
-		});
-
-		QUnit.test("when isPlatFormEnabled() is called for non FLP apps", function(assert) {
+		QUnit.test("when isPlatFormEnabled() is called for non FLP apps on S/4 Hana platform", function(assert) {
 			var oMockedDescriptorData = {
 				"sap.app": {
 					id: "BaseAppId"
@@ -120,19 +138,16 @@ sap.ui.require([
 			sandbox.stub(sap.ui.fl.Utils, "getAppDescriptor").returns(oMockedDescriptorData);
 
 			sandbox.stub(sap.ui.rta.Utils,"getUshellContainer").returns(false);
+			sandbox.stub(AppVariantUtils, "getManifirstSupport").returns(Promise.resolve({response: true}));
 
 			sandbox.stub(AppVariantUtils, "isStandAloneApp").returns(false);
 
-			var fnInboundInfoSpy = sandbox.spy(AppVariantUtils, "getInboundInfo");
-
-			var oRootControl = new sap.ui.core.Control();
-			var oStack = new Stack();
-
-			assert.equal(RtaAppVariantFeature.isPlatFormEnabled(oRootControl, "CUSTOMER", oStack), false, "then the 'i' button is not visible");
-			assert.equal(fnInboundInfoSpy.callCount, 0, "then the getInboundInfo is never called");
+			return RtaAppVariantFeature.isPlatFormEnabled("CUSTOMER", true).then(function(bResult) {
+				assert.equal(bResult, false, "then the 'i' button is not visible");
+			});
 		});
 
-		QUnit.test("when isPlatFormEnabled() is called for FLP apps", function(assert) {
+		QUnit.test("when isPlatFormEnabled() is called for scaffolding apps", function(assert) {
 
 			var oMockedDescriptorData = {
 				"sap.app": {
@@ -141,39 +156,56 @@ sap.ui.require([
 			};
 
 			sandbox.stub(sap.ui.fl.Utils, "getAppDescriptor").returns(oMockedDescriptorData);
+			sandbox.stub(AppVariantUtils, "getManifirstSupport").returns(Promise.resolve({response: false}));
 
+			sandbox.stub(AppVariantUtils, "isStandAloneApp").returns(false);
+
+			return RtaAppVariantFeature.isPlatFormEnabled("CUSTOMER", true).then(function(bResult) {
+				assert.equal(bResult, false, "then the 'i' button is not visible");
+			});
+		});
+
+		QUnit.test("when isPlatFormEnabled() is called for non FLP apps on S/4 Hana platform with feature flag 'sap-ui-xx-rta-save-as' equal to false", function(assert) {
+			var oMockedDescriptorData = {
+				"sap.ui5": {
+					componentName: "BaseAppId"
+				},
+				"sap.app": {
+					title: "BaseAppTitle",
+					subTitle: "BaseAppSubtitle",
+					description: "BaseAppDescription",
+					id: "BaseAppId",
+					crossNavigation: {
+						inbounds: {}
+					}
+				},
+				"sap.ui": {
+					icons: {
+						icon: "sap-icon://history"
+					}
+				}
+			};
+
+			var oMockedUriParams = {
+				mParams: {
+					"sap-ui-xx-rta-save-as": ["false"]
+				}
+			};
+
+			sandbox.stub(jQuery.sap, "getUriParameters").returns(oMockedUriParams);
+
+			sandbox.stub(sap.ui.fl.Utils, "getAppDescriptor").returns(oMockedDescriptorData);
+
+			sandbox.stub(AppVariantUtils, "getManifirstSupport").returns(Promise.resolve({response: true}));
+
+			sandbox.stub(AppVariantUtils, "getInboundInfo").returns({currentRunningInbound: "testInboundId", addNewInboundRequired: true});
 			sandbox.stub(sap.ui.rta.Utils,"getUshellContainer").returns(true);
 
 			sandbox.stub(AppVariantUtils, "isStandAloneApp").returns(false);
 
-			var fnInboundInfoSpy = sandbox.spy(AppVariantUtils, "getInboundInfo");
-
-			var oRootControl = new sap.ui.core.Control();
-			var oStack = new Stack();
-
-			assert.equal(RtaAppVariantFeature.isPlatFormEnabled(oRootControl, "CUSTOMER", oStack), true, "then the 'i' button is visible");
-			assert.ok(fnInboundInfoSpy.calledOnce, "then the getInboundInfo is called once");
-			assert.equal(fnInboundInfoSpy.getCall(0).args[0], undefined, "then the parameter passed is correct");
-		});
-
-		QUnit.test("when isPlatFormEnabled() is called for standalone apps", function(assert) {
-
-			var oMockedDescriptorData = {
-				"sap.app": {
-					id: "BaseAppId"
-				}
-			};
-
-			sandbox.stub(sap.ui.fl.Utils, "getAppDescriptor").returns(oMockedDescriptorData);
-
-			sandbox.stub(sap.ui.rta.Utils,"getUshellContainer").returns(true);
-
-			sandbox.stub(AppVariantUtils, "isStandAloneApp").returns(true);
-
-			var oRootControl = new sap.ui.core.Control();
-			var oStack = new Stack();
-
-			assert.equal(RtaAppVariantFeature.isPlatFormEnabled(oRootControl, "CUSTOMER", oStack), false, "then the 'i' button is not visible");
+			return RtaAppVariantFeature.isPlatFormEnabled("CUSTOMER", true).then(function(bResult) {
+				assert.equal(bResult, false, "then the 'i' button is not visible");
+			});
 		});
 
 		QUnit.test("when isPlatFormEnabled() is called for an FLP app which has no crossNavigation in 'sap.app' property of a descriptor", function(assert) {
@@ -194,18 +226,26 @@ sap.ui.require([
 				}
 			};
 
+			var oMockedUriParams = {
+				mParams: {
+					"sap-ui-xx-rta-save-as": ["true"]
+				}
+			};
+
+			sandbox.stub(jQuery.sap, "getUriParameters").returns(oMockedUriParams);
+
 			sandbox.stub(sap.ui.fl.Utils, "getAppDescriptor").returns(oMockedDescriptorData);
 
+			sandbox.stub(AppVariantUtils, "getManifirstSupport").returns(Promise.resolve({response: true}));
+
+			sandbox.stub(AppVariantUtils, "getInboundInfo").returns({currentRunningInbound: "testInboundId", addNewInboundRequired: true});
 			sandbox.stub(sap.ui.rta.Utils,"getUshellContainer").returns(true);
 
 			sandbox.stub(AppVariantUtils, "isStandAloneApp").returns(false);
 
-			var fnInboundInfoSpy = sandbox.spy(AppVariantUtils, "getInboundInfo");
-			var oRootControl = new sap.ui.core.Control();
-			var oStack = new Stack();
-
-			assert.equal(RtaAppVariantFeature.isPlatFormEnabled(oRootControl, "CUSTOMER", oStack), true, "then the 'i' button is visible");
-			assert.equal(fnInboundInfoSpy.getCall(0).args[0], undefined, "then the parameter passed is correct");
+			return RtaAppVariantFeature.isPlatFormEnabled("CUSTOMER", true).then(function(bResult) {
+				assert.equal(bResult, false, "then the 'i' button is not visible");
+			});
 		});
 
 		QUnit.test("when isPlatFormEnabled() is called for FLP app which has no 'sap.app' property of a descriptor", function(assert) {
@@ -220,17 +260,29 @@ sap.ui.require([
 				}
 			};
 
+			var oMockedUriParams = {
+				mParams: {
+					"sap-ui-xx-rta-save-as": ["true"]
+				}
+			};
+
+			sandbox.stub(jQuery.sap, "getUriParameters").returns(oMockedUriParams);
+
 			sandbox.stub(sap.ui.fl.Utils, "getAppDescriptor").returns(oMockedDescriptorData);
-			var fnInboundInfoSpy = sandbox.spy(AppVariantUtils, "getInboundInfo");
 
-			var oRootControl = new sap.ui.core.Control();
-			var oStack = new Stack();
+			sandbox.stub(AppVariantUtils, "getManifirstSupport").returns(Promise.resolve({response: true}));
 
-			assert.equal(RtaAppVariantFeature.isPlatFormEnabled(oRootControl, "CUSTOMER", oStack), false, "then the 'i' button is not visible");
-			assert.equal(fnInboundInfoSpy.callCount, 0, "then the getInboundInfo method is never called");
+			sandbox.stub(AppVariantUtils, "getInboundInfo").returns({currentRunningInbound: "testInboundId", addNewInboundRequired: true});
+			sandbox.stub(sap.ui.rta.Utils,"getUshellContainer").returns(true);
+
+			sandbox.stub(AppVariantUtils, "isStandAloneApp").returns(false);
+
+			return RtaAppVariantFeature.isPlatFormEnabled("CUSTOMER", true).then(function(bResult) {
+				assert.equal(bResult, false, "then the 'i' button is not visible");
+			});
 		});
 
-		QUnit.test("when isPlatFormEnabled() is called and it is an flp app, not a standalone app and no cross navigation property", function(assert) {
+		QUnit.test("when isPlatFormEnabled() is called with no isPlatFormEnabled support (NON S/4 Hana Cloud systems)", function(assert) {
 			var oMockedDescriptorData = {
 				"sap.app": {
 					id: "BaseAppId"
@@ -239,16 +291,13 @@ sap.ui.require([
 
 			sandbox.stub(sap.ui.fl.Utils, "getAppDescriptor").returns(oMockedDescriptorData);
 			sandbox.stub(sap.ui.rta.Utils,"getUshellContainer").returns(true);
+			sandbox.stub(AppVariantUtils, "getManifirstSupport").returns(Promise.resolve({response: true}));
 
 			sandbox.stub(AppVariantUtils, "isStandAloneApp").returns(false);
 
-			var fnInboundInfoSpy = sandbox.spy(AppVariantUtils, "getInboundInfo");
-
-			var oRootControl = new sap.ui.core.Control();
-			var oStack = new Stack();
-
-			assert.equal(RtaAppVariantFeature.isPlatFormEnabled(oRootControl, "CUSTOMER", oStack), true, "then the 'i' button is visible");
-			assert.equal(fnInboundInfoSpy.getCall(0).args[0], undefined, "then the parameter passed is correct");
+			return RtaAppVariantFeature.isPlatFormEnabled("CUSTOMER", false).then(function(bResult) {
+				assert.equal(bResult, false, "then the 'i' button is not visible");
+			});
 		});
 	});
 
@@ -292,14 +341,18 @@ sap.ui.require([
 		}
 	}, function() {
 
-		QUnit.test("when onSaveAsFromOverviewDialog() method is called", function(assert) {
-			var done = assert.async();
+		QUnit.test("when onSaveAs() is triggered from App variant overview list", function(assert) {
+			var oRootControl = new sap.ui.core.Control();
+
 			var oDescriptor = {
 				"sap.app" : {
 					id : "TestId",
 					crossNavigation: {
 						inbounds: {}
 					}
+				},
+				"sap.ui5" : {
+					componentName: "TestIdBaseApp"
 				}
 			};
 
@@ -334,7 +387,7 @@ sap.ui.require([
 
 			sandbox.stub(sap.ui.fl.Utils, "getAppComponentForControl").returns(oComponent);
 
-			var onGetOverviewSpy = sandbox.stub(RtaAppVariantFeature, "onGetOverview").returns(Promise.resolve());
+			var onGetOverviewSpy = sandbox.stub(RtaAppVariantFeature, "onGetOverview").returns(Promise.resolve(true));
 
 			sandbox.stub(Settings, "getInstance").returns(Promise.resolve(
 				new Settings({
@@ -386,27 +439,23 @@ sap.ui.require([
 			]);
 
 			oResponse = {
-				response: {
-					"VariantId" : "customer.TestId",
-					"IAMId" : "IAMId",
-					"CatalogIds" : ["TEST_CATALOG"]
-				}
+				"VariantId" : "customer.TestId",
+				"IAMId" : "IAMId",
+				"CatalogIds" : ["TEST_CATALOG"]
 			};
 
 			var fnTriggerCatalogAssignment = sandbox.stub(AppVariantManager.prototype, "triggerCatalogAssignment").returns(oResponse);
 
-			sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "showRelevantDialog").returns(Promise.resolve());
+			sandbox.stub(AppVariantManager.prototype, "_showSaveSuccessMessage").returns(Promise.resolve());
 
 			this.oServer.autoRespond = true;
 
 			var fnCreateDescriptorSpy = sandbox.spy(AppVariantManager.prototype, "createDescriptor");
 			var fnSaveAppVariantToLREP = sandbox.spy(AppVariantManager.prototype, "saveAppVariantToLREP");
-			var fnCopyUnsavedChangesToLREP = sandbox.stub(AppVariantManager.prototype, "copyUnsavedChangesToLREP").returns(Promise.resolve());
+			var fnCopyUnsavedChangesToLREP = sandbox.spy(AppVariantManager.prototype, "copyUnsavedChangesToLREP");
 			var fnShowSuccessMessageAndTriggerActionFlow = sandbox.spy(AppVariantManager.prototype, "showSuccessMessageAndTriggerActionFlow");
 
-			var fnNotifyKeyUserWhenTileIsReadySpy = sandbox.stub(AppVariantManager.prototype, "notifyKeyUserWhenTileIsReady").returns(Promise.resolve());
-
-			return RtaAppVariantFeature.onSaveAsFromOverviewDialog(oDescriptor, false).then(function() {
+			return RtaAppVariantFeature.onSaveAs(oRootControl, oDescriptor).then(function() {
 				assert.ok(onGetOverviewSpy.calledOnce, "then the App variant dialog gets opened only once after the new app variant has been saved to LREP");
 				assert.ok(fnCreateDescriptorSpy.calledOnce, "then the create descriptor method is called once");
 				assert.ok(fnProcessSaveAsDialog.calledOnce, "then the processSaveAsDialog method is called once");
@@ -414,13 +463,12 @@ sap.ui.require([
 				assert.ok(fnCopyUnsavedChangesToLREP.calledOnce, "then the copyUnsavedChangesToLREP method is called once");
 				assert.ok(fnTriggerCatalogAssignment.calledOnce, "then the triggerCatalogAssignment method is called once");
 				assert.ok(fnShowSuccessMessageAndTriggerActionFlow.calledOnce, "then the showSuccessMessageAndTriggerActionFlow method is called once");
-				assert.ok(fnNotifyKeyUserWhenTileIsReadySpy.calledOnce, "then the notifyKeyUserWhenTileIsReady method is called once");
-				done();
 			});
 		});
 
 		QUnit.test("when onSaveAs() is triggered from RTA toolbar", function(assert) {
-			var done = assert.async();
+			var oRootControl = new sap.ui.core.Control();
+
 			var oDescriptor = {
 				"sap.app" : {
 					id : "TestId",
@@ -510,27 +558,24 @@ sap.ui.require([
 			]);
 
 			oResponse = {
-				response: {
-					"VariantId" : "customer.TestId",
-					"IAMId" : "IAMId",
-					"CatalogIds" : ["TEST_CATALOG"]
-				}
+				"VariantId" : "customer.TestId",
+				"IAMId" : "IAMId",
+				"CatalogIds" : ["TEST_CATALOG"]
 			};
 
 			var fnTriggerCatalogAssignment = sandbox.stub(AppVariantManager.prototype, "triggerCatalogAssignment").returns(oResponse);
 
-			sandbox.stub(sap.ui.rta.appVariant.AppVariantUtils, "showRelevantDialog").returns(Promise.resolve());
+			sandbox.stub(AppVariantManager.prototype, "_showSaveSuccessMessage").returns(Promise.resolve());
 
 			this.oServer.autoRespond = true;
 
-
 			var fnCreateDescriptorSpy = sandbox.spy(AppVariantManager.prototype, "createDescriptor");
 			var fnSaveAppVariantToLREP = sandbox.spy(AppVariantManager.prototype, "saveAppVariantToLREP");
-			var fnCopyUnsavedChangesToLREP = sandbox.stub(AppVariantManager.prototype, "copyUnsavedChangesToLREP").returns(Promise.resolve(true));
+			var fnCopyUnsavedChangesToLREP = sandbox.spy(AppVariantManager.prototype, "copyUnsavedChangesToLREP");
 			var fnShowSuccessMessageAndTriggerActionFlow = sandbox.spy(AppVariantManager.prototype, "showSuccessMessageAndTriggerActionFlow");
-			var fnNavigateToFLPHomepage = sandbox.stub(AppVariantManager.prototype, "_navigateToFLPHomepage").returns(Promise.resolve());
+			var fnNavigateToFLPHomepage = sandbox.spy(AppVariantManager.prototype, "_navigateToFLPHomepage");
 
-			return RtaAppVariantFeature.onSaveAsFromRtaToolbar(true, true).then(function() {
+			return RtaAppVariantFeature.onSaveAs(oRootControl).then(function() {
 				assert.ok(fnCreateDescriptorSpy.calledOnce, "then the create descriptor method is called once");
 				assert.ok(fnProcessSaveAsDialog.calledOnce, "then the processSaveAsDialog method is called once");
 				assert.ok(fnSaveAppVariantToLREP.calledOnce, "then the saveAppVariantToLREP method is called once");
@@ -538,7 +583,6 @@ sap.ui.require([
 				assert.ok(fnTriggerCatalogAssignment.calledOnce, "then the triggerCatalogAssignment method is called once");
 				assert.ok(fnShowSuccessMessageAndTriggerActionFlow.calledOnce, "then the showSuccessMessageAndTriggerActionFlow method is called once");
 				assert.ok(fnNavigateToFLPHomepage.calledOnce, "then the _navigateToFLPHomepage method is called once");
-				done();
 			});
 		});
 	});

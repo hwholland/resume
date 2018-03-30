@@ -1,17 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.Panel.
-sap.ui.define([
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/IconPool',
-	'./PanelRenderer'
-],
-	function(library, Control, IconPool, PanelRenderer) {
+sap.ui.define(['./library', 'sap/ui/core/Control', 'sap/ui/core/IconPool'],
+	function(library, Control, IconPool) {
 	"use strict";
 
 	// shortcut for sap.m.PanelAccessibleRole
@@ -61,7 +56,7 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -177,7 +172,7 @@ sap.ui.define([
 				}
 			}
 		},
-		designtime: "sap/m/designtime/Panel.designtime"
+		designTime: true
 	}});
 
 	Panel.prototype.init = function () {

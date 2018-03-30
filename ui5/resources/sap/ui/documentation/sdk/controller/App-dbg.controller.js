@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -52,8 +52,7 @@ sap.ui.define([
 					"Terms of Use": "https://www.sap.com/corporate/en/legal/terms-of-use.html",
 					"Copyright": "https://www.sap.com/corporate/en/legal/copyright.html",
 					"Trademark": "https://www.sap.com/corporate/en/legal/copyright.html#trademark",
-					"Disclaimer": "https://help.sap.com/viewer/disclaimer",
-					"License": "LICENSE.txt"
+					"Disclaimer": "https://help.sap.com/viewer/disclaimer"
 				};
 				this.FEEDBACK_SERVICE_URL = "https://feedback-sapuisofiaprod.hana.ondemand.com:443/api/v2/apps/5bb7d7ff-bab9-477a-a4c7-309fa84dc652/posts";
 				this.OLD_DOC_LINK_SUFFIX = ".html";
@@ -71,6 +70,9 @@ sap.ui.define([
 				this.oRouter.attachRouteMatched(this.onRouteChange.bind(this));
 				this.oRouter.attachBypassed(this.onRouteNotFound.bind(this));
 
+				this.getRouter().getRoute("topicIdLegacyRoute").attachPatternMatched(this._onTopicOldRouteMatched, this);
+				this.getRouter().getRoute("apiIdLegacyRoute").attachPatternMatched(this._onApiOldRouteMatched, this);
+
 				this.oRouter.getRoute("entitySamplesLegacyRoute").attachPatternMatched(this._onEntityOldRouteMatched, this);
 				this.oRouter.getRoute("entityAboutLegacyRoute").attachPatternMatched(this._onEntityOldRouteMatched, this);
 				this.oRouter.getRoute("entityPropertiesLegacyRoute").attachPatternMatched({entityType: "properties"}, this._forwardToAPIRef, this);
@@ -81,11 +83,6 @@ sap.ui.define([
 
 				// register Feedback rating icons
 				this._registerFeedbackRatingIcons();
-
-				// attach to the afterMasterClose event of the splitApp to be able to toggle the hamburger button state on clicking anywhere
-				this.byId("splitApp").attachEvent("afterMasterClose", function (oEvent) {
-					oViewModel.setProperty("/bIsShownMaster", false);
-				}, this);
 			},
 
 			onBeforeRendering: function() {
@@ -105,16 +102,19 @@ sap.ui.define([
 				Device.orientation.detachHandler(this._onOrientationChange, this);
 			},
 
-			_onTopicOldRouteMatched: function(sId) {
+			_onTopicOldRouteMatched: function(oEvent) {
+
+				var sId = oEvent.getParameter("arguments").id;
 				if (sId) {
 					sId = this._trimOldDocSuffix(sId);
 				}
 				this.getRouter().navTo("topicId", {id: sId});
 			},
 
-			_onApiOldRouteMatched: function(sId) {
+			_onApiOldRouteMatched: function(oEvent) {
 
-				var sEntityType,
+				var sId = oEvent.getParameter("arguments").id,
+					sEntityType,
 					sEntityId,
 					aSplit;
 
@@ -183,14 +183,14 @@ sap.ui.define([
 
 				this._toggleTabHeaderClass();
 
-				if (bPhone && bHasMaster) { // on phone we need the id of the master view (for navigation)
+				if (bPhone && bHasMaster) { // on phone we need the id of the master view (for mavigation)
 					oMasterView = this.getOwnerComponent().getConfigUtil().getMasterView(sRouteName);
 					sMasterViewId = oMasterView && oMasterView.getId();
 					oViewModel.setProperty("/sMasterViewId", sMasterViewId);
 				}
 
 				// hide master on route change
-				this.byId("splitApp").hideMaster();
+				this.getView().byId("splitApp").hideMaster();
 				oViewModel.setProperty("/bIsShownMaster", false);
 			},
 
@@ -202,7 +202,7 @@ sap.ui.define([
 			toggleMaster: function(oEvent) {
 				var bPressed = oEvent.getParameter("pressed"),
 					bPhone = Device.system.phone,
-					oSplitApp = this.byId("splitApp"),
+					oSplitApp = this.getView().byId("splitApp"),
 					isShowHideMode = oSplitApp.getMode() === SplitAppMode.ShowHideMode,
 					isHideMode = oSplitApp.getMode() === SplitAppMode.HideMode,
 					sMasterViewId = this.getModel("appView").getProperty("/sMasterViewId"),
@@ -253,8 +253,6 @@ sap.ui.define([
 				if (!this._oAboutDialog) {
 					this._oAboutDialog = new sap.ui.xmlfragment("aboutDialogFragment", "sap.ui.documentation.sdk.view.AboutDialog", this);
 					this._oView.addDependent(this._oAboutDialog);
-				} else {
-					this._oAboutDialog.getContent()[0].backToTop(); // reset the nav container to the first page
 				}
 				this._oAboutDialog.open();
 			},
@@ -676,7 +674,7 @@ sap.ui.define([
 			},
 
 			_toggleTabHeaderClass: function() {
-				var th = this.byId("tabHeader");
+				var th = this.getView().byId("tabHeader");
 				if (this._isToggleButtonVisible()) {
 					th.addStyleClass("tabHeaderNoLeftMargin");
 				} else {

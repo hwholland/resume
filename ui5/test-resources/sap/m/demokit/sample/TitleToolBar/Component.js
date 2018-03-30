@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.TitleToolBar.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.TitleToolBar.Toolbar",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.TitleToolBar.Toolbar",
 			dependencies : {
 				libs : [
 					"sap.m"

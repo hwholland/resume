@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -117,9 +117,9 @@
                      <h1 class="title topictitle1" hidden>View Extension</h1>
                      
                      <div class="body">
-                        <p class="shortdesc" hidden><span class="ph"><span class="ph pname">OpenUI5</span></span> uses extension
-                           points for extending standard views with custom content. The assignment of a custom view to
-                           an extension point is done in component customizing.
+                        <p class="shortdesc" hidden><span class="ph"><span class="ph pname">OpenUI5</span></span> uses extension points for extending standard views with custom content. The
+                           assignment of a custom view to an extension point is done in component
+                           customizing.
                         </p>
                         
                         
@@ -137,7 +137,7 @@
                            identifies an extension point.
                         </p>
                         
-                        <pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns=&quot;sap.m&quot;  xmlns:core=&quot;sap.ui.core&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;&gt;
+                        <pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns=&quot;sap.ui.commons&quot;  xmlns:core=&quot;sap.ui.core&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;&gt;
     &lt;core:ExtensionPoint name=&quot;extension1&quot; /&gt;
     &lt;TextView text=&quot;SAP View &apos;Sub2&apos; - this one is extended by the customer and there should be a button after this text&quot;&gt;&lt;/TextView&gt;    
     &lt;core:ExtensionPoint name=&quot;extension2&quot; /&gt;   
@@ -182,9 +182,9 @@
                         <pre class="pre codeblock prettyprint lang-js">[...]
 	var oLayout = new sap.ui.layout.VerticalLayout({
 		content: [
-		          new sap.m.Button({text: &quot;I am preceding the extension point&quot;}),
+		          new sap.ui.commons.Button({text: &quot;I am preceding the extension point&quot;}),
 		          sap.ui.extensionpoint(this, &quot;extension4&quot;),
-		          new sap.m.Button({text: &quot;I am following the extension point&quot;})
+		          new sap.ui.commons.Button({text: &quot;I am following the extension point&quot;})
 		         ]
 	});
 [...]
@@ -213,7 +213,7 @@
                                  <samp class="ph codeph">&lt;ExtensionPoint&gt;</samp> tag.
                               </p>
                               
-                              <pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns=&quot;sap.m&quot;  xmlns:core=&quot;sap.ui.core&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;&gt;
+                              <pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns=&quot;sap.ui.commons&quot;  xmlns:core=&quot;sap.ui.core&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;&gt;
     &lt;ListBox items=&quot;{/names}&quot;&gt;
         &lt;core:ExtensionPoint name=&quot;extension1&quot; /&gt;
             &lt;ListItem text=&quot;{firstName} /&gt;
@@ -284,7 +284,7 @@
                                  <samp class="ph codeph">CustomFrag1.fragment.xml</samp> file:
                               </p>
                               
-                              <pre class="pre codeblock prettyprint lang-js">&lt;Button xmlns=&quot;sap.m&quot; text=&quot;This Button is in an Extension Fragment&quot; /&gt;
+                              <pre class="pre codeblock prettyprint lang-js">&lt;Button xmlns=&quot;sap.ui.commons&quot; text=&quot;This Button is in an Extension Fragment&quot; /&gt;
 </pre>
                               
                               <aside class="note note  insertion"><span class="title">Note</span> You can also add multiple root-level controls using one fragment.
@@ -295,7 +295,7 @@
                                  <samp class="ph codeph">CustomSubSubView1.view.xml</samp> file.
                               </p>
                               
-                              <pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns=&quot;sap.m&quot;  xmlns:core=&quot;sap.ui.core&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;&gt;
+                              <pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns=&quot;sap.ui.commons&quot;  xmlns:core=&quot;sap.ui.core&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;&gt;
     &lt;core:ExtensionPoint name=&quot;extension1&quot; /&gt;
     &lt;TextView text=&quot;Customer View &apos;SubSubView1&apos; - this one extends the original SAP View &apos;Sub2&apos; - and even custom Views can be extended:&quot;&gt;&lt;/TextView&gt;   
     &lt;core:ExtensionPoint name=&quot;extension2&quot; /&gt;   

@@ -1,44 +1,11 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-sap.ui.define([
-	'jquery.sap.global',
-	'./Dialog',
-	'./ComboBoxTextField',
-	'./Toolbar',
-	'./Button',
-	'./Bar',
-	'./Text',
-	'./Title',
-	'sap/ui/core/InvisibleText',
-	'sap/ui/core/IconPool',
-	'sap/ui/core/ValueStateSupport',
-	'./library',
-	'sap/ui/Device',
-	'sap/ui/core/library',
-	'./ComboBoxBaseRenderer',
-	'jquery.sap.keycodes'
-],
-	function(
-	jQuery,
-	Dialog,
-	ComboBoxTextField,
-	Toolbar,
-	Button,
-	Bar,
-	Text,
-	Title,
-	InvisibleText,
-	IconPool,
-	ValueStateSupport,
-	library,
-	Device,
-	coreLibrary,
-	ComboBoxBaseRenderer
-	) {
+sap.ui.define(['jquery.sap.global', './Dialog', './ComboBoxTextField', './Toolbar', './Button', './Bar', './Text', './Title', 'sap/ui/core/InvisibleText', 'sap/ui/core/IconPool', 'sap/ui/core/ValueStateSupport', './library', 'sap/ui/Device', 'sap/ui/core/library', 'jquery.sap.keycodes'],
+	function(jQuery, Dialog, ComboBoxTextField, Toolbar, Button, Bar, Text, Title, InvisibleText, IconPool, ValueStateSupport, library, Device, coreLibrary) {
 		"use strict";
 
 		// shortcut for sap.m.PlacementType
@@ -59,7 +26,7 @@ sap.ui.define([
 		 * @abstract
 		 *
 		 * @author SAP SE
-		 * @version 1.54.2
+		 * @version 1.52.5
 		 *
 		 * @constructor
 		 * @public
@@ -115,6 +82,9 @@ sap.ui.define([
 				}
 			}
 		});
+
+		//Keeps the ID of the static aria text for available options
+		var sPickerHiddenLabelId;
 
 		/* =========================================================== */
 		/* Private methods                                             */
@@ -272,7 +242,19 @@ sap.ui.define([
 		 * @protected
 		 */
 		ComboBoxBase.prototype.getPickerInvisibleTextId = function() {
-			return InvisibleText.getStaticId("sap.m", "COMBOBOX_AVAILABLE_OPTIONS");
+			if (!sap.ui.getCore().getConfiguration().getAccessibility()) {
+				return "";
+			}
+
+			// Load the resources
+			var oResourceBundle = sap.ui.getCore().getLibraryResourceBundle("sap.m");
+
+			if (!sPickerHiddenLabelId) {
+				sPickerHiddenLabelId = new InvisibleText({
+					text: oResourceBundle.getText("COMBOBOX_AVAILABLE_OPTIONS")
+				}).toStatic().getId();
+			}
+			return sPickerHiddenLabelId;
 		};
 
 		/* =========================================================== */
@@ -779,6 +761,7 @@ sap.ui.define([
 		 * To be overwritten by subclasses.
 		 *
 		 * @param {string} sPickerType The picker type
+		 * @returns {sap.m.Popover | sap.m.Dialog} The picker popup to be used.
 		 * @protected
 		 */
 		ComboBoxBase.prototype.createPicker = function(sPickerType) {};
@@ -1082,7 +1065,7 @@ sap.ui.define([
 
 		/**
 		 * Scrolls an item into the visual viewport.
-		 * @param {object} oItem The item to be scrolled
+		 * @param {object} The item to be scrolled
 		 *
 		 */
 		ComboBoxBase.prototype.scrollToItem = function(oItem) {

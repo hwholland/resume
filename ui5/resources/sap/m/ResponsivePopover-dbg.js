@@ -1,33 +1,18 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.ResponsivePopover.
-sap.ui.define([
-	'jquery.sap.global',
-	'./Dialog',
-	'./Popover',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/IconPool',
-	'sap/ui/base/ManagedObject',
-	'sap/ui/Device',
-	'./ResponsivePopoverRenderer'
-],
-	function(
-		jQuery,
-		Dialog,
-		Popover,
-		library,
-		Control,
-		IconPool,
-		ManagedObject,
-		Device,
-		ResponsivePopoverRenderer
-	) {
+sap.ui.define(['jquery.sap.global', './Dialog', './Popover', './library', 'sap/ui/core/Control', 'sap/ui/core/IconPool', 'sap/ui/base/ManagedObject', 'sap/ui/Device'],
+	function(jQuery, Dialog, Popover, library, Control, IconPool, ManagedObject, Device) {
 	"use strict";
+
+
+
+	// shortcut for sap.m.ButtonType
+	var ButtonType = library.ButtonType;
 
 	// shortcut for sap.m.DialogType
 	var DialogType = library.DialogType;
@@ -58,7 +43,7 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -133,7 +118,6 @@ sap.ui.define([
 
 			/**
 			 * Determines if a close button should be inserted into the dialog's header dynamically to close the dialog. This property only takes effect on phone.
-			 * <b>Note:</b> The close button could be placed only in a sap.m.Bar if a sap.m.Toolbar is passed as a header - the property will not take effect.
 			 */
 			showCloseButton : {type : "boolean", group : "Misc", defaultValue : true},
 
@@ -397,7 +381,7 @@ sap.ui.define([
 	/**
 	 * Opens the ResponsivePopover. The ResponsivePopover is positioned relatively to the control parameter on tablet or desktop and is full screen on phone. Therefore the control parameter is only used on tablet or desktop and is ignored on phone.
 	 *
-	 * @param {object} oParent When this control is displayed on tablet or desktop, the ResponsivePopover is positioned relative to this control.
+	 * @param {object} oControl When this control is displayed on tablet or desktop, the ResponsivePopover is positioned relative to this control.
 	 * @returns {object} Reference to the opening control
 	 * @public
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
@@ -516,7 +500,7 @@ sap.ui.define([
 	ResponsivePopover.prototype._insertCloseButton = function(oHeader){
 		var oCloseButton = this._getCloseButton(),
 			iIndex;
-		if (oHeader && oHeader.addContentRight) {
+		if (oHeader) {
 			iIndex = oHeader.getAggregation("contentRight", []).length;
 			oHeader.insertAggregation("contentRight", oCloseButton, iIndex);
 		}
@@ -652,6 +636,10 @@ sap.ui.define([
 	 * @public
 	 */
 	ResponsivePopover.prototype.setBeginButton = function(oButton){
+		if (oButton) {
+			oButton.setType(ButtonType.Transparent);
+		}
+
 		this._oControl.setBeginButton(oButton);
 		return this._setButton("begin", oButton);
 	};
@@ -663,6 +651,10 @@ sap.ui.define([
 	 * @public
 	 */
 	ResponsivePopover.prototype.setEndButton = function(oButton){
+		if (oButton) {
+			oButton.setType(ButtonType.Transparent);
+		}
+
 		this._oControl.setEndButton(oButton);
 		return this._setButton("end", oButton);
 	};

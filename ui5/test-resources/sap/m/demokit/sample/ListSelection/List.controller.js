@@ -15,7 +15,7 @@ sap.ui.define([
 
 		handleSelectChange: function (oEvent) {
 			var mode = oEvent.getParameter("selectedItem").getKey();
-			this.byId("ProductList").setMode(mode);
+			this.getView().byId("ProductList").setMode(mode);
 		}
 
 	});

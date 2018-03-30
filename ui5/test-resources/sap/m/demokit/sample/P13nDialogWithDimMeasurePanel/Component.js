@@ -6,11 +6,7 @@ sap.ui.define([
 	var Component = UIComponent.extend("sap.m.sample.P13nDialogWithDimMeasurePanel.Component", {
 
 		metadata: {
-			rootView: {
-				"viewName": "sap.m.sample.P13nDialogWithDimMeasurePanel.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.m.sample.P13nDialogWithDimMeasurePanel.Page",
 			dependencies: {
 				libs: [
 					"sap.m", "sap.ui.layout"

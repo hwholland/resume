@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -15,7 +15,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Element', 'sap/ui/model/Sorter'
 	 * Note: Do not access the function of this helper directly but via <code>sap.ui.table.TableUtils.Grouping...</code>
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @namespace
 	 * @name sap.ui.table.TableGrouping
 	 * @private
@@ -114,85 +114,45 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Element', 'sap/ui/model/Sorter'
 		 */
 
 		/**
-		 * Toggles or sets the expanded state of a single or multiple rows. Toggling only works for a single row.
-		 *
-		 * @param {sap.ui.table.Table} oTable Instance of the table.
-		 * @param {int|int[]} vRowIndex A single index, or an array of indices of the rows to expand or collapse.
-		 * @param {boolean} [bExpand] If defined, instead of toggling the desired state is set.
-		 * @returns {boolean|null} The new expanded state in case an action was performed, otherwise <code>null</code>.
+		 * Toggles the expand / collapse state of the group for the given index.
+		 * @param {sap.ui.table.Table} oTable Instance of the table
+		 * @param {number} iRowIndex the row index which should be toggled.
+		 * @param {boolean} [bExpand] If defined instead of toggling the desired state is set.
+		 * @returns {boolean|null} the new expand state in case an action was performed, <code>null</code> otherwise.
 		 * @private
 		 */
-		toggleGroupHeader : function(oTable, vRowIndex, bExpand) {
-			var aIndices = [];
-			var oBinding = oTable != null ? oTable.getBinding("rows") : null;
+		toggleGroupHeader : function(oTable, iRowIndex, bExpand) {
+			var oBinding = oTable.getBinding("rows");
 
-			if (oTable == null || oBinding == null || oBinding.expand == null || vRowIndex == null) {
-				return null;
-			}
-
-			if (typeof vRowIndex === "number") {
-				aIndices = [vRowIndex];
-			} else if (Array.isArray(vRowIndex)) {
-				if (bExpand == null && vRowIndex.length > 1) {
-					// Toggling the expanded state of multiple rows seems to be an absurd task. Therefore we assume this is unintentional and
-					// prevent the execution.
-					return null;
-				}
-				aIndices = vRowIndex;
-			}
-
-			// The cached binding length cannot be used here. In the synchronous execution after re-binding the rows, the cached binding length is
-			// invalid. The table will validate it in its next update cycle, which happens asynchronously.
-			// As of now, this is the required behavior for some features, but leads to failure here. Therefore, the length is requested from the
-			// binding directly.
-			var iTotalRowCount = oTable._getTotalRowCount(true);
-
-			var aValidSortedIndices = aIndices.filter(function(iIndex) {
-				// Only indices of existing, expandable/collapsible nodes must be considered. Otherwise there might be no change event on the final
-				// expand/collapse.
-				var bIsExpanded = oBinding.isExpanded(iIndex);
-				var bIsLeaf = true; // If the node state cannot be determined, we assume it is a leaf.
+			if (oBinding && oBinding.expand) {
+				var bIsExpanded = oBinding.isExpanded(iRowIndex);
+				var bIsLeaf = true; // If the node state can not be determined, we assume it is a leaf.
 
 				if (oBinding.nodeHasChildren != null) {
 					if (oBinding.getNodeByIndex != null) {
-						bIsLeaf = !oBinding.nodeHasChildren(oBinding.getNodeByIndex(iIndex));
+						bIsLeaf = !oBinding.nodeHasChildren(oBinding.getNodeByIndex(iRowIndex));
 					} else {
 						// The sap.ui.model.TreeBindingCompatibilityAdapter has no #getNodeByIndex function and #nodeHasChildren always returns true.
 						bIsLeaf = false;
 					}
 				}
 
-				return iIndex >= 0 && iIndex < iTotalRowCount
-					   && !bIsLeaf
-					   && bExpand !== bIsExpanded;
-			}).sort();
-
-			if (aValidSortedIndices.length === 0) {
-				return null;
-			}
-
-			// Operations need to be performed from the highest index to the lowest. This ensures correct results with OData bindings. The indices
-			// are sorted ascending, so the array is iterated backwards.
-
-			// Expand/Collapse all nodes except the first, and suppress the change event.
-			for (var i = aValidSortedIndices.length - 1; i > 0; i--) {
-				if (bExpand) {
-					oBinding.expand(aValidSortedIndices[i], true);
+				if (bIsLeaf) {
+					return null; // a leaf can't be expanded or collapsed
+				} else if (bExpand === true && !bIsExpanded) { // Force expand
+					oBinding.expand(iRowIndex);
+				} else if (bExpand === false && bIsExpanded) { // Force collapse
+					oBinding.collapse(iRowIndex);
+				} else if (bExpand !== true && bExpand !== false) { // Toggle state
+					oBinding.toggleIndex(iRowIndex);
 				} else {
-					oBinding.collapse(aValidSortedIndices[i], true);
+					return null;
 				}
+
+				return !bIsExpanded;
 			}
 
-			// Expand/Collapse the first node without suppressing the change event.
-			if (bExpand === true) {
-				oBinding.expand(aValidSortedIndices[0], false);
-			} else if (bExpand === false) {
-				oBinding.collapse(aValidSortedIndices[0], false);
-			} else {
-				oBinding.toggleIndex(aValidSortedIndices[0]);
-			}
-
-			return oBinding.isExpanded(aValidSortedIndices[0]);
+			return null;
 		},
 
 		/**

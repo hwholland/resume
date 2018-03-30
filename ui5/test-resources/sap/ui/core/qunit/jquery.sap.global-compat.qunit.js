@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
@@ -195,20 +195,8 @@ sap.ui.require([
 		assert.strictEqual(fnGetter(), oValue);
 	});
 
-	QUnit.test("jQuery.sap.getObject", function(assert) {
+	QUnit.test("jQuery.sap.getObject", function() {
 		var UNIQUE = {}, oObject = {}, foo;
-
-		// falsy path is mapped to empty object {} when iNoCreates parameter is set to 0
-		assert.propEqual(jQuery.sap.getObject("a.b.c", 0, {a: {b: {c: ""}}}), {});
-		assert.propEqual(jQuery.sap.getObject("a.b.c", 0, {a: {b: {c: 0}}}), {});
-		assert.strictEqual(jQuery.sap.getObject("a.b.c", 0, {a: {b: {c: 1}}}), 1);
-		assert.strictEqual(jQuery.sap.getObject("a.b.c", 0, {a: {b: {c: " "}}}), " ");
-		assert.strictEqual(jQuery.sap.getObject("a.b.c", 0, {a: {b: {c: "a"}}}), "a");
-		assert.strictEqual(jQuery.sap.getObject("a.b.c", 0, {a: {b: {c: true}}}), true);
-		assert.propEqual(jQuery.sap.getObject("a.b.c", 0, {a: {b: {c: false}}}), {});
-		assert.propEqual(jQuery.sap.getObject("a.b.c", 0, {a: {b: {c: undefined}}}), {});
-		assert.propEqual(jQuery.sap.getObject("a.b.c", 0, {a: {b: {c: null}}}), {});
-		assert.propEqual(jQuery.sap.getObject("a.b.c", 0, {a: {b: {c: NaN}}}), {});
 
 
 		assert.strictEqual(jQuery.sap.getObject(), undefined, "no params");

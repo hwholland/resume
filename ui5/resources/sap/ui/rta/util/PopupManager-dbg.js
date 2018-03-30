@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.define([
@@ -42,7 +42,7 @@ function (
 	 * Constructor for a new sap.ui.rta.util.PopupManager
 	 * @extends sap.ui.base.ManagedObject
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @constructor
 	 * @private
 	 * @since 1.48
@@ -299,11 +299,12 @@ function (
 	 * @private
 	 */
 	PopupManager.prototype._applyPopupPatch = function(oPopupElement) {
-		var oOverlayContainer = Overlay.getOverlayContainer();
+		var oPopupOverlay = OverlayRegistry.getOverlay(oPopupElement);
+		var oOverlayContainer = Overlay.getOverlayContainer(oPopupOverlay);
 		var oPopup = oPopupElement.oPopup;
 		var aAutoCloseAreas = [
 			oPopup.oContent.getDomRef(),
-			oOverlayContainer.get(0)
+			oOverlayContainer
 		].concat(
 			this.getAutoCloseAreas()
 		);
@@ -484,11 +485,6 @@ function (
 	};
 
 	PopupManager.prototype._isPopupAdaptable = function(oPopupElement) {
-		//For variantManagement manage dialog
-		if (oPopupElement.isPopupAdaptationAllowed && !oPopupElement.isPopupAdaptationAllowed()) {
-			return false;
-		}
-
 		var oPopupAppComponent = this._getAppComponentForControl(oPopupElement);
 
 		return (this.oRtaRootAppComponent === oPopupAppComponent || this._isComponentInsidePopup(oPopupElement))

@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -311,10 +311,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/ComponentContainer', 'sap/m/She
 				title : "SAPUI5 Explored",
 				showLogout : false,
 				app : new ComponentContainer({
-					name : 'sap.ui.demokit.explored',
-					settings : {
-						id : "explored"
-					}
+					name : 'sap.ui.demokit.explored'
 				}),
 				homeIcon : {
 					'phone' : sPath + '/img/57_iPhone_Desktop_Launch.png',

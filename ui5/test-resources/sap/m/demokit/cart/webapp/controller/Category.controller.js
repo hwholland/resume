@@ -1,21 +1,20 @@
 sap.ui.define([
-	'jquery.sap.global',
 	'sap/ui/demo/cart/controller/BaseController',
 	'sap/ui/demo/cart/model/formatter',
 	'sap/ui/Device',
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator',
 	'sap/m/MessageToast',
-	'sap/ui/model/json/JSONModel'
-], function (
-	$,
-	BaseController,
-	formatter,
-	Device,
-	Filter,
-	FilterOperator,
-	MessageToast,
-	JSONModel) {
+	'sap/ui/model/json/JSONModel',
+	'jquery.sap.global'
+], function (BaseController,
+			 formatter,
+			 Device,
+			 Filter,
+			 FilterOperator,
+			 MessageToast,
+			 JSONModel,
+			 $) {
 	"use strict";
 
 	return BaseController.extend("sap.ui.demo.cart.controller.Category", {
@@ -32,11 +31,9 @@ sap.ui.define([
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
 			this._router.getRoute("category").attachMatched(this._loadCategories, this);
-			this._router.getRoute("product").attachMatched(this._loadCategories, this);
 		},
 
 		_loadCategories: function(oEvent) {
-			var oModel = this.getModel();
 			this._loadSuppliers();
 			var oProductList = this.byId("productList");
 			this._changeNoDataTextToIndicateLoading(oProductList);
@@ -44,27 +41,13 @@ sap.ui.define([
 			oBinding.attachDataReceived(this.fnDataReceived, this);
 			var sId = oEvent.getParameter("arguments").id;
 			this._sProductId = oEvent.getParameter("arguments").productId;
-			// the binding should be done after insuring that the metadata is loaded successfully
-			oModel.metadataLoaded().then(function () {
-				var oView = this.getView(),
-					sPath = "/" + this.getModel().createKey("ProductCategories", {
-					Category: sId
-				});
-				oView.bindElement({
-					path : sPath,
-					parameters: {
-						expand: "Products"
-					},
-					events: {
-						dataRequested: function () {
-							oView.setBusy(true);
-						},
-						dataReceived: function () {
-							oView.setBusy(false);
-						}
-					}
-				});
-			}.bind(this));
+
+			this.getView().bindElement({
+				path : "/ProductCategories('" + sId + "')",
+				parameters: {
+					expand: "Products"
+				}
+			});
 		},
 
 		/**

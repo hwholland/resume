@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 		var Component = UIComponent.extend("sap.m.sample.WizardBranching.Component", {
 
 			metadata: {
-				rootView: {
-					"viewName": "sap.m.sample.WizardBranching.V",
-					"type": "XML",
-					"async": true
-				},
+				rootView: "sap.m.sample.WizardBranching.V",
 				dependencies: {
 					libs: [
 						"sap.m",

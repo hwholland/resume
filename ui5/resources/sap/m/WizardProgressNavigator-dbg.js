@@ -1,29 +1,11 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-sap.ui.define([
-	"./library",
-	"sap/ui/core/Control",
-	"sap/ui/core/ResizeHandler",
-	"sap/ui/core/delegate/ItemNavigation",
-	"sap/ui/Device",
-	"jquery.sap.global",
-	"sap/m/ActionSheet",
-	"./WizardProgressNavigatorRenderer"
-],
-function(
-	library,
-	Control,
-	ResizeHandler,
-	ItemNavigation,
-	Device,
-	jQuery,
-	ActionSheet,
-	WizardProgressNavigatorRenderer
-) {
+sap.ui.define(["./library", "sap/ui/core/Control", "sap/ui/core/ResizeHandler", "sap/ui/core/delegate/ItemNavigation", "sap/ui/Device", "jquery.sap.global", "sap/m/ActionSheet"],
+function (library, Control, ResizeHandler, ItemNavigation, Device, jQuery, ActionSheet) {
 	"use strict";
 
 	/**
@@ -39,7 +21,7 @@ function(
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @private
@@ -62,7 +44,6 @@ function(
 			 * The title for each step is visible on hover.
 			 * <b>Note:</b> The number of titles should equal the number of steps,
 			 * otherwise no titles will be rendered.
-			 * @since 1.32
 			 */
 			stepTitles: {type: "string[]", group: "Appearance", defaultValue: []},
 
@@ -71,7 +52,6 @@ function(
 			 * The icon for each step is directly visible in the WizardProgressNavigator.
 			 * <b>Note:</b> The number of icons should equal the number of steps,
 			 * otherwise no icons will be rendered.
-			 * @since 1.32
 			 */
 			stepIcons: {type: "sap.ui.core.URI[]", group: "Appearance", defaultValue: []},
 
@@ -104,11 +84,34 @@ function(
 		MIN_STEP_WIDTH_WITH_TITLE: 200
 	};
 
+	WizardProgressNavigator.CLASSES = {
+		NAVIGATION: "sapMWizardProgressNav",
+		LIST: "sapMWizardProgressNavList",
+		LIST_VARYING: "sapMWizardProgressNavListVarying",
+		LIST_NO_TITLES: "sapMWizardProgressNavListNoTitles",
+		STEP: "sapMWizardProgressNavStep",
+		ANCHOR: "sapMWizardProgressNavAnchor",
+		ANCHOR_CIRCLE: "sapMWizardProgressNavAnchorCircle",
+		ANCHOR_TITLE: "sapMWizardProgressNavAnchorTitle",
+		ANCHOR_ICON: "sapMWizardProgressNavAnchorIcon"
+	};
+
+	WizardProgressNavigator.ATTRIBUTES = {
+		STEP: "data-sap-ui-wpn-step",
+		STEP_COUNT: "data-sap-ui-wpn-step-count",
+		CURRENT_STEP: "data-sap-ui-wpn-step-current",
+		ACTIVE_STEP: "data-sap-ui-wpn-step-active",
+		OPEN_STEP: "data-sap-ui-wpn-step-open",
+		OPEN_STEP_PREV: "data-sap-ui-wpn-step-open-prev",
+		OPEN_STEP_NEXT: "data-sap-ui-wpn-step-open-next",
+		ARIA_LABEL: "aria-label",
+		ARIA_DISABLED: "aria-disabled"
+	};
+
 	WizardProgressNavigator.TEXT = {
 		SELECTED: "WIZARD_PROG_NAV_SELECTED",
 		PROCESSED: "WIZARD_PROG_NAV_PROCESSED",
-		STEP: "WIZARD_PROG_NAV_STEP_TITLE",
-		OPTIONAL_STEP: "WIZARD_STEP_OPTIONAL_STEP_TEXT"
+		STEP: "WIZARD_PROG_NAV_STEP_TITLE"
 	};
 
 	/**************************************** LICECYCLE METHODS ***************************************/
@@ -117,7 +120,6 @@ function(
 		this._currentStep = 1;
 		this._activeStep = 1;
 		this._cachedSteps = [];
-		this._stepOptionalIndication = [];
 		this._resourceBundle = sap.ui.getCore().getLibraryResourceBundle("sap.m");
 		this._actionSheet = new ActionSheet();
 		this._createAnchorNavigation();
@@ -203,8 +205,6 @@ function(
 		this._currentStep = null;
 		this._activeStep = null;
 		this._cachedSteps = null;
-
-		this._stepOptionalIndication = null;
 	};
 
 	/**************************************** PUBLIC METHODS ***************************************/
@@ -303,7 +303,7 @@ function(
 		});
 		this._anchorNavigation.attachEvent("AfterFocus", function (params) {
 			var event = params.mParameters.event;
-			if (!event || !event.relatedTarget || jQuery(event.relatedTarget).hasClass(WizardProgressNavigatorRenderer.CLASSES.ANCHOR)) {
+			if (!event || !event.relatedTarget || jQuery(event.relatedTarget).hasClass(WizardProgressNavigator.CLASSES.ANCHOR)) {
 				return;
 			}
 
@@ -321,7 +321,7 @@ function(
 	WizardProgressNavigator.prototype._cacheDOMElements = function () {
 		var domRef = this.getDomRef();
 
-		this._cachedSteps = domRef.querySelectorAll("." + WizardProgressNavigatorRenderer.CLASSES.STEP);
+		this._cachedSteps = domRef.querySelectorAll("." + WizardProgressNavigator.CLASSES.STEP);
 	};
 
 	/**
@@ -377,12 +377,12 @@ function(
 	WizardProgressNavigator.prototype._updateStepActiveAttribute = function (newIndex, oldIndex) {
 		if (oldIndex !== undefined && this._cachedSteps[oldIndex]) {
 			this._cachedSteps[oldIndex]
-				.removeAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.ACTIVE_STEP);
+				.removeAttribute(WizardProgressNavigator.ATTRIBUTES.ACTIVE_STEP);
 		}
 
 		if (this._cachedSteps[newIndex]) {
 			this._cachedSteps[newIndex]
-				.setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.ACTIVE_STEP, true);
+				.setAttribute(WizardProgressNavigator.ATTRIBUTES.ACTIVE_STEP, true);
 		}
 
 	};
@@ -397,12 +397,12 @@ function(
 	WizardProgressNavigator.prototype._updateStepCurrentAttribute = function (newIndex, oldIndex) {
 		if (oldIndex !== undefined && this._cachedSteps[oldIndex]) {
 			this._cachedSteps[oldIndex]
-				.removeAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.CURRENT_STEP);
+				.removeAttribute(WizardProgressNavigator.ATTRIBUTES.CURRENT_STEP);
 		}
 
 		if (this._cachedSteps[newIndex]) {
 			this._cachedSteps[newIndex]
-				.setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.CURRENT_STEP, true);
+				.setAttribute(WizardProgressNavigator.ATTRIBUTES.CURRENT_STEP, true);
 		}
 	};
 
@@ -419,8 +419,8 @@ function(
 		for (var i = index + 1; i < stepsLength; i++) {
 			anchor = this._cachedSteps[i].children[0];
 
-			anchor.setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.ARIA_DISABLED, true);
-			anchor.removeAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.ARIA_LABEL);
+			anchor.setAttribute(WizardProgressNavigator.ATTRIBUTES.ARIA_DISABLED, true);
+			anchor.removeAttribute(WizardProgressNavigator.ATTRIBUTES.ARIA_LABEL);
 		}
 	};
 
@@ -433,7 +433,7 @@ function(
 	WizardProgressNavigator.prototype._removeAnchorAriaDisabledAttribute = function (index) {
 		if (this._cachedSteps[index]) {
 			this._cachedSteps[index].children[0]
-				.removeAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.ARIA_DISABLED);
+				.removeAttribute(WizardProgressNavigator.ATTRIBUTES.ARIA_DISABLED);
 		}
 	};
 
@@ -448,14 +448,14 @@ function(
 		if (oldIndex !== undefined && this._cachedSteps[oldIndex]) {
 			this._cachedSteps[oldIndex].children[0]
 				.setAttribute(
-					WizardProgressNavigatorRenderer.ATTRIBUTES.ARIA_LABEL,
+					WizardProgressNavigator.ATTRIBUTES.ARIA_LABEL,
 					this._resourceBundle.getText(WizardProgressNavigator.TEXT.PROCESSED));
 		}
 
 		if (this._cachedSteps[newIndex]) {
 			this._cachedSteps[newIndex].children[0]
 				.setAttribute(
-					WizardProgressNavigatorRenderer.ATTRIBUTES.ARIA_LABEL,
+					WizardProgressNavigator.ATTRIBUTES.ARIA_LABEL,
 					this._resourceBundle.getText(WizardProgressNavigator.TEXT.SELECTED));
 		}
 
@@ -539,14 +539,15 @@ function(
 				Math.floor(width / WizardProgressNavigator.CONSTANTS.MIN_STEP_WIDTH_WITH_TITLE) :
 				Math.floor(width / WizardProgressNavigator.CONSTANTS.MIN_STEP_WIDTH_NO_TITLE);
 
+
 		[].forEach.call(this._cachedSteps, function (step) {
-			step.setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP, false);
-			step.setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP_PREV, false);
-			step.setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP_NEXT, false);
+			step.setAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP, false);
+			step.setAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP_PREV, false);
+			step.setAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP_NEXT, false);
 		});
 
 		if (this._cachedSteps[currStep]) {
-			this._cachedSteps[currStep].setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP, true);
+			this._cachedSteps[currStep].setAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP, true);
 		}
 
 		for (var i = 1; i < stepsToShow; i++) {
@@ -555,17 +556,17 @@ function(
 			}
 
 			if (isForward && this._cachedSteps[currStep + counter]) {
-				this._cachedSteps[currStep + counter].setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP, true);
+				this._cachedSteps[currStep + counter].setAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP, true);
 				isForward = !isForward;
 			} else if (!isForward && this._cachedSteps[currStep - counter]) {
-				this._cachedSteps[currStep - counter].setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP, true);
+				this._cachedSteps[currStep - counter].setAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP, true);
 				isForward = !isForward;
 			} else if (this._cachedSteps[currStep + counter + 1]) {
 				counter += 1;
-				this._cachedSteps[currStep + counter].setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP, true);
+				this._cachedSteps[currStep + counter].setAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP, true);
 				isForward = true;
 			} else if (this._cachedSteps[currStep - counter]) {
-				this._cachedSteps[currStep - counter].setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP, true);
+				this._cachedSteps[currStep - counter].setAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP, true);
 				counter += 1;
 				isForward = false;
 			}
@@ -573,18 +574,18 @@ function(
 
 		// mark the topmost steps of both groups (in the beginning and the end)
 		for (i = 0; i < this._cachedSteps.length; i++) {
-			if (this._cachedSteps[i].getAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP) == "true" &&
+			if (this._cachedSteps[i].getAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP) == "true" &&
 				this._cachedSteps[i - 1] &&
-				this._cachedSteps[i - 1].getAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP) == "false") {
+				this._cachedSteps[i - 1].getAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP) == "false") {
 
-				this._cachedSteps[i - 1].setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP_PREV, true);
+				this._cachedSteps[i - 1].setAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP_PREV, true);
 			}
 
-			if (this._cachedSteps[i].getAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP) == "false" &&
+			if (this._cachedSteps[i].getAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP) == "false" &&
 				this._cachedSteps[i - 1] &&
-				this._cachedSteps[i - 1].getAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP) == "true") {
+				this._cachedSteps[i - 1].getAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP) == "true") {
 
-				this._cachedSteps[i].setAttribute(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP_NEXT, true);
+				this._cachedSteps[i].setAttribute(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP_NEXT, true);
 				break;
 			}
 		}
@@ -599,10 +600,10 @@ function(
 	 * @private
 	 */
 	WizardProgressNavigator.prototype._isGroupAtStart = function (domTarget) {
-		var step = jQuery(domTarget).closest("." + WizardProgressNavigatorRenderer.CLASSES.STEP);
+		var step = jQuery(domTarget).closest("." + WizardProgressNavigator.CLASSES.STEP);
 		var stepNumber = this._getStepNumber(step);
 
-		return step.attr(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP_PREV) === "true" &&
+		return step.attr(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP_PREV) === "true" &&
 				stepNumber > 1;
 	};
 
@@ -615,10 +616,10 @@ function(
 	 * @private
 	 */
 	WizardProgressNavigator.prototype._isGroupAtEnd = function (domTarget) {
-		var step = jQuery(domTarget).closest("." + WizardProgressNavigatorRenderer.CLASSES.STEP);
+		var step = jQuery(domTarget).closest("." + WizardProgressNavigator.CLASSES.STEP);
 		var stepNumber = this._getStepNumber(step);
 
-		return step.attr(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP_NEXT) === "true" &&
+		return step.attr(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP_NEXT) === "true" &&
 				stepNumber < this._cachedSteps.length;
 	};
 
@@ -661,7 +662,7 @@ function(
 	 * @private
 	 */
 	WizardProgressNavigator.prototype._isAnchor = function (domTarget) {
-		return domTarget.className.indexOf(WizardProgressNavigatorRenderer.CLASSES.ANCHOR) !== -1;
+		return domTarget.className.indexOf(WizardProgressNavigator.CLASSES.ANCHOR) !== -1;
 	};
 
 	/**
@@ -672,18 +673,18 @@ function(
 	 * @private
 	 */
 	WizardProgressNavigator.prototype._isOpenStep = function (domTarget) {
-		var step = jQuery(domTarget).closest("." + WizardProgressNavigatorRenderer.CLASSES.STEP);
+		var step = jQuery(domTarget).closest("." + WizardProgressNavigator.CLASSES.STEP);
 
-		return step.attr(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP) === "true" ||
-				(step.attr(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP) === "false" &&
-				step.attr(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP_PREV) === "true") ||
-				(step.attr(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP) === "false" &&
-				step.attr(WizardProgressNavigatorRenderer.ATTRIBUTES.OPEN_STEP_NEXT) === "true");
+		return step.attr(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP) === "true" ||
+				(step.attr(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP) === "false" &&
+				step.attr(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP_PREV) === "true") ||
+				(step.attr(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP) === "false" &&
+				step.attr(WizardProgressNavigator.ATTRIBUTES.OPEN_STEP_NEXT) === "true");
 	};
 
 	/**
 	 * Checks whether the step is active.
-	 * @param {number} stepNumber The step number to be checked.
+	 * @param {stepNumber} iStep The step number to be checked.
 	 * @returns {boolean} True when the step number has been activated, false otherwise.
 	 * @private
 	 */
@@ -699,8 +700,8 @@ function(
 	 */
 	WizardProgressNavigator.prototype._getStepNumber = function (domAnchor) {
 		var stepNumber = jQuery(domAnchor)
-						.closest("." + WizardProgressNavigatorRenderer.CLASSES.STEP)
-						.attr(WizardProgressNavigatorRenderer.ATTRIBUTES.STEP);
+						.closest("." + WizardProgressNavigator.CLASSES.STEP)
+						.attr(WizardProgressNavigator.ATTRIBUTES.STEP);
 
 		return parseInt(stepNumber, 10);
 	};

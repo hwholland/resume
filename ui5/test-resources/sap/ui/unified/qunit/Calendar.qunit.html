@@ -71,8 +71,6 @@
 								new sap.ui.unified.DateTypeRange({startDate: new Date("2011", "0", "5"), type: sap.ui.unified.CalendarDayType.Type04}),
 								new sap.ui.unified.DateTypeRange({startDate: new Date("2011", "0", "6"),
 									endDate: new Date("2011", "0", "10"), type: sap.ui.unified.CalendarDayType.NonWorking}),
-								new sap.ui.unified.DateTypeRange({startDate: new Date("2011", "0", "6"),
-										endDate: new Date("2011", "0", "6"), type: sap.ui.unified.CalendarDayType.Type01}),
 								new sap.ui.unified.DateTypeRange({startDate: new Date("2011", "0", "21"), type:
 									sap.ui.unified.CalendarDayType.NonWorking})
 				],
@@ -253,14 +251,6 @@
 				}
 
 				oCal2.focusDate(new Date(2011, 0, 10));
-
-				// Act - move the focus out of Cal2 (to Cal1) and set focus date to the same date on Cal2
-				oCal1.focus();
-				oCal2.focusDate(new Date(2011, 0, 10));
-
-				// Assert
-				assert.strictEqual(jQuery(document.activeElement).attr("id"), "Cal2--Month0-20110110",
-							"Focus should NOT remain on Cal1 but on Cal2 focused date");
 			});
 
 			QUnit.test("week number calculation", function(assert) {
@@ -306,13 +296,11 @@
 				assert.equal(jQuery("#Cal2--Month0-20110104").attr("title"), "Text", "20110104 has special days tooltip");
 				assert.equal(jQuery("#Cal2--Month0-20110104").attr("aria-label"), "4. Januar 2011; My Type 2", "20110104 aria label");
 
-				sDescribingDomTextId = sap.ui.unified.CalendarLegendRenderer.typeARIATexts["Type04"].getId();
+				sDescribingDomTextId = sap.ui.unified.CalendarLegend.typeARIATexts["Type04"].getId();
 				assert.ok(jQuery("#Cal2--Month0-20110105").attr("aria-describedby").indexOf(sDescribingDomTextId) > -1, "special day is described by a static label");
 
 				assert.ok(jQuery("#Cal2--Month0-20110106").hasClass("sapUiCalItemWeekEnd"),
 						"20110106 is date of type 'NonWorking' as part of a date range");
-				assert.ok(jQuery("#Cal2--Month0-20110106").hasClass("sapUiCalItemType01") && jQuery("#Cal2--Month0-20110106").hasClass("sapUiCalItemWeekEnd"),
-				"20110106 is date of type 'Type0' and type 'NonWorking'");
 				assert.ok(jQuery("#Cal2--Month0-20110108").hasClass("sapUiCalItemWeekEnd"),
 						"20110108 is date of type 'NonWorking' as part of a date range");
 				assert.ok(jQuery("#Cal2--Month0-20110110").hasClass("sapUiCalItemWeekEnd"),
@@ -983,30 +971,6 @@
 				//cleanup
 				oCal6.destroy();
 				oCal7.destroy();
-			});
-
-
-			// BCP: 1780409322
-			QUnit.test("month change update aria-label of the button", function (assert) {
-				// prepare
-				var oCalendar = new sap.ui.unified.Calendar(),
-					oCurrentDate = new Date(2017, 5, 2),
-					oNewFocusedDate = new Date(2017, 6, 3);
-
-				oCalendar.displayDate(oCurrentDate);
-				oCalendar.placeAt("qunit-fixture");
-				sap.ui.getCore().applyChanges();
-
-				assert.equal(oCalendar.$("-Head-B1").attr("aria-label"),oCalendar.$("-Head-B1").text(), "aria-label should be equal to the text of the button");
-
-				// act
-				oCalendar.focusDate(oNewFocusedDate);
-
-				// assert
-				assert.equal(oCalendar.$("-Head-B1").attr("aria-label"),oCalendar.$("-Head-B1").text(), "aria-label should be equal to the text of the button");
-
-				// cleanup
-				oCalendar.destroy();
 			});
 
 		</script>

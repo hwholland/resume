@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -96,7 +96,6 @@ sap.ui.define([
 			onTreeFilter: function (oEvent) {
 				var oTree = this.byId("tree");
 				var sFilterArgument = oEvent.getParameter("newValue").trim();
-				var sFilterArgumentJoined = sFilterArgument.replace(/\s/g, '');
 				var oBinding = oTree.getBinding("items");
 
 				if (this._filterTimeout) {
@@ -116,11 +115,6 @@ sap.ui.define([
 					if (sFilterArgument) {
 						var oNameFilter = new Filter("name", FilterOperator.Contains, sFilterArgument);
 						aFilters.push(oNameFilter);
-					}
-
-					if (sFilterArgumentJoined) {
-						var oNameFilterJoined = new Filter("name", FilterOperator.Contains, sFilterArgumentJoined);
-						aFilters.push(oNameFilterJoined);
 					}
 
 					oBinding.filter(aFilters);

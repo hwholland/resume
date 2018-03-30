@@ -1,19 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.SelectList.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/delegate/ItemNavigation',
-	'sap/ui/core/Item',
-	'./SelectListRenderer'
-],
-	function(jQuery, library, Control, ItemNavigation, Item, SelectListRenderer) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/ui/core/delegate/ItemNavigation', 'sap/ui/core/Item'],
+	function(jQuery, library, Control, ItemNavigation, Item) {
 		"use strict";
 
 		// shortcut for sap.m.touch
@@ -33,7 +26,7 @@ sap.ui.define([
 		 * @extends sap.ui.core.Control
 		 *
 		 * @author SAP SE
-		 * @version 1.54.2
+		 * @version 1.52.5
 		 *
 		 * @constructor
 		 * @public
@@ -219,6 +212,10 @@ sap.ui.define([
 			}
 		};
 
+		/**
+		 * Called, whenever the binding of the aggregation items is changed.
+		 *
+		 */
 		SelectList.prototype.updateItems = function(sReason) {
 			this.bItemsUpdated = false;
 
@@ -683,18 +680,6 @@ sap.ui.define([
 		};
 
 		/**
-		 * Returns how many items, which are not separators, are in the SelectList
-		 *
-		 * returns {int}
-		 * @private
-		 */
-		SelectList.prototype._getNonSeparatorItemsCount = function () {
-			return this.getItems().filter(function(oItem) {
-				return !(oItem instanceof sap.ui.core.SeparatorItem);
-			}).length;
-		};
-
-		/**
 		 * Retrieves the default selected item from the aggregation named <code>items</code>.
 		 *
 		 * @param {sap.ui.core.Item[]} [aItems]
@@ -896,7 +881,7 @@ sap.ui.define([
 		 * <b>Note: </b> If duplicate keys exists, the first item matching the key is returned.
 		 *
 		 * @param {string} sKey An item key that specifies the item to retrieve.
-		 * @returns {sap.ui.core.Item | null} The matched item or null
+		 * @returns {sap.ui.core.Item | null}
 		 * @public
 		 */
 		SelectList.prototype.getItemByKey = function(sKey) {

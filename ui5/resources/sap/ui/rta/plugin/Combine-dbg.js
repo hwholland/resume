@@ -1,16 +1,18 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides class sap.ui.rta.plugin.Combine.
 sap.ui.define([
 	'sap/ui/rta/plugin/Plugin',
+	'sap/ui/dt/Selection',
 	'sap/ui/dt/OverlayRegistry',
 	'sap/ui/rta/Utils'
 ], function(
 	Plugin,
+	Selection,
 	OverlayRegistry,
 	Utils
 ) {
@@ -22,7 +24,7 @@ sap.ui.define([
 	 * @class
 	 * @extends sap.ui.rta.plugin.Plugin
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @constructor
 	 * @private
 	 * @since 1.46
@@ -49,6 +51,9 @@ sap.ui.define([
 	 * @private
 	 */
 	Combine.prototype._isEditable = function(oOverlay) {
+		if (!Utils.getRelevantContainerDesigntimeMetadata(oOverlay)) {
+			return false;
+		}
 		var oCombineAction = this.getAction(oOverlay);
 		if (oCombineAction && oCombineAction.changeType && oCombineAction.changeOnRelevantContainer) {
 			return this.hasChangeHandler(oCombineAction.changeType, oOverlay.getRelevantContainer()) && this.hasStableId(oOverlay);
@@ -83,7 +88,7 @@ sap.ui.define([
 	 * @public
 	 */
 	Combine.prototype.isAvailable = function(oOverlay) {
-		var aSelectedOverlays = this.getSelectedOverlays();
+		var aSelectedOverlays = this.getDesignTime().getSelection();
 
 		if (aSelectedOverlays.length <= 1) {
 			return false;
@@ -99,7 +104,7 @@ sap.ui.define([
 	 * @public
 	 */
 	Combine.prototype.isEnabled = function(oOverlay) {
-		var aSelectedOverlays = this.getSelectedOverlays();
+		var aSelectedOverlays = this.getDesignTime().getSelection();
 
 		// check that at least 2 fields can be combined
 		if (!this.isAvailable(oOverlay) || aSelectedOverlays.length <= 1) {
@@ -107,7 +112,7 @@ sap.ui.define([
 		}
 
 		var aSelectedControls = aSelectedOverlays.map(function (oSelectedOverlay) {
-			return oSelectedOverlay.getElement();
+			return oSelectedOverlay.getElementInstance();
 		});
 
 		// check that each selected element has an enabled action
@@ -140,10 +145,10 @@ sap.ui.define([
 		var oDesignTimeMetadata = oElementOverlay.getDesignTimeMetadata();
 
 		var aToCombineElements = [];
-		var aSelectedOverlays = this.getSelectedOverlays();
+		var aSelectedOverlays = this.getDesignTime().getSelection();
 
 		for (var i = 0; i < aSelectedOverlays.length; i++) {
-			var oSelectedElement = aSelectedOverlays[i].getElement();
+			var oSelectedElement = aSelectedOverlays[i].getElementInstance();
 			aToCombineElements.push(oSelectedElement);
 		}
 

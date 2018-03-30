@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ObjectHeaderResponsiveIV.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.ObjectHeaderResponsiveIV.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.ObjectHeaderResponsiveIV.Page",
 			dependencies : {
 				libs : [
 					"sap.m",

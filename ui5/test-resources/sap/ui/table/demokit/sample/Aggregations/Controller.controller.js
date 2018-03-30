@@ -76,7 +76,7 @@ sap.ui.define([
 				oFilter = this._oFacetFilter;
 			}
 
-			this.byId("table").getBinding("rows").filter(oFilter, "Application");
+			this.getView().byId("table").getBinding("rows").filter(oFilter, "Application");
 		},
 
 		handleTxtFilter : function(oEvent) {
@@ -104,7 +104,7 @@ sap.ui.define([
 		},
 
 		_getFacetFilterLists : function() {
-			var oFacetFilter = this.byId("facetFilter");
+			var oFacetFilter = this.getView().byId("facetFilter");
 			return oFacetFilter.getLists();
 		},
 

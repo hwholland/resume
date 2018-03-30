@@ -1,4 +1,4 @@
-/*global describe,it,element,by,takeScreenshot,expect,browser*/
+/*global describe,it,element,by,takeScreenshot,expect*/
 
 describe("sap.m.RatingIndicator", function() {
 	"use strict";
@@ -24,15 +24,11 @@ describe("sap.m.RatingIndicator", function() {
 	});
 
 	it('Should show large inactive RatingIndicator', function() {
-		browser.executeScript('document.getElementById("largeInactiveRI").scrollIntoView()').then(function() {
-			expect(takeScreenshot(element(by.id("largeInactiveRI")))).toLookAs("large-inactive-RI");
-		});
+		expect(takeScreenshot(element(by.id('largeInactiveRI')))).toLookAs('large-inactive-RI');
 	});
 
 	it('Should show large active RatingIndicator', function() {
-		browser.executeScript('document.getElementById("largeActiveRI").scrollIntoView()').then(function() {
-			expect(takeScreenshot(element(by.id("largeActiveRI")))).toLookAs("large-active-RI");
-		});
+		expect(takeScreenshot(element(by.id('largeActiveRI')))).toLookAs('large-active-RI');
 	});
 
 	it('Should show default active RatingIndicator', function() {

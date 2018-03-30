@@ -49,21 +49,17 @@
 				</l:BlockLayoutCell>
 			</l:BlockLayoutRow>
 
-			<l:BlockLayoutRow id="disclaimerBlock" visible="false">
-				<l:BlockLayoutCell
-						backgroundColorSet="ColorSet9"
-						backgroundColorShade="ShadeA">
+			<l:BlockLayoutRow visible="{versionData>/isInternal}">
+				<l:BlockLayoutCell>
 					<MessageStrip
-						id="disclaimerMessage"
-						showIcon="true"/>
+						showIcon="true"
+						text="This is the internal version of the documentation. It contains topics that are still under construction, as well as SAP-internal information that should not be passed on to anybody outside SAP."/>
 				</l:BlockLayoutCell>
 			</l:BlockLayoutRow>
 
 			<l:BlockLayoutRow class="sapUiContentPadding">
 				<l:BlockLayoutCell
-						class="largeCell"
-						backgroundColorSet="ColorSet11"
-						backgroundColorShade="ShadeA">
+						class="largeCell demokitInitialPagesColorPatternB">
 					<custom:TitleLink
 							width="100%"
 							text="What's New?"
@@ -72,9 +68,7 @@
 				</l:BlockLayoutCell>
 
 				<l:BlockLayoutCell
-						class="largeCell"
-						backgroundColorSet="ColorSet11"
-						backgroundColorShade="ShadeB">
+						class="largeCell demokitInitialPagesColorPatternC">
 					<custom:TitleLink
 							width="100%"
 							text="Read Me First"
@@ -120,9 +114,7 @@
 					</l:VerticalLayout>
 				</l:BlockLayoutCell>
 				<l:BlockLayoutCell
-						class="largeCell"
-						backgroundColorSet="ColorSet11"
-						backgroundColorShade="ShadeB">
+						class="largeCell demokitInitialPagesColorPatternC">
 					<l:VerticalLayout width="100%">
 						<custom:TitleLink
 								width="100%"
@@ -135,9 +127,7 @@
 				</l:BlockLayoutCell>
 
 				<l:BlockLayoutCell
-						class="largeCell"
-						backgroundColorSet="ColorSet11"
-						backgroundColorShade="ShadeA">
+						class="largeCell demokitInitialPagesColorPatternB">
 					<l:VerticalLayout width="100%">
 						<custom:TitleLink
 								width="100%"
@@ -154,8 +144,6 @@
 			<l:BlockLayoutRow>
 				<l:BlockLayoutCell
 						class="largeCell demokitInitialPagesColorPatternA"
-						backgroundColorSet="ColorSet9"
-						backgroundColorShade="ShadeA"
 						visible="{=!${versionData>/isOpenUI5}}">
 					<l:VerticalLayout width="100%">
 						<custom:TitleLink
@@ -170,8 +158,6 @@
 
 				<l:BlockLayoutCell
 						class="largeCell demokitInitialPagesColorPatternC"
-						backgroundColorSet="ColorSet11"
-						backgroundColorShade="ShadeB"
 						visible="{=!${versionData>/isOpenUI5}}">
 					<l:VerticalLayout width="100%">
 						<custom:TitleLink
@@ -201,9 +187,7 @@
 				</l:BlockLayoutCell>
 
 				<l:BlockLayoutCell
-						class="largeCell"
-						backgroundColorSet="ColorSet11"
-						backgroundColorShade="ShadeC">
+						class="largeCell demokitInitialPagesColorPatternD">
 					<l:VerticalLayout width="100%">
 						<custom:TitleLink
 								width="100%"

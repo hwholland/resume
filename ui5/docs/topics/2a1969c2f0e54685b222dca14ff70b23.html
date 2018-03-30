@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -117,23 +117,21 @@
                      <h1 class="title topictitle1" hidden>HTML Templating</h1>
                      
                      <div class="body">
-                        <p class="shortdesc" hidden>To build semantic HTML templates, <span class="ph"><span class="ph pname">OpenUI5</span></span> uses handlebars. You can
-                           		either use standard expressions and helpers together for the context of a template instance,
-                           		or you can use the custom helpers for handlebars provided by <span class="ph"><span class="ph pname">OpenUI5</span></span>, which you can use
-                           		together with the <span class="ph"><span class="ph pname">OpenUI5</span></span>
+                        <p class="shortdesc" hidden>To build semantic HTML templates, <span class="ph"><span class="ph pname">OpenUI5</span></span> uses handlebars. You can either use standard
+                           		expressions and helpers together for the context of a template instance, or you can use the
+                           		custom helpers for handlebars provided by <span class="ph"><span class="ph pname">OpenUI5</span></span>, which you can use together with the <span class="ph"><span class="ph pname">OpenUI5</span></span>
                            		models.
                         </p>
                         
                         		
-                        <p class="p">The HTML templating concept in <span class="ph"><span class="ph pname">OpenUI5</span></span> enables you to bind
-                           			texts against properties in the model. If the property in the model changes, the text is
-                           			updated accordingly. You can create and bind the value DOM elements including their DOM
-                           			attributes. For input DOM elements like <samp class="ph codeph">INPUT</samp>,
-                           				<samp class="ph codeph">TEXTAREA</samp> or <samp class="ph codeph">SELECT</samp>, <span class="ph"><span class="ph pname">OpenUI5</span></span> establishes a
-                           			two-way binding: On change of the DOM element value the model is updated if the value is
-                           			bound against a <span class="ph"><span class="ph pname">OpenUI5</span></span>
-                           			model. You can also define controls in the template similar to the declarative support
-                           			but in handlebars helper notation.
+                        <p class="p">The HTML templating concept in <span class="ph"><span class="ph pname">OpenUI5</span></span> enables you to bind texts against properties in the
+                           			model. If the property in the model changes, the text is updated accordingly. You can
+                           			create and bind the value DOM elements including their DOM attributes. For input DOM
+                           			elements like <samp class="ph codeph">INPUT</samp>, <samp class="ph codeph">TEXTAREA</samp> or
+                           			<samp class="ph codeph">SELECT</samp>, <span class="ph"><span class="ph pname">OpenUI5</span></span> establishes a two-way binding: On change of the DOM
+                           			element value the model is updated if the value is bound against a <span class="ph"><span class="ph pname">OpenUI5</span></span> model. You can
+                           			also define controls in the template similar to the declarative support but in
+                           			handlebars helper notation.
                         </p>
                         
                         		
@@ -164,10 +162,10 @@
 &lt;div id=&quot;myControlTemplate&quot; data-type=&quot;text/x-handlebars-template&quot;&gt;
     
         &lt;h3&gt;Control Template (using &quot;control&quot; expression)&lt;/h3&gt;
-        {{control sap-ui-type=&quot;sap.m.Label&quot; design=&quot;Bold&quot; text=&quot;{/title}&quot;}}
+        {{control sap-ui-type=&quot;sap.ui.commons.Label&quot; design=&quot;Bold&quot; text=&quot;{/title}&quot;}}
         &lt;ul&gt;
         {{#each path=&quot;/persons&quot;}}
-            &lt;li&gt;{{control sap-ui-type=&quot;sap.m.Input&quot; text=&quot;{lastName}, {firstName}&quot;}}&lt;/li&gt;
+            &lt;li&gt;{{control sap-ui-type=&quot;sap.ui.commons.TextView&quot; text=&quot;{lastName}, {firstName}&quot;}}&lt;/li&gt;
         {{/each}}
         &lt;/ul&gt;
     
@@ -177,24 +175,22 @@
 // register all available templates in the document
 sap.ui.template();</pre>
                               
-                              			<p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> looks up all DOM
-                                 				elements with a <samp class="ph codeph">data-type</samp> attribute and checks if the respective
-                                 				data type is supported. If yes, <span class="ph"><span class="ph pname">OpenUI5</span></span> creates a new
+                              			<p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> looks up all DOM elements with a <samp class="ph codeph">data-type</samp> attribute and
+                                 				checks if the respective  data type is supported. If yes, <span class="ph"><span class="ph pname">OpenUI5</span></span> creates a new
                                  				instance of <samp class="ph codeph">sap.ui.core.tmpl.Template</samp> which represents the raw
                                  				template and contains the markup of the template that is later used by the
                                  				templating engine to create the final HTML markup. You can use the
                                  					<samp class="ph codeph">placeAt</samp> method to add the template instance to the DOM. If you
-                                 				define a template in the head with a <samp class="ph codeph">SCRIPT</samp> tag, for example, <span class="ph"><span class="ph pname">OpenUI5</span></span> only creates the
-                                 				template instance. For inline templates, this instance is then placed at the same
-                                 				location of the document.
+                                 				define a template in the head with a <samp class="ph codeph">SCRIPT</samp> tag, for example,
+                                 				<span class="ph"><span class="ph pname">OpenUI5</span></span> only creates the template instance. For inline templates, this instance is
+                                 				then placed at the same location of the document.
                               </p>
                               
                               			
                               <p class="p">You can use the factory function <samp class="ph codeph">sap.ui.template</samp> to parse all
                                  				templates defined in <samp class="ph codeph">SCRIPT</samp> tags in the head or in
                                  					<samp class="ph codeph">DIV</samp> tags in the body. If you do <span class="ph emphasis emphasis">not</span>
-                                 				specify a parameter, <span class="ph"><span class="ph pname">OpenUI5</span></span> templating looks
-                                 				up all available templates.
+                                 				specify a parameter, <span class="ph"><span class="ph pname">OpenUI5</span></span> templating looks up all available templates.
                               </p>
                               
                               		

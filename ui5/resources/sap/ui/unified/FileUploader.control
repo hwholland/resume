@@ -234,29 +234,19 @@ This property is not supported by Internet Explorer 9.</documentation>
         </aggregation>
     </aggregations>
     <methods>
-        <method since="1.25.0" type="sap.ui.unified/FileUploader" name="clear">
-            <documentation>Clears the content of the &lt;code&gt;FileUploader&lt;/code&gt;.
-
-&lt;b&gt;Note:&lt;/b&gt; The attached additional data however is retained.</documentation>
+        <method since="1.25.0" type="sap.ui.core/void" name="clear">
+            <documentation>Clears the content of the FileUploader. The attached additional data however is retained.</documentation>
         </method>
         <method type="sap.ui.core/void" name="upload">
-            <documentation>Starts the upload (as defined by uploadUrl).</documentation>
+            <documentation>Starts the upload (as defined by uploadUrl)</documentation>
             <parameters>
                 <parameter type="sap.ui.core/boolean" name="preProcessFiles">
                     <documentation>Set to &lt;code&gt;true&lt;/code&gt; to allow pre-processing of the files before sending the request.</documentation>
                 </parameter>
             </parameters>
         </method>
-        <method since="1.24.0" name="abort">
+        <method since="1.24.0" type="sap.ui.core/void" name="abort">
             <documentation>Aborts the currently running upload.</documentation>
-            <parameters>
-                <parameter type="sap.ui.core/string" name="headerParameterName">
-                    <documentation>The name of the parameter within the &lt;code&gt;headerParameters&lt;/code&gt; aggregation to be checked.</documentation>
-                </parameter>
-                <parameter type="sap.ui.core/string" name="headerParameterValue">
-                    <documentation>The value of the parameter within the &lt;code&gt;headerParameters&lt;/code&gt; aggregation to be checked.</documentation>
-                </parameter>
-            </parameters>
         </method>
     </methods>
 </control>

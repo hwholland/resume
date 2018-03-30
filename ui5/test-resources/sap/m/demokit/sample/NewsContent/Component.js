@@ -3,11 +3,7 @@ sap.ui.define(['sap/ui/core/UIComponent'], function(UIComponent) {
 
 	var Component = UIComponent.extend("sap.m.sample.NewsContent.Component", {
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.NewsContent.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.NewsContent.Page",
 			dependencies : {
 				libs : ["sap.m"]
 			},

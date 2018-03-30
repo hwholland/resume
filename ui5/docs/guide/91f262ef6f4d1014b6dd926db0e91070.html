@@ -6,8 +6,8 @@
 <meta name="abstract" content="You create a JS (JavaScript) view in the same way as a controller and use the suffix .view.js for the file."/>
 <meta name="description" content="You create a JS (JavaScript) view in the same way as a controller and use the suffix .view.js for the file."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7160888838661721"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7160888838661721"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=23845645076226074"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=23845645076226074"/>
 <title>JS View</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -19,53 +19,46 @@
 	<h1 class="title topictitle1">JS View</h1>
 
 	
-	<div class="body conbody"><p class="shortdesc">You create a JS (JavaScript) view in the same way as a controller and use the suffix
-			<samp class="ph codeph">.view.js</samp> for the file.</p>
-
-		<p class="p">
-			<span class="ph"><span class="ph pname">OpenUI5</span></span> provides the
-			following two default methods for implementation: </p>
-
-		<ul class="ul">
-			<li class="li">
-				<p class="p"><samp class="ph codeph">getControllerName()</samp>: Specifies the controller belonging to this
-					view </p>
-
-				<p class="p">If this method is not implemented or returns <samp class="ph codeph">NULL</samp>, the view has
-					no controller. </p>
-
-			</li>
+	<div class="body conbody"><p class="shortdesc">You create a JS (JavaScript) view in the same way as a controller and use the suffix <samp class="ph codeph">.view.js</samp> for the file.</p>
+<p class="p">
+			<span class="ph"><span class="ph pname">OpenUI5</span></span> provides the following two default methods for implementation: </p>
+<ul class="ul"><li class="li"> 
+		  <p class="p"><samp class="ph codeph">getControllerName()</samp>: Specifies the controller belonging to this view </p>
+ 
+		  <p class="p">If this method is not implemented or returns 
+			 <samp class="ph codeph">NULL</samp>, the view has
+			 no controller. 
+		  </p>
+ 
+		</li>
 
 			<li class="li">
-				<p class="p"><samp class="ph codeph">createContent()</samp>: Called initially once after the controller has
-					been instantiated </p>
+				<p class="p"><samp class="ph codeph">createContent()</samp>: Called initially once after the controller has been
+					instantiated </p>
 
 				<p class="p">This method is used to create the UI. As the method knows the controller, it can
 					directly attach the event handlers. </p>
 
 			</li>
-
-		</ul>
-
-		<div class="note example" id="loio91f262ef6f4d1014b6dd926db0e91070__note_N10040_N10013_N10001"><span class="exampletitle">Example</span> 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">   sap.ui.jsview("sap.hcm.Address", {  // this View file is called Address.view.js
+</ul>
+<div class="note example" id="loio91f262ef6f4d1014b6dd926db0e91070__note_N10040_N10013_N10001"><span class="exampletitle">Example</span>  
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">   sap.ui.jsview("sap.hcm.Address", {  // this View file is called Address.view.js
    
    getControllerName: function() {
       return "sap.hcm.Address";     // the Controller lives in Address.controller.js
    },
 
    createContent: function(oController) {
-      var oButton = new sap.m.Button({text:"Hello JS View"});
+      var oButton = new sap.ui.commons.Button({text:"Hello JS View"});
       oButton.attachPress(oController.handleButtonClicked);
       return oButton;
    }
 
 });</pre></div>
-
-		</div>
-
-		<p class="p">The string in quotes denotes the view name that equals the <span class="ph"><span class="ph pname">OpenUI5</span></span> module name within
-			the define/require concept.</p>
+ 
+			</div>
+<p class="p">The string in quotes denotes the view name that equals the <span class="ph"><span class="ph pname">OpenUI5</span></span> module name within the
+			define/require concept.</p>
 
 		<div class="note caution"><span class="cautiontitle">Caution</span> 
 			<p class="p">In event handlers for controls "this" usually denotes the control itself. This is
@@ -83,7 +76,7 @@
 				the second element is the "this" object:</p>
 
 			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">   ...
-      var oButton = new sap.m.Button({
+      var oButton = new sap.ui.commons.Button({
          text: "Hello JS View",
          press: [oController.handleButtonClicked, oController]
       });
@@ -99,15 +92,13 @@
 				by using the <samp class="ph codeph">View.createId(...)</samp> method. For the example above, this
 				is done as follows:</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var oButton = new sap.m.Button(this.createId("myButton"), {text:"Hello JS View"});</pre></div>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var oButton = new sap.ui.commons.Button(this.createId("myButton"), {text:"Hello JS View"});</pre></div>
 
 			<p class="p">This is not required for declarative view types as the view parser can manage this
 				automatically, see <a class="xref" href="91f28be26f4d1014b6dd926db0e91070.html" title="Stable IDs are used to identify and modify the controls within the controller during runtime. However, if you reuse or nest these views, these stable IDs are no longer unique. To avoid ambiguity, each view adds its own ID as prefix to all its child controls.">Support for Unique IDs</a>.</p>
 
 		</div>
-
-	</div>
-
+</div>
 </div></div>
 
 </body>

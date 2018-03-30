@@ -1,18 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.demokit.FileUploadIntrospector.
-sap.ui.define([
-    'jquery.sap.global',
-    'sap/ui/core/Control',
-    './library',
-    "./FileUploadIntrospectorRenderer",
-    'jquery.sap.act'
-],
-	function(jQuery, Control, library, FileUploadIntrospectorRenderer) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', './library', 'jquery.sap.act'],
+	function(jQuery, Control, library) {
 	"use strict";
 
 
@@ -26,7 +20,7 @@ sap.ui.define([
 	 * @class
 	 * Control that allows to monitor uploaded files in a demo scenario. This is not a general purpose monitor but only works with the demo fileupload service.
 	 * @extends sap.ui.core.Control
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @private

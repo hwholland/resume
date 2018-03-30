@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -117,18 +117,19 @@
                      <h1 class="title topictitle1" hidden>JS Fragments</h1>
                      
                      <div class="body conbody">
-                        <p class="shortdesc" hidden>The structure of JS fragments is similar to the structure of the respective views:
-                           		They have a name and an object with a <samp class="ph codeph">createContent()</samp> function.
+                        <p class="shortdesc" hidden>The structure of JS fragments is similar to the structure of the respective views: They
+                           		have a name and an object with a <samp class="ph codeph">createContent()</samp> function.
                         </p>
                         
                         		
-                        <p class="p">You define a simple JS fragment named <samp class="ph codeph">my.useful.UiPartX</samp> as shown in the
+                        <p class="p">You  define a simple JS fragment named <samp class="ph codeph">my.useful.UiPartX</samp> as shown in the
                            			following code snippet:
                         </p>
                         
-                        		<pre class="pre codeblock prettyprint lang-js">sap.ui.jsfragment(&quot;my.useful.UiPartX&quot;, { 
+                        		<pre class="pre codeblock prettyprint lang-js">
+sap.ui.jsfragment(&quot;my.useful.UiPartX&quot;, { 
 	createContent: function(oController ) {
-		var oButton = new sap.m.Button({ 
+		var oButton = new sap.ui.commons.Button({ 
 			text:&quot;Hello World&quot;, 
 			press:oController.doSomething 
 		}); 
@@ -136,16 +137,16 @@
 	} 
 });</pre>
                         
-                        		<p class="p">The <samp class="ph codeph">createContent()</samp> function is responsible for the UI definition and
-                           			has to return a control. The definition can be created either inline or in a separate
-                           			file, for instance in <span class="ph filepath">&#x2026;/my/useful/UiPartX.fragment.js</span>. The
+                        		<p class="p">The <samp class="ph codeph">createContent()</samp> function is responsible for the UI definition and has to
+                           			return a control. The definition can be created either inline or in a separate file, for
+                           			instance in <span class="ph filepath">&#x2026;/my/useful/UiPartX.fragment.js</span>. The
                            				<samp class="ph codeph">oController</samp> is either already defined or it is null. In the first
                            			case, its methods can be used for the event handlers of controls.
                         </p>
                         
                         		
-                        <p class="p">Despite the many similarities to views, there are also differences: First of all, there
-                           			is no <samp class="ph codeph">getControllerName()</samp> method. Fragments cannot specify whether they
+                        <p class="p">Despite the many similarities to views, there are also differences: First of all, there is no
+                           				<samp class="ph codeph">getControllerName()</samp> method. Fragments cannot specify whether they
                            			have a controller. Whether <samp class="ph codeph">oController</samp> is defined or not is not a
                            			decision of the fragment itself. Instead, it is decided by the code instantiating the
                            			fragment. If that code is part of a controller, it can pass a reference to itself to the

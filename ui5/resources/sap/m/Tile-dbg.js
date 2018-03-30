@@ -1,19 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.Tile.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/InvisibleText',
-	'sap/ui/core/Control',
-	'sap/ui/Device',
-	'./TileRenderer'
-],
-	function(jQuery, library, InvisibleText, Control, Device, TileRenderer) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/InvisibleText', 'sap/ui/core/Control', 'sap/ui/Device'],
+	function(jQuery, library, InvisibleText, Control, Device) {
 	"use strict";
 
 
@@ -35,12 +28,12 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
 	 * @since 1.12
-	 * @deprecated as of version 1.50, replaced by {@link sap.m.GenericTile}
+	 * @deprecated As of version 1.50, use {@link sap.m.GenericTile} instead
 	 * @alias sap.m.Tile
 	 * @ui5-metamodel This control/element also will be described in the UI5 (legacy) designtime metamodel
 	 */
@@ -63,6 +56,8 @@ sap.ui.define([
 		}
 	}});
 
+	//Keeps a reference to the static aria text for deletable items.
+	var oAriaDescribedByDeleteLabel;
 	/**
 	 * Initializes the control.
 	 * @private
@@ -152,7 +147,7 @@ sap.ui.define([
 		}
 		if (bOldValue != bIsEditable && this.$()) {
 			//update the ARIA hint for DEL
-			this.$().attr("aria-describedBy", bIsEditable ? InvisibleText.getStaticId("sap.m", "TILE_REMOVE_BY_DEL_KEY") : null);
+			this.$().attr("aria-describedBy", bIsEditable ? this._getAriaDescribedByDeleteLabel().getId() : null);
 		}
 
 		return this._bIsEditable;
@@ -259,6 +254,19 @@ sap.ui.define([
 		return this;
 	};
 
+	/**
+	 * Retrieves the label responsible for ARIA attribute for deletable tiles.
+	 * @returns {Object} The label responsible for ARIA attribute for deletable tiles
+	 * @private
+	 */
+	Tile.prototype._getAriaDescribedByDeleteLabel = function() {
+		if (!oAriaDescribedByDeleteLabel) {
+			oAriaDescribedByDeleteLabel = new InvisibleText({
+				text: sap.ui.getCore().getLibraryResourceBundle("sap.m").getText("TILE_REMOVE_BY_DEL_KEY")
+			}).toStatic();
+		}
+		return oAriaDescribedByDeleteLabel;
+	};
 	return Tile;
 
 });

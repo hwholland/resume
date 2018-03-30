@@ -1,50 +1,11 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-sap.ui.define([
-	'jquery.sap.global',
-	'./Dialog',
-	'./Popover',
-	'./SelectList',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/EnabledPropagator',
-	'sap/ui/core/IconPool',
-	'./Button',
-	'./Bar',
-	'./Title',
-	'./delegate/ValueStateMessage',
-	'sap/ui/core/message/MessageMixin',
-	'sap/ui/core/library',
-	'sap/ui/core/Item',
-	'sap/ui/Device',
-	'sap/ui/core/InvisibleText',
-	'./SelectRenderer',
-	'jquery.sap.keycodes'
-],
-function(
-	jQuery,
-	Dialog,
-	Popover,
-	SelectList,
-	library,
-	Control,
-	EnabledPropagator,
-	IconPool,
-	Button,
-	Bar,
-	Title,
-	ValueStateMessage,
-	MessageMixin,
-	coreLibrary,
-	Item,
-	Device,
-	InvisibleText,
-	SelectRenderer
-	) {
+sap.ui.define(['jquery.sap.global', './Dialog', './Popover', './SelectList', './library', 'sap/ui/core/Control', 'sap/ui/core/EnabledPropagator', 'sap/ui/core/IconPool', './Button', './Bar', './Title', './delegate/ValueStateMessage', 'sap/ui/core/message/MessageMixin', 'sap/ui/core/library', 'sap/ui/core/Item', 'sap/ui/Device', 'jquery.sap.keycodes'],
+	function(jQuery, Dialog, Popover, SelectList, library, Control, EnabledPropagator, IconPool, Button, Bar, Title, ValueStateMessage, MessageMixin, coreLibrary, Item, Device) {
 		"use strict";
 
 		// shortcut for sap.m.SelectListKeyboardNavigationMode
@@ -77,7 +38,7 @@ function(
 		 * @implements sap.ui.core.IFormContent
 		 *
 		 * @author SAP SE
-		 * @version 1.54.2
+		 * @version 1.52.5
 		 *
 		 * @constructor
 		 * @public
@@ -266,11 +227,7 @@ function(
 						type: "sap.ui.core.Item",
 						multiple: true,
 						singularName: "item",
-						bindable: "bindable",
-						forwarding: {
-							getter: "getList",
-							aggregation: "items"
-						}
+						bindable: "bindable"
 					},
 
 					/**
@@ -335,7 +292,7 @@ function(
 						}
 					}
 				},
-				designtime: "sap/m/designtime/Select.designtime"
+				designTime: true
 			}
 		});
 
@@ -407,19 +364,17 @@ function(
 			return "";
 		};
 
-		/**
-		 * Gets the Select's <code>list</code>.
-		 *
-		 * @returns {sap.m.List}
-		 * @private
-		 * @since 1.22.0
-		 */
-		Select.prototype.getList = function() {
-			if (this.bIsDestroyed) {
-				return null;
-			}
+		Select.prototype._callMethodInControl = function(sFunctionName, aArgs) {
+			var oList = this.getList();
 
-			return this._oList;
+			if (aArgs[0] === "items") {
+
+				if (oList) {
+					return SelectList.prototype[sFunctionName].apply(oList, aArgs);
+				}
+			} else {
+				return Control.prototype[sFunctionName].apply(this, aArgs);
+			}
 		};
 
 		/**
@@ -549,6 +504,25 @@ function(
 			}
 		};
 
+		/**
+		 * Gets the Select's <code>list</code>.
+		 *
+		 * @returns {sap.m.List}
+		 * @private
+		 * @since 1.22.0
+		 */
+		Select.prototype.getList = function() {
+			if (this.bIsDestroyed) {
+				return null;
+			}
+
+			return this._oList;
+		};
+
+		/**
+		 * Called whenever the binding of the aggregation items is changed.
+		 *
+		 */
 		Select.prototype.updateItems = function(sReason) {
 			SelectList.prototype.updateItems.apply(this, arguments);
 
@@ -722,8 +696,7 @@ function(
 				offsetX: 0,
 				offsetY: 0,
 				initialFocus: this,
-				bounce: false,
-				ariaLabelledBy: this._getPickerHiddenLabelId()
+				bounce: false
 			});
 
 			// detect when the scrollbar or an item is pressed
@@ -783,7 +756,6 @@ function(
 			var that = this;
 			return new Dialog({
 				stretch: true,
-				ariaLabelledBy: this._getPickerHiddenLabelId(),
 				customHeader: this._getPickerHeader(),
 				beforeOpen: function() {
 					that.updatePickerHeaderTitle();
@@ -834,10 +806,6 @@ function(
 			}
 
 			return this.getAggregation("_pickerHeader");
-		};
-
-		Select.prototype._getPickerHiddenLabelId = function() {
-			return InvisibleText.getStaticId("sap.m", "INPUT_AVALIABLE_VALUES");
 		};
 
 		Select.prototype.updatePickerHeaderTitle = function() {
@@ -1343,32 +1311,6 @@ function(
 		};
 
 		/**
-		 * Handles the <code>tabnext</code> pseudo event when keyboard TAB key is pressed.
-		 *
-		 * @param {jQuery.Event} oEvent The event object.
-		 * @private
-		 */
-		Select.prototype.onsaptabnext = function (oEvent) {
-			// prevents actions from occurring when the control is disabled,
-			// IE11 browser focus non-focusable elements
-			if (!this.getEnabled()) {
-				return;
-			}
-
-			if (this.isOpen()) {
-				this.close();
-			}
-		};
-
-		/**
-		 * Handles the <code>tabprevious</code> pseudo event when keyboard SHIFT+TAB keys are pressed.
-		 *
-		 * @param {jQuery.Event} oEvent The event object.
-		 * @private
-		 */
-		Select.prototype.onsaptabprevious = Select.prototype.onsaptabnext;
-
-		/**
 		 * Handles the <code>focusin</code> event.
 		 *
 		 * @param {jQuery.Event} oEvent The event object.
@@ -1501,8 +1443,8 @@ function(
 		/**
 		 * Creates a picker popup container where the selection should take place.
 		 *
-		 * @param {string} sPickerType The picker type
-		 * @returns {sap.ui.core.Control} The <code>sap.m.Popover</code> or  <code>sap.m.Dialog</code> instance
+		 * @param {string} sPickerType
+		 * @returns {sap.m.Popover | sap.m.Dialog}
 		 * @protected
 		 */
 		Select.prototype.createPicker = function(sPickerType) {
@@ -1784,17 +1726,17 @@ function(
 		};
 
 		Select.prototype.addAggregation = function(sAggregationName, oObject, bSuppressInvalidate) {
+			this._callMethodInControl("addAggregation", arguments);
+
 			if (sAggregationName === "items" && !bSuppressInvalidate && !this.isInvalidateSuppressed()) {
 				this.invalidate(oObject);
 			}
-			return Control.prototype.addAggregation.apply(this, arguments);
+
+			return this;
 		};
 
-		Select.prototype.destroyAggregation = function(sAggregationName, bSuppressInvalidate) {
-			if (sAggregationName === "items" && !bSuppressInvalidate && !this.isInvalidateSuppressed()) {
-				this.invalidate();
-			}
-			return Control.prototype.destroyAggregation.apply(this, arguments);
+		Select.prototype.getAggregation = function() {
+			return this._callMethodInControl("getAggregation", arguments);
 		};
 
 		Select.prototype.setAssociation = function(sAssociationName, sId, bSuppressInvalidate) {
@@ -1807,6 +1749,33 @@ function(
 			}
 
 			return Control.prototype.setAssociation.apply(this, arguments);
+		};
+
+		Select.prototype.indexOfAggregation = function() {
+			return this._callMethodInControl("indexOfAggregation", arguments);
+		};
+
+		Select.prototype.insertAggregation = function() {
+			this._callMethodInControl("insertAggregation", arguments);
+			return this;
+		};
+
+		Select.prototype.removeAggregation = function() {
+			return this._callMethodInControl("removeAggregation", arguments);
+		};
+
+		Select.prototype.removeAllAggregation = function() {
+			return this._callMethodInControl("removeAllAggregation", arguments);
+		};
+
+		Select.prototype.destroyAggregation = function(sAggregationName, bSuppressInvalidate) {
+			this._callMethodInControl("destroyAggregation", arguments);
+
+			if (!bSuppressInvalidate && !this.isInvalidateSuppressed()) {
+				this.invalidate();
+			}
+
+			return this;
 		};
 
 		Select.prototype.setProperty = function(sPropertyName, oValue, bSuppressInvalidate) {
@@ -2048,7 +2017,7 @@ function(
 		 * Gets aggregation <code>items</code>.
 		 *
 		 * <b>Note</b>: This is the default aggregation.
-		 * @returns {sap.ui.core.Item[]} The controls in the <code>items</code> aggregation
+		 * @return {sap.ui.core.Item[]}
 		 * @public
 		 */
 		Select.prototype.getItems = function() {
@@ -2260,7 +2229,7 @@ function(
 		 * <b>Note: </b> If duplicate keys exist, the first item matching the key is returned.
 		 *
 		 * @param {string} sKey An item key that specifies the item to be retrieved.
-		 * @returns {sap.ui.core.Item} The <code>sap.ui.core.Item</code> instance or <code>null</code> if thre is no such item
+		 * @returns {sap.ui.core.Item | null}
 		 * @public
 		 * @since 1.16
 		 */
@@ -2387,11 +2356,8 @@ function(
 		};
 
 		/**
-		 * Returns the <code>sap.m.Select</code>  accessibility information.
-		 *
 		 * @see sap.ui.core.Control#getAccessibilityInfo
 		 * @protected
-		 * @returns {Object} The <code>sap.m.Select</code> accessibility information
 		 */
 		Select.prototype.getAccessibilityInfo = function() {
 			var oInfo = {

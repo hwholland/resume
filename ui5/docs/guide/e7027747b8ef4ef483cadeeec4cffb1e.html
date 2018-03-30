@@ -6,8 +6,8 @@
 <meta name="abstract" content="Applications can have dependencies between facets where selection of filter items in one facet list limits the list of valid filters in another facet list."/>
 <meta name="description" content="Applications can have dependencies between facets where selection of filter items in one facet list limits the list of valid filters in another facet list."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9463028802288163"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9463028802288163"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4717364783354969"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4717364783354969"/>
 <title>Dependent Facets</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -30,7 +30,9 @@
 
 		<div class="example"><h2 class="exampletitle">Example</h2><p class="p">In this example, only products from the selected category are displayed. </p>
 <img class="image" id="loioe7027747b8ef4ef483cadeeec4cffb1e__image_xq2_wnj_qn" src="loio1f47e6058f5747b687d1822040e46b1f_LowRes.png"/><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
-var oCategoriesModel = new sap.ui.model.odata.v2.ODataModel("/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc");
+var oCategoriesModel = new sap.ui.model.odata.ODataModel(
+"/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc", 
+true);
 
 var oCategoriesFFL = new sap.m.FacetFilterList({ // create the categories facet list
     title : "Categories",
@@ -47,7 +49,9 @@ var oCategoriesFFL = new sap.m.FacetFilterList({ // create the categories facet 
 oCategoriesFFL.setModel(oCategoriesModel); // set the data model
 
 // create the data model for the products facet list
-var oProductsModel = new sap.ui.model.odata.v2.ODataModel("/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc");
+var oProductsModel = new sap.ui.model.odata.ODataModel(
+    "/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc",
+    true);
 
 var oProductsFFL = new sap.m.FacetFilterList({
     title : "Products",

@@ -1,20 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.demokit.CodeViewer.
-sap.ui.define([
-    'jquery.sap.global',
-    'sap/ui/commons/Button',
-    'sap/ui/commons/Dialog',
-    'sap/ui/core/Control',
-    './library',
-    "./CodeViewerRenderer",
-    'jquery.sap.keycodes'
-],
-	function(jQuery, Button, Dialog, Control, library, CodeViewerRenderer) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/commons/Button', 'sap/ui/commons/Dialog', 'sap/ui/core/Control', './library', 'jquery.sap.keycodes'],
+	function(jQuery, Button, Dialog, Control, library) {
 	"use strict";
 
 
@@ -28,7 +20,7 @@ sap.ui.define([
 	 * @class
 	 * Shows a piece of (Javascript) code and allows to edit it
 	 * @extends sap.ui.core.Control
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @private

@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -17,12 +17,12 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/model/Context', 'sap/ui/model/Contex
 	 * The ContextBinding is a specific binding for a setting context for the model
 	 *
 	 * @param {sap.ui.model.Model} oModel
-	 * @param {string} sPath
-	 * @param {sap.ui.model.Context} oContext
-	 * @param {map} [mParameters] A map which contains additional parameters for the binding.
-	 * @param {string} [mParameters.expand] For the OData <code>$expand</code> query option parameter which should be included in the request
-	 * @param {string} [mParameters.select] For the OData <code>$select</code> query option parameter which should be included in the request
-	 * @param {map} [mParameters.custom] An optional map of custom query parameters. Custom parameters must not start with <code>$</code>.
+	 * @param {String} sPath
+	 * @param {Object} oContext
+	 * @param {map} [mParameters] a map which contains additional parameters for the binding.
+	 * @param {string} [mParameters.expand] for the OData <code>$expand</code> query option parameter which should be included in the request
+	 * @param {string} [mParameters.select] for the OData <code>$select</code> query option parameter which should be included in the request
+	 * @param {map} [mParameters.custom] an optional map of custom query parameters. Custom parameters must not start with <code>$</code>.
 	 * @abstract
 	 * @public
 	 * @alias sap.ui.model.odata.v2.ODataContextBinding
@@ -33,7 +33,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/model/Context', 'sap/ui/model/Contex
 		constructor : function(oModel, sPath, oContext, mParameters, oEvents){
 			ContextBinding.call(this, oModel, sPath, oContext, mParameters, oEvents);
 			this.bRefreshGroupId = undefined;
-			this.bPendingRequest = false;
 			this.mParameters = jQuery.extend(true, {}, this.mParameters);
 			this.bCreatePreliminaryContext = this.mParameters.createPreliminaryContext || oModel.bPreliminaryContext;
 			this.bUsePreliminaryContext = this.mParameters.usePreliminaryContext || oModel.bPreliminaryContext;
@@ -60,7 +59,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/model/Context', 'sap/ui/model/Contex
 		if (!this.oModel.oMetadata.isLoaded() || !this.bInitial) {
 			return;
 		}
-
 		this.bInitial = false;
 
 		// If context is preliminary and usePreliminary is not set, exit here
@@ -85,7 +83,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/model/Context', 'sap/ui/model/Contex
 		var oContext = this.oModel.createBindingContext(this.sPath, this.oContext, this.mParameters, function(oContext) {
 			var oData;
 
-			if (that.bCreatePreliminaryContext && oContext && oContext.isPreliminary()) {
+			if (that.bCreatePreliminaryContext) {
 				that.oElementContext.setPreliminary(false);
 				that.oModel._updateContext(that.oElementContext, oContext.getPath());
 				that._fireChange({ reason: ChangeReason.Context }, false, true);
@@ -134,16 +132,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/model/Context', 'sap/ui/model/Contex
 		if (bPreliminary && !this.bUsePreliminaryContext) {
 			return;
 		}
-
-		// clone parameters and remove preliminaryContext flags as the preliminary context should never be created during #checkUpdate
-		// it should only be created during #initialize and #refresh
-		if (!this._mParameters && this.mParameters.createPreliminaryContext){
-			this._mParameters =  jQuery.extend({}, this.mParameters);
-			delete this._mParameters.usePreliminaryContext;
-			delete this._mParameters.createPreliminaryContext;
-		}
-
-		oContext = this.oModel.createBindingContext(this.sPath, this.oContext, this._mParameters);
+		oContext = this.oModel.createBindingContext(this.sPath, this.oContext, this.mParameters);
 		if (oContext && oContext !== this.oElementContext) {
 			this.oElementContext = oContext;
 			this._fireChange({ reason: ChangeReason.Context });
@@ -274,7 +263,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/model/Context', 'sap/ui/model/Contex
 		}
 
 		if (Context.hasChanged(this.oContext, oContext)) {
-
 
 			this.oContext = oContext;
 

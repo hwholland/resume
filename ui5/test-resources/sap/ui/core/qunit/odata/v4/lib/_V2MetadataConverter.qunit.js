@@ -1,6 +1,6 @@
 /*
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
@@ -13,8 +13,7 @@ sap.ui.require([
 	/*eslint max-nested-callbacks: 0, no-multi-str: 0, no-warning-comments: 0 */
 	"use strict";
 
-	var sClassName = "sap.ui.model.odata.v4.lib._V2MetadataConverter",
-		sEdmx = '<edmx:Edmx Version="1.0" xmlns="http://schemas.microsoft.com/ado/2008/09/edm"'
+	var sEdmx = '<edmx:Edmx Version="1.0" xmlns="http://schemas.microsoft.com/ado/2008/09/edm"'
 			+ ' xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"'
 			+ ' xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"'
 			+ ' xmlns:sap="http://www.sap.com/Protocols/SAPData">',
@@ -23,8 +22,7 @@ sap.ui.require([
 			"/GWSAMPLE_BASIC/annotations" : {source : "GWSAMPLE_BASIC.annotations.xml"},
 			"/GWSAMPLE_BASIC/metadata_v4.json" : {source : "GWSAMPLE_BASIC.metadata_v4.json"}
 		},
-		sXmlnsEdm4 = "http://docs.oasis-open.org/odata/ns/edm",
-		sXmlnsEdmx4 = "http://docs.oasis-open.org/odata/ns/edmx";
+		sModuleName = "sap.ui.model.odata.v4.lib._V2MetadataConverter";
 
 	/**
 	 * Tests that the given XML snippet produces the expected annotations.
@@ -39,7 +37,7 @@ sap.ui.require([
 		var oXML = xml(assert, sEdmx + '<edmx:DataServices m:DataServiceVersion="2.0">'
 				+ '<Schema Namespace="GWSAMPLE_BASIC">' + sXmlSnippet
 				+ '</Schema></edmx:DataServices></edmx:Edmx>'),
-			oResult = new _V2MetadataConverter().convertXMLMetadata(oXML, "/foo/bar/$metadata");
+			oResult = _V2MetadataConverter.convertXMLMetadata(oXML, "/foo/bar/$metadata");
 
 		assert.deepEqual(oResult["GWSAMPLE_BASIC."].$Annotations, oExpected);
 	}
@@ -52,7 +50,7 @@ sap.ui.require([
 	 *   the XML snippet; it will be inserted below an <Edmx> element
 	 * @param {object} oExpected
 	 *   the expected JSON object
-	 * @param {boolean} [bSubset=false]
+	 * @param {boolean} bSubset
 	 *   whether the given JSON is just a subset of the real expectation, i.e. every top-level
 	 *   property that is given must exist with the exact value (deepEqual), but there may be others
 	 */
@@ -69,14 +67,14 @@ sap.ui.require([
 	 *   the XML snippet; it will be inserted below an <Edmx> element
 	 * @param {object} oExpected
 	 *   the expected JSON object
-	 * @param {boolean} [bSubset=false]
+	 * @param {boolean} bSubset
 	 *   whether the given JSON is just a subset of the real expectation, i.e. every top-level
 	 *   property that is given must exist with the exact value (deepEqual), but there may be others
 	 */
 	function testConversionForInclude(assert, sXmlSnippet, oExpected, bSubset) {
 		var sProperty,
 			oXML = xml(assert, sEdmx + sXmlSnippet + '</edmx:Edmx>'),
-			oResult = new _V2MetadataConverter().convertXMLMetadata(oXML, "/foo/bar/$metadata");
+			oResult = _V2MetadataConverter.convertXMLMetadata(oXML, "/foo/bar/$metadata");
 
 		if (bSubset) {
 			for (sProperty in oExpected) {
@@ -107,24 +105,29 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.module("sap.ui.model.odata.v4.lib._V2MetadataConverter", {
 		beforeEach : function () {
-			TestUtils.useFakeServer(this._oSandbox, "sap/ui/core/qunit/model", mFixture);
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oSandbox = sinon.sandbox.create();
+			TestUtils.useFakeServer(this.oSandbox, "sap/ui/core/qunit/model", mFixture);
+			this.oLogMock = this.oSandbox.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
+		},
+
+		afterEach : function () {
+			this.oSandbox.verifyAndRestore();
 		}
 	});
 
 	//*********************************************************************************************
 	QUnit.test("convertXMLMetadata: Reference", function (assert) {
 		testConversionForInclude(assert, '\
-				<edmx:Reference xmlns:edmx="' + sXmlnsEdmx4 + '" Uri="/qux/$metadata">\
+				<edmx:Reference Uri="/qux/$metadata">\
 					<edmx:Include Namespace="qux.foo"/>\
 					<edmx:Include Namespace="qux.bar"/>\
 					<edmx:IncludeAnnotations TermNamespace="qux.foo"/>\
 					<edmx:IncludeAnnotations TermNamespace="qux.bar" TargetNamespace="qux.bar"\
 						Qualifier="Tablet"/>\
 				</edmx:Reference>\
-				<edmx:Reference xmlns:edmx="' + sXmlnsEdmx4 + '" Uri="/bla/$metadata">\
+				<edmx:Reference Uri="/bla/$metadata">\
 					<edmx:Include Namespace="bla"/>\
 				</edmx:Reference>',
 			{
@@ -176,7 +179,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("convertXMLMetadata: aliases in include", function (assert) {
 		testConversionForInclude(assert, '\
-			<edmx:Reference xmlns:edmx="' + sXmlnsEdmx4 + '" Uri="/qux/$metadata">\
+			<edmx:Reference Uri="/qux/$metadata">\
 				<edmx:Include Namespace="qux" Alias="q"/>\
 			</edmx:Reference>\
 			<edmx:DataServices m:DataServiceVersion="2.0">\
@@ -189,8 +192,8 @@ sap.ui.require([
 				<Schema Namespace="foo" Alias="f"/>\
 			</edmx:DataServices>',
 			{
-				"$Reference" : {
-					"/qux/$metadata" : {
+				"$Reference": {
+					"/qux/$metadata": {
 						"$Include" : ["qux."]
 					}
 				},
@@ -274,7 +277,7 @@ sap.ui.require([
 			} else if (vExpectedValue !== undefined) {
 				oExpectedResult["$" + sProperty] = vExpectedValue;
 			}
-			new _V2MetadataConverter().processFacetAttributes(oXml.documentElement, oResult);
+			_V2MetadataConverter.processFacetAttributes(oXml.documentElement, oResult);
 			assert.deepEqual(oResult, oExpectedResult);
 		}
 
@@ -478,7 +481,7 @@ sap.ui.require([
 						<End Type="GWSAMPLE_BASIC.Product" Multiplicity="*"\
 								Role="Foo2"/>\
 					</Association>\
-					<EntityContainer Name="Container" m:IsDefaultEntityContainer="true">\
+					<EntityContainer Name="Container">\
 						<EntitySet Name="BusinessPartnerSet"\
 								EntityType="GWSAMPLE_BASIC.BusinessPartner"/>\
 						<EntitySet Name="ProductSet"\ EntityType="GWSAMPLE_BASIC.Product"/>\
@@ -490,22 +493,19 @@ sap.ui.require([
 								Role="ToRole_Assoc_BusinessPartner_Products"/>\
 						</AssociationSet>\
 					</EntityContainer>\
-				</Schema>\
-				<Schema Namespace="AnotherSchema">\
-					<EntityContainer Name="Container"/>\
 				</Schema>',
 			{
 				"$EntityContainer" : "GWSAMPLE_BASIC.0001.Container",
 				"GWSAMPLE_BASIC.0001." : {
-					"$Annotations" : {
-						"GWSAMPLE_BASIC.0001.Container/BusinessPartnerSet" : {
-							"@Org.OData.Capabilities.V1.SearchRestrictions" : {
-								"Searchable" : false
+					"$Annotations": {
+						"GWSAMPLE_BASIC.0001.Container/BusinessPartnerSet": {
+							"@Org.OData.Capabilities.V1.SearchRestrictions": {
+								"Searchable": false
 							}
 						},
-						"GWSAMPLE_BASIC.0001.Container/ProductSet" : {
-							"@Org.OData.Capabilities.V1.SearchRestrictions" : {
-								"Searchable" : false
+						"GWSAMPLE_BASIC.0001.Container/ProductSet": {
+							"@Org.OData.Capabilities.V1.SearchRestrictions": {
+								"Searchable": false
 							}
 						}
 					},
@@ -540,23 +540,15 @@ sap.ui.require([
 						"$kind" : "EntitySet",
 						"$Type" : "GWSAMPLE_BASIC.0001.Product"
 					}
-				},
-				"AnotherSchema." : {
-					"$kind" : "Schema"
-				},
-				"AnotherSchema.Container" : {
-					"$kind" : "EntityContainer"
 				}
 			});
 	});
-	// TODO multiple containers in a schema
-	// TODO AssociationSets between two containers
 
 	//*********************************************************************************************
-	["DELETE", "GET", "MERGE", "PATCH", "POST", "PUT"].forEach(function (sHttpMethod) {
-		QUnit.test("convert: FunctionImport, Method=" + sHttpMethod, function (assert) {
-			var sWhat = sHttpMethod !== "GET" ? "Action" : "Function",
-				sMethodAttribute = sHttpMethod ? ' m:HttpMethod="' + sHttpMethod + '"' : "",
+	[undefined, "GET", "POST"].forEach(function (sMethod) {
+		QUnit.test("convert: FunctionImport, Method=" + sMethod, function (assert) {
+			var sWhat = sMethod === "POST" ? "Action" : "Function",
+				sMethodAttribute = sMethod ? ' m:HttpMethod="' + sMethod + '"' : "",
 				sXml = '\
 					<Schema Namespace="foo" Alias="f">\
 						<EntityContainer Name="Container">\
@@ -568,15 +560,15 @@ sap.ui.require([
 							</FunctionImport>\
 						</EntityContainer>\
 					</Schema>',
-				oExpected = {
+				sExpected = {
 					"$EntityContainer" : "foo.Container",
 					"foo." : {
 						"$kind" : "Schema"
 					},
 					"foo.Container" : {
 						"$kind" : "EntityContainer",
-						"Baz" : {
-							"$kind" : sWhat + "Import"
+						"Baz": {
+							"$kind": sWhat + "Import"
 						}
 					},
 					"foo.Baz" : [{
@@ -600,12 +592,8 @@ sap.ui.require([
 					}]
 				};
 
-			oExpected["foo.Container"]["Baz"]["$" + sWhat] = "foo.Baz";
-			if (sHttpMethod !== "GET" && sHttpMethod !== "POST") {
-				// remember V2 m:HttpMethod only if needed
-				oExpected["foo.Baz"][0].$v2HttpMethod = sHttpMethod;
-			}
-			testConversion(assert, sXml, oExpected);
+			sExpected["foo.Container"]["Baz"]["$" + sWhat] = "foo.Baz";
+			testConversion(assert, sXml, sExpected);
 		});
 	});
 
@@ -614,8 +602,7 @@ sap.ui.require([
 		testConversion(assert, '\
 				<Schema Namespace="foo" Alias="f">\
 					<EntityContainer Name="Container">\
-						<FunctionImport m:HttpMethod="GET" Name="Baz" ReturnType="Edm.String"\
-							EntitySet="Bar"/>\
+						<FunctionImport Name="Baz" ReturnType="Edm.String" EntitySet="Bar"/>\
 					</EntityContainer>\
 				</Schema>',
 			{
@@ -625,7 +612,7 @@ sap.ui.require([
 				},
 				"foo.Container" : {
 					"$kind" : "EntityContainer",
-					"Baz" : {
+					"Baz": {
 						"$EntitySet" : "Bar",
 						"$Function" : "foo.Baz",
 						"$kind" : "FunctionImport"
@@ -641,99 +628,30 @@ sap.ui.require([
 	});
 
 	//*********************************************************************************************
-	// Note: sap:label at <Parameter> which represents "this" is lost, of course!
 	QUnit.test("convert: FunctionImport w/ sap:action-for", function (assert) {
+		this.oLogMock.expects("warning")
+			.withExactArgs("Unsupported 'sap:action-for' at FunctionImport 'Baz',"
+				+ " removing this FunctionImport", undefined, sModuleName);
+
 		testConversion(assert, '\
 				<Schema Namespace="foo" Alias="f">\
 					<EntityContainer Name="Container">\
-						<FunctionImport m:HttpMethod="GET" Name="Bar"/>\
-						<FunctionImport m:HttpMethod="GET" Name="SalesOrderLineItemFunction"\
-							ReturnType="Edm.String"\
-							sap:action-for="f.SalesOrderLineItem" sap:label="S.O.L.I.F.">\
-							<Parameter Name="ItemPosition" Type="Edm.String" Nullable="false"\
-								sap:label="Item Pos."/>\
-							<Parameter Name="SalesOrderID" Type="Edm.String" Nullable="false"\
-								sap:label="Sales Order ID"/>\
-						</FunctionImport>\
-						<FunctionImport m:HttpMethod="POST" Name="SalesOrderLineItemAction"\
-							ReturnType="Edm.String" sap:action-for="f.SalesOrderLineItem"\
-							sap:label="S.O.L.I.A.">\
-							<Parameter Name="SalesOrderID" Type="Edm.String" Nullable="false"\
-								sap:label="Sales Order ID"/>\
-							<Parameter Name="NoteLanguage" Type="Edm.String" Nullable="false"\
-								sap:label="Note Language"/>\
-							<Parameter Name="ItemPosition" Type="Edm.String" Nullable="false"\
-								sap:label="Item Pos."/>\
+						<FunctionImport Name="Bar"/>\
+						<FunctionImport Name="Baz" sap:action-for="EntityType">\
+							<Parameter Name="p1" Type="String"/>\
 						</FunctionImport>\
 					</EntityContainer>\
-					<EntityType Name="SalesOrderLineItem">\
-						<Key>\
-							<PropertyRef Name="SalesOrderID"/>\
-							<PropertyRef Name="ItemPosition"/>\
-						</Key>\
-						<Property Name="SalesOrderID" Type="Edm.String" Nullable="false"/>\
-						<Property Name="ItemPosition" Type="Edm.String" Nullable="false"/>\
-					</EntityType>\
 				</Schema>',
 			{
-				"$EntityContainer": "foo.Container",
-				"foo.": {
-					// Note: no "$Annotations"!
-					"$kind": "Schema"
+				"$EntityContainer" : "foo.Container",
+				"foo." : {
+					"$kind" : "Schema"
 				},
-				"foo.Bar" : [{
-					"$kind" : "Function"
+				"foo.Bar": [{
+					"$kind": "Function"
 				}],
-				"foo.SalesOrderLineItem": {
-					"$Key": [
-						"SalesOrderID",
-						"ItemPosition"
-					],
-					"$kind": "EntityType",
-					"ItemPosition": {
-						"$Nullable": false,
-						"$Type": "Edm.String",
-						"$kind": "Property"
-					},
-					"SalesOrderID": {
-						"$Nullable": false,
-						"$Type": "Edm.String",
-						"$kind": "Property"
-					}
-				},
-				"foo.SalesOrderLineItemAction" : [{
-					"$kind" : "Action",
-					"$IsBound" : true,
-					"$Parameter" : [{
-						"$Name" : null,
-						"$Nullable" : false,
-						"$Type" : "foo.SalesOrderLineItem"
-					}, {
-						"$Name" : "NoteLanguage",
-						"$Nullable" : false,
-						"$Type" : "Edm.String",
-						"@com.sap.vocabularies.Common.v1.Label" : "Note Language"
-					}],
-					"$ReturnType" : {
-						"$Type" : "Edm.String"
-					},
-					"@com.sap.vocabularies.Common.v1.Label" : "S.O.L.I.A."
-				}],
-				"foo.SalesOrderLineItemFunction" : [{
-					"$kind" : "Function",
-					"$IsBound" : true,
-					"$Parameter" : [{
-						"$Name" : null,
-						"$Nullable" : false,
-						"$Type" : "foo.SalesOrderLineItem"
-					}],
-					"$ReturnType" : {
-						"$Type" : "Edm.String"
-					},
-					"@com.sap.vocabularies.Common.v1.Label" : "S.O.L.I.F."
-				}],
-				"foo.Container" : {
-					"$kind" : "EntityContainer",
+				"foo.Container": {
+					"$kind": "EntityContainer",
 					"Bar" : {
 						"$kind" : "FunctionImport",
 						"$Function" : "foo.Bar"
@@ -742,33 +660,6 @@ sap.ui.require([
 			});
 	});
 
-	//*********************************************************************************************
-	[undefined, "FOO"].forEach(function (sHttpMethod) {
-		QUnit.test("convert: FunctionImport w/ m:HttpMethod = " + sHttpMethod, function (assert) {
-			var sMethodAttribute = sHttpMethod ? ' m:HttpMethod="' + sHttpMethod + '"' : "";
-
-			this.oLogMock.expects("warning")
-				.withExactArgs("Unsupported HttpMethod at FunctionImport 'Baz',"
-					+ " removing this FunctionImport", undefined, sClassName);
-
-			testConversion(assert, '\
-					<Schema Namespace="foo" Alias="f">\
-						<EntityContainer Name="Container">\
-							<FunctionImport' + sMethodAttribute + ' Name="Baz">\
-							</FunctionImport>\
-						</EntityContainer>\
-					</Schema>',
-				{
-					"$EntityContainer" : "foo.Container",
-					"foo." : {
-						"$kind" : "Schema"
-					},
-					"foo.Container" : {
-						"$kind" : "EntityContainer"
-					}
-				});
-		});
-	});
 
 	//*********************************************************************************************
 	QUnit.test("try to read some random XML as V2", function (assert) {
@@ -776,9 +667,8 @@ sap.ui.require([
 			oXML = xml(assert, '<foo xmlns="http://schemas.microsoft.com/ado/2007/06/edmx"/>');
 
 		assert.throws(function () {
-			new _V2MetadataConverter().convertXMLMetadata(oXML, sUrl);
-		}, new Error(sUrl
-			+ ": expected <Edmx> in namespace 'http://schemas.microsoft.com/ado/2007/06/edmx'"));
+			_V2MetadataConverter.convertXMLMetadata(oXML, sUrl);
+		}, new Error(sUrl + " is not a valid OData V2 metadata document"));
 	});
 
 	//*********************************************************************************************
@@ -791,9 +681,8 @@ sap.ui.require([
 					</Edmx>');
 
 		assert.throws(function () {
-			new _V2MetadataConverter().convertXMLMetadata(oXML, sUrl);
-		}, new Error(sUrl
-			+ ': expected DataServiceVersion="2.0": <DataServices m:DataServiceVersion="3.0"/>'));
+			_V2MetadataConverter.convertXMLMetadata(oXML, sUrl);
+		}, new Error(sUrl + " is not a valid OData V2 metadata document"));
 	});
 
 	//*********************************************************************************************
@@ -802,9 +691,8 @@ sap.ui.require([
 			oXML = xml(assert, '<Edmx xmlns="http://docs.oasis-open.org/odata/ns/edmx"/>');
 
 		assert.throws(function () {
-			new _V2MetadataConverter().convertXMLMetadata(oXML, sUrl);
-		}, new Error(sUrl
-			+ ": expected <Edmx> in namespace 'http://schemas.microsoft.com/ado/2007/06/edmx'"));
+			_V2MetadataConverter.convertXMLMetadata(oXML, sUrl);
+		}, new Error(sUrl + " is not a valid OData V2 metadata document"));
 	});
 
 	//*********************************************************************************************
@@ -812,16 +700,22 @@ sap.ui.require([
 		var oLogMock = this.oLogMock,
 			sUrl = "/GWSAMPLE_BASIC/$metadata";
 
+		["Confirm", "Cancel", "InvoiceCreated", "GoodsIssueCreated"].forEach(function (sName) {
+			oLogMock.expects("warning")
+				.withExactArgs("Unsupported 'sap:action-for' at FunctionImport 'SalesOrder_" + sName
+						+ "', removing this FunctionImport", undefined,
+					sModuleName);
+		});
 		["filterable", "sortable"].forEach(function (sAnnotation) {
 			oLogMock.expects("warning")
 				.withExactArgs("Unsupported SAP annotation at a complex type in '" + sUrl + "'",
 					"sap:" + sAnnotation + " at property 'GWSAMPLE_BASIC.CT_String/String'",
-					sClassName);
+					sModuleName);
 		});
 
 		return Promise.all([
 			jQuery.ajax(sUrl).then(function (oXML) {
-					return new _V2MetadataConverter().convertXMLMetadata(oXML, sUrl);
+					return _V2MetadataConverter.convertXMLMetadata(oXML, sUrl);
 				}),
 			jQuery.ajax("/GWSAMPLE_BASIC/metadata_v4.json")
 		]).then(function (aResults) {
@@ -894,7 +788,7 @@ sap.ui.require([
 			},
 			'@com.sap.vocabularies.UI.v1.Hidden' : true
 		}
-	}, { // combination of V2 annotations
+	}, { // combination of v2 annotations
 		annotationsV2 : 'sap:text="PathExpression" sap:label="Value"',
 		expectedAnnotationsV4 : {
 			'@com.sap.vocabularies.Common.v1.Label' : 'Value',
@@ -907,7 +801,7 @@ sap.ui.require([
 
 		QUnit.test(sTitle, function (assert) {
 			// there are no $annotations yet at the schema so mergeAnnotations is not called
-			this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+			this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 			testConversion(assert, '\
 					<Schema Namespace="GWSAMPLE_BASIC.0001">\
@@ -954,7 +848,7 @@ sap.ui.require([
 		expectedSemanticsV4 : {
 			'@com.sap.vocabularies.Communication.v1.Contact' : {
 				"n" : {
-					"given" : {
+					"given": {
 						"$Path" : "Bar"
 					}
 				}
@@ -965,7 +859,7 @@ sap.ui.require([
 		expectedSemanticsV4 : {
 			'@com.sap.vocabularies.Communication.v1.Contact' : {
 				"n" : {
-					"additional" : {
+					"additional": {
 						"$Path" : "Bar"
 					}
 				}
@@ -976,7 +870,7 @@ sap.ui.require([
 		expectedSemanticsV4 : {
 			'@com.sap.vocabularies.Communication.v1.Contact' : {
 				"n" : {
-					"surname" : {
+					"surname": {
 						"$Path" : "Bar"
 					}
 				}
@@ -986,7 +880,7 @@ sap.ui.require([
 		v2Semantics : 'sap:semantics="nickname"',
 		expectedSemanticsV4 : {
 			'@com.sap.vocabularies.Communication.v1.Contact' : {
-				"nickname" : {
+				"nickname": {
 					"$Path" : "Bar"
 				}
 			}
@@ -996,7 +890,7 @@ sap.ui.require([
 		expectedSemanticsV4 : {
 			'@com.sap.vocabularies.Communication.v1.Contact' : {
 				"n" : {
-					"prefix" : {
+					"prefix": {
 						"$Path" : "Bar"
 					}
 				}
@@ -1007,7 +901,7 @@ sap.ui.require([
 		expectedSemanticsV4 : {
 			'@com.sap.vocabularies.Communication.v1.Contact' : {
 				"n" : {
-					"suffix" : {
+					"suffix": {
 						"$Path" : "Bar"
 					}
 				}
@@ -1017,7 +911,7 @@ sap.ui.require([
 		var sTitle = "convert: V2 annotation at Property: " + oFixture.v2Semantics;
 		QUnit.test("convert sap:semantics=" + sTitle, function (assert) {
 			// there are no $annotations yet at the schema so mergeAnnotations is not called
-			this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+			this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 			testAnnotationConversion(assert, '\
 						<EntityType Name="Foo">\
@@ -1032,7 +926,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("convert sap:semantics=* to contact", function (assert) {
 		// there are no $annotations yet at the schema so mergeAnnotations is not called
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 		testAnnotationConversion(assert, '\
 				<EntityType Name="Foo">\
@@ -1060,22 +954,22 @@ sap.ui.require([
 			{
 				"GWSAMPLE_BASIC.Foo" : {
 					"@com.sap.vocabularies.Communication.v1.Contact" : {
-						"adr" : {
-							"code" : { "$Path" : "P19" },
-							"country" : { "$Path" : "P17" },
-							"locality" : { "$Path" : "P15" },
-							"pobox" : { "$Path" : "P20" },
-							"region" : { "$Path" : "P18" },
-							"street" : { "$Path" : "P16" }
+						"adr": {
+							"code": { "$Path": "P19" },
+							"country": { "$Path": "P17" },
+							"locality": { "$Path": "P15" },
+							"pobox": { "$Path": "P20" },
+							"region": { "$Path": "P18" },
+							"street": { "$Path": "P16" }
 						},
 						"bday" : { "$Path" : "P14" },
 						"fn" : { "$Path" : "P01" },
 						"n" : {
-							"given" : { "$Path" : "P02" },
-							"additional" : { "$Path" : "P03" },
-							"surname" : { "$Path" : "P04" },
-							"prefix" : { "$Path" : "P06" },
-							"suffix" : { "$Path" : "P07" }
+							"given": { "$Path" : "P02" },
+							"additional": { "$Path" : "P03" },
+							"surname": { "$Path" : "P04" },
+							"prefix": { "$Path" : "P06" },
+							"suffix": { "$Path" : "P07" }
 						},
 						"nickname" : { "$Path" : "P05" },
 						"note" : { "$Path" : "P08" },
@@ -1092,7 +986,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("convert sap:semantics=tel, email to Contact", function (assert) {
 		// there are no $annotations yet at the schema so mergeAnnotations is not called
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 		testAnnotationConversion(assert, '\
 				<EntityType Name="Foo">\
@@ -1122,7 +1016,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("convert sap:semantics=tel with type to Contact", function (assert) {
 		// there are no $annotations yet at the schema so mergeAnnotations is not called
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 		testAnnotationConversion(assert, '\
 				<EntityType Name="Foo">\
@@ -1133,7 +1027,7 @@ sap.ui.require([
 					"@com.sap.vocabularies.Communication.v1.Contact" : {
 						"tel" : [{
 							"type" : {
-								"EnumMember" :
+								"EnumMember":
 									"com.sap.vocabularies.Communication.v1.PhoneType/cell "
 									+ "com.sap.vocabularies.Communication.v1.PhoneType/work"
 							},
@@ -1150,7 +1044,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("convert sap:semantics=email with type to Contact", function (assert) {
 		// there are no $annotations yet at the schema so mergeAnnotations is not called
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 		testAnnotationConversion(assert, '\
 				<EntityType Name="Foo">\
@@ -1161,7 +1055,7 @@ sap.ui.require([
 					"@com.sap.vocabularies.Communication.v1.Contact" : {
 						"address" : [{
 							"type" : {
-								"EnumMember" :
+								"EnumMember":
 									"com.sap.vocabularies.Communication.v1.ContactInformationType/work "
 									+ "com.sap.vocabularies.Communication.v1.ContactInformationType/preferred "
 									+ "com.sap.vocabularies.Communication.v1.ContactInformationType/home"
@@ -1179,10 +1073,10 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("convert sap:semantics=email with unsupported type", function (assert) {
 		// there are no $annotations yet at the schema so mergeAnnotations is not called
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 		this.oLogMock.expects("warning")
-			.withExactArgs("Unsupported semantic type: foo", undefined, sClassName);
+			.withExactArgs("Unsupported semantic type: foo", undefined, sModuleName);
 
 		testAnnotationConversion(assert, '\
 				<EntityType Name="Foo">\
@@ -1205,10 +1099,10 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("convert sap:semantics=email with un/supported type", function (assert) {
 		// there are no $annotations yet at the schema so mergeAnnotations is not called
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 		this.oLogMock.expects("warning")
-			.withExactArgs("Unsupported semantic type: foo", undefined, sClassName);
+			.withExactArgs("Unsupported semantic type: foo", undefined, sModuleName);
 
 		testAnnotationConversion(assert, '\
 				<EntityType Name="Foo">\
@@ -1219,8 +1113,8 @@ sap.ui.require([
 					"@com.sap.vocabularies.Communication.v1.Contact" : {
 						"address" : [{
 							uri : {"$Path" : "P01"},
-							"type" : {
-								"EnumMember" : "com.sap.vocabularies.Communication.v1.ContactInformationType/work"
+							"type": {
+								"EnumMember": "com.sap.vocabularies.Communication.v1.ContactInformationType/work"
 							}
 						}]
 					}
@@ -1234,7 +1128,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("convert sap:semantics=* to Event", function (assert) {
 		// there are no $annotations yet at the schema so mergeAnnotations is not called
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 		testAnnotationConversion(assert, '\
 				<EntityType Name="Foo">\
@@ -1251,7 +1145,7 @@ sap.ui.require([
 			{
 				"GWSAMPLE_BASIC.Foo" : {
 					"@com.sap.vocabularies.Communication.v1.Event" : {
-						"dtstart" : {"$Path" : "P01"},
+						"dtstart": {"$Path" : "P01"},
 						"dtend" : { "$Path" : "P02" },
 						"duration" : { "$Path" : "P03" },
 						"class" : { "$Path" : "P04" },
@@ -1268,7 +1162,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("convert sap:semantics=* to Task", function (assert) {
 		// there are no $annotations yet at the schema so mergeAnnotations is not called
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 		testAnnotationConversion(assert, '\
 				<EntityType Name="Foo">\
@@ -1280,7 +1174,7 @@ sap.ui.require([
 			{
 				"GWSAMPLE_BASIC.Foo" : {
 					"@com.sap.vocabularies.Communication.v1.Task" : {
-						"due" : {"$Path" : "P01"},
+						"due": {"$Path" : "P01"},
 						"completed" : { "$Path" : "P02" },
 						"percentcomplete" : { "$Path" : "P03" },
 						"priority" : { "$Path" : "P04" }
@@ -1292,7 +1186,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("convert sap:semantics=* to Message", function (assert) {
 		// there are no $annotations yet at the schema so mergeAnnotations is not called
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 		testAnnotationConversion(assert, '\
 				<EntityType Name="Foo">\
@@ -1305,7 +1199,7 @@ sap.ui.require([
 			{
 				"GWSAMPLE_BASIC.Foo" : {
 					"@com.sap.vocabularies.Communication.v1.Message" : {
-						"from" : {"$Path" : "P01"},
+						"from": {"$Path" : "P01"},
 						"sender" : { "$Path" : "P02" },
 						"subject" : { "$Path" : "P03" },
 						"body" : { "$Path" : "P04" },
@@ -1318,7 +1212,7 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("convert sap:semantics=* to Contact, Event, Task, Message", function (assert) {
 		// there are no $annotations yet at the schema so mergeAnnotations is not called
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 		testAnnotationConversion(assert, '\
 				<EntityType Name="Foo">\
@@ -1506,7 +1400,7 @@ sap.ui.require([
 			if (oFixture.message) {
 				this.oLogMock.expects("warning")
 					.withExactArgs("Inconsistent metadata in '/foo/bar/$metadata'",
-						oFixture.message, sClassName);
+						oFixture.message, sModuleName);
 			}
 			testConversion(assert, sXML, oExpectedResult);
 		});
@@ -1625,7 +1519,7 @@ sap.ui.require([
 	}].forEach(function (oFixture, i) {
 		QUnit.test("mergeAnnotations: complex merge - " + i, function (assert) {
 			// Code under test
-			new _V2MetadataConverter().mergeAnnotations(oFixture.convertedV2Annotations,
+			_V2MetadataConverter.mergeAnnotations(oFixture.convertedV2Annotations,
 				oFixture.v4Annotations);
 
 			assert.deepEqual(oFixture.v4Annotations, oFixture.result);
@@ -1636,7 +1530,7 @@ sap.ui.require([
 	QUnit.test("convert: V4 Annotations", function (assert) {
 		testConversion(assert, '\
 				<Schema Namespace="foo" Alias="f">\
-					<Annotations xmlns="' + sXmlnsEdm4 + '" Target="f.Bar/f.Baz">\
+					<Annotations Target="f.Bar/f.Baz">\
 						<Annotation Term="f.Binary" Binary="T0RhdGE"/>\
 						<Annotation Term="f.Bool" Bool="false"/>\
 						<Annotation Term="f.Date" Date="2015-01-01" />\
@@ -1667,8 +1561,7 @@ sap.ui.require([
 						<Annotation Term="f.Invalid" Invalid="foo" />\
 						<Annotation Term="f.Baz" Qualifier="Employee"/>\
 					</Annotations>\
-					<Annotations xmlns="' + sXmlnsEdm4 + '"  Target="f.Bar/Abc" \
-							Qualifier="Employee">\
+					<Annotations Target="f.Bar/Abc" Qualifier="Employee">\
 						<Annotation Term="f.Baz"/>\
 					</Annotations>\
 				</Schema>',
@@ -1719,8 +1612,8 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("inline annotations: Reference", function (assert) {
 		testConversionForInclude(assert, '\
-				<edmx:Reference xmlns:edmx="' + sXmlnsEdmx4 + '" Uri="qux/$metadata">\
-					<Annotation xmlns="' + sXmlnsEdm4 + '" Term="foo.Term" String="Reference"/>\
+				<edmx:Reference Uri="qux/$metadata">\
+					<Annotation Term="foo.Term" String="Reference"/>\
 				</edmx:Reference>',
 			{
 				"$Reference" : {
@@ -1757,8 +1650,7 @@ sap.ui.require([
 		testConversion(assert, '\
 				<Schema Namespace="foo" Alias="f">\
 					<EntityContainer Name="Container">\
-						<FunctionImport m:HttpMethod="GET" Name="FunctionImport"\
-								sap:label="LabelFunctionImport">\
+						<FunctionImport Name="FunctionImport" sap:label="LabelFunctionImport">\
 							<Parameter Name="Parameter" Type="Edm.String"\
 									sap:label="LabelParameter">\
 							</Parameter>\
@@ -1798,52 +1690,24 @@ sap.ui.require([
 	// overwrite the others
 
 	//*********************************************************************************************
-	QUnit.test("convert sap:semantics=* from mV2toV4SimpleSemantics", function (assert) {
+	QUnit.test("convert sap:semantics=url to IsURL", function (assert) {
 		// there are no $annotations yet at the schema so mergeAnnotations is not called
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations").never();
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations").never();
 
 		testAnnotationConversion(assert, '\
 				<EntityType Name="Foo">\
-					<Property Name="P01" Type="Edm.String" sap:semantics="fiscalyear"/>\
-					<Property Name="P02" Type="Edm.String" sap:semantics="fiscalyearperiod"/>\
-					<Property Name="P03" Type="Edm.String" sap:semantics="url"/>\
-					<Property Name="P04" Type="Edm.String" sap:semantics="year"/>\
-					<Property Name="P05" Type="Edm.String" sap:semantics="yearmonth"/>\
-					<Property Name="P06" Type="Edm.String" sap:semantics="yearmonthday"/>\
-					<Property Name="P07" Type="Edm.String" sap:semantics="yearquarter"/>\
-					<Property Name="P08" Type="Edm.String" sap:semantics="yearweek"/>\
+					<Property Name="P01" Type="Edm.String" sap:semantics="url"/>\
 				</EntityType>',
 			{
 				"GWSAMPLE_BASIC.Foo/P01" : {
-					"@com.sap.vocabularies.Common.v1.IsFiscalYear" : true
-				},
-				"GWSAMPLE_BASIC.Foo/P02" : {
-					"@com.sap.vocabularies.Common.v1.IsFiscalYearPeriod" : true
-				},
-				"GWSAMPLE_BASIC.Foo/P03" : {
 					"@Org.OData.Core.V1.IsURL" : true
-				},
-				"GWSAMPLE_BASIC.Foo/P04" : {
-					"@com.sap.vocabularies.Common.v1.IsCalendarYear" : true
-				},
-				"GWSAMPLE_BASIC.Foo/P05" : {
-					"@com.sap.vocabularies.Common.v1.IsCalendarYearMonth" : true
-				},
-				"GWSAMPLE_BASIC.Foo/P06" : {
-					"@com.sap.vocabularies.Common.v1.IsCalendarDate" : true
-				},
-				"GWSAMPLE_BASIC.Foo/P07" : {
-					"@com.sap.vocabularies.Common.v1.IsCalendarYearQuarter" : true
-				},
-				"GWSAMPLE_BASIC.Foo/P08" : {
-					"@com.sap.vocabularies.Common.v1.IsCalendarYearWeek" : true
 				}
 			});
 	});
 
 	//*********************************************************************************************
 	QUnit.test("mergeAnnotations called", function (assert) {
-		this.mock(_V2MetadataConverter.prototype).expects("mergeAnnotations")
+		this.mock(_V2MetadataConverter).expects("mergeAnnotations")
 			.withExactArgs({ "GWSAMPLE_BASIC.Foo/P01" : { "@Org.OData.Core.V1.IsURL" : true } },
 				{ "GWSAMPLE_BASIC.Foo/P01" : { "@Org.OData.Core.V1.IsURL" : false } }
 			);
@@ -1852,7 +1716,7 @@ sap.ui.require([
 				<EntityType Name="Foo">\
 					<Property Name="P01" Type="Edm.String" sap:semantics="url"/>\
 				</EntityType>\
-				<Annotations xmlns="' + sXmlnsEdm4 + '" Target="GWSAMPLE_BASIC.Foo/P01">\
+				<Annotations Target="GWSAMPLE_BASIC.Foo/P01">\
 					<Annotation Term="Org.OData.Core.V1.IsURL" Bool="false"/>\
 				</Annotations>',
 			{
@@ -1879,7 +1743,7 @@ sap.ui.require([
 						<EntitySet Name="Suppliers" EntityType="GWSAMPLE_BASIC.BusinessPartner"\
 							sap:searchable="true"/>\
 <!-- loop over EntityContainer\'s children does not fail for non-EntitySets -->\
-						<FunctionImport m:HttpMethod="GET" Name="Foo" ReturnType="Edm.String"/>\
+						<FunctionImport Name="Foo" ReturnType="Edm.String"/>\
 					</EntityContainer>\
 <!-- EntitySets in ALL EntityContainers of a Schema are handled -->\
 					<EntityContainer Name="YetAnotherContainer">\
@@ -1888,8 +1752,7 @@ sap.ui.require([
 					</EntityContainer>\
 					<EntityType Name="BusinessPartner">\
 						<Property Name="IsCreatable" Type="Edm.Boolean"/>\
-						<NavigationProperty Name="CreatableA"\
-							sap:creatable="false" sap:filterable="true"\
+						<NavigationProperty Name="CreatableA" sap:creatable="false"\
 							Relationship="GWSAMPLE_BASIC.Assoc" FromRole="From" ToRole="To"/>\
 						<NavigationProperty Name="CreatablePathA"\
 							sap:creatable-path="IsCreatable"\
@@ -1926,10 +1789,6 @@ sap.ui.require([
 							sap:creatable-path="n/a"\
 							Relationship="GWSAMPLE_BASIC.Assoc" FromRole="From" ToRole="To"/>\
 						<NavigationProperty Name="CreatableTrue" sap:creatable="true"\
-							Relationship="GWSAMPLE_BASIC.Assoc" FromRole="From" ToRole="To"/>\
-						<NavigationProperty Name="FilterableFalse" sap:filterable="false"\
-							Relationship="GWSAMPLE_BASIC.Assoc" FromRole="From" ToRole="To"/>\
-						<NavigationProperty Name="FilterableTrue" sap:filterable="true"\
 							Relationship="GWSAMPLE_BASIC.Assoc" FromRole="From" ToRole="To"/>\
 					</EntityType>\
 					<Association Name="Assoc">\
@@ -2003,16 +1862,6 @@ sap.ui.require([
 						"$NavigationPropertyPath" : "ConflictB"
 					}]
 				},
-				"@Org.OData.Capabilities.V1.NavigationRestrictions" : {
-					"RestrictedProperties" : [{
-						"NavigationProperty" : {
-							"$NavigationPropertyPath" : "FilterableFalse"
-						},
-						"FilterRestrictions" : {
-							"Filterable" : false
-						}
-					}]
-				},
 				"@Org.OData.Capabilities.V1.SortRestrictions" : {
 					"NonSortableProperties" : [{
 						"$PropertyPath" : "FilterableSortable"
@@ -2048,31 +1897,31 @@ sap.ui.require([
 
 		this.oLogMock.expects("warning")
 			.withExactArgs("Unsupported SAP annotation at a complex type in '/foo/bar/$metadata'",
-				"sap:filterable at property 'GWSAMPLE_BASIC.0001.Address/Street'", sClassName);
+				"sap:filterable at property 'GWSAMPLE_BASIC.0001.Address/Street'", sModuleName);
 		this.oLogMock.expects("warning")
 			.withExactArgs("Unsupported SAP annotation at a complex type in '/foo/bar/$metadata'",
 				"sap:filter-restriction at property 'GWSAMPLE_BASIC.0001.Address/Street'",
-				sClassName);
+				sModuleName);
 		this.oLogMock.expects("warning")
 			.withExactArgs("Unsupported SAP annotation at a complex type in '/foo/bar/$metadata'",
 				"sap:required-in-filter at property 'GWSAMPLE_BASIC.0001.Address/Street'",
-				sClassName);
+				sModuleName);
 		this.oLogMock.expects("warning")
 			.withExactArgs("Unsupported SAP annotation at a complex type in '/foo/bar/$metadata'",
-				"sap:sortable at property 'GWSAMPLE_BASIC.0001.Address/Street'", sClassName);
+				"sap:sortable at property 'GWSAMPLE_BASIC.0001.Address/Street'", sModuleName);
 		this.oLogMock.expects("warning")
 			.withExactArgs("Inconsistent metadata in '/foo/bar/$metadata'",
 				"Use either 'sap:creatable' or 'sap:creatable-path' at navigation property"
-				+ " 'GWSAMPLE_BASIC.0001.BusinessPartner/ConflictA'", sClassName);
+				+ " 'GWSAMPLE_BASIC.0001.BusinessPartner/ConflictA'", sModuleName);
 		this.oLogMock.expects("warning")
 			.withExactArgs("Inconsistent metadata in '/foo/bar/$metadata'",
 				"Use either 'sap:creatable' or 'sap:creatable-path' at navigation property"
-				+ " 'GWSAMPLE_BASIC.0001.BusinessPartner/ConflictB'", sClassName);
+				+ " 'GWSAMPLE_BASIC.0001.BusinessPartner/ConflictB'", sModuleName);
 		this.oLogMock.expects("warning")
 			.withExactArgs("Inconsistent metadata in '/foo/bar/$metadata'",
 				'Unsupported sap:filter-restriction="unsupported" at property'
 				+ " 'GWSAMPLE_BASIC.0001.BusinessPartner/FilterRestrictionUnsupported'",
-				sClassName);
+				sModuleName);
 		testConversion(assert, sXML, oExpectedResult, /*bSubset*/true);
 	});
 	//TODO schema GWSAMPLE_BASIC.0000. with "forward reference" to EntityType processed later
@@ -2093,11 +1942,11 @@ sap.ui.require([
 				"GWSAMPLE_BASIC.0001." : {
 					"$Annotations" : {
 						"GWSAMPLE_BASIC.0001.BusinessPartner/Computed" : {
-							"@com.sap.vocabularies.Common.v1.Label" : "Computed",
+							"@com.sap.vocabularies.Common.v1.Label": "Computed",
 							"@Org.OData.Core.V1.Computed" : true
 						},
 						"GWSAMPLE_BASIC.0001.BusinessPartner/Immutable" : {
-							"@com.sap.vocabularies.Common.v1.Label" : "Immutable",
+							"@com.sap.vocabularies.Common.v1.Label": "Immutable",
 							"@Org.OData.Core.V1.Immutable" : true
 						}
 					},
@@ -2157,8 +2006,7 @@ sap.ui.require([
 						<End Type="GWSAMPLE_BASIC.0001.Measure" Multiplicity="*"\
 							Role="ToRole_Assoc_Product_Measure" />\
 					</Association>\
-					<Annotations xmlns="' + sXmlnsEdm4
-							+ '" Target="GWSAMPLE_BASIC.Product/NetPrice">\
+					<Annotations Target="GWSAMPLE_BASIC.Product/NetPrice">\
 						<Annotation Term="Org.OData.Measures.V1.ISOCurrency" Path="Foo/Bar"/>\
 					</Annotations>\
 				</Schema>\
@@ -2171,144 +2019,75 @@ sap.ui.require([
 					</EntityType>\
 				</Schema>',
 			oExpectedResult = {
-				"GWSAMPLE_BASIC.0001." : {
-					"$Annotations" : {
-						"GWSAMPLE_BASIC.0001.Product/Depth" : {
-							"@Org.OData.Measures.V1.Unit" : {
-								"$Path" : "DepthUnit"
+				"GWSAMPLE_BASIC.0001.": {
+					"$Annotations": {
+						"GWSAMPLE_BASIC.0001.Product/Depth": {
+							"@Org.OData.Measures.V1.Unit": {
+								"$Path": "DepthUnit"
 							},
-							"@com.sap.vocabularies.Common.v1.Label" : "Depth"
+							"@com.sap.vocabularies.Common.v1.Label": "Depth"
 						},
-						"GWSAMPLE_BASIC.0001.Product/GrossWeight" : {
-							"@Org.OData.Measures.V1.Unit" : {
-								"$Path" : "Parts/WeightUnit"
+						"GWSAMPLE_BASIC.0001.Product/GrossWeight": {
+							"@Org.OData.Measures.V1.Unit": {
+								"$Path": "Parts/WeightUnit"
 							}
 						},
-						"GWSAMPLE_BASIC.0001.Product/PackagingWeight" : {
-							"@Org.OData.Measures.V1.Unit" : {
-								"$Path" : "toMeasure/Parts/WeightUnit"
+						"GWSAMPLE_BASIC.0001.Product/PackagingWeight": {
+							"@Org.OData.Measures.V1.Unit": {
+								"$Path": "toMeasure/Parts/WeightUnit"
 							},
-							"@com.sap.vocabularies.Common.v1.Label" : "Packaging Weight"
+							"@com.sap.vocabularies.Common.v1.Label": "Packaging Weight"
 						},
-						"GWSAMPLE_BASIC.0001.Product/Price" : {
-							"@Org.OData.Measures.V1.ISOCurrency" : {
-								"$Path" : "PriceCurrency"
+						"GWSAMPLE_BASIC.0001.Product/Price": {
+							"@Org.OData.Measures.V1.ISOCurrency": {
+								"$Path": "PriceCurrency"
 							}
 						},
-						"GWSAMPLE_BASIC.0001.Product/NetPrice" : {
-							"@Org.OData.Measures.V1.ISOCurrency" : {
-								"$Path" : "Foo/Bar"
+						"GWSAMPLE_BASIC.0001.Product/NetPrice": {
+							"@Org.OData.Measures.V1.ISOCurrency": {
+								"$Path": "Foo/Bar"
 							}
 						},
-						"GWSAMPLE_BASIC.0001.CT_Parts/Weight" : {
-							"@Org.OData.Measures.V1.Unit" : {
-								"$Path" : "WeightUnit"
+						"GWSAMPLE_BASIC.0001.CT_Parts/Weight": {
+							"@Org.OData.Measures.V1.Unit": {
+								"$Path": "WeightUnit"
 							}
 						},
-						"GWSAMPLE_BASIC.0001.Product/WeightMissingUnit1" : {
-							"@com.sap.vocabularies.Common.v1.Label" : "Weight Missing Unit"
+						"GWSAMPLE_BASIC.0001.Product/WeightMissingUnit1": {
+							"@com.sap.vocabularies.Common.v1.Label": "Weight Missing Unit"
 						},
-						"GWSAMPLE_BASIC.0001.Product/NetWeight" : {
-							"@Org.OData.Measures.V1.Unit" : {
-								"$Path" : "toMeasure/WeightUnit"
+						"GWSAMPLE_BASIC.0001.Product/NetWeight": {
+							"@Org.OData.Measures.V1.Unit": {
+								"$Path": "toMeasure/WeightUnit"
 							},
-							"@com.sap.vocabularies.Common.v1.Label" : "Net Weight"
+							"@com.sap.vocabularies.Common.v1.Label": "Net Weight"
 						}
 					},
-					"$kind" : "Schema"
+					"$kind": "Schema"
 				},
-				"GWSAMPLE_BASIC.0002." : {
-					"$Annotations" : {
-						"GWSAMPLE_BASIC.0002.Product/Depth" : {
-							"@Org.OData.Measures.V1.Unit" : {
-								"$Path" : "DepthUnit"
+				"GWSAMPLE_BASIC.0002.": {
+					"$Annotations": {
+						"GWSAMPLE_BASIC.0002.Product/Depth": {
+							"@Org.OData.Measures.V1.Unit": {
+								"$Path": "DepthUnit"
 							}
 						}
 					},
-					"$kind" : "Schema"
+					"$kind": "Schema"
 				}
 			};
 
 		this.oLogMock.expects("warning").withExactArgs(
 			"Unsupported sap:semantics at sap:unit='InvalidUnit';"
 			+ " expected 'currency-code' or 'unit-of-measure'",
-			"GWSAMPLE_BASIC.0001.Product/Width", sClassName);
+			"GWSAMPLE_BASIC.0001.Product/Width", sModuleName);
 		this.oLogMock.expects("warning").withExactArgs(
 			"Path 'MissingUnit/Foo' for sap:unit cannot be resolved",
-			"GWSAMPLE_BASIC.0001.Product/WeightMissingUnit1" , sClassName);
+			"GWSAMPLE_BASIC.0001.Product/WeightMissingUnit1" , sModuleName);
 		this.oLogMock.expects("warning").withExactArgs(
 			"Path 'Parts/MissingUnit/Foo' for sap:unit cannot be resolved",
-			"GWSAMPLE_BASIC.0001.Product/WeightMissingUnit0" , sClassName);
-		this.oLogMock.expects("warning").withExactArgs(
-			"Unsupported annotation 'sap:semantics'",
-			sinon.match(/<Property.*sap:semantics="invalid".*\/>/),
-			sClassName);
+			"GWSAMPLE_BASIC.0001.Product/WeightMissingUnit0" , sModuleName);
 
 		testConversion(assert, sXML, oExpectedResult, /*bSubset*/true);
-	});
-
-	//*********************************************************************************************
-	QUnit.test("collectSapAnnotations/warnUnusedSapAnnotations", function (assert) {
-		var oLogMock = this.oLogMock;
-
-		function warn(rElement, sName, sValue) {
-			oLogMock.expects("warning").withExactArgs("Unsupported annotation 'sap:" + sName + "'",
-				sinon.match(rElement), sClassName);
-		}
-
-		warn(/<Schema.*sap:bar="baz".*>/, "bar");
-		warn(/<ComplexType.*sap:bar="baz".*\/>/, "bar");
-		warn(/<EntityType.*sap:bar="baz".*>/, "bar", "baz");
-		warn(/<Association.*sap:bar="baz".*>/, "bar", "baz");
-		warn(/<Property.*sap:bar="baz".*\/>/, "bar", "baz");
-		warn(/<NavigationProperty.*sap:bar="baz".*\/>/, "bar", "baz");
-		warn(/<EntityContainer.*sap:bar="baz".*>/, "bar", "baz");
-		warn(/<EntityContainer.*sap:foo="fuz".*>/, "foo", "fuz");
-		warn(/<EntitySet.*sap:bar="baz".*\/>/, "bar", "baz");
-		warn(/<FunctionImport.*sap:applicable-path="foo".*\/>/, "applicable-path", "foo");
-		oLogMock.expects("warning").withExactArgs("Unsupported HttpMethod at FunctionImport"
-			+ " 'BoundFunctionNoGET', removing this FunctionImport", undefined, sClassName);
-
-		testConversion(assert, '\
-			<Schema Namespace="foo" sap:bar="baz">\
-				<ComplexType Name="MyComplexType" sap:bar="baz"/>\
-				<EntityType Name="MyEntityType" sap:content-version="1" sap:bar="baz">\
-					<Key>\
-						<PropertyRef Name="MyProperty"/>\
-					</Key>\
-					<Property Name="MyProperty" Type="Edm.String" sap:bar="baz"/>\
-					<NavigationProperty Name="ToSomewhere" Relationship="foo.Assoc" \
-						ToRole="A" sap:bar="baz"/>\
-				</EntityType>\
-				<Association Name="Assoc" sap:content-version="1" sap:bar="baz">\
-					<End Type="foo.MyEntityType" Role="A"/>\
-					<End Type="foo.MyEntityType" Role="B"/>\
-				</Association>\
-				<EntityContainer Name="Container" sap:bar="baz" sap:foo="fuz">\
-					<EntitySet Name="MyEntitySet" EntityType="foo.MyEntityType" \
-						sap:content-version="1" sap:bar="baz"/>\
-					<FunctionImport Name="BoundFunctionNoGET"\
-						sap:action-for="foo.MyEntityType" sap:applicable-path="bar"/>\
-					<FunctionImport m:HttpMethod="GET" Name="MyFunction"\
-						sap:applicable-path="foo"/>\
-					<FunctionImport m:HttpMethod="GET" Name="BoundFunction"\
-						sap:action-for="foo.MyEntityType" sap:applicable-path="bar"/>\
-					<AssociationSet Name="MyAssociationSet" Association="foo.Assoc"\
-							sap:creatable="false" sap:deletable="false" sap:updatable="false">\
-						<End EntitySet="MyEntitySet" Role="A"/>\
-						<End EntitySet="MyEntitySet" Role="B"/>\
-					</AssociationSet>\
-				</EntityContainer>\
-			</Schema>', {}, true);
-	});
-
-	//*********************************************************************************************
-	QUnit.test("sap:schema-version", function (assert) {
-		testConversion(assert, '<Schema Namespace="foo" sap:schema-version="1"/>', {
-			"foo." : {
-				$kind : "Schema",
-				"@Org.Odata.Core.V1.SchemaVersion" : "1"
-			}
-		});
 	});
 });

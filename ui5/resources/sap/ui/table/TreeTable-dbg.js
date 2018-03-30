@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -18,7 +18,7 @@ sap.ui.define(['jquery.sap.global', './Table', 'sap/ui/model/ClientTreeBindingAd
 	 * @class
 	 * The TreeTable control provides a comprehensive set of features to display hierarchical data.
 	 * @extends sap.ui.table.Table
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -233,35 +233,45 @@ sap.ui.define(['jquery.sap.global', './Table', 'sap/ui/model/ClientTreeBindingAd
 	};
 
 	/**
-	 * Expands one or more rows.
+	 * expands the row for the given row index
 	 *
-	 * @param {int|int[]} vRowIndex A single index or an array of indices of the rows to be expanded
-	 * @returns {sap.ui.table.TreeTable} <code>this</code> to allow method chaining
+	 * @param {int} iRowIndex
+	 *         index of the row to expand
+	 * @returns {sap.ui.table.TreeTable} a reference on the TreeTable control, can be used for chaining
 	 * @public
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
 	 */
-	TreeTable.prototype.expand = function(vRowIndex) {
-		TableUtils.Grouping.toggleGroupHeader(this, vRowIndex, true);
+	TreeTable.prototype.expand = function(iRowIndex) {
+		var oBinding = this.getBinding("rows");
+		if (oBinding && iRowIndex >= 0) {
+			oBinding.expand(iRowIndex);
+		}
+
 		return this;
 	};
 
 	/**
-	 * Collapses one or more rows.
+	 * collapses the row for the given row index
 	 *
-	 * @param {int|int[]} vRowIndex A single index or an array of indices of the rows to be collapsed
-	 * @returns {sap.ui.table.TreeTable} <code>this</code> to allow method chaining
+	 * @param {int} iRowIndex
+	 *         index of the row to collapse
+	 * @returns {sap.ui.table.TreeTable} a reference on the TreeTable control, can be used for chaining
 	 * @public
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
 	 */
-	TreeTable.prototype.collapse = function(vRowIndex) {
-		TableUtils.Grouping.toggleGroupHeader(this, vRowIndex, false);
+	TreeTable.prototype.collapse = function(iRowIndex) {
+		var oBinding = this.getBinding("rows");
+		if (oBinding && iRowIndex >= 0) {
+			oBinding.collapse(iRowIndex);
+		}
+
 		return this;
 	};
 
 	/**
 	 * Collapses all nodes (and lower if collapseRecursive is activated)
 	 *
-	 * @returns {sap.ui.table.TreeTable} <code>this</code> to allow method chaining
+	 * @returns {sap.ui.table.TreeTable} a reference on the TreeTable control, can be used for chaining
 	 * @public
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
 	 */
@@ -301,10 +311,10 @@ sap.ui.define(['jquery.sap.global', './Table', 'sap/ui/model/ClientTreeBindingAd
 	};
 
 	/**
-	 * Checks whether the row is expanded or collapsed.
+	 * Returns whether the row is expanded or collapsed.
 	 *
-	 * @param {int} iRowIndex The index of the row to be checked
-	 * @returns {boolean} <code>true</code> if the row is expanded, <code>false</code> if it is collapsed
+	 * @param {int} iRowIndex index of the row to check
+	 * @returns {boolean} true if the node at "iRowIndex" is expanded, false otherwise (meaning it is collapsed)
 	 * @public
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
 	 */
@@ -641,7 +651,7 @@ sap.ui.define(['jquery.sap.global', './Table', 'sap/ui/model/ClientTreeBindingAd
 	 * @deprecated Since version 1.28.
 	 * To get a group-like visualization the <code>useGroupMode</code> property can be used.
 	 * @returns {sap.ui.table.TreeTable} Reference to this in order to allow method chaining
-	 * @see sap.ui.table.TreeTable#setUseGroupMode
+	 * @see {@link sap.ui.table.TreeTable#setUseGroupMode}
 	 * @public
 	 */
 	TreeTable.prototype.setEnableGrouping = function() {

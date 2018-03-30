@@ -6,8 +6,8 @@
 <meta name="abstract" content="To make sure that the code is always tested thoroughly before it is included in a productive app, you should use a test runner that automates tests. The test runner can be included in your project setup so that it is called whenever code changes are submitted."/>
 <meta name="description" content="To make sure that the code is always tested thoroughly before it is included in a productive app, you should use a test runner that automates tests. The test runner can be included in your project setup so that it is called whenever code changes are submitted."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=02919499626415034"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=02919499626415034"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6397821714143818"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6397821714143818"/>
 <title>Test Automation</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -299,7 +299,9 @@ Press tab to list possible options.
 				<span class="ph cmd">Pass on the <span class="ph"><span class="ph pname">OpenUI5</span></span>
 					configuration.</span>
 				<div class="itemgroup info">
-					<div class="p">You can create an object that configures the adapter with any of the <span class="ph"><span class="ph pname">OpenUI5</span></span> configuration options like in the following example:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+					<div class="p">You can create an object that configures the adapter with any of the <span class="ph"><span class="ph pname">OpenUI5</span></span>
+						configuration options like in the following
+						example:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
   config.set({
     [...]
     <span class="ph emphasis emphasis">client: {
@@ -308,8 +310,8 @@ Press tab to list possible options.
           theme: 'sap_belize',
           language: 'EN',
           resourceroots: {
-            'my.own.application': './base',
-            'test': './base/test'
+            'my.own.application': './',
+            'test': './test'
           }
         }
       }
@@ -444,13 +446,14 @@ For
 				configured as the <samp class="ph codeph">basePath</samp> in the
 					<span class="ph filepath">karma.conf.js</span> file.</p>
 
-			<div class="p">Add the proxy settings to the <span class="ph filepath">karma.conf.js</span> file:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+			<div class="p">Add the proxy settings to the <span class="ph filepath">karma.conf.js</span>
+				file:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
   config.set({
     [...]
     // map of path-proxy pairs
     <span class="ph emphasis emphasis">proxies: {
       '/resources': 'http://&lt;<var class="keyword varname">&lt;server&gt;</var>&gt;:&lt;<var class="keyword varname">&lt;port&gt;</var>&gt;/resources',
-      '/test-resources': 'http://&lt;<var class="keyword varname">&lt;server&gt;</var>&gt;:&lt;<var class="keyword varname">&lt;port&gt;</var>&gt;/test-resources'
+      '/test-resources': 'http://&lt;<var class="keyword varname">&lt;server&gt;</var>&gt;:&lt;<var class="keyword varname">&lt;port&gt;</var>&gt;/resources'
     },</span>
     [...]
   });

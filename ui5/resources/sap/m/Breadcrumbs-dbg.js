@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -15,21 +15,8 @@ sap.ui.define([
 	"sap/ui/core/ResizeHandler",
 	"sap/ui/core/IconPool",
 	"sap/ui/Device",
-	"sap/m/library",
-	"./BreadcrumbsRenderer"
-], function(
-	Control,
-	Text,
-	Link,
-	Select,
-	Item,
-	ItemNavigation,
-	ResizeHandler,
-	IconPool,
-	Device,
-	library,
-	BreadcrumbsRenderer
-) {
+	"sap/m/library"
+], function (Control, Text, Link, Select, Item, ItemNavigation, ResizeHandler, IconPool, Device, library) {
 	"use strict";
 
 	// shortcut for sap.m.SelectType
@@ -48,7 +35,7 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -61,7 +48,6 @@ sap.ui.define([
 		metadata: {
 			library: "sap.m",
 			interfaces: ["sap.m.IBreadcrumbs"],
-			designtime: "sap/m/designtime/Breadcrumbs.designtime",
 			properties: {
 
 				/**
@@ -134,6 +120,10 @@ sap.ui.define([
 
 	Breadcrumbs.PAGEUP_AND_PAGEDOWN_JUMP_SIZE = 5;
 
+	Breadcrumbs._getResourceBundle = function () {
+		return sap.ui.getCore().getLibraryResourceBundle("sap.m");
+	};
+
 	/*************************************** Internal aggregation handling  ******************************************/
 
 	Breadcrumbs.prototype._getAugmentedId = function (sSuffix) {
@@ -149,7 +139,7 @@ sap.ui.define([
 				autoAdjustWidth: true,
 				icon: IconPool.getIconURI("slim-arrow-down"),
 				type: SelectType.IconOnly,
-				tooltip: BreadcrumbsRenderer._getResourceBundleText("BREADCRUMB_SELECT_TOOLTIP")
+				tooltip: Breadcrumbs._getResourceBundle().getText("BREADCRUMB_SELECT_TOOLTIP")
 			})));
 		}
 		return this.getAggregation("_select");
@@ -378,15 +368,11 @@ sap.ui.define([
 		return this._oDistributedControls;
 	};
 
-	Breadcrumbs.prototype._getSelectWidth = function() {
-		return this._getSelect().getVisible() && this._iSelectWidth || 0;
-	};
-
 	Breadcrumbs.prototype._determineControlDistribution = function (iMaxContentSize) {
 		var index,
 			oControlInfo,
 			aControlInfo = this._getControlsInfo().aControlInfo,
-			iSelectWidth = this._getSelectWidth(),
+			iSelectWidth = this._iSelectWidth,
 			aControlsForSelect = [],
 			aControlsForBreadcrumbTrail = [],
 			iUsedSpace = iSelectWidth; // account for the selectWidth initially;
@@ -421,9 +407,8 @@ sap.ui.define([
 	};
 
 	/**
-	 * Stores the sizes and other info of controls so they don't need to be recalculated again until they change.
+	 * Stores the sizes and other info of controls so they don't need to be recalculated again until they change
 	 * @private
-	 * @returns {Object} The <code>Breadcrumbs</code> control information
 	 */
 	Breadcrumbs.prototype._getControlsInfo = function () {
 		if (!this._bControlsInfoCached) {

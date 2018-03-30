@@ -1,34 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 //Provides control sap.m.DateTimePicker.
-sap.ui.define([
-	'jquery.sap.global',
-	'./DatePicker',
-	'sap/ui/model/type/Date',
-	'sap/ui/unified/DateRange',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/Device',
-	'sap/ui/core/format/DateFormat',
-	'sap/ui/core/LocaleData',
-	'./DateTimePickerRenderer',
-	'jquery.sap.keycodes'
-], function(
-	jQuery,
-	DatePicker,
-	Date1,
-	DateRange,
-	library,
-	Control,
-	Device,
-	DateFormat,
-	LocaleData,
-	DateTimePickerRenderer
-	) {
+sap.ui.define(['jquery.sap.global', './DatePicker', 'sap/ui/model/type/Date', './library', 'sap/ui/core/Control', 'sap/ui/Device', 'sap/ui/core/format/DateFormat', 'sap/ui/core/LocaleData', 'jquery.sap.keycodes'],
+		function(jQuery, DatePicker, Date1, library, Control, Device, DateFormat, LocaleData) {
 	"use strict";
 
 	// shortcut for sap.m.PlacementType
@@ -112,7 +90,7 @@ sap.ui.define([
 	 * mobile devices, it opens in full screen.
 	 *
 	 * @extends sap.m.DatePicker
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -129,8 +107,8 @@ sap.ui.define([
 			 * Internal aggregation that contains the inner _picker pop-up.
 			 */
 			_popup: { type: "sap.m.ResponsivePopover", multiple: false, visibility: "hidden" }
-		},
-		designtime: "sap/m/designtime/DateTimePicker.designtime"
+		}
+
 	}});
 
 	var PopupContent = Control.extend("DateTimePickerPopup", {
@@ -260,9 +238,9 @@ sap.ui.define([
 			} else {
 				oCalendar.$().css("display", "none");
 				oSliders.$().css("display", "");
-				oSliders._updateSlidersValues();
+				oSliders.updateSlidersValues();
 				oSliders._onOrientationChanged();
-				oSliders.openFirstSlider();
+				oSliders._initFocus();
 			}
 
 		},
@@ -311,7 +289,7 @@ sap.ui.define([
 		DatePicker.prototype.setDisplayFormat.apply(this, arguments);
 
 		if (this._oSliders) {
-			this._oSliders.setDisplayFormat(_getTimePattern.call(this));
+			this._oSliders.setFormat(_getTimePattern.call(this));
 		}
 
 		return this;
@@ -402,12 +380,9 @@ sap.ui.define([
 
 	};
 
-	DateTimePicker.prototype._getLocaleBasedPattern = function(sPlaceholder) {
-		var oLocaleData = LocaleData.getInstance(
-				sap.ui.getCore().getConfiguration().getFormatSettings().getFormatLocale()
-			),
-			iSlashIndex = sPlaceholder.indexOf("/");
+	DateTimePicker.prototype._getPlaceholderPattern = function(oLocaleData, sPlaceholder) {
 
+		var iSlashIndex = sPlaceholder.indexOf("/");
 		if (iSlashIndex > 0) {
 			return oLocaleData.getCombinedDateTimePattern(sPlaceholder.substr(0, iSlashIndex), sPlaceholder.substr(iSlashIndex + 1));
 		} else {
@@ -487,7 +462,7 @@ sap.ui.define([
 
 		var oSliders = this._oPopup.getContent()[0] && this._oPopup.getContent()[0].getTimeSliders();
 		if (oSliders) {//Sliders values need to be updated after a popup is (especially sliders) is really visible
-			jQuery.sap.delayedCall(0, oSliders, oSliders._updateSlidersValues);
+			jQuery.sap.delayedCall(0, oSliders, oSliders.updateSlidersValues);
 		}
 	};
 
@@ -500,48 +475,17 @@ sap.ui.define([
 		if (bNoCalendar) {
 			this._oPopupContent.setCalendar(this._oCalendar);
 			this._oCalendar.attachSelect(_selectDate, this);
-
-			var that = this,
-				oHideMonthPicker = this._oCalendar._hideMonthPicker,
-				oHideYearPicker = this._oCalendar._hideYearPicker;
-
-			this._oCalendar._hideMonthPicker = function (bSkipFocus) {
-				oHideMonthPicker.apply(this, arguments);
-
-				if (!bSkipFocus) {
-					that._selectFocusedDateValue(new DateRange().setStartDate(this._getFocusedDate().toLocalJSDate()));
-
-				}
-			};
-
-			this._oCalendar._hideYearPicker = function (bSkipFocus) {
-				oHideYearPicker.apply(this, arguments);
-
-				if (!bSkipFocus) {
-					that._selectFocusedDateValue(new DateRange().setStartDate(this._getFocusedDate().toLocalJSDate()));
-
-				}
-			};
 		}
 
 		if (!this._oSliders) {
 			jQuery.sap.require("sap.m.TimePickerSliders");
 			this._oSliders = new sap.m.TimePickerSliders(this.getId() + "-Sliders", {
-				displayFormat: _getTimePattern.call(this),
-				localeId: this.getLocaleId()
-			})._setShouldOpenSliderAfterRendering(true);
+				format: _getTimePattern.call(this),
+				invokedBy: this.getId()
+			});
 			this._oPopupContent.setTimeSliders(this._oSliders);
 		}
 
-	};
-
-	DateTimePicker.prototype._selectFocusedDateValue = function (oDateRange) {
-		var oCalendar = this._oCalendar;
-
-		oCalendar.removeAllSelectedDates();
-		oCalendar.addSelectedDate(oDateRange);
-
-		return this;
 	};
 
 	DateTimePicker.prototype._fillDateRange = function(){
@@ -551,7 +495,7 @@ sap.ui.define([
 		if (oDate) {
 			oDate = new Date(oDate.getTime());
 		} else {
-			oDate = this._getInitialFocusedDateValue();
+			oDate = new Date();
 			var iMaxTimeMillis = this._oMaxDate.getTime() + 86400000 /* one day in milliseconds */;
 
 			if (oDate.getTime() < this._oMinDate.getTime() || oDate.getTime() > iMaxTimeMillis) {
@@ -564,7 +508,7 @@ sap.ui.define([
 			this._oDateRange.setStartDate(oDate);
 		}
 
-		this._oSliders._setTimeValues(oDate);
+		this._oSliders.setTimeValues(oDate);
 
 	};
 
@@ -574,7 +518,7 @@ sap.ui.define([
 
 		if (oDate) {
 			var oDateTime = this._oSliders.getTimeValues();
-			var sPattern = this._oSliders._getDisplayFormatPattern();
+			var sPattern = this._oSliders.getFormat();
 			if (sPattern.search("h") >= 0 || sPattern.search("H") >= 0) {
 				oDate.setHours(oDateTime.getHours());
 			}
@@ -594,10 +538,6 @@ sap.ui.define([
 
 		return oDate;
 
-	};
-
-	DateTimePicker.prototype._getInitialFocusedDateValue = function () {
-		return this.getInitialFocusedDateValue() || new Date();
 	};
 
 	DateTimePicker.prototype.getLocaleId = function(){
@@ -627,8 +567,6 @@ sap.ui.define([
 
 		this.onsaphide(oEvent);
 
-		this._oCalendar.removeAllSelectedDates();
-		this._oCalendar.addSelectedDate(new DateRange().setStartDate(this._getInitialFocusedDateValue()));
 	}
 
 	function _handleBeforeOpen(oEvent){

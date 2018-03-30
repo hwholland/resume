@@ -1,28 +1,14 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.layout.FixFlex.
-sap.ui.define([
-    "jquery.sap.global",
-    "sap/ui/core/Control",
-    "sap/ui/core/EnabledPropagator",
-    "sap/ui/core/ResizeHandler",
-    "./library",
-    "sap/ui/core/delegate/ScrollEnablement",
-    "./FixFlexRenderer"
-],
-	function(
-	    jQuery,
-		Control,
-		EnabledPropagator,
-		ResizeHandler,
-		library,
-		ScrollEnablement,
-		FixFlexRenderer
-	) {
+sap.ui.define(["jquery.sap.global", "sap/ui/core/Control", "sap/ui/core/EnabledPropagator", "sap/ui/core/ResizeHandler",
+				"./library", "sap/ui/core/delegate/ScrollEnablement"],
+	function (jQuery, Control, EnabledPropagator,
+				ResizeHandler, library, ScrollEnablement) {
 		"use strict";
 
 		/**
@@ -57,7 +43,7 @@ sap.ui.define([
 		 * @extends sap.ui.core.Control
 		 *
 		 * @author SAP SE
-		 * @version 1.54.2
+		 * @version 1.52.5
 		 *
 		 * @constructor
 		 * @public
@@ -105,7 +91,7 @@ sap.ui.define([
 					 */
 					flexContent: {type: "sap.ui.core.Control", multiple: false}
 				},
-				designtime: "sap/ui/layout/designtime/FixFlex.designtime"
+				designTime: true
 			}
 		});
 

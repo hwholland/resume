@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.TableEditable.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.TableEditable.Table",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.TableEditable.Table",
 			dependencies : {
 				libs : [
 					"sap.m"

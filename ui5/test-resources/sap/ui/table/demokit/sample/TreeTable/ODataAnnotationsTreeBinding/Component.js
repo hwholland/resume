@@ -7,11 +7,7 @@ sap.ui.define([
 
     return  UIComponent.extend("sap.ui.table.sample.TreeTable.ODataAnnotationsTreeBinding.Component", {
         metadata: {
-            rootView: {
-                "viewName": "sap.ui.table.sample.TreeTable.ODataAnnotationsTreeBinding.View",
-                "type": "XML",
-                "async": true
-            },
+            rootView: "sap.ui.table.sample.TreeTable.ODataAnnotationsTreeBinding.View",
             dependencies: {
                 libs: [
                     "sap.ui.table",
@@ -34,7 +30,7 @@ sap.ui.define([
         },
         init : function (){
             // call the init function of the parent
-            UIComponent.prototype.init.apply(this, arguments);
+			UIComponent.prototype.init.apply(this, arguments);
 
             var sODataServiceUrl = "/here/goes/your/odata/service/url/";
 

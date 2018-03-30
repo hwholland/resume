@@ -91,8 +91,7 @@ sap.ui.define([
 		//Actions
 		When.onTheDetailPage.iPressProcessorTab();
 		//Assertions
-		Then.onTheDetailPage.iShouldSeeTheProcessorInfo().
-			and.iTeardownMyAppFrame();
+		Then.onTheDetailPage.iShouldSeeTheProcessorInfo();
 	});
 
 	opaTest("Start the app with the processor tab in the hash I should be on the processor tab", function (Given, When, Then) {
@@ -101,14 +100,13 @@ sap.ui.define([
 			hash: "Orders/7991/?tab=processor"
 		});
 		//Assertions
-		Then.onTheDetailPage.iShouldSeeTheProcessorInfo().
-			and.iTeardownMyAppFrame();
+		Then.onTheDetailPage.iShouldSeeTheProcessorInfo();
 	});
 
 	opaTest("Start the app with an invalid tab url I should be on the shipping tab", function (Given, When, Then) {
 		//Arrangement
 		Given.iStartTheApp({
-			hash: "/Orders/7827/?tab=foo"
+			hash: "/Orders(7827)/?tab=foo"
 		});
 		//Assertions
 		Then.onTheDetailPage.iShouldSeeTheShippingInfo().

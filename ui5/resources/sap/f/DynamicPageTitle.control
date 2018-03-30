@@ -39,48 +39,8 @@ content that is displayed.</documentation>
             <documentation>Determines which of the &lt;code&gt;DynamicPageTitle&lt;/code&gt; areas (Begin, Middle) is primary.
 
 &lt;b&gt;Note:&lt;/b&gt; The primary area is shrinking at lower rate, remaining visible as much as it can.</documentation>
-            <deprecation since="1.54">Please use the &lt;code&gt;areaShrinkRatio&lt;/code&gt; property instead.
-The value of &lt;code&gt;areaShrinkRatio&lt;/code&gt; must be set in &lt;code&gt;Heading:Content:Actions&lt;/code&gt; format
-where Heading, Content and Actions are numbers greater than or equal to 0. The greater value a
-section has the faster it shrinks when the screen size is being reduced.
-
-&lt;code&gt;primaryArea=Begin&lt;/code&gt; can be achieved by setting a low number for the Heading area to
-&lt;code&gt;areaShrinkRatio&lt;/code&gt;, for example &lt;code&gt;1:1.6:1.6&lt;/code&gt;.
-
-&lt;code&gt;primaryArea=Middle&lt;/code&gt; can be achieved by setting a low number for the Content area to
-&lt;code&gt;areaShrinkRatio&lt;/code&gt;, for example &lt;code&gt;1.6:1:1.6&lt;/code&gt;.</deprecation>
-        </property>
-        <property since="1.54" group="Appearance" defaultValue="1:1.6:1.6" type="sap.f/DynamicPageTitleShrinkRatio" name="areaShrinkRatio">
-            <documentation>Assigns shrinking ratio to the &lt;code&gt;DynamicPageTitle&lt;/code&gt; areas (Heading, Content, Actions).
-The greater value a section has the faster it shrinks when the screen size is being reduced.
-
-The value must be set in &lt;code&gt;Heading:Content:Actions&lt;/code&gt; format where Title, Content and Actions
-are numbers greater than or equal to 0. If set to 0, the respective area will not shrink.
-
-For example, if &lt;code&gt;2:7:1&lt;/code&gt; is set, the Content area will shrink seven times faster than
-the Actions area. So, when all three areas have width of 500px and the available space is reduced by 100px
-the Title area will reduced by 20px, the Content area - by 70px and the Actions area - by 10px.
-
-If all the areas have assigned values greater than 1, the numbers are scaled so that at least one of them
-is equal to 1. For example, value of &lt;code&gt;2:4:8&lt;/code&gt; is equal to &lt;code&gt;1:2:4&lt;/code&gt;.
-
-&lt;Note:&gt; When this property is set the &lt;code&gt;primaryArea&lt;/code&gt; property has no effect.</documentation>
         </property>
     </properties>
-    <events>
-        <event allowPreventDefault="false" since="1.54" name="stateChange">
-            <documentation>Fired when the title state (expanded/collapsed) is toggled by user interaction.
-For example, scrolling, title clicking/tapping, using expand/collapse button.
-
-Also fired when the developer toggles the title state by programmatically
-changing the scroll position of the scrollbar of &lt;code&gt;DynamicPage&lt;/code&gt;.</documentation>
-            <parameters>
-                <parameter type="sap.ui.core/boolean" name="isExpanded">
-                    <documentation>Whether the title was expanded (true) or collapsed (false).</documentation>
-                </parameter>
-            </parameters>
-        </event>
-    </events>
     <aggregations>
         <aggregation cardinality="0..1" type="sap.ui.core/Control" name="heading">
             <documentation>The &lt;code&gt;heading&lt;/code&gt; is positioned in the &lt;code&gt;DynamicPageTitle&lt;/code&gt; left area

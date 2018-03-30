@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -124,8 +124,7 @@
                               <h2 class="sectiontitle tasklabel">Context</h2>
                            </div>
                            			
-                           <p class="p">When mixing XHTML and <span class="ph"><span class="ph pname">OpenUI5</span></span> controls,
-                              				observe the following rules: 
+                           <p class="p">When mixing XHTML and <span class="ph"><span class="ph pname">OpenUI5</span></span> controls, observe the following rules: 
                            </p>
                            
                            			
@@ -133,9 +132,9 @@
                               				
                               <li class="li">
                                  					
-                                 <p class="p">XHTML elements can be used instead of the <span class="ph"><span class="ph pname">OpenUI5</span></span> type
-                                    						control, for example, in the root of an XML view or in the content
-                                    						aggregation of a layout container. 
+                                 <p class="p">XHTML elements can be used instead of the <span class="ph"><span class="ph pname">OpenUI5</span></span> type control, for example,
+                                    						in the root of an XML view or in the content aggregation of a layout
+                                    						container. 
                                  </p>
                                  
                                  				
@@ -144,10 +143,10 @@
                               				
                               <li class="li">
                                  					
-                                 <p class="p">When embedding XHTML in an aggregation of a <span class="ph"><span class="ph pname">OpenUI5</span></span> control,
-                                    						the XHTML must not consist of a single text node. The topmost node of an
-                                    						embedded XHTML tree must be an XHTML element. Embedding pure text into an
-                                    						aggregation is not supported. 
+                                 <p class="p">When embedding XHTML in an aggregation of a <span class="ph"><span class="ph pname">OpenUI5</span></span> control, the XHTML must
+                                    						not consist of a single text node. The topmost node of an embedded XHTML
+                                    						tree must be an XHTML element. Embedding pure text into an aggregation is
+                                    						not supported. 
                                  </p>
                                  
                                  				
@@ -156,9 +155,9 @@
                               				
                               <li class="li">
                                  					
-                                 <p class="p">The XHTML nodes are converted 1:1 to HTML, the XML view does not deal with
-                                    						any differences between XHTML and HTML (for example rewriting and
-                                    						auto-closing tags) 
+                                 <p class="p">The XHTML nodes are converted 1:1 to HTML, the XMLView does not deal with any
+                                    						differences between XHTML and HTML (for example rewriting and auto-closing
+                                    						tags) 
                                  </p>
                                  
                                  				
@@ -185,16 +184,16 @@
                            
                            		
                         </div>
-                        		<span id="steps" class="anchor"></span><section class="section procedure">
+                        <span id="steps" class="anchor"></span><section class="section procedure">
                            <div class="ol steps tasklabel">
                               <h2 class="sectiontitle tasklabel">Procedure</h2>
                            </div>
                            <div class="li step p">
-                              				<span class="ph cmd">To mix <span class="ph"><span class="ph pname">OpenUI5</span></span>
-                                 					controls with native XHTML, you only need the XHTML namespace to use (X)HTML: </span>
+                              		<span class="ph cmd">To mix <span class="ph"><span class="ph pname">OpenUI5</span></span> controls with native XHTML, you only need the XHTML namespace to use (X)HTML: </span>
                               				
                               <div class="itemgroup info">
-                                 					<pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View controllerName=&quot;sap.hcm.Address&quot; xmlns=&quot;sap.m&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;
+                                 					<pre class="pre codeblock prettyprint lang-xml">
+&lt;mvc:View controllerName=&quot;sap.hcm.Address&quot; xmlns=&quot;sap.ui.commons&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;
            xmlns:html=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
    &lt;Panel&gt;
       &lt;Button text=&quot;Press Me. I am an SAPUI5 Button&quot;/&gt;
@@ -203,7 +202,7 @@
 &lt;/mvc:View&gt;</pre>
                                  
                                  				</div>
-                              			
+                              	
                            </div>
                            
                         </section>

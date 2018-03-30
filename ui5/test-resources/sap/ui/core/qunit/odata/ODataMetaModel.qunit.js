@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
@@ -614,7 +614,8 @@ sap.ui.require([
 				{source : "FAR_CUSTOMER_LINE_ITEMS.metadata_MyComplexTypeCustomer.xml"},
 			"/GWSAMPLE_BASIC/$metadata" : {source : "GWSAMPLE_BASIC.metadata.xml"},
 			"/GWSAMPLE_BASIC/annotations" : {source : "GWSAMPLE_BASIC.annotations.xml"}
-		};
+		},
+		oGlobalSandbox; // global sandbox for async tests
 
 	/**
 	 * Runs the given code under test with an <code>ODataMetaModel</code> for the service URL
@@ -714,17 +715,20 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.module("sap.ui.model.odata.ODataMetaModel", {
 		beforeEach : function () {
-			TestUtils.useFakeServer(this._oSandbox, "sap/ui/core/qunit/model", mFixture);
+			oGlobalSandbox = sinon.sandbox.create();
+			TestUtils.useFakeServer(oGlobalSandbox, "sap/ui/core/qunit/model", mFixture);
 			this.iOldLogLevel = jQuery.sap.log.getLevel(sComponent);
 			// do not rely on ERROR vs. DEBUG due to minified sources
 			jQuery.sap.log.setLevel(jQuery.sap.log.Level.ERROR, sComponent);
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oLogMock = oGlobalSandbox.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
 		},
 		afterEach : function () {
 			jQuery.sap.log.setLevel(this.iOldLogLevel, sComponent);
 			ODataModel.mServiceData = {}; // clear cache
+			// I would consider this an API, see https://github.com/cjohansen/Sinon.JS/issues/614
+			oGlobalSandbox.verifyAndRestore();
 		}
 	});
 
@@ -938,18 +942,17 @@ sap.ui.require([
 	QUnit.test("basics", function (assert) {
 		var oMetaModel = new ODataMetaModel({
 				getServiceMetadata : function () { return {dataServices : {}}; }
-			}),
-			that = this;
+			});
 
 		return oMetaModel.loaded().then(function () {
-			var oMetaModelMock = that.mock(oMetaModel),
-				oModelMock = that.mock(oMetaModel.oModel),
+			var oMetaModelMock = oGlobalSandbox.mock(oMetaModel),
+				oModelMock = oGlobalSandbox.mock(oMetaModel.oModel),
 				oResult = {};
 
 			assert.strictEqual(arguments.length, 1, "almost no args");
 			assert.strictEqual(arguments[0], undefined, "almost no args");
 
-			that.mock(Model.prototype).expects("destroy");
+			oGlobalSandbox.mock(Model.prototype).expects("destroy");
 
 			// generic dispatching
 			["destroy", "isList"].forEach(function (sName) {
@@ -1038,10 +1041,8 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("bindList", function (assert) {
-		var that = this;
-
 		return withMetaModel(assert, function (oMetaModel) {
-			var fnApply = that.mock(FilterProcessor).expects("apply"),
+			var fnApply = oGlobalSandbox.mock(FilterProcessor).expects("apply"),
 				oBinding,
 				oContext = oMetaModel.createBindingContext("/"),
 				aFilters = [],
@@ -1061,7 +1062,7 @@ sap.ui.require([
 			assert.strictEqual(oBinding.iLength, oBinding.aIndices.length);
 
 			fnGetValue = fnApply.args[0][2];
-			that.mock(oMetaModel).expects("getProperty")
+			oGlobalSandbox.mock(oMetaModel).expects("getProperty")
 				.withExactArgs("0/namespace", sinon.match.same(oBinding.oList["schema"]))
 				.returns("foo");
 
@@ -1271,7 +1272,7 @@ sap.ui.require([
 	QUnit.test("_getObject: some error in parseExpression (not SyntaxError)", function (assert) {
 		var oError = new Error();
 
-		this.mock(BindingParser).expects("parseExpression").throws(oError);
+		oGlobalSandbox.mock(BindingParser).expects("parseExpression").throws(oError);
 
 		return withMetaModel(assert, function (oMetaModel) {
 			assert.throws(function () {
@@ -1282,14 +1283,12 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("_getObject: caching queries", function (assert) {
-		var that = this;
-
 		return withMetaModel(assert, function (oMetaModel) {
 			var sPath = "/dataServices/schema/[${namespace}==='GWSAMPLE_BASIC']/entityType/"
 					+ "[$\{name}==='Product']",
 				oResult = oMetaModel._getObject(sPath);
 
-			that.mock(oMetaModel.oResolver).expects("bindProperty").never();
+			oGlobalSandbox.mock(oMetaModel.oResolver).expects("bindProperty").never();
 
 			assert.strictEqual(oMetaModel._getObject(sPath), oResult);
 		});
@@ -1406,6 +1405,7 @@ sap.ui.require([
 					oCTAddress = oGWSampleBasic.complexType[0],
 					oCTAddressCity = oCTAddress.property[0],
 					oFunctionImport = oEntityContainer.functionImport[0],
+					oNavigationProperty = oBusinessPartner.navigationProperty[0],
 					oParameter = oFunctionImport.parameter[0],
 					sPrefix,
 					oProduct = oGWSampleBasic.entityType[2],
@@ -1414,7 +1414,6 @@ sap.ui.require([
 					oProductSet = oEntityContainer.entitySet[1],
 					oProductWeightMeasure =  oProduct.property[2],
 					oProductWeightUnit =  oProduct.property[3],
-					oToFooNavigationProperty = oBusinessPartner.navigationProperty[0],
 					oValue,
 					oVHSex = oGWSampleBasic.entityType[1],
 					oVHSexSet = oEntityContainer.entitySet[2];
@@ -1471,10 +1470,6 @@ sap.ui.require([
 				delete oGWSampleBasic.$path;
 				assert.strictEqual(oGWSampleBasic["sap:schema-version"], "0000");
 				delete oGWSampleBasic["sap:schema-version"];
-				assert.deepEqual(oGWSampleBasic["Org.Odata.Core.V1.SchemaVersion"], {
-					String : "0000"
-				});
-				delete oGWSampleBasic["Org.Odata.Core.V1.SchemaVersion"];
 
 				assert.strictEqual(oBusinessPartner["sap:content-version"], "1");
 				delete oBusinessPartner["sap:content-version"];
@@ -1532,6 +1527,9 @@ sap.ui.require([
 					"GWSAMPLE_BASIC.Product");
 				delete oEntityContainer.functionImport[1]["sap:action-for"];
 
+				assert.strictEqual(oNavigationProperty["sap:filterable"], "false");
+				delete oNavigationProperty["sap:filterable"];
+
 				assert.strictEqual(oVHSex["sap:content-version"], "1");
 				delete oVHSex["sap:content-version"];
 				assert.strictEqual(oVHSexSet["sap:content-version"], "1");
@@ -1584,10 +1582,10 @@ sap.ui.require([
 						});
 						delete oGWSampleBasic["acme.Foo.v1.Foo"];
 						// entity type: navigation property
-						assert.deepEqual(oToFooNavigationProperty["acme.Foo.v1.Foo"], {
+						assert.deepEqual(oNavigationProperty["acme.Foo.v1.Foo"], {
 							"String" : "GWSAMPLE_BASIC.BusinessPartner/ToFoo"
 						});
-						delete oToFooNavigationProperty["acme.Foo.v1.Foo"];
+						delete oNavigationProperty["acme.Foo.v1.Foo"];
 						// complex type
 						assert.deepEqual(oCTAddress["acme.Foo.v1.Foo"], {
 							"String" : "GWSAMPLE_BASIC.CT_Address"
@@ -1801,36 +1799,11 @@ sap.ui.require([
 						[
 							{"PropertyPath" : "AnyProperty"},
 							{"PropertyPath" : "NonFilterable"},
-							// deprecated but still converted
-							// TODO Remove Utils.addPropertyToAnnotation("sap:filterable"...) call
-							// for navigation properties from calculateEntitySetAnnotations after
-							// all annotation consumers have adjusted their code to use only
-							// Org.OData.Capabilities.V1.NavigationRestrictions instead of
-							// Org.OData.Capabilities.V1.FilterRestrictions for navigation
-							// properties.
-							{"PropertyPath" : "ToFoo"} // deprecated but still converted
+							{"PropertyPath" : "ToFoo"}
 						],
 					"BusinessPartnerSet not filterable");
 				delete oBusinessPartnerSet["Org.OData.Capabilities.V1.FilterRestrictions"]
 					["NonFilterableProperties"];
-
-				assert.deepEqual(
-					oBusinessPartnerSet["Org.OData.Capabilities.V1.NavigationRestrictions"],
-					{
-						"RestrictedProperties" : [{
-							"NavigationProperty" : {
-								"NavigationPropertyPath" : "ToFoo"
-							},
-							"FilterRestrictions" : {
-								"Filterable": {"Bool" : "false"}
-							}
-						}]
-					},
-					"Non filterable navigation property");
-				delete oBusinessPartnerSet["Org.OData.Capabilities.V1.NavigationRestrictions"];
-
-				assert.strictEqual(oToFooNavigationProperty["sap:filterable"], "false");
-				delete oToFooNavigationProperty["sap:filterable"];
 
 				// sap:required-in-filter
 				assert.strictEqual(oBusinessPartnerId["sap:required-in-filter"], "true");
@@ -2073,7 +2046,7 @@ sap.ui.require([
 					"sap.ui.model.odata.v2.ODataModel");
 			}
 			// Note: this is just a placeholder for "anything which could go wrong inside load()"
-			this.mock(Model.prototype).expects("setDefaultBindingMode").throws(oError);
+			oGlobalSandbox.stub(Model.prototype, "setDefaultBindingMode").throws(oError);
 
 			// code under test
 			return oModel.getMetaModel().loaded().then(function () {
@@ -2623,9 +2596,7 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("getODataValueLists: Metadata loaded completely, ValueList w/o qualifier",
-		function (assert) {
-			var that = this;
-
+		function (assert){
 			return withMetaModel(assert, function (oMetaModel) {
 				var oContext = oMetaModel.getMetaContext("/ProductSet(foo)/Category"),
 					oEntityType = oMetaModel.getODataEntityType("GWSAMPLE_BASIC.Product"),
@@ -2633,10 +2604,14 @@ sap.ui.require([
 					oPromise,
 					oProperty = oMetaModel.getODataProperty(oEntityType, "Category");
 
-				that.mock(oInterface).expects("addAnnotationUrl").never();
+				oGlobalSandbox.stub(oInterface, "addAnnotationUrl", function () {
+					return Promise.reject(new Error("Unexpected call to addAnnotationUrl"));
+				});
 
 				oPromise = oMetaModel.getODataValueLists(oContext);
 
+				assert.strictEqual(oInterface.addAnnotationUrl.callCount, 0,
+					"no separate load of value list");
 				oPromise.then(function (mValueLists) {
 					assert.deepEqual(mValueLists,
 						{"" : oProperty["com.sap.vocabularies.Common.v1.ValueList"]});
@@ -2686,14 +2661,12 @@ sap.ui.require([
 		// Note: "/FAR_CUSTOMER_LINE_ITEMS/annotations" contains
 		// @com.sap.vocabularies.Common.v1.ValueList#DEBID_addtl, but we expect a request as long as
 		// the annotation w/o qualifier is missing!
-		function (assert) {
-			var that = this;
-
+		function (assert){
 			return withGivenService(assert, "/FAR_CUSTOMER_LINE_ITEMS",
 					"/FAR_CUSTOMER_LINE_ITEMS/annotations", function (oMetaModel) {
 				var oContext = oMetaModel.getMetaContext("/Items('foo')/Customer"),
 					oPromise,
-					fnSpy = that.spy(oMetaModel.oODataModelInterface, "addAnnotationUrl");
+					fnSpy = oGlobalSandbox.spy(oMetaModel.oODataModelInterface, "addAnnotationUrl");
 
 				// no sap:value-list => no request
 				oMetaModel.getODataValueLists(
@@ -2750,16 +2723,15 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("getODataValueLists: addAnnotationUrl rejects", function (assert) {
-		var that = this;
-
 		return withGivenService(assert, "/FAR_CUSTOMER_LINE_ITEMS", null, function (oMetaModel) {
 			var oContext = oMetaModel.getMetaContext("/Items('foo')/Customer"),
 				oInterface = oMetaModel.oODataModelInterface,
 				oMyError = new Error(),
 				oPromise;
 
-			that.mock(oInterface).expects("addAnnotationUrl")
-				.returns(Promise.reject(oMyError));
+			oGlobalSandbox.stub(oInterface, "addAnnotationUrl", function () {
+				return Promise.reject(oMyError);
+			});
 
 			oPromise = oMetaModel.getODataValueLists(oContext);
 			return oPromise.then(function () {
@@ -2802,8 +2774,6 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("getODataValueLists: request bundling", function (assert) {
-		var that = this;
-
 		return withGivenService(assert, "/FAR_CUSTOMER_LINE_ITEMS", null, function (oMetaModel) {
 			var oCompanyCode = oMetaModel.getMetaContext("/Items('foo')/CompanyCode"),
 				oCustomer = oMetaModel.getMetaContext("/Items('foo')/Customer"),
@@ -2811,7 +2781,7 @@ sap.ui.require([
 				oPromiseCompanyCode,
 				oPromiseCustomer;
 
-			that.spy(oInterface, "addAnnotationUrl");
+			oGlobalSandbox.spy(oInterface, "addAnnotationUrl");
 
 			// Note: "wrong" alphabetic order of calls to check that property names will be sorted!
 			oPromiseCustomer = oMetaModel.getODataValueLists(oCustomer);
@@ -2841,54 +2811,54 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("_sendBundledRequest", function (assert) {
-		var that = this;
-
 		return withGivenService(assert, "/FAR_CUSTOMER_LINE_ITEMS", null, function (oMetaModel) {
 			var oError = new Error(),
+				fnBarReject = sinon.spy(),
+				fnBarResolve = sinon.stub().throws(oError),
+				fnFooResolve = sinon.spy(),
 				oInterface = oMetaModel.oODataModelInterface,
-				mQName2PendingRequest = {
-					"BAR" : {
-						resolve : function () {},
-						reject : function () {}
-					},
-					"FOO" : {
-						resolve : function () {},
-						reject : function (oError) {
-							assert.ok(false, oError);
-						}
-					}
-				},
+				oPromise,
 				oResponse = {
 					annotations : {},
 					entitySets : []
+				};
+
+			oGlobalSandbox.stub(oInterface, "addAnnotationUrl")
+				.returns(new Promise(function (fnResolve, fnReject) {
+					fnResolve(oResponse);
+				}));
+
+			oMetaModel.mQName2PendingRequest = {
+				"BAR" : {
+					resolve : fnBarResolve,
+					reject : fnBarReject
 				},
-				oPromise = Promise.resolve(oResponse);
+				"FOO" : {
+					resolve : fnFooResolve,
+					reject : function (oError) {
+						assert.ok(false, oError);
+					}
+				}
+			};
 
-			that.mock(oInterface).expects("addAnnotationUrl")
-				.withExactArgs("$metadata?sap-value-list=BAR,FOO")
-				.returns(oPromise);
-
-			oMetaModel.mQName2PendingRequest = mQName2PendingRequest;
-
-			// technical test: oResponse is delivered to all pending requests, regardless of
-			// errors thrown
-			that.mock(mQName2PendingRequest.BAR).expects("resolve")
-				.withExactArgs(sinon.match.same(oResponse))
-				.throws(oError);
-			// if "resolve" handler throws, "reject" handler is called
-			that.mock(mQName2PendingRequest.BAR).expects("reject")
-				.withExactArgs(sinon.match.same(oError));
-			that.mock(mQName2PendingRequest.FOO).expects("resolve")
-				.withExactArgs(sinon.match.same(oResponse));
-
-			// code under test
 			oMetaModel._sendBundledRequest();
 
 			// check bundling
+			assert.strictEqual(oInterface.addAnnotationUrl.callCount, 1, "addAnnotationUrl once");
+			assert.strictEqual(oInterface.addAnnotationUrl.args[0][0],
+				"$metadata?sap-value-list=BAR,FOO",
+				oInterface.addAnnotationUrl.printf("addAnnotationUrl calls: %C"));
 			assert.deepEqual(Object.keys(oMetaModel.mQName2PendingRequest), [], "nothing pending");
 
+			oPromise = oInterface.addAnnotationUrl.returnValues[0];
 			return oPromise.then(function (oResponse0) {
 				assert.strictEqual(oResponse0, oResponse);
+				// technical test: oResponse is delivered to all pending requests, regardless of
+				// errors thrown
+				assert.ok(fnBarResolve.calledWithExactly(oResponse), fnBarResolve.printf("%C"));
+				assert.ok(fnFooResolve.calledWithExactly(oResponse), fnFooResolve.printf("%C"));
+				// if "resolve" handler throws, "reject" handler is called
+				assert.ok(fnBarReject.calledWithExactly(oError), fnBarReject.printf("%C"));
 			});
 		});
 	});
@@ -3003,13 +2973,11 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("getODataValueLists: ValueList on ComplexType", function (assert) {
-		var that = this;
-
 		return withGivenService(assert, "/FAR_CUSTOMER_LINE_ITEMS", null, function (oMetaModel) {
 			var oContext = oMetaModel.getMetaContext("/Items('foo')/Complex/Customer"),
 				oInterface = oMetaModel.oODataModelInterface;
 
-			that.spy(oInterface, "addAnnotationUrl");
+			oGlobalSandbox.spy(oInterface, "addAnnotationUrl");
 
 			return oMetaModel.getODataValueLists(oContext).then(function (mValueLists) {
 				assert.deepEqual(mValueLists, {
@@ -3036,9 +3004,9 @@ sap.ui.require([
 
 		this.oLogMock.expects("warning").withExactArgs(sIgnoreThisWarning);
 
-		oAverageSpy = this.spy(jQuery.sap.measure, "average")
+		oAverageSpy = oGlobalSandbox.spy(jQuery.sap.measure, "average")
 			.withArgs("sap.ui.model.odata.ODataMetaModel/load", "", [sComponent]);
-		oEndSpy = this.spy(jQuery.sap.measure, "end")
+		oEndSpy = oGlobalSandbox.spy(jQuery.sap.measure, "end")
 			.withArgs("sap.ui.model.odata.ODataMetaModel/load");
 		oModel = new ODataModel1("/GWSAMPLE_BASIC", {
 			annotationURI : "/GWSAMPLE_BASIC/annotations",

@@ -5,23 +5,28 @@ sap.ui.require([
 	// Controls
 	'sap/m/Button',
 	'sap/m/MessageBox',
+	'sap/ui/comp/smartform/Group',
+	'sap/ui/comp/smartform/GroupElement',
+	'sap/ui/comp/smartform/SmartForm',
 	// internal
+	'sap/ui/Device',
 	'sap/ui/dt/plugin/ContextMenu',
+	'sap/ui/dt/DesignTimeMetadata',
 	'sap/ui/dt/OverlayRegistry',
 	'sap/ui/fl/registry/Settings',
+	'sap/ui/fl/registry/ChangeRegistry',
+	'sap/ui/fl/LrepConnector',
 	'sap/ui/fl/Change',
 	'sap/ui/fl/Utils',
-	'sap/ui/rta/Utils',
 	'sap/ui/fl/FakeLrepLocalStorage',
-	'sap/ui/fl/variants/VariantManagement',
 	'sap/ui/rta/RuntimeAuthoring',
 	'sap/ui/rta/command/Stack',
 	'sap/ui/rta/command/CommandFactory',
 	'sap/ui/rta/plugin/Remove',
 	'sap/ui/rta/plugin/CreateContainer',
 	'sap/ui/rta/plugin/Rename',
-	'sap/ui/rta/plugin/ControlVariant',
 	'sap/ui/base/Event',
+	'sap/ui/base/EventProvider',
 	'sap/ui/rta/command/BaseCommand',
 	'sap/ui/rta/qunit/RtaQunitUtils',
 	// should be last
@@ -31,26 +36,30 @@ sap.ui.require([
 ], function(
 	Button,
 	MessageBox,
+	Group,
+	GroupElement,
+	SmartForm,
+	Device,
 	ContextMenu,
+	DesignTimeMetadata,
 	OverlayRegistry,
 	Settings,
+	ChangeRegistry,
+	LrepConnector,
 	Change,
 	Utils,
-	RtaUtils,
 	FakeLrepLocalStorage,
-	VariantManagement,
 	RuntimeAuthoring,
 	Stack,
 	CommandFactory,
 	Remove,
 	CreateContainerPlugin,
 	RenamePlugin,
-	ControlVariantPlugin,
 	Event,
+	EventProvider,
 	RTABaseCommand,
 	RtaQunitUtils,
-	sinon
-) {
+	sinon) {
 	"use strict";
 
 	QUnit.start();
@@ -59,31 +68,7 @@ sap.ui.require([
 	var oCompCont = RtaQunitUtils.renderTestAppAt("test-view");
 	var oComp = oCompCont.getComponentInstance();
 
-	QUnit.module("Given that RuntimeAuthoring is created without a root control...", {
-		beforeEach : function(assert) {
-			this.oRta = new RuntimeAuthoring({
-				rootControl : undefined
-			});
-
-		},
-		afterEach : function(assert) {
-			this.oRta.destroy();
-			sandbox.restore();
-		}
-	});
-
-	QUnit.test("when RTA starts", function(assert) {
-		this.oUtilsLogStub = sandbox.stub(Utils.log, "error");
-		var done = assert.async();
-
-		this.oRta.start().catch(function(vError){
-			assert.ok(vError, "then the promise is rejected");
-			assert.strictEqual(this.oUtilsLogStub.callCount, 1, "and an error is logged");
-			done();
-		}.bind(this));
-	});
-
-	QUnit.module("Given that RuntimeAuthoring is created and started with non-default plugin sets only...", {
+	QUnit.module("Given that RuntimeAuthoring is started with different plugin sets...", {
 		beforeEach : function(assert) {
 			var done = assert.async();
 			FakeLrepLocalStorage.deleteChanges();
@@ -121,10 +106,11 @@ sap.ui.require([
 		}
 	});
 
-	QUnit.test("when we check the plugins on RTA", function(assert) {
+	QUnit.test("when RTA gets initialized with custom plugins only", function(assert) {
 		var done = assert.async();
 
-		assert.equal(this.oRta.getPlugins()['contextMenu'], this.oContextMenuPlugin, " then the custom ContextMenuPlugin is set");
+		assert.ok(this.oRta, " then RuntimeAuthoring is created");
+		assert.equal(this.oRta.getPlugins()['contextMenu'], this.oContextMenuPlugin, " and the custom ContextMenuPlugin is set");
 		assert.equal(this.oRta.getPlugins()['rename'], undefined, " and the default plugins are not loaded");
 		assert.equal(this.fnDestroy.callCount, 1, " and _destroyDefaultPlugins have been called 1 time after oRta.start()");
 
@@ -135,7 +121,7 @@ sap.ui.require([
 		}.bind(this));
 	});
 
-	QUnit.module("Given that RuntimeAuthoring is created and started with default plugin sets...", {
+	QUnit.module("Given that RuntimeAuthoring is started with different plugin sets...", {
 		beforeEach : function(assert) {
 			var done = assert.async();
 			FakeLrepLocalStorage.deleteChanges();
@@ -160,7 +146,7 @@ sap.ui.require([
 		}
 	});
 
-	QUnit.test("when we check the plugins on RTA", function(assert) {
+	QUnit.test("when RTA gets initialized without custom plugins and default plugins get used", function(assert) {
 		var done = assert.async();
 
 		assert.ok(this.oRta.getPlugins()['contextMenu'], " then the default ContextMenuPlugin is set");
@@ -191,7 +177,7 @@ sap.ui.require([
 		}.bind(this));
 	});
 
-	QUnit.module("Given that RuntimeAuthoring is started with one different (non-default) plugin (using setPlugins method)...", {
+	QUnit.module("Given that RuntimeAuthoring is started with different plugin sets...", {
 		beforeEach : function(assert) {
 			var done = assert.async();
 			FakeLrepLocalStorage.deleteChanges();
@@ -230,7 +216,7 @@ sap.ui.require([
 		}
 	});
 
-	QUnit.test("when we check the plugins on RTA", function (assert) {
+	QUnit.test("when RTA gets initialized without custom plugins but set plugins with setPlugins method", function (assert) {
 		var done = assert.async();
 
 		this.oRta.attachStop(function(oEvent) {
@@ -630,6 +616,63 @@ sap.ui.require([
 	QUnit.test("and FL settings return rejected promise", function(assert) {
 		assert.equal(this.oRta.getToolbar().getControl('restore').getVisible(), true, "then the Reset Button is still visible");
 		assert.equal(this.oRta.getToolbar().getControl('publish').getVisible(), false, "then the Publish Button is invisible");
+	});
+
+	QUnit.module("Given that changeSpecificData is given with changes for two controls...", {
+		beforeEach : function(assert) {
+			this.oRta = new RuntimeAuthoring({
+				rootControl : oCompCont.getComponentInstance().getAggregation("rootControl")
+			});
+
+			this.oFlexController = this.oRta._getFlexController();
+			this.aChangeSpecificData = [
+				{ selector : { id : "Comp1---idMain1--GeneralLedgerDocument.Name" } },
+				{ selector : { id : "Comp1---idMain1--GeneralLedgerDocument.CompanyCode" } }
+			];
+			this.oCheckTargetAndApplyChangeStub = sandbox.stub(this.oFlexController, "createAndApplyChange");
+			this.oSaveAllStub = sandbox.stub(this.oFlexController, "saveAll");
+			this.oUtilsLogStub = sandbox.stub(Utils.log, "error");
+			this.oShowMessageStub = sandbox.stub(this.oRta, "_showMessage").returns(Promise.resolve());
+		},
+		afterEach : function(assert) {
+			sandbox.restore();
+		}
+	});
+
+	QUnit.test("when _createAndApplyChanges function is called and all promises are resolved", function(assert) {
+		var done = assert.async();
+		this.oCheckTargetAndApplyChangeStub.returns(Promise.resolve());
+		this.oSaveAllStub.returns(Promise.resolve());
+
+		var oPromiseReturn = this.oRta._createAndApplyChanges(this.aChangeSpecificData);
+
+		assert.ok(oPromiseReturn instanceof Promise, "then promise is returned");
+
+		oPromiseReturn.then(function() {
+			assert.strictEqual(this.oCheckTargetAndApplyChangeStub.callCount, 2, "then both changes are processed");
+			assert.strictEqual(this.oUtilsLogStub.callCount, 0, "then no errors occurred");
+			assert.ok(this.oSaveAllStub.calledOnce, "then process was finished");
+			done();
+		}.bind(this));
+	});
+
+	QUnit.test("when _createAndApplyChanges function is called with rejected promises", function(assert) {
+		var done = assert.async();
+		this.oCheckTargetAndApplyChangeStub.onCall(0).returns(Promise.resolve());
+		this.oCheckTargetAndApplyChangeStub.onCall(1).returns(Promise.reject());
+		this.oSaveAllStub.returns(Promise.reject());
+
+		var oPromiseReturn = this.oRta._createAndApplyChanges(this.aChangeSpecificData);
+
+		assert.ok(oPromiseReturn instanceof Promise, "then promise is returned");
+
+		oPromiseReturn.then(function() {
+			assert.strictEqual(this.oCheckTargetAndApplyChangeStub.callCount, 2, "then both changes are processed");
+			assert.strictEqual(this.oUtilsLogStub.callCount, 2, "then rejected errors are handled");
+			assert.ok(this.oSaveAllStub.calledOnce, "then process was finished");
+			assert.ok(this.oShowMessageStub.calledOnce, "then save error MessageToast called");
+			done();
+		}.bind(this));
 	});
 
 	QUnit.done(function( details ) {

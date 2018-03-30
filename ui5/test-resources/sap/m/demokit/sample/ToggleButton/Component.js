@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ToggleButton.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.ToggleButton.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.ToggleButton.Page",
 			dependencies : {
 				libs : [
 					"sap.m"

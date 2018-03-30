@@ -1,12 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 sap.ui.define([
 	"jquery.sap.global",
-	"sap/ui/support/supportRules/ui/controllers/BaseController",
+	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/support/supportRules/WindowCommunicationBus",
 	"sap/ui/support/supportRules/ui/models/SharedModel",
@@ -14,9 +14,8 @@ sap.ui.define([
 	"sap/ui/support/supportRules/IssueManager",
 	"sap/ui/support/supportRules/WCBChannels",
 	"sap/ui/support/supportRules/ui/models/formatter",
-	"sap/ui/support/supportRules/Constants",
-	"sap/m/OverflowToolbarAssociativePopoverControls"
-], function ($, BaseController, JSONModel, CommunicationBus, SharedModel, ElementTree, IssueManager, channelNames, formatter, constants, OverflowToolbarAssociativePopoverControls) {
+	"sap/ui/support/supportRules/Constants"
+], function ($, Controller, JSONModel, CommunicationBus, SharedModel, ElementTree, IssueManager, channelNames, formatter, constants) {
 	"use strict";
 
 	var mIssueSettings = {
@@ -28,7 +27,7 @@ sap.ui.define([
 		}
 	};
 
-	return BaseController.extend("sap.ui.support.supportRules.ui.controllers.Issues", {
+	return Controller.extend("sap.ui.support.supportRules.ui.controllers.Issues", {
 		ISSUES_LIMIT : 1000,
 		formatter: formatter,
 		onInit: function () {
@@ -38,20 +37,8 @@ sap.ui.define([
 			this.getView().setModel(this.model);
 			this.clearFilters();
 			this._initElementTree();
-			this.treeTable = this.byId("issuesList");
-			this.issueTable = this.byId("issueTable");
-			this.toolHeader = this.byId('toolHeader');
-			this.toolHeader.removeStyleClass('sapTntToolHeader sapContrast sapContrastPlus');
-
-			var toolHeaderPopover = this.toolHeader._getPopover();
-			toolHeaderPopover.removeStyleClass('sapTntToolHeaderPopover sapContrast sapContrastPlus');
-
-			// add VerticalLayout to the controls, which can overflow
-			OverflowToolbarAssociativePopoverControls._mSupportedControls["sap.ui.layout.VerticalLayout"] = {
-				canOverflow: true,
-				listenForEvents: [],
-				noInvalidationProps: []
-			};
+			this.treeTable = this.getView().byId("issuesList");
+			this.issueTable = this.getView().byId("issueTable");
 		},
 		setCommunicationSubscriptions: function () {
 
@@ -80,7 +67,7 @@ sap.ui.define([
 				this.model.setProperty("/issues", data.issues);
 				this.model.setProperty('/analyzePressed', true);
 				this.model.setProperty("/issuesCount", this.data.issues.length);
-				this.model.setProperty("/selectedIssue", null);
+				this.model.setProperty("/selectedIssue", "");
 				this.elementTree.setData({
 					controls: data.elementTree,
 					issuesIds: problematicControlsIds
@@ -116,7 +103,7 @@ sap.ui.define([
 			});
 		},
 		onAfterRendering: function () {
-			this.elementTree.setContainerId(this.byId("elementTreeContainer").getId());
+			this.elementTree.setContainerId(this.getView().byId("elementTreeContainer").getId());
 		},
 		clearFilters: function () {
 			this.model.setProperty("/severityFilter", "All");
@@ -141,20 +128,19 @@ sap.ui.define([
 		},
 		onRowSelectionChanged: function (event) {
 			if (event.getParameter("rowContext")) {
-				var selection = event.getParameter("rowContext").getObject(),
-					visibleRowCount = constants.MAX_VISIBLE_ISSUES_FOR_RULE;
-
+				var selection = event.getParameter("rowContext").getObject();
 				if (selection.type === "rule") {
 					this._setSelectedRule(selection);
 				} else {
-					this.model.setProperty("/selectedIssue", null);
+					this.model.setProperty("/selectedIssue", "");
 				}
+				if (selection.issueCount < 4 ) {
+					this._setPropertiesOfResponsiveDetailsAndTable("Fixed", "inherit");
+					this.model.setProperty("/visibleRowCount", 4);
 
-				if (selection.issueCount < visibleRowCount) {
-					visibleRowCount = selection.issueCount;
+				} else {
+					this._setPropertiesOfResponsiveDetailsAndTable("Auto", "5rem");
 				}
-
-				this.model.setProperty("/visibleRowCount", visibleRowCount);
 			}
 
 		},
@@ -224,7 +210,7 @@ sap.ui.define([
 				this.model.setProperty("/selectedIssue", selectionCopy);
 				this._setIconAndColorToIssue(selectionCopy.issues);
 			} else {
-				this.model.setProperty("/selectedIssue", null);
+			this.model.setProperty("/selectedIssue", "");
 			}
 		},
 
@@ -251,6 +237,11 @@ sap.ui.define([
 						break;
 				}
 			});
+		},
+
+		_setPropertiesOfResponsiveDetailsAndTable: function(visibleRowCountMode, heightDetailsArea){
+			this.model.setProperty("/visibleRowCountMode", visibleRowCountMode);
+			this.model.setProperty("/heightDetailsArea", heightDetailsArea);
 		}
 	});
 });

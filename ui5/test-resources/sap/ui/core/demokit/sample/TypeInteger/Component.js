@@ -5,11 +5,7 @@ sap.ui.define(["sap/ui/core/UIComponent"],
 	return UIComponent.extend("sap.ui.core.sample.TypeInteger.Component", {
 
 		metadata: {
-			rootView: {
-				"viewName": "sap.ui.core.sample.TypeInteger.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.ui.core.sample.TypeInteger.V",
 			dependencies: {
 				libs: [
 					"sap.m",

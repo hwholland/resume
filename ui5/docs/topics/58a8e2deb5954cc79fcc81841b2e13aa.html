@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -137,7 +137,8 @@
                                  					expressions and helpers.
                               </p>
                               
-                              				<pre class="pre codeblock prettyprint lang-html">&lt;h3&gt;{{title}}&lt;/h3&gt;
+                              				<pre class="pre codeblock prettyprint lang-html">
+&lt;h3&gt;{{title}}&lt;/h3&gt;
 &lt;ul&gt;
 {{#each persons}}
     &lt;li&gt;{{firstName}} {{lastName}}&lt;/li&gt;
@@ -217,7 +218,8 @@
                                        							the value of an input field against a model property): 
                                     </p>
                                     
-                                    						<pre class="pre codeblock prettyprint lang-html">{{element tag=&quot;input&quot; value=&quot;{/title}&quot;}}
+                                    						<pre class="pre codeblock prettyprint lang-html">
+{{element tag=&quot;input&quot; value=&quot;{/title}&quot;}}
 {{element tag=&quot;textarea&quot; text=&quot;{/title}&quot;}}</pre>
                                     
                                     						<p class="p">DOM elements have the advantage that you can update them individually
@@ -234,14 +236,14 @@
                                     <p class="p"><samp class="ph codeph">{{control}}</samp></p>
                                     
                                     						
-                                    <p class="p">You use the <samp class="ph codeph">control</samp> helper to create or embed <span class="ph"><span class="ph pname">OpenUI5</span></span>
+                                    <p class="p">You use the <samp class="ph codeph">control</samp> helper to creat or embed <span class="ph"><span class="ph pname">OpenUI5</span></span>
                                        							controle intro a template instance. It is aligned with declarative
-                                       							support. The following example shows how you embed an
-                                       								<samp class="ph codeph">sap.m.Input</samp> control in a template:
+                                       							support. The following example shows how you embed a
+                                       								<samp class="ph codeph">sap.ui.commons.TextField</samp> in a template:
                                     </p>
                                     
                                     						
-                                    <p class="p"><samp class="ph codeph">{{control sap-ui-type=&quot;sap.m.Input&quot; value=&quot;{/title}&quot;}}</samp></p>
+                                    <p class="p"><samp class="ph codeph">{{control sap-ui-type=&quot;sap.ui.commons.TextField&quot; value=&quot;{/title}&quot;}}</samp></p>
                                     
                                     					
                                  </li>
@@ -253,10 +255,11 @@
                                     
                                     						
                                     <p class="p">You can use the <samp class="ph codeph">each</samp> helper together with <span class="ph"><span class="ph pname">OpenUI5</span></span> data
-                                       							binding by specifying the <samp class="ph codeph">path</samp> attribute:
+                                       							binding by specifiying the path attribute:
                                     </p>
                                     
-                                    						<pre class="pre codeblock prettyprint lang-html">{{#each path=&quot;/persons&quot;}}
+                                    						<pre class="pre codeblock prettyprint lang-html">
+{{#each path=&quot;/persons&quot;}}
   {{element text=&quot;firstName&quot;}}
 {{/each}}
 </pre>

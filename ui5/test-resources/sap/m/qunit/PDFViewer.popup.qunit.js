@@ -3,10 +3,9 @@
 sap.ui.define([
 	"test/sap/m/qunit/PDFViewerTestUtils",
 	"sap/m/PDFViewer",
-	'jquery.sap.global',
-	'sap/m/PDFViewerRenderer'
+	'jquery.sap.global'
 	// QUnit dependency cannot be defined here because test requires the instance specified in *.html file
-], function (TestUtils, PDFViewer, $, PDFViewerRenderer) {
+], function (TestUtils, PDFViewer, $) {
 	"use strict";
 
 	var oPdfViewer;
@@ -18,7 +17,7 @@ sap.ui.define([
 	});
 
 	// if the environment does not have pdf plugin, then it is not possible to run standard test suite
-	if (!PDFViewerRenderer._isPdfPluginEnabled()) {
+	if (!PDFViewer._isPdfPluginEnabled()) {
 		return;
 	}
 

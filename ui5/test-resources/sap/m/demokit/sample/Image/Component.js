@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.Image.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.Image.ImageGroup",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.Image.ImageGroup",
 			dependencies : {
 				libs : [
 					"sap.m",

@@ -16,14 +16,11 @@
 						<Title text="Header Title"/>
 					</f:heading>
 					<f:expandedContent>
-						<Label text="This is a subheading"/>
+						<Text text="This is a subheading"/>
 					</f:expandedContent>
 					<f:snappedContent>
-						<Label text="This is a subheading"/>
+						<Text text="This is a subheading"/>
 					</f:snappedContent>
-					<f:content>
-						<Image src="./test-resources/sap/f/images/KPI.png" tooltip="This is just a placeholder, not a real KPI control."/>
-					</f:content>
 					<f:actions>
 						<ToolbarSpacer/>
 						<Button
@@ -34,6 +31,10 @@
 								type="Transparent"/>
 						<Button
 								text="Copy"
+								type="Transparent"/>
+						<ToggleButton
+								pressed="{/headerExpanded}"
+								text="{path:'/headerExpanded', formatter:'.formatToggleButtonText'}"
 								type="Transparent"/>
 						<Button
 								icon="sap-icon://action"
@@ -52,7 +53,7 @@
 							<items>
 								<Panel
 										backgroundDesign="Transparent"
-										class="sapUiNoContentPadding">
+										class="sapUiNoContentPadding sapUiSmallMarginTop">
 									<content>
 										<layout:HorizontalLayout
 												allowWrapping="true">

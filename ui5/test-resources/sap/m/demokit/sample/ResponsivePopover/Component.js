@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ResponsivePopover.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.ResponsivePopover.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.ResponsivePopover.V",
 			dependencies : {
 				libs : [
 					"sap.m",

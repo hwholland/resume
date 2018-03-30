@@ -1,6 +1,6 @@
 /*global QUnit testRule*/
 
-sap.ui.define([
+sap.ui.require([
 	"jquery.sap.global",
 	"sap/ui/core/Component",
 	"sap/ui/core/ComponentContainer",

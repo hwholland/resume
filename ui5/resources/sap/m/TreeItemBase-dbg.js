@@ -1,20 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.StandardListItem.
-sap.ui.define([
-	'jquery.sap.global',
-	'./ListItemBase',
-	'./library',
-	'sap/ui/core/IconPool',
-	'sap/ui/core/Icon',
-	'./TreeItemBaseRenderer',
-	'jquery.sap.keycodes'
-],
-	function(jQuery, ListItemBase, library, IconPool, Icon, TreeItemBaseRenderer) {
+sap.ui.define(['jquery.sap.global', './ListItemBase', './library', 'sap/ui/core/IconPool', 'sap/ui/core/Icon', 'jquery.sap.keycodes'],
+	function(jQuery, ListItemBase, library, IconPool, Icon) {
 	"use strict";
 
 	// shortcut for sap.m.ListMode
@@ -31,7 +23,7 @@ sap.ui.define([
 	 * @extends sap.m.ListItemBase
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -234,13 +226,6 @@ sap.ui.define([
 				sSrc = this.getExpanded() ? this.ExpandedIconURI : this.CollapsedIconURI;
 			}
 			this._oExpanderControl.setSrc(sSrc);
-			this.$().attr("aria-expanded", this.getExpanded());
-
-			// update the indentation again
-			var iIndentation = this._getPadding(),
-				sStyleRule = sap.ui.getCore().getConfiguration().getRTL() ? "paddingRight" : "paddingLeft";
-			this.$().css(sStyleRule, iIndentation + "rem");
-
 		}
 	};
 
@@ -358,10 +343,6 @@ sap.ui.define([
 	TreeItemBase.prototype.exit = function() {
 		ListItemBase.prototype.exit.apply(this, arguments);
 		this.destroyControls(["Expander"]);
-	};
-
-	TreeItemBase.prototype.onlongdragover = function(oEvent) {
-		this.informTree("LongDragOver");
 	};
 
 	return TreeItemBase;

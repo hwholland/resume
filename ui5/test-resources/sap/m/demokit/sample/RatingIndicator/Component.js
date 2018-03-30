@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.RatingIndicator.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.RatingIndicator.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.RatingIndicator.V",
 			dependencies : {
 				libs : [
 					"sap.m",

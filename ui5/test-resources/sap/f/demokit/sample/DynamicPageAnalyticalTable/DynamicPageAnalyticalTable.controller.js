@@ -13,6 +13,9 @@ sap.ui.define([
 			var oJSONModel = this.initSampleDataModel();
 			this.getView().setModel(oJSONModel);
 		},
+		formatToggleButtonText: function (bValue) {
+			return bValue ? "Collapse Header" : "Expand Header";
+		},
 		initSampleDataModel : function() {
 			var oModel = new JSONModel();
 
@@ -65,6 +68,5 @@ sap.ui.define([
 		handleDetailsPress : function(oEvent) {
 			MessageToast.show("Details for product with id " + this.getView().getModel().getProperty("ProductId", oEvent.getSource().getBindingContext()));
 		}
-
 	});
 });

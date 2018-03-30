@@ -1,4 +1,4 @@
-/*global describe,it,element,by,takeScreenshot,expect,browser*/
+/*global describe,it,element,by,takeScreenshot,expect*/
 
 describe("sap.m.RadioButton", function() {
 	"use strict";
@@ -33,11 +33,9 @@ describe("sap.m.RadioButton", function() {
 
 	// check disabled state radiobutton
 	it('should show disabled state buttons', function() {
-		browser.executeScript('document.getElementById("disabled-vbox-button-notselected").scrollIntoView()').then(function() {
-			element(by.id('disabled-vbox')).click();
-			element(by.id('disabled-vbox-button-notselected')).click();
-			expect(takeScreenshot(element(by.id("disabled-vbox")))).toLookAs("disabled-state-buttons");
-		});
+		element(by.id('disabled-vbox')).click();
+		element(by.id('disabled-vbox-button-notselected')).click();
+		expect(takeScreenshot(element(by.id('disabled-vbox')))).toLookAs('disabled-state-buttons');
 	});
 
 });

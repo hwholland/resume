@@ -5,13 +5,12 @@ sap.ui.define([
 	'sap/ui/test/matchers/AggregationLengthEquals',
 	'sap/ui/test/matchers/Properties',
 	'sap/ui/test/matchers/PropertyStrictEquals'
-], function (
-	Opa5,
-	Press,
-	BindingPath,
-	AggregationLengthEquals,
-	Properties,
-	PropertyStrictEquals) {
+], function (Opa5,
+			 Press,
+			 BindingPath,
+			 AggregationLengthEquals,
+			 Properties,
+			 PropertyStrictEquals) {
 	"use strict";
 
 	Opa5.createPageObjects({
@@ -38,7 +37,9 @@ sap.ui.define([
 							modelName: "view",
 							path: "/Promoted/0"
 						}),
-						actions: new Press(),
+						actions: new Press({
+							idSuffix: "link"
+						}),
 						errorMessage: "The product link was not displayed"
 					});
 				},

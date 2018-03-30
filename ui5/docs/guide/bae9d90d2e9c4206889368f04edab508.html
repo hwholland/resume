@@ -6,8 +6,8 @@
 <meta name="abstract" content="We just ran our app against a real service, but for developing and testing our app we do not want to rely on the availability of the “real” service or put additional load on the system where the data service is located."/>
 <meta name="description" content="We just ran our app against a real service, but for developing and testing our app we do not want to rely on the availability of the “real” service or put additional load on the system where the data service is located."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=036940904417051224"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=036940904417051224"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=2726639910452403"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=2726639910452403"/>
 <title>Step 27: Mock Server Configuration</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -34,7 +34,7 @@
 			<div class="fig fignone" id="loiobae9d90d2e9c4206889368f04edab508__fig_r1j_pst_mr"><div class="figcontainer">
 				
 				<img class="image" id="loiobae9d90d2e9c4206889368f04edab508__image_qmj_5w2_yr" src="loioccce9b342efd457990d547ba35323f93_HiRes.png"/>
-			<div class="figcap">The list of invoices is now served by the Mock Server</div></div></div>
+			<div class="figcap">Figure 1: The list of invoices is now served by the Mock Server</div></div></div>
 
 		</div></div>
 
@@ -45,7 +45,7 @@
 			<div class="fig fignone" id="loiobae9d90d2e9c4206889368f04edab508__fig_dhm_tbp_ns"><div class="figcontainer">
 				
 				<img class="image" id="loiobae9d90d2e9c4206889368f04edab508__image_ypz_ww2_yr" src="loio7a5e2b02d72d40d388f5e601d7de74df_HiRes.png"/>
-			<div class="figcap">Folder Structure for this Step</div></div></div>
+			<div class="figcap">Figure 2: Folder Structure for this Step</div></div></div>
 
 			<p class="p">The folder structure of our app project is clearly separating test and productive files after this step. The new <samp class="ph codeph">test</samp> folder
 				now contains a new HTML page <span class="ph filepath">mockServer.html</span> which will launch our application in test mode without calling the
@@ -297,7 +297,7 @@
 		init: function () {
 			// create
 			var oMockServer = new MockServer({
-				rootUri: "https://services.odata.org/V2/Northwind/Northwind.svc/"
+				rootUri: "/destinations/northwind/V2/Northwind/Northwind.svc/"
 			}); 
 			var oUriParameters = jQuery.sap.getUriParameters();
 			// configure
@@ -322,12 +322,9 @@
 				the server. This method is called before the component initialization in the <samp class="ph codeph">mockServer.html</samp> file above. The
 					<samp class="ph codeph">init</samp> method creates a <samp class="ph codeph">MockServer</samp> instance with the same URL as the real service calls.</p>
 
-			<p class="p">The URL in configuration parameter <samp class="ph codeph">rootURI</samp> has to be exactly the same as the
-					<samp class="ph codeph">uri</samp> that is defined for the data source in the
-					<span class="ph filepath">manifest.json</span> descriptor file. This can be an absolute or,
-				for example in <span class="ph pname">SAP Web IDE</span>, a
-				relative URL to a destination. The URL will now be served by our test server instead
-				of the real service. Next, we set two global configuration settings that tell the
+			<p class="p">The URL in configuration parameter <samp class="ph codeph">rootURI</samp> will now be served by our
+				test server instead of the real service. It matches the URL of our data source in
+				the descriptor file. Next, we set two global configuration settings that tell the
 				server to respond automatically and introduce a delay of one second to imitate a
 				typical server response time. Otherwise, we would have to call the respond method on
 				the <samp class="ph codeph">MockServer</samp> manually to simulate the call.</p>
@@ -350,6 +347,17 @@
 			<p class="p">Try calling the app with the <samp class="ph codeph">index.html</samp> file and the <samp class="ph codeph">mockServer.html</samp> file to see the difference. If the real
 				service connection cannot be made, for example when there is no network connection, you can always fall back to the local test
 				page.</p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">The URI of the <samp class="ph codeph">invoiceRemote</samp> data source in the descriptor
+					points to our destination configured for <span class="ph pname">SAP Web IDE</span> (see previous step). We
+					assume this destination to be available. In any other development environment,
+					you need to use a local proxy for the request to the service as described in the
+					previous step. This is important when you call the application with the
+						<span class="ph filepath">index.html</span> file, otherwise the call to the remote
+					service will fail.</p>
+
+			</div>
 
 		</div></div>
 
@@ -395,7 +403,6 @@
 <div class="relinfo"><div class="relinfotitle ">Related Information</div>
 <div><a class="link" href="69d3cbd4150c4ffb884e788f7f60fd93.html" title="Mock server is a mocking framework for HTTP and HTTPS that is used to simplify integration testing and to decouple development teams by allowing to develop against a service that is not complete or unstable.">Mock Server</a></div>
 <div><a class="link" href="../../docs/api/symbols/sap.ui.core.util.MockServer.html" alt="../../docs/api/symbols/sap.ui.core.util.MockServer.html" title="../../docs/api/symbols/sap.ui.core.util.MockServer.html">API Reference: <samp class="ph codeph">sap.ui.core.util.MockServer</samp></a></div>
-<div><a class="link" href="3a16c7a2f1e944deb000db49e5ece6be.html" title="Configure a destination in the SAP Cloud Platform Cockpit in order to bypass the same-origin policy of the browser.">Create a Northwind Destination</a></div>
 </div>
 </div>
 </div></div>

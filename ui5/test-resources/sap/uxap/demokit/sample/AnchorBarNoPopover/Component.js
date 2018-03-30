@@ -3,11 +3,7 @@ sap.ui.define(["sap/ui/core/UIComponent"], function (UIComponent) {
 
 	var Component = UIComponent.extend("sap.uxap.sample.AnchorBarNoPopover.Component", {
 		metadata: {
-			rootView: {
-				"viewName": "sap.uxap.sample.AnchorBarNoPopover.AnchorBarNoPopover",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.uxap.sample.AnchorBarNoPopover.AnchorBarNoPopover",
 			dependencies: {
 				libs: [
 					"sap.m"

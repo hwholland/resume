@@ -6,8 +6,8 @@
 <meta name="abstract" content="You can use a ComponentContainer to wrap a UIComponent and reuse it anywhere within the OpenUI5 control tree. You can use reuse components to nest components in other components."/>
 <meta name="description" content="You can use a ComponentContainer to wrap a UIComponent and reuse it anywhere within the OpenUI5 control tree. You can use reuse components to nest components in other components."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=28873993640347273"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=28873993640347273"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=17113070643782147"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=17113070643782147"/>
 <title>Using and Nesting Components</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -79,7 +79,8 @@
 			component: oComponent
 		});
 		oContainer.placeAt("target");
-	});</pre></div>
+	});
+</pre></div>
 </div>
 
 					</li>
@@ -87,12 +88,16 @@
 					<li class="li">
 						<div class="p">Load the component asynchronously with "manifest first" mode by specifying the component
 							name:
-							<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">	var oContainer = new sap.ui.core.ComponentContainer({
+							<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">	sap.ui.component({
 		name: "samples.components.sample",
 		manifest: true,
 		async: true
-	});
-	oContainer.placeAt("target");</pre></div>
+	}).then(function(oComponent) {
+		var oContainer = new sap.ui.core.ComponentContainer({
+			component: oComponent
+		});
+		oContainer.placeAt("target");
+	});</pre></div>
 </div>
 
 					</li>
@@ -256,12 +261,12 @@ Under
 							
 							<thead class="thead" align="left">
 								<tr class="row">
-									<th class="entry" valign="top" id="d2331168e304">
+									<th class="entry" valign="top" id="d2378600e304">
 										<p class="p">Old Code</p>
 
 									</th>
 
-									<th class="entry" valign="top" id="d2331168e310">
+									<th class="entry" valign="top" id="d2378600e310">
 										<p class="p">Recommended Code</p>
 
 									</th>
@@ -272,7 +277,7 @@ Under
 
 							<tbody class="tbody">
 								<tr class="row">
-									<td class="entry" valign="top" headers="d2331168e304 ">
+									<td class="entry" valign="top" headers="d2378600e304 ">
 										<div class="p"><span class="ph filepath">manifest.json</span> with dependency
 											declaration
 											only:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-json">{
@@ -288,7 +293,7 @@ Under
 
 									</td>
 
-									<td class="entry" valign="top" headers="d2331168e310 ">
+									<td class="entry" valign="top" headers="d2378600e310 ">
 										<div class="p"><span class="ph filepath">manifest.json</span> with declaration of
 											reuse
 											components:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-json">{
@@ -313,7 +318,7 @@ Under
 								</tr>
 
 								<tr class="row">
-									<td class="entry" valign="top" headers="d2331168e304 ">
+									<td class="entry" valign="top" headers="d2378600e304 ">
 										<div class="p"><span class="ph filepath">Component.js</span> with nested reuse
 											component:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">createContent: function() {
    
@@ -326,7 +331,7 @@ Under
 
 									</td>
 
-									<td class="entry" valign="top" headers="d2331168e310 ">
+									<td class="entry" valign="top" headers="d2378600e310 ">
 										<div class="p"><span class="ph filepath">Component.js</span> that loads the reuse
 											component<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">createContent: function() {
    
@@ -356,7 +361,7 @@ Under
 <div class="relinfo"><div class="relinfotitle ">Related Information</div>
 <div><a class="link" href="2c66fb3eb775426087401117cfa6a94e.html" title="If you use nested component definitions in your app, you can connect the routing definition of these components by using a parent-relationship for routes.">Working with Nested Components</a></div>
 <div><a class="link" href="../../docs/api/symbols/sap.ui.core.ComponentContainer.html" alt="../../docs/api/symbols/sap.ui.core.ComponentContainer.html" title="../../docs/api/symbols/sap.ui.core.ComponentContainer.html">API Reference: <samp class="ph codeph">sap.ui.core.ComponentContainer</samp></a></div>
-<div><a class="link" href="https://ui5.sap.com/#/api/sap.ui.core.ComponentContainer/methods/setLifecycle" alt="https://ui5.sap.com/#/api/sap.ui.core.ComponentContainer/methods/setLifecycle" title="https://ui5.sap.com/#/api/sap.ui.core.ComponentContainer/methods/setLifecycle">API Reference:
+<div><a class="link" href="../../docs/api/symbols/sap.ui.core.ComponentContainer.html#setLifecycle" alt="../../docs/api/symbols/sap.ui.core.ComponentContainer.html#setLifecycle" title="../../docs/api/symbols/sap.ui.core.ComponentContainer.html#setLifecycle">API Reference:
 				<samp class="ph codeph">sap.ui.core.ComponentContainer.setLifecycle</samp></a></div>
 <div><a class="link" href="be0cf40f61184b358b5faedaec98b2da.html" title="The descriptor for applications, components, and libraries is inspired by the Web Application Manifest concept introduced by the W3C. The descriptor provides a central, machine-readable and easy-to-access location for storing metadata associated with an application, an application component, or a library.">Descriptor for Applications, Components, and Libraries</a></div>
 </div>

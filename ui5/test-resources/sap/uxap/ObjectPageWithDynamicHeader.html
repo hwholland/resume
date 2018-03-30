@@ -286,21 +286,19 @@
 <body id="body" class="sapUiBody">
 <script>
 	(function (jQuery, App, Page) {
-		sap.ui.getCore().attachInit(function() {
-			var oApp = new App(),
-					myView = sap.ui.xmlview({viewContent:jQuery('#view1').html()}),
-					oToggleHeaderOnTitleClickBtn = myView.byId("toggleHeaderOnTitleClick"),
-					oObjectPage = myView.byId("ObjectPageLayout");
+		var oApp = new App(),
+			myView = sap.ui.xmlview({viewContent:jQuery('#view1').html()}),
+				oToggleHeaderOnTitleClickBtn = myView.byId("toggleHeaderOnTitleClick"),
+				oObjectPage = myView.byId("ObjectPageLayout");
 
-			oToggleHeaderOnTitleClickBtn.setPressed(oObjectPage.getToggleHeaderOnTitleClick());
-			oToggleHeaderOnTitleClickBtn.attachPress(function(oEvent) {
-				oObjectPage.setToggleHeaderOnTitleClick(oEvent.getParameter("pressed"));
-			});
-			oApp.addPage(new Page({
-				title: "ObjectPage",
-				content: [myView]
-			})).placeAt("content");
+		oToggleHeaderOnTitleClickBtn.setPressed(oObjectPage.getToggleHeaderOnTitleClick());
+		oToggleHeaderOnTitleClickBtn.attachPress(function(oEvent) {
+			oObjectPage.setToggleHeaderOnTitleClick(oEvent.getParameter("pressed"));
 		});
+		oApp.addPage(new Page({
+			title: "ObjectPage",
+			content: [myView]
+		})).placeAt("content");
 	}(jQuery, sap.m.App, sap.m.Page))
 </script>
 <div id="content"></div>

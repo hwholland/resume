@@ -1,42 +1,12 @@
 /*!
 * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
 */
 
 // Provides control sap.m.ViewSettingsDialog.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/IconPool',
-	'./Toolbar',
-	'./CheckBox',
-	'./SearchField',
-	'./List',
-	'./StandardListItem',
-	'sap/ui/base/ManagedObject',
-	'sap/ui/base/EventProvider',
-	'sap/ui/Device',
-	'sap/ui/core/InvisibleText',
-	'./ViewSettingsDialogRenderer'
-],
-function(
-	jQuery,
-	library,
-	Control,
-	IconPool,
-	Toolbar,
-	CheckBox,
-	SearchField,
-	List,
-	StandardListItem,
-	ManagedObject,
-	EventProvider,
-	Device,
-	InvisibleText,
-	ViewSettingsDialogRenderer
-) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/ui/core/IconPool', './Toolbar', './CheckBox', './SearchField', './List', './StandardListItem', 'sap/ui/base/ManagedObject', 'sap/ui/base/EventProvider', 'sap/ui/Device', 'sap/ui/core/InvisibleText'],
+function(jQuery, library, Control, IconPool, Toolbar, CheckBox, SearchField, List, StandardListItem, ManagedObject, EventProvider, Device, InvisibleText) {
 	"use strict";
 
 	// shortcut for sap.m.ListMode
@@ -101,7 +71,7 @@ function(
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -229,7 +199,7 @@ function(
 
 					/**
 					 * The selected filter items in an object notation format: { key: boolean }. If a custom control filter was displayed (for example, the user clicked on the filter item), the value for its key is set to true to indicate that there has been an interaction with the control.
-					 * @deprecated as of version 1.42, replaced by <code>filterCompoundKeys</code> event
+					 * @deprecated As of version 1.42, replaced by filterCompoundKeys
 					 */
 					filterKeys : {type : "object", deprecated: true},
 
@@ -1242,7 +1212,7 @@ function(
 	 * @public
 	 * @return {object} An object with item and sub-item keys
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
-	 * @deprecated as of version 1.42, replaced by <code>getSelectedFilterCompoundKeys</code> method
+	 * @deprecated As of version 1.42, replaced by getSelectedFilterCompoundKeys
 	 */
 	ViewSettingsDialog.prototype.getSelectedFilterKeys = function() {
 		var oSelectedFilterKeys = {}, aSelectedFilterItems = this
@@ -1302,7 +1272,7 @@ function(
 	 *         It can be used to set the dialog state based on presets.
 	 * @return {sap.m.ViewSettingsDialog} this pointer for chaining
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
-	 * @deprecated as of version 1.42, replaced by <code>setSelectedFilterCompoundKeys</code> method
+	 * @deprecated As of version 1.42, replaced by setSelectedFilterCompoundKeys
 	 */
 	ViewSettingsDialog.prototype.setSelectedFilterKeys = function(oSelectedFilterKeys) {
 		var aFilterItems    = this.getFilterItems(),

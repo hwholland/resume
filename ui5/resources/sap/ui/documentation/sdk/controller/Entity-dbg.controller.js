@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -10,16 +10,10 @@ sap.ui.define([
 		"sap/ui/documentation/sdk/controller/BaseController",
 		"sap/ui/documentation/sdk/controller/util/ControlsInfo",
 		"sap/ui/documentation/sdk/controller/util/EntityInfo",
-		"sap/ui/documentation/sdk/controller/util/APIInfo",
 		"sap/ui/documentation/sdk/util/ToggleFullScreenHandler",
-		"sap/ui/documentation/sdk/controller/util/JSDocUtil",
-		"sap/m/Label",
-		"sap/m/Link",
-		"sap/m/Text",
-		"sap/m/HBox",
-		"sap/m/ObjectAttribute"
-	], function (JSONModel, BaseController, ControlsInfo, EntityInfo, APIInfo, ToggleFullScreenHandler,
-			JSDocUtil, Label, Link, Text, HBox, ObjectAttribute) {
+		"sap/ui/documentation/sdk/controller/util/JSDocUtil"
+	], function (JSONModel, BaseController, ControlsInfo,
+				 EntityInfo, ToggleFullScreenHandler, JSDocUtil) {
 		"use strict";
 
 		return BaseController.extend("sap.ui.documentation.sdk.controller.Entity", {
@@ -33,7 +27,7 @@ sap.ui.define([
 				this.router = this.getRouter();
 				this.router.getRoute("entity").attachPatternMatched(this.onRouteMatched, this);
 
-				this._oObjectPage = this.byId("ObjectPageLayout");
+				this._oObjectPage = this.getView().byId("ObjectPageLayout");
 
 				this.getView().setModel(new JSONModel());
 			},
@@ -60,6 +54,10 @@ sap.ui.define([
 					id: this._sId,
 					part: sTab
 				}, true);
+			},
+
+			onNavBack: function (oEvt) {
+				this.router.myNavBack("home", {});
 			},
 
 			onNavToSample: function (oEvt) {
@@ -122,7 +120,7 @@ sap.ui.define([
 					}
 				});
 
-				return '<span class="sapUiJSD">' + sFormattedTextBlock + '</span>';
+				return '<span class="sapUiDocumentationJsDoc">' + sFormattedTextBlock + '</span>';
 			},
 
 			_TAB_KEYS: ["samples", "about"],
@@ -155,8 +153,7 @@ sap.ui.define([
 				}
 
 				// set data model
-				var oData,
-					oView = this.getView();
+				var oData;
 				if (this._sId !== sNewId) {
 
 					// retrieve entity docu from server
@@ -167,18 +164,12 @@ sap.ui.define([
 							this.router.myNavToWithoutHash("sap.ui.documentation.sdk.view.NotFound", "XML", false);
 							return;
 						}
+
 						// get view data
 						oData = this._getViewData(sNewId, oDoc, oEntity, oControlsData);
 
-						this.getAPIReferenceCheckPromise(oData.name).then(function (bHasAPIReference) {
-							oData.bHasAPIReference = bHasAPIReference;
-
-							// build header layout 3x3 matrix
-							this._buildHeaderLayout(oData);
-						}.bind(this));
-
 						// set view model
-						oView.getModel().setData(oData, false /* no merge with previous data */);
+						this.getView().getModel().setData(oData, false /* no merge with previous data */);
 
 						// done, we can now switch the id
 						this._sId = sNewId;
@@ -206,7 +197,7 @@ sap.ui.define([
 					this._loadSample(oData);
 				}.bind(this));
 
-				this.searchResultsButtonVisibilitySwitch(this.byId("entityBackToSearch"));
+				this.searchResultsButtonVisibilitySwitch(this.getView().byId("entityBackToSearch"));
 			},
 
 			onToggleFullScreen: function (oEvt) {
@@ -228,6 +219,14 @@ sap.ui.define([
 						oData.shortDescription = oEntity.description;
 					}
 
+					// make intro text active if a documentation link is set
+					if (oEntity.docuLink) {
+						oData.show.introLink = true;
+						oData.docuLink = oEntity.docuLink.replace("docs/guide", "topic").replace(/\.html$/, "");
+					} else {
+						oData.show.introLink = false;
+					}
+
 					if (!oData.baseName) {
 						oData.baseName = oEntity.name;
 					}
@@ -238,21 +237,8 @@ sap.ui.define([
 
 				// apply entity related stuff
 				oData.show.samples = bShouldShowSamplesSection;
-				oData.show.introLink = false;
 				oData.count.samples = iSamplesCount;
 				oData.entity = oEntity;
-
-				if (oDoc) {
-					// make intro text active if a documentation link is set
-					if (oDoc.docuLink) {
-						oData.show.introLink = true;
-						oData.docuLink = "#/topic/" + oDoc.docuLink;
-						oData.docuLinkText = oDoc.docuLinkText;
-					}
-
-					oData.uxGuidelinesLink = oDoc.uxGuidelinesLink;
-					oData.uxGuidelinesLinkText = oDoc.uxGuidelinesLinkText;
-				}
 
 				// done
 				return oData;
@@ -271,9 +257,6 @@ sap.ui.define([
 					shortDescription: (oDoc) ? this._formatDeprecatedDescription(oDoc.deprecation) : null,
 					description: (oDoc) ? this._wrapInSpanTag(oDoc.doc) : null,
 					docuLink: null,
-					docuLinkText: null,
-					uxGuidelinesLink: null,
-					uxGuidelinesLinkText: null,
 					values: oDoc ? oDoc.values : [],
 					show: {
 						baseType: (oDoc) ? !!oDoc.baseType : false,
@@ -348,7 +331,7 @@ sap.ui.define([
 
 			_switchPageTab: function () {
 
-				var oSection = this.byId(this._sNewTab);
+				var oSection = this.getView().byId(this._sNewTab);
 				if (!oSection) {
 					return;
 				}
@@ -359,167 +342,8 @@ sap.ui.define([
 				}
 			},
 
-			_getHeaderLayoutUtil: function () {
-				if (!this._oHeaderLayoutUtil) {
-					var _getObjectAttributeBlock = function (sTitle, sText) {
-							return new ObjectAttribute({
-								title: sTitle,
-								text: sText
-							}).addStyleClass("sapUiTinyMarginBottom");
-						},
-						_getLink = function (oConfig) {
-							return new Link(oConfig || {});
-						},
-						_getText = function (oConfig) {
-							return new Text(oConfig || {});
-						},
-						_getLabel = function (oConfig) {
-							return new Label(oConfig || {});
-						},
-						_getHBox = function (oConfig, bAddCommonStyles) {
-							var oHBox = new HBox(oConfig || {});
-
-							if (bAddCommonStyles) {
-								oHBox.addStyleClass("sapUiDocumentationHeaderNavLinks sapUiTinyMarginBottom");
-							}
-
-							return oHBox;
-						};
-
-					this._oHeaderLayoutUtil = {
-
-						_getApiReferenceBlock: function (oData) {
-							return _getHBox({
-								items: [
-									_getLabel({design: "Bold", text: "API Reference:"}),
-									_getLink({
-										emphasized: true,
-										text: oData.name,
-										href: "#/api/" + oData.name
-									})
-								]
-							}, true);
-						},
-						_getDocumentationBlock: function (oData) {
-							return _getHBox({
-								items: [
-									_getLabel({design: "Bold", text: "Documentation:"}),
-									_getLink({
-										emphasized: true,
-										text: oData.docuLinkText,
-										href: oData.docuLink
-									})
-								]
-							}, true);
-						},
-						_getUXGuidelinesBlock: function (oData) {
-							return _getHBox({
-								items: [
-									_getLabel({design: "Bold", text: "UX Guidelines:"}),
-									_getLink({
-										emphasized: true,
-										text: oData.uxGuidelinesLinkText,
-										href: oData.uxGuidelinesLink,
-										target: "_blank"
-									})
-								]
-							}, true);
-						},
-						_getExtendsBlock: function (oData) {
-							return _getHBox({
-								items: [
-									_getLabel({text: "Extends:"}),
-									_getLink({
-										text: oData.baseTypeText,
-										href: "#/entity/" + oData.baseType,
-										visible: !!oData.baseTypeNav
-									}),
-									_getText({text: "N/A", visible: !oData.baseTypeNav || !oData.baseType})
-								]
-							}, true);
-						},
-						_getApplicationComponentBlock: function (oData) {
-							return _getObjectAttributeBlock("Application Component", oData.appComponent);
-						},
-						_getAvailableSinceBlock: function (oData) {
-							return _getObjectAttributeBlock("Available since", oData.entity.since);
-						},
-						_getCategoryBlock: function (oData) {
-							return _getObjectAttributeBlock("Category", oData.entity.category);
-						},
-						_getContentDensityBlock: function (oData) {
-							return _getObjectAttributeBlock("Content Density", oData.entity.formFactors);
-						}
-					};
-				}
-
-				return this._oHeaderLayoutUtil;
-			},
-
 			backToSearch: function () {
 				this.onNavBack();
-			},
-
-			/**
-			 * Builds the header layout structure.
-			 * The header displays the entity data in 3 columns
-			 * and each column can consist of 3 key-value pairs at most.
-			 * @param {object} oData main control data object source
-			 */
-			_buildHeaderLayout: function (oData) {
-				var FIRST_COLUMN = 0,
-					SECOND_COLUMN = 1,
-					THIRD_COLUMN = 2,
-					ENTITIES_PER_COLUMN = 3,
-					aHeaderControls = [[], [], []],
-					oHeaderLayoutUtil = this._getHeaderLayoutUtil(),
-					aHeaderBlocksInfo = [
-						{creator: "_getApiReferenceBlock", exists: oData.bHasAPIReference},
-						{creator: "_getDocumentationBlock", exists: oData.show.introLink},
-						{creator: "_getUXGuidelinesBlock", exists: !!oData.uxGuidelinesLink},
-						{creator: "_getExtendsBlock", exists: true},
-						{creator: "_getApplicationComponentBlock", exists: true},
-						{creator: "_getAvailableSinceBlock", exists: true},
-						{creator: "_getCategoryBlock", exists: true},
-						{creator: "_getContentDensityBlock", exists: true}
-					],
-					fnFillHeaderControlsStructure = function () {
-						var iControlsAdded = 0,
-							iIndexToAdd,
-							fnGetIndexToAdd = function (iControlsAdded) {
-								// determines the column(1st, 2nd or 3rd), the next entity data key-value should be added to.
-								if (iControlsAdded <= ENTITIES_PER_COLUMN) {
-									return FIRST_COLUMN;
-								} else if (iControlsAdded <= ENTITIES_PER_COLUMN * 2) {
-									return SECOND_COLUMN;
-								}
-								return THIRD_COLUMN;
-							};
-
-						aHeaderBlocksInfo.forEach(function (oHeaderBlockInfo) {
-							var oControlBlock;
-							if (oHeaderBlockInfo.exists) {
-								oControlBlock = oHeaderLayoutUtil[oHeaderBlockInfo.creator].call(this, oData);
-								iIndexToAdd = fnGetIndexToAdd(++iControlsAdded);
-								aHeaderControls[iIndexToAdd].push(oControlBlock);
-							}
-						}, this);
-					}.bind(this);
-
-				// Creates the entity key-value controls
-				// based on the existing entity key-value data,
-				fnFillHeaderControlsStructure();
-
-				// Wraps each column in a <code>sap.ui.layout.VerticalLayout</code>.
-				aHeaderControls.forEach(function (aHeaderColumn, iIndex) {
-					var oVL = this.byId("headerColumn" + iIndex);
-					oVL.removeAllContent();
-
-					if (aHeaderColumn.length > 0) {
-						oVL.setVisible(true);
-						aHeaderColumn.forEach(oVL.addContent, oVL);
-					}
-				}, this);
 			},
 
 			/**

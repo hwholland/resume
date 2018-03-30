@@ -5,25 +5,24 @@
 
 	jQuery.sap.registerModulePath("view", "view");
 
-	var iRenderingDelay = 2000;
+	sinon.config.useFakeTimers = true;
+
+	var iRenderingDelay = 1000;
 	var ANCHORBAR_CLASS_SELECTOR = ".sapUxAPAnchorBar";
 	var HIERARCHICAL_CLASS_SELECTOR = ".sapUxAPHierarchicalSelect";
 
 	QUnit.module("properties", {
 		beforeEach: function () {
-			this.clock = sinon.useFakeTimers();
 			this.anchorBarView = sap.ui.xmlview("UxAP-69_anchorBar", {
 				viewName: "view.UxAP-69_AnchorBar"
 			});
 			this.oObjectPage = this.anchorBarView.byId("ObjectPageLayout");
 			this.anchorBarView.placeAt('qunit-fixture');
 			sap.ui.getCore().applyChanges();
-			this.clock.tick(iRenderingDelay);
 		},
 		afterEach: function () {
 			this.anchorBarView.destroy();
 			this.oObjectPage = null;
-			this.clock.restore();
 		}
 	});
 
@@ -64,32 +63,13 @@
 
 	QUnit.test("Selected button", function (assert) {
 		//select button programatically
-		var oAnchorBar = this.oObjectPage.getAggregation("_anchorBar"),
-			aAnchorBarContent = oAnchorBar.getContent(),
-			oFirstSectionButton = aAnchorBarContent[0],
-			oLastSectionButton = aAnchorBarContent[aAnchorBarContent.length - 1];
-
-		oAnchorBar.setSelectedButton(oLastSectionButton);
+		var oLastSectionButton = this.oObjectPage.getAggregation("_anchorBar").getContent()[this.oObjectPage.getAggregation("_anchorBar").getContent().length - 1];
+		this.oObjectPage.getAggregation("_anchorBar").setSelectedButton(oLastSectionButton);
 
 		// allow for scroling
 		this.clock.tick(iRenderingDelay);
 
 		assert.strictEqual(oLastSectionButton.$().hasClass("sapUxAPAnchorBarButtonSelected"), true, "select button programmatically");
-		assert.strictEqual(oLastSectionButton.$().attr("aria-pressed"), "true", "ARIA pressed state should be true for the selected button");
-		assert.strictEqual(oFirstSectionButton.$().attr("aria-pressed"), "false", "ARIA pressed state should be false for the unselected button");
-	});
-
-	QUnit.test("Submenu button accessibility", function (assert) {
-		var	oButton = this.oObjectPage.getAggregation("_anchorBar").getContent()[1],
-			sSubSectionId = this.oObjectPage.getSections()[1].getSubSections()[0].getId();
-
-		oButton.firePress();
-
-		// allow for re-render
-		this.clock.tick(iRenderingDelay);
-
-		assert.strictEqual(jQuery(".sapUxAPAnchorBarPopover").find(".sapUxAPAnchorBarButton").first().attr("aria-controls"), sSubSectionId,
-				"ARIA controls attribute should match the corresponding SubSection ID");
 	});
 
 	QUnit.test("Phone view", function (assert) {
@@ -138,14 +118,12 @@
 	QUnit.test("When using the objectPageNavigation the 'navigate' event is fired with the appropriate arguments", function (assert) {
 		var oAnchorBar = this.oObjectPage.getAggregation("_anchorBar"),
 			oExpectedSection = this.oObjectPage.getSections()[0],
-			oExpectedSubSection = oExpectedSection.getSubSections()[0],
 			navigateSpy = this.spy(this.oObjectPage, "fireNavigate");
 
 		this.oObjectPage.setShowAnchorBarPopover(false);
 		oAnchorBar.getContent()[0].firePress();
 
-		assert.ok(navigateSpy.calledWithMatch(sinon.match.has("section", oExpectedSection)), "Event fired has the correct section parameter attached");
-		assert.ok(navigateSpy.calledWithMatch(sinon.match.has("subSection", oExpectedSubSection)), "Event fired has the correct subSection parameter attached");
+		assert.ok(navigateSpy.calledWithMatch(sinon.match.has("section", oExpectedSection)), "Event fired has the correct parameters attached");
 	});
 
 	var oModel = new sap.ui.model.json.JSONModel({
@@ -161,7 +139,6 @@
 
 	QUnit.module("simple binding", {
 		beforeEach: function () {
-			this.clock = sinon.useFakeTimers();
 			this.anchorBarView = sap.ui.xmlview("UxAP-69_anchorBarBinding", {
 				viewName: "view.UxAP-69_AnchorBarBinding"
 			});
@@ -169,13 +146,11 @@
 			this.anchorBarView.setModel(oModel);
 			this.anchorBarView.placeAt('qunit-fixture');
 			sap.ui.getCore().applyChanges();
-			this.clock.tick(iRenderingDelay);
 		},
 		afterEach: function () {
 			this.anchorBarView.destroy();
 			this.oObjectPage = null;
 			this.oLastSectionButton = null;
-			this.clock.restore();
 		}
 	});
 
@@ -202,8 +177,9 @@
 		var oSection = this.oObjectPage.getSections()[0];
 
 		oSection.setTitle("my updated title again");
-		this.clock.tick(iRenderingDelay);
 
+		// allow for re-render
+		sap.ui.getCore().applyChanges();
 		var oSectionButton = this.oObjectPage.getAggregation("_anchorBar").getContent()[0];
 
 		assert.strictEqual(oSectionButton.getText(), "my updated title again", "section title set updates anchor bar button");
@@ -214,7 +190,7 @@
 
 		oSection.bindProperty("title", "/sections/3/title");
 
-		this.clock.tick(iRenderingDelay);
+		sap.ui.getCore().applyChanges();
 		var oSectionButton = this.oObjectPage.getAggregation("_anchorBar").getContent()[3];
 
 		assert.equal(oSectionButton.getProperty("text"), "my fourth section", "Property must return model value");
@@ -228,14 +204,14 @@
 			mode: "OneTime"
 		});
 
-		this.clock.tick(iRenderingDelay);
+		sap.ui.getCore().applyChanges();
 		var oSectionButton = this.oObjectPage.getAggregation("_anchorBar").getContent()[3];
 
 		assert.equal(oSectionButton.getProperty("text"), "my fourth section", "Property must return model value");
 
 		oModel.setProperty("/sections/3/title", "newvalue");
 
-		this.clock.tick(iRenderingDelay);
+		sap.ui.getCore().applyChanges();
 
 		oSectionButton = this.oObjectPage.getAggregation("_anchorBar").getContent()[3];
 		assert.equal(oSectionButton.getProperty("text"), "my fourth section", "New model value must not be reflected");
@@ -249,14 +225,14 @@
 			path: "/sections/3/title"
 		});
 
-		this.clock.tick(iRenderingDelay);
+		sap.ui.getCore().applyChanges();
 		var oSectionButton = this.oObjectPage.getAggregation("_anchorBar").getContent()[3];
 
 		assert.equal(oSectionButton.getProperty("text"), "my fourth section", "Property must return model value");
 
 		oModel.setProperty("/sections/3/title", "newvalue");
 
-		this.clock.tick(iRenderingDelay);
+		sap.ui.getCore().applyChanges();
 
 		oSectionButton = this.oObjectPage.getAggregation("_anchorBar").getContent()[3];
 		assert.equal(oSectionButton.getProperty("text"), "newvalue", "New model value must not be reflected");
@@ -264,7 +240,6 @@
 
 	QUnit.module("complex binding", {
 		beforeEach: function () {
-			this.clock = sinon.useFakeTimers();
 			this.anchorBarView = sap.ui.xmlview("UxAP-69_anchorBarBinding", {
 				viewName: "view.UxAP-69_AnchorBarBinding"
 			});
@@ -272,13 +247,11 @@
 			this.anchorBarView.setModel(oModel);
 			this.anchorBarView.placeAt('qunit-fixture');
 			sap.ui.getCore().applyChanges();
-			this.clock.tick(iRenderingDelay);
 		},
 		afterEach: function () {
 			this.anchorBarView.destroy();
 			this.oObjectPage = null;
 			this.oLastSectionButton = null;
-			this.clock.restore();
 		}
 	});
 

@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -20,10 +20,9 @@ sap.ui.define([
 	"sap/ui/core/CustomData",
 	"./HierarchicalSelect",
 	"./library",
-	"sap/uxap/AnchorBarRenderer",
 	"jquery.sap.keycodes"
 ], function (jQuery, Button, mobileLibrary, Popover, Toolbar, IconPool, Item, ResizeHandler,
-			 ScrollEnablement, HorizontalLayout, Device, CustomData, HierarchicalSelect, library, AnchorBarRenderer) {
+			 ScrollEnablement, HorizontalLayout, Device, CustomData, HierarchicalSelect, library) {
 	"use strict";
 
 	// shortcut for sap.m.SelectType
@@ -33,21 +32,13 @@ sap.ui.define([
 	var PlacementType = mobileLibrary.PlacementType;
 
 	/**
-	 * Constructor for a new <code>AnchorBar</code>.
+	 * Constructor for a new AnchorBar.
 	 *
-	 * @param {string} [sId] ID for the new control, generated automatically if no ID is given
-	 * @param {object} [mSettings] Initial settings for the new control
+	 * @param {string} [sId] id for the new control, generated automatically if no id is given
+	 * @param {object} [mSettings] initial settings for the new control
 	 *
 	 * @class
-	 * Displays the titles of the sections and subsections in the {@link sap.uxap.ObjectPageLayout ObjectPageLayout}
-	 * and allows the user to scroll to the respective content.
-	 *
-	 * <h3>Overview</h3>
-	 *
-	 * The <code>AnchorBar</code> is internally generated as a menu in the <code>ObjectPageLayout</code>.
-	 * It displays the sections and subsections and allows the user to directly scroll to the respective
-	 * content by selecting them, while it remains visible at the top of the page (below the page header).
-	 *
+	 * Anchor bar is the navigation bar of an Object page. Its purpose is to provide links to all Sections and Subsections. Takes the form of a Select on phone.
 	 * @extends sap.m.Toolbar
 	 *
 	 * @author SAP SE
@@ -55,7 +46,6 @@ sap.ui.define([
 	 * @constructor
 	 * @public
 	 * @since 1.26
-	 * @see {@link topic:370b67986497463187336fa130aebbf1 Anchor Bar}
 	 * @alias sap.uxap.AnchorBar
 	 * @ui5-metamodel This control/element also will be described in the UI5 (legacy) designtime metamodel
 	 */
@@ -172,8 +162,8 @@ sap.ui.define([
 
 			if (this._bHasButtonsBar) {
 				//remove selection class from the currently selected item
-				this.$().find(".sapUxAPAnchorBarButtonSelected").removeClass("sapUxAPAnchorBarButtonSelected").attr("aria-pressed", false);
-				oButton.$().addClass("sapUxAPAnchorBarButtonSelected").attr("aria-pressed", true);
+				this.$().find(".sapUxAPAnchorBarButtonSelected").removeClass("sapUxAPAnchorBarButtonSelected");
+				oButton.$().addClass("sapUxAPAnchorBarButtonSelected");
 
 				if (oSelectedSectionId) {
 					this.scrollToSection(oSelectedSectionId, AnchorBar.SCROLL_DURATION);
@@ -328,6 +318,7 @@ sap.ui.define([
 					oPopoverState.oLastFirstLevelButton.attachPress(fnPressHandler);
 					this._oPressHandlers[oPopoverState.oLastFirstLevelButton.getId()] = fnPressHandler;
 				}
+
 				oPopoverState.oCurrentPopover.addContent(oButton);
 			} else if (this.getShowPopover()) {
 				jQuery.sap.log.error("sapUxApAnchorBar :: missing parent first level for item " + oButton.getText());
@@ -346,8 +337,7 @@ sap.ui.define([
 					verticalScrolling: true,
 					horizontalScrolling: false,
 					contentWidth: "auto",
-					showArrow: false,
-					afterOpen: this._decorateSubMenuButtons
+					showArrow: false
 				});
 
 				oPopoverState.oCurrentPopover.addStyleClass("sapUxAPAnchorBarPopover");
@@ -364,14 +354,6 @@ sap.ui.define([
 				this._oPressHandlers[oPopoverState.oLastFirstLevelButton.getId()] = fnPressHandler;
 			}
 		}
-	};
-
-	AnchorBar.prototype._decorateSubMenuButtons = function (oEvent) {
-		var aContent = oEvent.getSource().getContent();
-
-		aContent.forEach(function (oButton) {
-			oButton.$().attr("aria-controls", oButton.data("sectionId"));
-		});
 	};
 
 	AnchorBar.prototype._addKeyboardHandling = function (oCurrentPopover) {
@@ -489,7 +471,7 @@ sap.ui.define([
 
 			this.setAggregation('_select', new HierarchicalSelect({
 				width: "100%",
-				icon: "sap-icon://slim-arrow-down",
+				icon: "sap-icon://overflow",
 				change: jQuery.proxy(this._onSelectChange, this)
 			}));
 		}
@@ -603,9 +585,14 @@ sap.ui.define([
 	/*******************************************************************************
 	 * Horizontal scrolling
 	 ******************************************************************************/
+	AnchorBar._hierarchicalSelectModes = {
+		"Icon": "icon",   // Only icon - overview button mode
+		"Text": "text"    // Text - phone mode
+	};
+
 	AnchorBar.prototype._applyHierarchicalSelectMode = function () {
 
-		if (this._sHierarchicalSelectMode === AnchorBarRenderer._AnchorBarHierarchicalSelectMode.Icon) {
+		if (this._sHierarchicalSelectMode === AnchorBar._hierarchicalSelectModes.Icon) {
 			this.$().find(".sapUxAPAnchorBarScrollContainer").show();
 
 			this._oSelect.setWidth("auto");
@@ -621,15 +608,15 @@ sap.ui.define([
 			this._oSelect.setType(SelectType.Default);
 		}
 
-		this.$().toggleClass("sapUxAPAnchorBarOverflow", this._sHierarchicalSelectMode === AnchorBarRenderer._AnchorBarHierarchicalSelectMode.Icon);
+		this.$().toggleClass("sapUxAPAnchorBarOverflow", this._sHierarchicalSelectMode === AnchorBar._hierarchicalSelectModes.Icon);
 	};
 
 	AnchorBar.prototype._adjustSize = function () {
 
 		//size changed => check if switch in display-mode (phone-view vs. desktop-view) needed
 		var sNewMode = library.Utilities.isPhoneScenario(this._getCurrentMediaContainerRange()) ?
-			AnchorBarRenderer._AnchorBarHierarchicalSelectMode.Text :
-			AnchorBarRenderer._AnchorBarHierarchicalSelectMode.Icon;
+			AnchorBar._hierarchicalSelectModes.Text :
+			AnchorBar._hierarchicalSelectModes.Icon;
 
 		if (sNewMode !== this._sHierarchicalSelectMode) {
 			this._sHierarchicalSelectMode = sNewMode;
@@ -637,7 +624,7 @@ sap.ui.define([
 		}
 
 		//size changed => check if overflow gradients needed
-		if (this._sHierarchicalSelectMode === AnchorBarRenderer._AnchorBarHierarchicalSelectMode.Icon) {
+		if (this._sHierarchicalSelectMode === AnchorBar._hierarchicalSelectModes.Icon) {
 
 			//don't go any further if the positions of the items are not calculated yet
 			if (this._iMaxPosition < 0) {
@@ -680,7 +667,7 @@ sap.ui.define([
 	/**
 	 * Handles scrolling via the scroll buttons.
 	 *
-	 * @param {boolean} bScrollLeft Indicates whether the left arrow button was pressed
+	 * @param boolean bScrollLeft indicates whether the left arrow button was pressed
 	 * @private
 	 */
 	AnchorBar.prototype._handleScrollButtonTap = function (bScrollLeft) {
@@ -701,14 +688,14 @@ sap.ui.define([
 	 * Scroll to a specific Section.
 	 *
 	 * @param {string} sId The Section ID to scroll to
-	 * @param {int} iDuration Scroll duration (in ms). Default value is 0.
+	 * @param {int} duration Scroll duration (in ms). Default value is 0
 	 * @public
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
 	 */
-	AnchorBar.prototype.scrollToSection = function (sId, iDuration) {
+	AnchorBar.prototype.scrollToSection = function (sId, duration) {
 
 		if (this._bHasButtonsBar) {
-			var iDuration = iDuration || AnchorBar.SCROLL_DURATION,
+			var iDuration = duration || AnchorBar.SCROLL_DURATION,
 				iScrollTo;
 
 			if (!library.Utilities.isPhoneScenario(this._getCurrentMediaContainerRange())
@@ -736,7 +723,7 @@ sap.ui.define([
 						jQuery.sap.byId(this.getId() + "-scroll").parent().stop(true, false);
 					}
 
-					this._iCurrentScrollTimeout = jQuery.sap.delayedCall(iDuration, this, function () {
+					this._iCurrentScrollTimeout = jQuery.sap.delayedCall(duration, this, function () {
 						this._sCurrentScrollId = undefined;
 						this._iCurrentScrollTimeout = undefined;
 					});
@@ -756,7 +743,6 @@ sap.ui.define([
 	 * @type object
 	 * @public
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
-	 * @returns {sap.ui.core.delegate.ScrollEnablement} The <code>sap.ui.core.delegate.ScrollEnablement</code> instance
 	 */
 	AnchorBar.prototype.getScrollDelegate = function () {
 		return this._oScroller;
@@ -957,25 +943,21 @@ sap.ui.define([
 			sCurrentSectionId = oObjectPageLayout.getSelectedSection(),
 			aSections = oObjectPageLayout.getSections(),
 			aSubSections = [this.getDomRef()],
-			aCurrentSubSections = [];
+			aCurrentSubSections;
 
 		if (bUseIconTabBar) {
 			aCurrentSubSections = sap.ui.getCore().byId(sCurrentSectionId).getSubSections().map(function (oSubSection) {
 				return oSubSection.$().attr("tabindex", -1)[0];
 			});
-
-			aSubSections = aSubSections.concat(aCurrentSubSections);
 		} else {
 			//this is needed in order to be sure that next F6 group will be found in sub sections
-			aSections.forEach(function (oSection) { // for each section
-				// get the subsections which have tabindex=-1
+			aSections.forEach(function (oSection) {
 				aCurrentSubSections = oSection.getSubSections().map(function (oSubSection) {
 					return oSubSection.$().attr("tabindex", -1)[0];
 				});
-				// accumulate the result
-				aSubSections = aSubSections.concat(aCurrentSubSections);
 			});
 		}
+		aSubSections = aSubSections.concat(aCurrentSubSections);
 		oSettings.scope = aSubSections;
 
 		oEvent.preventDefault();
@@ -1016,7 +998,7 @@ sap.ui.define([
 		//initial state
 		if (this._bHasButtonsBar) {
 			jQuery.sap.delayedCall(AnchorBar.DOM_CALC_DELAY, this, function () {
-				if (this._sHierarchicalSelectMode === AnchorBarRenderer._AnchorBarHierarchicalSelectMode.Icon) {
+				if (this._sHierarchicalSelectMode === AnchorBar._hierarchicalSelectModes.Icon) {
 					this._computeBarSectionsInfo();
 				}
 				this._adjustSize();
@@ -1056,7 +1038,7 @@ sap.ui.define([
 			oContent.$().attr("aria-haspopup", "true");
 		}
 		// set ARIA attributes of main buttons
-		oContent.$().attr("aria-controls", oContent.data("sectionId")).attr("aria-pressed", false);
+		oContent.$().attr("aria-controls", oContent.data("sectionId"));
 
 		var iWidth = oContent.$().outerWidth(true);
 

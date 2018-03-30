@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -24,7 +24,7 @@ sap.ui.define([
 
 	return Controller.extend("sap.ui.core.sample.ViewTemplate.types.Types", {
 		showErrorPopover : function (sButtonID) {
-			this.messagePopover.openBy(this.byId(sButtonID));
+			this.messagePopover.openBy(this.getView().byId(sButtonID));
 		},
 
 		onInit : function () {
@@ -45,19 +45,19 @@ sap.ui.define([
 
 		onReset : function () {
 			var i,
-				oModel = this.getView().getModel(),
 				aObjects = this.getView().findAggregatedObjects(true),
-				that = this;
+				that = this,
+				oView = this.getView();
 
-			if (this.getView().getModel("ui").getProperty("/v2")) {
+			if (oView.getModel("ui").getProperty("/v2")) {
+
 				for (i = 0; i < aObjects.length; i += 1) {
 					if (aObjects[i].setValueState) {
 						aObjects[i].setValueState(ValueState.None);
 					}
 				}
-				oModel.resetChanges();
-				oModel.callFunction("/ResetEdmTypes", {
-					urlParameters : {ID : '1'},
+				this.getView().getModel().resetChanges();
+				this.getView().getModel().callFunction("/ResetEdmTypes", {
 					method : "POST",
 					success : function () {
 						showSuccessMessage("reset");
@@ -67,8 +67,10 @@ sap.ui.define([
 					}
 				});
 			} else {
-				this.byId("resetButton").getObjectBinding("v4").execute()
+				oView.byId("resetButton").getObjectBinding("v4").execute()
 					.then(function () {
+						var oModel = oView.getModel();
+
 						//TODO: refresh needed as long there is no synchronisation
 						oModel.refresh();
 						showSuccessMessage("reset");
@@ -88,10 +90,11 @@ sap.ui.define([
 		},
 
 		onSave : function () {
-			var oModel = this.getView().getModel(),
-				that = this;
+			var that = this,
+				oView = this.getView(),
+				oModel = oView.getModel();
 
-			if (this.getView().getModel("ui").getProperty("/v2")) {
+			if (oView.getModel("ui").getProperty("/v2")) {
 				oModel.attachEventOnce("requestCompleted", this, function(oEvent) {
 					if (oEvent.getParameter("success")) {
 						showSuccessMessage("saved");
@@ -112,7 +115,7 @@ sap.ui.define([
 
 		onSourceCode : function (oEvent) {
 			var oView = this.getView(),
-				bVisible = this.byId("toggleSourceCodeButton").getPressed(),
+				bVisible = oView.byId("toggleSourceCodeButton").getPressed(),
 				sSource;
 
 			oView.getModel("ui").setProperty("/codeVisible", bVisible);
@@ -135,7 +138,7 @@ sap.ui.define([
 
 		onV4 : function (oEvent) {
 			var oView = this.getView(),
-				oIdentificationBox = this.byId("identificationBox"),
+				oIdentificationBox = oView.byId("identificationBox"),
 				bV4 = oView.getModel("ui").getProperty("/v4");
 
 			oIdentificationBox.removeAllItems();

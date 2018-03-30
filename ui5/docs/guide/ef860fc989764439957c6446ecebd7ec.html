@@ -6,8 +6,8 @@
 <meta name="abstract" content="The FacetFilterList.getSelectedItems() method returns a copy of each selected facet filter item. You use the method to get the selected filter items when filtering the target data set."/>
 <meta name="description" content="The FacetFilterList.getSelectedItems() method returns a copy of each selected facet filter item. You use the method to get the selected filter items when filtering the target data set."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=40327094170880284"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=40327094170880284"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5268717718778478"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5268717718778478"/>
 <title>Facet Filter Selection</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -26,14 +26,15 @@
 		<p class="p">Therefore, you should not attempt to modify any of the item's properties.</p>
 
 		<div class="section"><div class="section_title">Variants</div><div type="Variants"><p class="p">An application can support the personalization of settings and
-                allow the user to save the facet filter list selections as well as other properties
-                by means of a variant. For example, you can use <samp class="ph codeph">getSelectedKeys</samp> to
-                retrieve an object containing all selected items and use JSON.stringify to marshall
-                and JSON.parse to unmarshall. After unmarshalling, you can use
-                    <samp class="ph codeph">setSelectedKeys</samp> to apply the selections to the list. The
-                following figure and code snippet give an example.</p>
+				allow the user to save the facet filter list selections as well as other properties
+				by means of a variant. For example, you can use <samp class="ph codeph">getSelectedKeys</samp> to
+				retrieve an object containing all selected items and use JSON.stringify to marshall
+				and JSON.parse to unmarshall. After unmarshalling, you can use
+					<samp class="ph codeph">setSelectedKeys</samp> to apply the selections to the list. The
+				following figure and code snippet give an example.</p>
 <img class="image" id="loioef860fc989764439957c6446ecebd7ec__image_awj_1nj_qn" src="loioce923dff09294b65b51609d2ec1f1718_LowRes.png"/><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
-var oDataModel = new sap.ui.model.odata.v2.ODataModel("/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc");
+var oDataModel = new sap.ui.model.odata.ODataModel(
+    "/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc", true);
 
 // create the FacetFilterList and bind the filter items
 var oFacetFilterList = new sap.m.FacetFilterList({

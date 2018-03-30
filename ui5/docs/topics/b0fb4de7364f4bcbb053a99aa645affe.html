@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -134,12 +134,12 @@
                               <p class="p">Names starting with a dot (&apos;.&apos;) are always assumed to represent a method in the
                                  					controller. They are resolved by removing the leading dot and reading the
                                  					property with the resulting name from the controller instance. These names are
-                                 					&apos;relative&apos; to the view/controller. For example, <samp class="ph codeph">press:
-                                    						&quot;.myLocalHandler&quot;</samp> is resolved by <samp class="ph codeph">
-                                    						attachPress(oController[&quot;myLocalHandler&quot;], oController);</samp></p>
+                                 					&apos;relative&apos; to the view/controller. Example:
+                              </p>
                               
-                              				
-                              <aside class="note note  insertion"><span class="title">Note</span> This syntax is by intention consistent to the complex binding syntax for
+                              				<pre class="pre codeblock prettyprint">press: &quot;.myLocalHandler&quot; --&gt; attachPress(oController[&quot;myLocalHandler&quot;], oController);</pre>
+                              
+                              				<aside class="note note  insertion"><span class="title">Note</span> This syntax is by intention consistent to the complex binding syntax for
                                  					formatter functions.
                               </aside>
                               
@@ -151,13 +151,12 @@
                               				
                               <p class="p">Names containing a dot at a later position are assumed to represent global
                                  					functions and are resolved by calling <samp class="ph codeph">jQuery.sap.getObject</samp> with
-                                 					the full name. For example, name <samp class="ph codeph">press: &quot;some.global.handler&quot;</samp>
-                                 					is resolved by calling
-                                 						<samp class="ph codeph">attachPress(jQuery.sap.getObject(&quot;some.global.handler&quot;),
-                                    						oController);</samp></p>
+                                 					the full name. Example:
+                              </p>
                               
-                              			
-                           </li>
+                              				<pre class="pre codeblock prettyprint">press: &quot;some.global.handler&quot; --&gt; attachPress(jQuery.sap.getObject(&quot;some.global.handler&quot;), oController);</pre>
+                              
+                              			</li>
                            
                            			
                            <li class="li">

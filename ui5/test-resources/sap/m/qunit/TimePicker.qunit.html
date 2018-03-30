@@ -70,9 +70,7 @@
 		jQuery.sap.require("sap.ui.test.TestUtils");
 		jQuery.sap.require("sap.m.TimePickerSliders");
 		jQuery.sap.require("sap.m.TimePickerSlider");
-		jQuery.sap.require("sap.m.VisibleItem")
-
-		var TimePickerMaskMode = sap.m.TimePickerMaskMode;
+		jQuery.sap.require("sap.m.VisibleItem");
 
 		QUnit.module("step precision in time picker", {
 			beforeEach: function() {
@@ -116,98 +114,6 @@
 			//Assert
 			assert.ok(oSpySlidersSetMinutesStep.calledWith(STEP), "setMinutesStep is propagated to the picker part");
 			assert.ok(oSpySetProperty.calledWith("minutesStep", STEP, true), "property is updated without re-rendering");
-		});
-
-		QUnit.test("setMinutesStep corrects value 0 to 1", function(assert) {
-			var oSpySetProperty,
-					oSpySlidersSetMinutesStep,
-					step = 0,
-					expectedStep = 1;
-
-			//arrange
-			this.oTp._createPicker(this.oTp.getDisplayFormat());
-
-			oSpySetProperty = this.spy(this.oTp, "setProperty");
-			oSpySlidersSetMinutesStep = this.spy(this.oTp._getSliders(), "setMinutesStep");
-
-			//Act
-			this.oTp.setMinutesStep(step);
-
-			//Assert
-			assert.ok(oSpySlidersSetMinutesStep.calledWith(expectedStep), "setMinutesStep is propagated to the picker part with corrected value - 0 becomes 1");
-			assert.ok(oSpySetProperty.calledWith("minutesStep", expectedStep, true), "property is updated without re-rendering. Setter is called with corrected value - 0 becomes 1");
-
-			oSpySetProperty.restore();
-			oSpySlidersSetMinutesStep.restore();
-		});
-
-		QUnit.test("setSecondsStep corrects value 0 to 1", function(assert) {
-			var oSpySetProperty,
-					oSpySlidersSetSecondsStep,
-					step = 0,
-					expectedStep = 1;
-
-			//arrange
-			this.oTp._createPicker(this.oTp.getDisplayFormat());
-
-			oSpySetProperty = this.spy(this.oTp, "setProperty");
-			oSpySlidersSetSecondsStep = this.spy(this.oTp._getSliders(), "setSecondsStep");
-
-			//Act
-			this.oTp.setSecondsStep(step);
-
-			//Assert
-			assert.ok(oSpySlidersSetSecondsStep.calledWith(expectedStep), "setSecondsStep is propagated to the picker part with corrected value - 0 becomes 1");
-			assert.ok(oSpySetProperty.calledWith("secondsStep", expectedStep, true), "property is updated without re-rendering. Setter is called with corrected value - 0 becomes 1");
-
-			oSpySetProperty.restore();
-			oSpySlidersSetSecondsStep.restore();
-		});
-
-		QUnit.test("setMinutesStep corrects negative values to 1", function(assert) {
-			var oSpySetProperty,
-					oSpySlidersSetMinutesStep,
-					step = -2,
-					expectedStep = 1;
-
-			//arrange
-			this.oTp._createPicker(this.oTp.getDisplayFormat());
-
-			oSpySetProperty = this.spy(this.oTp, "setProperty");
-			oSpySlidersSetMinutesStep = this.spy(this.oTp._getSliders(), "setMinutesStep");
-
-			//Act
-			this.oTp.setMinutesStep(step);
-
-			//Assert
-			assert.ok(oSpySlidersSetMinutesStep.calledWith(expectedStep), "setMinutesStep is propagated to the picker part with corrected value - -2 becomes 1");
-			assert.ok(oSpySetProperty.calledWith("minutesStep", expectedStep, true), "property is updated without re-rendering. Setter is called with corrected value - -2 becomes 1");
-
-			oSpySetProperty.restore();
-			oSpySlidersSetMinutesStep.restore();
-		});
-
-		QUnit.test("setSecondsStep corrects negative values to 1", function(assert) {
-			var oSpySetProperty,
-					oSpySlidersSetSecondsStep,
-					step = -2,
-					expectedStep = 1;
-
-			//arrange
-			this.oTp._createPicker(this.oTp.getDisplayFormat());
-
-			oSpySetProperty = this.spy(this.oTp, "setProperty");
-			oSpySlidersSetSecondsStep = this.spy(this.oTp._getSliders(), "setSecondsStep");
-
-			//Act
-			this.oTp.setSecondsStep(step);
-
-			//Assert
-			assert.ok(oSpySlidersSetSecondsStep.calledWith(expectedStep), "setSecondsStep is propagated to the picker part with corrected value - -2 becomes 1");
-			assert.ok(oSpySetProperty.calledWith("secondsStep", expectedStep, true), "property is updated without re-rendering. Setter is called with corrected value - -2 becomes 1");
-
-			oSpySetProperty.restore();
-			oSpySlidersSetSecondsStep.restore();
 		});
 
 		QUnit.module("step precision in sliders", {
@@ -436,116 +342,6 @@
 			this.oTimePicker.setEditable(false);
 			this.clock.tick(1000);
 			assert.ok(!this.oTimePicker.$().hasClass("sapMInputVH"), "Value help CSS class is NOT applied by default ('Enabled' = true 'Editable' = false)");
-		});
-
-		QUnit.module("Placeholder", {
-			beforeEach: function () {
-				// SUT
-				this.oTimePicker = new sap.m.TimePicker();
-				this.oTimePicker.placeAt("qunit-fixture");
-				sap.ui.getCore().applyChanges();
-			},
-			afterEach: function () {
-				// Cleanup
-				this.oTimePicker.destroy();
-				this.oTimePicker = null;
-			}
-		});
-
-		QUnit.test("Default", function (assert) {
-			// Assert
-			assert.equal(this.oTimePicker.getPlaceholder(), "", "The placeholder is empty string");
-		});
-
-		QUnit.test("Empty", function (assert) {
-			// Act
-			this.oTimePicker.setPlaceholder();
-			// Assert
-			assert.equal(this.oTimePicker.getPlaceholder(), "", "The placeholder is empty string");
-		});
-
-		QUnit.test("Custom", function (assert) {
-			// Act
-			this.oTimePicker.setPlaceholder("My Placeholder");
-			// Assert
-			assert.equal(this.oTimePicker.getPlaceholder(), "My Placeholder", "The placeholder is 'My Placeholder'");
-		});
-
-		QUnit.test("Set displayFormat to 'HH:mm'", function (assert) {
-			// Act
-			this.oTimePicker.setDisplayFormat("HH:mm");
-			// Assert
-			assert.equal(this.oTimePicker._getPlaceholder(), "HH:mm", "The placeholder is 'HH:mm'");
-		});
-
-		QUnit.test("Set displayFormat to 'short'", function (assert) {
-			// Act
-			this.oTimePicker.setDisplayFormat("short");
-			// Assert
-			assert.equal(this.oTimePicker._getPlaceholder(), "h:mm a", "The placeholder is 'h:mm a'");
-		});
-
-		QUnit.module("Display format", {
-			beforeEach: function () {
-				// SUT
-				this.oTimePicker = new sap.m.TimePicker({
-					dateValue: new Date(2016, 1, 17, 10, 11, 12)
-				});
-				this.oTimePicker.placeAt("qunit-fixture");
-				sap.ui.getCore().applyChanges();
-			},
-			afterEach: function () {
-				// Cleanup
-				this.oTimePicker.destroy();
-				this.oTimePicker = null;
-			}
-		});
-
-		QUnit.test("Default", function (assert) {
-			// Assert
-			assert.equal(this.oTimePicker._$input.val(), "10:11:12 AM", "Display format is correct");
-		});
-
-		QUnit.test("Empty", function (assert) {
-			// Act
-			this.oTimePicker.setDisplayFormat();
-			// Assert
-			assert.equal(this.oTimePicker._$input.val(), "10:11:12 AM", "Display format is correct");
-		});
-
-		QUnit.test("Custom", function (assert) {
-			// Act
-			this.oTimePicker.setDisplayFormat("HH+mm");
-			// Assert
-			assert.equal(this.oTimePicker._$input.val(), "10+11", "Display format is correct");
-		});
-
-		QUnit.test("Wrong", function (assert) {
-			// Act
-			this.oTimePicker.setDisplayFormat("jj:ll:TT");
-			// Assert
-			assert.equal(this.oTimePicker._$input.val(), "jj:ll:TT", "Display format is wrong");
-		});
-
-		QUnit.test("HH:mm", function (assert) {
-			// Act
-			this.oTimePicker.setDisplayFormat("HH:mm");
-			// Assert
-			assert.equal(this.oTimePicker._$input.val(), "10:11", "Display format is correct");
-		});
-
-		QUnit.test("short", function (assert) {
-			// Act
-			this.oTimePicker.setDisplayFormat("short");
-			// Assert
-			assert.equal(this.oTimePicker._$input.val(), "10:11 AM", "Display format is correct");
-		});
-
-		QUnit.test("medium", function (assert) {
-			// Act
-			this.oTimePicker.setDisplayFormat("medium");
-			// Assert
-			assert.equal(this.oTimePicker._$input.val(), "10:11:12 AM", "Display format is correct");
 		});
 
 		QUnit.module("Input formats, display formats and values", {
@@ -783,13 +579,13 @@
 		QUnit.test("test locale", function(assert) {
 			generateValuesTest([
 						{ key: "setValueFormat", value: "hh:mm a" },
-						{ key: "setValue", value: "11:50 PM" },
+						{ key: "setValue", value: "11:50 nachm." },
 						{ key: "setDisplayFormat", value: "hh:mm a" },
 						{ key: "setLocaleId", value: "de_DE"}
 					],
 					{
-						expInputVal: "11:50 PM",
-						expValue: "11:50 PM",
+						expInputVal: "11:50 nachm.",
+						expValue: "11:50 nachm.",
 						expDateValue: getDate(23, 50, 0)
 					});
 		});
@@ -814,8 +610,8 @@
 				{ key: "setDateValue", value: getDate(17, 23, 18) }
 			],
 			{
-				expValue: "5:23 PM",
-				expInputVal: "05:23:18 PM",
+				expValue: "5:23 nachm.",
+				expInputVal: "05:23:18 nachm.",
 				expDateValue: getDate(17, 23, 18)
 			});
 
@@ -1613,110 +1409,6 @@
 			tp.destroy();
 		});
 
-		QUnit.test("support2400 - property play",function(assert) {
-			//prepare
-			var oTP = new sap.m.TimePicker({
-				displayFormat: "HH:mm:ss",
-				dateValue: new Date(2000, 1, 2, 23, 35, 54)
-			}),
-				oEvent,
-				oSliders,
-				oSliderHours;
-
-			oTP.placeAt("qunit-fixture");
-			sap.ui.getCore().applyChanges();
-
-			//assert
-			assert.strictEqual(oTP.getSupport2400(), false, "'support2400' is false by default");
-
-			//act
-			oTP.setSupport2400(true);
-
-			//assert
-			assert.strictEqual(oTP.getSupport2400(), true, "'support2400' is now set to 'true'");
-
-			//act
-			oTP._openPicker();
-			this.clock.tick(1000);
-			oBtnOK = oTP._getPicker().getBeginButton();
-			oSliders = oTP._getSliders();
-			oSliderHours = oSliders.getAggregation("_columns")[0];
-			oEvent = this._createMouseWheelEvent(-1);
-			oSliders._onmousewheel(oEvent); //these values are inside the event object when we scroll just a little
-			this.clock.tick(160);
-
-			//assert
-			assert.equal(oSliderHours.getSelectedValue(), "24", "slider's hour value changed to 24");
-
-			//cleanup
-			oTP.destroy();
-
-		});
-
-		QUnit.test("support2400 - minutes and seconds are disabled and set to '0' when hours are '24'", function(assert) {
-			//prepare
-			var oTP = new sap.m.TimePicker({
-				displayFormat: "HH:mm:ss",
-				dateValue: new Date(2000, 1, 2, 23, 35, 54)
-			}),
-				oSliders,
-				oSliderHours,
-				oSliderMinutes,
-				oSliderSeconds,
-				oEvent;
-
-			oTP.placeAt("qunit-fixture");
-			sap.ui.getCore().applyChanges();
-
-
-			//assert
-			assert.strictEqual(oTP.getSupport2400(), false, "support2400 is false by default");
-
-			//act
-			oTP.setSupport2400(true);
-			oTP._openPicker();
-			this.clock.tick(1000); //wait the initial focus of the first slider
-
-			oSliders = oTP._getSliders();
-			oSliderHours = oSliders.getAggregation("_columns")[0];
-			oSliderMinutes = oSliders.getAggregation("_columns")[1];
-			oSliderSeconds = oSliders.getAggregation("_columns")[2];
-
-			//set hours to '24'
-			oEvent = this._createMouseWheelEvent(-1);
-			oSliders._onmousewheel(oEvent); //these values are inside the event object when we scroll just a little
-			this.clock.tick(160);
-
-			//assert
-			assert.equal(oSliderMinutes.getSelectedValue(), "0", "When hours are set to 24, minutes are set to 0");
-			assert.ok(oSliderMinutes.$().hasClass("sapMTPDisabled"),
-					"When hours are set to 24, minutes have 'sapMTPDisabled' class");
-			assert.equal(oSliderSeconds.getSelectedValue(), "0", "When hours are set to 24, seconds are set to 0");
-			assert.ok(oSliderSeconds.$().hasClass("sapMTPDisabled"),
-					"When hours are set to 24, seconds have 'sapMTPDisabled' class");
-
-			//act
-			//scroll hours to their previous state
-			oEvent = this._createMouseWheelEvent(-1);
-			oSliders._onmousewheel(oEvent); //these values are inside the event object when we scroll just a little
-			this.clock.tick(160);
-
-			//assert
-			assert.equal(oSliderHours.getSelectedValue(), "0", "slider's hour value changed to 0");
-			assert.equal(oSliderMinutes.getSelectedValue(), "35",
-					"Minutes are back to their previous value before scrolling though '24' for hours");
-			assert.ok(!oSliderMinutes.$().hasClass("sapMTP2400"),
-					"When minutes are back to their previous value, they don't have 'sapMTP2400' class");
-			assert.equal(oSliderSeconds.getSelectedValue(), "54",
-					"Seconds are back to their previous value before scrolling though '24' for hours");
-			assert.ok(!oSliderSeconds.$().hasClass("sapMTP2400"),
-					"When seconds are back to their previous value, they don't have 'sapMTP2400' class");
-
-			//cleanup
-			oTP.destroy();
-
-		});
-
 		QUnit.test("_getUpdatedCycleScrollTop returns a new top value with the right offset", function(assert) {
 			//sut
 			var tp = new sap.m.TimePicker();
@@ -2105,10 +1797,11 @@
 				assert.ok(sAriaDescribedById.length, "TimePickerSlider " + iNonZeroIndex + " has aria-describedby association");
 				assert.strictEqual(sAriaDescribedById, $AriaDescribedTarget.attr("id"), "TimePickerSlider " + iNonZeroIndex + " aria-describedby association has a correct value " + sAriaDescribedById);
 			},
-			fnAriaSelectionChangeTest: function (oTP, oSlider, iIndex) {
+			fnAriaSelectionChangeTest: function (oSlider, iIndex) {
 				var bIsFormatType = oSlider.getLabel() === this.oRB.getText("TIMEPICKER_LBL_AMPM"),
 						iIterations = 3,
 						iNonZeroIndex = iIndex + 1,
+						oTP = sap.ui.getCore().byId(oSlider.getParent().getInvokedBy()),
 						sLocaleId = oTP.getLocaleId(),
 						oLocale = new sap.ui.core.Locale(sLocaleId),
 						sCurrentSelectionValue,
@@ -2289,7 +1982,7 @@
 					this.fnAriaLiveAndHiddenTest(oColumn, iIndex);
 					this.fnAriaLabelledByTest(oColumn, iIndex);
 					this.fnAriaDescribedByTest(oColumn, iIndex);
-					this.fnAriaSelectionChangeTest(this.oTP, oColumn, iIndex);
+					this.fnAriaSelectionChangeTest(oColumn, iIndex);
 				}, this);
 			}
 			this.clock.restore();
@@ -2312,7 +2005,7 @@
 			oAPPMColumn = oSliders.getAggregation("_columns")[3];
 
 			//assert
-			this.fnAriaSelectionChangeTest(this.oTP, oAPPMColumn, 3);
+			this.fnAriaSelectionChangeTest(oAPPMColumn, 3);
 
 			//Cleanup
 			this.clock.restore();
@@ -2375,7 +2068,6 @@
 
 		QUnit.module("MaskInput integration", {
 			beforeEach : function() {
-				this.clock = sinon.useFakeTimers();
 				this._defaultFormatter = sap.ui.core.format.DateFormat.getTimeInstance({style: "medium", strictParsing: true, relative: false});
 			},
 			typeAndCheckValueForDisplayFormat: function(sDisplayFormat, sInput, sExpectedValue) {
@@ -2395,7 +2087,6 @@
 				assert.equal(jQuery("#" + tp.getId() + "-inner").val(), sExpectedValue, "$input.val() ok");
 
 				//cleanup
-				this.clock.restore();
 				tp.destroy();
 			}
 		});
@@ -2419,14 +2110,6 @@
 
 		QUnit.test("allows input of valid time string - hh format, hours === 12", function(assert) {
 			this.typeAndCheckValueForDisplayFormat("hh:mm", "1215", "12:15");
-		});
-
-		QUnit.test("allows input of valid time string - style short", function(assert) {
-			this.typeAndCheckValueForDisplayFormat("short", "1215a", "12:15 AM");
-		});
-
-		QUnit.test("allows input of valid time string - style medium", function(assert) {
-			this.typeAndCheckValueForDisplayFormat("medium", "12159a", "12:15:09 AM");
 		});
 
 
@@ -2759,7 +2442,7 @@
 
 			var sCharReplaced = tp._oTimeSemanticMaskHelper.replaceChar("v", 3, "12 ------");
 
-			assert.equal(sCharReplaced, "v", "replaceChar completes with spaces");
+			assert.equal(sCharReplaced, "vorm. ", "replaceChar completes with spaces");
 
 			//cleanup
 			tp.destroy();
@@ -2949,597 +2632,6 @@
 			assert.equal(oSpyDestroy.callCount, 1, "When initMask is called, the old instance of semanticmask helper is destroyed");
 		});
 
-		QUnit.test("In IE when both focusin + setValue(''), the order of their calling is reversed and that caused" +
-			"missing first symbol in the mask", function(assert) {
-			//prepare
-			var oTp = new sap.m.TimePicker({
-					value: "000000",
-				placeholder: "Enter Value"
-				});
-
-			oTp.placeAt("content");
-			sap.ui.getCore().applyChanges();
-
-			//act
-			oTp.setValue("");
-			oTp.focus();
-			this.clock.tick(1000);
-
-			//assert
-			assert.equal(oTp._oTempValue.toString(), "--:--:-- --", "the mask is the correct one");
-
-		});
-
-		QUnit.module("maskMode property", {
-			beforeEach: function () {
-				this.oTp = new sap.m.TimePicker();
-				this.oTp.placeAt("qunit-fixture");
-				sap.ui.getCore().applyChanges();
-			},
-
-			afterEach: function () {
-				this.oTp.destroy();
-				this.oTp = null;
-			}
-		});
-
-		QUnit.test("_isMaskEnabled returns true if maskMode is 'On'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.On; });
-
-			// assert
-			assert.ok(this.oTp._isMaskEnabled(), "mask should be enabled if maskMode is 'On'");
-
-			// cleanup
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("_isMaskEnabled returns false if maskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; });
-
-			// assert
-			assert.ok(!this.oTp._isMaskEnabled(), "mask should be disabled if maskMode is 'Off'");
-
-			// cleanup
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onfocusin event should call MaskEnabler's onfocusin if maskMode is 'On'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.On; }),
-					oMaskEnablerFocusInSpy = this.spy(sap.m.MaskEnabler, "onfocusin");
-
-			// act
-			this.oTp.onfocusin({ target: this.oTp.getDomRef() });
-
-			// assert
-			assert.equal(oMaskEnablerFocusInSpy.callCount, 1, "MaskEnabler.onfocusin should be called once");
-
-			// cleanup
-			oMaskEnablerFocusInSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onfocusin event should call MaskEnabler's onfocusin if maskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-				oMaskEnablerFocusInSpy = this.spy(sap.m.MaskEnabler, "onfocusin");
-
-			// act
-			this.oTp.onfocusin({ target: this.oTp.getDomRef() });
-
-			// assert
-			assert.equal(oMaskEnablerFocusInSpy.callCount, 1, "MaskEnabler.onfocusin should be called once");
-
-			// cleanup
-			oMaskEnablerFocusInSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onfocusin event should call _applyMask and _positionCaret if maskMode is 'On'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.On; }),
-				oApplyMaskSpy = this.spy(this.oTp, "_applyMask"),
-				oPositionCaret = this.spy(this.oTp, "_positionCaret");
-
-			// act
-			this.oTp.onfocusin({ target: this.oTp.getDomRef() });
-
-			// assert
-			assert.equal(oApplyMaskSpy.callCount, 1, "MaskEnabler._applyMask should be called once");
-			assert.equal(oPositionCaret.callCount, 1, "MaskEnabler._positionCaret should be called once");
-
-			// cleanup
-			oApplyMaskSpy.restore();
-			oPositionCaret.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onfocusin event should not call _applyMask and _positionCaret if maskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-				oApplyMaskSpy = this.spy(this.oTp, "_applyMask"),
-				oPositionCaret = this.spy(this.oTp, "_positionCaret");
-
-			// act
-			this.oTp.onfocusin({ target: this.oTp.getDomRef() });
-
-			// assert
-			assert.equal(oApplyMaskSpy.callCount, 0, "MaskEnabler._applyMask should not be called");
-			assert.equal(oPositionCaret.callCount, 0, "MaskEnabler._positionCaret should not be called");
-
-			// cleanup
-			oApplyMaskSpy.restore();
-			oPositionCaret.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("setValue method should call MaskEnabler's setValue method if maskMode is 'On'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.On; }),
-				oMaskEnablerSetValueSpy = this.spy(sap.m.MaskEnabler, "setValue");
-
-			// act
-			this.oTp.setValue("12:12:12");
-
-			// assert
-			assert.equal(oMaskEnablerSetValueSpy.callCount, 1, "MaskEnabler.setValue should be called once");
-
-			// cleanup
-			oMaskEnablerSetValueSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("setValue method should call MaskEnabler's setValue method if maskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-				oMaskEnablerSetValueSpy = this.spy(sap.m.MaskEnabler, "setValue");
-
-			// act
-			this.oTp.setValue("12:12:12");
-
-			// assert
-			assert.equal(oMaskEnablerSetValueSpy.callCount, 1, "MaskEnabler.setValue should be called once");
-
-			// cleanup
-			oMaskEnablerSetValueSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("setValue method should call _applyRules if maskMode is 'On'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.On; }),
-				oApplyRulesSpy = this.spy(this.oTp, "_applyRules");
-
-			// act
-			this.oTp.setValue("12:12:12");
-
-			// assert
-			assert.equal(oApplyRulesSpy.callCount, 1, "MaskEnabler._applyRules should be called once");
-
-			// cleanup
-			oApplyRulesSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("setValue method should not call _applyRules if maskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-				oApplyRulesSpy = this.spy(this.oTp, "_applyRules");
-
-			// act
-			this.oTp.setValue("12:12:12");
-
-			// assert
-			assert.equal(oApplyRulesSpy.callCount, 0, "MaskEnabler._applyRules should not be called");
-
-			// cleanup
-			oApplyRulesSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onkeydown event should call MaskEnabler's onkeydown event if maskMode is 'On'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.On; }),
-					oKeyDownSpy = this.spy(sap.m.MaskEnabler, "onkeydown");
-
-			// act
-			this.oTp.onkeydown({});
-
-			// assert
-			assert.equal(oKeyDownSpy.callCount, 1, "MaskEnabler.onkeydown should be called once");
-
-			// cleanup
-			oKeyDownSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onkeydown event should call MaskEnabler's onkeydown event if maskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-				oKeyDownSpy = this.spy(sap.m.MaskEnabler, "onkeydown");
-
-			// act
-			this.oTp.onkeydown({});
-
-			// assert
-			assert.equal(oKeyDownSpy.callCount, 1, "MaskEnabler.onkeydown should be called once");
-
-			// cleanup
-			oKeyDownSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onkeydown event should call _keyDownHandler if maskMode is 'On'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.On; }),
-					oKeyDownHandlerSpy = this.spy(this.oTp, "_keyDownHandler");
-
-			// act
-			this.oTp.onkeydown({});
-
-			// assert
-			assert.equal(oKeyDownHandlerSpy.callCount, 1, "MaskEnabler._keyDownHandler should be called once");
-
-			// cleanup
-			oKeyDownHandlerSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onkeydown event should not call _keyDownHandler if maskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-				oKeyDownHandlerSpy = this.spy(this.oTp, "_keyDownHandler");
-
-			// act
-			this.oTp.onkeydown({});
-
-			// assert
-			assert.equal(oKeyDownHandlerSpy.callCount, 0, "MaskEnabler._keyDownHandler should not be called");
-
-			// cleanup
-			oKeyDownHandlerSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onfocusout event should call closeValueStateMessage and _inputCompletedHandler if maskMode is 'On'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.On; }),
-				oCloseValueStateMessageSpy = this.spy(this.oTp, "closeValueStateMessage"),
-				oInputCompletedHandlerSpy = this.spy(this.oTp, "_inputCompletedHandler");
-
-			// act
-			this.oTp.onfocusout({});
-
-			// assert
-			assert.equal(oCloseValueStateMessageSpy.callCount, 1, "MaskEnabler.closeValueStateMessage should be called once");
-			assert.equal(oInputCompletedHandlerSpy.callCount, 1, "MaskEnabler._inputCompletedHandler should be called once");
-
-			// cleanup
-			oCloseValueStateMessageSpy.restore();
-			oInputCompletedHandlerSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onfocusout event should call InputBase.prototype.onfocusout if maskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-				oInputBaseFocusOutSpy = this.spy(sap.m.InputBase.prototype, "onfocusout");
-
-			// act
-			this.oTp.onfocusout({});
-
-			// assert
-			assert.equal(oInputBaseFocusOutSpy.callCount, 1, "InputBase.prototype.onfocusout should be called once");
-
-			// cleanup
-			oInputBaseFocusOutSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("oninput event should call _applyMask and _positionCaret if maskMode is 'On'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.On; }),
-				oApplyMaskSpy = this.spy(this.oTp, "_applyMask"),
-				oPositionCaretSpy = this.spy(this.oTp, "_positionCaret");
-
-			// act
-			this.oTp.oninput({ setMarked: function () {}});
-
-			// assert
-			assert.equal(oApplyMaskSpy.callCount, 1, "MaskEnabler._applyMask should be called once");
-			assert.equal(oPositionCaretSpy.callCount, 1, "MaskEnabler._positionCaret should be called once");
-
-			// cleanup
-			oApplyMaskSpy.restore();
-			oPositionCaretSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("oninput event should not call _applyMask and _positionCaret if maskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-					oApplyMaskSpy = this.spy(this.oTp, "_applyMask"),
-					oPositionCaretSpy = this.spy(this.oTp, "_positionCaret");
-
-			// act
-			this.oTp.oninput({ setMarked: function () {}});
-
-			// assert
-			assert.equal(oApplyMaskSpy.callCount, 0, "MaskEnabler._applyMask should not be called");
-			assert.equal(oPositionCaretSpy.callCount, 0, "MaskEnabler._positionCaret should not be called ");
-
-			// cleanup
-			oApplyMaskSpy.restore();
-			oPositionCaretSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onkeypress event should call _keyPressHandler if maskMode is 'On'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.On; }),
-				okeyPressHandlerSpy = this.spy(this.oTp, "_keyPressHandler");
-
-			// act
-			this.oTp.onkeypress({ preventDefault: function() {}});
-
-			// assert
-			assert.equal(okeyPressHandlerSpy.callCount, 1, "MaskEnabler._keyPressHandler should be called once");
-
-			// cleanup
-			okeyPressHandlerSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onkeypress event should not call _keyPressHandler if maskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-				okeyPressHandlerSpy = this.spy(this.oTp, "_keyPressHandler");
-
-			// act
-			this.oTp.onkeypress({ preventDefault: function() {}});
-
-			// assert
-			assert.equal(okeyPressHandlerSpy.callCount, 0, "MaskEnabler._keyPressHandler should not be called");
-
-			// cleanup
-			okeyPressHandlerSpy.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onkeydown event should call _keyDownHandler if maskMode is 'On'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.On; }),
-				oKeyDownHandler = this.spy(this.oTp, "_keyDownHandler");
-
-			// act
-			this.oTp.onkeydown({});
-
-			// assert
-			assert.equal(oKeyDownHandler.callCount, 1, "MaskEnabler._keyDownHandler should be called once");
-
-			// cleanup
-			oKeyDownHandler.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onkeydown event should not call _keyDownHandler if maskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-				oKeyDownHandler = this.spy(this.oTp, "_keyDownHandler");
-
-			// act
-			this.oTp.onkeydown({});
-
-			// assert
-			assert.equal(oKeyDownHandler.callCount, 0, "MaskEnabler._keyDownHandler should not be called");
-
-			// cleanup
-			oKeyDownHandler.restore();
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onfocusin: input value should be empty if the TimePickerMaskMode is 'Off'", function (assert) {
-			// prepare
-			var sExpectedValue = "",
-				oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; });
-
-			// act
-			this.oTp.focus();
-
-			// assert
-			assert.equal(jQuery("#" + this.oTp.getId() + "-inner").val(), sExpectedValue, "mask should not be applied to the input");
-
-			// cleanup
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("input should fire change event if value is changed and TimePickerMaskMode is 'Off' and focus leaves", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-				oChangeSpy = this.spy();
-			this.oTp.attachChange(oChangeSpy);
-
-			// act
-			this.oTp.focus();
-			jQuery(this.oTp.getFocusDomRef()).val("11");
-			jQuery(this.oTp.getFocusDomRef()).blur();
-
-			// assert
-			assert.equal(oChangeSpy.callCount, 1, "change event should be called once");
-
-			// cleanup
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("onsapfocusleave: input should not fire change event if value is not changed and TimePickerMaskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-					oChangeSpy = this.spy();
-			this.oTp.attachChange(oChangeSpy);
-
-			// act
-			this.oTp.focus();
-			this.oTp.onsapfocusleave();
-
-			// assert
-			assert.equal(oChangeSpy.callCount, 0, "change event should not be called");
-
-			// cleanup
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.test("on keydown enter: input should fire change event if value is changed and TimePickerMaskMode is 'Off'", function (assert) {
-			// prepare
-			var oGetMaskModeStub = this.stub(this.oTp, "getMaskMode", function () { return TimePickerMaskMode.Off; }),
-				oChangeSpy = this.spy();
-			this.oTp.attachChange(oChangeSpy);
-			sap.ui.getCore().applyChanges();
-
-			// act
-			jQuery(this.oTp.getFocusDomRef()).val("11");
-			qutils.triggerKeydown(jQuery(this.oTp.getFocusDomRef()), jQuery.sap.KeyCodes.ENTER);
-
-			// assert
-			assert.equal(oChangeSpy.callCount, 1, "change event should be called once");
-
-			// cleanup
-			oGetMaskModeStub.restore();
-		});
-
-		QUnit.module("initialFocusedDate property", {
-			beforeEach: function () {
-				this.oTp = new sap.m.TimePicker();
-				this.oTp.placeAt("qunit-fixture");
-				sap.ui.getCore().applyChanges();
-			},
-
-			afterEach: function () {
-				this.oTp.destroy();
-				this.oTp = null;
-			}
-		});
-
-		QUnit.test("_shouldSetInitialFocusedDateValue should return false if TimePicker has value and initialFocusedDate", function (assert) {
-			// prepare
-			var oGetInitialFocusedDateValueStub = this.stub(this.oTp, "getInitialFocusedDateValue", function () { return new Date(2017, 10, 10, 10, 11, 12, 13) }),
-				oIsValidValue = this.stub(this.oTp, "_isValidValue", function () { return true; });
-			this.oTp.setValue("12:11:10");
-
-			// act && assert
-			assert.equal(this.oTp._shouldSetInitialFocusedDateValue(), false, "method should return false");
-
-			// cleanup
-			oGetInitialFocusedDateValueStub.restore();
-			oIsValidValue.restore();
-		});
-
-		QUnit.test("_shouldSetInitialFocusedDateValue should return false if TimePicker has value and no initialFocusedDate", function (assert) {
-			// act
-			this.oTp.setValue("12:11:10");
-
-			// assert
-			assert.equal(this.oTp._shouldSetInitialFocusedDateValue(), false, "method should return false");
-		});
-
-		QUnit.test("_shouldSetInitialFocusedDateValue should return false if TimePicker has no value and no initialFocusedDate", function (assert) {
-			// prepare
-			var oIsValidValue = this.stub(this.oTp, "_isValidValue", function () { return true; });
-
-			// assert
-			assert.equal(this.oTp._shouldSetInitialFocusedDateValue(), false, "method should return false");
-
-			// cleanup
-			oIsValidValue.restore();
-		});
-
-		QUnit.test("_shouldSetInitialFocusedDateValue should return true if TimePicker has initialFocusedDate and no value", function (assert) {
-			// prepare
-			var oGetInitialFocusedDateValueStub = this.stub(this.oTp, "getInitialFocusedDateValue", function () { return new Date(2017, 10, 10, 10, 11, 12, 13) }),
-					oIsValidValue = this.stub(this.oTp, "_isValidValue", function () { return true; });
-
-			// assert
-			assert.equal(this.oTp._shouldSetInitialFocusedDateValue(), true, "method should return true");
-
-			// cleanup
-			oGetInitialFocusedDateValueStub.restore();
-			oIsValidValue.restore();
-		});
-
-		QUnit.test("_shouldSetInitialFocusedDateValue should return true if TimePicker value is not valid", function (assert) {
-			// prepare
-			var oIsValidValue = this.stub(this.oTp, "_isValidValue", function () { return false; });
-
-			// assert
-			assert.equal(this.oTp._shouldSetInitialFocusedDateValue(), true, "method should return true");
-
-			// cleanup
-			oIsValidValue.restore();
-		});
-
-		QUnit.test("onBeforeOpen should call _setTimeValues with provided dateValue not initialFocusedDateValue", function (assert) {
-			// prepare
-			var oExpectedDateValue = new Date(2017, 8, 9, 10, 11, 12, 13),
-				oInitialFocusedDateValue = new Date(2017, 2, 3, 4, 5, 6, 7),
-				oTimePickerSliders = new sap.m.TimePickerSliders(this.oTp.getId() + "-sliders", {
-					displayFormat: "hh:mm",
-					labelText: "",
-					minutesStep: this.oTp.getMinutesStep(),
-					secondsStep: this.oTp.getSecondsStep()
-				}),
-				oGetDateValue = this.stub(this.oTp, "getDateValue", function () { return oExpectedDateValue }),
-				oShouldSetInitialFocusedDateValueStub = this.stub(this.oTp, "_shouldSetInitialFocusedDateValue", function () { return false; }),
-				oGetInitialFocusedDateValueStub = this.stub(this.oTp, "getInitialFocusedDateValue", function () { return oInitialFocusedDateValue }),
-				oGetSlidersStub = this.stub(this.oTp, "_getSliders", function () { return oTimePickerSliders; }),
-				oIsValidValue = this.stub(this.oTp, "_isValidValue", function () { return true; }),
-				oSetTimeValuesSpy = this.spy(oTimePickerSliders, "_setTimeValues");
-
-			// act
-			this.oTp.onBeforeOpen();
-
-			assert.ok(oSetTimeValuesSpy.calledWith(oExpectedDateValue), "sliders value should be set to the getDateValue");
-			assert.equal(oSetTimeValuesSpy.getCall(0).args[0].toString(), oExpectedDateValue.toString(), "_setTimeValues should be called with " + oExpectedDateValue);
-
-			// cleanup
-			oGetDateValue.restore();
-			oShouldSetInitialFocusedDateValueStub.restore();
-			oGetInitialFocusedDateValueStub.restore();
-			oGetSlidersStub.restore();
-			oSetTimeValuesSpy.restore();
-			oIsValidValue.restore();
-			oTimePickerSliders.destroy();
-		});
-
-		QUnit.test("onBeforeOpen should call _setTimeValues with provided initialFocusedDateValue if there is no value", function (assert) {
-			// prepare
-			var oExpectedDateValue = new Date(2017, 8, 9, 10, 11, 12, 13),
-				oTimePickerSliders = new sap.m.TimePickerSliders(this.oTp.getId() + "-sliders", {
-					displayFormat: "hh:mm",
-					labelText: "",
-					minutesStep: this.oTp.getMinutesStep(),
-					secondsStep: this.oTp.getSecondsStep()
-				}),
-				oGetDateValue = this.stub(this.oTp, "getDateValue", function () { return null }),
-				oGetInitialFocusedDateValueStub = this.stub(this.oTp, "getInitialFocusedDateValue", function () { return oExpectedDateValue }),
-				oGetSlidersStub = this.stub(this.oTp, "_getSliders", function () { return oTimePickerSliders; }),
-				oIsValidValue = this.stub(this.oTp, "_isValidValue", function () { return true; }),
-				oSetTimeValuesSpy = this.spy(oTimePickerSliders, "_setTimeValues");
-
-			// act
-			this.oTp.onBeforeOpen();
-
-			assert.ok(oSetTimeValuesSpy.calledWith(oExpectedDateValue), "sliders value should be set to the initialFocusedDateValue");
-			assert.equal(oSetTimeValuesSpy.getCall(0).args[0].toString(), oExpectedDateValue.toString(), "_setTimeValues should be called with " + oExpectedDateValue);
-
-			// cleanup
-			oGetDateValue.restore();
-			oGetInitialFocusedDateValueStub.restore();
-			oGetSlidersStub.restore();
-			oSetTimeValuesSpy.restore();
-			oIsValidValue.restore();
-			oTimePickerSliders.destroy();
-		});
 
 		QUnit.module("events and event handlers", {
 			beforeEach: function () {
@@ -3621,27 +2713,6 @@
 			assert.equal(spy.callCount, 2, "changed event fired twice");
 
 			spy = null;
-			tp.destroy();
-		});
-
-		QUnit.test("_handleInputChange formats correctly givven value before setting it to the property value", function(assert) {
-			//system under test
-			var tp = new sap.m.TimePicker("tp", {
-				valueFormat: "h:mm:ss",
-				displayFormat: "h:mm:ss"
-			});
-
-			//arrange
-			tp.placeAt("qunit-fixture");
-			sap.ui.getCore().applyChanges();
-
-			//act
-			tp._$input.val("2:28:34");
-			tp._handleInputChange();
-
-			//assert
-			assert.equal(tp.getValue(), '2:28:34', "getValue is correct");
-
 			tp.destroy();
 		});
 

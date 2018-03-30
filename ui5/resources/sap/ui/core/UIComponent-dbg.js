@@ -1,6 +1,6 @@
 /*
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -14,6 +14,11 @@ sap.ui.define(['jquery.sap.global', '../base/ManagedObject', './Component', './l
 
 
 	/**
+	 * Base Class for UIComponent.
+	 *
+	 * If you are extending a UIComponent make sure you read the {@link #.extend} documentation since the metadata is special.
+	 *
+	 * @class
 	 * Creates and initializes a new UIComponent with the given <code>sId</code> and
 	 * settings.
 	 *
@@ -23,21 +28,17 @@ sap.ui.define(['jquery.sap.global', '../base/ManagedObject', './Component', './l
 	 *
 	 * @param {string}
 	 *            [sId] Optional ID for the new control; generated automatically if
-	 *            no non-empty ID is given; Note: this can be omitted, no matter
-	 *            whether <code>mSettings</code> will be given or not
+	 *            no non-empty ID is given Note: this can be omitted, no matter
+	 *            whether <code>mSettings</code> will be given or not!
 	 * @param {object}
-	 *            [mSettings] Optional map/JSON-object with initial settings for the
+	 *            [mSettings] optional map/JSON-object with initial settings for the
 	 *            new component instance
-	 *
-	 * @class Base Class for UIComponent.
-	 *
-	 * If you are extending a UIComponent make sure you read the {@link #.extend} documentation since the metadata is special.
-	 *
 	 * @public
+	 *
 	 * @extends sap.ui.core.Component
 	 * @abstract
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @alias sap.ui.core.UIComponent
 	 * @since 1.9.2
 	 * @ui5-metamodel This control/element also will be described in the UI5 (legacy) designtime metamodel
@@ -71,7 +72,7 @@ sap.ui.define(['jquery.sap.global', '../base/ManagedObject', './Component', './l
 				 */
 				"rootControl": { type: "sap.ui.core.Control", multiple: false, visibility: "hidden" }
 			},
-			designtime: "sap/ui/core/designtime/UIComponent.designtime",
+			designTime : true,
 			routing: {
 			}
 			//autoDestroy: false // TODO: destroy component when view should be destroyed (not implemented yet!)

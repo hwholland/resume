@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.LightBox.Component", {
 
 		metadata: {
-			rootView: {
-				"viewName": "sap.m.sample.LightBox.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.m.sample.LightBox.V",
 			dependencies: {
 				libs: [
 					"sap.m",

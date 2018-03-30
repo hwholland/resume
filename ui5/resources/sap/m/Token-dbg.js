@@ -1,21 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.Token.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'./Tokenizer',
-	'sap/ui/core/library',
-	'sap/ui/core/Icon',
-	'./TokenRenderer',
-	'jquery.sap.keycodes'
-],
-	function(jQuery, library, Control, Tokenizer, coreLibrary, Icon, TokenRenderer) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Tokenizer', 'sap/ui/core/library', 'sap/ui/core/InvisibleText', 'sap/ui/core/Icon', 'jquery.sap.keycodes'],
+	function(jQuery, library, Control, Tokenizer, coreLibrary, InvisibleText, Icon) {
 	"use strict";
 
 
@@ -44,7 +35,7 @@ sap.ui.define([
 	 * Tokens can only be used with the Tokenizer as a container.
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -124,6 +115,17 @@ sap.ui.define([
 			deselect : {}
 		}
 	}});
+
+	var oRb = sap.ui.getCore().getLibraryResourceBundle("sap.m");
+
+	// create an ARIA announcement and remember its ID for later use in the renderer:
+	Token.prototype._sAriaTokenLabelId = new InvisibleText({
+		text: oRb.getText("TOKEN_ARIA_LABEL")
+	}).toStatic().getId();
+
+	Token.prototype._sAriaTokenDeletableId = new InvisibleText({
+		text: oRb.getText("TOKEN_ARIA_DELETABLE")
+	}).toStatic().getId();
 
 	/**
 	 * This file defines behavior for the control,

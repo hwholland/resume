@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -197,7 +197,8 @@
 			component: oComponent
 		});
 		oContainer.placeAt(&quot;target&quot;);
-	});</pre>
+	});
+</pre>
                                           </div>
                                        
                                        					
@@ -208,12 +209,16 @@
                                        						
                                        <div class="p">Load the component asynchronously with &quot;manifest first&quot; mode by specifying the component
                                           							name:
-                                          							<pre class="pre codeblock prettyprint lang-js">	var oContainer = new sap.ui.core.ComponentContainer({
+                                          							<pre class="pre codeblock prettyprint lang-js">	sap.ui.component({
 		name: &quot;samples.components.sample&quot;,
 		manifest: true,
 		async: true
-	});
-	oContainer.placeAt(&quot;target&quot;);</pre>
+	}).then(function(oComponent) {
+		var oContainer = new sap.ui.core.ComponentContainer({
+			component: oComponent
+		});
+		oContainer.placeAt(&quot;target&quot;);
+	});</pre>
                                           </div>
                                        
                                        					
@@ -446,7 +451,7 @@
                                              								
                                              <tr class="row">
                                                 									
-                                                <th class="entry" valign="top" id="d146045e301">
+                                                <th class="entry" valign="top" id="d138570e301">
                                                    										
                                                    <p class="p">Old Code</p>
                                                    
@@ -454,7 +459,7 @@
                                                 </th>
                                                 
                                                 									
-                                                <th class="entry" valign="top" id="d146045e307">
+                                                <th class="entry" valign="top" id="d138570e307">
                                                    										
                                                    <p class="p">Recommended Code</p>
                                                    
@@ -472,7 +477,7 @@
                                              								
                                              <tr class="row">
                                                 									
-                                                <td class="entry" valign="top" headers="d146045e301 ">
+                                                <td class="entry" valign="top" headers="d138570e301 ">
                                                    										
                                                    <div class="p"><span class="ph filepath">manifest.json</span> with dependency
                                                       											declaration
@@ -491,7 +496,7 @@
                                                 </td>
                                                 
                                                 									
-                                                <td class="entry" valign="top" headers="d146045e307 ">
+                                                <td class="entry" valign="top" headers="d138570e307 ">
                                                    										
                                                    <div class="p"><span class="ph filepath">manifest.json</span> with declaration of
                                                       											reuse
@@ -521,7 +526,7 @@
                                              								
                                              <tr class="row">
                                                 									
-                                                <td class="entry" valign="top" headers="d146045e301 ">
+                                                <td class="entry" valign="top" headers="d138570e301 ">
                                                    										
                                                    <div class="p"><span class="ph filepath">Component.js</span> with nested reuse
                                                       											component:<pre class="pre codeblock prettyprint lang-js">createContent: function() {
@@ -537,7 +542,7 @@
                                                 </td>
                                                 
                                                 									
-                                                <td class="entry" valign="top" headers="d146045e307 ">
+                                                <td class="entry" valign="top" headers="d138570e307 ">
                                                    										
                                                    <div class="p"><span class="ph filepath">Component.js</span> that loads the reuse
                                                       											component<pre class="pre codeblock prettyprint lang-js">createContent: function() {

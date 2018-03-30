@@ -234,13 +234,13 @@ sap.ui.define([
 		},
 
 		onAfterRendering: function () {
-			var oButton = this.byId('showQuickView');
+			var oButton = this.getView().byId('showQuickView');
 			oButton.$().attr('aria-haspopup', true);
 
-			oButton = this.byId('employeeQuickView');
+			oButton = this.getView().byId('employeeQuickView');
 			oButton.$().attr('aria-haspopup', true);
 
-			oButton = this.byId('genericQuickView');
+			oButton = this.getView().byId('genericQuickView');
 			oButton.$().attr('aria-haspopup', true);
 		},
 

@@ -14,7 +14,7 @@ The enabled property of an item (@link sap.ui.unified.MenuItemBase#getEnabled) h
         </property>
         <property group="Accessibility" type="sap.ui.core/string" name="ariaDescription">
             <documentation>Accessible label / description of the menu for assistive technologies like screenreaders.</documentation>
-            <deprecation since="1.27.0">replaced by &lt;code&gt;ariaLabelledBy&lt;/code&gt; association</deprecation>
+            <deprecation since="1.27.0">Please use association &lt;code&gt;ariaLabelledBy&lt;/code&gt; instead.</deprecation>
         </property>
         <property group="Behavior" defaultValue="0" type="sap.ui.core/int" name="maxVisibleItems">
             <documentation>The maximum number of items which are displayed before an overflow mechanism takes effect.
@@ -50,7 +50,7 @@ For values smaller than 1, paging behaves in a similar way to when using the &lt
         </association>
     </associations>
     <methods>
-        <method type="sap.ui.core/void" name="open">
+        <method type="any" name="open">
             <documentation>Opens the menu at the specified position.
 
 The position of the menu is defined relative to an element in the visible DOM by specifying
@@ -81,7 +81,7 @@ See {@link sap.ui.core.Popup#open Popup#open} for further details about popup po
                 </parameter>
             </parameters>
         </method>
-        <method type="sap.ui.core/void" name="close">
+        <method type="any" name="close">
             <documentation>Closes the menu.</documentation>
         </method>
     </methods>

@@ -1,10 +1,10 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
-sap.ui.define(["sap/ui/core/library"],
-	function(coreLibrary) {
+sap.ui.define(["sap/ui/core/library", "sap/m/ObjectAttribute"],
+	function(coreLibrary, ObjectAttribute) {
 	"use strict";
 
 
@@ -17,10 +17,6 @@ sap.ui.define(["sap/ui/core/library"],
 	 * @namespace
 	 */
 	var ObjectAttributeRenderer = {
-		MAX_LINES: {
-			SINGLE_LINE: 1,
-			MULTI_LINE: 2
-		}
 	};
 
 	/**
@@ -101,9 +97,9 @@ sap.ui.define(["sap/ui/core/library"],
 
 		if (oAttrAggregation && oParent) {
 			if ((oParent instanceof sap.m.ObjectHeader) && !oOA.getParent().getResponsive()) {
-				oOA._setControlWrapping(oAttrAggregation, true, ObjectAttributeRenderer.MAX_LINES.MULTI_LINE);
+				oOA._setControlWrapping(oAttrAggregation, true, ObjectAttribute.MAX_LINES.MULTI_LINE);
 			} else {
-				oOA._setControlWrapping(oAttrAggregation, false, ObjectAttributeRenderer.MAX_LINES.SINGLE_LINE);
+				oOA._setControlWrapping(oAttrAggregation, false, ObjectAttribute.MAX_LINES.SINGLE_LINE);
 			}
 			oRm.renderControl(oAttrAggregation);
 		} else {

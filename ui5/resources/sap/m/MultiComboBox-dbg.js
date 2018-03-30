@@ -1,45 +1,11 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-sap.ui.define([
-	'jquery.sap.global',
-	'./InputBase',
-	'./ComboBoxTextField',
-	'./ComboBoxBase',
-	'./Input',
-	'./ToggleButton',
-	'./List',
-	'./Popover',
-	'./library',
-	'sap/ui/core/EnabledPropagator',
-	'sap/ui/core/IconPool',
-	'sap/ui/core/library',
-	'sap/ui/Device',
-	'sap/ui/core/Item',
-	'./MultiComboBoxRenderer',
-	'jquery.sap.xml',
-	'jquery.sap.keycodes'
-],
-function(
-	jQuery,
-	InputBase,
-	ComboBoxTextField,
-	ComboBoxBase,
-	Input,
-	ToggleButton,
-	List,
-	Popover,
-	library,
-	EnabledPropagator,
-	IconPool/* , jQuerySap */,
-	coreLibrary,
-	Device,
-	Item,
-	MultiComboBoxRenderer
-	) {
+sap.ui.define(['jquery.sap.global', './InputBase', './ComboBoxTextField', './ComboBoxBase', './Input', './ToggleButton', './List', './Popover', './library', 'sap/ui/core/EnabledPropagator', 'sap/ui/core/IconPool', 'sap/ui/core/library', 'sap/ui/Device', 'sap/ui/core/Item', 'jquery.sap.xml', 'jquery.sap.keycodes'],
+	function(jQuery, InputBase, ComboBoxTextField, ComboBoxBase, Input, ToggleButton, List, Popover, library, EnabledPropagator, IconPool/* , jQuerySap */, coreLibrary, Device, Item) {
 	"use strict";
 
 	// shortcut for sap.m.ListType
@@ -65,7 +31,7 @@ function(
 	 * @extends sap.m.ComboBoxBase
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -76,7 +42,6 @@ function(
 	var MultiComboBox = ComboBoxBase.extend("sap.m.MultiComboBox", /** @lends sap.m.MultiComboBox.prototype */ { metadata: {
 
 		library: "sap.m",
-		designtime: "sap/m/designtime/MultiComboBox.designtime",
 		properties: {
 
 			/**
@@ -362,6 +327,7 @@ function(
 				this._selectItemByKey(oEvent);
 			} else {
 				this._showWrongValueVisualEffect();
+				this.setValue(null);
 			}
 		}
 	};
@@ -377,22 +343,14 @@ function(
 	 * @private
 	 */
 	MultiComboBox.prototype.onsapfocusleave = function(oEvent) {
-		var oPicker = this.getAggregation("picker"),
-			bTablet = this.isPlatformTablet(),
-			oControl = sap.ui.getCore().byId(oEvent.relatedControlId),
-			oFocusDomRef = oControl && oControl.getFocusDomRef(),
-			sOldValue = this.getValue();
+		var oPicker = this.getAggregation("picker");
+		var bTablet = this.isPlatformTablet();
+		var oControl = sap.ui.getCore().byId(oEvent.relatedControlId);
+		var oFocusDomRef = oControl && oControl.getFocusDomRef();
 
 		// If focus target is outside of picker
 		if (!oPicker || !oPicker.getFocusDomRef() || !oFocusDomRef || !jQuery.contains(oPicker.getFocusDomRef(), oFocusDomRef)) {
-
 			this.setValue(null);
-
-			// fire change event only if the value of the MCB is not empty
-			if (sOldValue) {
-				this.fireChangeEvent("", { value: sOldValue });
-			}
-
 			// If focus is outside of the MultiComboBox
 			if (!(oControl instanceof sap.m.Token)) {
 				this._oTokenizer.scrollToEnd();
@@ -929,6 +887,7 @@ function(
 	/**
 	 * Create an instance type of <code>sap.m.List</code>.
 	 *
+	 * @returns {sap.m.List} The List instance
 	 * @protected
 	 */
 	MultiComboBox.prototype.createList = function() {
@@ -955,7 +914,6 @@ function(
 	/**
 	 * Update and synchronize "selectedItems" association and the "selectedItems" in the List.
 	 *
-	 * @param {object} mOptions Options object
 	 * @param {sap.ui.core.Item | null} mOptions.item The item instance
 	 * @param {string} mOptions.id The item ID
 	 * @param {string} mOptions.key The item key
@@ -1018,7 +976,6 @@ function(
 	/**
 	 * Remove an item from "selectedItems" association and the "selectedItems" in the List.
 	 *
-	 * @param {object} mOptions Options object
 	 * @param {sap.ui.core.Item | null} mOptions.item The item instance
 	 * @param {string} mOptions.id The item ID
 	 * @param {string} mOptions.key The item key
@@ -2419,7 +2376,6 @@ function(
 	 * Fill the list of items.
 	 *
 	 * @param {array} aItems An array with items type of sap.ui.core.Item.
-	 * @returns {null} Null if array is empty
 	 * @private
 	 */
 	MultiComboBox.prototype._fillList = function(aItems) {
@@ -2635,7 +2591,7 @@ function(
 	 * <b>Note:</b> If duplicate keys exist, the first item matching the key is returned.
 	 *
 	 * @param {string} sKey An item key that specifies the item to retrieve.
-	 * @returns {sap.ui.core.Item} The matching item
+	 * @returns {sap.ui.core.Item}
 	 * @public
 	 */
 	MultiComboBox.prototype.getItemByKey = function(sKey) {
@@ -2810,7 +2766,7 @@ function(
 	 * Getter for the control's ListItem.
 	 *
 	 * @param {sap.ui.core.Item} oItem The item
-	 * @returns {sap.m.StandardListItem | null} The ListItem
+	 * @returns {sap.m.StandardListItem | null}
 	 * @private
 	 * @since 1.24.0
 	 */

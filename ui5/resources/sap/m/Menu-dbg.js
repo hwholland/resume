@@ -1,12 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.Menu.
-sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Button', './Dialog', './NavContainer', './List', './Page', './MenuListItem', 'sap/ui/unified/Menu', 'sap/ui/unified/MenuItem', 'sap/ui/Device', 'sap/ui/core/EnabledPropagator'],
-	function(jQuery, library, Control, Button, Dialog, NavContainer, List, Page, MenuListItem, UfdMenu, UfdMenuItem, Device, EnabledPropagator) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Button', './Dialog', './NavContainer', './List', './Page', './MenuListItem', 'sap/ui/unified/Menu', 'sap/ui/Device', 'sap/ui/core/EnabledPropagator'],
+	function(jQuery, library, Control, Button, Dialog, NavContainer, List, Page, MenuListItem, UfdMenu, Device, EnabledPropagator) {
 		"use strict";
 
 		// shortcut for sap.m.ListType
@@ -28,7 +28,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Butto
 		 * @implements sap.ui.core.IContextMenu
 		 *
 		 * @author SAP SE
-		 * @version 1.54.2
+		 * @version 1.52.5
 		 *
 		 * @constructor
 		 * @public
@@ -99,7 +99,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Butto
 		 * @type {map}
 		 * @private
 		 */
-		Menu.UNFIFIED_MENU_ITEMS_PROPS = UfdMenuItem.getMetadata().getAllProperties();
+		Menu.UNFIFIED_MENU_ITEMS_PROPS = sap.ui.unified.MenuItem.getMetadata().getAllProperties();
 
 		/**
 		 * List items ID prefix.
@@ -394,7 +394,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Butto
 		};
 
 		Menu.prototype._createVisualMenuItemFromItem = function(oItem) {
-			return new UfdMenuItem({
+			return new sap.ui.unified.MenuItem({
 				id  : this._generateUnifiedMenuItemId(oItem.getId()),
 				icon: oItem.getIcon(),
 				text: oItem.getText(),
@@ -457,17 +457,8 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Butto
 			oList.rerender();
 		};
 
-		/**
-		 * Connects an instance of sap.ui.unified.MenuItem for given sap.m.MenuItem.
-		 * The sap.ui.unified.MenuItem is rendered to the end-user.
-		 * If there is an instance of sap.ui.unified.MenuItem already connected, this method does nothing.
-		 * @param {sap.m.MenuItem} oItem the item to assign a visual item for
-		 * @param {sap.ui.core.Control} oControl the container control
-		 * @param {int} iIndex the index of the given item inside the aggregation <items>
-		 * @private
-		 */
-		Menu.prototype._connectVisualItem = function(oItem, oControl, iIndex) {
-			if (!oControl || sap.ui.getCore().byId(oItem._getVisualControl())) {
+		Menu.prototype._addVisualItemFromItem = function(oItem, oControl, iIndex) {
+			if (!oControl) {
 				return;
 			}
 
@@ -534,7 +525,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Butto
 			do {
 				aUnfdMenuItemStack.push(oCurrentUnfdMenuItem.getId());
 				oCurrentUnfdMenuItem = oCurrentUnfdMenuItem.getParent().getParent();
-			} while (oCurrentUnfdMenuItem instanceof UfdMenuItem);
+			} while (oCurrentUnfdMenuItem instanceof sap.ui.unified.MenuItem);
 
 			aItems = this.getItems();
 			do {
@@ -592,7 +583,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Butto
 			Control.prototype.addAggregation.apply(this, arguments);
 
 			if (sAggregationName === "items") {
-				this._connectVisualItem(oObject, this._getVisualParent());
+				this._addVisualItemFromItem(oObject, this._getVisualParent());
 			}
 
 			return this;
@@ -602,7 +593,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Butto
 			Control.prototype.insertAggregation.apply(this, arguments);
 
 			if (sAggregationName === "items") {
-				this._connectVisualItem(oObject, this._getVisualParent(), iIndex);
+				this._addVisualItemFromItem(oObject, this._getVisualParent(), iIndex);
 			}
 
 			return this;
@@ -654,6 +645,8 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Butto
 						vMenuOrList.rerender();
 					}
 				}
+				// destroy removed visual items from Menu or List
+				oVisualItem.destroy();
 			}
 		};
 
@@ -774,7 +767,7 @@ sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', './Butto
 			var oLI;
 
 			if (oParentItem._getVisualChild()) { //this is not the first sub-item that is added
-				this._connectVisualItem(oNewItem, sap.ui.getCore().byId(oParentItem._getVisualChild()), iInsertIndex);
+				this._addVisualItemFromItem(oNewItem, sap.ui.getCore().byId(oParentItem._getVisualChild()), iInsertIndex);
 			} else {
 				if (Device.system.phone) {
 					this._initPageForParent(oParentItem);

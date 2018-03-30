@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -12,27 +12,6 @@ sap.ui.define([
 	"use strict";
 
 	var DocumentationRouter = Router.extend("sap.ui.documentation.sdk.util.DocumentationRouter", {
-
-		constructor : function() {
-			Router.prototype.constructor.apply(this, arguments);
-
-			this.getRoute("topicIdLegacyRoute").attachPatternMatched(this._onTopicOldRouteMatched, this);
-			this.getRoute("apiIdLegacyRoute").attachPatternMatched(this._onApiOldRouteMatched, this);
-		},
-
-		_onTopicOldRouteMatched: function(oEvent) {
-			var sId = oEvent.getParameter("arguments").id;
-			this.getView("sap.ui.documentation.sdk.view.App", "XML", "app").loaded().then(function(oView) {
-				oView.getController()._onTopicOldRouteMatched(sId);
-			});
-		},
-
-		_onApiOldRouteMatched: function(oEvent) {
-			var sId = oEvent.getParameter("arguments").id;
-			this.getView("sap.ui.documentation.sdk.view.App", "XML", "app").loaded().then(function(oView) {
-				oView.getController()._onApiOldRouteMatched(sId);
-			});
-		},
 
 		/**
 		 * mobile nav back handling

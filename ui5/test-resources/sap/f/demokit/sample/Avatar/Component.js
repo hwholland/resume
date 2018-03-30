@@ -4,11 +4,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 
 		return UIComponent.extend("sap.f.sample.Avatar.Component", {
 			metadata: {
-				rootView: {
-					"viewName": "sap.f.sample.Avatar.Avatar",
-					"type": "XML",
-					"async": true
-				},
+				rootView: "sap.f.sample.Avatar.Avatar",
 				dependencies: {
 					libs: [
 						"sap.f"

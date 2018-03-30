@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
@@ -66,14 +66,15 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.module("sap.ui.base.BindingParser", {
 		beforeEach : function (assert) {
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oSandbox = sinon.sandbox.create();
+			this.oLogMock = this.oSandbox.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
 
 			// create spies for all functions that are not referenced as constructors
 			for ( var n in oController ) {
 				if ( typeof oController[n] === 'function' && n !== 'mytype' ) {
-					this.spy(oController, n);
+					this.oSandbox.spy(oController, n);
 				}
 			}
 
@@ -85,6 +86,9 @@ sap.ui.require([
 				fnActual.call(/* arbitrary this */{}, /* arbitrary args */ "some", 42 );
 				assert.ok(fnExpected.calledOnce && fnExpected.calledOn(fnExpectedThis) && fnExpected.calledWithExactly("some", 42), sMessage);
 			};
+		},
+		afterEach : function () {
+			this.oSandbox.verifyAndRestore();
 		}
 	});
 
@@ -459,12 +463,15 @@ sap.ui.require([
 					at: oFixture.expression.length - 1
 				};
 
-			this.mock(ExpressionParser).expects("parse")
-				.withExactArgs(sinon.match.func, oFixture.expression, 2)
-				.returns(oParseResult);
+			this.stub(ExpressionParser, "parse", function () {
+				return oParseResult;
+			});
 
 			oBindingInfo = parse(oFixture.expression);
 
+			assert.strictEqual(typeof ExpressionParser.parse.args[0][0], "function");
+			assert.strictEqual(ExpressionParser.parse.args[0][1], oFixture.expression);
+			assert.strictEqual(ExpressionParser.parse.args[0][2], 2);
 			assert.deepEqual(oBindingInfo, {
 				formatter: oParseResult.result.formatter,
 				parts: oFixture.parts
@@ -479,30 +486,27 @@ sap.ui.require([
 		assert.strictEqual(o.model, "special}Name");
 	});
 
-	QUnit.test("Expression binding: propagate ExpressionParser exception", function (assert) {
-		var oError = new Error("error message"),
-			sInput = "{=invalid}";
+	QUnit.test("Expression binding: error handling", function (assert) {
+		var sMsg;
 
-		this.mock(ExpressionParser).expects("parse")
-			.withExactArgs(sinon.match.func, sInput, 2)
-			.throws(oError);
-
-		assert.throws(function () {
-			parse(sInput);
-		}, oError);
-	});
-
-	QUnit.test("Expression binding: expression binding must end with }", function (assert) {
-		var sInput = "{='foo',}",
-			sMsg = "Expected '}' and instead saw ',' in expression binding {='foo',} at position 7";
-
-		this.mock(ExpressionParser).expects("parse")
-			.withExactArgs(sinon.match.func, sInput, 2)
-			.returns({at: sInput.length - 2, result: {}});
+		this.stub(ExpressionParser, "parse", function (fnResolveBinding, sInput) {
+			if (sInput === "{=invalid}") {
+				throw new Error("error message");
+			}
+			if (sInput === "{='foo',}") {
+				return {at: sInput.length - 2, result: {}};
+			}
+			return {at: sInput.length - 1, result: {}};
+		});
 
 		assert.throws(function () {
-			parse(sInput);
-		}, {message : sMsg, name : "SyntaxError"});
+			parse("{=invalid}");
+		}, /error message/, "propagate ExpressionParser exception");
+
+		sMsg = "Expected '}' and instead saw ',' in expression binding {='foo',} at position 7";
+		assert.throws(function () {
+			parse("{='foo',}");
+		}, new RegExp(jQuery.sap.escapeRegExp(sMsg)), "expression binding must end with }");
 	});
 
 	QUnit.test("mergeParts w/o root formatter", function (assert) {

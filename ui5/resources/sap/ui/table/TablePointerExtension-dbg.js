@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -822,18 +822,14 @@ sap.ui.define([
 					} else {
 						oPointerExtension._bHideMenu = true;
 					}
-				} else if (oCellInfo.isOfType(TableUtils.CELLTYPE.ANYCONTENTCELL)) {
-					if (TableUtils.Menu.hasContextMenu(this)) {
+				} else if (oCellInfo.isOfType(TableUtils.CELLTYPE.DATACELL)) {
+					bMenuOpen = this._oCellContextMenu && this._oCellContextMenu.bOpen;
+					var bMenuOpenedAtAnotherDataCell = bMenuOpen && this._oCellContextMenu.oOpenerRef !== $Cell[0];
+
+					if (!bMenuOpen || bMenuOpenedAtAnotherDataCell) {
 						oPointerExtension._bShowMenu = true;
 					} else {
-						bMenuOpen = this._oCellContextMenu && this._oCellContextMenu.bOpen;
-						var bMenuOpenedAtAnotherDataCell = bMenuOpen && this._oCellContextMenu.oOpenerRef !== $Cell[0];
-
-						if (!bMenuOpen || bMenuOpenedAtAnotherDataCell) {
-							oPointerExtension._bShowMenu = true;
-						} else {
-							oPointerExtension._bHideMenu = true;
-						}
+						oPointerExtension._bHideMenu = true;
 					}
 				} else {
 					oPointerExtension._bShowDefaultMenu = true;
@@ -917,7 +913,7 @@ sap.ui.define([
 			} else if (oPointerExtension._bShowMenu) {
 				oEvent.setMarked("handledByPointerExtension");
 				oEvent.preventDefault(); // To prevent opening the default browser context menu.
-				TableUtils.Menu.openContextMenu(this, oEvent.target, false, null, oEvent);
+				TableUtils.Menu.openContextMenu(this, oEvent.target, false);
 				delete oPointerExtension._bShowMenu;
 
 			} else if (oPointerExtension._bHideMenu) {
@@ -936,7 +932,7 @@ sap.ui.define([
 	 * @class Extension for sap.ui.table.Table which handles mouse and touch related things.
 	 * @extends sap.ui.table.TableExtension
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @constructor
 	 * @private
 	 * @alias sap.ui.table.TablePointerExtension

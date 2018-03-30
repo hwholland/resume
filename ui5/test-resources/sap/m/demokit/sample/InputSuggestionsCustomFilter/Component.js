@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.InputSuggestionsCustomFilter.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.InputSuggestionsCustomFilter.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.InputSuggestionsCustomFilter.V",
 			dependencies : {
 				libs : [
 					"sap.m",

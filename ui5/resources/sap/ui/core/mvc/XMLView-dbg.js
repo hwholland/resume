@@ -1,43 +1,18 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.core.mvc.XMLView.
-sap.ui.define([
-    'jquery.sap.global',
-    'sap/ui/core/XMLTemplateProcessor',
-    'sap/ui/core/library',
-    './View',
-    'sap/ui/model/resource/ResourceModel',
-    'sap/ui/base/ManagedObject',
-    'sap/ui/core/Control',
-    'sap/ui/core/RenderManager',
-    'sap/ui/core/cache/CacheManager',
-    "./XMLViewRenderer",
-    'jquery.sap.xml',
-    'jquery.sap.script'
-],
-	function(
-	    jQuery,
-		XMLTemplateProcessor,
-		library,
-		View,
-		ResourceModel,
-		ManagedObject,
-		Control,
-		RenderManager,
-		Cache/* , jQuerySap */,
-		XMLViewRenderer
-	) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/core/XMLTemplateProcessor', 'sap/ui/core/library', './View', 'sap/ui/model/resource/ResourceModel', 'sap/ui/base/ManagedObject', 'sap/ui/core/Control', 'sap/ui/core/RenderManager', 'sap/ui/core/cache/CacheManager', 'jquery.sap.xml', 'jquery.sap.script'],
+	function(jQuery, XMLTemplateProcessor, library, View, ResourceModel, ManagedObject, Control, RenderManager, Cache/* , jQuerySap */) {
 	"use strict";
 
 	// actual constants
 	var RenderPrefixes = RenderManager.RenderPrefixes,
 		ViewType = library.mvc.ViewType,
-		sXMLViewCacheError = "XMLViewCacheError",
-		notCacheRelevant = {};
+		sXMLViewCacheError = "XMLViewCacheError";
 
 
 	/**
@@ -61,7 +36,7 @@ sap.ui.define([
 	 * control's dependents aggregation or add it by using {@link sap.ui.core.mvc.XMLView#addDependent}.
 	 *
 	 * @extends sap.ui.core.mvc.View
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @public
 	 * @alias sap.ui.core.mvc.XMLView
@@ -92,7 +67,7 @@ sap.ui.define([
 			cache : 'Object'
 		},
 
-		designtime: "sap/ui/core/designtime/mvc/XMLView.designtime"
+		designTime: true
 	}});
 
 		/**
@@ -268,9 +243,6 @@ sap.ui.define([
 
 		function validateCacheKey(oView, aFutureKeyParts) {
 			return Promise.all(aFutureKeyParts).then(function(aKeys) {
-				aKeys = aKeys.filter(function(oElement) {
-					return oElement !== notCacheRelevant;
-				});
 				if (aKeys.every(isValidKey)) {
 					return aKeys.join('_');
 				} else {
@@ -291,27 +263,14 @@ sap.ui.define([
 		}
 
 		function getCacheKeyProviders(oView) {
-			var mPreprocessors = oView.getPreprocessors(),
+			var mPreprocessors = View._mPreprocessors["XML"],
 				oPreprocessorInfo = oView.getPreprocessorInfo(/*bSync =*/false),
 				aFutureCacheKeys = [];
 
 			function pushFutureKey(o) {
-				aFutureCacheKeys.push(o.preprocessor
-					.then(function(oPreprocessorImpl) {
-						if (oPreprocessorImpl.getCacheKey) {
-							return oPreprocessorImpl.getCacheKey(oPreprocessorInfo);
-						} else {
-							/* We cannot check for the getCacheKey function synchronous, but we later need
-							 * to differentiate wether the result of getCacheKey returns an invalid result
-							 * (null/undefined) or the function simply does not exist.
-							 * Therefore we use the 'notCacheRelevant' token to mark preProcessors that does
-							 * not provide a getCacheKey function and so are not relevant for caching.
-							 * See validateCacheKey function.
-							 */
-							return notCacheRelevant;
-						}
-					})
-				);
+				if (o.preprocessor.getCacheKey) {
+					aFutureCacheKeys.push(o.preprocessor.getCacheKey(oPreprocessorInfo));
+				}
 			}
 
 			for (var sType in mPreprocessors) {
@@ -605,7 +564,7 @@ sap.ui.define([
 		* either the plain "xml" or the already initialized "controls" , see {@link sap.ui.core.mvc.XMLView.PreprocessorType}.
 		* For each type one preprocessor is executed. If there is a preprocessor passed to or activated at the
 		* view instance already, that one is used. When several preprocessors are registered for one hook, it has to be made
-		* sure, that they do not conflict when being processed serially.
+		* sure, that they do not conflict when beeing processed serially.
 		*
 		* It can be either a module name as string of an implementation of {@link sap.ui.core.mvc.View.Preprocessor} or a
 		* function with a signature according to {@link sap.ui.core.mvc.View.Preprocessor.process}.

@@ -21,7 +21,7 @@
 
 	// for behaviour testing
 	if (oUriParameters.get("oldFlex")) {
-		sap.m.ToolbarRenderer.hasNewFlexBoxSupport = false;
+		sap.m.Toolbar.hasNewFlexBoxSupport = false;
 	}
 
 	var oApp = new sap.m.App();
@@ -32,10 +32,6 @@
 			new sap.m.Button({text : "Button"}),
 			new sap.m.ToolbarSeparator(),
 			new sap.m.Button({text : "Test"}),
-			new sap.m.Label({
-				text: "Choose:",
-				labelFor: sSelId
-			}),
 			new sap.m.Select(sSelId, {
 				autoAdjustWidth: true,
 				items : [
@@ -96,11 +92,7 @@
 			new sap.m.ToolbarSpacer(),
 			new sap.m.Label({ text : sText }),
 			new sap.m.ToolbarSpacer(),
-			new sap.m.Label({
-				text: "Choose:",
-				labelFor: sSelId + 'innerSelect'
-			}),
-			new sap.m.Select(sSelId + 'innerSelect', {
+			new sap.m.Select({
 				items : [
 					new sap.ui.core.Item({
 						key: "0",
@@ -122,7 +114,7 @@
 			}),
 			new sap.m.ToolbarSpacer(),
 			new sap.m.ToggleButton({
-				text: "Press to toggle"
+				text: "ToggleButton"
 			}),
 			new sap.m.Input({
 				placeholder: "Input",
@@ -258,12 +250,10 @@
 				height: "auto",
 				content : [
 					new sap.m.Label({
-						text : "Percent Width Controls",
-						labelFor: "searchField",
-						width: "15%"
+						text : "Percent Width Controls"
 					}),
 					new sap.m.ToolbarSpacer(),
-					new sap.m.SearchField("searchField", {
+					new sap.m.SearchField({
 						placeholder : "This has 100% width by default"
 					})
 				]

@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -191,8 +191,8 @@ onGetNextAvailableItem : function (oEvent) {
                               </p>
                               
                               			
-                              <p class="p">If the function returns a primitive value or a collection, the binding for the result must be
-                                 					<samp class="ph codeph">&quot;{value}&quot;</samp> as shown in the 2 examples below:
+                              <p class="p">If the function returns a primitive value, the binding for the result must be
+                                 					<samp class="ph codeph">&quot;{value}&quot;</samp> as shown here:
                               </p>
                               
                               			
@@ -204,14 +204,6 @@ onGetNextAvailableItem : function (oEvent) {
     &lt;Text text=&quot;{value}&quot;/&gt;
     &lt;Button text=&quot;Call the function&quot; press=&quot;onGetNumberOfAvailableItems&quot;/&gt;
 &lt;/Form&gt;</pre>
-                              
-                              			<pre class="pre codeblock prettyprint">&lt;VBox id=&quot;getAvailableItems&quot; binding=&quot;{path : &apos;/GetAvailableItems(...)&apos;, parameters : {$select : &apos;ProductName&apos;, &apos;ProductId&apos;}}&quot;&gt;
-    &lt;List id=&quot;xyz&quot; items=&quot;{value}&quot;&gt;
-        &lt;items&gt;
-            &lt;ObjectListItem title=&quot;{ProductName}&quot; /&gt;
-        &lt;/items&gt;
-    &lt;/List&gt;
-&lt;/VBox&gt;</pre>
                               
                               			<p class="p"><samp class="ph codeph">execute</samp> returns a promise which is resolved if the operation was
                                  				successful and rejected with an error if this was not the case. Note that the

@@ -4,21 +4,21 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/mvc/Controller'],
 
 	var DynamicSideContent = Controller.extend("sap.ui.layout.sample.DynamicSideContentPosition.DynamicSideContent", {
 		onBeforeRendering: function() {
-			this.byId("DSCWidthSlider").setVisible(!sap.ui.Device.system.phone);
-			this.byId("DSCWidthHintText").setVisible(!sap.ui.Device.system.phone);
+			this.getView().byId("DSCWidthSlider").setVisible(!sap.ui.Device.system.phone);
+			this.getView().byId("DSCWidthHintText").setVisible(!sap.ui.Device.system.phone);
 		},
 		handleSliderChange: function (oEvent) {
 			var iValue = oEvent.getParameter("value");
 			this.updateControlWidth(iValue);
 		},
 		updateControlWidth: function (iValue) {
-			var $DSCContainer = this.byId("sideContentContainer").$();
+			var $DSCContainer = this.getView().byId("sideContentContainer").$();
 			if (iValue) {
 				$DSCContainer.width(iValue + "%");
 			}
 		},
 		updateToggleButtonState: function (oEvent) {
-			var oToggleButton = this.byId("toggleButton"),
+			var oToggleButton = this.getView().byId("toggleButton"),
 				sCurrentBreakpoint = oEvent.getParameter("currentBreakpoint");
 
 			if (sCurrentBreakpoint === "S") {
@@ -28,7 +28,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/mvc/Controller'],
 			}
 		},
 		handleToggleClick: function () {
-			this.byId("DynamicSideContent").toggle();
+			this.getView().byId("DynamicSideContent").toggle();
 		}
 	});
 

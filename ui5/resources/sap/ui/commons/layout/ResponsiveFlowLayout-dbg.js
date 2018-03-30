@@ -1,17 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.commons.layout.ResponsiveFlowLayout.
-sap.ui.define([
- 'jquery.sap.global',
- 'sap/ui/commons/library',
- 'sap/ui/layout/ResponsiveFlowLayout',
- "./ResponsiveFlowLayoutRenderer"
-],
-	function(jQuery, library, ResponsiveFlowLayout1, ResponsiveFlowLayoutRenderer) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/commons/library', 'sap/ui/layout/ResponsiveFlowLayout'],
+	function(jQuery, library, ResponsiveFlowLayout1) {
 	"use strict";
 
 
@@ -27,7 +22,7 @@ sap.ui.define([
 	 * @extends sap.ui.layout.ResponsiveFlowLayout
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public

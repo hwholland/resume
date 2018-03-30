@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -117,16 +117,16 @@
                      <h1 class="title topictitle1" hidden>IDs in Declarative XML or HTML Fragments</h1>
                      
                      <div class="body conbody">
-                        <p class="shortdesc" hidden>If a fragment with a control ID is instantiated twice without giving an ID, a
-                           		duplicate ID error occurs.
+                        <p class="shortdesc" hidden>If a fragment with a control ID is instantiated twice without giving an ID, a duplicate
+                           		ID error occurs.
                         </p>
                         
                         		
                         <div class="p">Given the following XML fragment
-                           			example:<pre class="pre codeblock prettyprint lang-xml">&lt;HBox xmlns=&quot;sap.m&quot;&gt;
+                           			example:<pre class="pre codeblock prettyprint lang-xml">&lt;HorizontalLayout xmlns=&quot;sap.ui.commons&quot;&gt;
    &lt;Button                    text=&quot;Hello World&quot; /&gt;
    &lt;Button id=&quot;btnInFragment&quot; text=&quot;Hello World&quot; /&gt;
-&lt;/HBox&gt;</pre>
+&lt;/HorizontalLayout&gt;</pre>
                            The
                            			first button will always have a generated ID, as, for instance,
                            				<samp class="ph codeph">__button2</samp>. This is regardless of how the fragment is instantiated
@@ -134,22 +134,20 @@
                         </div>
                         
                         		
-                        <div class="p">The second button will either have the ID <samp class="ph codeph">btnInFragment</samp>, in case the
-                           			fragment is instantiated without giving an ID. This approach is easy to use, but implies
-                           			the risk of ID collisions when instantiated multiple times:
+                        <div class="p">The second button will either have the ID <samp class="ph codeph">btnInFragment</samp>, in case the fragment is instantiated without giving an ID. This approach is easy
+                           			to use, but implies the risk of ID collisions when instantiated multiple times:
                            			<pre class="pre codeblock prettyprint lang-js">sap.ui.htmlfragment(&quot;my.useful.UiPartZ&quot;); // Button ID will not be prefixed</pre>
                            </div>
                         
                         		
-                        <div class="p">The other possible ID of the second button is <samp class="ph codeph">myFragment--btnInFragment</samp>,
-                           			in case the fragment is instantiated giving the ID <samp class="ph codeph">myFragment</samp>. You
-                           			should not rely on the exact syntax of this prefixing.
+                        <div class="p">The other possible ID of the second button is <samp class="ph codeph">myFragment--btnInFragment</samp>, in case the fragment is instantiated giving the ID
+                           				<samp class="ph codeph">myFragment</samp>. You should not rely on the exact syntax of this prefixing.
                            			<pre class="pre codeblock prettyprint lang-js">sap.ui.htmlfragment(&quot;myFragment&quot;, &quot;my.useful.UiPartZ&quot;);</pre>
                            </div>
                         
                         		
-                        <p class="p">It is, however, possible that a containing view may add its prefix. For more information,
-                           			see <a class="xref" href="../../#/topic/f10bf709b05f4adea8f8b8ad9a840247.html" title="For fragments that are used within declarative views, generated IDs are not prefixed." target="_top">IDs of Fragments in Views</a>.
+                        <p class="p">It is, however, possible that a containing view may add its prefix. For more information, see
+                           				<a class="xref" href="../../#/topic/f10bf709b05f4adea8f8b8ad9a840247.html" title="For fragments that are used within declarative views, generated IDs are not prefixed." target="_top">IDs of Fragments in Views</a>.
                         </p>
                         
                         	

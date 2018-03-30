@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.CustomTreeItem.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.CustomTreeItem.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.CustomTreeItem.Page",
 			dependencies : {
 				libs : [
 					"sap.m",
@@ -20,8 +16,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 				sample : {
 					files : [
 						"Page.view.xml",
-						"Page.controller.js",
-						"Tree.json"
+						"Page.controller.js"
 					]
 				}
 			}

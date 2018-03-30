@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -9,15 +9,13 @@ sap.ui.define(["sap/ui/core/LayoutData", "./library"], function (LayoutData, lib
 	"use strict";
 
 	/**
-	 * Constructor for a new <code>ObjectPageHeaderLayoutData</code>.
+	 * Constructor for a new ObjectPageHeaderLayoutData.
 	 *
-	 * @param {string} [sId] ID for the new control, generated automatically if no ID is given
-	 * @param {object} [mSettings] Initial settings for the new control
+	 * @param {string} [sId] id for the new control, generated automatically if no id is given
+	 * @param {object} [mSettings] initial settings for the new control
 	 *
 	 * @class
-	 * A {@link sap.ui.core.LayoutData} element that can be added to controls used in the
-	 * <code>headerContent</code> aggregation of the <code>ObjectPageLayout</code>.
-	 *
+	 * This is a LayoutData Element that can be added to a control if this control is used within an ObjectPage headerContent aggregation.</br></br>
 	 * <b>Note:</b> This element is only taken into account when the <code>sap.uxap.ObjectPageLayout</code> control is used together with
 	 * <code>sap.uxap.ObjectPageHeader</code> as value of <code>headerTitle</code>.
 	 * @extends sap.ui.core.LayoutData
@@ -71,7 +69,7 @@ sap.ui.define(["sap/ui/core/LayoutData", "./library"], function (LayoutData, lib
 
 	/*!
 	 * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
 	 */
 

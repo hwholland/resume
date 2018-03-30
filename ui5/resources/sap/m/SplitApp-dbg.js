@@ -1,18 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.SplitApp.
-sap.ui.define([
-	'jquery.sap.global',
-	'./SplitContainer',
-	'./library',
-	'sap/ui/Device',
-	'./SplitAppRenderer'
-],
-	function(jQuery, SplitContainer, library, Device, SplitAppRenderer) {
+sap.ui.define(['jquery.sap.global', './SplitContainer', './library', 'sap/ui/Device'],
+	function(jQuery, SplitContainer, library, Device) {
 	"use strict";
 
 	/**
@@ -49,7 +43,7 @@ sap.ui.define([
 	 * @extends sap.m.SplitContainer
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -100,8 +94,7 @@ sap.ui.define([
 					landscape : {type : "boolean"}
 				}
 			}
-		},
-		designtime: "sap/m/designtime/SplitApp.designtime"
+		}
 	}});
 
 

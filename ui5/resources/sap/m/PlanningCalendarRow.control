@@ -4,9 +4,9 @@
     <derived/>
     <documentation>Row in the {@link sap.m.PlanningCalendar}.
 
-This element holds the data of one row in the {@link sap.m.PlanningCalendar}. Once the header information (for example, person information)
+This element holds the data of one row in the @link sap.m.PlanningCalendar}. Once the header information (e.g. person information)
 is assigned, the appointments are assigned.</documentation>
-    <since>1.34</since>
+    <since>1.34.0</since>
     <baseType>sap.ui.core/Element</baseType>
     <properties>
         <property group="Data" type="sap.ui.core/string" name="title">
@@ -42,58 +42,7 @@ cause unwanted results if you have more than one selected row in your binding.</
         <property group="Data" type="sap.ui.core/string" name="key">
             <documentation>Defines the identifier of the row.</documentation>
         </property>
-        <property since="1.54" group="Misc" defaultValue="false" type="sap.ui.core/boolean" name="enableAppointmentsDragAndDrop">
-            <documentation>Determines whether the appointments in the row are draggable.
-
-The drag and drop interaction is visualized by a placeholder highlighting the area where the
-appointment can be dropped by the user.
-
-Specifics based on the intervals (hours, days or months) displayed in the &lt;code&gt;PlanningCalendar&lt;/code&gt; views:
-
-Hours:&lt;br&gt;
-For views where the displayed intervals are hours, the placeholder snaps on every interval
-of 30 minutes. After the appointment is dropped, the appointmentDrop event is fired, containing
-the new start and end JavaScript date objects.&lt;br&gt;
-For example, an appointment with start date &quot;Nov 13 2017 12:17:00&quot; and end date &quot;Nov 13 2017 12:45:30&quot;
-lasts for 27 minutes and 30 seconds. After dragging and dropping to a new time, the possible new
-start date has time that is either &quot;hh:00:00&quot; or &quot;hh:30:00&quot; because of the placeholder that can
-snap on every 30 minutes. The new end date is calculated to be 27 minutes and 30 seconds later
-and would be either &quot;hh:27:30&quot; or &quot;hh:57:30&quot;.
-
-Days:&lt;br&gt;
-For views where intervals are days, the placeholder highlights the whole day and after the
-appointment is dropped the appointmentDrop event is fired. The event contains the new start and
-end JavaScript date objects with changed date but the original time (hh:mm:ss) is preserved.
-
-Months:&lt;br&gt;
-For views where intervals are months, the placeholder highlights the whole month and after the
-appointment is dropped the appointmentDrop event is fired. The event contains the new start and
-end JavaScript date objects with changed month but the original date and time is preserved.
-
-&lt;b&gt;Notes:&lt;/b&gt;
-&lt;ul&gt;
-&lt;li&gt;In &quot;One month&quot; view, the appointments are not draggable on small screen (as there they are
-displayed as a list below the dates). Group appointments are also not draggable&lt;/li&gt;
-&lt;li&gt;Appointments can be dragged only within their original PlanningCalendarRow&lt;/li&gt;
-&lt;/ul&gt;</documentation>
-        </property>
     </properties>
-    <events>
-        <event allowPreventDefault="false" since="1.54" name="appointmentDrop">
-            <documentation>Fired if an appointment is dropped.</documentation>
-            <parameters>
-                <parameter type="sap.ui.unified/CalendarAppointment" name="appointment">
-                    <documentation>The dropped appointment.</documentation>
-                </parameter>
-                <parameter type="sap.ui.core/object" name="startDate">
-                    <documentation>Start date of the dropped appointment, as a JavaScript date object.</documentation>
-                </parameter>
-                <parameter type="sap.ui.core/object" name="endDate">
-                    <documentation>Dropped appointment end date as a JavaScript date object.</documentation>
-                </parameter>
-            </parameters>
-        </event>
-    </events>
     <aggregations>
         <aggregation cardinality="0..n" type="sap.ui.unified/CalendarAppointment" name="appointments">
             <documentation>The appointments to be displayed in the row. Appointments that outside the visible time frame are not rendered.
@@ -108,9 +57,6 @@ Keep in mind that the &lt;code&gt;intervalHeaders&lt;/code&gt; should always fil
 than one interval, they are not displayed.
 
 &lt;b&gt;Note:&lt;/b&gt; For performance reasons, only appointments in the visible time range or nearby should be assigned.</documentation>
-        </aggregation>
-        <aggregation cardinality="0..n" since="1.54" type="sap.ui.core/dnd/DragDropBase" name="dragDropConfig">
-            <documentation>Defines the drag-and-drop configuration via {@link sap.ui.core.dnd.DragDropInfo}</documentation>
         </aggregation>
         <aggregation visibility="hidden" cardinality="0..n" type="sap.ui.unified/DateRange" name="_nonWorkingDates"/>
     </aggregations>

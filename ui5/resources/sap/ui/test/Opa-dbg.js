@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -39,14 +39,9 @@ sap.ui.define([
 		}
 
 		var startTime = new Date();
-		opaCheck();
+		fnCheck();
 
-		function opaCheck () {
-			/* eslint-disable no-console */
-			if (console.timeStamp){
-                console.timeStamp("opa.check");
-			}
-			/* eslint-enable no-console */
+		function fnCheck () {
 			oLogCollector.getAndClearLog();
 
 			var oResult = fnCallback();
@@ -65,14 +60,14 @@ sap.ui.define([
 			var iPassedSeconds = (new Date() - startTime) / 1000;
 
 			if (oOptions.timeout === 0 || oOptions.timeout > iPassedSeconds) {
-				timeout = setTimeout(opaCheck, oOptions.pollingInterval);
+				timeout = setTimeout(fnCheck, oOptions.pollingInterval);
 				// OPA timeout not yet reached
 				return;
 			}
 
 			// Timeout is reached and the check never returned true.
 			// Execute the error function (if provided in the options) and reject the queue promise.
-			addErrorMessageToOptions("Opa timeout after " + oOptions.timeout + " seconds", oOptions);
+			addErrorMessageToOptions("Opa timeout", oOptions);
 
 			if (oOptions.error) {
 				try {
@@ -309,7 +304,6 @@ sap.ui.define([
 		// URI params overwrite default
 		// deep extend is necessary so appParams object is not overwritten but merged
 		Opa.config = $.extend(true, Opa.config, options, opaUriParams);
-		_OpaLogger.setLevel(Opa.config.logLevel);
 	};
 
 	Opa._parseParam = function(sParam) {
@@ -421,7 +415,7 @@ sap.ui.define([
 			queue = [];
 
 			if (oStopQueueOptions) {
-				var sErrorMessage = oStopQueueOptions.qunitTimeout ? "QUnit timeout after " + oStopQueueOptions.qunitTimeout + " seconds" : "Queue was stopped manually";
+				var sErrorMessage = oStopQueueOptions.qunitTimeout ? "QUnit timeout" : "Queue was stopped manually";
 				// if the queue was running, log the stack of the last executed check before the queue was stopped
 				oOptions._stack = oStopQueueOptions.qunitTimeout && lastInternalWaitStack || createStack(1);
 				addErrorMessageToOptions(sErrorMessage, oOptions);

@@ -1,10 +1,10 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-/*global HTMLScriptElement, HTMLLinkElement, XMLHttpRequest */
+/*global HTMLScriptElement, HTMLLinkElement */
 
 /*
  * Provides the AppCacheBuster mechanism to load application files using a timestamp
@@ -60,10 +60,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', './Core', 'sap/
 	};
 
 	// store the original function / property description to intercept
-	var fnValidateProperty, descScriptSrc, descLinkHref, fnXhrOpenOrig, fnEnhancedXhrOpen;
+	var fnAjaxOrig, fnValidateProperty, descScriptSrc, descLinkHref;
 
 	// determine the application base url
-	var sLocation = document.baseURI.replace(/\?.*|#.*/g, "");
+	var sLocation = document.location.href.replace(/\?.*|#.*/g, "");
 
 	// determine the base urls (normalize and then calculate the resources and test-resources urls)
 	var oUri = URI(jQuery.sap.getModulePath("", "/../"));
@@ -316,7 +316,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', './Core', 'sap/
 			 *
 			 * The intercepted functions are:
 			 * <ul>
-			 * <li><code>XMLHttpRequest.prototype.open</code></li>
+			 * <li><code>jQuery.ajax</code></li>
 			 * <li><code>jQuery.sap.includeScript</code></li>
 			 * <li><code>jQuery.sap.includeStyleSheet</code></li>
 			 * <li><code>sap.ui.base.ManagedObject.prototype.validateProperty</code></li>
@@ -330,6 +330,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', './Core', 'sap/
 				oSession.active = true;
 
 				// store the original function / property description to intercept
+				fnAjaxOrig = jQuery.ajax;
 				fnValidateProperty = ManagedObject.prototype.validateProperty;
 				descScriptSrc = Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype, "src");
 				descLinkHref = Object.getOwnPropertyDescriptor(HTMLLinkElement.prototype, "href");
@@ -348,15 +349,13 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', './Core', 'sap/
 					return false;
 				}.bind(oSession);
 
-				// enhance xhr with appCacheBuster functionality
-				fnXhrOpenOrig = XMLHttpRequest.prototype.open;
-				XMLHttpRequest.prototype.open = function(sMethod, sUrl) {
-					if (sUrl && fnIsACBUrl(sUrl)) {
-						arguments[1] = fnConvertUrl(sUrl);
+				// enhance the original ajax function with appCacheBuster functionality
+				jQuery.ajax = function(url, options) {
+					if (url && url.url && fnIsACBUrl(url.url)) {
+						url.url = fnConvertUrl(url.url);
 					}
-					fnXhrOpenOrig.apply(this, arguments);
+					return fnAjaxOrig.apply(this, arguments);
 				};
-				fnEnhancedXhrOpen = XMLHttpRequest.prototype.open;
 
 				// enhance the validateProperty function to intercept URI types
 				//  test via: new sap.ui.commons.Image({src: "acctest/img/Employee.png"}).getSrc()
@@ -429,13 +428,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', './Core', 'sap/
 			exit: function() {
 
 				// remove the function interceptions
+				jQuery.ajax = fnAjaxOrig;
 				ManagedObject.prototype.validateProperty = fnValidateProperty;
-
-				// only remove xhr interception if xhr#open was not modified meanwhile
-				if (XMLHttpRequest.prototype.open === fnEnhancedXhrOpen) {
-					XMLHttpRequest.prototype.open = fnXhrOpenOrig;
-				}
-
 				// remove the property descriptor interceptions (but only if not overridden again)
 				var descriptor;
 				if ((descriptor = Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype, "src")) && descriptor.set && descriptor.set._sapUiCoreACB === true) {

@@ -1,22 +1,19 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
+// Provides class sap.ui.dt.DesignTimeMetadata.
 sap.ui.define([
 	'jquery.sap.global',
 	'sap/ui/base/ManagedObject',
 	'sap/ui/dt/ElementUtil',
 	'sap/ui/dt/DOMUtil'
 ],
-function(
-	jQuery,
-	ManagedObject,
-	ElementUtil,
-	DOMUtil
-) {
+function(jQuery, ManagedObject, ElementUtil, DOMUtil) {
 	"use strict";
+
 
 	/**
 	 * Constructor for a new DesignTimeMetadata.
@@ -29,7 +26,7 @@ function(
 	 * @extends sap.ui.base.ManagedObject
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @private
@@ -38,21 +35,22 @@ function(
 	 * @experimental Since 1.30. This class is experimental and provides only limited functionality. Also the API might be changed in future.
 	 */
 	var DesignTimeMetadata = ManagedObject.extend("sap.ui.dt.DesignTimeMetadata", /** @lends sap.ui.dt.DesignTimeMetadata.prototype */ {
-		metadata: {
-			library: "sap.ui.dt",
-			properties: {
+		metadata : {
+			// ---- object ----
+
+			// ---- control specific ----
+			library : "sap.ui.dt",
+			properties : {
 				/**
 				 * Data to be used as DT metadata
 				 */
-				data: {
-					type: "any",
-					defaultValue: {}
+				data : {
+					type : "any"
 				},
-
 				/**
 				* Name of the library the control belongs to
 				*/
-				libraryName: "string"
+				libraryName : "string"
 			}
 		}
 	});
@@ -64,8 +62,26 @@ function(
 	 * @protected
 	 */
 	DesignTimeMetadata.prototype.setData = function(oData) {
-		this.setProperty("data", jQuery.extend(true, {}, this.getDefaultData(), oData));
+
+		var oMergedData = jQuery.extend(true, this.getDefaultData(), oData || {});
+
+		this.setProperty("data", oMergedData);
 		return this;
+	};
+
+	/**
+	 * Returns data, if no data is set, creates a default data
+	 * @return {object} returns data
+	 * @public
+	 */
+	DesignTimeMetadata.prototype.getData = function() {
+		var oData = this.getProperty("data");
+		if (!oData) {
+			this.setData({});
+			oData = this.getProperty("data");
+		}
+
+		return oData;
 	};
 
 	/**
@@ -75,8 +91,9 @@ function(
 	 */
 	DesignTimeMetadata.prototype.getDefaultData = function() {
 		return {
-			ignore: false,
-			domRef: undefined
+			ignore : false,
+			domRef : undefined,
+			cloneDomRef : false
 		};
 	};
 
@@ -96,6 +113,15 @@ function(
 	};
 
 	/**
+	 * Returns property "copyDom" of the DT metadata
+	 * @return {boolean} if overlay should copy the DOM of its associated element
+	 * @public
+	 */
+	DesignTimeMetadata.prototype.getCloneDomRef = function() {
+		return this.getData().cloneDomRef;
+	};
+
+	/**
 	 * Returns property "domRef" of the DT metadata
 	 * @return {string|Element} Returns reference to the relevant DOM element or its selector
 	 * @public
@@ -103,6 +129,7 @@ function(
 	DesignTimeMetadata.prototype.getDomRef = function() {
 		return this.getData().domRef;
 	};
+
 
 	/**
 	 * Returns a DOM representation for an Element or aggregation, if it can be found or undefined
@@ -171,17 +198,8 @@ function(
 	 * @public
 	 */
 	DesignTimeMetadata.prototype.getLibraryText = function(sKey, aArgs) {
-		var oLibResourceBundle = sap.ui.getCore().getLibraryResourceBundle(this.getLibraryName() + ".designtime"),
-			sResult = oLibResourceBundle.getText(sKey, aArgs);
-
-		//Fallback to old logic that tries to get the text from the libraries resource bundle
-		//TODO: remove the fallback after all libraries have introduced a library.designtime.js that will provide the resource bundle and texts
-		if (!oLibResourceBundle.hasText(sKey)) {
-			oLibResourceBundle = sap.ui.getCore().getLibraryResourceBundle(this.getLibraryName());
-			sResult = oLibResourceBundle.getText(sKey, aArgs);
-		}
-
-		return sResult;
+		var oLibResourceBundle = sap.ui.getCore().getLibraryResourceBundle(this.getLibraryName());
+		return oLibResourceBundle.getText(sKey, aArgs);
 	};
 
 	/**

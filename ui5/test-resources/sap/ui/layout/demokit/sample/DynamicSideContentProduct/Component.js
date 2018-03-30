@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.ui.layout.sample.DynamicSideContentProduct.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.layout.sample.DynamicSideContentProduct.DynamicSideContent",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.layout.sample.DynamicSideContentProduct.DynamicSideContent",
 			dependencies : {
 				libs : [
 					"sap.ui.layout"
@@ -22,7 +18,6 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 					files : [
 						"DynamicSideContent.view.xml",
 						"DynamicSideContent.controller.js",
-						"feed.json",
 						"style.css"
 					]
 				}

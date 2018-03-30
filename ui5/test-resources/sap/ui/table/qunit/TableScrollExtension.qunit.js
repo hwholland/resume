@@ -126,17 +126,12 @@ sap.ui.require([
 
 	QUnit.test("Restoration of scroll positions", function(assert) {
 		var iAssertionDelay = 150;
-		var iDefaultRowHeight = 49;
 		var done = assert.async();
 		var that = this;
 
 		if (Device.browser.msie) {
 			iAssertionDelay = 200;
 		}
-
-		sinon.stub(oTable, "_getDefaultRowHeight").returns(iDefaultRowHeight);
-		//oTable.invalidate();
-		//sap.ui.getCore().applyChanges();
 
 		function assertScrollPositions(sAction, iHorizontalScrollPosition, iVerticalScrollPosition) {
 			var oHSb = that.oScrollExtension.getHorizontalScrollbar();
@@ -193,7 +188,7 @@ sap.ui.require([
 		}).then(function() {
 			return new Promise(function(resolve) {
 				window.setTimeout(function() {
-					assertScrollPositions("Binding length increased", 50, 2 * iDefaultRowHeight);
+					assertScrollPositions("Binding length increased", 50, 110);
 					oTable.setProperty("visibleRowCountMode", sap.ui.table.VisibleRowCountMode.Auto, true);
 					oTable._updateTableSizes();
 					resolve();
@@ -203,7 +198,7 @@ sap.ui.require([
 			return new Promise(function(resolve) {
 				window.setTimeout(function() {
 					assertOnAfterRenderingEventHandlerCall("Content updated");
-					assertScrollPositions("Content updated", 50, 2 * iDefaultRowHeight);
+					assertScrollPositions("Content updated", 50, 110);
 					oTable.getModel().oData.rows.splice(oTable.getVisibleRowCount() + 1);
 					oTable.getModel().refresh();
 					resolve();
@@ -212,7 +207,7 @@ sap.ui.require([
 		}).then(function() {
 			return new Promise(function(resolve) {
 				window.setTimeout(function() {
-					assertScrollPositions("Binding length decreased", 50, iDefaultRowHeight);
+					assertScrollPositions("Binding length decreased", 50, 49);
 					oTable.invalidate();
 					resolve();
 				}, iAssertionDelay);
@@ -221,7 +216,7 @@ sap.ui.require([
 			return new Promise(function(resolve) {
 				window.setTimeout(function() {
 					assertOnAfterRenderingEventHandlerCall("Invalidated");
-					assertScrollPositions("Invalidated", 50, iDefaultRowHeight);
+					assertScrollPositions("Invalidated", 50, 49);
 					oTable.getModel().oData.rows.splice(oTable.getVisibleRowCount());
 					oTable.getModel().refresh();
 					resolve();
@@ -241,7 +236,6 @@ sap.ui.require([
 		}).then(function() {
 			window.setTimeout(function() {
 				assertScrollPositions("Binding length increased - Vertical scrolling is possible again", 50, 0);
-				oTable._getDefaultRowHeight.restore();
 				done();
 			}, iAssertionDelay);
 		});
@@ -573,10 +567,10 @@ sap.ui.require([
 		}).then(function() {
 			return testAsync({
 				act: function() {
-					oTable.setFirstVisibleRow(oTable._getMaxFirstVisibleRowIndex() + 1);
+					oTable.setFirstVisibleRow(oTable._getMaxRowIndex() + 1);
 				},
 				test: function() {
-					assert.strictEqual(that.oVSb.scrollTop, oTable._getMaxFirstVisibleRowIndex() * 49, "The vertical scroll position was updated correctly");
+					assert.strictEqual(that.oVSb.scrollTop, oTable._getMaxRowIndex() * 49, "The vertical scroll position was updated correctly");
 				}
 			});
 		}).then(function() {
@@ -637,32 +631,18 @@ sap.ui.require([
 		assert.strictEqual(this.oScrollExtension.getVerticalScrollHeight(), 10 * 100,
 			"Total row count < Visible row count: The vertical scroll height is correct");
 
-		oGetTotalRowCountStub.returns(1000000);
-		assert.strictEqual(this.oScrollExtension.getVerticalScrollHeight(true), 1000000 * 100,
-			"Total row count = 1000000: The vertical scroll height is correct");
-
-		assert.strictEqual(this.oScrollExtension.getVerticalScrollHeight(), 1000000,
-			"Total row count = 1000000: The vertical scroll height is at its maximum");
-
 		oTable._bVariableRowHeightEnabled = true;
 		oGetTotalRowCountStub.returns(12);
-		assert.strictEqual(this.oScrollExtension.getVerticalScrollHeight(), 13 * 100,
+		assert.strictEqual(this.oScrollExtension.getVerticalScrollHeight(), 12 * 100,
 			"Variable row heights enabled & Total row count > Visible row count: The vertical scroll height is correct");
 
 		oGetTotalRowCountStub.returns(11);
-		assert.strictEqual(this.oScrollExtension.getVerticalScrollHeight(), 12 * 100,
+		assert.strictEqual(this.oScrollExtension.getVerticalScrollHeight(), 11 * 100,
 			"Variable row heights enabled & Total row count = Visible row count: The vertical scroll height is correct");
 
 		oGetTotalRowCountStub.returns(10);
-		assert.strictEqual(this.oScrollExtension.getVerticalScrollHeight(), 12 * 100,
+		assert.strictEqual(this.oScrollExtension.getVerticalScrollHeight(), 11 * 100,
 			"Variable row heights enabled & Total row count < Visible row count: The vertical scroll height is correct");
-
-		oGetTotalRowCountStub.returns(1000000);
-		assert.strictEqual(this.oScrollExtension.getVerticalScrollHeight(true), 1000001 * 100,
-			"Variable row heights enabled & Total row count = 1000000: The vertical scroll height is correct");
-
-		assert.strictEqual(this.oScrollExtension.getVerticalScrollHeight(), 1000000,
-			"Variable row heights enabled & Total row count = 1000000: The vertical scroll height is at its maximum");
 
 		oGetTotalRowCountStub.restore();
 		oGetVisibleRowCountStub.restore();
@@ -692,49 +672,45 @@ sap.ui.require([
 	QUnit.test("isVerticalScrollbarRequired", function(assert) {
 		var oGetTotalRowCountStub = sinon.stub(oTable, "_getTotalRowCount");
 		var oGetVisibleRowCountStub = sinon.stub(oTable, "getVisibleRowCount");
-		var oGetInnerVerticalScrollRangeStub = sinon.stub(this.oScrollExtension, "getInnerVerticalScrollRange");
 		var that = this;
 
-		function test(iTotalRowCount, iVisibleRowCount, iInnerScrollRange, bVSbShouldBeRequired) {
+		function test(iTotalRowCount, iVisibleRowCount, iRowHeightsDelta, bVSbShouldBeRequired) {
 			oGetTotalRowCountStub.returns(iTotalRowCount);
 			oGetVisibleRowCountStub.returns(iVisibleRowCount);
-			oGetInnerVerticalScrollRangeStub.returns(iInnerScrollRange);
+			that.oScrollExtension._iInnerVerticalScrollRange = iRowHeightsDelta;
 
 			assert.strictEqual(that.oScrollExtension.isVerticalScrollbarRequired(), bVSbShouldBeRequired,
-				"Total row count: " + iTotalRowCount + ", Visible row count: " + iVisibleRowCount + ", Inner scroll range: " + iInnerScrollRange);
+				"Total row count: " + iTotalRowCount + ", Visible row count: " + iVisibleRowCount + ", Row heights delta: " + iRowHeightsDelta);
 		}
 
 		test(10, 10, 0, false); // Total row count <= Visible row count
 		test(10, 1, 0, true); // Total row count > Visible row count
-		test(1, 10, 1, true); // Total row count <= Visible row count, but inner scroll range > 0 (increased row heights)
+		test(1, 10, 1, true); // Total row count <= Visible row count, but row heights delta > 0 (increased row heights)
 		test(10, 1, 1, true); // Total row count > Visible row count
 
 		oGetTotalRowCountStub.restore();
 		oGetVisibleRowCountStub.restore();
-		oGetInnerVerticalScrollRangeStub.restore();
 	});
 
-	QUnit.test("getRowIndexAtCurrentScrollPosition", function(assert) {
-		var oGetMaxRowIndexStub = sinon.stub(oTable, "_getMaxFirstVisibleRowIndex");
-		var oGetScrollRangeRowFractionStub = sinon.stub(this.oScrollExtension, "getVerticalScrollRangeRowFraction");
-		var oGetVerticalScrollRangeStub = sinon.stub(this.oScrollExtension, "getVerticalScrollRange");
-		var oGetVerticalScrollPositionStub = sinon.stub(this.oScrollExtension, "getVerticalScrollPosition");
+	QUnit.test("getRowIndexAtScrollPosition", function(assert) {
+		var oGetMaxRowIndexStub = sinon.stub(oTable, "_getMaxRowIndex");
+		var oGetScrollingPixelsForRowStub = sinon.stub(this.oScrollExtension, "getVerticalScrollRangeRowFraction");
+		var oGetVirtualScrollRangeStub = sinon.stub(this.oScrollExtension, "getVerticalScrollRange");
 		var mTestSettings;
 		var that = this;
 
 		function test(mTestSettings) {
 			oGetMaxRowIndexStub.returns(mTestSettings.maxRowIndex);
-			oGetScrollRangeRowFractionStub.returns(mTestSettings.scrollRangeRowFraction);
-			oGetVerticalScrollRangeStub.returns(mTestSettings.scrollRange);
-			oGetVerticalScrollPositionStub.returns(mTestSettings.scrollPosition);
+			oGetScrollingPixelsForRowStub.returns(mTestSettings.scrollingPixelsForRow);
+			oGetVirtualScrollRangeStub.returns(mTestSettings.scrollRange);
 
-			assert.strictEqual(that.oScrollExtension.getRowIndexAtCurrentScrollPosition(), mTestSettings.expectedRowIndex,
+			assert.strictEqual(that.oScrollExtension.getRowIndexAtScrollPosition(mTestSettings.scrollPosition), mTestSettings.expectedRowIndex,
 				JSON.stringify(mTestSettings).replace(/"([^(\")]+)":/g, "$1: ").replace(/(\d+,)/g, "$1 "));
 		}
 
 		mTestSettings = {
 			maxRowIndex: 0,
-			scrollRangeRowFraction: 50,
+			scrollingPixelsForRow: 50,
 			scrollRange: 1001,
 			scrollPosition: 1000,
 			expectedRowIndex: 0
@@ -758,9 +734,8 @@ sap.ui.require([
 		test(mTestSettings);
 
 		oGetMaxRowIndexStub.restore();
-		oGetScrollRangeRowFractionStub.restore();
-		oGetVerticalScrollRangeStub.restore();
-		oGetVerticalScrollPositionStub.restore();
+		oGetScrollingPixelsForRowStub.restore();
+		oGetVirtualScrollRangeStub.restore();
 	});
 
 	QUnit.test("getVerticalScrollRange", function(assert) {
@@ -772,15 +747,19 @@ sap.ui.require([
 		function test(mTestSettings) {
 			oGetVerticalScrollHeightStub.returns(mTestSettings.verticalScrollHeight);
 			oGetVerticalScrollbarHeightStub.returns(mTestSettings.verticalScrollbarHeight);
+			oTable._bVariableRowHeightEnabled = mTestSettings.variableRowHeightsEnabled;
+			that.oScrollExtension._iInnerVerticalScrollRange = mTestSettings.rowHeightsDelta;
 
 			assert.strictEqual(that.oScrollExtension.getVerticalScrollRange(), mTestSettings.expectedScrollRange,
 				JSON.stringify(mTestSettings).replace(/"([^(\")]+)":/g, "$1: ").replace(/(\d+,)/g, "$1 "));
 		}
 
 		mTestSettings = {
-			verticalScrollHeight: 0,
 			verticalScrollbarHeight: 0,
-			expectedScrollRange: 0
+			verticalScrollHeight: 0,
+			variableRowHeightsEnabled: false,
+			rowHeightsDelta: 0,
+			expectedScrollRange: 1
 		};
 		test(mTestSettings);
 
@@ -794,132 +773,105 @@ sap.ui.require([
 		mTestSettings.expectedScrollRange = 800;
 		test(mTestSettings);
 
+		mTestSettings.rowHeightsDelta = 50;
+		test(mTestSettings);
+
+		mTestSettings.variableRowHeightsEnabled = true;
+		mTestSettings.expectedScrollRange = 750;
+		test(mTestSettings);
+
+		mTestSettings.rowHeightsDelta = 1000;
+		mTestSettings.expectedScrollRange = 1;
+		test(mTestSettings);
+
 		oGetVerticalScrollHeightStub.restore();
 		oGetVerticalScrollbarHeightStub.restore();
 	});
 
 	QUnit.test("getVerticalScrollRangeRowFraction", function(assert) {
 		var oGetVerticalScrollRangeStub = sinon.stub(this.oScrollExtension, "getVerticalScrollRange");
-		var oGetTotalRowCountStub = sinon.stub(oTable, "_getTotalRowCount");
-		var oGetVisibleRowCountStub = sinon.stub(oTable, "getVisibleRowCount");
-		var oGetVerticalScrollRangeBufferStub = sinon.stub(this.oScrollExtension, "getVerticalScrollRangeBuffer");
-		var oGetVerticalScrollHeightStub = sinon.stub(this.oScrollExtension, "getVerticalScrollHeight");
-		var oGetDefaultRowHeightStub = sinon.stub(oTable, "_getDefaultRowHeight");
+		var oGetMaxRowIndexStub = sinon.stub(oTable, "_getMaxRowIndex");
 		var that = this;
 
 		function test(mTestSettings) {
 			oGetVerticalScrollRangeStub.returns(mTestSettings.verticalScrollRange);
-			oGetTotalRowCountStub.returns(mTestSettings.totalRowCount);
-			oGetVisibleRowCountStub.returns(mTestSettings.visibleRowCount);
-			oGetVerticalScrollRangeBufferStub.returns(mTestSettings.buffer);
-			oGetVerticalScrollHeightStub.returns(mTestSettings.verticalScrollHeight);
-			oGetDefaultRowHeightStub.returns(mTestSettings.defaultRowHeight);
-			oTable._bVariableRowHeightEnabled = mTestSettings.variableRowHeightsEnabled;
+			oGetMaxRowIndexStub.returns(mTestSettings.maxRowIndex);
 
 			assert.strictEqual(that.oScrollExtension.getVerticalScrollRangeRowFraction(), mTestSettings.expectedResult,
 				JSON.stringify(mTestSettings).replace(/"([^(\")]+)":/g, "$1: ").replace(/(\d+,)/g, "$1 "));
 		}
 
-		var mTestSettings = {
-			verticalScrollRange: 0,
-			verticalScrollHeight: 0,
-			totalRowCount: 0,
-			defaultRowHeight: 50,
-			visibleRowCount: 0,
-			variableRowHeightsEnabled: false,
-			buffer: 0,
-			expectedResult: 0
-		};
-		test(mTestSettings);
-
-		mTestSettings.verticalScrollRange = 150;
-		mTestSettings.expectedResult = 150;
-		test(mTestSettings);
-
-		mTestSettings.visibleRowCount = 10;
-		test(mTestSettings);
-
-		mTestSettings.totalRowCount = 30;
-		mTestSettings.expectedResult = 150 / 20;
-		test(mTestSettings);
-
-		mTestSettings.variableRowHeightsEnabled = true;
-		mTestSettings.expectedResult = (150 + 50) / 20;
-		test(mTestSettings);
-
-		mTestSettings.buffer = 50;
-		mTestSettings.expectedResult = (150 - 50 + 50) / 20;
-		test(mTestSettings);
-
-		mTestSettings.verticalScrollHeight = 1000000;
-		mTestSettings.buffer = 0;
-		mTestSettings.expectedResult = 150 / 20;
-		test(mTestSettings);
-
-		mTestSettings.buffer = 50;
-		mTestSettings.expectedResult = (150 - 50) / 20;
-		test(mTestSettings);
+		test({verticalScrollRange: 0, maxRowIndex: 0, expectedResult: 1});
+		test({verticalScrollRange: 0, maxRowIndex: 10, expectedResult: 0.1});
+		test({verticalScrollRange: 1000, maxRowIndex: 0, expectedResult: 1000});
+		test({verticalScrollRange: 1000, maxRowIndex: 1, expectedResult: 1000});
+		test({verticalScrollRange: 1000, maxRowIndex: 10, expectedResult: 100});
+		test({verticalScrollRange: 1000, maxRowIndex: 3, expectedResult: 1000 / 3});
 
 		oGetVerticalScrollRangeStub.restore();
-		oGetTotalRowCountStub.restore();
-		oGetVisibleRowCountStub.restore();
-		oGetVerticalScrollRangeBufferStub.restore();
-		oGetVerticalScrollHeightStub.restore();
-		oGetDefaultRowHeightStub.restore();
+		oGetMaxRowIndexStub.restore();
 	});
 
-	QUnit.test("getInnerVerticalScrollRange", function(assert) {
+	QUnit.test("getVerticalScrollRangeDelta", function(assert) {
+		var oGetVerticalScrollHeightStub = sinon.stub(this.oScrollExtension, "getVerticalScrollHeight");
+		var oGetVerticalScrollbarHeightStub = sinon.stub(this.oScrollExtension, "getVerticalScrollbarHeight");
+		var oGetVerticalScrollRangeStub = sinon.stub(this.oScrollExtension, "getVerticalScrollRange");
 		var oGetTotalRowCountStub = sinon.stub(oTable, "_getTotalRowCount");
 		var oGetVisibleRowCountStub = sinon.stub(oTable, "getVisibleRowCount");
-		var oGetDefaultRowHeightStub = sinon.stub(oTable, "_getDefaultRowHeight");
 		var mTestSettings;
 		var that = this;
 
 		function test(mTestSettings) {
+			oGetVerticalScrollHeightStub.returns(mTestSettings.verticalScrollHeight);
+			oGetVerticalScrollbarHeightStub.returns(mTestSettings.verticalScrollbarHeight);
+			oGetVerticalScrollRangeStub.returns(mTestSettings.verticalScrollRange);
 			oGetTotalRowCountStub.returns(mTestSettings.totalRowCount);
 			oGetVisibleRowCountStub.returns(mTestSettings.visibleRowCount);
-			oGetDefaultRowHeightStub.returns(mTestSettings.defaultRowHeight);
-			oTable._aRowHeights = mTestSettings.rowHeights;
 
-			assert.strictEqual(that.oScrollExtension.getInnerVerticalScrollRange(), mTestSettings.expectedResult,
+			assert.strictEqual(that.oScrollExtension.getVerticalScrollRangeDelta(), mTestSettings.expectedResult,
 				JSON.stringify(mTestSettings).replace(/"([^(\")]+)":/g, "$1: ").replace(/(\d+,)/g, "$1 "));
 		}
 
 		mTestSettings = {
-			visibleRowCount: 0,
+			verticalScrollbarHeight: 0,
+			verticalScrollHeight: 0,
+			verticalScrollRange: 0,
 			totalRowCount: 0,
-			defaultRowHeight: 50,
-			rowHeights: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
+			visibleRowCount: 0,
 			expectedResult: 0
 		};
 		test(mTestSettings);
 
+		mTestSettings.verticalScrollbarHeight = 200;
+		test(mTestSettings);
+
+		mTestSettings.verticalScrollHeight = 1000;
+		mTestSettings.expectedResult = 800;
+		test(mTestSettings);
+
 		mTestSettings.visibleRowCount = 10;
-		mTestSettings.totalRowCount = 10;
 		test(mTestSettings);
 
-		mTestSettings.rowHeights[9] = 80;
-		mTestSettings.expectedResult = 30;
+		mTestSettings.totalRowCount = 20;
+		mTestSettings.expectedResult = 800;
 		test(mTestSettings);
 
-		mTestSettings.totalRowCount = 11;
-		test(mTestSettings);
-
-		mTestSettings.totalRowCount = 9;
+		mTestSettings.verticalScrollRange = 801;
 		mTestSettings.expectedResult = 0;
 		test(mTestSettings);
 
-		mTestSettings.rowHeights[8] = 101;
+		mTestSettings.verticalScrollRange = 800;
+		test(mTestSettings);
+
+		mTestSettings.verticalScrollRange = 799;
 		mTestSettings.expectedResult = 1;
 		test(mTestSettings);
 
-		mTestSettings.rowHeights[8] = 101.01;
-		mTestSettings.expectedResult = 2;
-		test(mTestSettings);
-
+		oGetVerticalScrollHeightStub.restore();
+		oGetVerticalScrollbarHeightStub.restore();
+		oGetVerticalScrollRangeStub.restore();
 		oGetTotalRowCountStub.restore();
 		oGetVisibleRowCountStub.restore();
-		oGetDefaultRowHeightStub.restore();
 	});
 
 	QUnit.module("Horizontal scrolling", {
@@ -1537,11 +1489,12 @@ sap.ui.require([
 	});
 
 	QUnit.test("To Middle - small data - no variable row heights", function(assert) {
-		this.doTest(assert, {scrollTop: 750, expectedFirstVisibleRow: 14});
+
+		this.doTest(assert, {scrollTop: 750, expectedFirstVisibleRow: 15});
 	});
 
 	QUnit.test("To End - small data - no variable row heights", function(assert) {
-		this.doTest(assert, {scrollTop: 1000, expectedFirstVisibleRow: 19});
+		this.doTest(assert, {scrollTop: 1000, expectedFirstVisibleRow: 20});
 	});
 
 	QUnit.test("To Middle - big data - no variable row heights", function(assert) {
@@ -1562,11 +1515,11 @@ sap.ui.require([
 	});
 
 	QUnit.test("To Middle - small data - variable row heights", function(assert) {
-		this.doTest(assert, {scrollTop: 750, expectedFirstVisibleRow: 14});
+		this.doTest(assert, {scrollTop: 750, expectedFirstVisibleRow: 15});
 	});
 
 	QUnit.test("To End - small data - variable row heights", function(assert) {
-		this.doTest(assert, {scrollTop: 1000, expectedFirstVisibleRow: 19});
+		this.doTest(assert, {scrollTop: 1000, expectedFirstVisibleRow: 20});
 	});
 
 	QUnit.test("To Middle - big data - variable row heights", function(assert) {

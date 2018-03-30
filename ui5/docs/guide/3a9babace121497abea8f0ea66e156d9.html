@@ -6,8 +6,8 @@
 <meta name="abstract" content="Detailed description of the steps needed to create a descriptor V2 for applications file for an existing transactional app created by the customer based on SAP Fiori."/>
 <meta name="description" content="Detailed description of the steps needed to create a descriptor V2 for applications file for an existing transactional app created by the customer based on SAP Fiori."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8082564171917583"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8082564171917583"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7177066503787456"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7177066503787456"/>
 <title>Creating a Descriptor File for Existing Apps</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -624,7 +624,7 @@ init : function() {
     this.setModel(i18nModel, "i18n");
      
     // set data model
-    var m = new sap.ui.model.odata.v2.ODataModel(sServiceUrl);
+    var m = new sap.ui.model.odata.ODataModel(sServiceUrl, {json: true,loadMetadataAsync: true});
     this.setModel(m);</pre></div>
 
                 <p class="p">Return to the <samp class="ph codeph">manifest.json</samp> file:</p>
@@ -1027,7 +1027,7 @@ init : function() {
     this.setModel(i18nModel, "i18n");
      
     // set data model
-    var m = new sap.ui.model.odata.v2.ODataModel(sServiceUrl);
+    var m = new sap.ui.model.odata.ODataModel(sServiceUrl, {json: true,loadMetadataAsync: true});
     this.setModel(m);</pre></div>
 
                     <p class="p">Apply the following changes:</p>

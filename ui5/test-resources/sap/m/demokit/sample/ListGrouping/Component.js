@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ListGrouping.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.ListGrouping.List",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.ListGrouping.List",
 			dependencies : {
 				libs : [
 					"sap.m",

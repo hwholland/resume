@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -162,7 +162,7 @@
                                     				
                                     				<img xmlns="" class="inline  " id="loiobae9d90d2e9c4206889368f04edab508__image_qmj_5w2_yr" src="loioccce9b342efd457990d547ba35323f93_HiRes.png">
                                     			
-                                 </div><span class="figcap">The list of invoices is now served by the Mock Server</span></div>
+                                 </div><span class="figcap"><span class="enumeration fig-enumeration">Figure 36: </span>The list of invoices is now served by the Mock Server</span></div>
                               
                               		
                            </section>
@@ -183,7 +183,7 @@
                                     				
                                     				<img xmlns="" class="inline  " id="loiobae9d90d2e9c4206889368f04edab508__image_ypz_ww2_yr" src="loio7a5e2b02d72d40d388f5e601d7de74df_HiRes.png">
                                     			
-                                 </div><span class="figcap">Folder Structure for this Step</span></div>
+                                 </div><span class="figcap"><span class="enumeration fig-enumeration">Figure 37: </span>Folder Structure for this Step</span></div>
                               
                               			
                               <p class="p">The folder structure of our app project is clearly separating test and productive files after this step. The new <samp class="ph codeph">test</samp> folder
@@ -485,7 +485,7 @@
 		init: function () {
 			// create
 			var oMockServer = new MockServer({
-				rootUri: &quot;https://services.odata.org/V2/Northwind/Northwind.svc/&quot;
+				rootUri: &quot;/destinations/northwind/V2/Northwind/Northwind.svc/&quot;
 			}); 
 			var oUriParameters = jQuery.sap.getUriParameters();
 			// configure
@@ -514,12 +514,9 @@
                               </p>
                               
                               			
-                              <p class="p">The URL in configuration parameter <samp class="ph codeph">rootURI</samp> has to be exactly the same as the
-                                 					<samp class="ph codeph">uri</samp> that is defined for the data source in the
-                                 					<span class="ph filepath">manifest.json</span> descriptor file. This can be an absolute or,
-                                 				for example in <span class="ph pname">SAP Web IDE</span>, a
-                                 				relative URL to a destination. The URL will now be served by our test server instead
-                                 				of the real service. Next, we set two global configuration settings that tell the
+                              <p class="p">The URL in configuration parameter <samp class="ph codeph">rootURI</samp> will now be served by our
+                                 				test server instead of the real service. It matches the URL of our data source in
+                                 				the descriptor file. Next, we set two global configuration settings that tell the
                                  				server to respond automatically and introduce a delay of one second to imitate a
                                  				typical server response time. Otherwise, we would have to call the respond method on
                                  				the <samp class="ph codeph">MockServer</samp> manually to simulate the call.
@@ -552,6 +549,21 @@
                                  test
                                  				page.
                               </p>
+                              
+                              			
+                              <aside class="note note  insertion"><span class="title">Note</span> 
+                                 				
+                                 <p class="p">The URI of the <samp class="ph codeph">invoiceRemote</samp> data source in the descriptor
+                                    					points to our destination configured for <span class="ph pname">SAP Web IDE</span> (see previous step). We
+                                    					assume this destination to be available. In any other development environment,
+                                    					you need to use a local proxy for the request to the service as described in the
+                                    					previous step. This is important when you call the application with the
+                                    						<span class="ph filepath">index.html</span> file, otherwise the call to the remote
+                                    					service will fail.
+                                 </p>
+                                 
+                                 			
+                              </aside>
                               
                               		
                            </section>
@@ -631,8 +643,6 @@
                            <div><a class="link" href="../../#/topic/69d3cbd4150c4ffb884e788f7f60fd93.html" title="Mock server is a mocking framework for HTTP and HTTPS that is used to simplify integration testing and to decouple development teams by allowing to develop against a service that is not complete or unstable." target="_top">Mock Server</a></div>
                            
                            <div><a class="link" href="../../#/api/sap.ui.core.util.MockServer" target="_top" alt="#/api/sap.ui.core.util.MockServer" title="#/api/sap.ui.core.util.MockServer">API Reference: <samp class="ph codeph">sap.ui.core.util.MockServer</samp></a></div>
-                           
-                           <div><a class="link" href="../../#/topic/3a16c7a2f1e944deb000db49e5ece6be.html" title="Configure a destination in the SAP Cloud Platform Cockpit in order to bypass the same-origin policy of the browser." target="_top">Create a Northwind Destination</a></div>
                            
                         </div>
                         

@@ -97,7 +97,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -147,9 +147,9 @@
                               <p class="p"><span class="ph emphasis emphasis">Name</span></p>
                               
                               				
-                              <p class="p">The name indentifies the module in connection with the
-                                 						<samp class="ph codeph">sap.ui.define</samp> and <samp class="ph codeph">sap.ui.require</samp> syntax. A
-                                 					module defined under a certain name can be required using the same name.
+                              <p class="p">The name indentifies the module in connection with the <samp class="ph codeph">sap.ui.define</samp> and
+                                 						<samp class="ph codeph">sap.ui.require</samp> syntax. A module defined under a certain
+                                 					name can be required using the same name.
                               </p>
                               
                               			
@@ -161,8 +161,7 @@
                               <p class="p"><span class="ph emphasis emphasis">Definition</span></p>
                               
                               				
-                              <p class="p">Modules have a predefined structure based on the function
-                                 						<samp class="ph codeph">sap.ui.define</samp>. 
+                              <p class="p">Modules have a predefined structure based on the function <samp class="ph codeph">sap.ui.define</samp>. 
                               </p>
                               
                               				
@@ -172,7 +171,7 @@
                               
                               				
                               <p class="p"><span class="ph">For more
-                                    						information, see the <a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.ui/methods/sap.ui.define" target="_blank" alt="https://ui5.sap.com/sdk/#/api/sap.ui/methods/sap.ui.define" title="https://ui5.sap.com/sdk/#/api/sap.ui/methods/sap.ui.define">API Reference:
+                                    						information, see the <a class="xref" href="../../#/api/sap.ui/methods/.define" target="_top" alt="#/api/sap.ui/methods/.define" title="#/api/sap.ui/methods/.define">API Reference:
                                        								<samp class="ph codeph">sap.ui.define</samp></a>.</span>
                                  					
                               </p>
@@ -205,8 +204,8 @@
                         <div class="example">
                            <h2 class="exampletitle">Example</h2>
                            			
-                           <p class="p">The following code snippet shows a typical module that uses all of features listed
-                              				above. The name of the module is <samp class="ph codeph">someClass</samp>:
+                           <p class="p">The following code snippet shows a typical module that uses all of features listed above. The
+                              				name of the module is <samp class="ph codeph">someClass</samp>:
                            </p>
                            
                            			<pre class="pre codeblock prettyprint lang-js">  sap.ui.define(&quot;SomeClass&quot;, [&apos;sap/mylib/Helper&apos;, &apos;sap/m/Bar&apos;], function(Helper, Bar) {
@@ -229,7 +228,7 @@
   });
  
  
-// later requiring the previously defined module
+// later requiring the previously defined modile
 sap.ui.require([&apos;SomeClass&apos;], function(SomeClass) {
     var oInstance = new SomeClass();
 });</pre>
@@ -242,8 +241,8 @@ sap.ui.require([&apos;SomeClass&apos;], function(SomeClass) {
                               <h2 class="section_title" style="font-size: 1.15em;">Static and Dynamic Dependencies</h2>
                               			
                               			
-                              <p class="p">Adding each and every dependency to the <samp class="ph codeph">sap.ui.define</samp> call can lead
-                                 				to many modules that have to be loaded before your module can be executed. Often,
+                              <p class="p">Adding each and every dependency to the <samp class="ph codeph">sap.ui.define</samp> call can lead to many
+                                 				modules that have to be loaded before your module can be executed. Often,
                                  				dependencies are not needed initially when the module is started. For rarely or not
                                  				immediately used references, it might be overhead to load them in advance before
                                  				executing your module.
@@ -279,11 +278,7 @@ sap.ui.require([&apos;SomeClass&apos;], function(SomeClass) {
                                        </p>
                                        
                                        						
-                                       <p class="p">Dynamic dependencies should always be loaded asynchronously via
-                                          								<samp class="ph codeph">sap.ui.require</samp>. The use of
-                                          								<samp class="ph codeph">jQuery.sap.require</samp> is synchronous and considered as
-                                          							&quot;bad practice&quot; because <samp class="ph codeph">syncXHR</samp> is deprecated by the Web
-                                          							Hypertext Application Technology Working Group (WHATWG).
+                                       <p class="p">Dynamic dependencies should always be loaded asynchronously via <samp class="ph codeph">sap.ui.require</samp>. The use of <samp class="ph codeph">jQuery.sap.require</samp> is synchronous and considered as &quot;bad practice&quot; because <samp class="ph codeph">syncXHR</samp> is deprecated by the Web Hypertext Application Technology Working Group (WHATWG).
                                        </p>
                                        
                                        						
@@ -328,7 +323,6 @@ sap.ui.require([&apos;SomeClass&apos;], function(SomeClass) {
                            </section>
                         </div>
                         
-                        	
                      </div>
                      
                      <div class="related-links"> <br>
@@ -336,7 +330,7 @@ sap.ui.require([&apos;SomeClass&apos;], function(SomeClass) {
                         <div class="childtopics"><strong>In this section:</strong></div>
                         <ul class="ullinks">
                            
-                           <div><strong><a class="link" href="../../#/topic/d12024e38385472a89c1ad204e1edb48.html" title="For loading (requiring) a module, OpenUI5, you use the sap.ui.require function, which takes over the dependency resolution for you." target="_top">Loading a Module</a></strong><br>
+                           <div><strong><a class="link" href="../../#/topic/d12024e38385472a89c1ad204e1edb48.html" title="For loading (requiering) a module, OpenUI5, you use the sap.ui.require function, which takes over the dependency resolution for you." target="_top">Loading a Module</a></strong><br>
                               
                            </div>
                            

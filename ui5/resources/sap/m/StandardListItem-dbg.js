@@ -1,18 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.StandardListItem.
-sap.ui.define([
-	'./ListItemBase',
-	'./library',
-	'sap/ui/core/IconPool',
-	'sap/ui/core/library',
-	'./StandardListItemRenderer'
-],
-	function(ListItemBase, library, IconPool, coreLibrary, StandardListItemRenderer) {
+sap.ui.define(['./ListItemBase', './library', 'sap/ui/core/IconPool', 'sap/ui/core/library'],
+	function(ListItemBase, library, IconPool, coreLibrary) {
 	"use strict";
 
 
@@ -36,7 +30,7 @@ sap.ui.define([
 	 * @extends sap.m.ListItemBase
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -108,7 +102,7 @@ sap.ui.define([
 			 */
 			infoTextDirection : {type : "sap.ui.core.TextDirection", group : "Appearance", defaultValue : TextDirection.Inherit}
 		},
-		designtime: "sap/m/designtime/StandardListItem.designtime"
+		designTime : true
 	}});
 
 	StandardListItem.prototype.exit = function() {

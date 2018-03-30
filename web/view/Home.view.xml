@@ -1,7 +1,7 @@
-<core:View controllerName="resume.web.controller.Home" height="100%" width="100%" xmlns="sap.uxap" xmlns:consulting="resume.web.view.blocks.consulting"  xmlns:employment="resume.web.view.blocks.employment" xmlns:core="sap.ui.core" xmlns:entreprenuership="resume.web.view.blocks.entreprenuership" xmlns:f="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:m="sap.m" xmlns:skills="resume.web.view.blocks.skills">
-	<ObjectPageLayout alwaysShowContentHeader="false" id="ObjectPageLayout" useIconTabBar="true" subSectionLayout="TitleOnLeft">
+<core:View controllerName="resume.web.controller.Home" height="100%" width="100%" xmlns="sap.uxap" xmlns:consulting="resume.web.view.blocks.consulting" xmlns:core="sap.ui.core" xmlns:employment="resume.web.view.blocks.employment" xmlns:entreprenuership="resume.web.view.blocks.entreprenuership" xmlns:f="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:m="sap.m" xmlns:skills="resume.web.view.blocks.skills" xmlns:visualize="resume.web.view.blocks.visualize" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.data="sap.viz.ui5.data" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds">
+	<ObjectPageLayout alwaysShowContentHeader="false" id="ObjectPageLayout" showTitleInHeaderContent="true" subSectionLayout="TitleOnLeft" useIconTabBar="true">
 		<headerTitle>
-			<ObjectPageHeader headerDesign="Light" id="header" isObjectIconAlwaysVisible="true" objectImageShape="Circle" objectImageURI="./view/img/picture.jpg" objectSubtitle="Software Engineer &amp; Data Architect" objectTitle="Harrison Holland">
+			<ObjectPageHeader headerDesign="Light" id="header" objectImageShape="Circle" objectImageURI="./view/img/picture.jpg" objectSubtitle="Software Engineer &amp; Data Architect" objectTitle="Harrison Holland">
 				<actions>
 					<ObjectPageHeaderActionButton icon="sap-icon://action" text="action"/>
 					<ObjectPageHeaderActionButton icon="sap-icon://action-settings" text="settings"/>
@@ -27,6 +27,42 @@
 			</layout:HorizontalLayout>
 		</headerContent>
 		<sections>
+			<ObjectPageSection title="Overview">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<layout:BlockLayout>
+								
+								<layout:BlockLayoutRow>
+									<layout:BlockLayoutCell>
+							<viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}" vizType="heatmap" width="100%">
+								<viz:dataset>
+									<viz.data:FlattenedDataset data="{/data/heatmap}">
+										<viz.data:dimensions>
+											<viz.data:DimensionDefinition name="Skills" value="{skills}"/>
+											<viz.data:DimensionDefinition name="Company" value="{company}"/>
+										</viz.data:dimensions>
+										<viz.data:measures>
+											<viz.data:MeasureDefinition name="Volume" value="{level}"/>
+										</viz.data:measures>
+									</viz.data:FlattenedDataset>
+								</viz:dataset>
+								<viz:feeds>
+									<viz.feeds:FeedItem type="Measure" uid="color" values="Volume"/>
+									<viz.feeds:FeedItem type="Dimension" uid="categoryAxis" values="Skills"/>
+									<viz.feeds:FeedItem type="Dimension" uid="categoryAxis2" values="Company"/>
+								</viz:feeds>
+							</viz:VizFrame>
+						</layout:BlockLayoutCell>
+
+
+					</layout:BlockLayoutRow>
+					
+				</layout:BlockLayout>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
 			<ObjectPageSection title="Startups">
 				<subSections>
 					<ObjectPageSubSection title="SOLO">
@@ -139,7 +175,7 @@
 						</moreBlocks>
 					</ObjectPageSubSection>
 					<ObjectPageSubSection title="Kraft Foods">
-											<blocks>
+						<blocks>
 							<consulting:kraft columnLayout="auto"/>
 						</blocks>
 						<moreBlocks>
@@ -151,7 +187,7 @@
 			<ObjectPageSection title="Employment">
 				<subSections>
 					<ObjectPageSubSection title="SAP America">
-											<blocks>
+						<blocks>
 							<employment:sap columnLayout="auto"/>
 						</blocks>
 					</ObjectPageSubSection>

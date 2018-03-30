@@ -58,9 +58,6 @@ transition to use. The default is &lt;code&gt;slide&lt;/code&gt;, other options 
             <documentation>Determines the type of the transition/animation to apply for the &lt;code&gt;End&lt;/code&gt; column when &lt;code&gt;to()&lt;/code&gt; is called without defining the
 transition to use. The default is &lt;code&gt;slide&lt;/code&gt;, other options are &lt;code&gt;fade&lt;/code&gt;, &lt;code&gt;flip&lt;/code&gt;, &lt;code&gt;show&lt;/code&gt;, and the names of any registered custom transitions.</documentation>
         </property>
-        <property since="1.54" group="Appearance" defaultValue="Transparent" type="sap.m/BackgroundDesign" name="backgroundDesign">
-            <documentation>Specifies the background color of the content. The visualization of the different options depends on the used theme.</documentation>
-        </property>
     </properties>
     <events>
         <event allowPreventDefault="false" name="stateChange">
@@ -447,7 +444,7 @@ property. The original &quot;data&quot; object from the &quot;to&quot; navigatio
                 </parameter>
             </parameters>
         </method>
-        <method type="sap.f/FlexibleColumnLayout" name="backToTopBeginColumn">
+        <method type="sap.ui.core/Control" name="backToTopBeginColumn">
             <documentation>Navigates back to the initial/top level of Begin column (this is the element aggregated as &quot;initialPage&quot;, or the first added element).
 NOTE: If already on the initial page, nothing happens.
 The transition effect which had been used to get to the current page is inverted and used for this navigation.</documentation>
@@ -455,12 +452,12 @@ The transition effect which had been used to get to the current page is inverted
                 <parameter type="sap.ui.core/object" name="backData">
                     <documentation>This optional object can carry any payload data which should be made available to the target page of the back navigation. The event on the target page will contain this data object as &quot;backData&quot; property. (The original data from the &quot;to()&quot; navigation will still be available as &quot;data&quot; property.)</documentation>
                 </parameter>
-                <parameter type="sap.ui.core/object" name="transitionParameters">
+                <parameter type="sap.ui.core/object" name="transitionParameter">
                     <documentation>This optional object can give additional information to the transition function, like the DOM element which triggered the transition or the desired transition duration.</documentation>
                 </parameter>
             </parameters>
         </method>
-        <method type="sap.f/FlexibleColumnLayout" name="backToTopMidColumn">
+        <method type="sap.ui.core/Control" name="backToTopMidColumn">
             <documentation>Navigates back to the initial/top level of Mid column (this is the element aggregated as &quot;initialPage&quot;, or the first added element).
 NOTE: If already on the initial page, nothing happens.
 The transition effect which had been used to get to the current page is inverted and used for this navigation.</documentation>
@@ -468,12 +465,12 @@ The transition effect which had been used to get to the current page is inverted
                 <parameter type="sap.ui.core/object" name="backData">
                     <documentation>This optional object can carry any payload data which should be made available to the target page of the back navigation. The event on the target page will contain this data object as &quot;backData&quot; property. (The original data from the &quot;to()&quot; navigation will still be available as &quot;data&quot; property.)</documentation>
                 </parameter>
-                <parameter type="sap.ui.core/object" name="transitionParameters">
+                <parameter type="sap.ui.core/object" name="transitionParameter">
                     <documentation>This optional object can give additional information to the transition function, like the DOM element which triggered the transition or the desired transition duration.</documentation>
                 </parameter>
             </parameters>
         </method>
-        <method type="sap.f/FlexibleColumnLayout" name="backToTopEndColumn">
+        <method type="sap.ui.core/Control" name="backToTopEndColumn">
             <documentation>Navigates back to the initial/top level of End column (this is the element aggregated as &quot;initialPage&quot;, or the first added element).
 NOTE: If already on the initial page, nothing happens.
 The transition effect which had been used to get to the current page is inverted and used for this navigation.</documentation>
@@ -481,7 +478,7 @@ The transition effect which had been used to get to the current page is inverted
                 <parameter type="sap.ui.core/object" name="backData">
                     <documentation>This optional object can carry any payload data which should be made available to the target page of the back navigation. The event on the target page will contain this data object as &quot;backData&quot; property. (The original data from the &quot;to()&quot; navigation will still be available as &quot;data&quot; property.)</documentation>
                 </parameter>
-                <parameter type="sap.ui.core/object" name="transitionParameters">
+                <parameter type="sap.ui.core/object" name="transitionParameter">
                     <documentation>This optional object can give additional information to the transition function, like the DOM element which triggered the transition or the desired transition duration.</documentation>
                 </parameter>
             </parameters>

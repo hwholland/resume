@@ -90,11 +90,6 @@
 
 		// test property accessor methods
 
-		QUnit.test("VerticalAlignOk", function(assert) {
-			assert.strictEqual(l1.getVAlign(), "Inherit", "l1.getVAlign() returns result: " + l1.getVAlign());
-			assert.strictEqual(l2.getVAlign(), "Inherit", "l2.getVAlign() returns result: " + l2.getVAlign());
-		});
-
 		QUnit.test("TextOk", function(assert) {
 			assert.strictEqual(l1.getText(), sText, "l1.getText() returns result: " + l1.getText());
 			assert.strictEqual(l2.getText(), sText, "l2.getText() returns result: " + l2.getText());
@@ -119,18 +114,6 @@
 		QUnit.test("DesignOk", function(assert) {
 			assert.strictEqual(l1.getDesign(), oStandardDesign, "l1.getDesign() returns result: " + l1.getDesign());
 			assert.strictEqual(l2.getDesign(), oBoldDesign, "l2.getDesign() returns result: " + l2.getDesign());
-		});
-
-		QUnit.test("Should set vertical alignment", function(assert) {
-			var sVerticalAlign = l1.getVAlign();
-
-			assert.strictEqual(l1.getVAlign(), "Inherit", "should have vertical-align: inherit set as default");
-
-			l1.setVAlign(sap.ui.core.VerticalAlign.Top);
-
-			assert.ok(l1.$().attr("vertical-align", "top"), "should have vertical-align set on the DOM element");
-
-			l1.setVAlign(sap.ui.core.VerticalAlign.Inherit);
 		});
 
 		QUnit.test("When width is not set max-width should apply to control", function(assert) {
@@ -350,91 +333,6 @@
 			assert.strictEqual(afterRenderingSpy.callCount, 0, "The change should not cause rerendering");
 
 			this.label.onAfterRendering.restore();
-		});
-
-		jQuery.sap.require("sap.ui.layout.form.Form");
-		jQuery.sap.require("sap.ui.layout.form.FormRenderer");
-		jQuery.sap.require("sap.ui.layout.form.FormLayout");
-		jQuery.sap.require("sap.ui.layout.form.FormLayoutRenderer");
-		jQuery.sap.require("sap.ui.layout.form.FormContainer");
-		jQuery.sap.require("sap.ui.layout.form.FormElement");
-
-		QUnit.module("DisplayOnlyForm", {
-			beforeEach: function() {
-				var formLayout = new sap.ui.layout.form.FormLayout("FL1");
-				this.form = new sap.ui.layout.form.Form("F1", {
-					layout: formLayout
-				}).placeAt("qunit-fixture");
-				sap.ui.getCore().applyChanges();
-			},
-			afterEach: function() {
-				if (this.form) {
-					this.form.destroy();
-					this.form = undefined;
-				}
-			}
-		});
-
-		QUnit.test("Aria", function(assert) {
-			var formContainer1 = new sap.ui.layout.form.FormContainer("FC1");
-			var formElement1 = new sap.ui.layout.form.FormElement("FE1");
-			formElement1.setLabel("Test1");
-			var field1 = new sap.m.Text("Text1", {
-				text: 'Display Value'
-			});
-			formElement1.addField(field1);
-
-			formContainer1.addFormElement(formElement1);
-			this.form.addFormContainer(formContainer1);
-			sap.ui.getCore().applyChanges();
-
-			assert.equal(this.form.$().find('.sapUiFormElement.sapUiFormElementLbl').text(), 'Test1:Display Value', '":" span is added.');
-		});
-
-		QUnit.module("Label in Overflow Toolbar", {
-			beforeEach: function () {
-				this.clock = sinon.useFakeTimers();
-			},
-
-			afterEach: function () {
-				this.clock.restore();
-			}
-		});
-
-		QUnit.test("Grouped labels are identified", function (assert) {
-			var oSingleLabel = new sap.m.Label({ text: "Single label"}),
-				oGroupedLabel = new sap.m.Label({
-				text: "Label For Control",
-					layoutData: new sap.m.OverflowToolbarLayoutData({group: 1}),
-					labelFor: "labelledControlId"
-				}),
-				oLabelledControl = new sap.m.Input("labelledControlId", {layoutData: new sap.m.OverflowToolbarLayoutData({group: 1})}),
-
-				aToolbarContent = [
-					new sap.m.ToolbarSpacer(),
-					oSingleLabel,
-					oGroupedLabel,
-					oLabelledControl
-				],
-				oOverflowTB = new sap.m.OverflowToolbar({width: 'auto', content: aToolbarContent});
-
-			oOverflowTB.placeAt("qunit-fixture");
-			sap.ui.getCore().applyChanges();
-
-			oOverflowTB.setWidth('10px'); // set small width that causes all content to move to the overflow
-			this.clock.tick(1000);
-
-			assert.strictEqual(oGroupedLabel.hasStyleClass("sapMLabelMediumMarginTop"), true, "grouped label is correctly marked in the overflow");
-			assert.strictEqual(oSingleLabel.hasStyleClass("sapMLabelMediumMarginTop"), false, "non-grouped label is correctly marked in the overflow");
-
-			// remove the labelled control
-			oOverflowTB.removeContent(oLabelledControl);
-			this.clock.tick(1000);
-
-			assert.strictEqual(oGroupedLabel.hasStyleClass("sapMLabelMediumMarginTop"), false, "grouped label is correctly marked in the overflow");
-
-			oOverflowTB.destroy();
-			oLabelledControl.destroy();
 		});
 
 		QUnit.module("LabelFor with non-labelable controls", {

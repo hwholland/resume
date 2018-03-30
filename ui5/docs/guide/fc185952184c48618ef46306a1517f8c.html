@@ -6,8 +6,8 @@
 <meta name="abstract" content="The &lt;template:if&gt; instruction evaluates a condition expressed via existing OpenUI5 data binding features, such as extended syntax; in the preprocessing it is removed or replaced by its child elements based on the value of this condition."/>
 <meta name="description" content="The &lt;template:if&gt; instruction evaluates a condition expressed via existing OpenUI5 data binding features, such as extended syntax; in the preprocessing it is removed or replaced by its child elements based on the value of this condition."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8825463744780567"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8825463744780567"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=26754889687297756"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=26754889687297756"/>
 <title>if</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -19,12 +19,14 @@
 	<h1 class="title topictitle1">if</h1>
 
 	
-	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">&lt;template:if&gt;</samp> instruction evaluates a condition expressed
-		via existing <span class="ph"><span class="ph pname">OpenUI5</span></span> data
-		binding features, such as extended syntax; in the preprocessing it is removed or replaced by
-		its child elements based on the value of this condition. </p>
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">&lt;template:if&gt;</samp> instruction evaluates a condition expressed via
+		existing <span class="ph"><span class="ph pname">OpenUI5</span></span> data binding
+		features, such as extended syntax; in the preprocessing it is removed or replaced by its
+		child elements based on the value of this condition.  </p>
 
-		<p class="p">For more information, see <a class="xref" href="ec79a5d5918f4f7f9cbc2150e66778cc.html">Sorting, Grouping, and Filtering for List Binding</a>.</p>
+		<p class="p">For more information, see <a class="xref" href="099f0a2851ad4118af36345f7dd13ea8.html" title="Complex syntax can be used to add filters and sorters for aggregation binding. One or multiple objects can be defined.">Using Extended
+				Syntax to Add Filters and Sorters</a>
+		</p>
 
 		<p class="p">You set the condition to the <samp class="ph codeph">test</samp> attribute of the <samp class="ph codeph">if</samp>
 			instruction. It is recommended to use expression binding if you need to write logical
@@ -35,8 +37,8 @@
 			API Reference.</p>
 
 		<div class="p">
-			<div class="note note"><span class="notetitle">Note</span> The test condition is treated as a property binding and the result is converted to
-				the Boolean type according to the usual JavaScript rules, with the exception of the
+			<div class="note note"><span class="notetitle">Note</span> The test condition is treated as a property binding and the result is converted to the
+				Boolean type according to the usual JavaScript rules, with the exception of the
 				string <samp class="ph codeph">"false"</samp>, which is converted to the Boolean
 					<samp class="ph codeph">false</samp> for convenience. For more information about the
 				JavaScript rules, see the ECMAScript® Language Specification on the <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fwww.ecma-international.org%2F" alt="http://www.ecma-international.org/" title="http://www.ecma-international.org/">ECMA
@@ -47,10 +49,11 @@
 		<div class="example"><h2 class="exampletitle example_title">Example: </h2><div class="title authorexampletitle">"if" Instruction to Include an Image Only if the URL is Set</div>
 			
 			<p class="p">The output of the template below after preprocessing is as follows: If the test
-				condition does not hold, the <samp class="ph codeph">&lt;template:if&gt;</samp> node is dropped
-				and if the test condition holds, the node is replaced by its content.</p>
+				condition does not hold, the <samp class="ph codeph">&lt;template:if&gt;</samp> node is dropped and
+				if the test condition holds, the node is replaced by its content.</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;template:if test="{meta&gt;ImageUrl}"&gt;
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;template:if test="{meta&gt;ImageUrl}"&gt;
   &lt;Image src="{path: 'meta&gt;ImageUrl', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
 &lt;/template:if&gt;</pre></div>
 
@@ -63,16 +66,17 @@
 
 		</div>
 
-		<div class="example"><h2 class="exampletitle example_title">Example: </h2><div class="title authorexampletitle">"if/then/else" Instruction to Include an Image Only if the URL is Set and Display
-				a Title Otherwise</div>
+		<div class="example"><h2 class="exampletitle example_title">Example: </h2><div class="title authorexampletitle">"if/then/else" Instruction to Include an Image Only if the URL is Set and Display a Title
+				Otherwise</div>
 			
 			<p class="p">The syntax of this example is more complex due to the additional
 					<samp class="ph codeph">&lt;template:then&gt;</samp>/<samp class="ph codeph">&lt;template:else&gt;</samp>
-				elements. The output is the <samp class="ph codeph">&lt;template:if&gt;</samp> node replaced by
-				the content of the appropriate child node.</p>
+				elements. The output is the <samp class="ph codeph">&lt;template:if&gt;</samp> node replaced by the
+				content of the appropriate child node.</p>
 
 			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;template:if test="{meta&gt;ImageUrl}"&gt;
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;template:if test="{meta&gt;ImageUrl}"&gt;
   &lt;template:then&gt;
     &lt;Image src="{path: 'meta&gt;ImageUrl', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
   &lt;/template:then&gt;
@@ -92,15 +96,16 @@
 					<samp class="ph codeph">&lt;template:elseif&gt;</samp> element as shown in the example
 				below.</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;template:if test="{meta&gt;ImageUrl}"&gt;
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;template:if test="{meta&gt;ImageUrl}"&gt;
   &lt;template:then&gt;
-    &lt;m:Image src="{path: 'meta&gt;ImageUrl', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
+    &lt;commons:Image src="{path: 'meta&gt;ImageUrl', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
   &lt;/template:then&gt;
   &lt;template:elseif test="{meta&gt;TypeImageUrl}"&gt;
     &lt;commons:Image src="{path: 'meta&gt;TypeImageUrl', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
   &lt;/template:elseif&gt;
   &lt;template:else&gt;
-    &lt;commons:Text text="{path: 'meta&gt;Title/Value', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
+    &lt;commons:TextView text="{path: 'meta&gt;Title/Value', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
   &lt;/template:else&gt;
 &lt;/template:if&gt;</pre></div>
 

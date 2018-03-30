@@ -6,9 +6,9 @@
 <meta name="abstract" content=""/>
 <meta name="description" content=""/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=736962893817752"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=736962893817752"/>
-<title>Sorting, Grouping, and Filtering for List Binding</title>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7266647360961388"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7266647360961388"/>
+<title>Sorting, Grouping and Filtering for Aggregation Binding</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
     <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
@@ -16,12 +16,12 @@
 <body class="" id="loioec79a5d5918f4f7f9cbc2150e66778cc">
 <div id="wrapper"><div id="container">
 
-	<h1 class="title topictitle1">Sorting, Grouping, and Filtering for List Binding</h1>
+	<h1 class="title topictitle1">Sorting, Grouping and Filtering for Aggregation Binding</h1>
 
 	
 	<div class="body conbody"><p class="shortdesc"/>
 
-		<div class="section" id="loioec79a5d5918f4f7f9cbc2150e66778cc__section_606348F7CECC432C9E18DACEFB3127CF"><div class="section_title">Initial Sorting, Grouping and Filtering for List Binding</div><div type="Initial Sorting, Grouping and Filtering for List Binding">
+		<div class="section" id="loioec79a5d5918f4f7f9cbc2150e66778cc__section_606348F7CECC432C9E18DACEFB3127CF"><div class="section_title">Initial Sorting, Grouping and Filtering for Aggregation Binding</div><div type="Initial Sorting, Grouping and Filtering for Aggregation Binding">
 			
 			<p class="p">To provide initial <span class="ph emphasis emphasis">sorting and grouping</span> in an XML view, proceed as follows:</p>
 
@@ -127,7 +127,7 @@ var oFilterCity = new sap.ui.model.Filter("city",
 	oFilterRevenue = new sap.ui.model.Filter("revenue",
 		sap.ui.model.FilterOperator.LT, 150000000);</pre></div>
 
-			<p class="p">You can pass sorters and filters to the list binding:</p>
+			<p class="p">You can pass sorters and filters to the aggregation binding:</p>
 
 			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 var oList = new sap.m.List({
@@ -136,16 +136,15 @@ var oList = new sap.m.List({
 	}
 });</pre></div>
 
-			<p class="p">You can also use the other list binding possibilities (for example
-					<samp class="ph codeph">bindAggregation</samp> or <samp class="ph codeph">bindItems</samp>) and provide the
-				sorter and filters as parameters.</p>
+			<p class="p">You can also use the other aggregation binding possibilities (for example <samp class="ph codeph">bindAggregation</samp> or <samp class="ph codeph">bindItems</samp>) and
+				provide the sorter and filters as parameters.</p>
 
 		</div></div>
 
-		<div class="section" id="loioec79a5d5918f4f7f9cbc2150e66778cc__section_N100CF_N10013_N10001"><div class="section_title">Manual Sorting and Filtering for List Binding</div><div type="Manual Sorting and Filtering for List Binding">
+		<div class="section" id="loioec79a5d5918f4f7f9cbc2150e66778cc__section_N100CF_N10013_N10001"><div class="section_title">Manual Sorting and Filtering for Aggregation Binding</div><div type="Manual Sorting and Filtering for Aggregation Binding">
 			
-			<p class="p">You can sort or filter data manually after the list binding is complete by getting the
-				corresponding binding and calling the sort/filter function:</p>
+			<p class="p">You can sort or filter data manually after the aggregation binding is complete by getting the corresponding binding and calling the sort/filter
+				function:</p>
 
 			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">// manual sorting
 oList.getBinding("items").sort(oSorter);
@@ -154,41 +153,13 @@ oList.getBinding("items").sort(oSorter);
 oList.getBinding("items").filter([oFilterCity, oFilterRevenue]);</pre></div>
 
 			<div class="note note"><span class="notetitle">Note</span> 
-				<p class="p"><samp class="ph codeph">getBinding</samp> requires the name of the bound list. In this example, we are
-					looking at the <samp class="ph codeph">items</samp> of the <samp class="ph codeph">sap.m.List</samp>
-					control.</p>
+				<p class="p"><samp class="ph codeph">getBinding</samp> requires the name of the bound aggregation. In this example, we are looking at the <samp class="ph codeph">items</samp> of the
+						<samp class="ph codeph">sap.m.List</samp> control.</p>
 
 			</div>
 
 			<p class="p">For more information about the various sorting and filter methods and operators, <span class="ph">see the documentation for Filter, Sorter, and Filter operations under
 						<a class="xref" href="../../docs/api/symbols/sap.ui.model.html" alt="../../docs/api/symbols/sap.ui.model.html" title="../../docs/api/symbols/sap.ui.model.html">sap.ui.model</a> in the <span class="ph uicontrol">API Reference</span> part of the Demo Kit</span>.</p>
-
-		</div></div>
-
-		<div class="section" id="loioec79a5d5918f4f7f9cbc2150e66778cc__section_jxn_fmp_rcb"><div class="section_title">Using Complex Syntax to Add Filters and Sorters</div><div type="Using Complex Syntax to Add Filters and Sorters">
-			
-			<p class="p">Complex syntax can be used to add filters and sorters for list binding. One or multiple
-				objects can be defined.</p>
-
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
-&lt;table:Table rows="{
-    path: '/table', 
-    filters: [{
-        path: 'field3', 
-        operator: 'EQ',
-        value1: 'test'
-    }],
-    sorter: [{
-        path: 'field1', 
-        descending: false
-    }, {
-        path: 'field2', 
-        descending: true
-    }]
- }"&gt;
-...
-&lt;/table:Table&gt;
-</pre></div>
 
 		</div></div>
 

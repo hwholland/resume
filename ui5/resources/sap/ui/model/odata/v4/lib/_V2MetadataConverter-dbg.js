@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -11,15 +11,12 @@ sap.ui.define([
 ], function (jQuery, _Helper, _MetadataConverter) {
 	"use strict";
 
-	var sClassName = "sap.ui.model.odata.v4.lib._V2MetadataConverter",
-		rHttpMethods = /^(?:DELETE|GET|MERGE|PATCH|POST|PUT)$/,
+	var V2MetadataConverter,
+		sModuleName = "sap.ui.model.odata.v4.lib._V2MetadataConverter",
 
 		// namespaces
 		sEdmxNamespace = "http://schemas.microsoft.com/ado/2007/06/edmx",
 		sMicrosoftNamespace = "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata",
-		sSapNamespace = "http://www.sap.com/Protocols/SAPData",
-
-		// conversion tables
 		mV2toV4 = {
 			"creatable" : {
 				"property" : "Insertable",
@@ -59,9 +56,6 @@ sap.ui.define([
 			"text" : {
 				"term" : "@com.sap.vocabularies.Common.v1.Text"
 			},
-			"topable" : {
-				"term" : "@Org.OData.Capabilities.V1.TopSupported"
-			},
 			"updatable" : {
 				"property" : "Updatable",
 				"term" : "@Org.OData.Capabilities.V1.UpdateRestrictions"
@@ -71,14 +65,14 @@ sap.ui.define([
 				"term" : "@Org.OData.Capabilities.V1.UpdateRestrictions"
 			}
 		},
-		mV2toV4ComplexSemantics = {
+		mV2toV4Semantics = {
 			"bday" : {
 				TermName : "Contact"
 			},
 			"city" : {
 				Path : "adr",
 				TermName : "Contact",
-				V4Attribute : "locality"
+				V4Attribute: "locality"
 			},
 			"country" : {
 				Path : "adr",
@@ -87,7 +81,7 @@ sap.ui.define([
 			"email" : {
 				Path : "address",
 				TermName : "Contact",
-				V4Attribute : "uri",
+				V4Attribute: "uri",
 				typeMapping : {
 					"home" : "home",
 					"pref" : "preferred",
@@ -99,26 +93,26 @@ sap.ui.define([
 			"familyname" : {
 				Path : "n",
 				TermName : "Contact",
-				V4Attribute : "surname"
+				V4Attribute: "surname"
 			},
 			"givenname" : {
 				Path : "n",
 				TermName : "Contact",
-				V4Attribute : "given"
+				V4Attribute: "given"
 			},
 			"honorific" : {
 				Path : "n",
 				TermName : "Contact",
-				V4Attribute : "prefix"
+				V4Attribute: "prefix"
 			},
 			"middlename" : {
 				Path : "n",
 				TermName : "Contact",
-				V4Attribute : "additional"
+				V4Attribute: "additional"
 			},
 			"name" : {
 				TermName : "Contact",
-				V4Attribute : "fn"
+				V4Attribute: "fn"
 			},
 			"nickname" : {
 				TermName : "Contact"
@@ -159,7 +153,7 @@ sap.ui.define([
 			"tel" : {
 				Path : "tel",
 				TermName : "Contact",
-				V4Attribute : "uri",
+				V4Attribute: "uri",
 				typeMapping : {
 					"cell" : "cell",
 					"fax" : "fax",
@@ -178,7 +172,7 @@ sap.ui.define([
 			"zip" : {
 				Path : "adr",
 				TermName : "Contact",
-				V4Attribute : "code"
+				V4Attribute: "code"
 			},
 			// event annotations
 			"class" : {
@@ -233,443 +227,352 @@ sap.ui.define([
 			},
 			"percent-complete" : {
 				TermName : "Task",
-				V4Attribute : "percentcomplete"
+				V4Attribute: "percentcomplete"
 			},
 			"priority" : {
 				TermName : "Task"
 			}
 		},
-		mV2toV4SimpleSemantics = {
-			// calendar annotations
-			"fiscalyear" : "@com.sap.vocabularies.Common.v1.IsFiscalYear",
-			"fiscalyearperiod" : "@com.sap.vocabularies.Common.v1.IsFiscalYearPeriod",
-			"year" : "@com.sap.vocabularies.Common.v1.IsCalendarYear",
-			"yearmonth" : "@com.sap.vocabularies.Common.v1.IsCalendarYearMonth",
-			"yearmonthday" : "@com.sap.vocabularies.Common.v1.IsCalendarDate",
-			"yearquarter" : "@com.sap.vocabularies.Common.v1.IsCalendarYearQuarter",
-			"yearweek" : "@com.sap.vocabularies.Common.v1.IsCalendarYearWeek",
-			// OData core annotations
-			"url" : "@Org.OData.Core.V1.IsURL"
+		sSapNamespace = "http://www.sap.com/Protocols/SAPData",
+
+		// the configurations for traverse
+		oAliasConfig = {
+			"Reference" : {
+				"Include" : {
+					__processor : _MetadataConverter.processAlias
+				}
+			},
+			"DataServices" : {
+				"Schema" : {
+					__processor : _MetadataConverter.processAlias
+				}
+			}
+		},
+		oStructuredTypeConfig = {
+			"NavigationProperty" : {
+				__processor : processTypeNavigationProperty
+			},
+			"Property" : {
+				__processor : processTypeProperty
+			}
+		},
+		oFullConfig = {
+			__include : [_MetadataConverter.oReferenceInclude],
+			"DataServices" : {
+				__processor : processDataServices,
+				"Schema" : {
+					__postProcessor : postProcessSchema,
+					__processor : _MetadataConverter.processSchema,
+					__include : [_MetadataConverter.oAnnotationsConfig],
+					"Association" : {
+						__processor : processAssociation,
+						"End" : {
+							__processor : processAssociationEnd
+						},
+						"ReferentialConstraint" : {
+							__processor : processReferentialConstraint,
+							"Dependent" : {
+								__processor : processDependent,
+								"PropertyRef" : {
+									__processor : processReferentialConstraintPropertyRef
+								}
+							},
+							"Principal" : {
+								__processor : processPrincipal,
+								"PropertyRef" : {
+									__processor : processReferentialConstraintPropertyRef
+								}
+							}
+						}
+					},
+					"ComplexType" : {
+						__processor : processComplexType,
+						__include : [oStructuredTypeConfig]
+					},
+					"EntityContainer" : {
+						__processor : processEntityContainer,
+						"AssociationSet" : {
+							__processor : processAssociationSet,
+							"End" : {
+								__processor : processAssociationSetEnd
+							}
+						},
+						"EntitySet" : {
+							__processor : processEntitySet
+						},
+						"FunctionImport" : {
+							__processor : processFunctionImport,
+							"Parameter" : {
+								__processor : processParameter
+							}
+						}
+					},
+					"EntityType" : {
+						__processor : processEntityType,
+						__include : [oStructuredTypeConfig],
+						"Key" : {
+							"PropertyRef" : {
+								__processor : processEntityTypeKeyPropertyRef
+							}
+						}
+					}
+				}
+			}
 		};
 
-	//*********************************************************************************************
-	// Annotatable
-	//*********************************************************************************************
-
 	/**
-	 * Creates an annotatable that is able to consume V2 annotations and set V4 annotations for the
-	 * correct target. It ensures that the target for the annotations is only created when needed.
-	 *
-	 * @param {V2MetadataConverter} oConverter The converter
-	 * @param {string} sTarget
-	 *   The target name to which the V4 annotations shall be added. The target path is constructed
-	 *   from the path of the top annotatable of the stack in oConverter (if there is one yet) and
-	 *   the given name.
-	 * @constructor
-	 */
-	function Annotatable(oConverter, sTarget) {
-		var oParent = oConverter.oAnnotatable;
-
-		if (oParent) {
-			sTarget = _Helper.buildPath(oParent.sPath, sTarget);
-		}
-		this.oConverter = oConverter;
-		this.sPath = sTarget;
-		this.oParent = oParent;
-		this.mSapAttributes = oConverter.mSapAttributes;
-		this.mAnnotationsForTarget = null;
-	}
-
-	/**
-	 * Adds a V4 annotation for the annotatable's target.
-	 *
-	 * @param {string} sTerm The term
-	 * @param {any} vValue The value
-	 */
-	Annotatable.prototype.annotate = function (sTerm, vValue) {
-		this.getTarget()[sTerm] = vValue;
-	};
-
-	/**
-	 * Consumes the SAP annotation of the given name and returns its value. No warning will be
-	 * logged for this name afterwards.
-	 *
-	 * @param {string} sName The name
-	 * @returns {string} The value or <code>undefined</code>
-	 */
-	Annotatable.prototype.consume = function (sName) {
-		return this.oConverter.consumeSapAnnotation(sName);
-	};
-
-	/**
-	 * Converts the given V2 annotation. The conversion table <code>mV2ToV4</code> defines the V4
-	 * term to take the value given in <code>vValue</code>. The conversion table may also give a
-	 * property; in this case the resulting term is an &lt;edm:Record> and this call adds a property
-	 * to the record.
-	 *
-	 * Does nothing if <code>vValue</code> is <code>undefined</code> or <code>""</code>
-	 *
-	 * @param {string} sV2Name The name of the V2 annotation
-	 * @param {any} vValue The new value
-	 */
-	Annotatable.prototype.convert = function (sV2Name, vValue) {
-		var oAnnotation, mAnnotationInfo;
-
-		if (vValue === undefined || vValue === "") {
-			return;
-		}
-		mAnnotationInfo = mV2toV4[sV2Name];
-		if (mAnnotationInfo.property) {
-			oAnnotation = this.getOrCreateAnnotationRecord(mAnnotationInfo.term);
-			oAnnotation[mAnnotationInfo.property] = vValue;
-		} else {
-			this.annotate(mAnnotationInfo.term, vValue);
-		}
-	};
-
-	/**
-	 * Gets the converted V2 annotation for the given term. Assumes an &lt;edm:Record> and ensures
-	 * that there is one.
-	 *
-	 * @param {string} sTerm The term
-	 * @returns {object} The V4 annotation value, an &lt;edm:Record>
-	 */
-	Annotatable.prototype.getOrCreateAnnotationRecord = function (sTerm) {
-		return this.oConverter.getOrCreateObject(this.getTarget(), sTerm);
-	};
-
-	/**
-	 * Gets the target for the converted V2 annotations of this annotatable. Ensures that it exists.
-	 *
-	 * @returns {object} The target for the annotations
-	 */
-	Annotatable.prototype.getTarget = function () {
-		if (!this.mAnnotationsForTarget) {
-			this.mAnnotationsForTarget = this.oConverter.convertedV2Annotations[this.sPath] = {};
-		}
-		return this.mAnnotationsForTarget;
-	};
-
-	/**
-	 * Returns the value of the SAP annotation for the given name.
-	 *
-	 * @param {string} sName The name
-	 * @returns {string} The value or <code>undefined</code>
-	 */
-	Annotatable.prototype.peek = function (sName) {
-		return this.oConverter.mSapAnnotations[sName];
-	};
-
-	//*********************************************************************************************
-	// V2MetadataConverter
-	//*********************************************************************************************
-
-	/**
-	 * Creates a converter for V2 metadata.
-	 *
-	 * @constructor
-	 */
-	function V2MetadataConverter() {
-		this.association = null; // the current association
-		this.associations = {}; // maps qualified name -> association
-		this.associationSet = null; // the current associationSet
-		this.associationSets = []; // list of associationSets
-		this.aBoundOperations = []; // list of bound operations
-		this.constraintRole = null; // the current Principal/Dependent
-		// maps annotatable path to a map of converted V2 annotations for current Schema
-		this.convertedV2Annotations = {};
-		this.defaultEntityContainer = null; // the name of the default EntityContainer
-		this.mEntityContainersOfSchema = {}; // all EntityContainers of current Schema by name
-		// converted V2 annotations for EntitySets, identified by EntityType's name
-		this.mEntityType2EntitySetAnnotation = {};
-		this.mProperty2Semantics = {}; // maps a property's path to its sap:semantics value
-		this.sPropertyName = null; // the name of the current property
-		this.navigationProperties = []; // a list of navigation property data
-		this.mSapAnnotations = {}; // map of the current Element's SAP annotations by name
-		this.sTypeName = null; // the name of the current EntityType/ComplexType
-		this.mProperty2Unit = {}; // maps a property's path to its sap:unit value
-
-		_MetadataConverter.call(this);
-	}
-
-	V2MetadataConverter.prototype = Object.create(_MetadataConverter.prototype);
-
-	/**
-	 * Collects the element's SAP annotations in the aggregate.
+	 * Iterates over all attributes and converts V2 annotations to corresponding V4 annotations
+	 * based on the given kind.
 	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
+	 * @param {string} sKind The kind of the element, e.g. "EntitySet" or "Property"
 	 */
-	V2MetadataConverter.prototype.collectSapAnnotations = function (oElement) {
-		var oAttribute,
-			oAttributeList = oElement.attributes,
-			i, n;
+	function convertAnnotations(oElement, oAggregate, sKind) {
+		var sElementPath = oAggregate.annotatable.path,
+			mAnnotations = oAggregate.convertedV2Annotations[sElementPath] || {},
+			oAttribute,
+			aAttributes = oElement.attributes,
+			sParentPath = oAggregate.annotatable.parent.path,
+			mParentAnnotations = oAggregate.convertedV2Annotations[sParentPath] || {},
+			sSemanticValue,
+			i,
+			n = aAttributes.length;
 
-		this.mSapAnnotations = {};
-		for (i = 0, n = oAttributeList.length; i < n; i += 1) {
-			oAttribute = oAttributeList.item(i);
-
-			if (oAttribute.namespaceURI === sSapNamespace
-					&& oAttribute.localName !== "content-version") {
-				this.mSapAnnotations[oAttribute.localName] = oAttribute.value;
+		if (sKind === "EntityType" || sKind === "FunctionImport") {
+			setAnnotation(mAnnotations, "label", oElement.getAttributeNS(sSapNamespace, "label"));
+		} else {
+			for (i = 0; i < n; i++) {
+				oAttribute = aAttributes[i];
+				if (oAttribute.namespaceURI !== sSapNamespace) {
+					continue;
+				}
+				if (sKind === "EntitySet") {
+					convertEntitySetAnnotation(oElement, oAttribute, mAnnotations, oAggregate);
+				} else if (sKind === "Property" && oAttribute.localName === "semantics") {
+					sSemanticValue = oAttribute.value;
+					if (sSemanticValue === "unit-of-measure"
+							|| sSemanticValue === "currency-code") {
+						oAggregate.mProperty2Semantics[sElementPath] = sSemanticValue;
+					}
+					convertPropertySemanticAnnotations(oAttribute, mParentAnnotations,
+						mAnnotations);
+				} else if (sKind === "Property") {
+					if (oAttribute.localName === "unit") {
+						oAggregate.mProperty2Unit[sElementPath] = oAttribute.value;
+					}
+					convertPropertyAnnotations(oAttribute, mAnnotations);
+				}
+			}
+			if (sKind === "EntitySet"
+					&& oElement.getAttributeNS(sSapNamespace, "searchable") !== "true") {
+				// default for sap:searchable is false --> add v4 annotation, if value of
+				// v2 annotation is not true
+				setAnnotation(mAnnotations, "searchable", false);
+			} else if (sKind === "Property") {
+				if (oElement.getAttributeNS(sSapNamespace, "updatable") === "false") {
+					if (oElement.getAttributeNS(sSapNamespace, "creatable") === "false") {
+						mAnnotations["@Org.OData.Core.V1.Computed"] = true;
+					} else {
+						mAnnotations["@Org.OData.Core.V1.Immutable"] = true;
+					}
+				}
 			}
 		}
-	};
+
+		if (Object.keys(mAnnotations).length > 0) {
+			oAggregate.convertedV2Annotations[sElementPath] = mAnnotations;
+		}
+		if (Object.keys(mParentAnnotations).length > 0) {
+			oAggregate.convertedV2Annotations[sParentPath] = mParentAnnotations;
+		}
+	}
 
 	/**
-	 * Returns the value of the SAP annotation for the given name and removes it from the map.
+	 * Converts a V2 annotation of an EntitySet to the corresponding V4 annotation and puts
+	 * the annotation into the given map of V4 annotations.
 	 *
-	 * @param {string} sName The name
-	 * @returns {string} The value or <code>undefined</code>
+	 * @param {Element} oElement The element
+	 * @param {Attr} oAttribute The attribute
+	 * @param {object} mAnnotations Map of V4 annotations
+	 * @param {object} oAggregate The aggregate (for error handling)
 	 */
-	V2MetadataConverter.prototype.consumeSapAnnotation = function (sName) {
-		var sValue = this.mSapAnnotations[sName];
+	function convertEntitySetAnnotation(oElement, oAttribute, mAnnotations, oAggregate) {
+		var sConflictingV2Annotation;
 
-		delete this.mSapAnnotations[sName];
-		return sValue;
-	};
-
-	/**
-	 * Converts the given V2 annotation of an EntitySet to corresponding V4 annotation.
-	 *
-	 * @param {Annotatable} oAnnotatable The annotatable
-	 * @param {string} sName The name of the V2 annotation
-	 */
-	V2MetadataConverter.prototype.convertEntitySetAnnotation = function (oAnnotatable, sName) {
-		var sConflictingV2Annotation, sValue;
-
-		switch (sName) {
+		switch (oAttribute.localName){
 			case "creatable":
 			case "deletable":
 			case "updatable":
-				// do not consume it here, it might be needed for xxx-path
-				if (oAnnotatable.peek(sName) === "false") {
-					oAnnotatable.convert(sName, false);
+				if (oAttribute.value === "false") {
+					setAnnotation(mAnnotations, oAttribute.localName, false);
 				}
 				break;
 			case "deletable-path":
 			case "updatable-path":
-				sConflictingV2Annotation = sName.slice(0, 9);
-				sValue = oAnnotatable.consume(sName);
-				if (oAnnotatable.peek(sConflictingV2Annotation)) {
-					oAnnotatable.convert(sName, false);
-					jQuery.sap.log.warning(
-						"Inconsistent metadata in '" + this.url + "'",
+				sConflictingV2Annotation = oAttribute.localName.slice(0, 9);
+				if (oElement.getAttributeNS(sSapNamespace, sConflictingV2Annotation)) {
+					setAnnotation(mAnnotations, oAttribute.localName, false);
+					jQuery.sap.log.warning("Inconsistent metadata in '" + oAggregate.url + "'",
 						"Use either 'sap:" + sConflictingV2Annotation + "' or 'sap:"
 							+ sConflictingV2Annotation + "-path'"
-							+ " at entity set '" + oAnnotatable.sPath + "'",
-						sClassName);
+							+ " at entity set '" + oAggregate.annotatable.path + "'", sModuleName);
 				} else {
-					oAnnotatable.convert(sName, {
-						$Path : sValue
+					setAnnotation(mAnnotations, oAttribute.localName, {
+						$Path : oAttribute.value
 					});
 				}
 				break;
 			case "label":
-				this.convertLabel(oAnnotatable);
+				mAnnotations["@com.sap.vocabularies.Common.v1.Label"] = oAttribute.value;
 				break;
 			case "pageable":
-				sValue = oAnnotatable.consume(sName);
-				if (sValue === "false") {
-					oAnnotatable.annotate("@Org.OData.Capabilities.V1.SkipSupported", false);
-					oAnnotatable.annotate("@Org.OData.Capabilities.V1.TopSupported", false);
+				if (oAttribute.value === "false") {
+					mAnnotations["@Org.OData.Capabilities.V1.SkipSupported"] = false;
+					mAnnotations["@Org.OData.Capabilities.V1.TopSupported"] = false;
 				}
 				break;
 			case "requires-filter":
-				sValue = oAnnotatable.consume(sName);
-				if (sValue === "true") {
-					oAnnotatable.convert(sName, true);
+				if (oAttribute.value === "true") {
+					setAnnotation(mAnnotations, oAttribute.localName, true);
 				}
 				break;
 			case "topable":
-				sValue = oAnnotatable.consume(sName);
-				if (sValue === "false") {
-					oAnnotatable.convert(sName, false);
+				if (oAttribute.value === "false") {
+					mAnnotations["@Org.OData.Capabilities.V1.TopSupported"] = false;
 				}
 				break;
 			default: //no conversion yet
 		}
-	};
+	}
 
 	/**
-	 * Converts the V2 annotation "label".
+	 * Converts a V2 annotation of an EntitySet to the corresponding V4 annotation and puts
+	 * the annotation into the given map of V4 annotations.
 	 *
-	 * @param {Annotatable} oAnnotatable The annotatable
+	 * @param {Attr} oAttribute The attribute
+	 * @param {object} mAnnotations Map of V4 annotations
 	 */
-	V2MetadataConverter.prototype.convertLabel = function (oAnnotatable) {
-		oAnnotatable.convert("label", oAnnotatable.consume("label"));
-	};
-
-	/**
-	 * Converts the given V2 annotation of a Property to corresponding V4 annotation.
-	 *
-	 * @param {Annotatable} oAnnotatable The annotatable
-	 * @param {string} sName The name of the V2 annotation
-	 */
-	V2MetadataConverter.prototype.convertPropertyAnnotation = function (oAnnotatable, sName) {
-		var sValue;
-
-		switch (sName) {
+	function convertPropertyAnnotations(oAttribute, mAnnotations) {
+		switch (oAttribute.localName) {
 			// simple cases
 			case "heading":
 			case "label":
 			case "quickinfo":
-				oAnnotatable.convert(sName, oAnnotatable.consume(sName));
+				setAnnotation(mAnnotations, oAttribute.localName, oAttribute.value);
 				break;
 			case "field-control":
 			case "precision":
 			case "text":
-				oAnnotatable.convert(sName, {
-					$Path : oAnnotatable.consume(sName)
+				setAnnotation(mAnnotations, oAttribute.localName, {
+					$Path : oAttribute.value
 				});
 				break;
 			// more complex cases
 			case "aggregation-role":
-				sValue = oAnnotatable.consume(sName);
-				if (sValue === "dimension") {
-					oAnnotatable.annotate("@com.sap.vocabularies.Analytics.v1.Dimension", true);
-				} else if (sValue === "measure") {
-					oAnnotatable.annotate("@com.sap.vocabularies.Analytics.v1.Measure", true);
+				if (oAttribute.value === "dimension") {
+					mAnnotations["@com.sap.vocabularies.Analytics.v1.Dimension"] = true;
+				} else if (oAttribute.value === "measure") {
+					mAnnotations["@com.sap.vocabularies.Analytics.v1.Measure"] = true;
 				}
 				break;
 			case "display-format":
-				sValue = oAnnotatable.consume(sName);
-				if (sValue === "NonNegative") {
-					oAnnotatable.annotate("@com.sap.vocabularies.Common.v1.IsDigitSequence",
-						true);
-				} else if (sValue === "UpperCase") {
-					oAnnotatable.annotate("@com.sap.vocabularies.Common.v1.IsUpperCase", true);
+				if (oAttribute.value === "NonNegative") {
+					mAnnotations["@com.sap.vocabularies.Common.v1.IsDigitSequence"] = true;
+				} else if (oAttribute.value === "UpperCase") {
+					mAnnotations["@com.sap.vocabularies.Common.v1.IsUpperCase"] = true;
 				}
 				break;
-			case "semantics":
-				this.convertPropertySemanticsAnnotation(oAnnotatable);
-				break;
-			case "unit":
-				this.mProperty2Unit[oAnnotatable.sPath] = oAnnotatable.consume("unit");
-				break;
 			case "visible":
-				sValue = oAnnotatable.consume(sName);
-				if (sValue === "false") {
-					oAnnotatable.annotate("@com.sap.vocabularies.UI.v1.Hidden", true);
-					oAnnotatable.annotate("@com.sap.vocabularies.Common.v1.FieldControl", {
+				if (oAttribute.value === "false") {
+					mAnnotations["@com.sap.vocabularies.UI.v1.Hidden"] = true;
+					mAnnotations["@com.sap.vocabularies.Common.v1.FieldControl"] = {
 						$EnumMember :
 							"com.sap.vocabularies.Common.v1.FieldControlType/Hidden"
-					});
+					};
 				}
 				break;
 			default:
-			//no conversion supported
+				//no conversion supported
 		}
-	};
+	}
 
 	/**
-	 * Converts a sap:semantics V2 annotation of a property to the corresponding V4 annotation.
+	 * Converts a sap:semantics V2 annotation of a property to the corresponding V4 annotation at
+	 * an EntityType and puts the annotation into the given map of V4 annotations.
 	 *
-	 * @param {Annotatable} oAnnotatable The annotatable
+	 * @param {Attr} oAttribute The attribute
+	 * @param {object} mTypeAnnotations Map of V4 annotations at EntityType/ComplexType level
+	 * @param {object} mPropertyAnnotations Map of V4 annotations at Property level
 	 */
-	V2MetadataConverter.prototype.convertPropertySemanticsAnnotation = function (oAnnotatable) {
+	function convertPropertySemanticAnnotations(oAttribute, mTypeAnnotations,
+		mPropertyAnnotations) {
 		var oAnnotations,
 			sEnum,
 			oPath,
 			aResult,
 			oSemantics,
-			aValue = oAnnotatable.peek("semantics").split(";"),
+			aValue = oAttribute.value.split(";"),
 			sValue = aValue[0],
-			oV2toV4ComplexSemantic = mV2toV4ComplexSemantics[sValue];
+			oV2toV4Semantic;
 
-		if (sValue === "unit-of-measure" || sValue === "currency-code") {
-			this.mProperty2Semantics[oAnnotatable.sPath] = oAnnotatable.consume("semantics");
-		} else if (mV2toV4SimpleSemantics[sValue]) {
-			oAnnotatable.annotate(mV2toV4SimpleSemantics[sValue], true);
-			oAnnotatable.consume("semantics");
-		} else if (oV2toV4ComplexSemantic) {
+		if (sValue === "url") {
+			mPropertyAnnotations["@Org.OData.Core.V1.IsURL"] = true;
+			return;
+		}
+
+		oV2toV4Semantic = mV2toV4Semantics[sValue];
+		if (oV2toV4Semantic) {
 			oPath = {
-				"$Path" : this.sPropertyName
+				"$Path" : oAttribute.ownerElement.getAttribute("Name")
 			};
-			oAnnotations = oAnnotatable.oParent.getOrCreateAnnotationRecord(
-				"@com.sap.vocabularies.Communication.v1." + oV2toV4ComplexSemantic.TermName);
-			if (oV2toV4ComplexSemantic.Path) {
-				oSemantics = this.getOrCreateObject(oAnnotations, oV2toV4ComplexSemantic.Path);
-				oSemantics[oV2toV4ComplexSemantic.V4Attribute || sValue] = oPath;
+			oAnnotations = V2MetadataConverter.getOrCreateObject(mTypeAnnotations,
+				"@com.sap.vocabularies.Communication.v1." + oV2toV4Semantic.TermName);
+			if (oV2toV4Semantic.Path) {
+				oSemantics = V2MetadataConverter.getOrCreateObject(oAnnotations,
+					oV2toV4Semantic.Path);
+				oSemantics[oV2toV4Semantic.V4Attribute || sValue] = oPath;
 
-				if (oV2toV4ComplexSemantic.v4PropertyAnnotation) {
-					oAnnotatable.annotate(oV2toV4ComplexSemantic.v4PropertyAnnotation, true);
+				if (oV2toV4Semantic.v4PropertyAnnotation) {
+					mPropertyAnnotations[oV2toV4Semantic.v4PropertyAnnotation]
+						= true;
 
-					// Determination of space separated list of V4 annotations enumeration value for
-					// given sap:semantics "tel" and "email"
+					//Determination of space separated list of V4 annotations enumeration value for
+					//given sap:semantics "tel" and "email"
 					if (aValue[1]) {
 						aResult = [];
 						sEnum = aValue[1].split("=")[1];
 						sEnum.split(",").forEach(function (sType) {
-							var sTargetType = oV2toV4ComplexSemantic.typeMapping[sType];
+							var sTargetType = oV2toV4Semantic.typeMapping[sType];
 							if (sTargetType) {
-								aResult.push(oV2toV4ComplexSemantic.v4EnumType + "/" + sTargetType);
+								aResult.push(oV2toV4Semantic.v4EnumType + "/" + sTargetType);
 							} else {
-								jQuery.sap.log.warning("Unsupported semantic type: " + sType,
-									undefined, sClassName);
+								jQuery.sap.log.warning("Unsupported semantic type: "
+										+ sType, undefined, sModuleName);
 							}
 						});
 						if (aResult.length > 0) {
 							oSemantics.type = {"EnumMember" : aResult.join(" ")};
 						}
 					}
-					oAnnotations[oV2toV4ComplexSemantic.Path] = [oSemantics];
+					oAnnotations[oV2toV4Semantic.Path] = [oSemantics];
 				} else {
-					oAnnotations[oV2toV4ComplexSemantic.Path] = oSemantics;
+					oAnnotations[oV2toV4Semantic.Path] = oSemantics;
 				}
 			} else {
-				oAnnotations[oV2toV4ComplexSemantic.V4Attribute || sValue] = oPath;
-			}
-			oAnnotatable.consume("semantics");
-		}
-	};
-
-	/**
-	 * Finalizes the conversion after having traversed the XML completely.
-	 *
-	 * @override
-	 */
-	V2MetadataConverter.prototype.finalize = function () {
-		this.result.$Version = "4.0"; // The result of the conversion is a V4 streamlined JSON
-
-		this.setDefaultEntityContainer();
-		this.updateNavigationPropertiesAndCreateBindings();
-		this.processBoundOperations();
-		this.processUnitConversion();
-	};
-
-	/**
-	 * Merges the given V2 annotations into the given V4 annotations map. If the annotation
-	 * is contained in both maps the V4 one wins.
-	 *
-	 * @param {object} mConvertedV2Annotations
-	 *   Maps annotatable path to a map of converted V2 annotations; this object is modified
-	 *   during the merge
-	 * @param {object} [mV4Annotations]
-	 *   Maps annotatable path to a map of V4 annotations; V2 annotations are merged into this
-	 *   object
-	 */
-	V2MetadataConverter.prototype.mergeAnnotations = function (mConvertedV2Annotations,
-			mV4Annotations) {
-		var sAnnotatablePath;
-
-		for (sAnnotatablePath in mConvertedV2Annotations) {
-			if (sAnnotatablePath in mV4Annotations) {
-				mV4Annotations[sAnnotatablePath] = jQuery.extend(
-					mConvertedV2Annotations[sAnnotatablePath],
-					mV4Annotations[sAnnotatablePath]);
-			} else {
-				mV4Annotations[sAnnotatablePath] = mConvertedV2Annotations[sAnnotatablePath];
+				oAnnotations[oV2toV4Semantic.V4Attribute || sValue] = oPath;
 			}
 		}
-	};
+	}
 
 	/**
 	 * Post-processing of an Schema element.
 	 *
 	 * @param {Element} oElement The element
 	 * @param {any[]} aResult The results from child elements
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.postProcessSchema = function (oElement, aResult) {
+	function postProcessSchema(oElement, aResult, oAggregate) {
 		var mAnnotations,
 			oEntityContainer,
 			sEntityContainerName,
@@ -677,8 +580,8 @@ sap.ui.define([
 			sEntitySetName,
 			sTarget;
 
-		for (sEntityContainerName in this.mEntityContainersOfSchema) {
-			oEntityContainer = this.mEntityContainersOfSchema[sEntityContainerName];
+		for (sEntityContainerName in oAggregate.mEntityContainersOfSchema) {
+			oEntityContainer = oAggregate.mEntityContainersOfSchema[sEntityContainerName];
 
 			for (sEntitySetName in oEntityContainer) {
 				oEntitySet = oEntityContainer[sEntitySetName];
@@ -687,402 +590,306 @@ sap.ui.define([
 				}
 				sTarget = sEntityContainerName + "/" + sEntitySetName;
 				mAnnotations = jQuery.extend(true,
-					this.convertedV2Annotations[sTarget] || {},
-					this.mEntityType2EntitySetAnnotation[oEntitySet.$Type]);
+					oAggregate.convertedV2Annotations[sTarget] || {},
+					oAggregate.mEntityType2EntitySetAnnotation[oEntitySet.$Type]);
 				if (Object.keys(mAnnotations).length) {
-					this.convertedV2Annotations[sTarget] = mAnnotations;
+					oAggregate.convertedV2Annotations[sTarget] = mAnnotations;
 				}
 			}
 		}
 
-		if (this.schema.$Annotations) {
-			this.mergeAnnotations(this.convertedV2Annotations, this.schema.$Annotations);
-		} else if (Object.keys(this.convertedV2Annotations).length > 0) {
-			this.schema.$Annotations = this.convertedV2Annotations;
+		if (oAggregate.schema.$Annotations) {
+			V2MetadataConverter.mergeAnnotations(oAggregate.convertedV2Annotations,
+				oAggregate.schema.$Annotations);
+		} else if (Object.keys(oAggregate.convertedV2Annotations).length > 0) {
+			oAggregate.schema.$Annotations = oAggregate.convertedV2Annotations;
 		}
-		this.convertedV2Annotations = {}; // reset schema annotations for next schema
-		this.mEntityContainersOfSchema = {};
-	};
+
+		oAggregate.convertedV2Annotations = {}; // reset schema annotations for next schema
+		oAggregate.mEntityContainersOfSchema = {};
+	}
 
 	/**
 	 * Processes an Association element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processAssociation = function (oElement) {
-		var sName = this.namespace + oElement.getAttribute("Name");
+	function processAssociation(oElement, oAggregate) {
+		var sName = oAggregate.namespace + oElement.getAttribute("Name");
 
-		this.associations[sName] = this.association = {
+		oAggregate.associations[sName] = oAggregate.association = {
 			referentialConstraint : null,
 			roles : {} // maps role name -> AssocationEnd
 		};
-	};
+	}
 
 	/**
 	 * Processes an End element below an Association element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processAssociationEnd = function (oElement) {
+	function processAssociationEnd(oElement, oAggregate) {
 		var sName = oElement.getAttribute("Role");
 
-		this.association.roles[sName] = {
+		oAggregate.association.roles[sName] = {
 			multiplicity : oElement.getAttribute("Multiplicity"),
 			propertyName : undefined, // will poss. be set in updateNavigationProperties...
-			typeName : this.resolveAlias(oElement.getAttribute("Type"))
+			typeName : V2MetadataConverter.resolveAlias(oElement.getAttribute("Type"), oAggregate)
 		};
-	};
+	}
 
 	/**
 	 * Processes an AssociationSet element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processAssociationSet = function (oElement) {
+	function processAssociationSet(oElement, oAggregate) {
 		var oAssociationSet = {
-				associationName : this.resolveAlias(oElement.getAttribute("Association")),
-				ends : [],
-				entityContainer : this.entityContainer
+				associationName : V2MetadataConverter.resolveAlias(
+					oElement.getAttribute("Association"), oAggregate),
+				ends : []
 			};
 
-		this.associationSet = oAssociationSet;
-		this.associationSets.push(oAssociationSet);
-
-		this.consumeSapAnnotation("creatable");
-		this.consumeSapAnnotation("deletable");
-		this.consumeSapAnnotation("updatable");
-	};
+		oAggregate.associationSet = oAssociationSet;
+		oAggregate.associationSets.push(oAssociationSet);
+	}
 
 	/**
 	 * Processes an End element below an Association or AssociationSet element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processAssociationSetEnd = function (oElement) {
-		this.associationSet.ends.push({
+	function processAssociationSetEnd(oElement, oAggregate) {
+		oAggregate.associationSet.ends.push({
 			entitySetName : oElement.getAttribute("EntitySet"),
 			roleName : oElement.getAttribute("Role")
 		});
-	};
+	}
 
 	/**
 	 * Processes a ComplexType element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processComplexType = function (oElement) {
-		this.processType(oElement, {"$kind" : "ComplexType"});
-	};
+	function processComplexType(oElement, oAggregate) {
+		processType(oElement, oAggregate, {"$kind" : "ComplexType"});
+	}
 
 	/**
 	 * Processes a DataServices element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processDataServices = function (oElement) {
+	function processDataServices(oElement, oAggregate) {
 		if (oElement.getAttributeNS(sMicrosoftNamespace, "DataServiceVersion") !== "2.0") {
-			throw new Error(this.url + ": expected DataServiceVersion=\"2.0\": "
-				+ serializeSingleElement(oElement));
+			throw new Error(oAggregate.url + " is not a valid OData V2 metadata document");
 		}
-	};
+	}
 
 	/**
 	 * Processes a Dependent element below a ReferentialConstraint element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processDependent = function (oElement) {
-		var oConstraint = this.association.referentialConstraint;
+	function processDependent(oElement, oAggregate) {
+		var oConstraint = oAggregate.association.referentialConstraint;
 
-		this.constraintRole = oConstraint.dependent = {
+		oAggregate.constraintRole = oConstraint.dependent = {
 			roleName : oElement.getAttribute("Role")
 		};
-	};
-
-	/**
-	 * Collects all SAP annotations of the element, applys the processor on it and then checks that
-	 * all annotations have been consumed.
-	 *
-	 * @param {Element} oElement The element
-	 * @param {function} [fnProcessor] The processor
-	 */
-	V2MetadataConverter.prototype.processElement = function (oElement, fnProcessor) {
-		this.collectSapAnnotations(oElement);
-		if (fnProcessor) {
-			fnProcessor.call(this, oElement);
-		}
-		this.warnUnsupportedSapAnnotations(oElement);
-	};
+	}
 
 	/**
 	 * Processes an EntityContainer.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processEntityContainer = function (oElement) {
-		var sQualifiedName = this.namespace + oElement.getAttribute("Name");
+	function processEntityContainer(oElement, oAggregate) {
+		var sQualifiedName = oAggregate.namespace + oElement.getAttribute("Name");
 
-		this.mEntityContainersOfSchema[sQualifiedName]
-			= this.result[sQualifiedName] = this.entityContainer = {
+		oAggregate.mEntityContainersOfSchema[sQualifiedName]
+			= oAggregate.result[sQualifiedName] = oAggregate.entityContainer = {
 			"$kind" : "EntityContainer"
 		};
 		if (oElement.getAttributeNS(sMicrosoftNamespace, "IsDefaultEntityContainer") === "true") {
-			this.defaultEntityContainer = sQualifiedName;
+			oAggregate.defaultEntityContainer = sQualifiedName;
 		}
-		this.v2annotatable(sQualifiedName);
-	};
+		V2MetadataConverter.annotatable(oAggregate, sQualifiedName);
+	}
 
 	/**
 	 * Processes an EntitySet element at the EntityContainer.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processEntitySet = function (oElement) {
-		var oAnnotatable,
-			sName = oElement.getAttribute("Name");
+	function processEntitySet(oElement, oAggregate) {
+		var sName = oElement.getAttribute("Name");
 
-		this.entityContainer[sName] = this.entitySet = {
+		oAggregate.entityContainer[sName] = oAggregate.entitySet = {
 			$kind : "EntitySet",
-			$Type : this.resolveAlias(oElement.getAttribute("EntityType"))
+			$Type :
+				V2MetadataConverter.resolveAlias(oElement.getAttribute("EntityType"), oAggregate)
 		};
+		V2MetadataConverter.annotatable(oAggregate, sName);
 
-		oAnnotatable = this.v2annotatable(sName, this.convertEntitySetAnnotation);
-		// These annotations have to be retained until all V2 annotations have been visited
-		oAnnotatable.consume("creatable");
-		oAnnotatable.consume("deletable");
-		oAnnotatable.consume("updatable");
-
-		if (oAnnotatable.consume("searchable") !== "true") {
-			// default for sap:searchable is false --> add V4 annotation, if value of V2 annotation
-			// is not true
-			oAnnotatable.convert("searchable", false);
-		}
-	};
+		convertAnnotations(oElement, oAggregate, "EntitySet");
+	}
 
 	/**
 	 * Processes an EntityType element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processEntityType = function (oElement) {
+	function processEntityType(oElement, oAggregate) {
 		var oType = {
-				$kind : "EntityType"
-			},
-			that = this;
+			$kind : "EntityType"
+		};
 
-		this.processType(oElement, oType);
-		this.processAttributes(oElement, oType, {
-			"Abstract" : this.setIfTrue,
+		processType(oElement, oAggregate, oType);
+		V2MetadataConverter.processAttributes(oElement, oType, {
+			"Abstract" : V2MetadataConverter.setIfTrue,
 			"BaseType" : function (sType) {
-				return sType ? that.resolveAlias(sType) : undefined;
+				return sType ? V2MetadataConverter.resolveAlias(sType, oAggregate) : undefined;
 			}
 		});
 
-		this.convertLabel(this.oAnnotatable);
-	};
+		convertAnnotations(oElement, oAggregate, "EntityType");
+	}
 
 	/**
 	 * Processes a PropertyRef element of the EntityType's Key.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processEntityTypeKeyPropertyRef = function (oElement) {
+	function processEntityTypeKeyPropertyRef(oElement, oAggregate) {
 		var sName = oElement.getAttribute("Name");
 
-		this.getOrCreateArray(this.type, "$Key").push(sName);
-	};
-
-	/**
-	 * Processes the TFacetAttributes and TPropertyFacetAttributes of the elements Property,
-	 * TypeDefinition etc.
-	 *
-	 * @param {Element} oElement The element
-	 * @param {object} oResult The result object to fill
-	 */
-	V2MetadataConverter.prototype.processFacetAttributes = function (oElement, oResult) {
-		var that = this;
-
-		this.processAttributes(oElement, oResult, {
-			"DefaultValue" : this.setValue,
-			"MaxLength" :  function (sValue) {
-				return sValue === "Max" ? undefined : that.setNumber(sValue);
-			},
-			"Nullable" : this.setIfFalse,
-			"Precision" : this.setNumber,
-			"Scale" :  this.setNumber,
-			"Unicode" : this.setIfFalse
-		});
-		if (oElement.getAttribute("FixedLength") === "false") {
-			oResult.$Scale = "variable";
-		}
-	};
+		V2MetadataConverter.getOrCreateArray(oAggregate.type, "$Key").push(sName);
+	}
 
 	/**
 	 * Processes a FunctionImport element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processFunctionImport = function (oElement) {
-		var sAnnotationActionFor,
-			sHttpMethod = oElement.getAttributeNS(sMicrosoftNamespace, "HttpMethod"),
-			sKind = sHttpMethod !== "GET" ? "Action" : "Function",
-			sLabel,
-			sName = oElement.getAttribute("Name"),
-			oOperation = {
+	function processFunctionImport(oElement, oAggregate) {
+		var sHttpMethod = oElement.getAttributeNS(sMicrosoftNamespace, "HttpMethod"),
+			sKind = sHttpMethod === "POST" ? "Action" : "Function",
+			oFunction = {
 				$kind : sKind
 			},
-			oOperationImport = {
+			sName = oElement.getAttribute("Name"),
+			sQualifiedName = oAggregate.namespace + sName,
+			oFunctionImport = {
 				$kind : sKind + "Import"
 			},
-			sQualifiedName = this.namespace + sName,
 			sReturnType = oElement.getAttribute("ReturnType"),
 			oReturnType;
 
-		oOperationImport["$" + sKind] = sQualifiedName;
-		this.processAttributes(oElement, oOperationImport, {
-			"EntitySet" : this.setValue
+		oFunctionImport["$" + sKind] = sQualifiedName;
+		V2MetadataConverter.processAttributes(oElement, oFunctionImport, {
+			"EntitySet" : V2MetadataConverter.setValue
 		});
 		if (sReturnType) {
-			oOperation.$ReturnType = oReturnType = {};
-			this.processTypedCollection(sReturnType, oReturnType);
+			oFunction.$ReturnType = oReturnType = {};
+			processTypedCollection(sReturnType, oReturnType, oAggregate, oElement);
 		}
-		if (!rHttpMethods.test(sHttpMethod)) {
-			jQuery.sap.log.warning("Unsupported HttpMethod at FunctionImport '" + sName
-				+ "', removing this FunctionImport", undefined, sClassName);
-			this.consumeSapAnnotation("action-for");
-			this.consumeSapAnnotation("applicable-path");
+		if (oElement.getAttributeNS(sSapNamespace, "action-for")) {
+			jQuery.sap.log.warning("Unsupported 'sap:action-for' at FunctionImport '" + sName
+				+ "', removing this FunctionImport", undefined, sModuleName);
 		} else {
-			if (sHttpMethod !== "GET" && sHttpMethod !== "POST") {
-				// remember V2 HttpMethod only if needed
-				oOperation.$v2HttpMethod = sHttpMethod;
-			}
-
-			// add operation to the result
-			this.result[sQualifiedName] = [oOperation];
-
-			sAnnotationActionFor = this.consumeSapAnnotation("action-for");
-			if (sAnnotationActionFor) {
-				oOperation.$IsBound = true;
-				oOperation.$Parameter = [{
-					"$Name" : null,
-					"$Nullable" : false,
-					"$Type" : this.resolveAlias(sAnnotationActionFor)
-				}];
-				this.aBoundOperations.push(oOperation);
-				this.consumeSapAnnotation("applicable-path");
-
-				sLabel = this.consumeSapAnnotation("label");
-				if (sLabel) {
-					oOperation[mV2toV4["label"].term] = sLabel;
-				}
-			} else {
-				// add operation import to the result
-				this.entityContainer[sName] = oOperationImport;
-
-				this.v2annotatable(sName);
-				this.convertLabel(this.oAnnotatable);
-			}
+			// add Function and FunctionImport to the result
+			oAggregate.entityContainer[sName] = oFunctionImport;
+			oAggregate.result[sQualifiedName] = [oFunction];
 		}
-		// Remember the current operation (even if it has not been added to the result), so that
+		// Remember the current function (even if it has not been added to the result), so that
 		// processParameter adds to this. This avoids that parameters belonging to a removed
 		// FunctionImport are added to the predecessor.
-		this.oOperation = oOperation;
-	};
+		oAggregate.function = oFunction;
+		V2MetadataConverter.annotatable(oAggregate, sName);
+
+		convertAnnotations(oElement, oAggregate, "FunctionImport");
+	}
 
 	/**
 	 * Processes a Parameter element within an Action or Function.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processParameter = function (oElement) {
-		var sLabel,
-			oOperation = this.oOperation,
+	function processParameter(oElement, oAggregate) {
+		var oFunction = oAggregate.function,
+			sLabel,
 			oParameter = {
 				$Name : oElement.getAttribute("Name")
 			};
 
-		this.processFacetAttributes(oElement, oParameter);
-		this.processTypedCollection(oElement.getAttribute("Type"), oParameter);
+		V2MetadataConverter.processFacetAttributes(oElement, oParameter);
+		processTypedCollection(oElement.getAttribute("Type"), oParameter, oAggregate, oElement);
 
-		this.getOrCreateArray(oOperation, "$Parameter").push(oParameter);
+		V2MetadataConverter.getOrCreateArray(oFunction, "$Parameter").push(oParameter);
+		V2MetadataConverter.annotatable(oAggregate, oParameter);
 
-		sLabel = this.consumeSapAnnotation("label");
+		sLabel = oElement.getAttributeNS(sSapNamespace, "label");
 		if (sLabel) {
 			oParameter[mV2toV4["label"].term] = sLabel;
 		}
-	};
+	}
 
 	/**
 	 * Processes a Principal element below a ReferentialConstraint element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processPrincipal = function (oElement) {
-		var oConstraint = this.association.referentialConstraint;
+	function processPrincipal(oElement, oAggregate) {
+		var oConstraint = oAggregate.association.referentialConstraint;
 
-		this.constraintRole = oConstraint.principal = {
+		oAggregate.constraintRole = oConstraint.principal = {
 			roleName : oElement.getAttribute("Role")
 		};
-	};
+	}
 
 	/**
 	 * Processes an End element below an Association element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processReferentialConstraint = function (oElement) {
-		this.association.referentialConstraint = {};
-	};
+	function processReferentialConstraint(oElement, oAggregate) {
+		oAggregate.association.referentialConstraint = {};
+	}
 
 	/**
 	 * Processes an End element below an Association element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processReferentialConstraintPropertyRef = function (oElement) {
-		this.constraintRole.propertyRef = oElement.getAttribute("Name");
-	};
-
-	/**
-	 * Processes a Schema element.
-	 *
-	 * @param {Element} oElement The element
-	 */
-	V2MetadataConverter.prototype.processSchema = function (oElement) {
-		var sSchemaVersion = this.consumeSapAnnotation("schema-version");
-
-		this.namespace = oElement.getAttribute("Namespace") + ".";
-		this.result[this.namespace] = this.schema = {
-			"$kind" : "Schema"
-		};
-		if (sSchemaVersion) {
-			this.schema["@Org.Odata.Core.V1.SchemaVersion"] = sSchemaVersion;
-		}
-	};
+	function processReferentialConstraintPropertyRef(oElement, oAggregate) {
+		oAggregate.constraintRole.propertyRef = oElement.getAttribute("Name");
+	}
 
 	/**
 	 * Processes a ComplexType or EntityType element.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 * @param {object} oType The initial typed result object
 	 */
-	V2MetadataConverter.prototype.processType = function (oElement, oType) {
-		var sQualifiedName = this.namespace + oElement.getAttribute("Name");
+	function processType(oElement, oAggregate, oType) {
+		var sQualifiedName = oAggregate.namespace + oElement.getAttribute("Name");
 
-		this.sTypeName = sQualifiedName;
-		this.result[sQualifiedName] = this.type = oType;
-		this.v2annotatable(sQualifiedName);
-	};
+		oAggregate.sTypeName = sQualifiedName;
+		oAggregate.result[sQualifiedName] = oAggregate.type = oType;
+		V2MetadataConverter.annotatable(oAggregate, sQualifiedName);
+	}
 
 	/**
 	 * Processes the type in the form "Type" or "Collection(Type)" and sets the appropriate
 	 * properties.
-	 *
 	 * @param {string} sType The type attribute from the Element
 	 * @param {object} oProperty The property attribute in the JSON
+	 * @param {object} oAggregate The aggregate
+	 * @param {Element} oElement The element using the type
 	 */
-	V2MetadataConverter.prototype.processTypedCollection = function (sType, oProperty) {
-		var aMatches = this.rCollection.exec(sType);
+	function processTypedCollection(sType, oProperty, oAggregate, oElement) {
+		var aMatches = V2MetadataConverter.rCollection.exec(sType);
 
 		if (aMatches) {
 			oProperty.$isCollection = true;
@@ -1095,7 +902,7 @@ sap.ui.define([
 		switch (sType) {
 			case "Edm.DateTime":
 				oProperty.$v2Type = sType;
-				if (this.mSapAnnotations["display-format"] === "Date") {
+				if (oElement.getAttributeNS(sSapNamespace, "display-format") === "Date") {
 					sType = "Edm.Date";
 					delete oProperty.$Precision;
 				} else {
@@ -1111,61 +918,43 @@ sap.ui.define([
 				sType = "Edm.TimeOfDay";
 				break;
 			default:
-				sType = this.resolveAlias(sType);
+				sType = V2MetadataConverter.resolveAlias(sType, oAggregate);
 		}
 		oProperty.$Type = sType;
-	};
+	}
 
 	/**
 	 * Processes a NavigationProperty element of a structured type.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processTypeNavigationProperty = function (oElement) {
-		var sCreatable = this.consumeSapAnnotation("creatable"),
-			sCreatablePath = this.consumeSapAnnotation("creatable-path"),
-			sFilterable = this.consumeSapAnnotation("filterable"),
-			oFilterablePath,
+	function processTypeNavigationProperty(oElement, oAggregate) {
+		var sCreatable = oElement.getAttributeNS(sSapNamespace, "creatable"),
+			sCreatablePath = oElement.getAttributeNS(sSapNamespace, "creatable-path"),
 			vHere,
 			sName = oElement.getAttribute("Name"),
 			oNavigationPropertyPath,
 			oProperty = {
 				$kind : "NavigationProperty"
-			},
-			that = this;
+			};
 
-		/*
-		 * Assumes that the given annotation term applies to all <EntitySet>s using the current
-		 * <EntityType>. The term's value is a record that contains an array-valued property with
-		 * the given name. Pushes the annotation object to that array.
-		 * @param {string} sTerm The V4 annotation term starting with '@'
-		 * @param {string} sProperty The name of the array-valued property
-		 * @param {object} oAnnotation The V4 annotation object
-		 */
-		function pushPropertyPath(sTerm, sProperty, oAnnotation) {
-			vHere = that.getOrCreateObject(that.mEntityType2EntitySetAnnotation, that.sTypeName);
-			vHere = that.getOrCreateObject(vHere, sTerm);
-			vHere = that.getOrCreateArray(vHere, sProperty);
-			vHere.push(oAnnotation);
-		}
-
-		this.type[sName] = oProperty;
-		this.navigationProperties.push({
-			associationName : this.resolveAlias(oElement.getAttribute("Relationship")),
+		oAggregate.type[sName] = oProperty;
+		oAggregate.navigationProperties.push({
+			associationName :
+				V2MetadataConverter.resolveAlias(oElement.getAttribute("Relationship"), oAggregate),
 			fromRoleName : oElement.getAttribute("FromRole"),
 			property : oProperty,
 			propertyName : sName,
 			toRoleName : oElement.getAttribute("ToRole")
 		});
 
-		this.v2annotatable(sName);
-
+		V2MetadataConverter.annotatable(oAggregate, sName);
 		if (sCreatable) {
 			oNavigationPropertyPath = {"$NavigationPropertyPath" : sName};
 			if (sCreatablePath) {
-				jQuery.sap.log.warning("Inconsistent metadata in '" + this.url + "'",
+				jQuery.sap.log.warning("Inconsistent metadata in '" + oAggregate.url + "'",
 					"Use either 'sap:creatable' or 'sap:creatable-path' at navigation property '"
-					+ this.oAnnotatable.sPath + "'", sClassName);
+					+ oAggregate.annotatable.path + "'", sModuleName);
 			} else if (sCreatable === "true") {
 				oNavigationPropertyPath = null;
 			}
@@ -1179,38 +968,87 @@ sap.ui.define([
 			};
 		}
 		if (oNavigationPropertyPath) {
-			pushPropertyPath("@Org.OData.Capabilities.V1.InsertRestrictions",
-				"NonInsertableNavigationProperties", oNavigationPropertyPath);
+			vHere = V2MetadataConverter.getOrCreateObject(
+				oAggregate.mEntityType2EntitySetAnnotation, oAggregate.sTypeName);
+			vHere = V2MetadataConverter.getOrCreateObject(
+				vHere, "@Org.OData.Capabilities.V1.InsertRestrictions");
+			vHere = V2MetadataConverter.getOrCreateArray(
+				vHere, "NonInsertableNavigationProperties");
+			vHere.push(oNavigationPropertyPath);
 		}
-		if (sFilterable === "false") {
-			oFilterablePath = {
-				"NavigationProperty" : {
-					"$NavigationPropertyPath" : sName
-				},
-				"FilterRestrictions" : {
-					"Filterable" : false
+	}
+
+	/**
+	 * For each property with a "sap:unit" annotation a corresponding V4 annotation is created.
+	 * The annotation is "Org.OData.Measures.V1.Unit" if the unit has
+	 * sap:semantics="unit-of-measure" or "Org.OData.Measures.V1.ISOCurrency" if the unit has
+	 * sap:semantics="currency-code". The unit property can be in a different type thus the
+	 * conversion can only happen in pass 3.
+	 *
+	 * @param {object} oAggregate The aggregate
+	 */
+	function processUnitConversion(oAggregate) {
+		Object.keys(oAggregate.mProperty2Unit).forEach(function (sPropertyPath) {
+			var vHere,
+				oType,
+				sTypeName = sPropertyPath.split("/")[0],
+				sUnitAnnotation,
+				sUnitPath = oAggregate.mProperty2Unit[sPropertyPath],
+				aUnitPathSegments = sUnitPath.split("/"),
+				oUnitProperty,
+				sUnitSemantics,
+				i,
+				n = aUnitPathSegments.length;
+
+			for (i = 0; i < n; i++) {
+				oType = oAggregate.result[sTypeName];
+				oUnitProperty = oType[aUnitPathSegments[i]];
+				if (!oUnitProperty) {
+					jQuery.sap.log.warning("Path '" + sUnitPath
+						+ "' for sap:unit cannot be resolved", sPropertyPath, sModuleName);
+					return;
 				}
-			};
-			pushPropertyPath("@Org.OData.Capabilities.V1.NavigationRestrictions",
-				"RestrictedProperties", oFilterablePath);
-		}
-	};
+				if (i < n - 1) {
+					sTypeName = oUnitProperty.$Type;
+				}
+			}
+			sUnitSemantics = oAggregate.mProperty2Semantics[
+				sTypeName + "/" + aUnitPathSegments[n - 1]];
+			if (!sUnitSemantics) {
+				jQuery.sap.log.warning("Unsupported sap:semantics at sap:unit='" + sUnitPath
+					+ "'; expected 'currency-code' or 'unit-of-measure'", sPropertyPath,
+					sModuleName);
+				return;
+			}
+
+			sUnitAnnotation = sUnitSemantics === "currency-code" ? "ISOCurrency" : "Unit";
+			sUnitAnnotation = "@Org.OData.Measures.V1." + sUnitAnnotation;
+
+			vHere = V2MetadataConverter.getOrCreateObject(
+				oAggregate.result[_Helper.namespace(sPropertyPath) + "."], "$Annotations");
+			vHere = V2MetadataConverter.getOrCreateObject(vHere, sPropertyPath);
+			if (!(sUnitAnnotation in vHere)) { // existing V4 annotations won't be overridden
+				vHere[sUnitAnnotation] = {"$Path" : sUnitPath};
+			}
+		});
+	}
 
 	/**
 	 * Processes a Property element of a structured type.
-	 *
 	 * @param {Element} oElement The element
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.processTypeProperty = function (oElement) {
-		var oAnnotatable,
-			sEnumMember,
-			sFilterRestriction,
+	function processTypeProperty(oElement, oAggregate) {
+		var sEnumMember,
+			sFilterable = oElement.getAttributeNS(sSapNamespace, "filterable"),
+			sFilterRestriction = oElement.getAttributeNS(sSapNamespace, "filter-restriction"),
 			vHere,
 			sName = oElement.getAttribute("Name"),
 			oProperty = {
 				"$kind" : "Property"
 			},
-			that = this;
+			sRequiredInFilter = oElement.getAttributeNS(sSapNamespace, "required-in-filter"),
+			sSortable = oElement.getAttributeNS(sSapNamespace, "sortable");
 
 		/*
 		 * Assumes that the given annotation term applies to all <EntitySet>s using the current
@@ -1219,38 +1057,29 @@ sap.ui.define([
 		 * element to that array.
 		 */
 		function pushPropertyPath(sTerm, sProperty, sAnnotation) {
-			if (that.type.$kind === "EntityType") {
-				vHere = that.getOrCreateObject(
-					that.mEntityType2EntitySetAnnotation, that.sTypeName);
-				vHere = that.getOrCreateObject(vHere, sTerm);
-				vHere = that.getOrCreateArray(vHere, sProperty);
+			if (oAggregate.type.$kind === "EntityType") {
+				vHere = V2MetadataConverter.getOrCreateObject(
+					oAggregate.mEntityType2EntitySetAnnotation, oAggregate.sTypeName);
+				vHere = V2MetadataConverter.getOrCreateObject(vHere, sTerm);
+				vHere = V2MetadataConverter.getOrCreateArray(vHere, sProperty);
 				vHere.push({"$PropertyPath" : sName});
 			} else {
 				jQuery.sap.log.warning("Unsupported SAP annotation at a complex type in '"
-					+ that.url + "'", "sap:" + sAnnotation + " at property '"
-					+ oAnnotatable.sPath + "'", sClassName);
+					+ oAggregate.url + "'", "sap:" + sAnnotation + " at property '"
+					+ oAggregate.annotatable.path + "'", sModuleName);
 			}
 		}
 
-		this.sPropertyName = sName;
-		this.type[sName] = oProperty;
-		this.processFacetAttributes(oElement, oProperty);
-		this.processTypedCollection(oElement.getAttribute("Type"), oProperty);
+		oAggregate.type[sName] = oProperty;
+		V2MetadataConverter.processFacetAttributes(oElement, oProperty);
+		processTypedCollection(oElement.getAttribute("Type"), oProperty, oAggregate, oElement);
 
-		oAnnotatable = this.v2annotatable(sName, this.convertPropertyAnnotation);
-		if (oAnnotatable.consume("updatable") === "false") {
-			if (oAnnotatable.consume("creatable") === "false") {
-				oAnnotatable.annotate("@Org.OData.Core.V1.Computed", true);
-			} else {
-				oAnnotatable.annotate("@Org.OData.Core.V1.Immutable", true);
-			}
-		}
-
-		if (oAnnotatable.consume("filterable") === "false") {
+		V2MetadataConverter.annotatable(oAggregate, sName);
+		convertAnnotations(oElement, oAggregate, "Property");
+		if (sFilterable === "false") {
 			pushPropertyPath("@Org.OData.Capabilities.V1.FilterRestrictions",
 				"NonFilterableProperties", "filterable");
 		}
-		sFilterRestriction = oAnnotatable.consume("filter-restriction");
 		if (sFilterRestriction) {
 			switch (sFilterRestriction) {
 				case "interval":
@@ -1263,167 +1092,95 @@ sap.ui.define([
 					sEnumMember = "SingleValue";
 					break;
 				default:
-					jQuery.sap.log.warning("Inconsistent metadata in '" + this.url + "'",
+					jQuery.sap.log.warning("Inconsistent metadata in '" + oAggregate.url + "'",
 						"Unsupported sap:filter-restriction=\"" + sFilterRestriction
-						+ "\" at property '" + oAnnotatable.sPath + "'", sClassName);
+						+ "\" at property '" + oAggregate.annotatable.path + "'", sModuleName);
 			}
 			if (sEnumMember) {
-				if (this.type.$kind === "EntityType") {
-					vHere = this.getOrCreateObject(
-						this.mEntityType2EntitySetAnnotation, this.sTypeName);
-					vHere = this.getOrCreateArray(
+				if (oAggregate.type.$kind === "EntityType") {
+					vHere = V2MetadataConverter.getOrCreateObject(
+						oAggregate.mEntityType2EntitySetAnnotation, oAggregate.sTypeName);
+					vHere = V2MetadataConverter.getOrCreateArray(
 						vHere, "@com.sap.vocabularies.Common.v1.FilterExpressionRestrictions");
 					vHere.push({
 						"AllowedExpressions" : {
-							"EnumMember" : "com.sap.vocabularies.Common.v1.FilterExpressionType/"
-								+ sEnumMember
+							"EnumMember"
+							: "com.sap.vocabularies.Common.v1.FilterExpressionType/" + sEnumMember
 						},
 						"Property" : {"$PropertyPath" : sName}
 					});
 				} else {
 					jQuery.sap.log.warning("Unsupported SAP annotation at a complex type in '"
-						+ this.url + "'", "sap:filter-restriction at property '"
-						+ oAnnotatable.sPath + "'", sClassName);
+						+ oAggregate.url + "'", "sap:filter-restriction at property '"
+						+ oAggregate.annotatable.path + "'", sModuleName);
 				}
 			}
 		}
-		if (oAnnotatable.consume("required-in-filter") === "true") {
+		if (sRequiredInFilter === "true") {
 			pushPropertyPath("@Org.OData.Capabilities.V1.FilterRestrictions", "RequiredProperties",
 				"required-in-filter");
 		}
-		if (oAnnotatable.consume("sortable") === "false") {
+		if (sSortable === "false") {
 			pushPropertyPath("@Org.OData.Capabilities.V1.SortRestrictions",
 				"NonSortableProperties", "sortable");
 		}
-	};
+	}
 
 	/**
-	 * Post-processing of all bound operations: key properties are removed from parameters.
-	 */
-	V2MetadataConverter.prototype.processBoundOperations = function () {
-		var that = this;
-
-		this.aBoundOperations.forEach(function (oOperation) {
-			var oEntityType = that.result[oOperation.$Parameter[0].$Type];
-
-			oEntityType.$Key.forEach(function (sKeyName) {
-				oOperation.$Parameter.some(function (oParameter, i) {
-					if (oParameter.$Name === sKeyName) {
-						oOperation.$Parameter.splice(i, 1);
-						return true;
-					}
-				});
-			});
-		});
-	};
-
-	/**
-	 * For each property with a "sap:unit" annotation a corresponding V4 annotation is created.
-	 * The annotation is "Org.OData.Measures.V1.Unit" if the unit has
-	 * sap:semantics="unit-of-measure" or "Org.OData.Measures.V1.ISOCurrency" if the unit has
-	 * sap:semantics="currency-code". The unit property can be in a different type thus the
-	 * conversion can only happen in pass 3.
-	 */
-	V2MetadataConverter.prototype.processUnitConversion = function () {
-		var that = this;
-
-		Object.keys(this.mProperty2Unit).forEach(function (sPropertyPath) {
-			var vHere,
-				oType,
-				sTypeName = sPropertyPath.split("/")[0],
-				sUnitAnnotation,
-				sUnitPath = that.mProperty2Unit[sPropertyPath],
-				aUnitPathSegments = sUnitPath.split("/"),
-				oUnitProperty,
-				sUnitSemantics,
-				i,
-				n = aUnitPathSegments.length;
-
-			for (i = 0; i < n; i++) {
-				oType = that.result[sTypeName];
-				oUnitProperty = oType[aUnitPathSegments[i]];
-				if (!oUnitProperty) {
-					jQuery.sap.log.warning("Path '" + sUnitPath
-						+ "' for sap:unit cannot be resolved", sPropertyPath, sClassName);
-					return;
-				}
-				if (i < n - 1) {
-					sTypeName = oUnitProperty.$Type;
-				}
-			}
-			sUnitSemantics = that.mProperty2Semantics[
-				sTypeName + "/" + aUnitPathSegments[n - 1]];
-			if (!sUnitSemantics) {
-				jQuery.sap.log.warning("Unsupported sap:semantics at sap:unit='" + sUnitPath
-					+ "'; expected 'currency-code' or 'unit-of-measure'", sPropertyPath,
-					sClassName);
-				return;
-			}
-
-			sUnitAnnotation = sUnitSemantics === "currency-code" ? "ISOCurrency" : "Unit";
-			sUnitAnnotation = "@Org.OData.Measures.V1." + sUnitAnnotation;
-
-			vHere = that.getOrCreateObject(
-				that.result[_Helper.namespace(sPropertyPath) + "."], "$Annotations");
-			vHere = that.getOrCreateObject(vHere, sPropertyPath);
-			if (!(sUnitAnnotation in vHere)) { // existing V4 annotations won't be overridden
-				vHere[sUnitAnnotation] = {"$Path" : sUnitPath};
-			}
-		});
-	};
-
-	/**
-	 * Serializes the element with its attributes.
+	 * Sets an annotation for the given V2 name in the given annotations map.
+	 * Does nothing if vValue is <code>null</code> or <code>""</code>
 	 *
-	 * BEWARE: makes no attempt at encoding, DO NOT use in a security critical manner!
-	 *
-	 * @param {Element} oElement any XML DOM element
-	 * @returns {string} the serialization
+	 * @param {object} mAnnotations Map of annotations to be updated
+	 * @param {string} sV2Name The name of the V2 annotation
+	 * @param {object|boolean} vValue The new value
 	 */
-	function serializeSingleElement(oElement) {
-		var oAttribute,
-			oAttributesList = oElement.attributes,
-			sText = "<" + oElement.nodeName,
-			i, n;
-
-		for (i = 0, n = oAttributesList.length; i < n; i += 1) {
-			oAttribute = oAttributesList.item(i);
-			sText += " " + oAttribute.name + '="' + oAttribute.value + '"';
+	function setAnnotation(mAnnotations, sV2Name, vValue) {
+		var mAnnotationInfo = mV2toV4[sV2Name],
+			oAnnotation;
+		if (vValue === null || vValue === "") {
+			return;
 		}
-		return sText + (oElement.childNodes.length ? ">" : "/>");
+		if (mAnnotationInfo.property) {
+			oAnnotation = mAnnotations[mAnnotationInfo.term] || {};
+			oAnnotation[mAnnotationInfo.property] = vValue;
+		} else {
+			oAnnotation = vValue;
+		}
+		mAnnotations[mAnnotationInfo.term] = oAnnotation;
 	}
 
 	/**
 	 * Sets $EntityContainer to the default entity container (or the only one).
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.setDefaultEntityContainer = function () {
-		var sDefaultEntityContainer = this.defaultEntityContainer,
-			aEntityContainers,
-			oResult = this.result;
+	function setDefaultEntityContainer(oAggregate) {
+		var sDefaultEntityContainer = oAggregate.defaultEntityContainer,
+			aEntityContainers;
 
 		if (sDefaultEntityContainer) {
-			oResult.$EntityContainer = sDefaultEntityContainer;
+			oAggregate.result.$EntityContainer = sDefaultEntityContainer;
 		} else {
-			aEntityContainers = Object.keys(oResult).filter(function (sQualifiedName) {
-				return oResult[sQualifiedName].$kind === "EntityContainer";
+			aEntityContainers = Object.keys(oAggregate.result).filter(function (sQualifiedName) {
+				return oAggregate.result[sQualifiedName].$kind === "EntityContainer";
 			});
 			if (aEntityContainers.length === 1) {
-				oResult.$EntityContainer = aEntityContainers[0];
+				oAggregate.result.$EntityContainer = aEntityContainers[0];
 			}
 		}
-	};
+	}
 
 	/**
 	 * Updates navigation properties and creates navigation property bindings. Iterates over the
 	 * aggregated navigation properties list and updates the corresponding navigation properties
 	 * from the associations. Iterates over the aggregated association set and tries to create
 	 * navigation property bindings for both directions.
+	 *
+	 * @param {object} oAggregate The aggregate
 	 */
-	V2MetadataConverter.prototype.updateNavigationPropertiesAndCreateBindings = function () {
-		var that = this;
+	function updateNavigationPropertiesAndCreateBindings(oAggregate) {
 
-		this.navigationProperties.forEach(function (oNavigationPropertyData) {
-			var oAssociation = that.associations[oNavigationPropertyData.associationName],
+		oAggregate.navigationProperties.forEach(function (oNavigationPropertyData) {
+			var oAssociation = oAggregate.associations[oNavigationPropertyData.associationName],
 				oConstraint = oAssociation.referentialConstraint,
 				oNavigationProperty = oNavigationPropertyData.property,
 				oToRole = oAssociation.roles[oNavigationPropertyData.toRoleName];
@@ -1444,9 +1201,9 @@ sap.ui.define([
 			}
 		});
 
-		this.associationSets.forEach(function (oAssociationSet) {
-			var oAssociation = that.associations[oAssociationSet.associationName],
-				oEntityContainer = oAssociationSet.entityContainer;
+		oAggregate.associationSets.forEach(function (oAssociationSet) {
+			var oAssociation = oAggregate.associations[oAssociationSet.associationName],
+				oEntityContainer = oAggregate.entityContainer;
 
 			/*
 			 * Creates a navigation property binding for the navigation property of the "from" set's
@@ -1468,148 +1225,119 @@ sap.ui.define([
 			createNavigationPropertyBinding(oAssociationSet.ends[0], oAssociationSet.ends[1]);
 			createNavigationPropertyBinding(oAssociationSet.ends[1], oAssociationSet.ends[0]);
 		});
-	};
+	}
 
-	/**
-	 * This function is called by each V2 item for which V4 target annotations can be created. It
-	 * defines the target path for the annotations. The V4 annotations will be placed to
-	 * <code>convertedV2Annotations</code>. The annotatables form a stack (via 'parent'),
-	 * this functions pushes a new annotatable on the stack. It will be removed automatically by
-	 * traverse().
-	 *
-	 * @param {string} sName
-	 *   The target name to which the V4 annotations shall be added. The target path is constructed
-	 *   from the path of the top annotatable of the stack (if there is one yet) and the given name.
-	 * @param {function} [fnProcessV2Annotatable]
-	 *   An optional function which is called for each V2 annotation of the current element with the
-	 *   created annotatable and the annotation name as parameters.
-	 * @returns {Annotatable}
-	 *   The created annotatable
-	 */
-	V2MetadataConverter.prototype.v2annotatable = function (sName, fnProcessV2Annotatable) {
-		var oAnnotatable = new Annotatable(this, sName);
+	V2MetadataConverter = jQuery.extend({}, _MetadataConverter, {
+		/**
+		 * Converts the metadata from XML format to a JSON object.
+		 *
+		 * @param {Document} oDocument
+		 *   The XML DOM document
+		 * @param {string} sUrl
+		 *   The URL by which this document has been loaded (for error messages)
+		 * @returns {object}
+		 *   The metadata JSON
+		 */
+		convertXMLMetadata : function (oDocument, sUrl) {
+			var oAggregate, oElement;
 
-		this.oAnnotatable = oAnnotatable;
-		if (fnProcessV2Annotatable) {
-			fnProcessV2Annotatable = fnProcessV2Annotatable.bind(this);
-			Object.keys(this.mSapAnnotations).forEach(function (sName) {
-				fnProcessV2Annotatable(oAnnotatable, sName);
+			jQuery.sap.measure.average("convertXMLMetadata", "", sModuleName);
+
+			oElement = oDocument.documentElement;
+			if (oElement.localName !== "Edmx" || oElement.namespaceURI !== sEdmxNamespace) {
+				throw new Error(sUrl + " is not a valid OData V2 metadata document");
+			}
+			oAggregate = {
+				"aliases" : {}, // maps alias -> namespace
+				"annotatable" : null, // the current annotatable, see function annotatable
+				"association" : null, // the current association
+				"associations" : {}, // maps qualified name -> association
+				"associationSet" : null, // the current associationSet
+				"associationSets" : [], // list of associationSets
+				"constraintRole" : null, // the current Principal/Dependent
+				// maps annotatable path to a map of converted V2 annotations for current Schema
+				"convertedV2Annotations" : {},
+				"defaultEntityContainer" : null, // the name of the default EntityContainer
+				"entityContainer" : null, // the current EntityContainer
+				mEntityContainersOfSchema : {}, // all EntityContainers of current Schema by name
+				"entitySet" : null, // the current EntitySet
+				// converted V2 annotations for EntitySets, identified by EntityType's name
+				mEntityType2EntitySetAnnotation : {},
+				"function" : null, // the current function
+				"namespace" : null, // the namespace of the current Schema
+				mProperty2Semantics : {}, // maps a property's path to its sap:semantics value
+				"navigationProperties" : [], // a list of navigation property data
+				"processFacetAttributes" : V2MetadataConverter.processFacetAttributes,
+				"processTypedCollection" : processTypedCollection,
+				"schema" : null, // the current Schema
+				"type" : null, // the current EntityType/ComplexType
+				sTypeName : null, // the name of the current EntityType/ComplexType
+				mProperty2Unit : {}, // maps a property's path to its sap:unit value
+				"result" : {
+					"$Version" : "4.0" // The result of the conversion is a V4 streamlined JSON
+				},
+				"url" : sUrl // the document URL (for error messages)
+			};
+
+			// pass 1: find aliases
+			V2MetadataConverter.traverse(oElement, oAggregate, oAliasConfig);
+			// pass 2: full conversion
+			V2MetadataConverter.traverse(oElement, oAggregate, oFullConfig);
+			// pass 3
+			setDefaultEntityContainer(oAggregate);
+			updateNavigationPropertiesAndCreateBindings(oAggregate);
+			processUnitConversion(oAggregate);
+
+			jQuery.sap.measure.end("convertXMLMetadata");
+			return oAggregate.result;
+		},
+
+		/**
+		 * Merges the given V2 annotations into the given V4 annotations map. If the annotation
+		 * is contained in both maps the V4 one wins.
+		 * @param {object} mConvertedV2Annotations
+		 *   Maps annotatable path to a map of converted V2 annotations; this object is modified
+		 *   during the merge
+		 * @param {object} [mV4Annotations]
+		 *   Maps annotatable path to a map of V4 annotations; V2 annotations are merged into this
+		 *   object
+		 */
+		mergeAnnotations : function (mConvertedV2Annotations, mV4Annotations) {
+			var sAnnotatablePath;
+
+			for (sAnnotatablePath in mConvertedV2Annotations) {
+				if (sAnnotatablePath in mV4Annotations) {
+					mV4Annotations[sAnnotatablePath] = jQuery.extend(
+						mConvertedV2Annotations[sAnnotatablePath],
+						mV4Annotations[sAnnotatablePath]);
+				} else {
+					mV4Annotations[sAnnotatablePath] = mConvertedV2Annotations[sAnnotatablePath];
+				}
+			}
+		},
+
+		/**
+		 * Processes the TFacetAttributes and TPropertyFacetAttributes of the elements Property,
+		 * TypeDefinition etc.
+		 * @param {Element} oElement The element
+		 * @param {object} oResult The result object to fill
+		 */
+		processFacetAttributes : function (oElement, oResult) {
+			V2MetadataConverter.processAttributes(oElement, oResult, {
+				"DefaultValue" : V2MetadataConverter.setValue,
+				"MaxLength" : function (sValue) {
+					return sValue === "Max" ? undefined : V2MetadataConverter.setNumber(sValue);
+				},
+				"Nullable" : V2MetadataConverter.setIfFalse,
+				"Precision" : V2MetadataConverter.setNumber,
+				"Scale" :  V2MetadataConverter.setNumber,
+				"Unicode" : V2MetadataConverter.setIfFalse
 			});
+			if (oElement.getAttribute("FixedLength") === "false") {
+				oResult.$Scale = "variable";
+			}
 		}
-		return oAnnotatable;
-	};
-
-	/**
-	 * Logs a warning "Unsupported annotation" for each V2 annotation of the element that has not
-	 * been consumed while processing it.
-	 *
-	 * @param {Element} oElement The element
-	 */
-	V2MetadataConverter.prototype.warnUnsupportedSapAnnotations = function (oElement) {
-		Object.keys(this.mSapAnnotations).forEach(function (sName) {
-			jQuery.sap.log.warning("Unsupported annotation 'sap:" + sName + "'",
-				serializeSingleElement(oElement), sClassName);
-		});
-	};
-
-	/**
-	 * Build the configurations for traverse
-	 *
-	 * @param {object} $$ The prototype for V4MetadataConverter
-	 */
-	(function ($$) {
-		var oStructuredTypeConfig;
-
-		$$.sRootNamespace = sEdmxNamespace;
-
-		$$.oAliasConfig = {
-			"Reference" : {
-				__xmlns : _MetadataConverter.sEdmxNamespace,
-				"Include" : {
-					__processor : $$.processAlias
-				}
-			},
-			"DataServices" : {
-				"Schema" : {
-					__processor : $$.processAlias
-				}
-			}
-		};
-
-		oStructuredTypeConfig = {
-			"NavigationProperty" : {
-				__processor : $$.processTypeNavigationProperty
-			},
-			"Property" : {
-				__processor : $$.processTypeProperty
-			}
-		};
-
-		$$.oFullConfig = {
-			__include : [$$.oReferenceInclude],
-			"DataServices" : {
-				__processor : $$.processDataServices,
-				"Schema" : {
-					__postProcessor : $$.postProcessSchema,
-					__processor : $$.processSchema,
-					__include : [$$.oAnnotationsConfig],
-					"Association" : {
-						__processor : $$.processAssociation,
-						"End" : {
-							__processor : $$.processAssociationEnd
-						},
-						"ReferentialConstraint" : {
-							__processor : $$.processReferentialConstraint,
-							"Dependent" : {
-								__processor : $$.processDependent,
-								"PropertyRef" : {
-									__processor : $$.processReferentialConstraintPropertyRef
-								}
-							},
-							"Principal" : {
-								__processor : $$.processPrincipal,
-								"PropertyRef" : {
-									__processor : $$.processReferentialConstraintPropertyRef
-								}
-							}
-						}
-					},
-					"ComplexType" : {
-						__processor : $$.processComplexType,
-						__include : [oStructuredTypeConfig]
-					},
-					"EntityContainer" : {
-						__processor : $$.processEntityContainer,
-						"AssociationSet" : {
-							__processor : $$.processAssociationSet,
-							"End" : {
-								__processor : $$.processAssociationSetEnd
-							}
-						},
-						"EntitySet" : {
-							__processor : $$.processEntitySet
-						},
-						"FunctionImport" : {
-							__processor : $$.processFunctionImport,
-							"Parameter" : {
-								__processor : $$.processParameter
-							}
-						}
-					},
-					"EntityType" : {
-						__processor : $$.processEntityType,
-						__include : [oStructuredTypeConfig],
-						"Key" : {
-							"PropertyRef" : {
-								__processor : $$.processEntityTypeKeyPropertyRef
-							}
-						}
-					}
-				}
-			}
-		};
-
-	})(V2MetadataConverter.prototype);
+	});
 
 	return V2MetadataConverter;
 }, /* bExport= */false);

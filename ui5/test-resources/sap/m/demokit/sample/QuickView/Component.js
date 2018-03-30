@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.QuickView.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.QuickView.QuickView",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.QuickView.QuickView",
 			dependencies : {
 				libs : [
 					"sap.m",

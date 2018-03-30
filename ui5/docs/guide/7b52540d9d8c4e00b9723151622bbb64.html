@@ -3,11 +3,11 @@
 <html lang="en-us">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta name="abstract" content="Control metadata consists of properties, events, as well as aggregations and associations."/>
-<meta name="description" content="Control metadata consists of properties, events, as well as aggregations and associations."/>
+<meta name="abstract" content="Control metadata consist of properties, events, as well as aggregations and associations."/>
+<meta name="description" content="Control metadata consist of properties, events, as well as aggregations and associations."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5102020839361388"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5102020839361388"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4898382187775576"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4898382187775576"/>
 <title>Defining the Control Metadata</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -19,10 +19,10 @@
 	<h1 class="title topictitle1">Defining the Control Metadata</h1>
 
 	
-	<div class="body conbody"><p class="shortdesc">Control metadata consists of properties, events, as well as aggregations and
+	<div class="body conbody"><p class="shortdesc">Control metadata consist of properties, events, as well as aggregations and
 		associations.</p>
 
-		<p class="p">The control metadata is defined as follows:</p>
+		<p class="p">The control metadata are defined as follows:</p>
 
 		<ul class="ul" id="loio7b52540d9d8c4e00b9723151622bbb64__ul_gqc_fgp_zm">
 			<li class="li">
@@ -71,7 +71,8 @@
 
 				<p class="p">It is defined by its name only.</p>
 
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">events: {
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+events: {
    "logout": {}
 }</pre></div>
 
@@ -86,7 +87,8 @@
 						<samp class="ph codeph">true</samp> and checking the return value after firing the
 					event:</p>
 
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">events: {
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+events: {
    "close": {allowPreventDefault : true}  
 }</pre></div>
 
@@ -145,11 +147,12 @@
 
 				<p class="p">One example: </p>
 
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">aggregations: {
-   "acceptButton" : "sap.m.Button", // if only type is given, no object is required
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+aggregations: {
+   "acceptButton" : "sap.ui.commons.Button", // if only type is given, no object is required
    "content" : {singularName: "content"},    // default type is "sap.ui.core.Control", 
                                              // which is appropriate for generic containers
-   "toolbarItems" : {type : "sap.m.Button", multiple : true, singularName : "toolbarItem"}
+   "worksetItems" : {type : "sap.ui.ux3.NavigationItem", multiple : true, singularName : "worksetItem"} 
                                              // a fully specified aggregation
 }</pre></div>
 
@@ -166,7 +169,8 @@
 						<samp class="ph codeph">defaultAggregation</samp> property to the name of the aggregation
 					as shown in the following code snippet:</p>
 
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">aggregations: {
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+aggregations: {
    "content": {singularName: "content"} // default type is "sap.ui.core.Control", multiple is "true"
 
 },

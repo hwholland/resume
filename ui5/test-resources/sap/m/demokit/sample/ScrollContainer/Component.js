@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ScrollContainer.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.ScrollContainer.ScrollContainer",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.ScrollContainer.ScrollContainer",
 			dependencies : {
 				libs : [
 					"sap.m"

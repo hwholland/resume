@@ -5,11 +5,7 @@ sap.ui.define([
 
 	return UIComponent.extend("sap.ui.table.sample.TableFreeze.Component", {
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.table.sample.TableFreeze.View",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.table.sample.TableFreeze.View",
 			dependencies : {
 				libs : [
 					"sap.ui.table",

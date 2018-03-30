@@ -200,7 +200,7 @@ sap.ui.require([
 					stableId:true,
 					texttooltip:true,
 					tokenparent:true,
-					bindingPathSyntaxValidation:true,
+					unresolvedPropertyBindings:true,
 					wizardBranchingAssociations:true,
 					wizardStepParent:true
 				},

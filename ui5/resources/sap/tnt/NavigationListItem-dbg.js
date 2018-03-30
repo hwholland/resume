@@ -17,7 +17,7 @@ sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Item",
 		 * @extends sap.ui.core.Item
 		 *
 		 * @author SAP SE
-		 * @version 1.54.2
+		 * @version 1.52.5
 		 *
 		 * @constructor
 		 * @public
@@ -286,7 +286,7 @@ sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Item",
 			}
 
 			this.setProperty('expanded', true, true);
-			this.$().find('.sapTntNavLIGroup').attr('aria-expanded', true);
+			this.$().attr('aria-expanded', true);
 
 			var expandIconControl = this._getExpandIconControl();
 			expandIconControl.setSrc(NavigationListItem.collapseIcon);
@@ -312,7 +312,7 @@ sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Item",
 			}
 
 			this.setProperty('expanded', false, true);
-			this.$().find('.sapTntNavLIGroup').attr('aria-expanded', false);
+			this.$().attr('aria-expanded', false);
 
 			var expandIconControl = this._getExpandIconControl();
 			expandIconControl.setSrc(NavigationListItem.expandIcon);
@@ -401,22 +401,6 @@ sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Item",
 		 */
 		NavigationListItem.prototype.renderGroupItem = function (rm, control, index, length) {
 
-			var isListExpanded = control.getExpanded(),
-				isNavListItemExpanded = this.getExpanded(),
-				text = this.getText(),
-				tooltip,
-				ariaProps = {
-					level: '1',
-					posinset: index + 1,
-					setsize: this._getVisibleItems(control).length
-				};
-
-			//checking if there are items level 2 in the NavigationListItem
-			//of yes - there is need of aria-expanded property
-			if (isListExpanded && this.getItems().length !== 0) {
-				ariaProps.expanded = isNavListItemExpanded;
-			}
-
 			rm.write('<div');
 
 			rm.addClass("sapTntNavLIItem");
@@ -424,29 +408,16 @@ sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Item",
 
 			if (!this.getEnabled()) {
 				rm.addClass("sapTntNavLIItemDisabled");
-			} else {
+			} else if (control.getExpanded()) {
 				rm.write(' tabindex="-1"');
 			}
 
-			if (!isListExpanded) {
-				tooltip = this.getTooltip_AsString() || text;
-				if (tooltip) {
-					rm.writeAttributeEscaped("title", tooltip);
-				}
-
-				ariaProps.label = text;
-				ariaProps.role = 'button';
-				ariaProps.haspopup = true;
-			} else {
-				ariaProps.role = 'treeitem';
-			}
-
-			rm.writeAccessibilityState(ariaProps);
-
 			if (control.getExpanded()) {
-				tooltip = this.getTooltip_AsString() || text;
-				if (tooltip) {
-					rm.writeAttributeEscaped("title", tooltip);
+				var text = this.getText();
+
+				var sTooltip = this.getTooltip_AsString() || text;
+				if (sTooltip) {
+					rm.writeAttributeEscaped("title", sTooltip);
 				}
 
 				rm.writeAttributeEscaped("aria-label", text);
@@ -481,22 +452,48 @@ sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Item",
 				items = this._getVisibleItems(this),
 				childrenLength = items.length,
 				expanded = this.getExpanded(),
-				isListExpanded = control.getExpanded();
+				isListExpanded = control.getExpanded(),
+				text = this.getText();
 
-			rm.write('<li aria-hidden="true" ');
+			rm.write('<li');
 			rm.writeElementData(this);
 
 			if (this.getEnabled() && !isListExpanded) {
 				rm.write(' tabindex="-1"');
 			}
 
+			// ARIA
+			var ariaProps = {
+				level: '1',
+				expanded: this.getExpanded(),
+				posinset: index + 1,
+				setsize: this._getVisibleItems(control).length
+			};
+
+			if (!isListExpanded) {
+				var sTooltip = this.getTooltip_AsString() || text;
+				if (sTooltip) {
+					rm.writeAttributeEscaped("title", sTooltip);
+				}
+
+				ariaProps.label = text;
+				ariaProps.role = 'button';
+				ariaProps.haspopup = true;
+			} else {
+				ariaProps.role = 'treeitem';
+			}
+
+			rm.writeAccessibilityState(ariaProps);
+
+			rm.writeAttribute("tabindex", "0");
+
 			rm.write(">");
 
-			this.renderGroupItem(rm, control, index);
+			this.renderGroupItem(rm, control);
 
 			if (isListExpanded) {
 
-				rm.write('<ul aria-hidden="true" ');
+				rm.write("<ul");
 
 				rm.writeAttribute("role", "group");
 				rm.addClass("sapTntNavLIGroupItems");
@@ -542,9 +539,9 @@ sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Item",
 
 			var text = this.getText();
 
-			var tooltip = this.getTooltip_AsString() || text;
-			if (tooltip) {
-				rm.writeAttributeEscaped("title", tooltip);
+			var sTooltip = this.getTooltip_AsString() || text;
+			if (sTooltip) {
+				rm.writeAttributeEscaped("title", sTooltip);
 			}
 
 			// ARIA
@@ -739,6 +736,6 @@ sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Item",
 
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */

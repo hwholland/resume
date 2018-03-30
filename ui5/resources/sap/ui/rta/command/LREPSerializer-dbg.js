@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.define([
@@ -11,8 +11,7 @@ sap.ui.define([
 	'sap/ui/rta/command/AppDescriptorCommand',
 	'sap/ui/fl/FlexControllerFactory',
 	'sap/ui/fl/Utils',
-	'sap/ui/rta/ControlTreeModifier',
-	'sap/ui/fl/registry/Settings'
+	'sap/ui/rta/ControlTreeModifier'
 ], function(
 	ManagedObject,
 	CommandStack,
@@ -21,8 +20,7 @@ sap.ui.define([
 	AppDescriptorCommand,
 	FlexControllerFactory,
 	FlexUtils,
-	RtaControlTreeModifier,
-	Settings
+	RtaControlTreeModifier
 ) {
 	"use strict";
 	/**
@@ -31,7 +29,7 @@ sap.ui.define([
 	 * @class
 	 * @extends sap.ui.base.ManagedObject
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @constructor
 	 * @private
 	 * @since 1.42
@@ -150,116 +148,6 @@ sap.ui.define([
 		}.bind(this));
 
 		return this._lastPromise;
-	};
-
-	LREPSerializer.prototype._moveChangeToAppVariant = function(sReferenceAppIdForChanges, oFlexController) {
-		return Settings.getInstance().then(function(oSettings) {
-			var oPropertyBag = {
-				reference: sReferenceAppIdForChanges
-			};
-			var sNamespace = FlexUtils.createNamespace(oPropertyBag, "changes");
-
-			var aCommands = this.getCommandStack().getAllExecutedCommands();
-			aCommands.forEach(function(oCommand) {
-				// only commands with 'getPreparedChange' function implemented (like FlexCommand and AppDescriptorCommand)
-				// get moved to the new app variant
-				// variant commands are not FlexCommands but some still have 'getPreparedChange'
-				if (oCommand.getPreparedChange && !oCommand.getRuntimeOnly()) {
-					var vChange = oCommand.getPreparedChange();
-					if (!Array.isArray(vChange)) {
-						vChange = [vChange];
-					}
-
-					vChange.forEach(function(oChange) {
-						if (oSettings.isAtoEnabled()) {
-							oChange.setRequest("ATO_NOTIFICATION");
-						}
-						oChange.setNamespace(sNamespace);
-						oChange.setComponent(sReferenceAppIdForChanges);
-					});
-				}
-			});
-
-			return oFlexController.saveAll(true);
-		}.bind(this));
-	};
-
-	LREPSerializer.prototype._triggerUndoChanges = function() {
-		var oCommandStack = this.getCommandStack();
-		var aPromises = [];
-
-		var aCommands = oCommandStack.getAllExecutedCommands();
-		aCommands.forEach(function(oCommand) {
-			aPromises.push(oCommand.undo.bind(oCommand));
-		});
-
-		// The last command has to be undone first, therefore reversing is required
-		aPromises = aPromises.reverse();
-
-		return FlexUtils.execPromiseQueueSequentially(aPromises, false, true);
-	};
-
-	LREPSerializer.prototype._removeCommands = function(oFlexController) {
-		var oCommandStack = this.getCommandStack();
-		var aCommands = oCommandStack.getAllExecutedCommands();
-
-		aCommands.forEach(function(oCommand) {
-			if (oCommand instanceof FlexCommand){
-				var oChange = oCommand.getPreparedChange();
-				var oAppComponent = oCommand.getAppComponent();
-				var oControl = RtaControlTreeModifier.bySelector(oChange.getSelector(), oAppComponent);
-				oFlexController.removeFromAppliedChangesOnControl(oChange, oAppComponent, oControl);
-			}
-		});
-
-		// Once the changes are undoed, all commands shall be removed
-		oCommandStack.removeAllCommands();
-	};
-
-	/**
-	 *
-	 * @param {string} sReferenceAppIdForChanges
-	 * @returns {Promise} returns a promise with true or false
-	 * @description Shall be used to persist the unsaved changes (in the current RTA session) for new app variant;
-	 * Once the unsaved changes has been saved for the app variant, the cache (See Cache#update) will not be updated for the current app
-	 * and the dirty changes will be spliced;
-	 * At this point command stack is not aware if the changes have been booked for the new app variant.
-	 * Therefore if there shall be some UI changes present in command stack, we undo all the changes till the beginning. Before undoing we detach the 'commandExecuted' event
-	 * Since we detached the commandExecuted event, therefore LRepSerializer would not talk with FlexController and ChangePersistence.
-	 * In the last when user presses 'Save and Exit', there will be no change registered for the current app.
-	 */
-	LREPSerializer.prototype.saveAsCommands = function(sReferenceAppIdForChanges) {
-		if (!sReferenceAppIdForChanges) {
-			throw new Error("The id of the new app variant is required");
-		}
-
-		var oRootControl = sap.ui.getCore().byId(this.getRootControl());
-
-		if (!oRootControl) {
-			throw new Error("Can't save commands without root control instance!");
-		}
-
-		var oRunningAppDescriptor = FlexUtils.getAppDescriptor(oRootControl);
-		// In case the id of the current running app is equal to the app variant id
-		if (oRunningAppDescriptor["sap.app"].id === sReferenceAppIdForChanges) {
-			throw new Error("The id of the app variant should be different from the current app id");
-		}
-
-		var oFlexController = FlexControllerFactory.createForControl(oRootControl);
-
-		var oCommandStack = this.getCommandStack();
-		return this._moveChangeToAppVariant(sReferenceAppIdForChanges, oFlexController)
-			.then(function() {
-				// Detach the event 'commandExecuted' here to stop the communication of LREPSerializer with Flex
-				oCommandStack.detachCommandExecuted(this.handleCommandExecuted.bind(this));
-				return this._triggerUndoChanges();
-			}.bind(this))
-			.then(function() {
-				this._removeCommands(oFlexController);
-				// Attach the event 'commandExecuted' here to start the communication of LREPSerializer with Flex
-				oCommandStack.attachCommandExecuted(this.handleCommandExecuted.bind(this));
-				return true;
-			}.bind(this));
 	};
 
 	return LREPSerializer;

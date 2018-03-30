@@ -1,30 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.SegmentedButton.
-sap.ui.define([
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/EnabledPropagator',
-	'sap/ui/core/delegate/ItemNavigation',
-	'sap/ui/core/ResizeHandler',
-	'sap/ui/core/Item',
-	'sap/ui/core/IconPool',
-	'./SegmentedButtonRenderer'
-],
-function(
-	library,
-	Control,
-	EnabledPropagator,
-	ItemNavigation,
-	ResizeHandler,
-	Item,
-	IconPool,
-	SegmentedButtonRenderer
-	) {
+sap.ui.define(['./library', 'sap/ui/core/Control', 'sap/ui/core/EnabledPropagator', 'sap/ui/core/delegate/ItemNavigation', 'sap/ui/core/ResizeHandler', 'sap/ui/core/Item', 'sap/ui/core/IconPool'],
+	function(library, Control, EnabledPropagator, ItemNavigation, ResizeHandler, Item, IconPool) {
 	"use strict";
 
 
@@ -48,7 +30,7 @@ function(
 	 * @implements sap.ui.core.IFormContent
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -59,7 +41,6 @@ function(
 
 		interfaces : ["sap.ui.core.IFormContent"],
 		library : "sap.m",
-		designtime: "sap/m/designtime/SegmentedButton.designtime",
 		publicMethods : ["createButton"],
 		properties : {
 
@@ -85,7 +66,7 @@ function(
 
 			/**
 			 * The buttons of the SegmentedButton control. The items set in this aggregation are used as an interface for the buttons displayed by the control. Only the properties ID, icon, text, enabled and textDirections of the Button control are evaluated. Setting other properties of the button will have no effect. Alternatively, you can use the createButton method to add buttons.
-			 * @deprecated as of 1.28.0, replaced by <code>items</code> aggregation
+			 * @deprecated Since 1.28.0 Instead use the "items" aggregation.
 			 */
 			buttons : {type : "sap.m.Button", multiple : true, singularName : "button"},
 
@@ -106,7 +87,7 @@ function(
 			/**
 			 * A reference to the currently selected button control. By default or if the association is set to false (null, undefined, "", false), the first button will be selected.
 			 * If the association is set to an invalid value (for example, an ID of a button that does not exist) the selection on the SegmentedButton will be removed.
-			 * @deprecated as of version 1.52, replaced by <code>selectedItem</code> association
+			 * @deprecated As of version 1.52, use the <code>selectedItem</code> association instead.
 			 */
 			selectedButton : {deprecated: true, type : "sap.m.Button", multiple : false},
 
@@ -130,7 +111,7 @@ function(
 
 			/**
 			 * Fires when the user selects a button, which returns the ID and button object.
-			 * @deprecated as of version 1.52, replaced by <code>selectionChange</code> event
+			 * @deprecated As of version 1.52, use the <code>selectionChange</code> event instead.
 			 */
 			select : {
 				deprecated: true,
@@ -589,14 +570,12 @@ function(
 	/**
 	 * Adds item to <code>items</code> aggregation.
 	 * @param {sap.m.SegmentedButtonItem} oItem The item to be added
-	 * @returns {sap.m.SegmentedButton} <code>this</code> pointer for chaining
 	 * @public
 	 * @override
 	 */
 	SegmentedButton.prototype.addItem = function (oItem) {
 		this.addAggregation("items", oItem);
 		this.addButton(oItem.oButton);
-		return this;
 	};
 
 	/**
@@ -624,14 +603,12 @@ function(
 	 * Inserts item into <code>items</code> aggregation.
 	 * @param {sap.m.SegmentedButtonItem} oItem The item to be inserted
 	 * @param {int} iIndex index the item should be inserted at
-	 * @returns {sap.m.SegmentedButton} <code>this</code> pointer for chaining
 	 * @public
 	 * @override
 	 */
 	SegmentedButton.prototype.insertItem = function (oItem, iIndex) {
 		this.insertAggregation("items", oItem, iIndex);
 		this.insertButton(oItem.oButton, iIndex);
-		return this;
 	};
 
 	/**
@@ -753,7 +730,7 @@ function(
 	/**
 	 * Setter for association <code>selectedItem</code>.
 	 *
-	 * @param {string | sap.m.SegmentedButtonItem | null | undefined} vItem New value for association <code>setSelectedItem</code>
+	 * @param {string | <code>sap.m.SegmentedButtonItem</code> | null | undefined} vItem New value for association <code>setSelectedItem</code>
 	 *    An sap.m.SegmentedButtonItem instance which becomes the new target of this <code>selectedItem</code> association.
 	 *    Alternatively, the ID of an <code>sap.m.SegmentedButtonItem</code> instance may be given as a string.
 	 *    If the value of null, undefined, or an empty string is provided, the first item will be selected.

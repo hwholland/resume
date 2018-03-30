@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -52,7 +52,7 @@ sap.ui.define([
 			/* =========================================================== */
 
 			_onSampleMatched: function (event) {
-				var oPage = this.byId("page");
+				var oPage = this.getView().byId("page");
 
 				oPage.setBusy(true);
 
@@ -64,7 +64,7 @@ sap.ui.define([
 			},
 
 			_loadSample: function(oData) {
-				var oPage = this.byId("page"),
+				var oPage = this.getView().byId("page"),
 					oHistory = History.getInstance(),
 					oPrevHash = oHistory.getPreviousHash(),
 					oModelData = this._viewModel.getData(),
@@ -83,8 +83,6 @@ sap.ui.define([
 				oModelData.showNavButton = Device.system.phone || !!oPrevHash;
 				oModelData.previousSampleId = oSample.previousSampleId;
 				oModelData.nextSampleId = oSample.nextSampleId;
-				// we need this property to navigate to API reference
-				this.entityId = oSample.entityId;
 
 				// set page title
 				oPage.setTitle("Sample: " + oSample.name);
@@ -129,21 +127,11 @@ sap.ui.define([
 
 				// scroll to top of page
 				oPage.scrollTo(0);
-
-				this.getAPIReferenceCheckPromise(oSample.entityId).then(function (bHasAPIReference) {
-					this.getView().byId("apiRefButton").setVisible(bHasAPIReference);
-				}.bind(this));
-
 				this._viewModel.setData(oModelData);
 
 				jQuery.sap.delayedCall(0, this, function () {
 					oPage.setBusy(false);
 				});
-
-			},
-
-			onAPIRefPress: function () {
-				this.getRouter().navTo("apiId", {id: this.entityId});
 			},
 
 			onNewTab : function () {
@@ -162,33 +150,8 @@ sap.ui.define([
 				}, true);
 			},
 
-			/**
-			 * Extends the sSampleId with the relative path defined in sIframePath and returns the resulting path.
-			 * @param {string} sSampleId
-			 * @param {string} sIframe
-			 * @returns {string}
-			 * @private
-			 */
-			_resolveIframePath: function (sSampleId, sIframePath) {
-				var aIFramePathParts = sIframePath.split("/"),
-					i;
-
-				for (i = 0; i < aIFramePathParts.length - 1; i++) {
-					if (aIFramePathParts[i] == "..") {
-						// iframe path has parts pointing one folder up so remove last part of the sSampleId
-						sSampleId = sSampleId.substring(0, sSampleId.lastIndexOf("."));
-					} else {
-						// append the part of the iframe path to the sample's id
-						sSampleId += "." + aIFramePathParts[i];
-					}
-				}
-
-				return sSampleId;
-			},
-
 			_createIframe : function (oIframeContent, vIframe) {
 				var sSampleId = this._sId,
-					sIframePath = "",
 					rExtractFilename = /\/([^\/]*)$/,// extracts everything after the last slash (e.g. some/path/index.html -> index.html)
 					rStripUI5Ending = /\..+$/,// removes everything after the first dot in the filename (e.g. someFile.qunit.html -> .qunit.html)
 					aFileNameMatches,
@@ -196,16 +159,14 @@ sap.ui.define([
 					sFileEnding;
 
 				if (typeof vIframe === "string") {
-					sIframePath = this._resolveIframePath(sSampleId, vIframe);
-
 					// strip the file extension to be able to use jQuery.sap.getModulePath
 					aFileNameMatches = rExtractFilename.exec(vIframe);
 					sFileName = (aFileNameMatches && aFileNameMatches.length > 1 ? aFileNameMatches[1] : vIframe);
 					sFileEnding = rStripUI5Ending.exec(sFileName)[0];
-					var sIframeWithoutUI5Ending = sFileName.replace(rStripUI5Ending, "");
+					var sIframeWithoutUI5Ending = vIframe.replace(rStripUI5Ending, "");
 
 					// combine namespace with the file name again
-					this.sIFrameUrl = jQuery.sap.getModulePath(sIframePath + "/" + sIframeWithoutUI5Ending, sFileEnding || ".html");
+					this.sIFrameUrl = jQuery.sap.getModulePath(sSampleId + "." + sIframeWithoutUI5Ending, sFileEnding || ".html");
 				} else {
 					jQuery.sap.log.error("no iframe source was provided");
 					return;
@@ -270,7 +231,6 @@ sap.ui.define([
 						id: sCompId,
 						name: sCompName
 					});
-
 					// create component container
 					return new ComponentContainer({
 						component: this._oComp
@@ -279,7 +239,7 @@ sap.ui.define([
 			},
 
 			onNavBack : function (oEvt) {
-				this.getRouter().navTo("entity", { id : this.entityId }, true);
+				this.getRouter().myNavBack("home", {});
 			},
 
 			onNavToCode : function (evt) {
@@ -311,7 +271,7 @@ sap.ui.define([
 					FakeLrepConnectorLocalStorage.enableFakeConnector({
 						"isProductiveSystem": true
 					});
-					this.byId("toggleRTA").setVisible(true);
+					this.getView().byId("toggleRTA").setVisible(true);
 
 					this.getRouter().attachRouteMatched(function () {
 						if (this._oRTA) {
@@ -333,7 +293,7 @@ sap.ui.define([
 						this._oRTA = new RuntimeAuthoring({flexSettings: {
 							developerMode: false
 						}});
-						this._oRTA.setRootControl(this.byId("page").getContent()[0]);
+						this._oRTA.setRootControl(this.getView().byId("page").getContent()[0]);
 						this._oRTA.attachStop(function () {
 							this._oRTA.destroy();
 							delete this._oRTA;

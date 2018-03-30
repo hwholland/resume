@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -18,11 +18,6 @@
 }(this, function(URI, sinon) {
 	"use strict";
 	var sModuleName = "RequestRecorder";
-
-	// resolves the given (potentially relative) URL in the same way as the browser would resolve it
-	function resolveURL(url) {
-		return new URI(url).absoluteTo(new URI(document.baseURI).search("")).toString();
-	}
 
 	function _privateObject() { }
 	_privateObject.prototype = {
@@ -234,7 +229,7 @@
 				time: this.preciseDateNow() - fStartTimestamp,
 				request: {
 					headers: oXhr._requestParams.headers,
-					url: resolveURL(oXhr._requestParams.url),
+					url: new URI(oXhr._requestParams.url).absoluteTo(window.location.origin + window.location.pathname).href(),
 					method: oXhr._requestParams.method
 				},
 				response: {
@@ -691,7 +686,7 @@
 							var mCustomGroup;
 
 							// Get next entry
-							var sUrl = resolveURL(oXhr.url);
+							var sUrl = new URI(oXhr.url).absoluteTo(window.location.origin + window.location.pathname).resource();
 							sUrl = _private.replaceEntriesUrlByRegex(sUrl);
 							var sUrlGroup = oXhr.method + sUrl;
 

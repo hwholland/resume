@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.TableLayout.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.TableLayout.Table",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.TableLayout.Table",
 			dependencies : {
 				libs : [
 					"sap.m",

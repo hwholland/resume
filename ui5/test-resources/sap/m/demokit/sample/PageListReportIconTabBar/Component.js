@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.PageListReportIconTabBar.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.PageListReportIconTabBar.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.PageListReportIconTabBar.Page",
 			dependencies : {
 				libs : [
 					"sap.m",

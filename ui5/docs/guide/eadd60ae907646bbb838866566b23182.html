@@ -6,8 +6,8 @@
 <meta name="abstract" content="In this step, you will learn how to use your browser's developers tools to troubleshoot your OpenUI5 app."/>
 <meta name="description" content="In this step, you will learn how to use your browser's developers tools to troubleshoot your OpenUI5 app."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7562440290978624"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7562440290978624"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=37398327763491357"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=37398327763491357"/>
 <title>Step 1: Browser Developer Tools</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -77,9 +77,8 @@
 
 				<li class="li">
 					<div class="p">Search for the following
-						line:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;button id="HeapOfShards---app--myButton" data-sap-ui="HeapOfShards---app--myButton" aria-describedby="__text1"
-	class="sapMBtn sapMBtnBase sapMBtnInverted"&gt;
-&lt;/button&gt;</pre></div>
+						line:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;button id="__xmlview0--myButton" data-sap-ui="__xmlview0--myButton" aria-describedby="__text1" 
+class="sapMBtn sapMBtnBase sapMBtnInverted"&gt;</pre></div>
 </div>
 
 					<p class="p">The <span class="ph uicontrol">Styles</span> section in the panel on the right shows the active and
@@ -105,9 +104,9 @@
 					<p class="p">You can immediately see the effect on the web page.</p>
 
 					<div class="p">The edited element should now look like this:
-						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;button id="HeapOfShards---app--myButton" data-sap-ui="HeapOfShards---app--myButton" aria-describedby="__text1"
-	class="sapMBtn sapMBtnBase sapMBtnInverted sapUiLargeMargin"&gt;
-&lt;/button&gt;</pre></div>
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;button id="__xmlview0--myButton" data-sap-ui="__xmlview0--myButton" aria-describedby="__text1" 
+class="sapMBtn sapMBtnBase <span class="ph emphasis emphasis">sapUiLargeMargin</span> sapMBtnInverted"&gt;
+</pre></div>
 </div>
 
 				</li>
@@ -131,11 +130,10 @@
 				<ol class="ol" id="loioeadd60ae907646bbb838866566b23182__ol_tmy_vwt_vz">
 					<li class="li">
 						<p class="p">Switch to the <span class="ph uicontrol">Console</span> tab and enter
-								<samp class="ph codeph">$("#HeapOfShards---app--myButton")</samp></p>
+							<samp class="ph codeph">$("#myButton")</samp></p>
 
 						<div class="p">The console displays the DOM element structure of the
-							button:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">Q.fn.init [button#HeapOfShards---app--myButton.sapMBtn.sapMBtnBase.sapMBtnInverted, 
-context: document, selector: "#HeapOfShards---app--myButton"]</pre></div>
+							button:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">[prevObject: Q.fn.init(1), context: document, selector: "#myButton"]</pre></div>
 </div>
 
 					</li>
@@ -148,7 +146,7 @@ context: document, selector: "#HeapOfShards---app--myButton"]</pre></div>
 
 					<li class="li">
 						<p class="p">In the <span class="ph uicontrol">Console</span> tab, enter
-								<samp class="ph codeph">myView=sap.ui.getCore().byId("HeapOfShards---app")</samp>.</p>
+								<samp class="ph codeph">myView=sap.ui.getCore().byId("__xmlview0")</samp>.</p>
 
 					</li>
 
@@ -157,8 +155,7 @@ context: document, selector: "#HeapOfShards---app--myButton"]</pre></div>
 							<samp class="ph codeph">myView.byId("myButton")</samp>.</p>
 
 						<div class="p">The console displays the <span class="ph"><span class="ph pname">OpenUI5</span></span> structure of the button
-							control:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">f {bAllowTextSelection: true, mEventRegistry: {…}, 
-sId: "HeapOfShards---app--myButton", mProperties: PropertyBag, mAggregations: {…}, …}</pre></div>
+							control:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">f {bAllowTextSelection: true, mEventRegistry: Object, sId: "__xmlview0--myButton", mProperties: d, mAggregations: Object…}</pre></div>
 </div>
 
 						<p class="p">Examine the <span class="ph"><span class="ph pname">OpenUI5</span></span>
@@ -171,25 +168,25 @@ sId: "HeapOfShards---app--myButton", mProperties: PropertyBag, mAggregations: {�
 				<div class="note note"><span class="notetitle">Note</span> 
 					<div class="p">The method of retrieval is different for <span class="ph"><span class="ph pname">OpenUI5</span></span> controls
 						and DOM elements:<div class="table-wrapper"><table summary="" id="loioeadd60ae907646bbb838866566b23182__simpletable_xtw_wxt_vz" border="1" class="simpletable"><tr class="sthead">
-								<th valign="bottom" align="left" id="d11972401e293" class="stentry" width="50%">
+								<th valign="bottom" align="left" id="d12154603e296" class="stentry" width="50%">
 									<p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> Control</p>
 
 								</th>
 
-								<th valign="bottom" align="left" id="d11972401e302" class="stentry" width="50%">
+								<th valign="bottom" align="left" id="d12154603e305" class="stentry" width="50%">
 									<p class="p">DOM Element</p>
 
 								</th>
 
 							</tr>
 <tr class="strow">
-								<td valign="top" headers="d11972401e293" class="stentry">
-									<p class="p"><samp class="ph codeph">sap.ui.getCore().byId("HeapOfShards---app--myButton")</samp></p>
+								<td valign="top" headers="d12154603e296" class="stentry">
+									<p class="p"><samp class="ph codeph">myView.byId("myButton")</samp></p>
 
 								</td>
 
-								<td valign="top" headers="d11972401e302" class="stentry">
-									<p class="p"><samp class="ph codeph">$("#HeapOfShards---app--myButton") </samp></p>
+								<td valign="top" headers="d12154603e305" class="stentry">
+									<p class="p"><samp class="ph codeph">$("#myButton")</samp></p>
 
 								</td>
 
@@ -218,14 +215,14 @@ sId: "HeapOfShards---app--myButton", mProperties: PropertyBag, mAggregations: {�
 
 					<li class="li">
 						<div class="p">In the console, you see the following error
-							message:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">TypeError: oEvent.getSourceXYZ is not a function
-at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="ph emphasis emphasis">App.controller.js</span>?eval:<span class="ph emphasis emphasis">20</span>:69)
+							message:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">TypeError: evt.getSourceXYZ is not a function
+at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="ph emphasis emphasis">App.controller.js</span>?eval:<span class="ph emphasis emphasis">19</span>:18)
 ...</pre></div>
 </div>
 
 						<p class="p">This means that an error occurred in the <samp class="ph codeph">onPress</samp> function in the
 								<samp class="ph codeph">App.controller.js</samp> file at line
-							<samp class="ph codeph">20</samp>.</p>
+							<samp class="ph codeph">19</samp>.</p>
 
 					</li>
 
@@ -234,7 +231,7 @@ at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="
 							source code where you can see that it wasn't the generic
 								<samp class="ph codeph">getSource</samp> function that was called, but an
 							undefined
-							<samp class="ph codeph">getSourceXYZ</samp>.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sMessage = this.getResourceBundle().getText("buttonOk", [oEvent.getSourceXYZ().getId()])</pre></div>
+							<samp class="ph codeph">getSourceXYZ</samp>.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sMessage=evt.getSourceXYZ().getId() + " Pressed";</pre></div>
 </div>
 
 					</li>
@@ -261,8 +258,8 @@ at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="
 				</li>
 
 				<li class="li">
-					<div class="p">Set a breakpoint in line 20 by clicking on the line number of the following line:
-						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sMessage = this.getResourceBundle().getText("buttonOk", [oEvent.getSourceXYZ().getId()]);</pre></div>
+					<div class="p">Set a breakpoint in line 19 by clicking on the line number before the following line:
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sMessage=evt.getSourceXYZ().getId() + " Pressed";</pre></div>
 </div>
 
 				</li>
@@ -270,16 +267,16 @@ at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="
 				<li class="li">
 					<p class="p">Click the <span class="ph uicontrol">Do Something</span> button in the app.</p>
 
-					<p class="p">The debugger stops at line 20.</p>
+					<p class="p">The debugger stops at line 19.</p>
 
 				</li>
 
 				<li class="li">
-					<div class="p">In line 20, replace <samp class="ph codeph">getSourceXYZ()</samp> with <samp class="ph codeph">getSource()</samp> and
+					<div class="p">In line 19, replace <samp class="ph codeph">getSourceXYZ()</samp> with <samp class="ph codeph">getSource()</samp> and
 						press <span class="keys">
 							<kbd class="key">Ctrl</kbd>
 							 + <kbd class="key">S</kbd>
-						</span>:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sMessage = this.getResourceBundle().getText("buttonOk", [oEvent.getSource<span class="ph emphasis emphasis">XYZ</span>().getId()]);</pre></div>
+						</span>:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sMessage=evt.getSource<span class="ph emphasis emphasis">XYZ</span>().getId() + " Pressed";</pre></div>
 </div>
 
 				</li>
@@ -287,21 +284,13 @@ at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="
 				<li class="li">
 					<p class="p">Resume the execution of the code by pressing <kbd class="key">F8</kbd>.</p>
 
-					<p class="p">The message toast is now displayed on the web page with the following message:
-							<span class="ph uicontrol">"HeapOfShards---app--myButton" pressed</span>
+					<p class="p">The message toast is now displayed on the web page with the following message: <span class="ph uicontrol">o
+							__xmlview0--myButton Pressed</span>
 					</p>
 
 				</li>
 
 			</ol>
-
-			<div class="note note"><span class="notetitle">Note</span> 
-				<p class="p">You can also use the <span class="ph uicontrol">Pause on exception</span> button and select
-						<span class="ph uicontrol">Pause on caught exceptions</span> on the top right of the
-						<span class="ph uicontrol">Sources</span> tab to pause the execution before an
-					exception occurs without setting breakpoints.</p>
-
-			</div>
 
 		</div></div>
 

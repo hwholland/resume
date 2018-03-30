@@ -58,7 +58,7 @@
 		});
 	};
 
-	var iLoadingDelay = 1000;
+	var iLoadingDelay = 500;
 	var oConfigModel = new sap.ui.model.json.JSONModel();
 	oConfigModel.loadData("model/ObjectPageConfig.json", {}, false);
 

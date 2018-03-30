@@ -1,19 +1,15 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
 	"jquery.sap.global",
-	"sap/ui/base/SyncPromise",
 	"sap/ui/core/format/DateFormat",
-	"sap/ui/model/odata/ODataUtils",
-	"sap/ui/model/odata/v4/lib/_Helper",
-	"sap/ui/model/odata/v4/lib/_Parser",
-	"sap/ui/model/odata/v4/lib/_Requestor",
-	"sap/ui/model/odata/v4/lib/_V2Requestor"
-], function (jQuery, SyncPromise, DateFormat, ODataUtils, _Helper, _Parser, _Requestor,
-		asV2Requestor) {
+	"sap/ui/model/odata/v4/lib/_SyncPromise",
+	"sap/ui/model/odata/v4/lib/_V2Requestor",
+	"sap/ui/model/odata/ODataUtils"
+], function (jQuery, DateFormat, _SyncPromise, asV2Requestor, ODataUtils) {
 	/*global QUnit, sinon */
 	/*eslint max-nested-callbacks: 0, no-warning-comments: 0 */
 	"use strict";
@@ -21,9 +17,13 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.module("sap.ui.model.odata.v4.lib._V2Requestor", {
 		beforeEach : function () {
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oLogMock = sinon.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
+		},
+
+		afterEach : function () {
+			this.oLogMock.verify();
 		}
 	});
 
@@ -68,8 +68,8 @@ sap.ui.require([
 		bIsCollection : true,
 		oResponsePayload : {
 			"d" : {
-				"__count" : "3",
-				"__next" : "...?$skiptoken=12",
+				"__count": "3",
+				"__next": "...?$skiptoken=12",
 				"results" : [{"String" : "foo"}, {"Boolean" : true}]
 			}
 		},
@@ -81,13 +81,9 @@ sap.ui.require([
 	}, {
 		bIsCollection : false,
 		oResponsePayload : {
-			"d" : {
-				"__metadata" : {},
-				"String" : "foo"
-			}
+			"d" : {"String" : "foo"}
 		},
-		//TODO "__metadata" : {} is actually unexpected here, in real life
-		oExpectedResult : {"__metadata" : {}, "String" : "foo"}
+		oExpectedResult : {"String" : "foo"}
 	}, {
 		bIsCollection : false,
 		oResponsePayload : {
@@ -117,110 +113,6 @@ sap.ui.require([
 	});
 
 	//*********************************************************************************************
-	QUnit.test("doConvertResponse, 2.2.7.2.3 RetrieveComplexType Request", function (assert) {
-		var oPayload = {},
-			oRequestor = {},
-			oResponsePayload = {
-				// /sap/opu/odata/IWFND/RMTSAMPLEFLIGHT/
-				// FlightCollection(carrid='...',connid='...',fldate=datetime'...')/flightDetails
-				"d" : {
-					"flightDetails" : {
-						"__metadata" : {
-							"type" : "RMTSAMPLEFLIGHT.FlightDetails"
-						}
-					}
-				}
-			};
-
-		asV2Requestor(oRequestor);
-		this.mock(oRequestor).expects("convertNonPrimitive")
-			.withExactArgs(sinon.match.same(oResponsePayload.d.flightDetails))
-			.returns(oPayload);
-
-		// code under test
-		assert.strictEqual(oRequestor.doConvertResponse(oResponsePayload), oPayload);
-	});
-
-	//*********************************************************************************************
-	[{
-		"d" : {
-			// "An optional "__metadata" name/value pair..."
-			"readMe1st" : {}
-		}
-	}, {
-		"d" : {
-			// "An optional "__metadata" name/value pair..."
-			"ID" : 0,
-			"Name" : "Food"
-		}
-	}].forEach(function (oResponsePayload, i) {
-		QUnit.test("doConvertResponse, not 2.2.7.2.3 RetrieveComplexType: " + i, function (assert) {
-			var oPayload = {},
-				oRequestor = {};
-
-			asV2Requestor(oRequestor);
-			this.mock(oRequestor).expects("convertNonPrimitive")
-				.withExactArgs(sinon.match.same(oResponsePayload.d))
-				.returns(oPayload);
-
-			// code under test
-			assert.strictEqual(oRequestor.doConvertResponse(oResponsePayload), oPayload);
-		});
-	});
-
-	//*********************************************************************************************
-	QUnit.test("doConvertResponse, 2.2.7.2.4 RetrievePrimitiveProperty Req.", function (assert) {
-		var sMetaPath = "/FlightCollection/fldate",
-			sOutput = "2017-08-10T00:00:00Z",
-			oProperty = {},
-			oRequestor = {
-				oModelInterface : {fnFetchMetadata : function () {}}
-			},
-			oResponsePayload = {
-				// /sap/opu/odata/IWFND/RMTSAMPLEFLIGHT/
-				// FlightCollection(carrid='...',connid='...',fldate=datetime'...')/fldate
-				"d" : {
-					"fldate": "/Date(1502323200000)/"
-				}
-			};
-
-		asV2Requestor(oRequestor);
-		this.mock(oRequestor.oModelInterface).expects("fnFetchMetadata")
-			.withExactArgs(sMetaPath)
-			.returns(SyncPromise.resolve(oProperty));
-		this.mock(oRequestor).expects("convertPrimitive")
-			.withExactArgs(oResponsePayload.d.fldate, sinon.match.same(oProperty), sMetaPath,
-				"fldate")
-			.returns(sOutput);
-
-		// code under test
-		assert.deepEqual(
-			oRequestor.doConvertResponse(oResponsePayload, sMetaPath),
-			{value : sOutput});
-	});
-
-	//*********************************************************************************************
-	QUnit.test("doConvertResponse, 2.2.7.2.3 & 2.2.7.2.4: null", function (assert) {
-		var sMetaPath = "/FlightCollection/fldate",
-			oRequestor = {},
-			oResponsePayload = {
-				// /sap/opu/odata/IWFND/RMTSAMPLEFLIGHT/
-				// FlightCollection(carrid='...',connid='...',fldate=datetime'...')/fldate
-				"d" : {
-					"fldate": null
-				}
-			};
-
-		asV2Requestor(oRequestor);
-		this.mock(oRequestor).expects("convertPrimitive").never();
-
-		// code under test
-		assert.deepEqual(
-			oRequestor.doConvertResponse(oResponsePayload, sMetaPath),
-			{value : null});
-	});
-
-	//*********************************************************************************************
 	QUnit.test("convertNonPrimitive, complex value", function (assert) {
 		var oObject = {
 				__metadata : {type : "TypeQName"},
@@ -233,7 +125,7 @@ sap.ui.require([
 		asV2Requestor(oRequestor);
 		oRequestorMock.expects("getTypeForName").twice().withExactArgs("TypeQName").returns(oType);
 		oRequestorMock.expects("convertPrimitive")
-			.withExactArgs("42", {$Type : "Edm.Double"}, "TypeQName", "property")
+			.withExactArgs("42", "Edm.Double", "TypeQName", "property")
 			.returns(42);
 
 		// code under test
@@ -279,10 +171,10 @@ sap.ui.require([
 		asV2Requestor(oRequestor);
 		oRequestorMock.expects("getTypeForName").thrice().withExactArgs("TypeQName").returns(oType);
 		oRequestorMock.expects("convertPrimitive")
-			.withExactArgs("42", {$Type : "Edm.Double"}, "TypeQName", "property")
+			.withExactArgs("42", "Edm.Double", "TypeQName", "property")
 			.returns(42);
 		oRequestorMock.expects("convertPrimitive")
-			.withExactArgs("77", {$Type : "Edm.Double"}, "TypeQName", "property")
+			.withExactArgs("77", "Edm.Double", "TypeQName", "property")
 			.returns(77);
 
 		// code under test
@@ -320,7 +212,7 @@ sap.ui.require([
 			.withExactArgs(sinon.match.same(oObject.complex))
 			.returns(oObject.complex);
 		this.mock(oRequestor).expects("convertPrimitive")
-			.withExactArgs(oObject.property, {$Type : "Edm.Double"}, "TypeQName", "property")
+			.withExactArgs(oObject.property, "Edm.Double", "TypeQName", "property")
 			.returns(42);
 
 		// code under test
@@ -346,8 +238,8 @@ sap.ui.require([
 
 			// code under test
 			assert.throws(function () {
-				oRequestor.convertNonPrimitive(oObject);
-			}, new Error("Cannot convert structured value without type information in "
+				oRequestor.convertNonPrimitive(oObject, {});
+			}, new Error("Cannot convert complex value without type information in "
 					+ "__metadata.type: " + JSON.stringify(oObject)));
 		});
 	});
@@ -377,39 +269,29 @@ sap.ui.require([
 
 			asV2Requestor(oRequestor);
 			if (oFixture.sConvertMethod) {
-				if (oFixture.sType === "Edm.DateTimeOffset") {
-					this.mock(oRequestor).expects(oFixture.sConvertMethod)
-						.withExactArgs(sinon.match.same(vV2Value), {$Type : oFixture.sType})
-						.returns(vV4Value);
-				} else {
-					this.mock(oRequestor).expects(oFixture.sConvertMethod)
-						.withExactArgs(sinon.match.same(vV2Value))
-						.returns(vV4Value);
-				}
+				this.mock(oRequestor).expects(oFixture.sConvertMethod)
+					.withExactArgs(sinon.match.same(vV2Value))
+					.returns(vV4Value);
 			} else {
 				vV4Value = vV2Value; // no conversion
 			}
 
 			// code under test
-			assert.strictEqual(oRequestor.convertPrimitive(vV2Value, {$Type : oFixture.sType},
-				"property", "Type"), vV4Value);
+			assert.strictEqual(oRequestor.convertPrimitive(vV2Value, oFixture.sType, "property",
+				"Type"), vV4Value);
 		});
 	});
 
 	//*********************************************************************************************
-	QUnit.test("convertPrimitive, unknown and undefined type", function (assert) {
+	QUnit.test("convertPrimitive, unknown type", function (assert) {
 		var oRequestor = {};
 
 		asV2Requestor(oRequestor);
 
 		// code under test
 		assert.throws(function () {
-			oRequestor.convertPrimitive("foo", {$Type : "Unknown"}, "Type", "Property");
+			oRequestor.convertPrimitive("foo", "Unknown", "Type", "Property");
 		}, new Error("Type 'Unknown' of property 'Property' in type 'Type' is unknown; "
-			+ "cannot convert value: foo"));
-		assert.throws(function () {
-			oRequestor.convertPrimitive("foo", undefined, "Type", "Property");
-		}, new Error("Type 'undefined' of property 'Property' in type 'Type' is unknown; "
 			+ "cannot convert value: foo"));
 	});
 
@@ -439,9 +321,6 @@ sap.ui.require([
 
 		// code under test
 		assert.strictEqual(oRequestor.convertDate("\/Date(1395705600000)\/"), "2014-03-25");
-
-		// code under test
-		assert.strictEqual(oRequestor.convertDate("\/Date(-327628800000)\/"), "1959-08-15");
 	});
 
 	//*********************************************************************************************
@@ -471,36 +350,25 @@ sap.ui.require([
 	//*********************************************************************************************
 	[{
 		input : "/Date(1420529121547+0000)/",
-		output : "2015-01-06T07:25:21Z"
+		output : "2015-01-06T07:25:21.547Z"
 	}, {
 		input : "/Date(1420529121547+0500)/",
-		output : "2015-01-06T12:25:21+05:00"
+		output : "2015-01-06T12:25:21.547+05:00"
 	}, {
 		input : "/Date(1420529121547+1500)/",
-		output : "2015-01-06T22:25:21+15:00"
+		output : "2015-01-06T22:25:21.547+15:00"
 	}, {
 		input : "/Date(1420529121547+0530)/",
-		output : "2015-01-06T12:55:21+05:30"
+		output : "2015-01-06T12:55:21.547+05:30"
 	}, {
 		input : "/Date(1420529121547+0030)/",
-		output : "2015-01-06T07:55:21+00:30"
+		output : "2015-01-06T07:55:21.547+00:30"
 	}, {
 		input : "/Date(1420529121547-0530)/",
-		output : "2015-01-06T01:55:21-05:30"
-	}, {
-		input : "/Date(1420529121547-0530)/",
-		output : "2015-01-06T01:55:21-05:30",
-		precision : 0
-	}, {
-		input : "/Date(1420529121547-0530)/",
-		output : "2015-01-06T01:55:21.547000-05:30",
-		precision : 6
+		output : "2015-01-06T01:55:21.547-05:30"
 	}, {
 		input : "/Date(1395752399000)/", // DateTime in V2
-		output : "2014-03-25T12:59:59Z"  // must be interpreted as UTC
-	}, {
-		input : "/Date(-327628800000)/", // DateTime in V2 before 1970
-		output : "1959-08-15T00:00:00Z"
+		output : "2014-03-25T12:59:59.000Z"  // must be interpreted as UTC
 	}].forEach(function (oFixture, i) {
 		QUnit.test("convertDateTimeOffset, success " + i, function (assert) {
 			var oRequestor = {};
@@ -508,8 +376,7 @@ sap.ui.require([
 			asV2Requestor(oRequestor);
 
 			// code under test
-			assert.strictEqual(oRequestor.convertDateTimeOffset(oFixture.input,
-				{$Precision : oFixture.precision}), oFixture.output);
+			assert.strictEqual(oRequestor.convertDateTimeOffset(oFixture.input), oFixture.output);
 		});
 	});
 
@@ -528,25 +395,9 @@ sap.ui.require([
 
 			assert.throws(function () {
 				// code under test
-				return oRequestor.convertDateTimeOffset(oFixture.input, {});
+				return oRequestor.convertDateTimeOffset(oFixture.input);
 			}, new Error(oFixture.expectedError));
 		});
-	});
-
-	//*********************************************************************************************
-	// This test assumes that the precisions in this test are not used in other tests
-	QUnit.test("convertDateTimeOffset, DateTimeInstance map callCount", function (assert) {
-		var oDateFormatMock = this.mock(DateFormat),
-			oRequestor = {};
-
-		asV2Requestor(oRequestor);
-
-		oRequestor.convertDateTimeOffset("/Date(1395752399000)/", {$Precision : 42});
-		// after calling #getDateTimeInstance, there is no further call with the same precision
-		oDateFormatMock.expects("getDateTimeInstance").never();
-
-		// code under test
-		oRequestor.convertDateTimeOffset("/Date(1395752399000)/", {$Precision : 42});
 	});
 
 	//*********************************************************************************************
@@ -716,37 +567,28 @@ sap.ui.require([
 			}
 		}
 	}, { // test nested $expand structure
-		// def at root and baz in foo are complex properties for which two nested simple properties
-		// are selected in V4  -> In V2 these complex properties have to be selected once
 		expectedResultHandlerCalls : [
 			{key : "$expand", value : "foo,foo/bar,baz"},
 			{key : "$orderby", value : "foo,bar"},
-			{key : "$select", value : "foo/xyz,foo/baz,foo/bar/*,baz/*,abc,def"}
+			{key : "$select", value : "foo/xyz,foo/bar/*,baz/*,abc"}
 		],
 		expectedResultHandlerCallsSorted : [
 			{key : "$expand", value : "baz,foo,foo/bar"},
 			{key : "$orderby", value : "foo,bar"},
-			{key : "$select", value : "abc,baz/*,def,foo/bar/*,foo/baz,foo/xyz"}
+			{key : "$select", value : "abc,baz/*,foo/bar/*,foo/xyz"}
 		],
 		queryOptions : {
 			"$expand" : {
 				"foo" : {
-					"$select" : ["xyz", "baz/qux", "baz/quux"],
+					"$select" : "xyz",
 					"$expand" : {
 						"bar" : true
 					}
 				},
 				"baz" : true
 			},
-			"$select" : "abc,def/ghi,def/jkl",
+			"$select" : "abc",
 			"$orderby" : "foo,bar"
-		}
-	}, { // garbage in, garbage out - do not touch if there is a type cast
-		expectedResultHandlerCalls : [
-			{key : "$select", value : "foo/name.space.OtherType"}
-		],
-		queryOptions : {
-			"$select" : "foo/name.space.OtherType"
 		}
 	}].forEach(function (oFixture, i) {
 		var sTitle = "doConvertSystemQueryOptions (V2): " + i + ", mQueryOptions"
@@ -768,7 +610,7 @@ sap.ui.require([
 				asV2Requestor(oRequestor);
 
 				// code under test
-				oRequestor.doConvertSystemQueryOptions("/Foo", oFixture.queryOptions,
+				oRequestor.doConvertSystemQueryOptions("Foo", oFixture.queryOptions,
 					fnResultHandlerSpy, oFixture.dropSystemQueryOptions, bSorted);
 
 				assert.strictEqual(fnResultHandlerSpy.callCount,
@@ -802,7 +644,7 @@ sap.ui.require([
 
 			// code under test
 			assert.throws(function () {
-				oRequestor.doConvertSystemQueryOptions("/Foo", {"$expand" : vExpandOption});
+				oRequestor.doConvertSystemQueryOptions("Foo", {"$expand" : vExpandOption});
 			}, new Error("$expand must be a valid object"));
 		});
 	});
@@ -858,7 +700,7 @@ sap.ui.require([
 
 			// code under test
 			assert.throws(function () {
-				oRequestor.doConvertSystemQueryOptions("/Foo", oFixture.queryOptions,
+				oRequestor.doConvertSystemQueryOptions("Foo", oFixture.queryOptions,
 					function () {});
 			}, new Error(oFixture.error));
 		});
@@ -868,15 +710,15 @@ sap.ui.require([
 	QUnit.test("doConvertSystemQueryOptions: $filter", function (assert) {
 		var sFilter = "foo eq 'bar'",
 			oRequestor = {},
-			fnResultHandlerSpy = this.spy();
+			fnResultHandlerSpy = sinon.spy();
 
 		asV2Requestor(oRequestor);
 
 		this.mock(oRequestor).expects("convertFilter")
-			.withExactArgs(sFilter, "/Foo").returns("~");
+			.withExactArgs(sFilter, "Foo").returns("~");
 
 		// code under test
-		oRequestor.doConvertSystemQueryOptions("/Foo", {$filter : sFilter},
+		oRequestor.doConvertSystemQueryOptions("Foo", {$filter : sFilter},
 			fnResultHandlerSpy);
 
 		sinon.assert.calledOnce(fnResultHandlerSpy);
@@ -1109,100 +951,9 @@ sap.ui.require([
 		{literal : "null", type : "Edm.TimeOfDay", v2type : "Edm.Time",
 			result : "foo/bar eq null"}
 	].forEach(function (oFixture) {
-		QUnit.test("convertFilter: " + oFixture.type, function (assert) {
+		QUnit.test("convertFilter: success", function (assert) {
 			var sFilter = "foo/bar eq " + oFixture.literal,
-				sMetaPath = "/MyEntitySet",
-				oProperty = {$Type : oFixture.type, $v2Type : oFixture.v2type},
-				oRequestor = {
-					oModelInterface : {fnFetchMetadata : function () {}}
-				};
-
-			asV2Requestor(oRequestor);
-
-			this.mock(oRequestor.oModelInterface).expects("fnFetchMetadata")
-				.withExactArgs(sMetaPath + "/foo/bar")
-				.returns(SyncPromise.resolve(oProperty));
-
-			// code under test
-			assert.strictEqual(oRequestor.convertFilter(sFilter, sMetaPath),
-				oFixture.result || sFilter);
-		});
-	});
-	// TODO milliseconds in DateTimeOffset and TimeOfDay
-
-	//*********************************************************************************************
-	[{
-		v4 : "3.14 eq foo",
-		v2 : "3.14d eq foo"
-	}, {
-		v4 : "foo eq bar",
-		v2 : "foo eq bar"
-	}, {
-		v4 : "3.14 eq bar and baz",
-		v2 : "3.14d eq bar and baz"
-	}, {
-		v4 : "foo ne 3.14 or baz",
-		v2 : "foo ne 3.14d or baz"
-	}, {
-		v4 : "foo and 3.14 lt baz",
-		v2 : "foo and 3.14d lt baz"
-	}, {
-		v4 : "foo or baz lt 3.14",
-		v2 : "foo or baz lt 3.14d"
-	}, {
-		v4 : "foo and bar gt 3.14 or baz eq null",
-		v2 : "foo and bar gt 3.14d or baz eq null"
-	}, {
-		v4 : "not foo",
-		v2 : "not foo"
-	}, {
-		v4 : "not (foo gt 3.14)",
-		v2 : "not (foo gt 3.14d)"
-	}, {
-		v4 : "3.14 eq 3.14",
-		error : "saw literals on both sides of 'eq' at 6"
-	}, {
-		v4 : "length(foo) gt 20",
-		v2 : "length(foo) gt 20"
-	}, {
-		v4 : "20 lt length(foo)",
-		v2 : "20 lt length(foo)"
-	}, {
-		v4 : "length('foo') gt length(bar)",
-		v2 : "length('foo') gt length(bar)"
-	}, {
-		v4 : "substring(foo,2,5) eq 'bar'",
-		v2 : "substring(foo,2,5) eq 'bar'"
-	}, {
-		v4 : "day(2017-12-16) gt 0",
-		error : "ambiguous type for the literal at 5"
-	}, {
-		v4 : "floor(42.5) eq 42",
-		error : "ambiguous type for the literal at 7"
-	}, {
-		v4 : "0 lt day(2017-12-16)",
-		error : "ambiguous type for the literal at 10"
-	}, {
-		v4 : "42 eq floor(42.5)",
-		error : "ambiguous type for the literal at 13"
-	}, {
-		v4 : "floor(foo) eq 42",
-		v2 : "floor(foo) eq 42d"
-	}, {
-		v4 : "floor(round(foo)) eq 42",
-		v2 : "floor(round(foo)) eq 42d"
-	}, {
-		v4 : "startswith(foo,'bar') eq true",
-		v2 : "startswith(foo,'bar') eq true"
-	}, {
-		v4 : "contains(concat(foo,bar),substring(baz,5,2))",
-		v2 : "substringof(substring(baz,5,2),concat(foo,bar))"
-	}, {
-		v4 : "contains(foo)", // wrong actually, but should not generate a syntax error
-		v2 : "substringof(foo)"
-	}].forEach(function (oFixture) {
-		QUnit.test("convertFilter: " + oFixture.v4, function (assert) {
-			var oProperty = {$Type : "Edm.Double"},
+					oProperty = {$Type : oFixture.type, $v2Type : oFixture.v2type},
 				oRequestor = {
 					oModelInterface : {fnFetchMetadata : function () {}}
 				},
@@ -1210,22 +961,16 @@ sap.ui.require([
 
 			asV2Requestor(oRequestor);
 
-			// simply declare all properties to be Edm.Double so that a conversion is necessary
-			this.mock(oRequestor.oModelInterface).expects("fnFetchMetadata").atLeast(0)
-				.returns(SyncPromise.resolve(oProperty));
+			this.mock(oRequestor.oModelInterface).expects("fnFetchMetadata")
+				.withExactArgs("/" + sResourcePath + "/foo/bar")
+				.returns(_SyncPromise.resolve(oProperty));
 
 			// code under test
-			if (oFixture.error) {
-				assert.throws(function () {
-					oRequestor.convertFilter(oFixture.v4, sResourcePath);
-				}, new Error("Cannot convert filter to V2, " + oFixture.error + ": "
-					+ oFixture.v4));
-			} else {
-				assert.strictEqual(oRequestor.convertFilter(oFixture.v4, sResourcePath),
-					oFixture.v2);
-			}
+			assert.strictEqual(oRequestor.convertFilter(sFilter, sResourcePath),
+				oFixture.result || sFilter);
 		});
 	});
+	// TODO milliseconds in DateTimeOffset and TimeOfDay
 
 	//*********************************************************************************************
 	[{
@@ -1238,20 +983,23 @@ sap.ui.require([
 		error : "Invalid filter path: foo/bar"
 	}].forEach(function (oFixture) {
 		QUnit.test("convertFilter: " + oFixture.error, function (assert) {
-			var sMetaPath = "/MyEntitySet",
-				oRequestor = {
-					oModelInterface : {fnFetchMetadata : function () {}}
-				};
+			var oRequestor = {
+					oModelInterface : {
+						fnFetchMetadata : function () {
+						}
+					}
+				},
+				sResourcePath = "MyEntitySet";
 
 			asV2Requestor(oRequestor);
 
 			this.mock(oRequestor.oModelInterface).expects("fnFetchMetadata")
-				.withExactArgs(sMetaPath + "/foo/bar")
-				.returns(SyncPromise.resolve(oFixture.property));
+				.withExactArgs("/" + sResourcePath + "/foo/bar")
+				.returns(_SyncPromise.resolve(oFixture.property));
 
 			// code under test
 			assert.throws(function () {
-				oRequestor.convertFilter("foo/bar eq " + oFixture.literal, sMetaPath);
+				oRequestor.convertFilter("foo/bar eq " + oFixture.literal, sResourcePath);
 			}, new Error(oFixture.error));
 		});
 	});
@@ -1268,7 +1016,7 @@ sap.ui.require([
 		asV2Requestor(oRequestor);
 
 		this.mock(oRequestor.oModelInterface).expects("fnFetchEntityContainer")
-			.returns(SyncPromise.resolve(Promise.resolve({})));
+			.returns(_SyncPromise.resolve(Promise.resolve({})));
 
 		// code under test
 		oSyncPromise = oRequestor.ready();
@@ -1282,340 +1030,19 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("getTypeForName", function (assert) {
 		var oRequestor = {
-				oModelInterface : {fnFetchMetadata : function () {}}
+				oModelInterface : {
+					fnFetchMetadata : function () {}
+				}
 			},
 			oType = {};
 
 		asV2Requestor(oRequestor);
 
 		this.mock(oRequestor.oModelInterface).expects("fnFetchMetadata")
-			.withExactArgs("/my.Type").returns(SyncPromise.resolve(oType));
+			.withExactArgs("/my.Type").returns(_SyncPromise.resolve(oType));
 
 		// code under test
 		assert.strictEqual(oRequestor.getTypeForName("my.Type"), oType);
 		assert.strictEqual(oRequestor.getTypeForName("my.Type"), oType);
-	});
-
-	//*********************************************************************************************
-	[{
-		iCallCount : 1,
-		mHeaders : { "DataServiceVersion" : "2.0" },
-		bVersionOptional : true
-	}, {
-		iCallCount : 2,
-		mHeaders : {},
-		bVersionOptional : true
-	}, {
-		iCallCount : 2,
-		mHeaders : {},
-		bVersionOptional : false
-	}, {
-		iCallCount : 1,
-		mHeaders : { "DataServiceVersion" : "1.0" },
-		bVersionOptional : true
-	}].forEach(function (oFixture, i) {
-		QUnit.test("doCheckVersionHeader, success cases - " + i, function (assert) {
-			var oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0"),
-				fnGetHeader = this.spy(function (sHeaderKey) {
-					return oFixture.mHeaders[sHeaderKey];
-				});
-
-			// code under test
-			oRequestor.doCheckVersionHeader(fnGetHeader, "Foo('42')/Bar",
-				oFixture.bVersionOptional);
-
-			assert.strictEqual(fnGetHeader.calledWithExactly("DataServiceVersion"), true);
-			if (oFixture.iCallCount === 2) {
-				assert.strictEqual(fnGetHeader.calledWithExactly("OData-Version"), true);
-			}
-			assert.strictEqual(fnGetHeader.callCount, oFixture.iCallCount);
-		});
-	});
-
-	//*********************************************************************************************
-	[{
-		iCallCount : 1,
-		sError : "value 'foo' in response for /Foo('42')/Bar",
-		mHeaders : { "DataServiceVersion" : "foo" }
-	}, {
-		iCallCount : 2,
-		sError : "'OData-Version' header with value 'baz' in response for /Foo('42')/Bar",
-		mHeaders : { "OData-Version" : "baz" }
-	}].forEach(function (oFixture, i) {
-		QUnit.test("doCheckVersionHeader, error cases - " + i, function (assert) {
-			var oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0"),
-				fnGetHeader = this.spy(function (sHeaderKey) {
-					return oFixture.mHeaders[sHeaderKey];
-				});
-
-			assert.throws(function () {
-				// code under test
-				oRequestor.doCheckVersionHeader(fnGetHeader, "Foo('42')/Bar");
-			}, new Error("Expected 'DataServiceVersion' header with value '1.0' or '2.0' but "
-				+ "received " + oFixture.sError));
-
-			assert.strictEqual(fnGetHeader.calledWithExactly("DataServiceVersion"), true);
-			if (oFixture.iCallCount === 2) {
-				assert.strictEqual(fnGetHeader.calledWithExactly("OData-Version"), true);
-			}
-			assert.strictEqual(fnGetHeader.callCount, oFixture.iCallCount);
-		});
-	});
-
-	//*********************************************************************************************
-	QUnit.test("getPathAndAddQueryOptions: OperationImport", function (assert) {
-		var oModelInterface = {
-				fnFetchMetadata : null // do not call!
-			},
-			oOperationMetadata = {
-				"$Parameter" : [{
-					"$Name" : "Foo",
-					"$Type" : "Edm.Int16"
-				}, {
-					"$Name" : "ID",
-					"$Type" : "Edm.String"
-				}]
-			},
-			mParameters = {"ID" : "1", "Foo" : 42, "n/a" : NaN},
-			mQueryOptions = {},
-			oRequestor = _Requestor.create("/", oModelInterface, undefined, undefined, "2.0"),
-			oRequestorMock = this.mock(oRequestor);
-
-		oRequestorMock.expects("formatPropertyAsLiteral")
-			.withExactArgs(42, oOperationMetadata.$Parameter[0]).returns("42");
-		oRequestorMock.expects("formatPropertyAsLiteral")
-			.withExactArgs("1", oOperationMetadata.$Parameter[1]).returns("'1'");
-
-		assert.strictEqual(
-			// code under test
-			oRequestor.getPathAndAddQueryOptions("/OperationImport(...)", oOperationMetadata,
-				mParameters, mQueryOptions),
-			"OperationImport");
-		assert.deepEqual(mQueryOptions, {"ID" : "'1'", "Foo" : "42"});
-		assert.deepEqual(mParameters, {});
-	});
-
-	//*********************************************************************************************
-	[false, true].forEach(function (bAction) {
-		var sTitle = "getPathAndAddQueryOptions: bound " + (bAction ? "action" : "function");
-
-		QUnit.test(sTitle, function (assert) {
-			var oEntity = {"Foo" : 42, "ID" : "1"},
-				oModelInterface = {fnFetchMetadata : function () {}},
-				oOperationMetadata = {
-					"$IsBound" : true,
-					"$Parameter" : [{ // "$Name" : null, "$Nullable" : false,
-						"$Type" : "com.sap.ui5.OData.EdmTypes"
-					}, {
-						"$Name" : "Bar" //, "$Type" : "Edm.Boolean"
-					}]
-				},
-				mParameters = {"Bar" : true},
-				mQueryOptions = {},
-				oRequestor = _Requestor.create("/", oModelInterface, undefined, undefined, "2.0"),
-				oRequestorMock = this.mock(oRequestor),
-				oTypeMetadata = { // "$kind" : "EntityType",
-					"$Key" : ["ID", "Foo"],
-					"Foo" : {
-						"$kind" : "Property",
-						"$Type" : "Edm.Int16"
-					},
-					"ID" : {
-						"$kind" : "Property",
-						"$Type" : "Edm.String"
-					}
-				};
-
-			this.mock(oModelInterface).expects("fnFetchMetadata")
-				.withExactArgs("/com.sap.ui5.OData.EdmTypes")
-				.returns(SyncPromise.resolve(oTypeMetadata));
-			oRequestorMock.expects("formatPropertyAsLiteral").withExactArgs("1", oTypeMetadata.ID)
-				.returns("'1'");
-			oRequestorMock.expects("formatPropertyAsLiteral").withExactArgs(42, oTypeMetadata.Foo)
-				.returns("42");
-			oRequestorMock.expects("formatPropertyAsLiteral")
-				.withExactArgs(true, oOperationMetadata.$Parameter[1]).returns("true");
-
-			assert.strictEqual(
-				// code under test
-				oRequestor.getPathAndAddQueryOptions(
-					"/EdmTypesCollection('1')/com.sap.ui5.OData.ResetEdmTypes(...)",
-					oOperationMetadata, mParameters, mQueryOptions,
-					bAction ? oEntity : function () { return oEntity; }),
-				"ResetEdmTypes");
-			assert.deepEqual(mQueryOptions, {"Bar" : "true", "Foo" : "42", "ID" : "'1'"});
-			assert.deepEqual(mParameters, {});
-		});
-	});
-
-	//*********************************************************************************************
-	QUnit.test("getPathAndAddQueryOptions: Operation w/o parameters", function (assert) {
-		var oOperationMetadata = {},
-			mParameters = {foo : "bar"},
-			oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0");
-
-		this.mock(oRequestor).expects("formatPropertyAsLiteral").never();
-
-		assert.strictEqual(
-			// code under test
-			oRequestor.getPathAndAddQueryOptions("/some.Operation(...)", oOperationMetadata,
-				mParameters),
-			"some.Operation");
-		assert.deepEqual(mParameters, {});
-	});
-
-	//*********************************************************************************************
-	QUnit.test("getPathAndAddQueryOptions: $v2HttpMethod", function (assert) {
-		var oOperationMetadata = {$v2HttpMethod : "PUT"},
-			mParameters = {foo : "bar"},
-			oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0");
-
-		assert.strictEqual(
-			// code under test
-			oRequestor.getPathAndAddQueryOptions("/some.Operation(...)", oOperationMetadata,
-				mParameters),
-			"some.Operation");
-		assert.deepEqual(mParameters, {"X-HTTP-Method" : oOperationMetadata.$v2HttpMethod});
-	});
-
-	//*********************************************************************************************
-	QUnit.test("getPathAndAddQueryOptions: collection parameter", function (assert) {
-		var oOperationMetadata = {$Parameter : [{$Name : "foo", $IsCollection : true}]},
-			oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0");
-
-		assert.throws(function () {
-			// code under test
-			oRequestor.getPathAndAddQueryOptions("/ActionImport(...)", oOperationMetadata,
-				{"foo" : [42]});
-		}, new Error("Unsupported collection-valued parameter: foo"));
-	});
-
-	//*****************************************************************************************
-	QUnit.test("isChangeSetOptional", function (assert) {
-		var oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0");
-
-		assert.strictEqual(oRequestor.isChangeSetOptional(), false);
-	});
-
-	//*****************************************************************************************
-	QUnit.test("isActionBodyOptional", function (assert) {
-		var oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0");
-
-		assert.strictEqual(oRequestor.isActionBodyOptional(), true);
-	});
-
-	//*****************************************************************************************
-	QUnit.test("convertKeyPredicate: simple string predicate", function (assert) {
-		var oEntityType = {
-				$Key : ["KeyProperty"],
-				KeyProperty : {$Type : "Edm.String"}
-			},
-			oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0");
-
-		this.mock(_Helper).expects("getMetaPath")
-			.withExactArgs("/my/path('foo')").returns("/my/path");
-		this.mock(oRequestor).expects("fetchTypeForPath").withExactArgs("/my/path")
-			.returns(SyncPromise.resolve(oEntityType));
-		this.mock(_Parser).expects("parseKeyPredicate").withExactArgs("('foo')")
-			.returns({"" : "'foo'"});
-
-		assert.strictEqual(oRequestor.convertKeyPredicate("('foo')", "/my/path('foo')"), "('foo')");
-	});
-
-	//*****************************************************************************************
-	QUnit.test("convertKeyPredicate: simple non-string predicate", function (assert) {
-		var oEntityType = {
-				$Key : ["KeyProperty"],
-				KeyProperty : {$Type : "Edm.Foo"}
-			},
-			oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0");
-
-		this.mock(_Helper).expects("getMetaPath")
-			.withExactArgs("/my/path(42)").returns("/my/path");
-		this.mock(oRequestor).expects("fetchTypeForPath").withExactArgs("/my/path")
-			.returns(SyncPromise.resolve(oEntityType));
-		this.mock(_Parser).expects("parseKeyPredicate").withExactArgs("(42)").returns({"" : "42"});
-		this.mock(_Helper).expects("parseLiteral").withExactArgs("42", "Edm.Foo", "/my/path(42)")
-			.returns(42);
-		this.mock(oRequestor).expects("formatPropertyAsLiteral")
-			.withExactArgs(42, sinon.match.same(oEntityType.KeyProperty)).returns("~42~");
-
-		assert.strictEqual(oRequestor.convertKeyPredicate("(42)", "/my/path(42)"), "(~42~)");
-	});
-
-	//*****************************************************************************************
-	QUnit.test("convertKeyPredicate: named non-string predicate, encoded", function (assert) {
-		var oEntityType = {
-				$Key : ["føø"],
-				"føø" : {$Type : "Edm.Foo"}
-			},
-			oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0");
-
-		this.mock(_Helper).expects("getMetaPath")
-			.withExactArgs("/my/path(f%C3%B8%C3%B8=42)").returns("/my/path");
-		this.mock(oRequestor).expects("fetchTypeForPath").withExactArgs("/my/path")
-			.returns(SyncPromise.resolve(oEntityType));
-		this.mock(_Parser).expects("parseKeyPredicate").withExactArgs("(føø=42)")
-			.returns({"føø" : "42"});
-		this.mock(_Helper).expects("parseLiteral")
-			.withExactArgs("42", "Edm.Foo", "/my/path(f%C3%B8%C3%B8=42)")
-			.returns(42);
-		this.mock(oRequestor).expects("formatPropertyAsLiteral")
-			.withExactArgs(42, sinon.match.same(oEntityType["føø"])).returns("~bãr~");
-
-		assert.strictEqual(
-			oRequestor.convertKeyPredicate("(f%C3%B8%C3%B8=42)", "/my/path(f%C3%B8%C3%B8=42)"),
-			"(f%C3%B8%C3%B8=~b%C3%A3r~)");
-	});
-
-	//*****************************************************************************************
-	QUnit.test("convertKeyPredicate: compound predicate", function (assert) {
-		var oEntityType = {
-				$Key : ["p1", "p2", "p3"],
-				p1 : {$Type : "Edm.Double"},
-				p2 : {$Type : "Edm.String"},
-				p3 : {$Type : "Edm.Double"},
-			},
-			oHelperMock = this.mock(_Helper),
-			oParserMock = this.mock(_Parser),
-			oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0"),
-			oRequestorMock = this.mock(oRequestor);
-
-		this.mock(_Helper).expects("getMetaPath")
-			.withExactArgs("/my/path(p1=1,p2='2',p3=3)").returns("/my/path");
-		oRequestorMock.expects("fetchTypeForPath").withExactArgs("/my/path")
-			.returns(SyncPromise.resolve(oEntityType));
-		oParserMock.expects("parseKeyPredicate").withExactArgs("(p1=1,p2='2',p3=3)")
-			.returns({"p1" : "1", "p2" : "'2'", "p3" : "3"});
-		oHelperMock.expects("parseLiteral")
-			.withExactArgs("1", "Edm.Double", "/my/path(p1=1,p2='2',p3=3)").returns(1);
-		oRequestorMock.expects("formatPropertyAsLiteral")
-			.withExactArgs(1, sinon.match.same(oEntityType.p1)).returns("1d");
-		oHelperMock.expects("parseLiteral")
-			.withExactArgs("3", "Edm.Double", "/my/path(p1=1,p2='2',p3=3)").returns(3);
-		oRequestorMock.expects("formatPropertyAsLiteral")
-			.withExactArgs(3, sinon.match.same(oEntityType.p3)).returns("3d");
-
-		assert.strictEqual(
-			oRequestor.convertKeyPredicate("(p1=1,p2='2',p3=3)", "/my/path(p1=1,p2='2',p3=3)"),
-			"(p1=1d,p2='2',p3=3d)");
-	});
-
-	//*****************************************************************************************
-	["", "?$select=*"].forEach(function (sQuery) {
-		QUnit.test("convertResourcePath: query=" + sQuery, function (assert) {
-			var oRequestor = _Requestor.create("/", undefined, undefined, undefined, "2.0"),
-				oRequestorMock = this.mock(oRequestor);
-
-			oRequestorMock.expects("convertKeyPredicate")
-				.withExactArgs("(42)", "/Foo/Bar(42)")
-				.returns("(~42~)");
-			oRequestorMock.expects("convertKeyPredicate")
-				.withExactArgs("(23)", "/Foo/Bar(42)/Baz/Qux(23)")
-				.returns("(~23~)");
-
-			assert.strictEqual(oRequestor.convertResourcePath("Foo/Bar(42)/Baz/Qux(23)" + sQuery),
-				"Foo/Bar(~42~)/Baz/Qux(~23~)" + sQuery);
-		});
 	});
 });

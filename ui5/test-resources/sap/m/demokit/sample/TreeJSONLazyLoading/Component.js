@@ -4,11 +4,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 
 	return UIComponent.extend("sap.m.sample.TreeJSONLazyLoading.Component", {
 		metadata: {
-			rootView: {
-				"viewName": "sap.m.sample.TreeJSONLazyLoading.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.m.sample.TreeJSONLazyLoading.Page",
 			dependencies: {
 				libs: [
 					"sap.m",

@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.MultiComboBox.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.MultiComboBox.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.MultiComboBox.Page",
 			dependencies : {
 				libs : [
 					"sap.m",

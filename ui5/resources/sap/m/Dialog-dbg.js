@@ -1,50 +1,17 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.Dialog.
-sap.ui.define([
-	'jquery.sap.global',
-	'./Bar',
-	'./InstanceManager',
-	'./AssociativeOverflowToolbar',
-	'./ToolbarSpacer',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/IconPool',
-	'sap/ui/core/Popup',
-	'sap/ui/core/delegate/ScrollEnablement',
-	'sap/ui/core/RenderManager',
-	'sap/ui/core/InvisibleText',
-	'sap/ui/core/ResizeHandler',
-	'sap/ui/Device',
-	'sap/ui/base/ManagedObject',
-	'sap/ui/core/library',
-	'./DialogRenderer',
-	'jquery.sap.mobile'
-	],
-function(
-	jQuery,
-	Bar,
-	InstanceManager,
-	AssociativeOverflowToolbar,
-	ToolbarSpacer,
-	library,
-	Control,
-	IconPool,
-	Popup,
-	ScrollEnablement,
-	RenderManager,
-	InvisibleText,
-	ResizeHandler,
-	Device,
-	ManagedObject,
-	coreLibrary,
-	DialogRenderer
-	) {
+sap.ui.define(['jquery.sap.global', './Bar', './InstanceManager', './AssociativeOverflowToolbar', './ToolbarSpacer',
+	'./library', 'sap/ui/core/Control', 'sap/ui/core/IconPool', 'sap/ui/core/Popup', 'sap/ui/core/delegate/ScrollEnablement',
+	'sap/ui/core/RenderManager', 'sap/ui/core/InvisibleText', 'sap/ui/core/ResizeHandler', 'sap/ui/Device', 'sap/ui/base/ManagedObject', 'sap/ui/core/library', 'jquery.sap.mobile'],
+	function (jQuery, Bar, InstanceManager, AssociativeOverflowToolbar, ToolbarSpacer, library, Control, IconPool,
+			  Popup, ScrollEnablement, RenderManager, InvisibleText, ResizeHandler, Device, ManagedObject, coreLibrary) {
 		"use strict";
+
 
 		// shortcut for sap.ui.core.OpenState
 		var OpenState = coreLibrary.OpenState;
@@ -107,7 +74,7 @@ function(
 		*
 		* @implements sap.ui.core.PopupInterface
 		* @author SAP SE
-		* @version 1.54.2
+		* @version 1.52.5
 		*
 		* @constructor
 		* @public
@@ -164,7 +131,7 @@ function(
 					stretch: {type: "boolean", group: "Appearance", defaultValue: false},
 
 					/**
-					 * Preferred width of content in Dialog. This property affects the width of dialog on phone in landscape mode, tablet or desktop, because the dialog has a fixed width on phone in portrait mode. If the preferred width is less than the minimum width of the dialog or more than the available width of the screen, it will be overwritten by the min or max value. The current mininum value of dialog width on tablet is 400px.
+					 * Preferred width of content in Dialog. This property affects the width of dialog on phone in landscape mode, tablet or desktop, because the dialog has a fixed width on phone in portrait mode. If the preferred width is less than the minimum width of dilaog or more than the available width of the screen, it will be overwritten by the min or max value. The current mininum value of dialog width on tablet is 400px.
 					 * @since 1.12.1
 					 */
 					contentWidth: {type: "sap.ui.core.CSSSize", group: "Dimension", defaultValue: null},
@@ -345,11 +312,17 @@ function(
 						}
 					}
 				},
-				designtime: "sap/m/designtime/Dialog.designtime"
+				designTime : true
 			}
 		});
 
 		Dialog._bPaddingByDefault = (sap.ui.getCore().getConfiguration().getCompatibilityVersion("sapMDialogWithPadding").compareTo("1.16") < 0);
+
+		Dialog._mStateClasses = {};
+		Dialog._mStateClasses[ValueState.None] = "";
+		Dialog._mStateClasses[ValueState.Success] = "sapMDialogSuccess";
+		Dialog._mStateClasses[ValueState.Warning] = "sapMDialogWarning";
+		Dialog._mStateClasses[ValueState.Error] = "sapMDialogError";
 
 		Dialog._mIcons = {};
 		Dialog._mIcons[ValueState.Success] = IconPool.getIconURI("message-success");
@@ -963,7 +936,7 @@ function(
 		Dialog.prototype._createHeader = function () {
 			if (!this._header) {
 				// set parent of header to detect changes on title
-				this._header = new Bar(this.getId() + "-header");
+				this._header = new Bar(this.getId() + "-header").addStyleClass("sapMDialogTitle");
 				this._header._setRootAccessibilityRole("heading");
 				this.setAggregation("_header", this._header, false);
 			}
@@ -1250,7 +1223,7 @@ function(
 			var oCustomHeader = this.getCustomHeader();
 
 			if (oCustomHeader) {
-				return oCustomHeader._setRootAccessibilityRole("heading");
+				return oCustomHeader;
 			} else {
 				var bShowHeader = this.getShowHeader();
 
@@ -1381,7 +1354,7 @@ function(
 		 */
 		Dialog.prototype._getToolbar = function () {
 			if (!this._oToolbar) {
-				this._oToolbar = new AssociativeOverflowToolbar(this.getId() + "-footer").addStyleClass("sapMTBNoBorders");
+				this._oToolbar = new AssociativeOverflowToolbar(this.getId() + "-footer").addStyleClass("sapMTBNoBorders").applyTagAndContextClassFor("footer");
 				this._oToolbar._isControlsInfoCached = function () {
 					return false;
 				};
@@ -1519,6 +1492,13 @@ function(
 			return this;
 		};
 
+		Dialog.prototype.setCustomHeader = function (oCustomHeader) {
+			if (oCustomHeader) {
+				oCustomHeader.addStyleClass("sapMDialogTitle");
+			}
+			return this.setAggregation("customHeader", oCustomHeader);
+		};
+
 		Dialog.prototype.setState = function (sState) {
 			var mFlags = {},
 				$this = this.$(),
@@ -1527,8 +1507,8 @@ function(
 
 			this.setProperty("state", sState, true);
 
-			for (sName in DialogRenderer._mStateClasses) {
-				$this.toggleClass(DialogRenderer._mStateClasses[sName], !!mFlags[sName]);
+			for (sName in Dialog._mStateClasses) {
+				$this.toggleClass(Dialog._mStateClasses[sName], !!mFlags[sName]);
 			}
 			this.setIcon(Dialog._mIcons[sState], true);
 			return this;

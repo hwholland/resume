@@ -1,44 +1,15 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.unified.ColorPicker.
-sap.ui.define([
-	"jquery.sap.global",
-	"./library",
-	"sap/ui/core/Control",
-	"sap/ui/core/HTML",
-	"sap/ui/core/ResizeHandler",
-	"sap/ui/layout/Grid",
-	"sap/ui/layout/GridData",
-	"sap/ui/layout/VerticalLayout",
-	"sap/ui/layout/HorizontalLayout",
-	"sap/ui/core/Icon",
-	"sap/ui/core/theming/Parameters",
-	"sap/ui/core/InvisibleText",
-	"sap/ui/Device",
-	"sap/ui/core/library",
-	"./ColorPickerRenderer",
-	"sap/ui/Global"
-], function(
-	jQuery,
-	Library,
-	Control,
-	HTML,
-	ResizeHandler,
-	Grid,
-	GridData,
-	VLayout,
-	HLayout,
-	Icon,
-	Parameters,
-	InvisibleText,
-	Device,
-	coreLibrary,
-	ColorPickerRenderer
-) {
+sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Control", "sap/ui/core/HTML", "sap/ui/core/ResizeHandler",
+	"sap/ui/layout/Grid", "sap/ui/layout/GridData", "sap/ui/layout/VerticalLayout", "sap/ui/layout/HorizontalLayout",
+	"sap/ui/core/Icon", "sap/ui/core/theming/Parameters", "sap/ui/core/InvisibleText", "sap/ui/Device", "sap/ui/core/library"],
+	function(jQuery, Library, Control, HTML, ResizeHandler, Grid, GridData, VLayout, HLayout, Icon, Parameters,
+		InvisibleText, Device, coreLibrary) {
 	"use strict";
 
 
@@ -67,7 +38,7 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -1000,12 +971,9 @@ sap.ui.define([
 
 		if (this.bResponsive) {
 			// If library is not commons switch the control to responsive mode
-			if (!Device.system.phone && !jQuery('html').hasClass("sapUiMedia-Std-Phone")) {
-				// Changing tablet breakpoint to 400px is a magic number enabling the best adaptive behavior of the control
-				// mainly on Desktop which apply's best to control specific look and feel.
-				// Consider rewriting the renderer to take advantage on responsive grid behavior and to use it's private methods.
-				oGrid._setBreakPointTablet(400);
-			}
+			// Changing tablet breakpoint to 314px is a magic number enabling the best adaptive behavior of the control
+			// which apply's best to control specific look and feel.
+			oGrid._setBreakPointTablet(314);
 			oGrid.addStyleClass(CONSTANTS.CPResponsiveClass);
 		} else {
 			oGrid.setProperty("hSpacing", 0, true);

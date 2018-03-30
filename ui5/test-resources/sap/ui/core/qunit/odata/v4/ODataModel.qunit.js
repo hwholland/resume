@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
@@ -17,6 +17,7 @@ sap.ui.require([
 	"sap/ui/model/odata/v4/lib/_MetadataRequestor",
 	"sap/ui/model/odata/v4/lib/_Parser",
 	"sap/ui/model/odata/v4/lib/_Requestor",
+	"sap/ui/model/odata/v4/lib/_SyncPromise",
 	"sap/ui/model/odata/v4/ODataContextBinding",
 	"sap/ui/model/odata/v4/ODataListBinding",
 	"sap/ui/model/odata/v4/ODataMetaModel",
@@ -24,8 +25,8 @@ sap.ui.require([
 	"sap/ui/model/odata/v4/ODataPropertyBinding",
 	"sap/ui/model/odata/v4/SubmitMode",
 	"sap/ui/test/TestUtils"
-], function (jQuery, Message, Binding, BindingMode, BaseContext, Model, TypeString,
-		ODataUtils, OperationMode, Context, _MetadataRequestor, _Parser, _Requestor,
+], function (jQuery, Message, Binding, BindingMode, BaseContext, Model, TypeString, ODataUtils,
+		OperationMode, Context, _MetadataRequestor, _Parser, _Requestor, _SyncPromise,
 		ODataContextBinding, ODataListBinding, ODataMetaModel, ODataModel, ODataPropertyBinding,
 		SubmitMode, TestUtils) {
 	/*global QUnit, sinon */
@@ -92,12 +93,18 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.module("sap.ui.model.odata.v4.ODataModel", {
 		beforeEach : function () {
-			TestUtils.setupODataV4Server(this._oSandbox, mFixture, undefined, sServiceUrl);
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oSandbox = sinon.sandbox.create();
+			TestUtils.setupODataV4Server(this.oSandbox, mFixture, undefined, sServiceUrl);
+			this.oLogMock = this.oSandbox.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
-			this.mock(sap.ui.getCore().getConfiguration()).expects("getLanguageTag").atLeast(0)
-				.returns("ab-CD");
+			this.oSandbox.mock(sap.ui.getCore().getConfiguration()).expects("getLanguageTag")
+				.atLeast(0).returns("ab-CD");
+		},
+
+		afterEach : function () {
+			// I would consider this an API, see https://github.com/cjohansen/Sinon.JS/issues/614
+			this.oSandbox.verifyAndRestore();
 		}
 	});
 
@@ -106,7 +113,6 @@ sap.ui.require([
 		var oMetadataRequestor = {},
 			oMetaModel,
 			oModel,
-			oModelPrototypeMock = this.mock(ODataModel.prototype),
 			mModelOptions = {};
 
 		assert.throws(function () {
@@ -125,7 +131,6 @@ sap.ui.require([
 			return new ODataModel({operationMode : OperationMode.Auto, serviceUrl : "/foo/",
 				synchronizationMode : "None"});
 		}, new Error("Unsupported operation mode: Auto"), "Unsupported OperationMode");
-		oModelPrototypeMock.expects("initializeSecurityToken").never();
 
 		// code under test: operation mode Server must not throw an error
 		oModel = createModel("", {operationMode : OperationMode.Server, serviceUrl : "/foo/",
@@ -138,11 +143,9 @@ sap.ui.require([
 		this.mock(_MetadataRequestor).expects("create")
 			.withExactArgs({"Accept-Language" : "ab-CD"}, "4.0", sinon.match.same(mModelOptions))
 			.returns(oMetadataRequestor);
-		this.mock(ODataMetaModel.prototype).expects("fetchEntityContainer").withExactArgs(true);
-		oModelPrototypeMock.expects("initializeSecurityToken").withExactArgs();
 
 		// code under test
-		oModel = createModel("", {earlyRequests : true, annotationURI : ["my/annotations.xml"]});
+		oModel = createModel("", {annotationURI : ["my/annotations.xml"]});
 
 		assert.strictEqual(oModel.sServiceUrl, getServiceUrl());
 		assert.strictEqual(oModel.toString(), sClassName + ": " + getServiceUrl());
@@ -157,19 +160,6 @@ sap.ui.require([
 		assert.strictEqual(oMetaModel.oRequestor, oMetadataRequestor);
 		assert.strictEqual(oMetaModel.sUrl, getServiceUrl() + "$metadata");
 		assert.deepEqual(oMetaModel.aAnnotationUris, ["my/annotations.xml"]);
-	});
-
-	//*********************************************************************************************
-	QUnit.test("Early requests: $metadata and annotations", function (assert) {
-		var oFetchEntityContainerExpectation
-			= this.mock(ODataMetaModel.prototype).expects("fetchEntityContainer")
-				.withExactArgs(true),
-			oModel;
-
-		// code under test
-		oModel = createModel("", {earlyRequests : true});
-
-		assert.ok(oFetchEntityContainerExpectation.alwaysCalledOn(oModel.getMetaModel()));
 	});
 
 	//*********************************************************************************************
@@ -190,7 +180,7 @@ sap.ui.require([
 			var oModel;
 
 			this.mock(_Requestor).expects("create")
-				.withExactArgs(getServiceUrl(), sinon.match.object, {"Accept-Language" : "ab-CD"},
+				.withExactArgs(getServiceUrl(), {"Accept-Language" : "ab-CD"}, sinon.match.object,
 					sinon.match.object, sODataVersion)
 				.returns({});
 
@@ -383,26 +373,23 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("Model creates _Requestor", function (assert) {
-		var oExpectedBind0,
+		var oEntitySetMetaDataPromise = {},
+			oExpectedBind0,
 			oExpectedBind1,
-			oExpectedBind2,
 			oExpectedCreate = this.mock(_Requestor).expects("create"),
 			fnFetchEntityContainer = function () {},
-			fnFetchMetadata = function () {},
 			oModel,
 			oModelInterface,
 			oRequestor = {},
 			fnSubmitAuto = function () {};
 
 		oExpectedCreate
-			.withExactArgs(getServiceUrl(), sinon.match.object, {"Accept-Language" : "ab-CD"},
-				{"sap-client" : "123"}, "4.0")
+			.withExactArgs(getServiceUrl(), {"Accept-Language" : "ab-CD"}, {"sap-client" : "123"},
+				sinon.match.object, "4.0")
 			.returns(oRequestor);
 		oExpectedBind0 = this.mock(ODataMetaModel.prototype.fetchEntityContainer).expects("bind")
 			.returns(fnFetchEntityContainer);
-		oExpectedBind1 = this.mock(ODataMetaModel.prototype.fetchObject).expects("bind")
-			.returns(fnFetchMetadata);
-		oExpectedBind2 = this.mock(ODataModel.prototype.getGroupProperty).expects("bind")
+		oExpectedBind1 = this.mock(ODataModel.prototype.getGroupProperty).expects("bind")
 			.returns(ODataModel.prototype.getGroupProperty);
 
 		// code under test
@@ -411,8 +398,7 @@ sap.ui.require([
 		assert.ok(oModel instanceof Model);
 		assert.strictEqual(oModel.oRequestor, oRequestor);
 		assert.strictEqual(oExpectedBind0.firstCall.args[0], oModel.oMetaModel);
-		assert.strictEqual(oExpectedBind1.firstCall.args[0], oModel.oMetaModel);
-		assert.strictEqual(oExpectedBind2.firstCall.args[0], oModel);
+		assert.strictEqual(oExpectedBind1.firstCall.args[0], oModel);
 
 		this.mock(oModel._submitBatch).expects("bind")
 			.withExactArgs(sinon.match.same(oModel), "$auto")
@@ -421,9 +407,20 @@ sap.ui.require([
 			.withExactArgs(fnSubmitAuto);
 
 		// code under test - call fnOnCreateGroup
-		oModelInterface = oExpectedCreate.firstCall.args[1];
+		oModelInterface = oExpectedCreate.firstCall.args[3];
 		oModelInterface.fnOnCreateGroup("$auto");
 		oModelInterface.fnOnCreateGroup("foo");
+
+		this.mock(ODataMetaModel.prototype).expects("getMetaPath")
+			.withExactArgs("/EntitySet(42)")
+			.returns("/EntitySet");
+		this.mock(ODataMetaModel.prototype).expects("fetchObject")
+			.withExactArgs("/EntitySet")
+			.returns(oEntitySetMetaDataPromise);
+
+		// code under test
+		assert.strictEqual(oModelInterface.fnFetchMetadata("/EntitySet(42)"),
+			oEntitySetMetaDataPromise);
 	});
 
 	//*********************************************************************************************
@@ -586,7 +583,7 @@ sap.ui.require([
 
 		oModelMock.expects("checkDeferredGroupId").withExactArgs("groupId");
 		oModelMock.expects("_submitBatch").never(); // not yet
-		this.mock(sap.ui.getCore()).expects("addPrerenderingTask").callsFake(function (fnCallback) {
+		this.stub(sap.ui.getCore(), "addPrerenderingTask", function (fnCallback) {
 			setTimeout(function () {
 				// make sure that _submitBatch is called within fnCallback
 				oModelMock.expects("_submitBatch").withExactArgs("groupId")
@@ -772,17 +769,6 @@ sap.ui.require([
 	});
 
 	//*********************************************************************************************
-	QUnit.test("reportError on canceled error, no debug log", function (assert) {
-		var oError = {canceled : "noDebugLog"};
-
-		this.oLogMock.expects("debug").never();
-		this.mock(sap.ui.getCore().getMessageManager()).expects("addMessages").never();
-
-		// code under test
-		createModel().reportError("Failure", "class", oError);
-	});
-
-	//*********************************************************************************************
 	QUnit.test("destroy", function (assert) {
 		var oModel = createModel(),
 			oModelPrototypeMock = this.mock(Model.prototype);
@@ -870,53 +856,55 @@ sap.ui.require([
 	});
 
 	//*********************************************************************************************
-	[
-		"/foo",
-		"/EMPLOYEES('4711')/#com.sap.foo.bar.AcFoo",
-		"/EMPLOYEES('4711')/#com.sap.foo.bar.AcFoo/Title"
-	].forEach(function(sPath) {
-		QUnit.test("createBindingContext - absolute path, no context " + sPath, function (assert) {
-			var oBindingContext,
-				oModel = createModel();
+	QUnit.test("getDependentBindings: skip created entities", function (assert) {
+		var oModel = createModel(),
+			oParentBinding = {},
+			oContextCreated = Context.create(oModel, oParentBinding, "/Foo/-1"),
+			oBindingCreated = new Binding(oModel, "bar", oContextCreated),
+			oContext0 = Context.create(oModel, oParentBinding, "/Foo/0"),
+			oBinding0 = new Binding(oModel, "bar", oContext0),
+			oBindingUnresolved = new Binding(oModel, "baz");
 
-			// code under test
-			oBindingContext = oModel.createBindingContext(sPath);
+		this.mock(oContextCreated).expects("created").withExactArgs()
+			.returns(_SyncPromise.resolve());
 
-			assert.deepEqual(oBindingContext, new BaseContext(oModel, sPath));
-			assert.ok(oBindingContext instanceof BaseContext);
-		});
+		// to be called by V4 binding's c'tors
+		oModel.bindingCreated(oBindingCreated);
+		oModel.bindingCreated(oBinding0);
+		oModel.bindingCreated(oBindingUnresolved);
+
+		// code under test
+		assert.deepEqual(oModel.getDependentBindings(oParentBinding), [oBindingCreated, oBinding0]);
+		assert.deepEqual(oModel.getDependentBindings(oParentBinding, true), [oBinding0]);
 	});
 
 	//*********************************************************************************************
-	[{
-		entityPath : "/foo",
-		propertyPath : "bar"
-	}, {
-		entityPath : "/foo",
-		propertyPath : "foo_2_bar/#com.sap.foo.bar.AcBar"
-	}, {
-		entityPath : "/foo",
-		propertyPath : "#com.sap.foo.bar.AcBar/Title"
-	}].forEach(function(oFixture) {
-		var sResolvedPath = oFixture.entityPath + "/" + oFixture.propertyPath,
-			sTitle = "createBindingContext - relative path and context " + sResolvedPath;
+	QUnit.test("createBindingContext - absolute path, no context", function (assert) {
+		var oBindingContext,
+			oModel = createModel();
 
-		QUnit.test(sTitle, function (assert) {
-			var oBindingContext,
-				oModel = createModel(),
-				oModelMock = this.mock(oModel),
-				oContext = new BaseContext(oModel, oFixture.entityPath);
+		// code under test
+		oBindingContext = oModel.createBindingContext("/foo");
 
-			oModelMock.expects("resolve")
-				.withExactArgs(oFixture.propertyPath, sinon.match.same(oContext))
-				.returns(sResolvedPath);
+		assert.deepEqual(oBindingContext, new BaseContext(oModel, "/foo"));
+		assert.ok(oBindingContext instanceof BaseContext);
+	});
 
-			// code under test
-			oBindingContext = oModel.createBindingContext(oFixture.propertyPath, oContext);
+	//*********************************************************************************************
+	QUnit.test("createBindingContext - relative path and context", function (assert) {
+		var oBindingContext,
+		oModel = createModel(),
+		oModelMock = this.mock(oModel),
+		oContext = new BaseContext(oModel, "/foo");
 
-			assert.deepEqual(oBindingContext, new BaseContext(oModel, sResolvedPath));
-			assert.ok(oBindingContext instanceof BaseContext);
-		});
+		oModelMock.expects("resolve").withExactArgs("bar", sinon.match.same(oContext))
+			.returns("/foo/bar");
+
+		// code under test
+		oBindingContext = oModel.createBindingContext("bar", oContext);
+
+		assert.deepEqual(oBindingContext, new BaseContext(oModel, "/foo/bar"));
+		assert.ok(oBindingContext instanceof BaseContext);
 	});
 
 	//*********************************************************************************************
@@ -928,16 +916,8 @@ sap.ui.require([
 			dataPath : "/BusinessPartnerList('42')",
 			metaPath : "@com.sap.vocabularies.UI.v1.LineItem"
 		}, {
-			dataPath : "/BusinessPartnerList('42')/",
-			metaPath : "/com.sap.foo.bar.AcFoo",
-			relativeMetaPath : "./com.sap.foo.bar.AcFoo"
-		}, {
-			dataPath : "/BusinessPartnerList('42')/",
-			doubleHash : true, // single hash goes to data and is tested above
-			metaPath : "com.sap.foo.bar.AcFoo"
-		}, {
 			dataPath : "/",
-			metaPath : "com.sap.foo.bar.AcFoo"
+			metaPath : "BusinessPartnerList/@com.sap.vocabularies.UI.v1.LineItem"
 		}, {
 			dataPath : "/",
 			metaPath : "BusinessPartnerList/@com.sap.vocabularies.UI.v1.LineItem"
@@ -946,18 +926,14 @@ sap.ui.require([
 			metaPath : "/",
 			relativeMetaPath : "./" // meta path is always treated as a relative path
 		}, {
-			dataPath: "/BusinessPartnerList",
-			metaPath: "Name"
-		}, {
 			dataPath : "/BusinessPartnerList",
 			metaPath : "/Name",
 			relativeMetaPath : "./Name" // meta path is always treated as a relative path
 		}].forEach(function (oFixture) {
-			var sPath = oFixture.dataPath + (bDoubleHash ? "##" : "#") + oFixture.metaPath;
+			var sPath = (oFixture.dataPath
+					+ (bDoubleHash ? "##" : "#")
+					+ oFixture.metaPath);
 
-			if ("doubleHash" in oFixture && oFixture.doubleHash !== bDoubleHash) {
-				return;
-			}
 			QUnit.test("createBindingContext - go to metadata " + sPath, function (assert) {
 				var oContext = {},
 					oModel = createModel(),
@@ -1414,16 +1390,6 @@ sap.ui.require([
 			"/");
 		// Note: we do not go this far; JsDoc of @return wins: (string|undefined), nothing else!
 		assert.strictEqual(Model.prototype.resolve(null), null);
-	});
-
-	//*********************************************************************************************
-	QUnit.test("initializeSecurityToken", function (assert) {
-		var oModel = createModel("");
-
-		this.mock(oModel.oRequestor).expects("refreshSecurityToken").withExactArgs();
-
-		// code under test
-		oModel.initializeSecurityToken();
 	});
 });
 //TODO constructor: test that the service root URL is absolute?

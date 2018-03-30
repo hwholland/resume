@@ -3,11 +3,7 @@ sap.ui.define(["sap/ui/core/UIComponent"], function (UIComponent) {
 
 	var Component = UIComponent.extend("sap.uxap.sample.ObjectPageOnJSONWithLazyLoading.Component", {
 		metadata: {
-			rootView: {
-				"viewName": "sap.uxap.sample.ObjectPageOnJSONWithLazyLoading.ObjectPageOnJSONWithLazyLoading",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.uxap.sample.ObjectPageOnJSONWithLazyLoading.ObjectPageOnJSONWithLazyLoading",
 			dependencies: {
 				libs: [
 					"sap.m"

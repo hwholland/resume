@@ -39,16 +39,6 @@ For larger amounts, the unit of measurement wraps to the next line, which makes 
         <property group="Appearance" defaultValue="0" type="sap.ui.core/float" name="value">
             <documentation>Determines the currency value.</documentation>
         </property>
-        <property since="1.54" group="Appearance" type="sap.ui.core/string" name="stringValue">
-            <documentation>Determines the currency value as a string.
-
-String value is useful if you want to store really big values. If there are more than 21 digits
-before the decimal point or if the number starts with “0.” followed by more than five zeros, it is
-represented in exponential form. In these cases use the &lt;code&gt;stringValue&lt;/code&gt; property to keep the number in
-decimal format.
-
-&lt;b&gt;Note:&lt;/b&gt; If set, it will take precedence over the &lt;code&gt;value&lt;/code&gt; property.</documentation>
-        </property>
         <property group="Appearance" type="sap.ui.core/string" name="currency">
             <documentation>Determines the displayed currency code (ISO 4217).
 
@@ -63,10 +53,10 @@ only the character itself will be rendered, ignoring the &lt;code&gt;value&lt;/c
         </property>
     </properties>
     <methods>
-        <method type="sap.ui.core/string" name="getFormattedValue">
+        <method type="any" name="getFormattedValue">
             <documentation>The formatted value.</documentation>
         </method>
-        <method type="sap.ui.core/string" name="getCurrencySymbol">
+        <method type="any" name="getCurrencySymbol">
             <documentation>Get symbol of the currency, if available.</documentation>
         </method>
     </methods>

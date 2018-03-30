@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 		var Component = UIComponent.extend("sap.m.sample.MessageViewInsideResponsivePopover.Component", {
 
 			metadata : {
-				rootView : {
-					"viewName": "sap.m.sample.MessageViewInsideResponsivePopover.MessageView",
-					"type": "XML",
-					"async": true
-				},
+				rootView : "sap.m.sample.MessageViewInsideResponsivePopover.MessageView",
 				dependencies : {
 					libs : [
 						"sap.m"

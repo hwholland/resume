@@ -1,13 +1,15 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.VBox.
-sap.ui.define(['./FlexBox', './library', "./VBoxRenderer"],
-	function(FlexBox, library, VBoxRenderer) {
+sap.ui.define(['./FlexBox', './library'],
+	function(FlexBox, library) {
 	"use strict";
+
+
 
 	/**
 	 * Constructor for a new VBox.
@@ -23,22 +25,19 @@ sap.ui.define(['./FlexBox', './library', "./VBoxRenderer"],
 	 * @extends sap.m.FlexBox
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
 	 * @alias sap.m.VBox
-	 * @see https://www.w3.org/TR/css-flexbox-1/
-	 * @see https://www.w3.org/TR/css-flexbox-1/#propdef-justify-content
-	 * @see https://www.w3.org/TR/css-flexbox-1/#propdef-flex-direction
-	 * @see https://www.w3schools.com/css/css3_flexbox.asp#flex-direction
 	 * @ui5-metamodel This control/element also will be described in the UI5 (legacy) designtime metamodel
 	 */
 	var VBox = FlexBox.extend("sap.m.VBox", /** @lends sap.m.VBox.prototype */ { metadata : {
 
-		library : "sap.m",
-		designtime: "sap/m/designtime/VBox.designtime"
+		library : "sap.m"
 	}});
+
+
 
 	return VBox;
 

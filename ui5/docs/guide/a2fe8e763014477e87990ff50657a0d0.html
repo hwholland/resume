@@ -6,9 +6,9 @@
 <meta name="abstract" content="Calculated fields enable the binding of multiple properties in different models to a single property of a control."/>
 <meta name="description" content="Calculated fields enable the binding of multiple properties in different models to a single property of a control."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8019032437330912"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8019032437330912"/>
-<title>Composite Binding</title>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7817331160699851"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7817331160699851"/>
+<title>Calculated Fields for Data Binding</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
     <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
@@ -16,10 +16,10 @@
 <body class="" id="loioa2fe8e763014477e87990ff50657a0d0">
 <div id="wrapper"><div id="container">
 
-	<h1 class="title topictitle1">Composite Binding</h1>
+	<h1 class="title topictitle1">Calculated Fields for Data Binding</h1>
 
 	
-	<div class="body conbody"><p class="shortdesc">Calculated fields enable the binding of multiple properties in different models to a
+	<div class="body"><p class="shortdesc">Calculated fields enable the binding of multiple properties in different models to a
 		single property of a control.</p>
 
 		<p class="p">The value property of a text field, for example, may be bound to a property
@@ -59,7 +59,8 @@
 			
 			<ol class="ol" id="loioa2fe8e763014477e87990ff50657a0d0__ol_zkm_qrp_cj">
 				<li class="li">Use binding objects to add additional parameters, for example the type:
-					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oTxt = new sap.m.Input({
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+oTxt = new sap.ui.commons.TextField({
     value: {
         parts: [
                 {path: "/firstName", type: new sap.ui.model.type.String()},
@@ -71,7 +72,8 @@
 </li>
 
 				<li class="li"> Use strings which only take the
-					path:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oTxt = new sap.m.Input({
+					path:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+oTxt = new sap.ui.commons.TextField({
     value: {
         parts: [
                 "/firstName",
@@ -90,7 +92,8 @@
 			
 			<ol class="ol" id="loioa2fe8e763014477e87990ff50657a0d0__ol_bzv_yrp_cj">
 				<li class="li">Use binding objects to add additional parameters, for example the type:
-					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oTxt.bindValue({
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+oTxt.bindValue({
     parts: [
             {path: "/firstName", type: new sap.ui.model.type.String()},
             {path: "/lastName"}
@@ -99,7 +102,8 @@
 </li>
 
 				<li class="li">Use strings which only take the
-					path:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oTxt.bindValue({
+					path:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+oTxt.bindValue({
     parts: [
             "/firstName",
             "/lastName"
@@ -109,100 +113,25 @@
 
 			</ol>
 
-			<p class="p">These samples also work with a relative binding path, when you use them as a template in a
-				list binding. </p>
+			<p class="p">These samples also work with a relative binding path, when you use them as a template in an
+				aggregation binding. </p>
 
-		</div></div>
-
-		<div class="section" id="loioa2fe8e763014477e87990ff50657a0d0__section_tlp_5np_rcb"><div class="section_title">Complex Syntax for Calculated Fields</div><div type="Complex Syntax for Calculated Fields">
 			
-			<p class="p">Complex (or "extended") syntax can be used for calculated fields in declarative
-				views, such as HTML and XML views.</p>
-
-			<p class="p">To use the feature in your <span class="ph"><span class="ph pname">OpenUI5</span></span> application, set
-				the configuration flag <samp class="ph codeph">bindingSyntax</samp> in the bootstrap as
-				follows:</p>
-
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
-&lt;script id="sap-ui-bootstrap"
-      ...
-        data-sap-ui-bindingSyntax="complex"&gt;
-    &lt;/script&gt;</pre></div>
-
-			<p class="p">The following examples show how to use the feature:</p>
-
-			<ul class="ul" id="loioa2fe8e763014477e87990ff50657a0d0__ul_us5_ynp_rcb">
-				<li class="li">
-					<p class="p">You can mix text with calculated fields as follows:</p>
-
-					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
-&lt;Label text="Hello Mr. {
-                         path:'/singleEntry/firstName', 
-                         formatter: '.myFormatter'
-                        }, 
-                        {
-                         /singleEntry/lastName
-                        }
- " /&gt;</pre></div>
-
-					<div class="note note"><span class="notetitle">Note</span> 
-						<p class="p">Use translatable text in your application.</p>
-
-					</div>
-
-				</li>
-
-				<li class="li">
-					<p class="p">Use a syntax with leading quotation marks ("...") if you use MVC and your
-						formatter or type is located in the controller. In the following example,
-						the existing type or formatter function in the controller is used:</p>
-
-					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
-&lt;TextField value="{
-                   path:'gender', 
-                   formatter:'.myGenderFormatter'
-                  } 
-                  {firstName}, 
-                  {lastName}
-"/&gt;</pre></div>
-
-				</li>
-
-				<li class="li">
-					<p class="p">If you have a global formatter function, use the following syntax:</p>
-
-					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
-&lt;TextField value="{
-              parts: [
-                      {path:'birthday/day'},
-                      {path:'birthday/month'},
-                      {path:'birthday/year'}
-                     ], 
-              formatter:'my.globalFormatter'
-}"/&gt;</pre></div>
-
-				</li>
-
-				<li class="li">
-					<p class="p">For a global type that is created with the specified format options, see the
-						following example:</p>
-
-					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
-&lt;Label text="A type test: {
-                           path:'/singleEntry/amount', 
-                           type:'sap.ui.model.type.Float', 
-                           formatOptions: { minFractionDigits: 1}
-                          } EUR
-"/&gt;</pre></div>
-
-				</li>
-
-			</ul>
-
 		</div></div>
 
 	</div>
 
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="07e4b920f5734fd78fdaa236f26236d8.html" title="OpenUI5 supports the definition of custom formatters.">Custom Formatter Functions</a></strong><br/>
+</div>
+<div><strong><a class="link" href="daf6852a04b44d118963968a1239d2c0.html" title="Expression binding is an enhancement of the OpenUI5 binding syntax, which allows for providing expressions instead of custom formatter functions.">Expression Binding</a></strong><br/>
+</div>
+<div><strong><a class="link" href="0c803921b1bf4b3a97a038fbd51ef542.html" title="Complex (or &#34;extended&#34;) syntax can be used for calculated fields in declarative views, such as HTML and XML views.">Complex Syntax for Calculated Fields</a></strong><br/>
+</div>
+</ul>
+
+</div>
 </div></div>
 
 </body>

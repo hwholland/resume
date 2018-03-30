@@ -4,11 +4,8 @@ sap.ui.require([
 	"sap/ui/qunit/QUnitUtils",
 	"sap/ui/table/TableUtils",
 	"sap/ui/table/TableKeyboardDelegate2",
-	"sap/ui/Device",
-	"sap/m/Menu",
-	"sap/m/MenuItem",
-	"sap/ui/events/F6Navigation"
-], function(qutils, TableUtils, TableKeyboardDelegate2, Device, MenuM, MenuItemM, F6Navigation) {
+	"sap/ui/Device"
+], function(qutils, TableUtils, TableKeyboardDelegate2, Device) {
 	"use strict";
 
 	// mapping of global function calls
@@ -104,23 +101,16 @@ sap.ui.require([
 	/**
 	 * Checks whether the complete text in an text input element is selected.
 	 *
-	 * @param {Object} assert QUnit assert object.
 	 * @param {HTMLElement} oTextInputElement The input or textarea element to check for text selection.
-	 * @param {boolean} bExpectSelected Whether the text in the input is expected to be selected.
-	 * @param {string} sText The assertion message.
+	 * @returns {boolean} Returns <code>true</code>, if the complete text is selected.
 	 */
-	function assertTextSelection(assert, oTextInputElement, bExpectSelected, sText) {
-		if (Device.browser.phantomJS || Device.browser.safari) {
-			return;
-		}
-
+	function isTextSelected(oTextInputElement) {
 		var iFirstSelectedIndex = typeof oTextInputElement.selectionStart === "number" ? oTextInputElement.selectionStart : 0;
 		var iLastSelectedIndex = typeof oTextInputElement.selectionEnd === "number" ? oTextInputElement.selectionEnd : 0;
 		var iSelectedCharacterCount = iLastSelectedIndex - iFirstSelectedIndex;
 		var iTotalCharacterCount = oTextInputElement.value.length;
-		var bSelected = iSelectedCharacterCount > 0 && iSelectedCharacterCount === iTotalCharacterCount;
 
-		assert.strictEqual(bSelected, bExpectSelected, sText);
+		return iSelectedCharacterCount > 0 && iSelectedCharacterCount === iTotalCharacterCount;
 	}
 
 	/**
@@ -437,7 +427,6 @@ sap.ui.require([
 		var sInputType;
 		var mInputTypes = {
 			text: {supportsTextSelection: true, value: "text", columnIndex: null},
-			password: {supportsTextSelection: true, value: "password", columnIndex: null},
 			search: {supportsTextSelection: true, value: "search", columnIndex: null},
 			tel: {supportsTextSelection: true, value: "123 456", columnIndex: null},
 			url: {supportsTextSelection: true, value: "http://www.test.com", columnIndex: null},
@@ -449,15 +438,19 @@ sap.ui.require([
 			return oTable.getRows()[0].getCells()[iColumnIndex].getDomRef();
 		}
 
-		function testInputElement(mInputType, bSilentFocus) {
+		function testInputElement(mInputType, bSelectText, bSilentFocus) {
 			oElement = getInputElement(mInputType.columnIndex);
 
-			TableKeyboardDelegate2._focusElement(oTable, oElement, bSilentFocus);
+			TableKeyboardDelegate2._focusElement(oTable, oElement, bSelectText, bSilentFocus);
 
 			checkFocus(oElement, assert);
 
-			if (mInputType.supportsTextSelection) {
-				assertTextSelection(assert, oElement, true, "Input type: " + oElement.type + " - The text is selected");
+			if (Device.browser.phantomJS) {
+				assert.ok(true, "This test makes no sense in PhantomJS");
+			} else if (bSelectText && mInputType.supportsTextSelection) {
+				assert.ok(isTextSelected(oElement), "Input type: " + oElement.type + " - The text is selected");
+			} else if (!Device.browser.safari) {
+				assert.ok(!isTextSelected(oElement), "Input type: " + oElement.type + " - The text is not selected");
 			}
 
 			if (bSilentFocus) {
@@ -469,7 +462,11 @@ sap.ui.require([
 
 			if (oPreviousElement != oElement) {
 				if (oPreviousElement != null) {
-					assertTextSelection(assert, oPreviousElement, false, "The text of the previously focused input element is not selected");
+					if (Device.browser.phantomJS) {
+						assert.ok(true, "This test makes no sense in PhantomJS");
+					} else if (!Device.browser.safari) {
+						assert.ok(!isTextSelected(oPreviousElement), "The text of the previously focused input element is not selected");
+					}
 				}
 				oPreviousElement = oElement;
 			}
@@ -486,22 +483,28 @@ sap.ui.require([
 		for (sInputType in mInputTypes) {
 			testInputElement(mInputTypes[sInputType], true);
 		}
+		for (sInputType in mInputTypes) {
+			testInputElement(mInputTypes[sInputType], false, true);
+		}
+		for (sInputType in mInputTypes) {
+			testInputElement(mInputTypes[sInputType], true, true);
+		}
 
 		oElement = getInputElement(mInputTypes.text.columnIndex);
 		oPreviousElement = oElement;
-		TableKeyboardDelegate2._focusElement(oTable, oElement);
-		checkFocus(oElement, assert);
-		assert.ok(oSetSilentFocusSpy.notCalled, "The element was not focused silently");
-		assertTextSelection(assert, oElement, true, "The text is selected");
-
-		oElement = oTable.getRows()[0].getCells()[0].getDomRef();
-		TableKeyboardDelegate2._focusElement(oTable, oElement);
-		checkFocus(oElement, assert);
-		assert.ok(oSetSilentFocusSpy.notCalled, "The element was not focused silently");
-		assertTextSelection(assert, oPreviousElement, false, "The text of the previously focused element is not selected");
-
-		oElement = oTable.getRows()[0].getCells()[0].getDomRef();
 		TableKeyboardDelegate2._focusElement(oTable, oElement, true);
+		checkFocus(oElement, assert);
+		assert.ok(oSetSilentFocusSpy.notCalled, "The element was not focused silently");
+		assert.ok(isTextSelected(oElement), "The text is selected");
+
+		oElement = oTable.getRows()[0].getCells()[0].getDomRef();
+		TableKeyboardDelegate2._focusElement(oTable, oElement);
+		checkFocus(oElement, assert);
+		assert.ok(oSetSilentFocusSpy.notCalled, "The element was not focused silently");
+		assert.ok(!isTextSelected(oPreviousElement), "The text of the previously focused element is not selected");
+
+		oElement = oTable.getRows()[0].getCells()[0].getDomRef();
+		TableKeyboardDelegate2._focusElement(oTable, oElement, true, true);
 		checkFocus(oElement, assert);
 		assert.ok(oSetSilentFocusSpy.calledOnce, "The element was focused silently");
 
@@ -1660,11 +1663,12 @@ sap.ui.require([
 	});
 
 	QUnit.test("Default Test Table", function(assert) {
-		var oInput = new sap.ui.table.test.TestInputControl({tabbable: true});
-		var iPreventDefaultCount = 0;
-
 		oTable.setFixedColumnCount(0);
+		var oInput = new sap.ui.table.test.TestInputControl({tabbable: true});
 		oTable.addExtension(oInput);
+		sap.ui.getCore().applyChanges();
+
+		var iPreventDefaultCount = 0;
 		oTable.addEventDelegate({
 			onsaphome: function(oEvent) {
 				if (oEvent.isDefaultPrevented()) {
@@ -1677,39 +1681,11 @@ sap.ui.require([
 				}
 			}
 		});
-		sap.ui.getCore().applyChanges();
-
-		/* Test on element outside the grid */
-
-		oInput.focus();
-		var oElem = checkFocus(oInput.getDomRef(), assert);
-
-		qutils.triggerKeydown(oElem, Key.HOME, false, false, false);
-		oElem = checkFocus(oElem, assert);
-		assert.ok(iPreventDefaultCount === 0, "Event default not prevented");
-
-		iPreventDefaultCount = 0;
-		qutils.triggerKeydown(oElem, Key.END, false, false, false);
-		checkFocus(oElem, assert);
-		assert.ok(iPreventDefaultCount === 0, "Event default not prevented");
-
-		oInput.focus();
-		oElem = checkFocus(oInput.getDomRef(), assert);
-
-		iPreventDefaultCount = 0;
-		qutils.triggerKeydown(oElem, Key.HOME, false, false, false);
-		oElem = checkFocus(oElem, assert);
-		assert.ok(iPreventDefaultCount === 0, "Event default not prevented");
-
-		iPreventDefaultCount = 0;
-		qutils.triggerKeydown(oElem, Key.END, false, false, false);
-		checkFocus(oElem, assert);
-		assert.ok(iPreventDefaultCount === 0, "Event default not prevented");
 
 		/* Test on column header */
 
 		// First cell
-		oElem = checkFocus(getColumnHeader(0, true), assert);
+		var oElem = checkFocus(getColumnHeader(0, true), assert);
 
 		// *HOME* -> SelectAll
 		qutils.triggerKeydown(oElem, Key.HOME, false, false, false);
@@ -1805,6 +1781,21 @@ sap.ui.require([
 		qutils.triggerKeydown(oElem, Key.END, false, false, false);
 		checkFocus(getRowAction(0), assert);
 		assert.ok(iPreventDefaultCount === 4, "Event default prevented");
+
+		// Focus not on table element
+
+		iPreventDefaultCount = 0;
+
+		oInput.focus();
+		oElem = checkFocus(oInput.getDomRef(), assert);
+
+		qutils.triggerKeydown(oElem, Key.HOME, false, false, false);
+		oElem = checkFocus(oElem, assert);
+		assert.ok(iPreventDefaultCount === 0, "Event default not prevented");
+
+		qutils.triggerKeydown(oElem, Key.END, false, false, false);
+		oElem = checkFocus(oElem, assert);
+		assert.ok(iPreventDefaultCount === 0, "Event default not prevented");
 	});
 
 	QUnit.test("No Row Header", function(assert) {
@@ -2184,6 +2175,9 @@ sap.ui.require([
 		// *END* -> Row Action
 		qutils.triggerKeydown(oElem, Key.END, false, false, false);
 		checkFocus(getRowAction(0), assert);
+
+		//Cleanup
+		initRowActions(oTable, 0, 0);
 	});
 
 	QUnit.test("Fixed Columns with Column Span", function(assert) {
@@ -3515,7 +3509,7 @@ sap.ui.require([
 
 			// Enhance the Navigation Handler to use the test scope only (not the QUnit related DOM)
 			jQuery.sap.handleF6GroupNavigationOriginal = jQuery.sap.handleF6GroupNavigation;
-			jQuery.sap.handleF6GroupNavigation = F6Navigation.handleF6GroupNavigation = function(oEvent, oSettings) {
+			jQuery.sap.handleF6GroupNavigation = function(oEvent, oSettings) {
 				oSettings = oSettings ? oSettings : {};
 				if (!oSettings.scope) {
 					oSettings.scope = jQuery.sap.domById("qunit-fixture");
@@ -3526,7 +3520,7 @@ sap.ui.require([
 		afterEach: function() {
 			teardownTest();
 
-			jQuery.sap.handleF6GroupNavigation = F6Navigation.handleF6GroupNavigation = jQuery.sap.handleF6GroupNavigationOriginal;
+			jQuery.sap.handleF6GroupNavigation = jQuery.sap.handleF6GroupNavigationOriginal;
 			jQuery.sap.handleF6GroupNavigationOriginal = null;
 		}
 	});
@@ -5256,44 +5250,6 @@ sap.ui.require([
 		assert.ok(oContextMenuEventArgument.isDefaultPrevented(), "Opening of the default context menu was prevented");
 	});
 
-	QUnit.test("On a Data cell - Custom context menu", function(assert) {
-		oTable.setContextMenu(new MenuM({
-			items: [
-				new MenuItemM({text: "ContextMenuItem"})
-			]
-		}));
-		var oMenu = oTable.getContextMenu();
-		var fnOpenAsContextMenu = this.spy(oTable.getContextMenu(), "openAsContextMenu");
-		initRowActions(oTable, 1, 1);
-		var aElem = [
-			getCell(0, 0),
-			getRowHeader(0),
-			getRowAction(0)
-		];
-
-		// Shift+F10 to open the custom context menu
-		aElem.forEach(function(oElem) {
-			oElem.focus();
-			qutils.triggerKeydown(oElem, Key.F10, true, false, false);
-			oMenu.close();
-			checkFocus(oElem, assert);
-
-			oElem.trigger("contextmenu");
-			oMenu.close();
-			checkFocus(oElem, assert);
-			assert.ok(fnOpenAsContextMenu.calledTwice, "sap.m.Menu.openAsContextMenu called using Shift+F10 keys");
-			fnOpenAsContextMenu.reset();
-		});
-
-		// selectAll checkbox test for context menu
-		fnOpenAsContextMenu.reset();
-		var oSelectAll = getSelectAll(true);
-		oSelectAll.trigger("contexmenu");
-		assert.ok(!fnOpenAsContextMenu.called, "Menu did not open");
-		qutils.triggerKeydown(oSelectAll, Key.F10, true, false, false);
-		assert.ok(!fnOpenAsContextMenu.called, "Menu did not open");
-	});
-
 	QUnit.test("On other cells", function(assert) {
 		var oElem;
 		var oColumn = oTable.getColumns()[0];
@@ -5761,15 +5717,14 @@ sap.ui.require([
 			oPreviousElement = oElement;
 			assert.strictEqual(document.activeElement, oElement, sKeyCombination + ": First interactive element in the cell is focused");
 			assert.ok(oTable._getKeyboardExtension().isInActionMode(), "Table is in Action Mode");
-			assertTextSelection(assert, oElement, true, "The text in the input element of type \"text\" is selected");
+			assert.ok(isTextSelected(oElement), "The text in the input element of type \"text\" is selected");
 
 			// Focus cell with a focusable & non-tabbable element inside.
 			oTable._getKeyboardExtension().setActionMode(false);
 			oElement = checkFocus(getCell(0, iNumberOfCols - 1, true), assert);
 			assert.ok(!oTable._getKeyboardExtension().isInActionMode(),
 				"Focus cell with a focusable and non-tabbable input element: Table is in Navigation Mode");
-			assertTextSelection(assert, oPreviousElement, false,
-				"The text in the previously focused input element of type \"text\" is no longer selected");
+			assert.ok(!isTextSelected(oPreviousElement), "The text in the previously focused input element of type \"text\" is no longer selected");
 
 			// Enter action mode.
 			var oInputElement = TableKeyboardDelegate2._getInteractiveElements(oElement)[0];
@@ -5779,7 +5734,7 @@ sap.ui.require([
 			oElement = oInputElement;
 			assert.strictEqual(document.activeElement, oElement, sKeyCombination + ": First interactive element in the cell is focused");
 			assert.ok(oTable._getKeyboardExtension().isInActionMode(), "Table is in Action Mode");
-			assertTextSelection(assert, oElement, false, "The text in the input element of type \"number\" is not selected");
+			assert.ok(!isTextSelected(oElement), "The text in the input element of type \"number\" is not selected");
 
 			return oElement;
 		},
@@ -5829,7 +5784,11 @@ sap.ui.require([
 		oElement = TableKeyboardDelegate2._getInteractiveElements(getCell(0, iNumberOfCols - 2))[0];
 		oElement.focus();
 		assert.strictEqual(document.activeElement, oElement, "Tabbable input element in the cell is focused");
-		assertTextSelection(assert, oElement, false, "The text in the input element is not selected");
+		if (Device.browser.phantomJS) {
+			assert.ok(true, "This test makes no sense in PhantomJS");
+		} else if (!Device.browser.safari) {
+			assert.ok(!isTextSelected(oElement), "The text in the input element is not selected");
+		}
 		assert.ok(oTable._getKeyboardExtension().isInActionMode(), "Table is in Action Mode");
 
 		// Enter Navigation Mode: Focus a non-interactive element inside a data cell.
@@ -5842,7 +5801,11 @@ sap.ui.require([
 		oElement = getCell(0, iNumberOfCols - 1).find("input")[0];
 		oElement.focus();
 		assert.strictEqual(document.activeElement, oElement, "Non-Tabbable input element in the cell is focused");
-		assertTextSelection(assert, oElement, false, "The text in the input element is not selected");
+		if (Device.browser.phantomJS) {
+			assert.ok(true, "This test makes no sense in PhantomJS");
+		} else if (!Device.browser.safari) {
+			assert.ok(!isTextSelected(oElement), "The text in the input element is not selected");
+		}
 		assert.ok(oTable._getKeyboardExtension().isInActionMode(), "Table is in Action Mode");
 
 		// Stay in Action Mode: Focus a row selector cell.
@@ -5893,7 +5856,7 @@ sap.ui.require([
 		qutils.triggerKeydown(oElement, Key.F2, false, false, false);
 		checkFocus(getCell(0, iNumberOfCols - 1), assert);
 		assert.ok(!oTable._getKeyboardExtension().isInActionMode(), "Table is in Navigation Mode");
-		assertTextSelection(assert, oPreviousElement, false, "The text in the previously selected element is no longer selected");
+		assert.ok(!isTextSelected(oPreviousElement), "The text in the previously selected element is no longer selected");
 
 		this.testOnDataCellWithoutInteractiveControls(assert, Key.F2, "F2", false, false, false, qutils.triggerKeydown);
 
@@ -6153,9 +6116,9 @@ sap.ui.require([
 				bShowInfo = false;
 			}
 
-			function _assertTextSelection(oInputElement) {
+			function assertTextSelection(oInputElement) {
 				if (oInputElement instanceof window.HTMLInputElement) {
-					assertTextSelection(assert, oInputElement, true, "The text in the input element is selected");
+					assert.ok(isTextSelected(oInputElement, "The text in the input element is selected"));
 				}
 			}
 
@@ -6263,7 +6226,7 @@ sap.ui.require([
 										assert.strictEqual(document.activeElement, oElem,
 											"Row " + (iRowIndex + 1) + " (Absolute: " + (iAbsoluteRowIndex + 1)
 											+ "): Cell " + (iColumnIndex + 1) + ": Interactive element focused");
-										_assertTextSelection(document.activeElement);
+										assertTextSelection(document.activeElement);
 
 										if (iColumnIndex === iColumnCount - 1 && iActionItemCount === 0) {
 											resolve();
@@ -6467,7 +6430,7 @@ sap.ui.require([
 									assert.strictEqual(document.activeElement, oElem,
 										"Row " + (iRowIndex + 1) + " (Absolute: " + (iAbsoluteRowIndex + 1)
 										+ "): Cell " + (iColumnIndex + 1) + ": Interactive element focused");
-									_assertTextSelection(document.activeElement);
+									assertTextSelection(document.activeElement);
 
 									var bIsFirstInteractiveElementInRow =
 										TableKeyboardDelegate2._getFirstInteractiveElement(oTable.getRows()[iRowIndex])[0] === oElem;
@@ -6841,13 +6804,13 @@ sap.ui.require([
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.DOWN, false, false, true);
 		checkFocus(oInputElement, assert);
 		assert.ok(oTable._getKeyboardExtension().isInActionMode(), "Table is in Action Mode");
-		assertTextSelection(assert, oInputElement, true, "The text in the input element of type \"text\" is selected");
+		assert.ok(isTextSelected(oInputElement), "The text in the input element of type \"text\" is selected");
 
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.DOWN, false, false, true);
 		checkFocus(oTextAreaElement, assert);
 		assert.ok(oTable._getKeyboardExtension().isInActionMode(), "Table is in Action Mode");
-		assertTextSelection(assert, oTextAreaElement, false, "The text in the textarea is not selected");
-		assertTextSelection(assert, oInputElement, false, "The text in the input element of type \"text\" is not selected");
+		assert.ok(!isTextSelected(oTextAreaElement), "The text in the textarea is not selected");
+		assert.ok(!isTextSelected(oInputElement), "The text in the input element of type \"text\" is not selected");
 
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.DOWN, false, false, true);
 		// The interactive element in the cell under the textarea cell should be focused.
@@ -6857,18 +6820,18 @@ sap.ui.require([
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.UP, false, false, true);
 		checkFocus(oTextAreaElement, assert);
 		assert.ok(oTable._getKeyboardExtension().isInActionMode(), "Table is in Action Mode");
-		assertTextSelection(assert, oTextAreaElement, false, "The text in the textarea element is not selected");
+		assert.ok(!isTextSelected(oTextAreaElement), "The text in the textarea element is not selected");
 
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.UP, false, false, true);
 		checkFocus(oInputElement, assert);
 		assert.ok(oTable._getKeyboardExtension().isInActionMode(), "Table is in Action Mode");
-		assertTextSelection(assert, oInputElement, true, "The text in the input element of type \"text\" is selected");
+		assert.ok(isTextSelected(oInputElement), "The text in the input element of type \"text\" is selected");
 
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.UP, false, false, true);
 		// The interactive element in the cell above the input cell should be focused.
 		checkFocus(TableKeyboardDelegate2._getInteractiveElements(getCell(0, 1)).first(), assert);
 		assert.ok(oTable._getKeyboardExtension().isInActionMode(), "Table is in Action Mode");
-		assertTextSelection(assert, oInputElement, false, "The text in the input element of type \"text\" is not selected");
+		assert.ok(!isTextSelected(oInputElement), "The text in the input element of type \"text\" is not selected");
 	});
 
 	QUnit.test("Up & Down - Navigate between text input elements", function(assert) {
@@ -6891,12 +6854,12 @@ sap.ui.require([
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.DOWN, false, false, false);
 		checkFocus(oCellWithInput, assert);
 		assert.ok(!oTable._getKeyboardExtension().isInActionMode(), "Table is in Navigation Mode");
-		assertTextSelection(assert, oInputElement, false, "The text in the input element of type \"text\" is not selected");
+		assert.ok(!isTextSelected(oInputElement), "The text in the input element of type \"text\" is not selected");
 
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.DOWN, false, false, false);
 		checkFocus(oCellWithTextArea, assert);
 		assert.ok(!oTable._getKeyboardExtension().isInActionMode(), "Table is in Navigation Mode");
-		assertTextSelection(assert, oTextAreaElement, false, "The text in the textarea element is not selected");
+		assert.ok(!isTextSelected(oTextAreaElement), "The text in the textarea element is not selected");
 
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.DOWN, false, false, false);
 		checkFocus(getCell(3, 1), assert);
@@ -6905,12 +6868,12 @@ sap.ui.require([
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.UP, false, false, false);
 		checkFocus(oCellWithTextArea, assert);
 		assert.ok(!oTable._getKeyboardExtension().isInActionMode(), "Table is in Navigation Mode");
-		assertTextSelection(assert, oTextAreaElement, false, "The text in the textarea element is not selected");
+		assert.ok(!isTextSelected(oTextAreaElement), "The text in the textarea element is not selected");
 
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.UP, false, false, false);
 		checkFocus(oCellWithInput, assert);
 		assert.ok(!oTable._getKeyboardExtension().isInActionMode(), "Table is in Navigation Mode");
-		assertTextSelection(assert, oInputElement, false, "The text in the input element of type \"text\" is not selected");
+		assert.ok(!isTextSelected(oInputElement), "The text in the input element of type \"text\" is not selected");
 
 		qutils.triggerKeydown(document.activeElement, Key.Arrow.UP, false, false, false);
 		checkFocus(getCell(0, 1), assert);

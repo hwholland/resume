@@ -59,9 +59,6 @@ function(
 		beforeEach : function(assert) {
 			var done = assert.async();
 
-			// simulate that one overlay is selected
-			this.oNumberOfOverlaysStub = sandbox.stub(RemovePlugin.prototype, "getNumberOfSelectedOverlays").returns(1);
-
 			var oChangeRegistry = sap.ui.fl.registry.ChangeRegistry.getInstance();
 			oChangeRegistry.registerControlsForChanges({
 				"sap.m.Button" : {
@@ -100,8 +97,8 @@ function(
 		},
 		afterEach : function(assert) {
 			sandbox.restore();
-			this.oDesignTime.destroy();
 			this.oVerticalLayout.destroy();
+			this.oDesignTime.destroy();
 		}
 	});
 
@@ -162,23 +159,6 @@ function(
 		this.oRemovePlugin.registerElementOverlay(this.oButtonOverlay);
 
 		assert.strictEqual(this.oRemovePlugin.isEnabled(this.oButtonOverlay), false, "... then isEnabled returns false");
-	});
-
-	QUnit.test("when multiple overlays have remove action designTime metadata, but all visible elements in an aggregation are selected", function(assert) {
-		this.oButtonOverlay.setDesignTimeMetadata({
-			actions : {
-				remove : {
-					changeType: "hideControl"
-				}
-			}
-		});
-
-		this.oRemovePlugin.deregisterElementOverlay(this.oButtonOverlay);
-		this.oRemovePlugin.registerElementOverlay(this.oButtonOverlay);
-
-		this.oNumberOfOverlaysStub.restore();
-		sandbox.stub(RemovePlugin.prototype, "getNumberOfSelectedOverlays").returns(2);
-		assert.notOk(this.oRemovePlugin.isEnabled(this.oButtonOverlay), "... then isEnabled returns false");
 	});
 
 	QUnit.test("when an overlay has remove action designTime metadata, but the control has no parent", function(assert) {

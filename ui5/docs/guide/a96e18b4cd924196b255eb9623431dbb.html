@@ -6,8 +6,8 @@
 <meta name="abstract" content="In this step, we improve the responsiveness of our app. OpenUI5 applications can be run on phone, tablet, and desktop devices and we can configure the application to make best use of the screen estate for each scenario. Fortunately, OpenUI5 controls like the sap.m.Table already deliver a lot of features that we can use."/>
 <meta name="description" content="In this step, we improve the responsiveness of our app. OpenUI5 applications can be run on phone, tablet, and desktop devices and we can configure the application to make best use of the screen estate for each scenario. Fortunately, OpenUI5 controls like the sap.m.Table already deliver a lot of features that we can use."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=105062631749541"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=105062631749541"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=26183204161591866"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=26183204161591866"/>
 <title>Step 35: Responsiveness</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -30,7 +30,7 @@
 			<div class="fig fignone" id="loioa96e18b4cd924196b255eb9623431dbb__fig_r1j_pst_mr"><div class="figcontainer">
 				
 				<img class="image" id="loioa96e18b4cd924196b255eb9623431dbb__image_uqk_5ns_yr" src="loio62a5405e63324cb4928e587f518ae13f_HiRes.png"/>
-			<div class="figcap">A responsive table is hiding some of the columns on small devices</div></div></div>
+			<div class="figcap">Figure 1: A responsive table is hiding some of the columns on small devices</div></div></div>
 
 		</div></div>
 
@@ -228,7 +228,18 @@
 
 		<div class="section"><div class="section_title">webapp/i18n/i18n.properties</div><div type="webapp/i18n/i18n.properties">
 			
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-prefs">...
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-prefs"># App Descriptor
+appTitle=Hello World
+appDescription=A simple walkthrough app that explains the most important concepts of <span class="ph"><span class="ph pname">OpenUI5</span></span>
+
+# Hello Panel
+showHelloButtonText=Say Hello
+helloMsg=Hello {0}
+homePageTitle=Walkthrough
+helloPanelTitle=Hello World
+openDialogButtonText=Say Hello With Dialog
+dialogCloseButtonText=Ok
+
 # Invoice List
 invoiceListTitle=Invoices
 invoiceStatusA=New
@@ -241,7 +252,14 @@ columnStatus=Status
 columnPrice=Price</span>
 
 # Detail Page
-...</pre></div>
+detailPageTitle=Walkthrough - Details
+ratingConfirmation=You have rated this product with {0} stars
+
+# Product Rating
+productRatingLabelInitial=Please rate this product
+productRatingLabelIndicator=Your rating: {0} out of {1}
+productRatingLabelFinal=Thank you!
+productRatingButton=Rate</pre></div>
 
 			<p class="p">We add the column names and the attribute titles to our <samp class="ph codeph">i18n</samp> file.</p>
 

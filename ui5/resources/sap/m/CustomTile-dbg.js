@@ -1,12 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.CustomTile.
-sap.ui.define(['./Tile', './library', './CustomTileRenderer'],
-	function(Tile, library, CustomTileRenderer) {
+sap.ui.define(['./Tile', './library'],
+	function(Tile, library) {
 	"use strict";
 
 
@@ -21,7 +21,7 @@ sap.ui.define(['./Tile', './library', './CustomTileRenderer'],
 	 * Use the CustomTile control to display application specific content in the Tile control.
 	 * The tile width is 8.5em and height is 10em.
 	 * @extends sap.m.Tile
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -33,7 +33,6 @@ sap.ui.define(['./Tile', './library', './CustomTileRenderer'],
 	var CustomTile = Tile.extend("sap.m.CustomTile", /** @lends sap.m.CustomTile.prototype */ { metadata : {
 
 		library : "sap.m",
-		designtime: "sap/m/designtime/CustomTile.designtime",
 		defaultAggregation : "content",
 		aggregations : {
 
@@ -41,7 +40,8 @@ sap.ui.define(['./Tile', './library', './CustomTileRenderer'],
 			 * Defines the content of the CustomTile.
 			 */
 			content : {type : "sap.ui.core.Control", multiple : false}
-		}
+		},
+		designTime: true
 	}});
 
 

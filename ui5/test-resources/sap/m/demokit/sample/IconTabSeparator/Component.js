@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.IconTabSeparator.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.IconTabSeparator.IconTab",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.IconTabSeparator.IconTab",
 			dependencies : {
 				libs : [
 					"sap.m",

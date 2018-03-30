@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
@@ -15,9 +15,15 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.module("sap.ui.model.odata._AnnotationHelperBasics", {
 		beforeEach : function () {
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oSandbox = sinon.sandbox.create();
+			this.oLogMock = this.oSandbox.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
+		},
+
+		afterEach : function () {
+			// I would consider this an API, see https://github.com/cjohansen/Sinon.JS/issues/614
+			this.oSandbox.verifyAndRestore();
 		}
 	});
 
@@ -94,42 +100,40 @@ sap.ui.require([
 		var aArray = [],
 			oObject = {},
 			sString = "foo",
-			aTests = [aArray, oObject, sString, undefined, null, true, 0, NaN, Function],
-			oBasicsMock = this.mock(Basics);
+			aTests = [aArray, oObject, sString, undefined, null, true, 0, NaN, Function];
 
-		oBasicsMock.expects("error").never();
 		[
 			{type : "array", ok : aArray},
 			{type : "object", ok : oObject},
 			{type : "string", ok : sString}
 		].forEach(function (oFixture) {
-			aTests.forEach(function (vTest) {
+			aTests.forEach(sinon.test(function (vTest) {
 				var oPathValue = {
 						path : "/my/path",
 						value : vTest
 					};
 
-				if (vTest !== oFixture.ok) {
-					oBasicsMock.expects("error")
+				if (vTest === oFixture.ok) {
+					this.mock(Basics).expects("error").never();
+				} else {
+					this.mock(Basics).expects("error")
 						.withExactArgs(sinon.match.same(oPathValue), "Expected " + oFixture.type);
 				}
 
 				Basics.expectType(oPathValue, oFixture.type);
 
 				assert.ok(true, "type=" + oFixture.type + ", test=" + Basics.toErrorString(vTest));
-			});
+			}));
 		});
 	});
 
 	//*********************************************************************************************
 	[false, true].forEach(function (bTestProperty) {
 		QUnit.test("descend, bTestProperty=" + bTestProperty, function (assert) {
-			var oBasicsMock = this.mock(Basics);
-
 			[
 				{type : "object", property : "p", value : {p : "foo"}},
 				{type : "array", property : 0, value : ["foo"]}
-			].forEach(function (oFixture) {
+			].forEach(sinon.test(function (oFixture) {
 				var oStart = {
 						asExpression : "asExpression",
 						foo : "bar",
@@ -146,18 +150,19 @@ sap.ui.require([
 						value : "foo",
 						withType : "withType"
 					},
-					oResult;
+					oResult,
+					oBasics = this.mock(Basics);
 
-				oBasicsMock.expects("expectType")
+				oBasics.expects("expectType")
 					.withExactArgs(sinon.match.same(oStart), oFixture.type);
-				oBasicsMock.expects("expectType").exactly(bTestProperty ? 1 : 0)
+				oBasics.expects("expectType").exactly(bTestProperty ? 1 : 0)
 					.withExactArgs(oEnd, "string");
 
 				oResult = bTestProperty ?
 					Basics.descend(oStart, oFixture.property, "string") :
 					Basics.descend(oStart, oFixture.property);
 				assert.deepEqual(oResult, oEnd, oFixture.type);
-			});
+			}));
 		});
 	});
 

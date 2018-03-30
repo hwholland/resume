@@ -1,18 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.commons.Menu.
-sap.ui.define([
-	'jquery.sap.global',
-	'./MenuItemBase',
-	'./library',
-	'sap/ui/unified/Menu',
-	"./MenuRenderer"
-],
-	function(jQuery, MenuItemBase, library, Menu1, MenuRenderer) {
+sap.ui.define(['jquery.sap.global', './MenuItemBase', './library', 'sap/ui/unified/Menu'],
+	function(jQuery, MenuItemBase, library, Menu1) {
 	"use strict";
 
 
@@ -29,12 +23,13 @@ sap.ui.define([
 	 * @extends sap.ui.unified.Menu
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @since 1.0.0
 	 *
 	 * @constructor
 	 * @public
-	 * @deprecated as of version 1.21.0, replaced by {@link sap.ui.unified.Menu}
+	 * @deprecated Since version 1.21.0.
+	 * Please use the control sap.ui.unified.Menu of the library sap.ui.unified instead.
 	 * @alias sap.ui.commons.Menu
 	 * @ui5-metamodel This control/element will also be described in the UI5 (legacy) design time meta model
 	 */

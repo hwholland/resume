@@ -26,9 +26,7 @@ be closed.</documentation>
         </property>
         <property group="Behavior" defaultValue="true" type="sap.ui.core/boolean" name="multiSelect">
             <documentation>Specifies whether multiple or single selection is used.</documentation>
-            <deprecation since="1.20.0">replaced by &lt;code&gt;setMode&lt;/code&gt; method.
-&lt;code&gt;FacetFilterList&lt;/code&gt; overrides the &lt;code&gt;setMode&lt;/code&gt; method to restrict the possible modes to
-&lt;code&gt;MultiSelect&lt;/code&gt; and &lt;code&gt;SingleSelectMaster&lt;/code&gt;. All other modes are ignored and will not be set.</deprecation>
+            <deprecation since="1.20.0">This property is no longer supported. Use the setMode method instead. FacetFilterList overrides the setMode method to restrict the possible modes to MultiSelect and SingleSelectMaster. All other modes are ignored and will not be set.</deprecation>
         </property>
         <property group="Behavior" defaultValue="true" type="sap.ui.core/boolean" name="active">
             <documentation>Indicates that the list is displayed as a button when the FacetFilter type is set to &lt;code&gt;Simple&lt;/code&gt;.</documentation>
@@ -79,7 +77,7 @@ be closed.</documentation>
             <documentation>Returns the keys of the selected elements as an associative array.
 An empty object is returned if no items are selected.</documentation>
         </method>
-        <method since="1.20.3" type="sap.ui.core/void" name="setSelectedKeys">
+        <method since="1.20.3" type="any" name="setSelectedKeys">
             <documentation>Used to pre-select FacetFilterItems, such as when restoring FacetFilterList selections from a variant.
 Keys are cached separately from the actual FacetFilterItems so that they remain even when the physical items are removed by filtering or sorting.
 If aKeys is &lt;code&gt;undefined&lt;/code&gt;, &lt;code&gt;null&lt;/code&gt;, or {} (empty object) then all keys are deleted.
@@ -90,7 +88,7 @@ After this method completes, only those items with matching keys will be selecte
                 </parameter>
             </parameters>
         </method>
-        <method since="1.20.4" type="sap.ui.core/void" name="removeSelectedKey">
+        <method since="1.20.4" type="any" name="removeSelectedKey">
             <documentation>Removes the specified key from the selected keys cache and deselects the item.</documentation>
             <parameters>
                 <parameter type="sap.ui.core/string" name="key">
@@ -101,7 +99,7 @@ After this method completes, only those items with matching keys will be selecte
                 </parameter>
             </parameters>
         </method>
-        <method since="1.20.4" type="sap.ui.core/void" name="removeSelectedKeys">
+        <method since="1.20.4" type="any" name="removeSelectedKeys">
             <documentation>Removes all selected keys from the selected keys cache and deselects all items.</documentation>
         </method>
     </methods>

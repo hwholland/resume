@@ -1,0 +1,61 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Example of an Input control with changed rendering."/>
+<meta name="description" content="Example of an Input control with changed rendering."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=1290070648422863"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=1290070648422863"/>
+<title>Extending Input Rendering</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiobcee26a4801748f39bf5698d83d903aa">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Extending Input Rendering</h1>
+
+	
+	<div class="body"><p class="shortdesc">Example of an <samp class="ph codeph">Input</samp> control with changed rendering.</p>
+
+		<p class="p">The following code snippet creates a control type that inherits from
+				<samp class="ph codeph">sap.m.Input</samp>. The new control has all features from the
+				<samp class="ph codeph">Input</samp> control, but the rendering is changed to be highlighted with
+			yellow background.</p>
+
+		<p class="p">The control API and the <samp class="ph codeph">render</samp> method can be inherited as it is and the
+				<samp class="ph codeph">renderInnerAttributes</samp> method of the <samp class="ph codeph">InputRenderer</samp>
+			is overwritten: </p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">  
+sap.m.Input.extend("HighlightInput", { // call the new Control type "HighlightInput" 
+                                                      // and let it inherit from sap.m.Input
+     
+
+      renderer: {
+          // note that no render() function is given here. The Input's render() function is used. 
+          // But one function is overwritten:
+          
+          renderInnerAttributes : function(oRm, oInput) {
+              oRm.addStyle('background-color', '#ffff00');  // this change could also be done with plain CSS. 
+                                                            // But you get the idea...
+          }
+      }
+  });</pre></div>
+
+		<p class="p">The <samp class="ph codeph">HighlightInput</samp> control can be used in an application in the same way
+			as <samp class="ph codeph">Input</samp>:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+var myControl = new HighlightInput({value:"Highlighted editing"});
+myControl.placeAt("content");</pre></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

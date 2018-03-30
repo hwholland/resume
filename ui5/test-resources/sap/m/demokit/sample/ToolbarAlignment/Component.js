@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ToolbarAlignment.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.ToolbarAlignment.Toolbar",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.ToolbarAlignment.Toolbar",
 			dependencies : {
 				libs : [
 					"sap.m"

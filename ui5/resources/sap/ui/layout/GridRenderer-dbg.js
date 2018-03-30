@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.define(["sap/ui/Device", "sap/ui/layout/library"],
@@ -15,7 +15,7 @@ sap.ui.define(["sap/ui/Device", "sap/ui/layout/library"],
 	/**
 	 * @author SAP SE
 	 * @version
-	 * 1.54.2
+	 * 1.52.5
 	 * @namespace
 	 */
 	var GridRenderer = {};
@@ -125,10 +125,6 @@ sap.ui.define(["sap/ui/Device", "sap/ui/layout/library"],
 			oRm.write("<div");
 			var oLay = oControl._getLayoutDataForControl(aItems[i]);
 			var bCellSpanXLChanged = false;
-
-			if (!aItems[i].getVisible()) {
-				oRm.addClass("sapUiRespGridSpanInvisible");
-			}
 
 			if (oLay) {
 

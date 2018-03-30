@@ -1,30 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.Link.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/InvisibleText',
-	'sap/ui/core/EnabledPropagator',
-	'sap/ui/core/library',
-	'sap/ui/Device',
-	'./LinkRenderer'
-],
-function(
-	jQuery,
-	library,
-	Control,
-	InvisibleText,
-	EnabledPropagator,
-	coreLibrary,
-	Device,
-	LinkRenderer
-	) {
+sap.ui.define(['./library', 'sap/ui/core/Control', 'sap/ui/core/InvisibleText', 'sap/ui/core/EnabledPropagator', 'sap/ui/core/library', 'sap/ui/Device'],
+	function(library, Control, InvisibleText, EnabledPropagator, coreLibrary, Device) {
 	"use strict";
 
 
@@ -71,7 +53,7 @@ function(
 	 * @implements sap.ui.core.IShrinkable, sap.ui.core.IFormContent
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -86,7 +68,6 @@ function(
 			"sap.ui.core.IFormContent"
 		],
 		library : "sap.m",
-		designtime: "sap/m/designtime/Link.designtime",
 		properties : {
 
 			/**
@@ -119,18 +100,6 @@ function(
 			 * this should not be set, but instead an event handler for the <code>press</code> event should be registered.
 			 */
 			href : {type : "sap.ui.core.URI", group : "Data", defaultValue : null},
-
-			/**
-			 * Defines whether the link target URI should be validated.
-			 *
-			 * If validation fails, the value of the <code>href</code> property will still be set, but will not be applied to the DOM.
-			 *
-			 * <b>Note:</b> Additional whitelisting of URLs is allowed through
-			 * {@link jQuery.sap/methods/jQuery.sap.addUrlWhitelist jQuery.sap.addUrlWhitelist}.
-			 *
-			 * @since 1.54.0
-			 */
-			validateUrl : {type : "boolean", group : "Data", defaultValue : false},
 
 			/**
 			 * Determines whether the link text is allowed to wrap when there is no sufficient space.
@@ -179,7 +148,8 @@ function(
 			 * Event is fired when the user triggers the link control.
 			 */
 			press : {allowPreventDefault : true}
-		}
+		},
+		designTime: true
 	}});
 
 
@@ -196,41 +166,31 @@ function(
 	/**
 	 * Triggers link activation when space key is pressed on the focused control.
 	 *
-	 * @param {jQuery.Event} oEvent The SPACE keyboard key event object
+	 * @param {jQuery.Event} oEvent
 	 */
 	Link.prototype.onsapspace = function(oEvent) {
-		if (this.getEnabled() || this.getHref()) {
-			// mark the event for components that needs to know if the event was handled by the link
+		this._handlePress(oEvent); // this calls any JS event handlers
+		// _handlePress() checks the return value of the event handler and prevents default if required or of the Link is disabled
+		if (this.getHref() && !oEvent.isDefaultPrevented()) {
+			// Normal browser link, the browser does the job. According to the keyboard spec, Space should do the same as Enter/Click.
+			// To make the browser REALLY do the same (history, referrer, frames, target,...), create a new "click" event and let the browser "do the needful".
+
+			// first disarm the Space key event
+			oEvent.preventDefault(); // prevent any scrolling which the browser might do because from its perspective the Link does not handle the "space" key
 			oEvent.setMarked();
-			oEvent.preventDefault();
-		}
-	};
 
-	Link.prototype.onkeyup = function (oEvent) {
-		if (oEvent.which === jQuery.sap.KeyCodes.SPACE) {
-			this._handlePress(oEvent);
-
-			if (this.getHref() && !oEvent.isDefaultPrevented()) {
-				// Normal browser link, the browser does the job. According to the keyboard spec, space should fire press event on keyup.
-				// To make the browser REALLY do the same (history, referrer, frames, target,...), create a new "click" event and let the browser "do the needful".
-
-				// first disarm the Space key event
-				oEvent.preventDefault(); // prevent any scrolling which the browser might do because from its perspective the Link does not handle the "space" key
-				oEvent.setMarked();
-
-				// then create the click event
-				var oClickEvent = document.createEvent('MouseEvents');
-				oClickEvent.initEvent('click' /* event type */, false, true); // non-bubbling, cancelable
-				this.getDomRef().dispatchEvent(oClickEvent);
-			}
+			// then create the click event
+			var oClickEvent = document.createEvent('MouseEvents');
+			oClickEvent.initEvent('click' /* event type */, false, true); // non-bubbling, cancelable
+			this.getDomRef().dispatchEvent(oClickEvent);
 		}
 	};
 
 
 	/**
-	 * Handler for the <code>press</code> event of the link.
+	 * Handler for the "press" event of the link.
 	 *
-	 * @param {jQuery.Event} oEvent The <code>press</code> event object
+	 * @param {jQuery.Event} oEvent
 	 * @private
 	 */
 	Link.prototype._handlePress = function(oEvent) {
@@ -264,7 +224,7 @@ function(
 	/**
 	 * Handles the touch event on mobile devices.
 	 *
-	 * @param {jQuery.Event} oEvent The <code>touchstart</code> event object
+	 * @param {jQuery.Event} oEvent
 	 */
 	Link.prototype.ontouchstart = function(oEvent) {
 		if (this.getEnabled()) {
@@ -294,16 +254,7 @@ function(
 	};
 
 	Link.prototype.setHref = function(sUri){
-		var bIsValid = this._isHrefValid(sUri);
-
 		this.setProperty("href", sUri, true);
-
-		if (!bIsValid) {
-			this.$().removeAttr("href");
-			jQuery.sap.log.warning(this + ": The href tag of the link was not set since it's not valid.");
-			return this;
-		}
-
 		if (this.getEnabled()) {
 			sUri = this.getProperty("href");
 			if (!sUri) {
@@ -312,7 +263,6 @@ function(
 				this.$().attr("href", sUri);
 			}
 		}
-
 		return this;
 	};
 
@@ -331,7 +281,7 @@ function(
 		}
 
 		if (bSubtle && !Link.prototype._sAriaLinkSubtleId) {
-			Link.prototype._sAriaLinkSubtleId = InvisibleText.getStaticId("sap.m", "LINK_SUBTLE");
+			Link.prototype._sAriaLinkSubtleId = Link._getARIAInvisibleTextId("LINK_SUBTLE");
 		}
 
 		return this;
@@ -352,7 +302,7 @@ function(
 		}
 
 		if (bEmphasized && !Link.prototype._sAriaLinkEmphasizedId) {
-			Link.prototype._sAriaLinkEmphasizedId = InvisibleText.getStaticId("sap.m", "LINK_EMPHASIZED");
+			Link.prototype._sAriaLinkEmphasizedId = Link._getARIAInvisibleTextId("LINK_EMPHASIZED");
 		}
 
 		return this;
@@ -412,14 +362,26 @@ function(
 	/*************************************** Static members ******************************************/
 
 	/**
-	 * Checks if the given sUri is valid depending on the validateUrl property
+	 * Retrieves the resource bundle for the sap.m library
 	 *
-	 * @param {String} sUri
-	 * @returns {Boolean}
-	 * @private
+	 * @returns {Object} the resource bundle object
 	 */
-	Link.prototype._isHrefValid = function (sUri) {
-		return this.getValidateUrl() ? jQuery.sap.validateUrl(sUri) : true;
+	Link._getResourceBundle = function () {
+		return sap.ui.getCore().getLibraryResourceBundle("sap.m");
+	};
+
+	/**
+	 * Creates ARIA sap.ui.core.InvisibleText for the given translation text
+	 *
+	 * @param {String} sResourceBundleKey the resource key in the translation bundle
+	 * @returns {String} the InvisibleText control ID
+	 */
+	Link._getARIAInvisibleTextId = function (sResourceBundleKey) {
+		var oRb = Link._getResourceBundle();
+
+		return new InvisibleText({
+			text: oRb.getText(sResourceBundleKey)
+		}).toStatic().getId();
 	};
 
 	/**
@@ -459,11 +421,8 @@ function(
 	};
 
 	/**
-	 * Returns the <code>sap.m.Link</code>  accessibility information.
-	 *
 	 * @see sap.ui.core.Control#getAccessibilityInfo
 	 * @protected
-	 * @returns {Object} The <code>sap.m.Link</code>  accessibility information
 	 */
 	Link.prototype.getAccessibilityInfo = function() {
 		return {

@@ -51,7 +51,6 @@ sap.ui.define([
 				filterOperator: "Contains",
 				filterValue: "",
 				useLocalMetadata: true,
-				restoreTreeStateAfterChange: true,
 				hierarchyLevelFor: "LEVEL",
 				hierarchyParentNodeFor: "PARENT_NODE",
 				hierarchyNodeFor: "HIERARCHY_NODE",
@@ -171,8 +170,6 @@ sap.ui.define([
 
 			this.aVisibleRow.push(oVisibleRow);
 
-			var bRestoreTreeStateAfterChange = oView.byId("restoreTreeStateAfterChange").getSelected();
-
 			/**
 			 * Clear the Table and rebind it
 			 */
@@ -222,7 +219,7 @@ sap.ui.define([
 			this.oODataModel.attachMessageChange(function(oEvent) {
 				var counter = oEvent.getParameter("newMessages").length;
 				if (counter > 0) {
-					this.byId("btn_messagePopover").setText(counter);
+					this.getView().byId("btn_messagePopover").setText(counter);
 				}
 			}.bind(this));
 
@@ -251,7 +248,7 @@ sap.ui.define([
 						hierarchyDrillStateFor: sHierarchyDrillStateFor,
 						hierarchyNodeDescendantCountFor: sHierarchyDescendantCountFor
 					} : undefined,
-					restoreTreeStateAfterChange: bRestoreTreeStateAfterChange
+					restoreTreeStateAfterChange: true
 				}
 			});
 
@@ -398,7 +395,7 @@ sap.ui.define([
 		 * Create new node
 		 */
 		onCreate: function() {
-			var oTable = this.byId("tableOData");
+			var oTable = this.getView().byId("tableOData");
 			var iSelectedIndex = oTable.getSelectedIndex();
 			var oViewModel = this.getView().getModel();
 
@@ -494,7 +491,7 @@ sap.ui.define([
 		 * Paste logic
 		 */
 		onPaste: function () {
-			var oTable = this.byId("tableOData");
+			var oTable = this.getView().byId("tableOData");
 			var iSelectedIndex = oTable.getSelectedIndex();
 			if (this._oClipboardModel && iSelectedIndex != -1) {
 				this.openClipboard();

@@ -1,0 +1,53 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Server security comprises topics such as cross-origin resource sharing and resource handlers."/>
+<meta name="description" content="Server security comprises topics such as cross-origin resource sharing and resource handlers."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=07697212182591318"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=07697212182591318"/>
+<title>Server Security</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio91f3cac16f4d1014b6dd926db0e91070">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Server Security</h1>
+
+	<div class="body"><p class="shortdesc">Server security comprises topics such as cross-origin resource sharing and resource
+		handlers.</p>
+<p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> contains only a small server-side part to support loading of resources by the client
+			framework. The use of the resource handlers is not mandatory, <span class="ph"><span class="ph pname">OpenUI5</span></span> also offers a
+			static version of the libraries, which can be used with an arbitrary HTTP server.</p>
+<div class="section" id="loio91f3cac16f4d1014b6dd926db0e91070__section_57D82410C1E94F18919EB276AB273998"><div class="section_title">Cross-Origin Resource Sharing</div><div type="Cross-Origin Resource Sharing"> 
+		 
+		<p class="p">Usually the XMLHttpRequest for security reasons does only allow accessing resources from the
+				same domain as the originating document. As there are a lot of web-based services
+				available today, starting with RSS or Atom feeds, WebServices or OData services,
+				there is a need to be able to also access data sources from different domains within
+				the browser, which was addressed with the CORS (Cross-Origin Resource Sharing)
+				standard. This allows the server to set special headers on their responses, which
+				are telling the XMLHttpRequest object, whether it is allowed to process the
+				requested data or not. </p>
+ 
+		<p class="p">This CORS capability also plays an important role
+			in <span class="ph"><span class="ph pname">OpenUI5</span></span> based applications. In case the application itself and the data
+		  visualized are coming from different servers, the CORS header has to be
+		  configured correctly on the data providing server, to allow the application
+		  server domain to access the data. 
+		</p>
+ 
+				<p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> is using CORS header on its CDN based
+		  library to be able to load additional scripts, styles, and resources from the
+		  CDN server. 
+		</p>
+ 
+	 </div></div>
+</div>
+</div></div>
+
+</body>
+</html>

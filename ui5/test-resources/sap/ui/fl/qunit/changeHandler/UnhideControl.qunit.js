@@ -67,7 +67,7 @@ function(
 
 		assert.ok(this.oChangeHandler.applyChange(this.oChange, this.oXmlButton, {modifier: XmlTreeModifier}));
 
-		assert.strictEqual(this.oXmlButton.getAttribute("visible"), null, "xml button node has no longer the visible attribute");
+		assert.equal(this.oXmlButton.getAttribute("visible"), null, "xml button node has no longer the visible attribute");
 	});
 
 	QUnit.test('applyChange throws an error if the change is not applyable', function(assert) {

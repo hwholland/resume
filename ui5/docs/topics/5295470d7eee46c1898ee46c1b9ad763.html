@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -154,31 +154,23 @@
                                     				
                                     				<img xmlns="" class="inline  " id="loio5295470d7eee46c1898ee46c1b9ad763__image_tzj_zf2_yr" src="loiob59b3ed9928549d4bf7e4d0f9f5b5dc8_HiRes.png">
                                     			
-                                 </div><span class="figcap">A search field is displayed above the list</span></div>
+                                 </div><span class="figcap"><span class="enumeration fig-enumeration">Figure 32: </span>A search field is displayed above the list</span></div>
                               
                               		
                            </section>
                         </div>
                         
                         		
-                        <div class="section" id="loio5295470d7eee46c1898ee46c1b9ad763__section_qx5_wch_ycb">
-                           <section class="section" type="Coding">
-                              <h2 class="section_title" style="font-size: 1.15em;">Coding</h2>
-                              			
-                              			
-                              <p class="p">You can view and download all files <span class="ph">at <a class="xref" href="../../#/sample/sap.m.tutorial.walkthrough.24/preview" target="_top" alt="#/sample/sap.m.tutorial.walkthrough.24/preview" title="#/sample/sap.m.tutorial.walkthrough.24/preview">Walkthrough - Step 24</a></span>.
-                              </p>
-                              
-                              		
-                           </section>
-                        </div>
-                        
-                        		
-                        <div class="section" id="loio5295470d7eee46c1898ee46c1b9ad763__section_rx5_wch_ycb">
-                           <section class="section" type="webapp/view/InvoiceList.view.xml">
-                              <h2 class="section_title" style="font-size: 1.15em;">webapp/view/InvoiceList.view.xml</h2>
-                              			
-                              			<pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+                        <div class="section">
+                           			
+                           <div class="section_title">Coding</div>
+                           			
+                           <p class="p">You can view and download all files <span class="ph">at <a class="xref" href="../../#/sample/sap.m.tutorial.walkthrough.24/preview" target="_top" alt="#/sample/sap.m.tutorial.walkthrough.24/preview" title="#/sample/sap.m.tutorial.walkthrough.24/preview">Walkthrough - Step 24</a></span>.
+                           </p>
+                           
+                           			
+                           <div class="section_title">webapp/view/InvoiceList.view.xml</div>
+                           			<pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
    controllerName=&quot;sap.ui.demo.walkthrough.controller.InvoiceList&quot;
    xmlns=&quot;sap.m&quot;
    xmlns:mvc=&quot;sap.ui.core.mvc&quot;&gt;
@@ -201,26 +193,24 @@
       &lt;/items&gt;
    &lt;/List&gt;
 &lt;/mvc:View&gt;</pre>
-                              
-                              			<p class="p">The view is extended by a search control that we add to the list of invoices. We also
-                                 				need to specify an ID <samp class="ph codeph">invoiceList</samp> for the list control to be able
-                                 				to identify the list from the event handler function
-                                 					<samp class="ph codeph">onFilterInvoices</samp> that we add to the search field. In addition,
-                                 				the search field is part of the list header and therefore, each change on the list
-                                 				binding will trigger a rerendering of the whole list, including the search
-                                 				field.
-                              </p>
-                              
-                              			
-                              <p class="p">The <samp class="ph codeph">headerToolbar</samp> aggregation replaces the simple
-                                 					<samp class="ph codeph">title</samp> property that we used before for our list header. A
-                                 				toolbar control is way more flexible and can be adjusted as you like. We are now
-                                 				displaying the title on the left side with a <samp class="ph codeph">sap.m.Title</samp> control, a
-                                 				spacer, and the <samp class="ph codeph">sap.m.SearchField</samp> on the right.
-                              </p>
-                              
-                              		
-                           </section>
+                           
+                           			<p class="p">The view is extended by a search control that we add to the list of invoices. We also need to
+                              				specify an ID <samp class="ph codeph">invoiceList</samp> for the list control to be able to
+                              				identify the list from the event handler function <samp class="ph codeph">onFilterInvoices</samp>
+                              				that we add to the search field. In addition, the search field is part of the list
+                              				header and therefore, each change on the list binding will trigger a rerendering of
+                              				the whole list, including the search field.
+                           </p>
+                           
+                           			
+                           <p class="p">The <samp class="ph codeph">headerToolbar</samp> aggregation replaces the simple
+                              					<samp class="ph codeph">title</samp> property that we used before for our list header. A
+                              				toolbar control is way more flexible and can be adjusted as you like. We are now
+                              				displaying the title on the left side with a <samp class="ph codeph">sap.m.Title</samp> control, a
+                              				spacer, and the <samp class="ph codeph">sap.m.SearchField</samp> on the right.
+                           </p>
+                           
+                           		
                         </div>
                         
                         		

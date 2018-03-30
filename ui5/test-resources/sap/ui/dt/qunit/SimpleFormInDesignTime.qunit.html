@@ -95,16 +95,10 @@
 			});
 
 			QUnit.test("when the content is added to a SimpleForm ...", function(assert) {
-				var fnDone = assert.async();
 				this.oButton = new sap.m.Button("button1", {text : "Button"});
 				this.oSimpleForm.addContent(this.oButton);
-
-				this.oDesignTime.attachEventOnce("synced", function() {
-					var oOverlayForButton = OverlayRegistry.getOverlay(this.oButton);
-					assert.ok(oOverlayForButton, "overlay for button exists");
-					fnDone();
-				}, this);
-
+				var oOverlayForButton = OverlayRegistry.getOverlay(this.oButton);
+				assert.ok(oOverlayForButton, "overlay for button exists");
 			});
 
 			// __bSapUiDtSupressOverlayDestroy test

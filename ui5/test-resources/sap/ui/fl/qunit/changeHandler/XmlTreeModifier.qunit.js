@@ -19,7 +19,6 @@ function(
 
 			this.HBOX_ID = "hboxId";
 			this.TEXT_ID = "textId";
-			this.CHANGE_HANDLER_PATH = "path/to/changehandler/definition";
 
 			jQuery.sap.registerModulePath("testComponent", "../testComponent");
 
@@ -71,7 +70,7 @@ function(
 						'<Button text="Button2"></Button>' +
 						'<Button text="Button3"></Button>' +
 					'</VBox>' +
-					'<f:DynamicPageTitle id="title2" fl:flexibility="' + this.CHANGE_HANDLER_PATH + '">' +
+					'<f:DynamicPageTitle id="title2">' +
 						'<actions>' +
 							'<Button text="Action1"></Button>' +
 							'<Button text="Action2"></Button>' +
@@ -246,22 +245,6 @@ function(
 		assert.strictEqual(XmlTreeModifier.getVisible(oInvisibleLabel), false, "invisible in xml");
 	});
 
-	QUnit.test("setVisible", function (assert) {
-		var oVBox = XmlTreeModifier._children(this.oXmlView)[0];
-		var aChildNodes = XmlTreeModifier._children(oVBox);
-
-		XmlTreeModifier.setVisible(oVBox, false);
-		assert.strictEqual(oVBox.getAttribute("visible"), "false", "visible attribute can be added");
-
-		var oVisibleLabel = aChildNodes[1];
-		XmlTreeModifier.setVisible(oVisibleLabel, false);
-		assert.strictEqual(oVisibleLabel.getAttribute("visible"), "false", "visible attribute can be changed");
-
-		var oInvisibleLabel = aChildNodes[2];
-		XmlTreeModifier.setVisible(oInvisibleLabel, true);
-		assert.strictEqual(oInvisibleLabel.getAttribute("visible"), null, "visible=true means not having it in xml as some controls behave differently if visible property is provided");
-	});
-
 	QUnit.test("setStash", function (assert) {
 		var oVBox = XmlTreeModifier._children(this.oXmlView)[7];
 		var aChildNodes = XmlTreeModifier._children(oVBox);
@@ -340,7 +323,7 @@ function(
 		assert.strictEqual(XmlTreeModifier.findIndexInParentAggregation(oText), 1, "The function returned the correct index.");
 	});
 
-	QUnit.test("getParentAggregationName returns the correct name: ", function (assert) {
+	QUnit.test("_getParentAggregationName returns the correct name: ", function (assert) {
 		var oVBox = XmlTreeModifier._children(this.oXmlView)[0],
 			oLabel = XmlTreeModifier._children(oVBox)[1];
 
@@ -352,16 +335,11 @@ function(
 			oButton = oDynamicPageTitle.childNodes[0].childNodes[0],
 			oText2 = oDynamicPageTitle.childNodes[1].childNodes[0];
 
-		assert.strictEqual(XmlTreeModifier.getParentAggregationName(oLabel, oVBox), "items", "The function returned the correct name - 'items'.");
-		assert.strictEqual(XmlTreeModifier.getParentAggregationName(oTooltip, oHBox), "tooltip", "The function returned the correct name - 'tooltip'.");
-		assert.strictEqual(XmlTreeModifier.getParentAggregationName(oText, oHBox), "items", "The function returned the correct name - 'items'.");
-		assert.strictEqual(XmlTreeModifier.getParentAggregationName(oButton, oDynamicPageTitle), "actions", "The function returned the correct name - 'actions'.");
-		assert.strictEqual(XmlTreeModifier.getParentAggregationName(oText2, oDynamicPageTitle), "snappedContent", "The function returned the correct name - 'snappedContent'.");
-	});
-
-	QUnit.test("when getChangeHandlerModule is called for control instance on which changeHandler is defined", function (assert) {
-		var oDynamicPageTitle = XmlTreeModifier._children(this.oXmlView)[6];
-		assert.strictEqual(XmlTreeModifier.getChangeHandlerModulePath(oDynamicPageTitle), this.CHANGE_HANDLER_PATH, "then the changehandler path defined at the control instance is returned");
+		assert.strictEqual(XmlTreeModifier._getParentAggregationName(oVBox, oLabel), "items", "The function returned the correct name - 'items'.");
+		assert.strictEqual(XmlTreeModifier._getParentAggregationName(oHBox, oTooltip), "tooltip", "The function returned the correct name - 'tooltip'.");
+		assert.strictEqual(XmlTreeModifier._getParentAggregationName(oHBox, oText), "items", "The function returned the correct name - 'items'.");
+		assert.strictEqual(XmlTreeModifier._getParentAggregationName(oDynamicPageTitle, oButton), "actions", "The function returned the correct name - 'actions'.");
+		assert.strictEqual(XmlTreeModifier._getParentAggregationName(oDynamicPageTitle, oText2), "snappedContent", "The function returned the correct name - 'snappedContent'.");
 	});
 
 	QUnit.test("when getBingingTemplate is called for an aggregation without nodes", function (assert) {

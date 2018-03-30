@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -18,16 +18,18 @@
 	}
 
 sap.ui.define(['jquery.sap.global',
+				'sap/ui/core/routing/HashChanger',
 				'sap/ui/base/Object',
 				'sap/ui/core/mvc/View',
 				'./matchers/Ancestor',
 				'./matchers/Interactable',
 				'./matchers/Visible',
 				'./pipelines/MatcherPipeline',
+				'./autowaiter/_autoWaiter',
 				'sap/ui/test/_opaCorePlugin',
 				'sap/ui/test/_OpaLogger'],
-	function ($, UI5Object, View, Ancestor, Interactable, Visible,
-			MatcherPipeline, _opaCorePlugin, _OpaLogger) {
+	function ($, HashChanger, UI5Object, View, Ancestor, Interactable, Visible,
+			MatcherPipeline, _autoWaiter, _opaCorePlugin, _OpaLogger) {
 
 		var oMatcherPipeline = new MatcherPipeline(),
 			oInteractableMatcher = new Interactable(),
@@ -58,15 +60,11 @@ sap.ui.define(['jquery.sap.global',
 			 * If the control type is omitted, nothing is returned.
 			 *
 			 * @param {Function} [fnConstructorType] the control type, e.g: sap.m.CheckBox
-			 * @param {string} [sControlType] optional control type name, e.g: "sap.m.CheckBox"
 			 * @returns {Array} an array of the found controls (can be empty)
 			 * @public
 			 */
-			getAllControls : function (fnConstructorType, sControlType) {
-				var aControls = _opaCorePlugin.getAllControls(fnConstructorType);
-				this._oLogger.debug("Found " + aControls.length + " controls" +
-					(fnConstructorType ? " of type '" + (sControlType || fnConstructorType) + "'" : "") + " in page");
-				return aControls;
+			getAllControls : function (fnConstructorType) {
+				return _opaCorePlugin.getAllControls(fnConstructorType);
 			},
 
 			/**
@@ -77,7 +75,7 @@ sap.ui.define(['jquery.sap.global',
 			 * @public
 			 */
 			getView : function (sViewName) {
-				var aViews = this.getAllControls(View, "View");
+				var aViews = this.getAllControls(View);
 
 				return aViews.filter(function (oViewInstance) {
 					return oViewInstance.getViewName() === sViewName;
@@ -100,67 +98,66 @@ sap.ui.define(['jquery.sap.global',
 			 * @public
 			 */
 			getControlInView : function (oOptions) {
-				var sOptionsViewName = (oOptions.viewNamespace || "") + "." + (oOptions.viewName || ""),
-					sViewName = sOptionsViewName.replace(/\.+/g,'.').replace(/^\.|\.$/g, ""),
+				var sViewName = ((oOptions.viewNamespace || "") + "." + (oOptions.viewName || ""))
+					.replace(/\.+/g,'.').replace(/^\.|\.$/g, ""),
 					oView = this.getView(sViewName),
-					bSearchForSingleControl = typeof oOptions.id === "string";
+					aResult = [],
+					oControl,
+					bIdIsString = typeof oOptions.id === "string",
+					sViewId;
 
 				if (!oView) {
 					this._oLogger.debug("Found no view with the name: '" + sViewName + "'");
-					return bSearchForSingleControl ? null : [];
+					if (bIdIsString) {
+						return null;
+					}
+					return [];
 				}
 
 				if ($.isArray(oOptions.id)) {
-					var aControls = [];
-					var aUnmatchedIds = [];
 					$.each(oOptions.id, function (iIndex, sId) {
-						var oControl = oView.byId(sId);
+						oControl = oView.byId(sId);
+
 						if (oControl) {
-							aControls.push(oControl);
-						} else {
-							aUnmatchedIds.push(sId);
+							aResult.push(oControl);
 						}
 					});
-
-					var sUnmatchedLog = aUnmatchedIds.length ? ". Found no controls matching the subset of IDs " + aUnmatchedIds : "";
-					this._oLogger.debug("Found " + aControls.length + " controls with ID contained in " + oOptions.id + " in view '" + sViewName + "'" + sUnmatchedLog);
-					return aControls;
+					return aResult;
 				}
 
-				if (bSearchForSingleControl) {
-					var oControl = oView.byId(oOptions.id) || null;
-					this._oLogger.debug("Found " + (oControl ? "" : "no ") + "control with ID '" + oOptions.id + "' in view '" + sViewName + "'");
-					return oControl;
+				if (bIdIsString) {
+					var oElement = oView.byId(oOptions.id);
+					if (!oElement) {
+						this._oLogger.debug("Found no control with the id: '" + oOptions.id + "' in the view: '" + sViewName + "'");
+						return null;
+					}
+
+					return oElement;
 				}
 
-				var aAllControlsOfTheView = this.getAllControlsWithTheParent(oView, oOptions.controlType, oOptions.sOriginalControlType);
-				var bMatchById = $.type(oOptions.id) === "regexp";
+				var aAllControlsOfTheView = this.getAllControlsWithTheParent(oView, oOptions.controlType);
 
-				if (bMatchById) {
-					var sViewId = oView.getId();
+				if ($.type(oOptions.id) === "regexp") {
+					sViewId = oView.getId();
 					aAllControlsOfTheView = aAllControlsOfTheView.filter(function (oControl) {
 						var sUnprefixedControlId = oControl.getId().replace(sViewId, "");
 						return oOptions.id.test(sUnprefixedControlId);
 					});
 				}
 
-				this._oLogger.debug("Found " + aAllControlsOfTheView.length + " controls of type " + oOptions.sOriginalControlType +
-					(bMatchById ? " with ID matching " + oOptions.id : "") + " in view '" + sViewName + "'");
 				return aAllControlsOfTheView;
 			},
 
-			getAllControlsWithTheParent : function (oParent, fnControlType, sControlType) {
+			getAllControlsWithTheParent : function (oParent, fnControlType) {
 				var ancestorMatcher = new Ancestor(oParent);
-				return this._filterUniqueControlsByCondition(this.getAllControls(fnControlType, sControlType), ancestorMatcher);
+
+				return this._filterUniqueControlsByCondition(this.getAllControls(fnControlType),ancestorMatcher);
 			},
 
-			getAllControlsInContainer : function ($Container, fnControlType, sControlType, sContainerDescription) {
-				var aControls = this._filterUniqueControlsByCondition($Container.find("*").control(), function (oControl) {
+			getAllControlsInContainer : function ($Container, fnControlType) {
+				return this._filterUniqueControlsByCondition($Container.find("*").control(),function (oControl) {
 					return _opaCorePlugin.checkControlType(oControl, fnControlType);
 				});
-				this._oLogger.debug("Found " + aControls.length + " controls in " +
-					(sContainerDescription ? sContainerDescription : "container") + " with controlType '" + sControlType + "'");
-				return aControls;
 			},
 
 			/**
@@ -220,13 +217,13 @@ sap.ui.define(['jquery.sap.global',
 				}
 
 				if (oOptions.searchOpenDialogs) {
-					vResult = this.getAllControlsInContainer($("#sap-ui-static"), oOptions.controlType, oOptions.sOriginalControlType, "the static UI area");
+					vResult = this.getAllControlsInContainer($("#sap-ui-static"), oOptions.controlType);
 				} else if (oOptions.viewName) {
 					vResult = this.getControlInView(oOptions);
 				} else if (oOptions.id) {
 					vResult = this.getControlByGlobalId(oOptions);
 				} else if (oOptions.controlType) {
-					vResult = this.getAllControls(oOptions.controlType, oOptions.sOriginalControlType);
+					vResult = this.getAllControls(oOptions.controlType);
 				} else {
 					vResult = this.getAllControls();
 				}
@@ -268,31 +265,60 @@ sap.ui.define(['jquery.sap.global',
 			},
 
 			/**
-			 * uses getMatchingControls to retrieve controls
-			 * enforces use of Interactable matcher and autoWait when neccessary
-			 * returns special marker FILTER_FOUND_NO_CONTROLS if nothing is found
 			 * @private
 			 */
-			_getFilteredControls : function(oOptions) {
-				var bPluginLooksForControls = this._isLookingForAControl(oOptions);
-				// found control values can be null, a single control or an array of controls
-				var vControl = null;
-				var vResult = null;
+			getFilterdControls : function(oOptions) {
+				var oPluginOptions = $.extend({}, oOptions, {
+						// only pass interactable if there are actions for backwards compatibility or if the autoWait is set
+						interactable: !!oOptions.actions || oOptions.autoWait
+					}),
+					bPluginLooksForControls = this._isLookingForAControl(oPluginOptions);
+
+				var vControl = null,
+					vResult = null;
 
 				if (bPluginLooksForControls) {
-					vControl = this.getMatchingControls(oOptions);
+					// a range of controls or a single control
+					// this will also synchronize when autoWait is set to true
+					vControl = this.getMatchingControls(oPluginOptions);
+				} else if (oOptions.autoWait && _autoWaiter.hasToWait()) {
+					return OpaPlugin.FILTER_FOUND_NO_CONTROLS;
 				}
 
-				// conditions in which no control was found and return value should be the special marker FILTER_FOUND_NO_CONTROLS
-				var aControlsNotFoundConditions = [
-					typeof oOptions.id === "string" && !vControl, // search for single control by string ID
-					!oOptions.id && (oOptions.viewName || oOptions.searchOpenDialogs) && !vControl.length, // search by control type in view or staic area
-					$.type(oOptions.id) === "regexp" && !vControl.length, // search by regex ID
-					$.isArray(oOptions.id) && (!vControl || vControl.length !== oOptions.id.length), // search by array of IDs
-					oOptions.controlType && $.isArray(vControl) && !vControl.length // search by control type globally
-				];
 
-				if (aControlsNotFoundConditions.some(Boolean)) {
+				//We were searching for a control but we did not find it
+				if (typeof oOptions.id === "string" && !vControl) {
+					return OpaPlugin.FILTER_FOUND_NO_CONTROLS;
+				}
+
+
+				//Search for a controlType in a view or open dialog
+				if (!oOptions.id && (oOptions.viewName || oOptions.searchOpenDialogs) && vControl.length === 0) {
+					this._oLogger.debug("found no controls in view: " + oOptions.viewName + " with controlType " + oOptions.sOriginalControlType, "", "Opa");
+					return OpaPlugin.FILTER_FOUND_NO_CONTROLS;
+				}
+
+				//Regex did not find any control
+				if ($.type(oOptions.id) === "regexp" && !vControl.length) {
+					this._oLogger.debug("found no control with the id regex" + oOptions.id);
+					return OpaPlugin.FILTER_FOUND_NO_CONTROLS;
+				}
+
+				//Did not find all controls with the specified ids
+				if ($.isArray(oOptions.id) && (!vControl || vControl.length !== oOptions.id.length)) {
+					if (vControl && vControl.length) {
+						this._oLogger.debug("found not all controls with the ids " + oOptions.id + " onlyFound the controls: " +
+							vControl.map(function (oCont) {
+								return oCont.sId;
+							}));
+					} else {
+						this._oLogger.debug("found no control with the id  " + oOptions.id);
+					}
+					return OpaPlugin.FILTER_FOUND_NO_CONTROLS;
+				}
+
+				if (oOptions.controlType && $.isArray(vControl) && !vControl.length) {
+					this._oLogger.debug("found no controls with the type  " + oOptions.sOriginalControlType, "", "Opa");
 					return OpaPlugin.FILTER_FOUND_NO_CONTROLS;
 				}
 
@@ -320,69 +346,66 @@ sap.ui.define(['jquery.sap.global',
 			},
 
 			/**
-			 * Returns a control by its ID.
-			 * Accepts an object with properties id and controlType. The id property can be string, regex or array of strings and is recommended to exist.
-			 * The controlType property is optional and will ensure the returned control is of a certain type.
+			 * Returns a control by its id
+			 * accepts an object with an ID property the ID can be
+			 * will check a control type also, if defined
 			 * <ul>
-			 * 	<li>a single string - function will return the control instance or null</li>
+			 * 	<li>a single string - function will return the control instance or undefined</li>
 			 * 	<li>an array of strings - function will return an array of found controls or an empty array</li>
 			 * 	<li>a regexp - function will return an array of found controls or an empty array</li>
 			 * </ul>
 			 *
-			 * @param oOptions should contain an ID property which can be of the type string, regex or array of strings. Can contain optional controlType property.
+			 * @param oOptions should contain an ID property. It can be of the type string or regex. If contains controlType property, will check it as well
 			 * @returns {sap.ui.core.Element[]} all controls matched by the regex or the control matched by the string or null
 			 * @public
 			 */
 			getControlByGlobalId : function (oOptions) {
-				var oCoreElements = _opaCorePlugin.getCoreElements();
+				var vStringOrArrayOrRegex = oOptions.id,
+					vControl = [],
+					aIds = [],
+					oCoreElements = _opaCorePlugin.getCoreElements();
 
-				if (typeof oOptions.id === "string") {
-					var oControl = oCoreElements[oOptions.id] || null;
+				if (typeof vStringOrArrayOrRegex === "string") {
+					vControl = oCoreElements[vStringOrArrayOrRegex];
 
-					if (oControl && !_opaCorePlugin.checkControlType(oControl, oOptions.controlType)) {
-						this._oLogger.error("A control with global ID '" + oOptions.id + "' is found but does not have required controlType '" +
-							oOptions.sOriginalControlType + "'. Found control is '" + oControl + "' but null is returned instead");
+					if (!vControl) {
+						this._oLogger.debug("Found no control with the global id: '" + vStringOrArrayOrRegex + "'");
 						return null;
 					}
 
-					this._oLogger.debug("Found " + (oControl ? "" : "no ") + "control with the global ID '" + oOptions.id + "'");
-					return oControl;
+					if (!_opaCorePlugin.checkControlType(vControl, oOptions.controlType)) {
+						this._oLogger.error("An id: '" + oOptions.id + "' was passed together with the controlType '" + oOptions.sOriginalControlType +
+							"' but the type does not match the control retrieved: '" + vControl + "' - null is returned");
+						return null;
+					}
+
+
+					return vControl;
 				}
 
-				var aMatchIds = [];
-				var bMatchById = $.type(oOptions.id) === "regexp";
+				if ($.type(vStringOrArrayOrRegex) === "regexp") {
 
-				if (bMatchById) {
 					//Performance critical
 					for (var sPropertyName in oCoreElements) {
-						if (!oCoreElements.hasOwnProperty(sPropertyName) || !oOptions.id.test(sPropertyName)) {
+						if (!oCoreElements.hasOwnProperty(sPropertyName)) {
 							continue;
 						}
-						aMatchIds.push(sPropertyName);
+						if (!vStringOrArrayOrRegex.test(sPropertyName)) {
+							continue;
+						}
+						aIds.push(sPropertyName);
 					}
-				} else if ($.isArray(oOptions.id)) {
-					aMatchIds = oOptions.id;
+
+				} else if ($.isArray(vStringOrArrayOrRegex)) {
+					aIds = vStringOrArrayOrRegex;
 				}
 
-				var aMatchingControls = [];
-				var aUnmatchedIds = [];
-
-				aMatchIds.forEach(function (sId) {
-					var oControl = oCoreElements[sId];
-					// only return defined controls
-					if (oControl && _opaCorePlugin.checkControlType(oControl, oOptions.controlType) && !oControl.bIsDestroyed) {
-						aMatchingControls.push(oControl);
-					} else {
-						aUnmatchedIds.push(sId);
-					}
+				return aIds.map(function (sId) {
+					return oCoreElements[sId];
+				}).filter(function (oControl) {
+					//only return defined controls
+					return _opaCorePlugin.checkControlType(oControl, oOptions.controlType) && oControl && !oControl.bIsDestroyed;
 				});
-
-				var sUnmatchedLog = !bMatchById && aUnmatchedIds.length ? ". Found no controls of matching the subset of IDs " + aUnmatchedIds : "";
-				this._oLogger.debug("Found " + aMatchingControls.length + " controls of type " + oOptions.sOriginalControlType +
-					(bMatchById ? " with ID matching '" : " with ID contained in '") + oOptions.id + sUnmatchedLog);
-
-				return aMatchingControls;
-
 			},
 
 			/**
@@ -463,7 +486,7 @@ sap.ui.define(['jquery.sap.global',
 		OpaPlugin.FILTER_FOUND_NO_CONTROLS = "FILTER_FOUND_NO_CONTROL";
 
 		return OpaPlugin;
-	});
+	}, /* bExport= */ true);
 
 	if (original) {
 		global.module = original;

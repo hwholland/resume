@@ -1,0 +1,163 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The Support Assistant checks verify different aspects of your web application - from the view/elements structure and control properties to the dynamic, data and event-driven interactions. You can traverse the DOM tree, look at error logs during startup or check the CSS."/>
+<meta name="description" content="The Support Assistant checks verify different aspects of your web application - from the view/elements structure and control properties to the dynamic, data and event-driven interactions. You can traverse the DOM tree, look at error logs during startup or check the CSS."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6966925042528408"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6966925042528408"/>
+<title>Common Rule Patterns</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio3fc141206cee4ab2aa514b569ed423c0">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Common Rule Patterns</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The Support Assistant checks verify different aspects of your web application - from the
+        view/elements structure and control properties to the dynamic, data and event-driven
+        interactions. You can traverse the DOM tree, look at error logs during startup or check the
+        CSS.</p>
+
+		<div class="section"><div class="section_title">Rules for the Rendered HTML and the OpenUI5 Element Tree</div><div type="Rules for the Rendered HTML and the OpenUI5 Element Tree">
+			
+			<div class="p">With these rules you can check how your application is rendered and how properties of the
+				controls affect the rendering. Here is an example:
+			    <div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">var mElements = oScope.getElements();
+for (var n in mElements) {
+  ...
+}
+</pre></div>
+</div>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Rules for the Console Traces and Logging</div><div type="Rules for the Console Traces and Logging">
+            
+            <p class="p">Rules that analyze the console trace allow you to react to dynamic events while the
+                application is loading. They can help you catch common errors in the binding and
+                bootstrapping of the application. One such rule (<span class="ph uicontrol">Error Logs</span>)
+                is already created and catches all the errors from the console. </p>
+
+            <p class="p">With version 1.46, the logging API has been enhanced to allow additional objects to
+                be added to logs produced by any module. An additional callback function in a log
+                statement can provide such additional objects, which can be stored with the log
+                entry.</p>
+
+            <p class="p"><span class="ph">For more
+                    information, see the <a class="xref" href="../../docs/api/symbols/jQuery.sap.log.Logger.html" alt="../../docs/api/symbols/jQuery.sap.log.Logger.html" title="../../docs/api/symbols/jQuery.sap.log.Logger.html">API Reference:
+                            <samp class="ph codeph">jQuery.sap.log.Logger</samp></a>.</span>
+                </p>
+
+            <div class="p">Here is an example of how to log a warning with additional support information:<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+                    <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">//enable to log additional support information, this is automatically turned on if the url parameter: sap-ui-support is set to true
+jQuery.sap.log.logSupportInfo(true)
+
+jQuery.sap.log.warning("Log this text", function() {
+  //return additional object for further processing in support tooling
+  return {
+    type: "sap.mylib.supportType", //type can be used to filter the logs in support tooling
+    elementId: "sap.mylib.Class or ID" //can be given to narrow the scope of support tooling to a certain element ID, normally used as control ID.
+    mylogobject: {
+      context: "Identify Context"
+    }
+  }
+});</pre></div>
+
+                </div>
+
+            </div>
+
+            
+            
+            
+        </div></div>
+
+        <div class="section" id="loio3fc141206cee4ab2aa514b569ed423c0__section_gjj_15l_l1b"><div class="section_title">Recommendations for Writing CSS Rules</div><div type="Recommendations for Writing CSS Rules"><p class="p">To
+                set custom design preferences, you need to overwrite or manipulate the CSS styling
+                rules. However, this bears a risk because inappropriate changes in the standard
+                styles might provoke rendering or representation issues.</p>
+<p class="p">Below, you can find
+                examples of specific Support Assistant rules to check in such situations.</p>
+<div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Getting all loaded style sheets</p>
+
+            </div><p class="p">To get all loaded style sheets, you simply need to call the
+                    <samp class="ph codeph">document.styleSheets</samp> method. This method returns a list of all
+                inline and external CSS rules. You can further filter or search for a specific style
+                depending on your needs.</p>
+<div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Getting a list of all custom CSS file paths</p>
+
+            </div><p class="p">By custom CSS files we mean all files and styles that are not included
+                within a standard <samp class="ph codeph">library.css</samp> file. Here is an example function
+                that filters all loaded styles and returns only those specific file paths. Once you
+                have a list of all custom CSS files, you can do your further analysis.</p>
+<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">getExternalStyleSheets: function() {
+  return Array.from(document.styleSheets).filter(function(styleSheet) {
+    var themeName = sap.ui.getCore().getConfiguration().getTheme(),
+      styleSheetEnding = "/themes/" + themeName + "/library.css",
+      hasHref = !styleSheet.href || !styleSheet.href.endsWith(styleSheetEnding),
+      hasRules = !!styleSheet.rules;
+
+    return hasHref &amp;&amp; hasRules;
+  });
+},
+</pre></div>
+
+            </div>
+<div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Determining if a specific style sheet is in an
+                        <samp class="ph codeph">inline</samp> or <samp class="ph codeph">external</samp> file</p>
+
+                <p class="p">If you iterate over <samp class="ph codeph">document.styleSheets</samp> elements, you will see
+                    that each element has a property <samp class="ph codeph">href</samp> containing the full path
+                    to the style sheet. If it's empty, it means that the style is
+                        <samp class="ph codeph">inline</samp>. Here is an example function that returns the full
+                    path to a specific style sheet when loaded externally and
+                        <samp class="ph codeph">inline</samp> if the applied style is added by a
+                        <samp class="ph codeph">&lt;style&gt;</samp> tag:</p>
+
+                <div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+                    <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">getStyleSheetName: function(styleSheet) {
+  return styleSheet.href || "Inline";
+},
+</pre></div>
+
+                </div>
+
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Determining if a specific CSS rule is applied on a
+                    node</p>
+
+            </div><p class="p">Each style sheet object contains a property called
+                    <samp class="ph codeph">rules</samp>. This property is a <samp class="ph codeph">CSSRuleList</samp> of all
+                    <samp class="ph codeph">CSSStyleRules</samp> that are inside this style sheet. Each rule has
+                its own property <samp class="ph codeph">selectorText</samp> that contains a selector of a rule.
+                To get all nodes that contain that selector, we can use
+                    <samp class="ph codeph">document.querySelectorAll(rule.selectorText)</samp>. Here is a simple
+                example where we get all rules and find all nodes that contain each rule
+                selector:</p>
+<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">Array.from(styleSheet.rules).forEach(function(rule) {
+  var selector = rule.selectorText,
+    matchedNodes = document.querySelectorAll(selector);
+});
+</pre></div>
+
+            </div>
+</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

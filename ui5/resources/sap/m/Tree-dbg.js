@@ -1,34 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.Tree.
-sap.ui.define([
-	'jquery.sap.global',
-	'./ListBase',
-	'./TreeItemBase',
-	'./library',
-	'sap/ui/model/ClientTreeBindingAdapter',
-	'sap/ui/model/TreeBindingCompatibilityAdapter',
-	'sap/ui/model/odata/ODataTreeBinding',
-	'sap/ui/model/odata/v2/ODataTreeBinding',
-	'sap/ui/model/ClientTreeBinding',
-	'./TreeRenderer'
-],
-function(
-	jQuery,
-	ListBase,
-	TreeItemBase,
-	library,
-	ClientTreeBindingAdapter,
-	TreeBindingCompatibilityAdapter,
-	ODataTreeBinding,
-	V2ODataTreeBinding,
-	ClientTreeBinding,
-	TreeRenderer
-	) {
+sap.ui.define(['jquery.sap.global', './ListBase', './TreeItemBase', './library', 'sap/ui/model/ClientTreeBindingAdapter', 'sap/ui/model/TreeBindingCompatibilityAdapter', 'sap/ui/model/odata/ODataTreeBinding', 'sap/ui/model/odata/v2/ODataTreeBinding', 'sap/ui/model/ClientTreeBinding'],
+	function(jQuery, ListBase, TreeItemBase, library, ClientTreeBindingAdapter, TreeBindingCompatibilityAdapter, ODataTreeBinding, V2ODataTreeBinding, ClientTreeBinding) {
 	"use strict";
 
 
@@ -45,7 +23,7 @@ function(
 	 * @extends sap.m.ListBase
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -315,30 +293,17 @@ function(
 	};
 
 	Tree.prototype.getAccessbilityPosition = function(oItem) {
-		var iSetSize,
-			iPosInset,
+		var iSetSize = 0,
+			iPosInset = 0,
 			oNodeContext = oItem.getItemNodeContext();
 
-		if (oNodeContext.parent) {
-			iSetSize = oNodeContext.parent.children.length;
-		}
-		if (oNodeContext.positionInParent) {
-			iPosInset = oNodeContext.positionInParent + 1;
-		}
+		iSetSize = oNodeContext.parent.children.length;
+		iPosInset = oNodeContext.positionInParent + 1;
 
 		return {
 			setSize: iSetSize,
 			posInset: iPosInset
 		};
-	};
-
-	Tree.prototype.onItemLongDragOver = function(oItem) {
-		var iIndex = this.indexOfItem(oItem);
-		this.getBinding("items").expand(iIndex);
-	};
-
-	Tree.prototype.isGrouped = function() {
-		return false;
 	};
 
 	return Tree;

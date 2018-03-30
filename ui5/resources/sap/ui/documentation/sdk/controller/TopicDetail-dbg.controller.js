@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -82,7 +82,7 @@ sap.ui.define([
 
 				setTimeout(window.prettyPrint, 0);
 
-				this.searchResultsButtonVisibilitySwitch(this.byId("topicDetailBackToSearch"));
+				this.searchResultsButtonVisibilitySwitch(this.getView().byId("topicDetailBackToSearch"));
 
 				if (this.extHookonTopicMatched) {
 					this.extHookonTopicMatched(topicId);
@@ -97,6 +97,16 @@ sap.ui.define([
 
 			_formatHTML: function(html) {
 				return '<div>' + html + '</div>';
+			},
+
+			_onOrientationChange: function(e) {
+				var page = this.getView().byId("topicDetailPage");
+
+				if (e.landscape) {
+					page.setShowHeader(false);
+				} else {
+					page.setShowHeader(true);
+				}
 			},
 
 			backToSearch: function (text) {

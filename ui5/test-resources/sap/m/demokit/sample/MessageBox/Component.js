@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.MessageBox.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.MessageBox.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.MessageBox.V",
 			dependencies : {
 				libs : [
 					"sap.m",

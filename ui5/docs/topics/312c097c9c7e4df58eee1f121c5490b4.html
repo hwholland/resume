@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -119,7 +119,8 @@
                      <div class="body">
                         <p class="shortdesc" hidden>Example how helpers for HTML templating can be used.</p>
                         
-                        		<pre class="pre codeblock prettyprint lang-html">&lt;!DOCTYPE HTML&gt;
+                        		<pre class="pre codeblock prettyprint lang-html">
+&lt;!DOCTYPE HTML&gt;
 &lt;html&gt;
 &lt;head&gt;
 
@@ -130,8 +131,8 @@
 
     &lt;script id=&quot;sap-ui-bootstrap&quot;
             type=&quot;text/javascript&quot;
-            src=&quot;https://openui5.hana.ondemand.com/resources/sap-ui-core.js&quot;
-            data-sap-ui-libs=&quot;sap.m&quot;
+            src=&quot;resources/sap-ui-core.js&quot;
+            data-sap-ui-libs=&quot;sap.ui.commons&quot;
             data-sap-ui-theme=&quot;sap_belize&quot;
             data-sap-ui-xx-bindingSyntax=&quot;complex&quot;
             &gt;
@@ -147,13 +148,13 @@
                 title: &quot;Persons&quot;,
                 persons: [{
                     firstName: &quot;Peter&quot;,
-                    lastName: &quot;Matschig&quot;
+                    lastName: &quot;Muessig&quot;
                 }, {
                     firstName: &quot;Tim&quot;,
-                    lastName: &quot;Beck&quot;
+                    lastName: &quot;Back&quot;
                 }, {
                     firstName: &quot;Christoph&quot;,
-                    lastName: &quot;Krummer&quot;
+                    lastName: &quot;Kraemer&quot;
                 }]
             });
             sap.ui.getCore().setModel(oModel);
@@ -207,10 +208,10 @@
     &lt;div id=&quot;myControlTemplate&quot; data-type=&quot;text/x-handlebars-template&quot;&gt;
     
         &lt;h3&gt;Control Template (using &quot;control&quot; expression)&lt;/h3&gt;
-        {{control sap-ui-type=&quot;sap.m.Label&quot; design=&quot;Bold&quot; text=&quot;{/title}&quot;}}
+        {{control sap-ui-type=&quot;sap.ui.commons.Label&quot; design=&quot;Bold&quot; text=&quot;{/title}&quot;}}
         &lt;ul&gt;
         {{#each path=&quot;/persons&quot;}}
-            &lt;li&gt;{{control sap-ui-type=&quot;sap.m.Text&quot; text=&quot;{lastName}, {firstName}&quot;}}&lt;/li&gt;
+            &lt;li&gt;{{control sap-ui-type=&quot;sap.ui.commons.TextView&quot; text=&quot;{lastName}, {firstName}&quot;}}&lt;/li&gt;
         {{/each}}
         &lt;/ul&gt;
     
@@ -219,10 +220,10 @@
     &lt;div id=&quot;myControlEditTemplate&quot; data-type=&quot;text/x-handlebars-template&quot;&gt;
     
         &lt;h3&gt;Advanced Control Template (using editable &quot;control&quot; expression)&lt;/h3&gt;
-        {{control sap-ui-type=&quot;sap.m.TextArea&quot; value=&quot;{/title}&quot; rows=&quot;2&quot; cols=&quot;40&quot;}}
+        {{control sap-ui-type=&quot;sap.ui.commons.TextArea&quot; value=&quot;{/title}&quot; rows=&quot;2&quot; cols=&quot;40&quot;}}
         &lt;ul&gt;
         {{#each path=&quot;/persons&quot;}}
-            &lt;li&gt;{{control sap-ui-type=&quot;sap.m.Input&quot; width=&quot;12rem&quot; value=&quot;{lastName}&quot;}}, {{control sap-ui-type=&quot;sap.m.Input&quot; width=&quot;12rem&quot; value=&quot;{firstName}&quot;}}&lt;/li&gt;
+            &lt;li&gt;{{control sap-ui-type=&quot;sap.ui.commons.TextField&quot; value=&quot;{lastName}&quot;}}, {{control sap-ui-type=&quot;sap.ui.commons.TextField&quot; value=&quot;{firstName}&quot;}}&lt;/li&gt;
         {{/each}}
         &lt;/ul&gt;
     

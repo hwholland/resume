@@ -6,8 +6,8 @@
 <meta name="abstract" content="In this step, we use the mock server to add data to our app without dependency to any remote server or system."/>
 <meta name="description" content="In this step, we use the mock server to add data to our app without dependency to any remote server or system."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9343274684127117"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9343274684127117"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4845081459554872"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4845081459554872"/>
 <title>Step 2: Creating a Mock Server to Simulate Data</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -26,7 +26,7 @@
 			<div class="fig fignone" id="loio50897decc9504b2a875fb41d89fd254a__fig_qwx_h2q_st"><div class="figcontainer">
 				
 				<img class="image" id="loio50897decc9504b2a875fb41d89fd254a__image_dyv_r3q_st" src="loio55edd9fa2cc24f398a9373d6d497d3e4_HiRes.png"/>
-			<div class="figcap">The app now contains data</div></div></div>
+			<div class="figcap">Figure 1: The app now contains data</div></div></div>
 
 		</div></div>
 
@@ -102,37 +102,37 @@
 			
 			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;?xml version="1.0" encoding="utf-8" standalone="yes"?&gt;
 &lt;edmx:Edmx Version="1.0"
-    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"&gt;
-    &lt;edmx:DataServices
-        xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="1.0"&gt;
-        &lt;Schema Namespace="NerdMeetup.Models"
-            xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
-            xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
-            xmlns="http://schemas.microsoft.com/ado/2006/04/edm"&gt;
-            &lt;EntityType Name="Meetup"&gt;
-                &lt;Key&gt;
-                    &lt;PropertyRef Name="MeetupID" /&gt;
-                &lt;/Key&gt;
-                &lt;Property Name="MeetupID" Type="Edm.Int32" Nullable="false" /&gt;
-                &lt;Property Name="Title" Type="Edm.String" Nullable="true" /&gt;
-                &lt;Property Name="EventDate" Type="Edm.DateTime" Nullable="false" /&gt;
-                &lt;Property Name="Description" Type="Edm.String" Nullable="true" /&gt;
-                &lt;Property Name="HostedBy" Type="Edm.String" Nullable="true" /&gt;
-                &lt;Property Name="ContactPhone" Type="Edm.String" Nullable="true" /&gt;
-                &lt;Property Name="Address" Type="Edm.String" Nullable="true" /&gt;
-                &lt;Property Name="Country" Type="Edm.String" Nullable="true" /&gt;
-                &lt;Property Name="Latitude" Type="Edm.Double" Nullable="false" /&gt;
-                &lt;Property Name="Longitude" Type="Edm.Double" Nullable="false" /&gt;
-                &lt;Property Name="HostedById" Type="Edm.String" Nullable="true" /&gt;
-                &lt;Property Name="Location" Type="NerdMeetup.Models.LocationDetail" Nullable="false" /&gt;
-            &lt;/EntityType&gt;
-            &lt;ComplexType Name="LocationDetail" /&gt;
-            &lt;EntityContainer Name="NerdMeetups" m:IsDefaultEntityContainer="true"&gt;
-                &lt;EntitySet Name="Meetups" EntityType="NerdMeetup.Models.Meetup" /&gt;
-                &lt;FunctionImport Name="FindUpcomingMeetups" EntitySet="Meetups" ReturnType="Collection(NerdMeetup.Models.Meetup)" m:HttpMethod="GET" /&gt;
-            &lt;/EntityContainer&gt;
-        &lt;/Schema&gt;
-    &lt;/edmx:DataServices&gt;
+  xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"&gt;
+  &lt;edmx:DataServices
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="1.0"&gt;
+    &lt;Schema Namespace="NerdMeetup.Models"
+      xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
+      xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+      xmlns="http://schemas.microsoft.com/ado/2006/04/edm"&gt;
+      &lt;EntityType Name="Meetup"&gt;
+        &lt;Key&gt;
+          &lt;PropertyRef Name="MeetupID" /&gt;
+        &lt;/Key&gt;
+        &lt;Property Name="MeetupID" Type="Edm.Int32" Nullable="false" /&gt;
+        &lt;Property Name="Title" Type="Edm.String" Nullable="true" /&gt;
+        &lt;Property Name="EventDate" Type="Edm.DateTime" Nullable="false" /&gt;
+        &lt;Property Name="Description" Type="Edm.String" Nullable="true" /&gt;
+        &lt;Property Name="HostedBy" Type="Edm.String" Nullable="true" /&gt;
+        &lt;Property Name="ContactPhone" Type="Edm.String" Nullable="true" /&gt;
+        &lt;Property Name="Address" Type="Edm.String" Nullable="true" /&gt;
+        &lt;Property Name="Country" Type="Edm.String" Nullable="true" /&gt;
+        &lt;Property Name="Latitude" Type="Edm.Double" Nullable="false" /&gt;
+        &lt;Property Name="Longitude" Type="Edm.Double" Nullable="false" /&gt;
+        &lt;Property Name="HostedById" Type="Edm.String" Nullable="true" /&gt;
+        &lt;Property Name="Location" Type="NerdMeetup.Models.LocationDetail" Nullable="false" /&gt;
+      &lt;/EntityType&gt;
+      &lt;ComplexType Name="LocationDetail" /&gt;
+      &lt;EntityContainer Name="NerdMeetups" m:IsDefaultEntityContainer="true"&gt;
+        &lt;EntitySet Name="Meetups" EntityType="NerdMeetup.Models.Meetup" /&gt;
+        &lt;FunctionImport Name="FindUpcomingMeetups" EntitySet="Meetups" ReturnType="Collection(NerdMeetup.Models.Meetup)" m:HttpMethod="GET" /&gt;
+      &lt;/EntityContainer&gt;
+    &lt;/Schema&gt;
+  &lt;/edmx:DataServices&gt;
 &lt;/edmx:Edmx&gt;</pre></div>
 
 			<p class="p">The <span class="ph filepath">metadata</span> file contains information about the service
@@ -147,22 +147,22 @@
 			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">[{
 	"MeetupID": 1,
 	"Title": "Toronto Tech Meet-Up",
-	"EventDate": "/Date(1593810000000)/",
+	"EventDate": "/Date(1278450000000)/",
 	"Description": "The best way to expand your knowledge and network of the Toronto technology community"
 }, {
 	"MeetupID": 2,
-	"Title": "Los Angeles redditors",
-	"EventDate": "/Date(1572779994000)/",
+	"Title": "Los Angeles Redditors",
+	"EventDate": "/Date(1478171994000)/",
 	"Description": "This is a meet-up group specifically for redditors of r/LosAngeles. If you don't know what that is, this isn't the meet-up you're looking for"
 }, {
 	"MeetupID": 3,
 	"Title": "Designers + Geeks New York",
-	"EventDate": "/Date(1575544794000)/",
-	"Description": "Bringing designers + geeks together to talk shop, startups, and do some knowledge sharing. All types of designers + geeks welcome"
+	"EventDate": "/Date(1070968794000)/",
+	"Description": "Bringing designers + geeks together to talk shop, start-ups, and do some knowledge sharing. All types of designers + geeks welcome"
 }, {
 	"MeetupID": 4,
 	"Title": "New York City Geek Adventure Group",
-	"EventDate": "/Date(1539339594000)/",
+	"EventDate": "/Date(1034763594000)/",
 	"Description": "Are you looking to have fun and go on random adventures?"
 }]</span></pre></div>
 
@@ -175,7 +175,6 @@
 	"sap/ui/core/util/MockServer"
 ], function(MockServer) {
 	"use strict";
-
 	return {
 		/**
 		 * Initializes the mock server.
@@ -188,74 +187,29 @@
 			var oMockServer = new MockServer({
 				rootUri: "/"
 			});
-
 			// simulate against the metadata and mock data
 			oMockServer.simulate("../localService/metadata.xml", {
 				sMockdataBaseUrl: "../localService/mockdata",
 				bGenerateMissingMockData: true
 			});
-
 			// start
 			oMockServer.start();
-
 			jQuery.sap.log.info("Running the app with mock data");
 		}
-
 	};
-
 });</span></pre></div>
-<p class="p">Now
-				we can write the code to initialize the mock server that will simulate the requests
-				instead of the real server. We load the <samp class="ph codeph">MockServer</samp> module as a
-				dependency and create a helper object that defines an <samp class="ph codeph">init</samp> method
-				to start the server. This method is called before the Component initialization in
-				the <span class="ph filepath">mockServer.html</span> file above. The <samp class="ph codeph">init</samp>
-				method creates a <samp class="ph codeph">MockServer</samp> instance with the same URL as the real
-				service. The URL in configuration parameter <samp class="ph codeph">rootURI</samp> is now served
-				by our test server instead of the real service. </p>
-<p class="p">Next, we set two global
-				configuration settings for all <samp class="ph codeph">MockServer</samp> instances that tell the
-				server to respond automatically and introduce a delay of one second to imitate a
-				typical server response time.</p>
-<div class="p">In order to simulate a manual back-end call we
-				can simply call the <samp class="ph codeph">simulate</samp> method on the
-					<samp class="ph codeph">MockServer</samp> instance with the path to our newly
-					created<span class="ph filepath"> metadata.xml</span> file. This will read the test data
-				from our local file system and set up the URL patterns that will mimic the real
-				service. The first parameter is the path to the service
-					<span class="ph filepath">metadata.xml</span> document. The second parameter is an object
-				with the following properties:<ul class="ul" id="loio50897decc9504b2a875fb41d89fd254a__ul_hxm_2hq_st">
-					<li class="li">
-						<p class="p"><samp class="ph codeph">sMockdataBaseUrl</samp>: path where to look for mock data files
-							in JSON format</p>
-
-					</li>
-
-					<li class="li">
-						<p class="p"><samp class="ph codeph">bGenerateMissingMockData</samp>: Boolean property to tell the
-								<samp class="ph codeph">MockServer</samp> to use auto-generated mock data in case
-							no JSON files are found.</p>
-
-					</li>
-
-				</ul>
-We call the function <samp class="ph codeph">start</samp> on the mock server instance. From
-				this point on, each request matching the URL pattern <samp class="ph codeph">rootURI</samp> will
-				be processed by the <samp class="ph codeph">MockServer</samp>.</div>
-<p class="p">Finally, we add a message
-				toast to indicate for the user that the app runs with mock data.</p>
-<p class="p">This approach
-				is perfect for local and automated testing, even without any network connection.
-				Your development does not depend on the availability of a remote server, i.e. to run
-				your tests independently from the back-end service. You can control the mocked data
-				so the requests will return reliable and predictable results.</p>
-<p class="p">If the real
-				service connection cannot be established, for example, when there is no network
-				connection, you can always fall back to the local test page and run the app with
-				mock data.</p>
-Just run the app now again with the
-				<span class="ph filepath">mockServer.html</span> file.. The list should now be populated with
-			meet-ups from our mock data. You can also choose the button and see data.</div></div>
+<p class="p">Now we can write the code to initialize the mock server that will simulate the requests instead of the real server. We load the <samp class="ph codeph">MockServer</samp> module as a dependency and create a helper object that defines an <samp class="ph codeph">init</samp> method to start the server. This method is called before the Component initialization in the <span class="ph filepath">mockServer.html</span> file above. The <samp class="ph codeph">init</samp> method creates a <samp class="ph codeph">MockServer</samp> instance with the same URL as the real service. The URL in configuration parameter <samp class="ph codeph">rootURI</samp> is now served by our test server instead of the real service. </p>
+<p class="p">Next, we set two global configuration settings for all <samp class="ph codeph">MockServer</samp> instances that tell the server to respond automatically and introduce a delay of one second to imitate a typical server response time.</p>
+<div class="p">In order to simulate a manual back-end call we can simply call the <samp class="ph codeph">simulate</samp> method on the <samp class="ph codeph">MockServer</samp> instance with the path to our newly created<span class="ph filepath"> metadata.xml</span> file. This will read the test data from our local file system and set up the URL patterns that will mimic the real service. The first parameter is the path to the service <span class="ph filepath">metadata.xml</span> document. The second parameter is an object with the following properties:<ul class="ul" id="loio50897decc9504b2a875fb41d89fd254a__ul_hxm_2hq_st"><li class="li"><p class="p"><samp class="ph codeph">sMockdataBaseUrl</samp>: path where to look for mock data files in JSON format</p>
+</li>
+<li class="li"><p class="p"><samp class="ph codeph">bGenerateMissingMockData</samp>: Boolean property to tell the <samp class="ph codeph">MockServer</samp> to use auto-generated mock data in case no JSON files are found.</p>
+</li>
+</ul>
+We call the function <samp class="ph codeph">start</samp> on the mock server instance. From this point on, each request matching the URL pattern <samp class="ph codeph">rootURI</samp> will be processed by the <samp class="ph codeph">MockServer</samp>.</div>
+<p class="p">Finally, we add a message toast to indicate for the user that the app runs with mock data.</p>
+<p class="p">This approach is perfect for local and automated testing, even without any network connection. Your development does not depend on the availability of a remote server, i.e. to run your tests independently from the back-end service. You can control the mocked data so the requests will return reliable and predictable results.</p>
+<p class="p">If the real service connection cannot be established, for example, when there is no network connection, you can always fall back to the local test page and run the app with mock data.</p>
+Just run the app now again with the <span class="ph filepath">mockServer.html</span> file.. The list should now be populated with meet-ups from our mock data. You can also choose the button and see data.</div></div>
 
 	</div>
 

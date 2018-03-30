@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ContainerPadding.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.ContainerPadding.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.ContainerPadding.Page",
 			dependencies : {
 				libs : [
 					"sap.m",

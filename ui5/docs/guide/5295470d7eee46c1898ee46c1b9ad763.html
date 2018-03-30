@@ -6,8 +6,8 @@
 <meta name="abstract" content="In this step, we add a search field for our product list and define a filter that represents the search term. When searching, the list is automatically updated to show only the items that match the search term."/>
 <meta name="description" content="In this step, we add a search field for our product list and define a filter that represents the search term. When searching, the list is automatically updated to show only the items that match the search term."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=12301879484541633"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=12301879484541633"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=43350302589627543"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=43350302589627543"/>
 <title>Step 24: Filtering</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -28,18 +28,15 @@
 			<div class="fig fignone" id="loio5295470d7eee46c1898ee46c1b9ad763__fig_r1j_pst_mr"><div class="figcontainer">
 				
 				<img class="image" id="loio5295470d7eee46c1898ee46c1b9ad763__image_tzj_zf2_yr" src="loiob59b3ed9928549d4bf7e4d0f9f5b5dc8_HiRes.png"/>
-			<div class="figcap">A search field is displayed above the list</div></div></div>
+			<div class="figcap">Figure 1: A search field is displayed above the list</div></div></div>
 
 		</div></div>
 
-		<div class="section" id="loio5295470d7eee46c1898ee46c1b9ad763__section_qx5_wch_ycb"><div class="section_title">Coding</div><div type="Coding">
-			
+		<div class="section">
+			<div class="section_title">Coding</div>
 			<p class="p">You can view and download all files <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.walkthrough.24/preview" alt="../../explored.html#/sample/sap.m.tutorial.walkthrough.24/preview" title="../../explored.html#/sample/sap.m.tutorial.walkthrough.24/preview">Walkthrough - Step 24</a></span>.</p>
 
-		</div></div>
-
-		<div class="section" id="loio5295470d7eee46c1898ee46c1b9ad763__section_rx5_wch_ycb"><div class="section_title">webapp/view/InvoiceList.view.xml</div><div type="webapp/view/InvoiceList.view.xml">
-			
+			<div class="section_title">webapp/view/InvoiceList.view.xml</div>
 			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
    controllerName="sap.ui.demo.walkthrough.controller.InvoiceList"
    xmlns="sap.m"
@@ -64,13 +61,12 @@
    &lt;/List&gt;
 &lt;/mvc:View&gt;</pre></div>
 
-			<p class="p">The view is extended by a search control that we add to the list of invoices. We also
-				need to specify an ID <samp class="ph codeph">invoiceList</samp> for the list control to be able
-				to identify the list from the event handler function
-					<samp class="ph codeph">onFilterInvoices</samp> that we add to the search field. In addition,
-				the search field is part of the list header and therefore, each change on the list
-				binding will trigger a rerendering of the whole list, including the search
-				field.</p>
+			<p class="p">The view is extended by a search control that we add to the list of invoices. We also need to
+				specify an ID <samp class="ph codeph">invoiceList</samp> for the list control to be able to
+				identify the list from the event handler function <samp class="ph codeph">onFilterInvoices</samp>
+				that we add to the search field. In addition, the search field is part of the list
+				header and therefore, each change on the list binding will trigger a rerendering of
+				the whole list, including the search field.</p>
 
 			<p class="p">The <samp class="ph codeph">headerToolbar</samp> aggregation replaces the simple
 					<samp class="ph codeph">title</samp> property that we used before for our list header. A
@@ -78,7 +74,7 @@
 				displaying the title on the left side with a <samp class="ph codeph">sap.m.Title</samp> control, a
 				spacer, and the <samp class="ph codeph">sap.m.SearchField</samp> on the right.</p>
 
-		</div></div>
+		</div>
 
 		<div class="section"><div class="section_title">webapp/controller/InvoiceList.controller.js</div><div type="webapp/controller/InvoiceList.controller.js">
 			

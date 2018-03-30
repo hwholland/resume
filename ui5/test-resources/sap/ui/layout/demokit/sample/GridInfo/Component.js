@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.ui.layout.sample.GridInfo.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.layout.sample.GridInfo.Grid",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.layout.sample.GridInfo.Grid",
 			dependencies : {
 				libs : [
 					"sap.m",
@@ -20,8 +16,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 				sample : {
 					files : [
 						"Grid.view.xml",
-						"Grid.controller.js",
-						"persons.json"
+						"Grid.controller.js"
 					]
 				}
 			}

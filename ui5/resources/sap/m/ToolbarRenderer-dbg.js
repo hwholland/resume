@@ -1,11 +1,11 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-sap.ui.define(['./BarInPageEnabler'],
-	function(BarInPageEnabler) {
+sap.ui.define(['./BarInPageEnabler', 'sap/m/Toolbar'],
+	function(BarInPageEnabler, Toolbar) {
 	"use strict";
 
 
@@ -14,12 +14,6 @@ sap.ui.define(['./BarInPageEnabler'],
 	 * @namespace
 	 */
 	var ToolbarRenderer = {};
-
-	// determines whether toolbar has new flexbox (shrink) support
-	ToolbarRenderer.hasNewFlexBoxSupport = (function() {
-		var oStyle = document.documentElement.style;
-		return (oStyle.flex !== undefined || oStyle.webkitFlexShrink !== undefined);
-	}());
 
 	/**
 	 * Renders the HTML for the given control, using the provided {@link sap.ui.core.RenderManager}.
@@ -32,38 +26,37 @@ sap.ui.define(['./BarInPageEnabler'],
 	/**
 	 * Add classes attributes and styles to the root tag
 	 *
-	 * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the Render-Output-Buffer
-	 * @param {sap.ui.core.Control} oToolbar an object representation of the control that should be rendered
+	 * @param {sap.ui.core.RenderManager} oRM the RenderManager that can be used for writing to the Render-Output-Buffer
+	 * @param {sap.ui.core.Control} oControl an object representation of the control that should be rendered
 	 */
-	ToolbarRenderer.decorateRootElement = function (oRm, oToolbar) {
-		oRm.addClass("sapMTB");
+	ToolbarRenderer.decorateRootElement = function (rm, oToolbar) {
+		rm.addClass("sapMTB");
 
 		// ARIA
-		oRm.writeAccessibilityState(oToolbar, {
+		rm.writeAccessibilityState(oToolbar, {
 			role: oToolbar._getAccessibilityRole()
 		});
 
 
-		if (!ToolbarRenderer.hasNewFlexBoxSupport) {
-			oRm.addClass("sapMTBOldFlex");
+		if (!Toolbar.hasNewFlexBoxSupport) {
+			rm.addClass("sapMTBOldFlex");
 		} else {
-			oRm.addClass("sapMTBNewFlex");
+			rm.addClass("sapMTBNewFlex");
 		}
 
 		if (oToolbar.getActive()) {
-			oRm.addClass("sapMTBActive");
-			oRm.writeAttribute("tabindex", "0");
+			rm.addClass("sapMTBActive");
+			rm.writeAttribute("tabindex", "0");
 		} else {
-			oRm.addClass("sapMTBInactive");
+			rm.addClass("sapMTBInactive");
 		}
 
-		oRm.addClass("sapMTB" + oToolbar.getStyle());
-		oRm.addClass("sapMTB-" + oToolbar.getActiveDesign() + "-CTX");
+		rm.addClass("sapMTB-" + oToolbar.getActiveDesign() + "-CTX");
 
 		var sWidth = oToolbar.getWidth();
 		var sHeight = oToolbar.getHeight();
-		sWidth && oRm.addStyle("width", sWidth);
-		sHeight && oRm.addStyle("height", sHeight);
+		sWidth && rm.addStyle("width", sWidth);
+		sHeight && rm.addStyle("height", sHeight);
 	};
 
 	ToolbarRenderer.renderBarContent = function(rm, oToolbar) {

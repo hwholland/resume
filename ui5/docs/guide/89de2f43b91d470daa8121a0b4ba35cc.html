@@ -6,8 +6,8 @@
 <meta name="abstract" content="The navigation flow of the Master-Detail app considers both the Master and Detail pages, and is therefore slightly more complex than a typical full-screen scenario."/>
 <meta name="description" content="The navigation flow of the Master-Detail app considers both the Master and Detail pages, and is therefore slightly more complex than a typical full-screen scenario."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=14764693916280003"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=14764693916280003"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=22238570845896288"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=22238570845896288"/>
 <title>Navigation</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -28,20 +28,17 @@
     <div class="fig fignone" id="loio89de2f43b91d470daa8121a0b4ba35cc__fig_xyz_nkh_bt"><div class="figcontainer">
       
       <img class="image" id="loio89de2f43b91d470daa8121a0b4ba35cc__image_shs_rkh_bt" src="loioec746bc8018543fda1fae5230367dfc5_LowRes.png"/>
-    <div class="figcap">Navigation Flow of the Master-Detail App</div></div></div>
+    <div class="figcap">Figure 1: Navigation Flow of the Master-Detail App</div></div></div>
 
     <p class="p">The two main views <span class="ph uicontrol">Master</span> and <span class="ph uicontrol">Object</span> each have a route and two targets configured. When the route matches
       the URL, both targets are displayed and the corresponding views are created. The target master puts the created view in the <span class="keyword apiname">masterPages</span>
       aggregration of the <span class="keyword apiname">sap.m.SplitApp</span> control. All other targets put their created views in the <span class="keyword apiname">detailPages</span>
       aggregation. For more information, see <a class="xref" href="3d18f20bd2294228acb6910d8e8a5fb5.html" title="OpenUI5 offers hash-based navigation, which allows you to build single-page apps where the navigation is done by changing the hash. In this way the browser does not have to reload the page; instead there is a callback to which the app and especially the affected view can react. A hash string is parsed and matched against patterns which will then inform the handlers.">Routing and Navigation</a>.</p>
 
-    <p class="p">Here is a sample implementation for navigating from the <span class="ph uicontrol">Master</span> to the
-        <span class="ph uicontrol">Object</span> page. First you have to implement a press handler on the
-        <samp class="ph codeph">ListItem</samp>. Inside, you extract the current ID of the object pressed by the
-      user by using its <samp class="ph codeph">bindingContext</samp>. Since we want to navigate to the “object”
-      route, you need to supply the mandatory <samp class="ph codeph">objectId</samp> parameter and pass it to the
-        <samp class="ph codeph">navTo</samp> function, as described <span class="ph">in the <a class="xref" href="../..//api/sap.ui.core.routing.Router/methods/navTo" alt="../..//api/sap.ui.core.routing.Router/methods/navTo" title="../..//api/sap.ui.core.routing.Router/methods/navTo">sap.ui.core.routing.Routing#navTo</a> section</span> of the <span class="ph uicontrol">API
-        Reference</span> in the Demo Kit and shown here:</p>
+    <p class="p">Here is a sample implementation for navigating from the <span class="ph uicontrol">Master</span> to the <span class="ph uicontrol">Object</span> page. First you have to
+      implement a press handler on the <samp class="ph codeph">ListItem</samp>. Inside, you extract the current ID of the object pressed by the user by using its
+        <samp class="ph codeph">bindingContext</samp>. Since we want to navigate to the “object” route, you need to supply the mandatory <samp class="ph codeph">objectId</samp> parameter
+      and pass it to the <samp class="ph codeph">navTo</samp> function, as described <span class="ph">in the <a class="xref" href="../../docs/api/symbols/sap.ui.core.routing.Router.html#navTo" alt="../../docs/api/symbols/sap.ui.core.routing.Router.html#navTo" title="../../docs/api/symbols/sap.ui.core.routing.Router.html#navTo">sap.ui.core.routing.Routing#navTo</a> section</span> of the <span class="ph uicontrol">API Reference</span> in the Demo Kit and shown here:</p>
 
     <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">/**
  * Event handler when a table item gets pressed

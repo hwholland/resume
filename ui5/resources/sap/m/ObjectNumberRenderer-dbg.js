@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -69,6 +69,7 @@ sap.ui.define(['sap/ui/core/Renderer', 'sap/ui/core/library'],
 			});
 		}
 
+
 		oRm.write(">");
 
 		this.renderText(oRm, oON);
@@ -102,13 +103,28 @@ sap.ui.define(['sap/ui/core/Renderer', 'sap/ui/core/library'],
 	};
 
 	ObjectNumberRenderer.renderHiddenARIAElement = function(oRm, oON) {
+		var sARIAStateText = "",
+			oRB = sap.ui.getCore().getLibraryResourceBundle("sap.m");
 
 		if (oON.getState() == ValueState.None) {
 			return;
 		}
 
 		oRm.write("<span id='" + oON.getId() + "-state' class='sapUiInvisibleText' aria-hidden='true'>");
-		oRm.write(oON._getStateText());
+
+		switch (oON.getState()) {
+			case ValueState.Error:
+				sARIAStateText = oRB.getText("OBJECTNUMBER_ARIA_VALUE_STATE_ERROR");
+				break;
+			case ValueState.Warning:
+				sARIAStateText = oRB.getText("OBJECTNUMBER_ARIA_VALUE_STATE_WARNING");
+				break;
+			case ValueState.Success:
+				sARIAStateText = oRB.getText("OBJECTNUMBER_ARIA_VALUE_STATE_SUCCESS");
+				break;
+		}
+
+		oRm.write(sARIAStateText);
 		oRm.write("</span>");
 	};
 

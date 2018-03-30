@@ -44,8 +44,20 @@
 	});
 
 	QUnit.test("Handles' Tooltips", function (assert) {
-		this.rangeSlider.getAggregation("_tooltipContainer").show(this.rangeSlider);
-		assert.strictEqual(jQuery(".sapMSliderTooltip").length, 2, "There should be two tooltips.");
+		assert.strictEqual(jQuery(".sapMSliderHandleTooltip").length, 2, "There should be two tooltips.");
+
+		assert.strictEqual(jQuery("[id$='-LeftTooltip']").length, 1, "There should be only one handle tooltip rendered for handle1.");
+		assert.strictEqual(jQuery("[id$='-RightTooltip']").length, 1, "There should be only one handle tooltip rendered for handle2.");
+	});
+
+	QUnit.test("Handles' Tooltips' width percent ", function (assert) {
+		var oldPercent = this.rangeSlider._fTooltipHalfWidthPercent;
+
+		this.rangeSlider.setMin(-1000);
+		this.rangeSlider.setMax(0);
+		sap.ui.getCore().applyChanges();
+
+		assert.ok(oldPercent < this.rangeSlider._fTooltipHalfWidthPercent, "The new calculated percent should be bigger than the old one");
 	});
 
 	QUnit.test("RangeSlider's Labels", function (assert) {
@@ -59,7 +71,6 @@
 	QUnit.test("RangeSlider's Labels Width", function (assert) {
 		this.rangeSlider.setMax(10000000000000);
 		this.rangeSlider.rerender();
-
 		assert.equal(this.rangeSlider.$().find(".sapMSliderRangeLabel:eq(1)").width(), 120, "The end label should have 120px width when the value consists of 14 digits");
 
 	});
@@ -114,27 +125,6 @@
 		assert.strictEqual(aRange[1], 100, "The default high value of the range should be 100.");
 	});
 
-	QUnit.test("_handlesLabels aggregation", function (assert) {
-		// arrange & act
-		var oResourceBundle = sap.ui.getCore().getLibraryResourceBundle("sap.m"),
-			oBoundleCalledStub = this.stub(oResourceBundle, "getText"),
-			oSlider = new sap.m.RangeSlider(),
-			aLabels = oSlider.getAggregation("_handlesLabels");
-
-		oSlider.placeAt("qunit-fixture");
-		sap.ui.getCore().applyChanges();
-
-		// assert
-		assert.strictEqual(aLabels.length, 3, "Label for handles should be added as an aggregation");
-		assert.ok(oBoundleCalledStub.calledWith("RANGE_SLIDER_LEFT_HANDLE"), "Text should be regarding the left handle");
-		assert.ok(oBoundleCalledStub.calledWith("RANGE_SLIDER_RIGHT_HANDLE"), "Text should be regarding the right handle");
-		assert.ok(oBoundleCalledStub.calledWith("RANGE_SLIDER_RANGE_HANDLE"), "Text should be regarding the range");
-		assert.strictEqual(oSlider.getDomRef("progress").getAttribute("aria-labelledby"), aLabels[2].getId());
-
-		// cleanup
-		oSlider.destroy();
-	});
-
 	QUnit.test("getRange()", function (assert) {
 		var aRange = this.rangeSlider.getRange();
 
@@ -152,12 +142,11 @@
 
 		aRange = this.rangeSlider.getRange();
 
-		this.rangeSlider.getAggregation("_tooltipContainer").show(this.rangeSlider);
-
 		assert.strictEqual(aRange[0], newRange[0], "The first value of the range should be set to " + newRange[0]);
 		assert.strictEqual(aRange[1], newRange[1], "The second value of the range should be set to " + newRange[1]);
-		assert.strictEqual(parseInt(this.rangeSlider.getAggregation("_tooltipContainer").getAssociatedTooltipsAsControls()[0].getValue(), 10), newRange[0], "The tooltip1's value should be changed to the left handle's value of " + newRange[0]);
-		assert.strictEqual(parseInt(this.rangeSlider.getAggregation("_tooltipContainer").getAssociatedTooltipsAsControls()[1].getValue(), 10), newRange[1], "The tooltip2's value should be changed to the right handle's value of " + newRange[1]);
+
+		assert.strictEqual(parseInt(this.rangeSlider.$("LeftTooltip").text(), 10), newRange[0], "The tooltip1's value should be changed to the left handle's value of " + newRange[0]);
+		assert.strictEqual(parseInt(this.rangeSlider.$("RightTooltip").text(), 10), newRange[1], "The tooltip2's value should be changed to the right handle's value of " + newRange[1]);
 	});
 
 	QUnit.test("set/getValue()", function (assert) {
@@ -214,8 +203,9 @@
 
 	QUnit.test("set/getStep()", function (assert) {
 		//arrange
-		var aTooltips = this.rangeSlider.getAggregation("_tooltipContainer").getAssociatedTooltipsAsControls();
-		var fnLogWarning = this.spy(jQuery.sap.log, "warning");
+		var fnLogWarning = this.spy(jQuery.sap.log, "warning"),
+			sWarningText = "Warning: The step could not be negative on ";
+
 		assert.strictEqual(this.rangeSlider._iDecimalPrecision, 0, "The decimal precision should be 0 initially");
 
 		//act
@@ -227,16 +217,14 @@
 		assert.strictEqual(this.rangeSlider._iDecimalPrecision, 2, "The decimal precision should be 2");
 		assert.strictEqual(fnLogWarning.callCount, 0, "No warnings were logged");
 
-		assert.strictEqual(aTooltips[0].getStep(), 0.05, "Tooltip 1 step property was updated correctly");
-		assert.strictEqual(aTooltips[1].getStep(), 0.05, "Tooltip 2 step property was updated correctly");
-
 		//act
 		this.rangeSlider.setStep(-0.5);
 
 		//assert
 		assert.strictEqual(this.rangeSlider.getStep(), -0.5, "The step should be set properly within the range");
 		assert.strictEqual(this.rangeSlider._iDecimalPrecision, 1, "The decimal precision should be 1");
-		assert.ok(fnLogWarning.calledOnce, "One warning was logged");
+		assert.strictEqual(fnLogWarning.callCount, 1, "One warning was logged");
+		assert.strictEqual(fnLogWarning.getCalls()[0].args[0], sWarningText, "The correct warning was fired");
 	});
 
 	QUnit.test("set/getValue() with decimal precision", function (assert) {
@@ -268,35 +256,23 @@
 	});
 
 	QUnit.test("Invalid range starting value of -20 (where min is 0)", function (assert) {
-		var oWarningSpy = this.spy(jQuery.sap.log, "warning");
 		this.rangeSlider.setRange([-20, 50]);
 		sap.ui.getCore().applyChanges();
 
 		var aRange = this.rangeSlider.getRange();
 
 		assert.strictEqual(aRange[0], this.rangeSlider.getMin(), "The starting value of the range should be set to 0");
-		assert.ok(oWarningSpy.callCount === 1, "A warning is logged.");
-		assert.ok(oWarningSpy.calledWith("Warning: Min value (-20) not in the range: [0,100]"), "A correct warning is logged");
 		assert.strictEqual(aRange[1], 50, "The end value of the range should be set to 50");
-
-		// cleanup
-		oWarningSpy.restore();
 	});
 
 	QUnit.test("Invalid range ending value of 150 (where max is 100)", function (assert) {
-		var oWarningSpy = this.spy(jQuery.sap.log, "warning");
 		this.rangeSlider.setRange([20, 150]);
 		sap.ui.getCore().applyChanges();
 
 		var aRange = this.rangeSlider.getRange();
 
 		assert.strictEqual(aRange[0], 20, "The starting value of the range should be set to 20");
-		assert.ok(oWarningSpy.callCount === 1, "A warning is logged.");
-		assert.ok(oWarningSpy.calledWith("Warning: Max value (150) not in the range: [0,100]"), "A correct warning is logged");
 		assert.strictEqual(aRange[1], this.rangeSlider.getMax(), "The end value of the range should be set to 100");
-
-		// cleanup
-		oWarningSpy.restore();
 	});
 
 	QUnit.test("getClosestHandleDomRef() with coordinates for left handle", function (assert) {
@@ -579,27 +555,20 @@
 
 	QUnit.test("Swap tooltips when values are swapped.", function (assert) {
 		//Setup
-		var oLeftTooltip, oRightTooltip,
-			oRangeSlider = new sap.m.RangeSlider({
-				showAdvancedTooltip: true,
-				showHandleTooltip: true,
-				enableTickmarks: false,
-				range: [8, 2],
-				min: 2,
-				max: 10,
-				step: 1,
-				width: "600px"
-			}).placeAt(DOM_RENDER_LOCATION);
-			sap.ui.getCore().applyChanges();
-
-		oRangeSlider.getAggregation("_tooltipContainer").show(oRangeSlider);
-
-		oLeftTooltip = jQuery("#" + oRangeSlider.getId() + "-" + "leftTooltip").control(0);
-		oRightTooltip = jQuery("#" + oRangeSlider.getId() + "-" + "rightTooltip").control(0);
+		var oRangeSlider = new sap.m.RangeSlider({
+			showAdvancedTooltip: false,
+			showHandleTooltip: false,
+			enableTickmarks: true,
+			range: [8, 2],
+			min: 2,
+			max: 10,
+			step: 1
+		}).placeAt(DOM_RENDER_LOCATION);
+		sap.ui.getCore().applyChanges();
 
 		//Assert
-		assert.equal(oLeftTooltip.getValue(), "2");
-		assert.equal(oRightTooltip.getValue(), "8");
+		assert.strictEqual(oRangeSlider.getDomRef("LeftTooltip").innerHTML, "2");
+		assert.strictEqual(oRangeSlider.getDomRef("RightTooltip").innerHTML, "8");
 
 		//Cleanup
 		oRangeSlider.destroy();

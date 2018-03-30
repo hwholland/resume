@@ -6,176 +6,204 @@ sap.ui.define([
 	return Controller.extend("sap.ui.fl.sample.variantmanagement.VariantManagement", {
 
 		onInit: function() {
-
-			var oModelData = {
-				popoverTitle: "{i18n>POP_OVER_TITLE}",
-				currentVariant: "2",
-				defaultVariant: "2",
-				originalDefaultVariant: "2",
-				modified: false,
-				variantsEditable: true,
-				showFavorites: true,
-				variants: [
-					{
-						key: "Standard",
-						title: "Standard",
-						originalTitle: "Standard",
-						author: "A",
-						favorite: true,
-						originalFavorite: true,
-						remove: false,
-						rename: true,
-						executeOnSelect: false,
-						originalExecuteOnSelect: false,
-						visible: true,
-						change: true
-					}, {
-						key: "1",
-						title: "One",
-						originalTitle: "One",
-						author: "A",
-						share: false,
-						favorite: true,
-						originalFavorite: true,
-						remove: true,
-						rename: true,
-						executeOnSelect: false,
-						originalExecuteOnSelect: false,
-						visible: true,
-						change: true
-					}, {
-						key: "2",
-						title: "Two",
-						originalTitle: "Two",
-						author: "B",
-						favorite: true,
-						originalFavorite: true,
-						remove: true,
-						rename: true,
-						executeOnSelect: false,
-						originalExecuteOnSelect: false,
-						visible: true,
-						change: true
-					}, {
-						key: "3",
-						title: "Three",
-						originalTitle: "Three",
-						share: true,
-						toBeDeleted: false,
-						favorite: true,
-						originalFavorite: true,
-						remove: false,
-						rename: false,
-						executeOnSelect: false,
-						originalExecuteOnSelect: false,
-						visible: true,
-						change: false
-					}, {
-						key: "4",
-						title: "Four",
-						originalTitle: "Four",
-						favorite: true,
-						originalFavorite: true,
-						remove: true,
-						rename: true,
-						executeOnSelect: false,
-						originalExecuteOnSelect: false,
-						visible: true,
-						change: true
-					}, {
-						key: "5",
-						title: "Five",
-						originalTitle: "Five",
-						favorite: true,
-						originalFavorite: true,
-						remove: true,
-						rename: true,
-						executeOnSelect: false,
-						originalExecuteOnSelect: false,
-						visible: true,
-						change: true
-					}, {
-						key: "6",
-						title: "Six",
-						originalTitle: "Six",
-						favorite: true,
-						originalFavorite: true,
-						remove: true,
-						rename: true,
-						executeOnSelect: false,
-						originalExecuteOnSelect: false,
-						visible: true,
-						change: true
-					}, {
-						key: "7",
-						title: "Seven",
-						originalTitle: "Seven",
-						favorite: true,
-						originalFavorite: true,
-						remove: false,
-						rename: false,
-						executeOnSelect: false,
-						originalExecuteOnSelect: false,
-						visible: true,
-						change: false
-					}, {
-						key: "8",
-						title: "Eight",
-						originalTitle: "Eight",
-						favorite: true,
-						originalFavorite: true,
-						remove: true,
-						rename: true,
-						executeOnSelect: false,
-						originalExecuteOnSelect: false,
-						visible: false,
-						change: true
-					}, {
-						key: "9",
-						title: "Nine",
-						originalTitle: "Nine",
-						favorite: true,
-						originalFavorite: true,
-						remove: false,
-						rename: false,
-						executeOnSelect: false,
-						originalExecuteOnSelect: false,
-						visible: true,
-						change: false
-					}
-				]
-			};
-
-			var sResourceUrl = "i18n/i18n.properties";
-			var sLocale = sap.ui.getCore().getConfiguration().getLanguage();
-			var oResourceModel = new sap.ui.model.resource.ResourceModel({
-				bundleUrl: sResourceUrl,
-				bundleLocale: sLocale
-			});
-			this.getView().setModel(oResourceModel, "i18n");
-
 			this.oModel = new VariantModel({
+				"__xmlview0--idVariantManagementCtrl": {
+					currentVariant: "2",
+					defaultVariant: "2",
+					modified: false,
+					variants: [
+						{
+							key: "Standard",
+							title: "Standard",
+							author: "A",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: true,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "1",
+							title: "One",
+							author: "A",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "2",
+							title: "Two",
+							author: "B",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "3",
+							title: "Three",
+							global: true,
+							toBeDeleted: false,
+							favorite: true,
+							originalFavorite: true,
+							readOnly: true,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "4",
+							title: "Four",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "5",
+							title: "Five",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "6",
+							title: "Six",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "7",
+							title: "Seven",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "8",
+							title: "Eight",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: true,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "9",
+							title: "Nine",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}
+					]
+				},
 
 				M1: {
 					defaultVariant: "3",
 					currentVariant: "3",
 					modified: false,
-					variantsEditable: false,
-					showFavorites: false,
-					variants: []
+					variants: [
+						{
+							key: "Standard",
+							title: "Standard",
+							author: "A",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: true,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "1",
+							title: "ONE",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: true,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "2",
+							title: "TWO",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: true,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "3",
+							title: "THREE",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "4",
+							title: "FOUR",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "5",
+							title: "FIVE",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "6",
+							title: "SIX",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "7",
+							title: "SEVEN",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "8",
+							title: "EIGHT",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}, {
+							key: "9",
+							title: "NINE",
+							favorite: true,
+							originalFavorite: true,
+							readOnly: false,
+							executeOnSelect: false,
+							originalExecuteOnSelect: false
+						}
+					]
 				}
 			});
 
-			this._sModelName = "Sample";
+			this.oModel.updateCurrentVariant = function(sVariantMgmtRef, sNewVariantRef) {
+				this.oData[sVariantMgmtRef].currentVariant = sNewVariantRef;
+			}; // overrule default
 
 			this.oVM = this.getView().byId("idVariantManagementCtrl");
+			this.oVM._getLocalId = function() {
+				return this.getId();
+			};
 
-			this.oVM.setModelName(this._sModelName);
+			this.oVM.setModel(this.oModel, "$FlexVariants");
 
-			this.oModel.oData[this.oVM.getId()] = oModelData;
-			this.oVM.setModel(this.oModel, this._sModelName);
-
-			var oCurrentVariantChangeBinding = this.oModel.bindProperty("currentVariant", this.oVM.getBindingContext(this._sModelName));
+			var oCurrentVariantChangeBinding = this.oModel.bindProperty("currentVariant", this.oVM.getBindingContext("$FlexVariants"));
 			oCurrentVariantChangeBinding.attachChange(function(oEvent) {
 				MessageToast.show("currentVariant: " + oEvent.oSource.oValue);
 			});
@@ -187,22 +215,27 @@ sap.ui.define([
 
 			oParent.removeContent(this.oVM);
 			var sVMId = this.oVM.getId();
+			var bShowFav = this.oVM.getShowFavorites();
+			var bShowShare = this.oVM.getShowShare();
 			var bShowExe = this.oVM.getShowExecuteOnSelection();
 			// var bShowDef = this.oVM.getShowAsDefault();
 
 			this.oVM.destroy();
-			var oVM = new VariantManagement(sVMId, {
-				modelName: this._sModelName
-			});
+			var oVM = new VariantManagement(sVMId);
+			oVM._getLocalId = function() {
+				return this.getId();
+			};
 			oParent.addContent(oVM);
 
 			this.oVM = this.getView().byId("idVariantManagementCtrl");
+			this.oVM.setShowFavorites(!bShowFav);
+			this.oVM.setShowShare(bShowShare);
 			this.oVM.setShowExecuteOnSelection(bShowExe);
 			// this.oVM.setShowAsDefault(bShowDef);
 
-			this.oVM.setModel(this.oModel, this._sModelName);
+			this.oVM.setModel(this.oModel, "$FlexVariants");
 
-			var oCurrentVariantChangeBinding = this.oModel.bindProperty("currentVariant", this.oVM.getBindingContext(this._sModelName));
+			var oCurrentVariantChangeBinding = this.oModel.bindProperty("currentVariant", this.oVM.getBindingContext("$FlexVariants"));
 			oCurrentVariantChangeBinding.attachChange(function(oEvent) {
 				MessageToast.show("currentVariant: " + oEvent.oSource.oValue);
 			});
@@ -212,6 +245,12 @@ sap.ui.define([
 		onToggleErrorState: function(oEvent) {
 			this.oVM.setInErrorState(!this.oVM.getInErrorState());
 		},
+		onToggleFooterBtn: function(oEvent) {
+			this.oVM.setShowVariantListFooter(!this.oVM.getShowVariantListFooter());
+		},
+		onToggleShowShareBtn: function(oEvent) {
+			this.oVM.setShowShare(!this.oVM.getShowShare());
+		},
 		onToggleShowExeOnSeltBtn: function(oEvent) {
 			this.oVM.setShowExecuteOnSelection(!this.oVM.getShowExecuteOnSelection());
 		},
@@ -219,31 +258,21 @@ sap.ui.define([
 			this.oVM.setShowSetAsDefault(!this.oVM.getShowSetAsDefault());
 		},
 		onToggleFavoritesBtn: function(oEvent) {
-			var oModel = this.oVM.getModel(this._sModelName);
-			var oData = this.oVM.getBindingContext(this._sModelName).getObject();
-
-			oData.showFavorites = !oData.showFavorites;
-
-			oModel.checkUpdate(true);
+			this.oVM.setShowFavorites(!this.oVM.getShowFavorites());
 		},
 
 		onOpenMamageDialogBtn: function(oEvent) {
 			this.oVM.openManagementDialog(true);
 		},
 
-		onToggleEditableVariantsBtn: function(oEvent) {
-
-			var oModel = this.oVM.getModel(this._sModelName);
-			var oData = this.oVM.getBindingContext(this._sModelName).getObject();
-
-			oData.variantsEditable = !this.oVM.getEditable();
-
-			oModel.checkUpdate(true);
+		onToggleManageBtn: function(oEvent) {
+			this.oVM.setShowManage(!this.oVM.getShowManage());
 		},
-
-		onToggleEditableBtn: function(oEvent) {
-
-			this.oVM.setEditable(!this.oVM.getEditable());
+		onToggleSaveBtn: function(oEvent) {
+			this.oVM.setShowSave(!this.oVM.getShowSave());
+		},
+		onToggleSaveAsBtn: function(oEvent) {
+			this.oVM.setShowSaveAs(!this.oVM.getShowSaveAs());
 		},
 
 		onMarkAsChanged: function(oEvent) {
@@ -261,14 +290,12 @@ sap.ui.define([
 		},
 		onManage: function(oEvent) {
 
-			var oModel = this.oVM.getModel(this._sModelName);
-			var oData = this.oVM.getBindingContext(this._sModelName).getObject();
+			var oModel = this.oVM.getModel("$FlexVariants");
+			var oData = this.oVM.getBindingContext("$FlexVariants").getObject();
 
 			oData["variants"] = oData["variants"].filter(function(oItem) {
-				return oItem.visible;
+				return oItem.toBeDeleted === false;
 			});
-
-			oData.originalDefaultVariant = oData.defaultVariant;
 
 			oData["variants"].forEach(function(oItem) {
 				if (oItem.title !== oItem.originalTitle) {

@@ -1,18 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.suite.TaskCircle.
-sap.ui.define([
- 'jquery.sap.global',
- 'sap/ui/core/Control',
- 'sap/ui/core/EnabledPropagator',
- './library',
- "./TaskCircleRenderer"
-],
-	function(jQuery, Control, EnabledPropagator, library, TaskCircleRenderer) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', 'sap/ui/core/EnabledPropagator', './library'],
+	function(jQuery, Control, EnabledPropagator, library) {
 	"use strict";
 
 	// shortcut
@@ -29,7 +23,7 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author Svetozar Buzdumovic
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public

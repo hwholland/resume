@@ -1,0 +1,415 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.48 to 1.50."/>
+<meta name="description" content="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.48 to 1.50."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=59596327876892"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=59596327876892"/>
+<title>What's New in OpenUI5 1.50</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioa8449849c81249bb8abd98b4b9342a4a">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">What's New in <span class="ph"><span class="ph pname">OpenUI5</span></span>
+		1.50</h1>
+
+	
+	<div class="body conbody" id="Conbody_WN_SAPUI5_150"><p class="shortdesc">With
+		this release the <span class="ph pname">UI development toolkit for HTML5</span> (<span class="ph"><span class="ph pname">OpenUI5</span></span>) is upgraded from
+		version 1.48 to 1.50.</p>
+
+		<div class="section collapsible expanded" id="loioa8449849c81249bb8abd98b4b9342a4a__section_qfc_g5h_fbb"><div class="section_title">New Demo Kit (already available as of version 1.48.5)</div><div type="New Demo Kit (already available as of version 1.48.5)"><p class="p">The Demo Kit app has a new modern
+				design that is intuitive and can be used on both desktop and mobile
+				devices.</p>
+<p class="p">The global search has been improved and the results are now displayed
+				in categories. They also include results from the <span class="ph uicontrol">Samples</span>
+				section, which was not possible with the old Demo Kit since the
+					<span class="ph uicontrol">Explored</span> app was a decoupled app.</p>
+<div class="table-wrapper"><table summary="" id="loioa8449849c81249bb8abd98b4b9342a4a__simpletable_hrp_zdr_gbb" border="0" class="simpletable"><tr class="strow">
+					<td valign="top" class="stentry" width="50%"><div class="p">The new Demo Kit contains the following sections:<ul class="ul" id="loioa8449849c81249bb8abd98b4b9342a4a__ul_tgk_m5h_fbb">
+								<li class="li"><p class="p">Landing page with getting started information</p>
+</li>
+
+								<li class="li"><p class="p"><span class="ph uicontrol">Documentation</span> with detailed
+										information</p>
+</li>
+
+								<li class="li"><p class="p">
+										<span class="ph uicontrol">API Reference</span> with JavaScript
+										documentation about the framework and the UI controls,
+										including details for the corresponding properties,
+										aggregations, associations, events, and methods</p>
+</li>
+
+								<li class="li"><p class="p"><span class="ph uicontrol">Samples</span>, showcasing almost all
+										controls with ability to download the sample code</p>
+</li>
+
+								<li class="li"><p class="p"><span class="ph uicontrol">Demo Apps</span>, showcasing real-life
+										scenarios that can easily be downloaded</p>
+</li>
+
+							</ul>
+</div>
+</td>
+
+					<td valign="top" class="stentry" width="50%"><p class="p"><div class="video-links-disclaimer"><span class="video-links-disclaimer-label">Disclaimer: </span>The below video <img src="images/3rd_link.png" title="Information published on non-SAP site" alt="Information published on non-SAP site"/> is not part of the SAP product documentation.  Please read the <a href="http://help.sap.com/disclaimer?site=">legal disclaimer</a> for video links before viewing this video.</div><div class="iframe-wrapper"><iframe width="448" height="252" src="https://www.youtube.com/embed/m-wbguWlt9w" allowfullscreen="allowfullscreen">
+</iframe></div></p>
+</td>
+
+				</tr>
+</table></div>
+</div></div>
+
+		
+		<div class="section collapsible expanded" id="loioa8449849c81249bb8abd98b4b9342a4a__section_ewk_q4b_31b"><div class="section_title">New Features</div><div type="New Features"><ul class="ul" id="loioa8449849c81249bb8abd98b4b9342a4a__ul_xhq_gzt_1z">
+				<li class="li"><p class="p">The Unicode Common Locale Data Repository (CLDR) has been updated to version
+						31.</p>
+</li>
+
+				<li class="li"><p class="p">The correct plural category for a given number is now handled by the
+						locale-specific plural rules offered by CLDR. Different languages use
+						different plural forms, some languages have only singular and plural, others
+						require additional forms, for example, dual (two), paucal (few), or
+						many.</p>
+</li>
+
+				<li class="li"><div class="p">Date interval types are introduced to format two date-related properties from
+						a model for displaying in the UI. Additionally they are used to parse and
+						validate the values in UI controls before they are saved back to the model.
+						The new interval types are: <ul class="ul" id="loioa8449849c81249bb8abd98b4b9342a4a__ul_tnm_bzj_gbb">
+							<li class="li"><p class="p"><samp class="ph codeph">sap.ui.model.type.DateInterval</samp> - a date interval
+									(without time)</p>
+</li>
+
+							<li class="li"><p class="p"><samp class="ph codeph">sap.ui.model.type.DateTimeInterval</samp> - a date
+									interval with the exact point of time</p>
+</li>
+
+							<li class="li"><p class="p"><samp class="ph codeph">sap.ui.model.type.TimeInterval</samp> - a time interval
+									(without date)</p>
+</li>
+
+						</ul>
+<span class="ph">For more information, see <span class="ph"><a class="xref" href="94658aa4cfbe4fdfbd0981d78f6d9b3d.html" title="The interval data types represent intervals between two date/time related properties.">sap.ui.model.type.DateTimeInterval</a> and</span> the
+								<a class="xref" href="../../docs/api/symbols/sap.ui.model.type.html" alt="../../docs/api/symbols/sap.ui.model.type.html" title="../../docs/api/symbols/sap.ui.model.type.html">API Reference</a>.</span>
+						</div>
+</li>
+
+				<li class="li"><p class="p">The configuration option <samp class="ph codeph">animationMode</samp> replaces
+							<samp class="ph codeph">animation</samp>, which is now deprecated. The new option
+						supports several states (<samp class="ph codeph">full</samp>, <samp class="ph codeph">basic</samp>,
+							<samp class="ph codeph">minimal</samp>, <samp class="ph codeph">none</samp>), which allow controls
+						to extend support for animations in a more granular way instead of a binary
+							<samp class="ph codeph">on</samp>/<samp class="ph codeph">off</samp> state. <span class="ph">For
+							more information, see <a class="xref" href="91f2d03b6f4d1014b6dd926db0e91070.html" title="The complete list of configuration options available in OpenUI5 can be found in the API Reference under sap.ui.core.Configuration. The following table shows a subset of the available configuration options.">Configuration Options and URL Parameters</a>, <a class="xref" href="76b7d5065cf64304a1d2841046043c34.html" title="Some UI elements can have animations like page transitions or dynamic buttons. There may be cases where the animation has to be suppressed, for example, for performance reasons or for specific users. As a control developer, you have to make sure that your control supports the animation modes that are offered to the users.">Implementing Animation Modes</a>, and the <a class="xref" href="../../docs/api/symbols/sap.ui.core.Configuration.AnimationMode.html" alt="../../docs/api/symbols/sap.ui.core.Configuration.AnimationMode.html" title="../../docs/api/symbols/sap.ui.core.Configuration.AnimationMode.html">API Reference</a>.</span>
+						</p>
+</li>
+
+				
+			</ul>
+</div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">New Controls</div><div type="New Controls"><ul class="ul" id="loioa8449849c81249bb8abd98b4b9342a4a__ul_c4c_y51_dbb">
+				<li class="li"><p class="p"><samp class="ph codeph">sap.m.PlanningCalendarLegend</samp>: Enables two types of items to
+						be displayed in the <samp class="ph codeph">sap.m.PlanningCalendar</samp> as a legend -
+						types of days (for example, special dates and holidays) and appointments.
+							<span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.PlanningCalendarLegend.html" alt="../../docs/api/symbols/sap.m.PlanningCalendarLegend.html" title="../../docs/api/symbols/sap.m.PlanningCalendarLegend.html">API Reference</a>.</span></p>
+<div class="fig fignone" id="loioa8449849c81249bb8abd98b4b9342a4a__fig_ds3_1ck_dbb"><div class="figcontainer">
+						<img class="image" id="loioa8449849c81249bb8abd98b4b9342a4a__image_e5t_1ck_dbb" src="loioe8f3d352f8044779a3d90e37c0e9798e_LowRes.png"/>
+					</div></div>
+</li>
+
+				
+				
+			</ul>
+</div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">Improved Features</div><div type="Improved Features"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle"><span class="ph"><span class="ph pname">OpenUI5</span></span>
+					OData V4 Model</p>
+
+				<div class="p">The new version of the <span class="ph"><span class="ph pname">OpenUI5</span></span> OData V4
+					model introduces an adapter that allows you to use an OData V2 service together
+					with the OData V4 model in read scenarios. The adapter offers the following
+						features:<ul class="ul" id="loioa8449849c81249bb8abd98b4b9342a4a__ul_apt_cvg_yy">
+						<li class="li"><p class="p"> Metadata is converted, including some V2 annotations.</p>
+</li>
+
+						<li class="li"><p class="p">Data in the response is converted.</p>
+</li>
+
+						<li class="li"><p class="p">Literals in the request URI are converted, except for
+									<samp class="ph codeph">Edm.DateTime</samp>,
+									<samp class="ph codeph">Edm.DateTimeOffset</samp>, <samp class="ph codeph">Edm.Time</samp>,
+								and <samp class="ph codeph">Edm.Binary</samp>.</p>
+</li>
+
+						<li class="li"><p class="p"><samp class="ph codeph">$select</samp>, <samp class="ph codeph">$expand</samp>, and
+									<samp class="ph codeph">$orderby</samp> are handled. Cases that are not
+								supported by OData V2, like <samp class="ph codeph">$orderby</samp> in
+									<samp class="ph codeph">$expand</samp>, lead to an error.</p>
+</li>
+
+						<li class="li"><p class="p">All unsupported query options lead to an error.</p>
+</li>
+
+					</ul>
+</div>
+
+				<div class="note caution"><span class="cautiontitle">Caution</span> <p class="p"><span class="ph emphasis emphasis">Incompatibility Due to a Bug
+						Fix</span></p>
+<p class="p">The following bug has been reported: If you call the
+							<a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#getObject" alt="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#getObject" title="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#getObject">sap.ui.model.odata.v4.Context#getObject()</a> or the <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#requestObject" alt="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#requestObject" title="../../docs/api/symbols/sap.ui.model.odata.v4.Context.html#requestObject">sap.ui.model.odata.v4.Context#requestObject()</a> methods without
+						a parameter, the expected and documented behavior is that the same result is
+						returned as if the parameter <samp class="ph codeph">sPath=""</samp> had been specified.
+						However, due to the bug, the return value wraps the expected output that can
+						then only be accessed via <samp class="ph codeph">.value[0]</samp>, for example
+							<samp class="ph codeph">oContext.getObject().value[0]</samp>.</p>
+<p class="p"><span class="ph emphasis emphasis">If you
+							have used this workaround, your application will break starting with <span class="ph"><span class="ph pname">OpenUI5</span></span>
+							version <span class="ph">1.44.6</span>.</span></p>
+<p class="p"><span class="ph emphasis emphasis">Solution</span>: If your
+						application needs to run with both the fixed and unfixed versions of <span class="ph"><span class="ph pname">OpenUI5</span></span>, specify
+						the <samp class="ph codeph">sPath=""</samp> parameter, for the <samp class="ph codeph">sPath</samp>
+						parameter. In both cases, you <span class="ph emphasis emphasis">must not</span> use the
+						workaround with <samp class="ph codeph">.value[0]</samp> any longer.</p>
+</div>
+
+				<div class="note restriction"><span class="restrictiontitle">Restriction</span> <p class="p">Due to the limited feature scope of this version of the
+							<span class="ph"><span class="ph pname">OpenUI5</span></span>
+						OData V4 model, check that all required features are in place before
+						developing applications. Check the detailed documentation of the features,
+						as certain parts of a feature may be missing. While we aim to be compatible
+						with existing controls, some controls might not work due to small
+						incompatibilities compared to
+							<samp class="ph codeph">sap.ui.model.odata.(v2.)ODataModel</samp>, or due to missing
+						features in the model (such as tree binding). This also applies to  controls such as
+							<samp class="ph codeph">TreeTable</samp> and <samp class="ph codeph">AnalyticalTable</samp>, which
+						are not supported together with the <span class="ph"><span class="ph pname">OpenUI5</span></span> OData V4
+						model. The interface for applications has been changed for easier and more
+						efficient use of the model. For a summary of these changes, see <a class="xref" href="abd4d7c7548d4c29ab8364d3904a6d74.html" title="This section outlines the main differences between the OData V2 and OData V4 models.">Changes Compared to OData V2 Model</a>.</p>
+</div>
+
+				
+				<p class="p">For more
+					information, see <a class="xref" href="5de13cf4dd1f4a3480f7e2eaaee3f5b8.html" title="The sap.ui.model.odata.v4.ODataModel is the model implementation for consuming an OData V4 service.">OData V4 Model</a>, the
+					<a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v4.html" alt="../../docs/api/symbols/sap.ui.model.odata.v4.html" title="../../docs/api/symbols/sap.ui.model.odata.v4.html">API Reference</a>, and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.model.odata.v4.ODataModel/samples" alt="../../explored.html#/entity/sap.ui.model.odata.v4.ODataModel/samples" title="../../explored.html#/entity/sap.ui.model.odata.v4.ODataModel/samples">sample</a> in the Demo Kit. </p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Support Assistant: OPA Test Sample Added</p>
+
+				<p class="p">With the roll-out of Support Assistant in version 1.48, we introduced the
+					possibility to use the tool in OPA tests to check if there are issues in the
+					different states of an application. This is possible by enabling the available
+					OPA extension.</p>
+
+				<p class="p">As of this version, there is now a sample of the OPA integration in the Demo Kit.
+					It demonstrates how you can extend existing OPA tests by making calls to the
+					assertions in the Support Assistant extension. These assertions may have
+					different severity, execution scope and subset of rules which are taken into
+					consideration. The sample also shows how to execute rule checks and how to get
+					reports.</p>
+
+				<p class="p">As of this
+					version, there is now a sample of the OPA integration in the Demo Kit. For more
+					information, see <a class="xref" href="cfabbd4dfc054936997d9d00916e1668.html" title="The Support Assistant can be used as part of an existing OPA test to cover more test aspects of the application.">Integrating the Rules in OPA Tests</a> and the
+						<a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.sample.OpaWithSupportAssistant/preview" alt="../../explored.html#/sample/sap.ui.core.sample.OpaWithSupportAssistant/preview" title="../../explored.html#/sample/sap.ui.core.sample.OpaWithSupportAssistant/preview">Sample</a>.</p>
+
+				
+			</div></div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">Improved Controls</div><div type="Improved Controls"><ul class="ul" id="loioa8449849c81249bb8abd98b4b9342a4a__ul_pbm_ngk_dbb">
+				<li class="li"><div class="p"><samp class="ph codeph">sap.f.DynamicPage</samp> has the following new features: <ul class="ul" id="loioa8449849c81249bb8abd98b4b9342a4a__ul_sjh_1pr_2bb">
+							<li class="li"><p class="p">You can now define the priority of the
+										<samp class="ph codeph">DynamicPageTitle</samp> areas with the use of the
+									new <samp class="ph codeph">primaryArea</samp> property. The primary area
+									shrinks at a slower rate, remaining visible as long as
+									possible.</p>
+</li>
+
+							<li class="li"><p class="p">With the new content aggregation of the
+										<samp class="ph codeph">DynamicPageTitle</samp>, you can add content in
+									the middle area of the title. This content is displayed both in
+									the expanded and collapsed states of the
+										<samp class="ph codeph">DynamicPageHeader</samp>.</p>
+</li>
+
+						</ul>
+<span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.f.DynamicPageTitle.html" alt="../../docs/api/symbols/sap.f.DynamicPageTitle.html" title="../../docs/api/symbols/sap.f.DynamicPageTitle.html">API Reference</a>.</span></div>
+</li>
+
+				<li class="li"><div class="p"><samp class="ph codeph">sap.f.semantic.SemanticPage</samp>: To align with the latest <span class="ph pname">SAP Fiori design guidelines</span>,
+						the following changes were implemented:<ul class="ul" id="loioa8449849c81249bb8abd98b4b9342a4a__ul_abl_ppr_2bb">
+							<li class="li"><p class="p">The position of the draft indicator is changed to be the first
+									one before the finalizing actions in the footer toolbar of the
+									page.</p>
+</li>
+
+							<li class="li"><p class="p">A new <span class="ph uicontrol">Edit</span> button was added as the main
+									action and the order of the actions changed to
+										<span class="ph uicontrol">Edit</span>, <span class="ph uicontrol">Delete</span>,
+										<span class="ph uicontrol">Copy</span>, and
+									<span class="ph uicontrol">Add</span>.</p>
+</li>
+
+						</ul>
+<span class="ph">For more information, see <a class="xref" href="47dc86847f7a426a8e557167cf523bda.html" title="The sap.f.semantic.SemanticPage is an enhanced sap.f.DynamicPage that implements the SAP Fiori 2.0 design guidelines.">Semantic Page (sap.f)</a>, the <a class="xref" href="../../docs/api/symbols/sap.f.semantic.html" alt="../../docs/api/symbols/sap.f.semantic.html" title="../../docs/api/symbols/sap.f.semantic.html">API Reference</a>, and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.f.sample.SemanticPage/preview" alt="../../explored.html#/sample/sap.f.sample.SemanticPage/preview" title="../../explored.html#/sample/sap.f.sample.SemanticPage/preview">sample</a>.</span></div>
+</li>
+
+				
+				<li class="li"><div class="p"><samp class="ph codeph">sap.m.Label</samp> has the following new properties: <ul class="ul" id="loioa8449849c81249bb8abd98b4b9342a4a__ul_ubc_wxg_fbb">
+							<li class="li"><p class="p"><samp class="ph codeph">wrapping</samp>: Determines whether text within a label
+									is wrapped. The default value is <samp class="ph codeph">false</samp>. If set
+									to <samp class="ph codeph">false</samp>, the label text only uses one line and
+									any exceeding text is truncated and replaced with an ellipsis.
+									When you use the <samp class="ph codeph">Label</samp> within a
+										<samp class="ph codeph">sap.m.Form</samp> the label text is automatically
+									displayed as wrapped.</p>
+<div class="fig fignone" id="loioa8449849c81249bb8abd98b4b9342a4a__fig_dv5_3yg_fbb"><div class="figcontainer">
+									<img class="image" id="loioa8449849c81249bb8abd98b4b9342a4a__image_yhy_4zg_fbb" src="loioa18049e61af44b0d9f766dc0d743ea0b_LowRes.png"/>
+								</div></div>
+</li>
+
+							<li class="li"><p class="p">
+									<samp class="ph codeph">displayOnly</samp>: Determines whether the label is in
+										<samp class="ph codeph">displayOnly</samp> mode. Controls in this mode are
+									non-interactive, non-focusable, cannot be edited, and do not
+									form part of the tab chain. The <samp class="ph codeph">displayOnly</samp>
+									property is used in <samp class="ph codeph">Form</samp> controls when they are
+									in preview mode.</p>
+</li>
+
+						</ul>
+<span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.Label.html" alt="../../docs/api/symbols/sap.m.Label.html" title="../../docs/api/symbols/sap.m.Label.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.Label/samples" alt="../../explored.html#/entity/sap.m.Label/samples" title="../../explored.html#/entity/sap.m.Label/samples">Samples</a>.</span></div>
+</li>
+
+				<li class="li"><p class="p"><samp class="ph codeph">sap.m.MessageStrip</samp> now supports a limited set of formatting
+						tags for the text. The available tags are <samp class="ph codeph">&lt;a&gt;</samp>,
+							<samp class="ph codeph">&lt;em&gt;</samp>, <samp class="ph codeph">&lt;strong&gt;</samp>, and
+							<samp class="ph codeph">&lt;u&gt;</samp>. To enable the additional formatting tags,
+						you have to set the <samp class="ph codeph">enableFormattedText</samp> property to
+							<samp class="ph codeph">true</samp>. <span class="ph">For
+							more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.MessageStrip.html" alt="../../docs/api/symbols/sap.m.MessageStrip.html" title="../../docs/api/symbols/sap.m.MessageStrip.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.MessageStripWithEnableFormattedText/preview" alt="../../explored.html#/sample/sap.m.sample.MessageStripWithEnableFormattedText/preview" title="../../explored.html#/sample/sap.m.sample.MessageStripWithEnableFormattedText/preview">Samples</a>.</span></p>
+</li>
+
+				<li class="li"><p class="p"><samp class="ph codeph">sap.m.Panel</samp> has a new parameter for the
+							<samp class="ph codeph">expand</samp> event that identifies whether the user or the
+						application is expanding or collapsing the <samp class="ph codeph">Panel</samp> control.
+						The parameter is called <samp class="ph codeph">triggeredByInteraction</samp> and is
+							<samp class="ph codeph">true</samp> when the panel is expanded as a result of a user
+						action. <span class="ph">For
+							more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.Panel.html" alt="../../docs/api/symbols/sap.m.Panel.html" title="../../docs/api/symbols/sap.m.Panel.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.PanelExpanded/preview" alt="../../explored.html#/sample/sap.m.sample.PanelExpanded/preview" title="../../explored.html#/sample/sap.m.sample.PanelExpanded/preview">Samples</a>.</span></p>
+</li>
+
+				<li class="li"><samp class="ph codeph">sap.m.PlanningCalendar</samp>:<ul class="ul" id="loioa8449849c81249bb8abd98b4b9342a4a__ul_ox5_4gk_dbb">
+						<li class="li"><p class="p">You can now directly navigate to a date with fewer clicks.</p>
+</li>
+
+						<li class="li"><p class="p">With the use of the new <samp class="ph codeph">builtInViews</samp> property the
+								app developer can now define which of the built-in views are
+								displayed. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.PlanningCalendar.html" alt="../../docs/api/symbols/sap.m.PlanningCalendar.html" title="../../docs/api/symbols/sap.m.PlanningCalendar.html">API Reference</a> and the
+										<a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.PlanningCalendarViews/preview" alt="../../explored.html#/sample/sap.m.sample.PlanningCalendarViews/preview" title="../../explored.html#/sample/sap.m.sample.PlanningCalendarViews/preview">sample</a>.</span></p>
+</li>
+
+						<li class="li"><p class="p">To save space, the days are now displayed on the same line as the
+								dates. If you want to display the day names on a separate line, set
+								the <samp class="ph codeph">showDayNamesLine</samp> property to
+									<samp class="ph codeph">true</samp>. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.PlanningCalendar.html" alt="../../docs/api/symbols/sap.m.PlanningCalendar.html" title="../../docs/api/symbols/sap.m.PlanningCalendar.html">API Reference</a> and the
+										<a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.PlanningCalendarSingle/preview" alt="../../explored.html#/sample/sap.m.sample.PlanningCalendarSingle/preview" title="../../explored.html#/sample/sap.m.sample.PlanningCalendarSingle/preview">sample</a>.</span></p>
+</li>
+
+					</ul>
+</li>
+
+				<li class="li"><p class="p"><samp class="ph codeph">sap.m.ProgressIndicator</samp>: You can now set the control in a
+						display-only state using the new <samp class="ph codeph">displayOnly</samp> property. When
+						set to <samp class="ph codeph">true</samp>, the control has different visualization and is
+						not active, not editable, and cannot be focused. <span class="ph">For
+							more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.ProgressIndicator.html" alt="../../docs/api/symbols/sap.m.ProgressIndicator.html" title="../../docs/api/symbols/sap.m.ProgressIndicator.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.ProgressIndicator/preview" alt="../../explored.html#/sample/sap.m.sample.ProgressIndicator/preview" title="../../explored.html#/sample/sap.m.sample.ProgressIndicator/preview">Samples</a>.</span></p>
+</li>
+
+				<li class="li"><p class="p"><samp class="ph codeph">sap.m.RatingIndicator</samp>: A new state can be set using the
+							<samp class="ph codeph">displayOnly</samp> property. It enables visually
+						distinguishable rendering of the <samp class="ph codeph">RatingIndicator</samp> (gray
+						color), denoting it as non-interactive in forms. All controls in this mode
+						are also non-focusable and not part of the tab chain. <span class="ph">For
+							more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.RatingIndicator.html" alt="../../docs/api/symbols/sap.m.RatingIndicator.html" title="../../docs/api/symbols/sap.m.RatingIndicator.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.RatingIndicator/preview" alt="../../explored.html#/sample/sap.m.sample.RatingIndicator/preview" title="../../explored.html#/sample/sap.m.sample.RatingIndicator/preview">Sample</a>.</span></p>
+<div class="fig fignone" id="loioa8449849c81249bb8abd98b4b9342a4a__fig_a1t_5zr_2bb"><div class="figcontainer">
+						<img class="image" id="loioa8449849c81249bb8abd98b4b9342a4a__image_yhq_rzr_2bb" src="loioe38d0425a1d44102a6834a9efe0d95be_LowRes.png"/>
+					</div></div>
+</li>
+
+				<li class="li"><p class="p"><samp class="ph codeph">sap.m.semantic.SemanticPage</samp>. You can now set the background
+						color of the page using the new <samp class="ph codeph">backgroundDesign</samp> property.
+							<span class="ph">For more information, see <a class="xref" href="4a97a07ec8f5441d901994d82eaab1f5.html" title="The sap.m.semantic.SemanticPage is an enhanced sap.m.Page that implements the SAP Fiori 1.0 design guidelines.">Semantic Page (sap.m)</a> and the <a class="xref" href="../../docs/api/symbols/sap.m.semantic.SemanticPage.html" alt="../../docs/api/symbols/sap.m.semantic.SemanticPage.html" title="../../docs/api/symbols/sap.m.semantic.SemanticPage.html">API Reference</a>.</span></p>
+</li>
+
+				<li class="li"><p class="p"><samp class="ph codeph">sap.m.UploadCollection</samp>:
+							<samp class="ph codeph">UploadCollectionItem</samp> has been extended to display
+						folders in the <samp class="ph codeph">UploadCollection</samp> control. When you click the
+						file name or item thumbnail, you can perform custom actions by adding an
+						event handler to the <samp class="ph codeph">press</samp> event. With the
+							<samp class="ph codeph">deletePress</samp> event, you can control the deletion of an
+						item. <span class="ph">For
+							more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.UploadCollectionItem.html" alt="../../docs/api/symbols/sap.m.UploadCollectionItem.html" title="../../docs/api/symbols/sap.m.UploadCollectionItem.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.UploadCollectionFolderHierarchy/preview" alt="../../explored.html#/sample/sap.m.sample.UploadCollectionFolderHierarchy/preview" title="../../explored.html#/sample/sap.m.sample.UploadCollectionFolderHierarchy/preview">sample</a>. </span></p>
+</li>
+
+				<li class="li"><p class="p"><samp class="ph codeph">sap.m.Tree</samp>: The <samp class="ph codeph">toggleOpenState</samp> event has
+						been added. <span class="ph">For
+							more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.Tree.html" alt="../../docs/api/symbols/sap.m.Tree.html" title="../../docs/api/symbols/sap.m.Tree.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.TreeJSONLazyLoading/preview" alt="../../explored.html#/sample/sap.m.sample.TreeJSONLazyLoading/preview" title="../../explored.html#/sample/sap.m.sample.TreeJSONLazyLoading/preview">sample</a>.</span></p>
+</li>
+
+				
+				
+				
+				<li class="li"><p class="p"><samp class="ph codeph">sap.ui.unified.Calendar</samp>: The days of the previous/next month
+						are no longer visible whenever the <samp class="ph codeph">sap.ui.unified.Calendar</samp>
+						displays multiple months. <span class="ph">For
+							more information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.unified.Calendar.html" alt="../../docs/api/symbols/sap.ui.unified.Calendar.html" title="../../docs/api/symbols/sap.ui.unified.Calendar.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.unified.sample.CalendarMultipleMonth/preview" alt="../../explored.html#/sample/sap.ui.unified.sample.CalendarMultipleMonth/preview" title="../../explored.html#/sample/sap.ui.unified.sample.CalendarMultipleMonth/preview">sample</a>.</span></p>
+</li>
+
+				
+				
+				<li class="li"><p class="p"><samp class="ph codeph">sap.ui.layout.form.Form</samp> and
+							<samp class="ph codeph">sap.ui.layout.form.SimpleForm</samp>: The samples, including
+						the descriptions, have been simplified and are now more consistent. <span class="ph">For
+							more information, see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.layout.form.Form/samples" alt="../../explored.html#/entity/sap.ui.layout.form.Form/samples" title="../../explored.html#/entity/sap.ui.layout.form.Form/samples">Form</a> and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.layout.form.SimpleForm/samples" alt="../../explored.html#/entity/sap.ui.layout.form.SimpleForm/samples" title="../../explored.html#/entity/sap.ui.layout.form.SimpleForm/samples">SimpleForm</a>
+					samples.</span></p>
+</li>
+
+				
+				
+			</ul>
+</div></div>
+
+		
+		
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="6660a59a8a22460a91fe65a0d96a567e.html">Previous Versions</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="2818f800e7424c5c91dbd495f8cb757b.html" title="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.46 to 1.48.">What's New in OpenUI5 1.48</a></div>
+<div><a class="link" href="4cf0986450ca43e5a8d12dd66e999a77.html" title="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.44 to 1.46.">What's New in OpenUI5 1.46</a></div>
+<div><a class="link" href="05ce1dc72c74475bada39234f6721f21.html" title="With this release, the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.42 to 1.44.">What's New in OpenUI5 1.44</a></div>
+<div><a class="link" href="4768f1ac7f0645929b4e9ea9981bb65e.html" title="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.40 to 1.42.">What's New in OpenUI5 1.42</a></div>
+<div><a class="link" href="e659bd2383524a05b716916bcda9b368.html" title="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.38 to 1.40.">What's New in OpenUI5 1.40</a></div>
+<div><a class="link" href="6a875f998994489483e8085705347d72.html#loio6a875f998994489483e8085705347d72" title="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.36 to 1.38.">What's New in OpenUI5 1.38</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

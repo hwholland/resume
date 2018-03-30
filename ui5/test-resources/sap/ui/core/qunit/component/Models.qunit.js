@@ -928,11 +928,9 @@ sap.ui.define([
 	});
 
 	QUnit.test("dynamic enhance of models and datasources", function(assert) {
-		this.stubGetUriParameters();
 
-		// @evo-todo using declare and define without name together was bad,
-		// using define with a name is better, but still the result is expected synchronously - will fail in future!
-		sap.ui.define("sap/ui/test/v2local/Component", ["sap/ui/core/UIComponent"], function(UIComponent) {
+		jQuery.sap.declare("sap.ui.test.v2local.Component");
+		sap.ui.define(["sap/ui/core/UIComponent"], function(UIComponent) {
 
 			var LocalComponent = UIComponent.extend("sap.ui.test.v2local.Component", {
 				metadata : {
@@ -944,15 +942,13 @@ sap.ui.define([
 				}
 			});
 
-			LocalComponent.prototype._initComponentModels = function(mModels, mDataSources, mCacheTokens) {
+			LocalComponent.prototype._initComponentModels = function(mModels, mDataSources) {
 
 				mModels = mModels || {};
 				mDataSources = mDataSources || {};
-				mCacheTokens = mCacheTokens || {};
-				mCacheTokens.dataSources = mCacheTokens.dataSources || {};
 
 				mModels["ODataModel"] = {
-					"type": "sap.ui.model.odata.v2.ODataModel",
+					"type": "sap.ui.model.odata.ODataModel",
 					"dataSource": "OData",
 					"settings": {
 						"useBatch": false,
@@ -975,9 +971,7 @@ sap.ui.define([
 					"type": "ODataAnnotation"
 				};
 
-				mCacheTokens.dataSources["/path/to/odata/service"] = "1234567890";
-
-				UIComponent.prototype._initComponentModels.call(this, mModels, mDataSources, mCacheTokens);
+				UIComponent.prototype._initComponentModels.call(this, mModels, mDataSources);
 
 			};
 
@@ -989,21 +983,21 @@ sap.ui.define([
 			name: "sap.ui.test.v2local"
 		});
 
-		// sap.ui.model.odata.v2.ODataModel
-		sinon.assert.callCount(this.modelSpy.odataV2, 1);
+		// sap.ui.model.odata.ODataModel
+		sinon.assert.callCount(this.modelSpy.odata, 1);
 
 		// model: "ODataModel"
-		sinon.assert.calledWithExactly(this.modelSpy.odataV2, {
-			serviceUrl: '/path/to/odata/service?sap-client=foo&sap-server=bar',
-			annotationURI: [ 'testdata/v2local/path/to/local/odata/annotations?sap-language=EN&sap-client=foo' ],
-			metadataUrlParams: { "sap-context-token": '1234567890', "sap-language": 'EN' },
+		sinon.assert.calledWithExactly(this.modelSpy.odata, {
+			serviceUrl: '/path/to/odata/service',
+			annotationURI: [ 'testdata/v2local/path/to/local/odata/annotations' ],
 			useBatch: false,
-			refreshAfterChange: false
+			refreshAfterChange: false,
+			json: true
 		});
 
 		// check if models are set on component (and save them internally)
 		this.assertModelInstances({
-			"ODataModel": sap.ui.model.odata.v2.ODataModel
+			"ODataModel": sap.ui.model.odata.ODataModel
 		});
 
 		// destroy the component

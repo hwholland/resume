@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.InputAssistedTabularSuggestions.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.InputAssistedTabularSuggestions.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.InputAssistedTabularSuggestions.V",
 			config : {
 				sample : {
 					files : [

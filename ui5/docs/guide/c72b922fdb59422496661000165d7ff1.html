@@ -6,8 +6,8 @@
 <meta name="abstract" content="In the examples used so far, we have used a read-only field to display the value of a model property. We will now change the user interface so that the first and last name fields are displayed using sap.m.Input fields and an additional check box control is used to enable or disable both input fields. This arrangement illustrates a feature known as &#34;two-way data binding&#34;. Now that the view contains more controls, we will also move the view definition into an XML file."/>
 <meta name="description" content="In the examples used so far, we have used a read-only field to display the value of a model property. We will now change the user interface so that the first and last name fields are displayed using sap.m.Input fields and an additional check box control is used to enable or disable both input fields. This arrangement illustrates a feature known as &#34;two-way data binding&#34;. Now that the view contains more controls, we will also move the view definition into an XML file."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8584859084208277"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8584859084208277"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8795770256663887"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8795770256663887"/>
 <title>Step 4: Two-Way Data Binding</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -31,7 +31,7 @@
 			<div class="fig fignone" id="loioc72b922fdb59422496661000165d7ff1__fig_r1j_pst_mr"><div class="figcontainer">
 				
 				<img class="image" id="loioc72b922fdb59422496661000165d7ff1__image_ebx_fng_5s" src="loio61d68f167778425bbdd2abd7d550ae65_HiRes.png"/>
-			<div class="figcap">Input fields can be enabled or disabled</div></div></div>
+			<div class="figcap">Figure 1: Input fields can be enabled or disabled</div></div></div>
 
 		</div></div>
 
@@ -101,32 +101,25 @@
 &lt;/html&gt;
     </pre></div>
 <p class="p">We
-				add the parameter <samp class="ph codeph">data-sap-ui-resourceroots</samp> to the
-				bootstrap.</p>
-<p class="p">We delete the code that assigned the <samp class="ph codeph">sap.m.Text</samp>
-				field to the UI and add an XML view that is identified by its resource
-				name.</p>
-<p class="p">You can now refresh the application preview and select or deselect the
-				checkbox. You will see that the input fields are automatically enabled or disabled
-				in response to the state of the checkbox.</p>
-<img class="image" id="loioc72b922fdb59422496661000165d7ff1__image_tgr_2wr_xs" src="loio61d68f167778425bbdd2abd7d550ae65_HiRes.png"/><img class="image" id="loioc72b922fdb59422496661000165d7ff1__image_qtd_fwr_xs" src="loio6222561089bb4559beafb33b456bc8d4_HiRes.png"/><p class="p">It is clear that we have not
-				written any code to transfer data between the user interface and the model, yet the
-					<samp class="ph codeph">Input</samp> controls are enabled or disabled according to the state
-				of the checkbox. This behaviour is the result of the fact that all <span class="ph"><span class="ph pname">OpenUI5</span></span> models implement
-				two-way data binding, and for JSON Models, two-way binding is the default
-				behavior.</p>
+				add the parameter <samp class="ph codeph">data-sap-ui-resourcerouts</samp> to the bootstrap.</p>
+<p class="p">We delete the code that assigned the
+					<samp class="ph codeph">sap.m.Text</samp> field to the UI and add an XML view that is identified by its resource name.</p>
+<p class="p">You can now refresh the
+				application preview and select or deselect the checkbox. You will see that the input fields are automatically enabled or disabled in response to
+				the state of the checkbox.</p>
+<img class="image" id="loioc72b922fdb59422496661000165d7ff1__image_tgr_2wr_xs" src="loio61d68f167778425bbdd2abd7d550ae65_HiRes.png"/><img class="image" id="loioc72b922fdb59422496661000165d7ff1__image_qtd_fwr_xs" src="loio6222561089bb4559beafb33b456bc8d4_HiRes.png"/><p class="p">It is clear that we have not written any code to transfer data between the user interface and
+				the model, yet the <samp class="ph codeph">Input</samp> controls are enabled or disabled according to the state of the checkbox. This behaviour is the result
+				of the fact that all <span class="ph"><span class="ph pname">OpenUI5</span></span> models implement two-way data binding, and for JSON
+				Models, two-way binding is the default behavior.</p>
 <div class="p">Two things are happening here:<ul class="ul" id="loioc72b922fdb59422496661000165d7ff1__ul_xmc_zvr_xs">
 					<li class="li">
-						<p class="p">Data binding allows the property of a control to derive its value from
-							any suitable property in a model.</p>
+						<p class="p">Data binding allows the property of a control to derive its value from any suitable property in a model.</p>
 
 					</li>
 
 					<li class="li">
-						<p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span>
-							automatically handles the transport of data both from the model to the
-							controls, and back from the controls to the model. This is called
-							two-way binding.</p>
+						<p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> automatically handles the transport of data both from the model
+							to the controls, and back from the controls to the model. This is called two-way binding.</p>
 
 					</li>
 
@@ -150,7 +143,7 @@
 </div>
 </div>
 <div class="relinfo"><div class="relinfotitle ">Related Information</div>
-<div><a class="link" href="68b9644a253741e8a4b9e4279a35c247.html" title="You use data binding to bind UI elements to data sources to keep the data in sync and allow data editing on the UI.">Data Binding</a></div>
+<div><a class="link" href="68b9644a253741e8a4b9e4279a35c247.html" title="You use data binding to bind two data sources or information sources together to keep them in synch: All changes in one data source are also reflected in the other data source.">Data Binding</a></div>
 </div>
 </div>
 </div></div>

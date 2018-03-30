@@ -35,8 +35,10 @@ irrespective of whether a &lt;code&gt;width&lt;/code&gt; is reached or the avail
             <documentation>Width of the form.</documentation>
         </property>
         <property group="Misc" type="sap.ui.core/boolean" name="editable">
-            <documentation>Applies a device-specific and theme-specific line height and label alignment to the form rows if the form has editable content.
+            <documentation>Applies a device-specific and theme-specific line-height to the form rows if the form has editable content.
 If set, all (not only the editable) rows of the form will get the line height of editable fields.
+
+The accessibility &lt;code&gt;aria-readonly&lt;/code&gt; attribute is set according to this property.
 
 &lt;b&gt;Note:&lt;/b&gt; The setting of the property has no influence on the editable functionality of the form's content.</documentation>
         </property>
@@ -167,13 +169,9 @@ The visualization of the different options depends on the used theme.</documenta
 &lt;li&gt;Add a &lt;code&gt;Label&lt;/code&gt; control to start a new row (&lt;code&gt;FormElement&lt;/code&gt;).&lt;/li&gt;
 &lt;li&gt;Add controls as input fields, text fields or other as needed.&lt;/li&gt;
 &lt;li&gt;Use &lt;code&gt;LayoutData&lt;/code&gt; to influence the layout for special cases in the single controls.
-For example, if a &lt;code&gt;ResponsiveLayout&lt;/code&gt; is used as a layout,
-the form content is weighted using weight 3 for the labels and weight 5 for the fields part.
-By default the label column is 192 pixels wide.
-If your input controls should influence their width, you can add &lt;code&gt;sap.ui.layout.ResponsiveFlowLayoutData&lt;/code&gt;
-to them via &lt;code&gt;setLayoutData&lt;/code&gt; method.
-Ensure that the sum of the weights in the &lt;code&gt;ResponsiveFlowLayoutData&lt;/code&gt; is not more than 5,
-as this is the total width of the input control part of each form row.&lt;/li&gt;
+For example, if a &lt;code&gt;ResponsiveLayout&lt;/code&gt; is used as a layout, the form content is weighted using weight 3 for the labels and weight 5 for the fields part. By default the label column is 192 pixels wide.
+If your input controls should influence their width, you can add &lt;code&gt;sap.ui.layout.ResponsiveFlowLayoutData&lt;/code&gt; to them via &lt;code&gt;setLayoutData&lt;/code&gt; method.
+Ensure that the sum of the weights in the &lt;code&gt;ResponsiveFlowLayoutData&lt;/code&gt; is not more than 5, as this is the total width of the input control part of each form row.&lt;/li&gt;
 &lt;/ul&gt;
 Example for a row where the &lt;code&gt;Input&lt;/code&gt; weight 4 and the second &lt;code&gt;Input&lt;/code&gt; weight 1 (using &lt;code&gt;ResponsiveLayout&lt;/code&gt;):
 &lt;pre&gt;
@@ -182,28 +180,20 @@ new sap.m.Input({value:&quot;Weight 4&quot;, layoutData: new sap.ui.layout.Respo
 new sap.m.Input({value:&quot;Weight 1&quot;, layoutData: new sap.ui.layout.ResponsiveFlowLayoutData({weight:1})}),
 &lt;/pre&gt;
 
-For example, if a &lt;code&gt;ResponsiveGridLayout&lt;/code&gt; is used as a layout, there are 12 cells in one row.
-Depending on the screen size the labels use the defined &lt;code&gt;labelSpan&lt;/code&gt;.
-The remaining cells are used for the fields (and &lt;code&gt;emptySpan&lt;/code&gt; if defined).
-The available cells are distributed to all fields in the row. If one field should use a fixed number of cells
+For example, if a &lt;code&gt;ResponsiveGridLayout&lt;/code&gt; is used as a layout, there are 12 cells in one row. Depending on the screen size the labels use the defined &lt;code&gt;labelSpan&lt;/code&gt;.
+The remaining cells are used for the fields (and &lt;code&gt;emptySpan&lt;/code&gt; if defined). The available cells are distributed to all fields in the row. If one field should use a fixed number of cells
 you can add &lt;code&gt;sap.ui.layout.GridData&lt;/code&gt; to them via &lt;code&gt;setLayoutData&lt;/code&gt; method.
 If there are additional fields in the row they will get the remaining cells.
 &lt;/ul&gt;
-Example for a row with two &lt;code&gt;Input&lt;/code&gt; controls where one uses four cells on small screens,
-one cell on medium screens and 2 cells on larger screens (using &lt;code&gt;ResponsiveGridLayout&lt;/code&gt;):
+Example for a row with two &lt;code&gt;Input&lt;/code&gt; controls where one uses four cells on small screens, one cell on medium screens and 2 cells on larger screens (using &lt;code&gt;ResponsiveGridLayout&lt;/code&gt;):
 &lt;pre&gt;
 new sap.m.Label({text:&quot;Label&quot;});
 new sap.m.Input({value:&quot;auto size&quot;}),
 new sap.m.Input({value:&quot;fix size&quot;, layoutData: new sap.ui.layout.GridData({span: &quot;XL1 L1 M2 S4&quot;})}),
 &lt;/pre&gt;
 
-&lt;b&gt;Warning:&lt;/b&gt; Do not put any layout or other container controls in here. This could damage the visual layout,
-keyboard support and screen-reader support. Only labels, titles, toolbars and form controls are allowed.
-Views are also not supported. Allowed form controls implement the interface &lt;code&gt;sap.ui.core.IFormContent&lt;/code&gt;.
-
-If editable controls are used as content, the &lt;code&gt;editable&lt;/code&gt; property must be set to &lt;code&gt;true&lt;/code&gt;,
-otherwise to &lt;code&gt;false&lt;/code&gt;. If the &lt;code&gt;editable&lt;/code&gt; property is set incorrectly, there will be visual issues
-like wrong label alignment or wrong spacing between the controls.</documentation>
+&lt;b&gt;Note:&lt;/b&gt; Do not put any layout controls in here. This could destroy the visual layout,
+keyboard support and screen-reader support.</documentation>
         </aggregation>
         <aggregation visibility="hidden" cardinality="0..1" type="sap.ui.layout/form/Form" name="form">
             <documentation>Hidden, for internal use only.</documentation>

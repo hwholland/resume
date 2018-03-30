@@ -86,7 +86,7 @@ This parameter is used when tokenChange type is &quot;tokenChanged&quot;.</docum
             </parameters>
         </event>
         <event allowPreventDefault="true" name="tokenUpdate">
-            <documentation>Fired when the tokens aggregation changed due to a user interaction (add / remove token)</documentation>
+            <documentation>Fired when the tokens aggregation changed (add / remove token)</documentation>
             <parameters>
                 <parameter type="sap.ui.core/string" name="type">
                     <documentation>Type of tokenChange event.
@@ -110,6 +110,9 @@ This parameter is used when tokenUpdate type is &quot;removed&quot;.</documentat
         </aggregation>
         <aggregation visibility="hidden" cardinality="0..1" type="sap.m/Tokenizer" name="tokenizer">
             <documentation>The tokenizer which displays the tokens</documentation>
+        </aggregation>
+        <aggregation visibility="hidden" cardinality="0..1" type="sap.ui.core/InvisibleText" name="_tokensInfo">
+            <documentation>Hidden text used for accesibility</documentation>
         </aggregation>
     </aggregations>
 </control>

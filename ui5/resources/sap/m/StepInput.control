@@ -55,14 +55,6 @@ In this case, use the regular {@link sap.m.Input} instead.&lt;/li&gt;
             <documentation>Increases/decreases the value of the input.
 &lt;ul&gt;&lt;b&gt;Note:&lt;/b&gt; &lt;li&gt;The value of the &lt;code&gt;step&lt;/code&gt; property should not contain more digits after the decimal point than what is set to the &lt;code&gt;displayValuePrecision&lt;/code&gt; property, as it may lead to an increase/decrease that is not visible for the user. For example, if the &lt;code&gt;value&lt;/code&gt; is set to 1.22 and the &lt;code&gt;displayValuePrecision&lt;/code&gt; is set to one digit after the decimal, the user will see 1.2. In this case, if the &lt;code&gt;value&lt;/code&gt; of the &lt;code&gt;step&lt;/code&gt; property is set to 1.005 and the user selects &lt;code&gt;increase&lt;/code&gt;, the resulting value will increase to 1.2261 but the displayed value will remain as 1.2 as it will be rounded to the first digit after the decimal point.&lt;/li&gt; &lt;li&gt;Depending on what is set for the &lt;code&gt;value&lt;/code&gt; and the &lt;code&gt;displayValuePrecision&lt;/code&gt; properties, it is possible the displayed value to be rounded to a higher number, for example to 3.0 when the actual value is 2.99.&lt;/li&gt;&lt;/ul&gt;</documentation>
         </property>
-        <property since="1.54" group="Data" defaultValue="AdditionAndSubtraction" type="sap.m/StepInputStepModeType" name="stepMode">
-            <documentation>Defines the calculation mode for the provided &lt;code&gt;step&lt;code&gt; and &lt;code&gt;largerStep&lt;/code&gt;.
-
-If the user increases/decreases the value by &lt;code&gt;largerStep&lt;/code&gt;, this calculation will consider
-it as well. For example, if the current &lt;code&gt;value&lt;/code&gt; is 3, &lt;code&gt;step&lt;/code&gt; is 5,
-&lt;code&gt;largerStep&lt;/code&gt; is 5 and the user chooses PageUp, the calculation logic will consider
-the value of 3x5=15 to decide what will be the next &lt;code&gt;value&lt;/code&gt;.</documentation>
-        </property>
         <property group="Data" defaultValue="2" type="sap.ui.core/float" name="largerStep">
             <documentation>Increases/decreases the value with a larger value than the set step only when using the PageUp/PageDown keys.
 Default value is 2 times larger than the set step.</documentation>
@@ -103,23 +95,6 @@ the field and a label (see aggregation &lt;code&gt;labelFor&lt;/code&gt; of &lt;
 
 The value should be between 0 (default) and 20.
 In case the value is not valid it will be set to the default value.</documentation>
-        </property>
-        <property since="1.54" group="Misc" type="sap.ui.core/string" name="description">
-            <documentation>Determines the description text after the input field, for example units of measurement, currencies.</documentation>
-        </property>
-        <property since="1.54" group="Appearance" defaultValue="50%" type="sap.ui.core/CSSSize" name="fieldWidth">
-            <documentation>Determines the distribution of space between the input field
-and the description text . Default value is 50% (leaving the other
-50% for the description).
-
-&lt;b&gt;Note:&lt;/b&gt; This property takes effect only if the
-&lt;code&gt;description&lt;/code&gt; property is also set.</documentation>
-        </property>
-        <property since="1.54" group="Appearance" defaultValue="End" type="sap.ui.core/TextAlign" name="textAlign">
-            <documentation>Defines the horizontal alignment of the text that is displayed inside the input field.</documentation>
-        </property>
-        <property since="1.54" group="Misc" defaultValue="FocusOut" type="sap.m/StepInputValidationMode" name="validationMode">
-            <documentation>Defines when the validation of the typed value will happen. By default this happens on focus out.</documentation>
         </property>
     </properties>
     <events>

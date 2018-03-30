@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -124,19 +124,19 @@
                            			script location points to an existing <span class="ph"><span class="ph pname">OpenUI5</span></span> installation.
                         </p>
                         
-                        		<pre class="pre codeblock prettyprint lang-html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-	&lt;head&gt;
+                        		<pre class="pre codeblock prettyprint lang-html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;head&gt;
 	&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
 	&lt;meta content=&quot;charset=utf-8&quot;&gt;
 	
 	&lt;title&gt;JSFragment used in XmlView&lt;/title&gt;
 	
-	&lt;!-- Load UI5, select theme and the &quot;sap.m&quot; control library --&gt;
+	&lt;!-- Load UI5, select theme and the &quot;commons&quot; control library --&gt;
 	&lt;script id=&apos;sap-ui-bootstrap&apos; type=&apos;text/javascript&apos;
 			src=&apos;/sapui5/resources/sap-ui-core.js&apos;
 			data-sap-ui-theme=&apos;sap_belize&apos;
-			data-sap-ui-libs=&apos;sap.m,sap.ui.layout&apos;&gt;&lt;/script&gt;
+			data-sap-ui-libs=&apos;sap.ui.commons&apos;&gt;&lt;/script&gt;
 	
 	
 	&lt;!-- DEFINE RE-USE COMPONENTS - NORMALLY DONE IN SEPARATE FILES --&gt;
@@ -151,8 +151,8 @@
 			createContent: function() {
 				// button text is bound to Model, &quot;press&quot; action is bound to Controller&apos;s event handler
 				return [ 
-					new sap.m.Button({text:&apos;my Fragment Button&apos;}),
-					new sap.m.Button(this.createId(&quot;btn2&quot;), {text:&apos;my second Fragment Button&apos;}) 
+					new sap.ui.commons.Button({text:&apos;my Fragment Button&apos;}),
+					new sap.ui.commons.Button(this.createId(&quot;btn2&quot;), {text:&apos;my second Fragment Button&apos;}) 
 				]
 			}
 		});
@@ -161,13 +161,13 @@
 	
 	&lt;!-- define an XMLView - normally done in a separate file --&gt;
 	&lt;script id=&quot;view1&quot; type=&quot;sapui5/xmlview&quot;&gt;
-		&lt;mvc:View xmlns:core=&quot;sap.ui.core&quot; xmlns:layout=&quot;sap.ui.layout&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot; xmlns=&quot;sap.m&quot;
+		&lt;mvc:View xmlns:core=&quot;sap.ui.core&quot; xmlns:layout=&quot;sap.ui.commons.layout&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot; xmlns=&quot;sap.ui.commons&quot;
 				controllerName=&quot;my.own.controller&quot; xmlns:html=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
 			&lt;layout:VerticalLayout id=&quot;vl&quot;&gt;
 				&lt;Button text=&quot;Find controls by ID&quot; press=&quot;findControls&quot;&gt;&lt;/Button&gt;
-				&lt;Text text=&quot;Fragment referenced inline, no Fragment ID:&quot; /&gt;
+				&lt;TextView text=&quot;Fragment referenced inline, no Fragment ID:&quot; /&gt;
 				&lt;core:Fragment fragmentName=&apos;my.own.frag&apos; type=&apos;JS&apos; /&gt;
-				&lt;Text text=&quot;Fragment referenced inline, with Fragment ID &apos;myFrag&apos;:&quot; /&gt;
+				&lt;TextView text=&quot;Fragment referenced inline, with Fragment ID &apos;myFrag&apos;:&quot; /&gt;
 				&lt;core:Fragment id=&quot;myFrag&quot; fragmentName=&apos;my.own.frag&apos; type=&apos;JS&apos; /&gt;
 			&lt;/layout:VerticalLayout&gt;
 		&lt;/mvc:View&gt; 
@@ -207,7 +207,8 @@
 	&lt;body class=&apos;sapUiBody&apos;&gt;
 		&lt;div id=&apos;content&apos;&gt;&lt;/div&gt;
 	&lt;/body&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;
+</pre>
                         
                         	</div>
                      

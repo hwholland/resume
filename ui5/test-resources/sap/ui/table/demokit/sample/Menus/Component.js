@@ -5,11 +5,7 @@ sap.ui.define([
 
 	return UIComponent.extend("sap.ui.table.sample.Menus.Component", {
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.table.sample.Menus.View",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.table.sample.Menus.View",
 			dependencies : {
 				libs : [
 					"sap.ui.table",

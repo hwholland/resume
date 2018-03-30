@@ -6,8 +6,8 @@
 <meta name="abstract" content="You use busy indicators to inform users that something is going on in the background, for example, some data is being fetched from the back end and the user has to wait. As long as the busy indicator is shown, either all or a specific part of the UI is blocked, and no user interaction is possible."/>
 <meta name="description" content="You use busy indicators to inform users that something is going on in the background, for example, some data is being fetched from the back end and the user has to wait. As long as the busy indicator is shown, either all or a specific part of the UI is blocked, and no user interaction is possible."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6517977010397873"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6517977010397873"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=25928613540509227"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=25928613540509227"/>
 <title>Busy Indicators</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -91,21 +91,31 @@
 					<samp class="ph codeph">busy</samp> are skipped and the focus jumps to the next control.</p>
 
 			<div class="p">Here's how to do it:
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">	var oInput = new sap.m.Input({
-		value:'Hello World'
-	});
-...
-	<span class="ph emphasis emphasis">oInput.setBusy(true);</span>
-</pre></div>
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var oMyListBox = new sap.ui.commons.ListBox({
+    tooltip : "Country",
+    editable : false,
+    width : "200px",
+    height : "200px",
+    items : [ new sap.ui.core.ListItem({
+        text : "I'm an item, and you?"
+    }) ]
+ }).placeAt("uiArea1");
+
+<span class="ph emphasis emphasis">oMyListBox.setBusy(true);</span></pre></div>
 The
 				following code shows how you define the default state of a control as
 					<samp class="ph codeph">busy</samp> so that it will be displayed as busy when it has been
-				rendered:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">	var oInput = new sap.m.Input({
-		value:'Hello World',
-		<span class="ph emphasis emphasis">busy: true
+				rendered:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var oMyListBox = new sap.ui.commons.ListBox({
+    <span class="ph emphasis emphasis">busy : true,
 </span>
-	});
-</pre></div>
+    tooltip : "Country",
+    editable : false,
+    width : "200px",
+    height : "200px",
+    items : [ new sap.ui.core.ListItem({
+        text : "I'm an item, and you?"
+    }) ]
+ }).placeAt("uiArea1");</pre></div>
 </div>
 
 			<div class="p">To release the control's busy state again, the same API can be used. This has to be done by

@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
@@ -15,24 +15,12 @@ sap.ui.require([
 
 	//*****************************************************************************
 	opaTest("Start sales orders TP100 app and check log", function (Given, When, Then) {
-		var aExpectedLogs = [{
-				component : "sap.ui.model.odata.v4.lib._V2MetadataConverter",
-				level : jQuery.sap.log.Level.WARNING,
-				message: "Unsupported annotation 'sap:supported-formats'"
-			}, {
-				component : "sap.ui.model.odata.v4.lib._V2MetadataConverter",
-				level : jQuery.sap.log.Level.WARNING,
-				message: "Unsupported annotation 'sap:semantics'"
-			}],
-			i;
-
-		for (i = 0; i < 16; i++) {
-			aExpectedLogs.push({
-				component : "sap.ui.model.odata.v4.lib._V2MetadataConverter",
-				level : jQuery.sap.log.Level.WARNING,
-				message: "Unsupported annotation 'sap:value-list'"
-			});
-		}
+		var oExpectedLog = {
+			component : "sap.ui.model.odata.v4.lib._V2MetadataConverter",
+			level : jQuery.sap.log.Level.WARNING,
+			message: "Unsupported 'sap:action-for' at FunctionImport '"
+				+ "SEPM_C_SLSORDER_TP_100Set_to_delivered', removing this FunctionImport"
+			};
 
 		Given.iStartMyUIComponent({
 			componentConfig : {
@@ -44,7 +32,7 @@ sap.ui.require([
 		When.onTheMainPage.selectSalesOrder(1);
 		When.onTheMainPage.pressMoreButton(/SalesOrderItems-trigger/);
 
-		Then.onAnyPage.checkLog(aExpectedLogs);
+		Then.onAnyPage.checkLog([oExpectedLog]);
 		Then.iTeardownMyUIComponent();
 	});
 });

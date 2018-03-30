@@ -1,32 +1,19 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.CheckBox.
-sap.ui.define([
-	'jquery.sap.global',
+sap.ui.define(['jquery.sap.global',
 	'./Label',
 	'./library',
 	'sap/ui/Device',
 	'sap/ui/core/Control',
 	'sap/ui/core/IconPool',
 	'sap/ui/core/EnabledPropagator',
-	'sap/ui/core/library',
-	'./CheckBoxRenderer'
-],
-	function(
-	jQuery,
-	Label,
-	library,
-	Device,
-	Control,
-	IconPool,
-	EnabledPropagator,
-	coreLibrary,
-	CheckBoxRenderer
-	) {
+	'sap/ui/core/library'],
+	function(jQuery, Label, library, Device, Control, IconPool, EnabledPropagator, coreLibrary) {
 	"use strict";
 
 	// shortcut for sap.ui.core.ValueState
@@ -60,7 +47,7 @@ sap.ui.define([
 	 * <h3>Usage</h3>
 	 *
 	 * You can set the width of the element containing the box and the label manually with the use
-	 * of the <code>width</code> property. If the text exceeds the available width, it is truncated.
+	 * of the <code>width<code> property. If the text exceeds the available width, it is truncated.
 	 *
 	 * <b>Note:</b> When <code>useEntireWidth</code> property is set to <code>true</code>, the value of the
 	 * <code>width</code> property is applied to the control as a whole (box and label). If
@@ -69,9 +56,9 @@ sap.ui.define([
 	 * The touchable area for toggling the <code>CheckBox</code> ends where the text ends.
 	 *
 	 * If the width allows more space than the text requires, white space is added.
-	 * The text can be positioned manually in this space using the <code>textAlign</code> property.
+	 * The text can be positioned manually in this space using the <code>textAlign<code> property.
 	 *
-	 * <b>Note:</b> Keep in mind that setting the <code>textAlign</code> property to <code>Right</code>
+	 * <b>Note:</b> Keep in mind that setting the <code>textAlign<code> property to <code>Right</code>
 	 * can result in a large amount of white space between the box and the text.
 	 *
 	 * You can disable the <code>CheckBox</code> by setting the <code>enabled</code> property to <code>false</code>,
@@ -83,7 +70,7 @@ sap.ui.define([
 	 * @implements sap.ui.core.IFormContent
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -156,28 +143,7 @@ sap.ui.define([
 			 * Accepts the core enumeration ValueState.type that supports 'None', 'Error', 'Warning' and 'Success'.
 			 * @since 1.38
 			 */
-			valueState : {type : "sap.ui.core.ValueState", group : "Data", defaultValue : ValueState.None},
-
-			/**
-			 * Determines whether the <code>CheckBox</code> is in display only state.
-			 *
-			 * When set to <code>true</code>, the <code>CheckBox</code> is not interactive, not editable, not focusable
-			 * and not in the tab chain. This setting is used for forms in review mode.
-			 *
-			 * <Note:> When the property <code>enabled</code> is set to <code>false</code> this property has no effect.
-			 * @since 1.54
-			 */
-			displayOnly : {type : "boolean", group : "Behavior", defaultValue : false},
-
-			/**
-			 * Determines whether the label's text is wrapped.
-			 *
-			 * When set to <code>false</code> (default), the label's text
-			 * is truncated with ellipsis at the end.
-			 *
-			 * @since 1.54
-			 */
-			wrapping: {type : "boolean", group : "Appearance", defaultValue : false}
+			valueState : {type : "sap.ui.core.ValueState", group : "Data", defaultValue : ValueState.None}
 		},
 		aggregations: {
 			/**
@@ -212,7 +178,7 @@ sap.ui.define([
 				}
 			}
 		},
-		designtime: "sap/m/designtime/CheckBox.designtime"
+		designTime : true
 	}});
 
 	EnabledPropagator.call(CheckBox.prototype);
@@ -291,16 +257,6 @@ sap.ui.define([
 		return this;
 	};
 
-	CheckBox.prototype.setWrapping = function(bWrap) {
-		var oLabel = this._getLabel();
-
-		this.setProperty("wrapping", bWrap, true);
-		oLabel.setWrapping(bWrap);
-		this.$().toggleClass("sapMCbWrapped", bWrap);
-
-		return this;
-	};
-
 	/**
 	 * Add ActiveState to non-supported mobile platform
 	 * @private
@@ -321,7 +277,7 @@ sap.ui.define([
 	/**
 	 * Event handler called when the CheckBox is touched.
 	 *
-	 * @param {jQuery.Event} oEvent The <code>touchstart</code> event object
+	 * @param {jQuery.Event} oEvent
 	 */
 	CheckBox.prototype.ontouchstart = function(oEvent) {
 		//for control who need to know if they should handle events from the CheckBox control
@@ -331,10 +287,10 @@ sap.ui.define([
 	/**
 	 * Event handler called when the CheckBox is tapped.
 	 *
-	 * @param {jQuery.Event} oEvent The <code>tap</code> event object
+	 * @param {jQuery.Event} oEvent
 	 */
 	CheckBox.prototype.ontap = function(oEvent) {
-		if (this.getEnabled() && this.getEditable() && !this.getDisplayOnly()) {
+		if (this.getEnabled() && this.getEditable()) {
 			this.$().focus(); // In IE taping on the input doesn`t focus the wrapper div.
 			var bSelected = !this.getSelected();
 			this.setSelected(bSelected);
@@ -348,7 +304,7 @@ sap.ui.define([
 	/**
 	 * Event handler called when the space key is pressed onto the Checkbox.
 	 *
-	 * @param {jQuery.Event} oEvent The SPACE keyboard key event object
+	 * @param {jQuery.Event} oEvent
 	 */
 	CheckBox.prototype.onsapspace = function(oEvent) {
 		this.ontap(oEvent);
@@ -362,7 +318,7 @@ sap.ui.define([
 	/**
 	 * Event handler called when the enter key is pressed onto the Checkbox.
 	 *
-	 * @param {jQuery.Event} oEvent The ENTER keyboard key event object
+	 * @param {jQuery.Event} oEvent
 	 */
 	CheckBox.prototype.onsapenter = function(oEvent) {
 		this.ontap(oEvent);
@@ -372,7 +328,7 @@ sap.ui.define([
 	 * Sets the tab index of the control
 	 *
 	 * @param {int} iTabIndex The tab index should be greater than or equal -1
-	 * @returns {sap.m.CheckBox} The <code>sap.m.CheckBox</code> instance
+	 * @return {sap.m.CheckBox}
 	 * @since 1.16
 	 * @protected
 	 */
@@ -393,7 +349,7 @@ sap.ui.define([
 		if ( this.hasOwnProperty("_iTabIndex") ) {
 			return this._iTabIndex;
 		}
-		return (this.getEnabled() && !this.getDisplayOnly()) ? 0 : -1;
+		return this.getEnabled() ? 0 : -1 ;
 	};
 
 	/**
@@ -436,7 +392,6 @@ sap.ui.define([
 	/**
 	 * @see sap.ui.core.Control#getAccessibilityInfo
 	 * @protected
-	 * @returns {Object} The <code>sap.m.CheckBox</code> accessibility information
 	 */
 	CheckBox.prototype.getAccessibilityInfo = function() {
 		var oBundle = sap.ui.getCore().getLibraryResourceBundle("sap.m");
@@ -444,7 +399,7 @@ sap.ui.define([
 			role: "checkbox",
 			type: oBundle.getText("ACC_CTR_TYPE_CHECKBOX"),
 			description: (this.getText() || "") + (this.getSelected() ? (" " + oBundle.getText("ACC_CTR_STATE_CHECKED")) : ""),
-			focusable: this.getEnabled() && !this.getDisplayOnly(),
+			focusable: this.getEnabled(),
 			enabled: this.getEnabled(),
 			editable: this.getEditable()
 		};

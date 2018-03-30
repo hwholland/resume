@@ -6,8 +6,8 @@
 <meta name="abstract" content=""/>
 <meta name="description" content=""/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6901153577191103"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6901153577191103"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=06836691810427364"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=06836691810427364"/>
 <title>Mock Server: Frequently Asked Questions</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -29,18 +29,10 @@
 
 		</div></div>
 
-		<div class="section"><div class="section_title">What module is needed?</div><div type="What module is needed?">
+		<div class="section"><div class="section_title">What require() is needed?</div><div type="What require() is needed?">
 			
-			<div class="p">The mock server is contained in module <samp class="ph codeph">sap/ui/core/util/MockServer</samp>. The
-				module can either be added to the list of dependencies in a
-					<samp class="ph codeph">sap.ui.define</samp> call or it can be required with a call to
-					<samp class="ph codeph">sap.ui.require</samp>:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([…, 'sap/ui/core/util/MockServer', ...], function(…, MockServer, …) { 
-    var oMyMockServer = new MockServer(...);
-});
-
-sap.ui.require(['sap/ui/core/util/MockServer'], function(MockServer) {
-    var oMyMockServer = new MockServer(…);
-});</pre></div>
+			<div class="p">The mock server needs the following <samp class="ph codeph">require</samp> statement:
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">jQuery.sap.require("sap.ui.core.util.MockServer"); </pre></div>
 </div>
 
 		</div></div>
@@ -117,20 +109,11 @@ sap.ui.require(['sap/ui/core/util/MockServer'], function(MockServer) {
 				them.</p>
 
 			<div class="p">The code snippet shows an example:
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([…, 
-    'sap/ui/core/util/MockServer',
-    'sap/ui/model/odata/v2/ODataModel',
-     ...
-], function(…, MockServer, ODataModel, …) {
-
-    var sUri = "/mock/";
-    var oMockServer = new MockServer({
-        rootUri : sUri
-    });
-    var oModel = new ODataModel(sUri, true);
-    ...
-
-});</pre></div>
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var sUri = "/mock/";
+var oMockServer = new sap.ui.core.util.MockServer({
+    rootUri : sUri
+});
+var oModel = new sap.ui.model.odata.ODataModel(sUri, true);</pre></div>
 </div>
 
 		</div></div>
@@ -164,11 +147,11 @@ sap.ui.require(['sap/ui/core/util/MockServer'], function(MockServer) {
 		<div class="section"><div class="section_title">How can I use the mock server in a QUnit?</div><div type="How can I use the mock server in a QUnit?">
 			
 			<div class="p">You can set up the mock server in the setup function; example:
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.require(['sap/ui/core/util/MockServer'], function(MockServer) {
-	...
-        QUnit.module("OData data provider", {
-            beforeEach : function() {
-                this._oMockServer = new MockServer({ rootUri: "/model/"});
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var _oMockServer = undefined;
+        module("OData data provider", {
+            setup : function() {
+                jQuery.sap.require("sap.ui.app.MockServer");
+                this._oMockServer = new sap.ui.app.MockServer({ rootUri: "/model/"});
                 this._oMockServer.simulate("../../../../qunit/service/metadata.xml");
                 this._oMockServer.start();
             },
@@ -176,9 +159,7 @@ sap.ui.require(['sap/ui/core/util/MockServer'], function(MockServer) {
                 this._oMockServer.stop();
             }
         });
-
-	...
-});</pre></div>
+</pre></div>
 </div>
 
 			
@@ -213,8 +194,8 @@ oMockServer.detachAfter(sap.ui.core.util.MockServer.HTTPMETHOD.GET, fnCbPost);</
 
 		<div class="section"><div class="section_title">What do I need to do to run an OPA test with mock server</div><div type="What do I need to do to run an OPA test with mock server">
 			
-			<p class="p">Start your app in mock mode. It is not possible to declare a mock server outside the app's
-				context.</p>
+			<p class="p">Start you app in mock mode. It is not possible to declare a mock server outside the
+				app's context.</p>
 
 		</div></div>
 

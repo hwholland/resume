@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.define([
@@ -25,7 +25,7 @@ sap.ui.define([
 	ValueHelp = Control.extend("sap.ui.core.sample.common.ValueHelp", {
 		metadata : {
 			properties : {
-				enabled : {type: "boolean", defaultValue: true, bindable: "bindable"},
+				editable : {type: "boolean", defaultValue: true, bindable: "bindable"},
 				value: {type: "string", group: "Data", defaultValue: null, bindable: "bindable"}
 			},
 			aggregations : {
@@ -70,12 +70,6 @@ sap.ui.define([
 			return this;
 		},
 
-		getAccessibilityInfo : function() {
-			var oField = this.getAggregation("field");
-
-			return oField && oField.getAccessibilityInfo();
-		},
-
 		removeAssociation : function() {
 			var oField = this.getAggregation("field");
 
@@ -101,6 +95,7 @@ sap.ui.define([
 						case ValueListType.Standard:
 							oField = new Input({
 								change: that.onValueChange.bind(that),
+								editable : true,
 								id : that.getId() + "-field",
 								showValueHelp : true,
 								value : that.getValue(),
@@ -109,6 +104,7 @@ sap.ui.define([
 							break;
 						case ValueListType.Fixed:
 							oField = new ComboBox({
+								editable : true,
 								id : that.getId() + "-field",
 								loadItems : that.onLoadItems.bind(that),
 								value : that.getValue()
@@ -116,6 +112,7 @@ sap.ui.define([
 							break;
 						default:
 							oField = new Input({
+								editable : that.getEditable(),
 								id : that.getId() + "-field",
 								showValueHelp : false,
 								value : that.getValue()
@@ -214,12 +211,7 @@ sap.ui.define([
 					var sParameterPath = oParameter.ValueListProperty;
 
 					// TODO use Label annotation
-					oTable.addColumn(new Column({
-						header : new Text({
-							text : sParameterPath,
-							wrapping : false
-						})
-					}));
+					oTable.addColumn(new Column({header : new Text({text : sParameterPath})}));
 					oColumnListItem.addCell(new Text({text : "{" + sParameterPath + "}"}));
 				});
 				oTable.attachSelectionChange(onSelectionChange);
@@ -232,12 +224,6 @@ sap.ui.define([
 				jQuery.sap.log.error(oError, undefined,
 					"sap.ui.core.sample.common.ValueHelp");
 			});
-		},
-
-		setEnabled : function (bEnabled) {
-			if (this.getAggregation("field")) {
-				this.getAggregation("field").setEnabled(bEnabled);
-			}
 		},
 
 		setValue : function (sValue) {

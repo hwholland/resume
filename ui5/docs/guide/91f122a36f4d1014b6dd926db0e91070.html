@@ -6,8 +6,8 @@
 <meta name="abstract" content="The resource model is used as a wrapper for resource bundles. In data binding you use the resource model instance, for example, to bind texts of a control to language-dependent resource bundle properties."/>
 <meta name="description" content="The resource model is used as a wrapper for resource bundles. In data binding you use the resource model instance, for example, to bind texts of a control to language-dependent resource bundle properties."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=10547895258902795"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=10547895258902795"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8392633652958337"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8392633652958337"/>
 <title>Resource Model</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -36,15 +36,9 @@
 
 		<p class="p">After the resource model has been instantiated, you have a model containing the resource bundle texts as data.</p>
 
-		<div class="section" id="loio91f122a36f4d1014b6dd926db0e91070__section_fkt_njk_zcb"><div class="sectiondiv imagemap-wrapper imagemap_tooltips" id="loio91f122a36f4d1014b6dd926db0e91070__im_overall1">
-				
-				<div class="fig imagemap" id="loio91f122a36f4d1014b6dd926db0e91070____im_imagemap1"><div class="note note"><span class="insertion notetitle">Note</span>The following image contains links to more information.</div><img usemap="#d7092177e55" border="0" class="image" id="loio91f122a36f4d1014b6dd926db0e91070__image_qnz_s11_w5" src="loio46a5dad5f10e47fb8142fe9994dfbcca_LowRes.png"/>
-<map name="d7092177e55" id="d7092177e55">
-<area href="91f27e3e6f4d1014b6dd926db0e91070.html" id="im1" alt="The view in the Model View Controller concept is responsible for defining and rendering the UI. OpenUI5 supports predefined view types." title="The view in the Model View Controller concept is responsible for defining and rendering the UI. OpenUI5 supports predefined view types." shape="rect" coords="0,92,227,209"/>
-<area href="91f225ce6f4d1014b6dd926db0e91070.html" id="im2" alt="A resource bundle file is a Java properties file (as described in the Javadoc of class java.util.Properties). It contains key-value pairs where the values are the language-dependent texts and the keys are language-independent and used by the application to identify and access the corresponding values." title="A resource bundle file is a Java properties file (as described in the Javadoc of class java.util.Properties). It contains key-value pairs where the values are the language-dependent texts and the keys are language-independent and used by the application to identify and access the corresponding values." shape="rect" coords="652,0,870,302"/>
-</map></div>
-			</div>
-		</div>
+		<div class="fig fignone" id="loio91f122a36f4d1014b6dd926db0e91070__fig_xrl_s11_w5"><div class="figcontainer">
+			<img class="image" id="loio91f122a36f4d1014b6dd926db0e91070__image_qnz_s11_w5" src="loio46a5dad5f10e47fb8142fe9994dfbcca_LowRes.png"/>
+		</div></div>
 
 	</div>
 
@@ -69,8 +63,8 @@
 CLOSE_BUTTON_TEXT=Close
 OPEN_BUTTON_TEXT=Open
 CANCEL_BUTTON_TEXT=Cancel</pre></div>
-Binding
-			paths within the model:
+
+			...Binding paths within the model:
 			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 CLOSE_BUTTON_TEXT
 OPEN_BUTTON_TEXT
@@ -106,15 +100,45 @@ CANCEL_BUTTON_TEXT</pre></div>
 			</li>
 
 			<li class="li">
-				<div class="p">To bind this resource bundle content in XML views, insert the following code:
-					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;core:View resourceBundleName="myBundle"
+				<div class="p">To bind this resource bundle content, insert the following code depending on the
+					view type: <ul class="ul" id="loio7341396326c34631813c805d44058b05__ul_bbm_nxy_n1b">
+						<li class="li">
+							<div class="p">For JSON views, insert the following
+								code:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-json">
+{	"Type": "sap.ui.core.JSONView",
+	 "controllerName":"my.own.views.test",
+ 	"resourceBundleName":"myBundle",
+ 	"resourceBundleAlias":"i18n",
+ 	"content": [{
+    		"Type":"sap.ui.commons.Panel",
+    		"id":"myPanel",
+    		"content":[{
+       			"Type":"sap.ui.commons.Button",
+       			"id":"Button1",
+       			"text":"{i18n&gt;MY_TEXT}",
+       			"press": "doIt"
+    		}]
+ 	}]
+}</pre></div>
+</div>
+
+						</li>
+
+						<li class="li">
+							<div class="p">For XML views, insert the following code:
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;core:View resourceBundleName="myBundle"
            resourceBundleAlias="i18n" 
-           controllerName="sap.hcm.Address" xmlns="sap.m" xmlns:core="sap.ui.core"
+           controllerName="sap.hcm.Address" xmlns="sap.ui.commons" xmlns:core="sap.ui.core"
            xmlns:html="http://www.w3.org/1999/xhtml"&gt;
    &lt;Panel&gt;
       &lt;Button text="{i18n&gt;MY_TEXT}"/&gt;
    &lt;/Panel&gt;
 &lt;core:View&gt;</pre></div>
+</div>
+
+						</li>
+
+					</ul>
 </div>
 
 			</li>

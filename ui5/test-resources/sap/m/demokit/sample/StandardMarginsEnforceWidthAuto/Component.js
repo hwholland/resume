@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.StandardMarginsEnforceWidthAuto.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.StandardMarginsEnforceWidthAuto.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.StandardMarginsEnforceWidthAuto.Page",
 			dependencies : {
 				libs : [
 					"sap.m",

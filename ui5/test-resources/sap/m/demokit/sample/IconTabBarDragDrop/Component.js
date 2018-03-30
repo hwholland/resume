@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.IconTabBarDragDrop.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.IconTabBarDragDrop.IconTabBarDragDrop",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.IconTabBarDragDrop.IconTabBarDragDrop",
 			dependencies : {
 				libs : [
 					"sap.m"

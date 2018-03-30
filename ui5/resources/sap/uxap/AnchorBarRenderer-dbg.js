@@ -1,11 +1,11 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-sap.ui.define(["sap/m/ToolbarRenderer", "sap/ui/core/Renderer", "sap/m/BarInPageEnabler", "./library"],
-	function (ToolbarRenderer, Renderer, BarInPageEnabler, library) {
+sap.ui.define(["sap/m/ToolbarRenderer", "sap/ui/core/Renderer", "sap/m/BarInPageEnabler", "./AnchorBar", "./library"],
+	function (ToolbarRenderer, Renderer, BarInPageEnabler, AnchorBar, library) {
 		"use strict";
 
 		/**
@@ -13,12 +13,6 @@ sap.ui.define(["sap/m/ToolbarRenderer", "sap/ui/core/Renderer", "sap/m/BarInPage
 		 * @static
 		 */
 		var AnchorBarRenderer = Renderer.extend(ToolbarRenderer);
-
-		var _AnchorBarHierarchicalSelectMode = AnchorBarRenderer._AnchorBarHierarchicalSelectMode = {
-			Icon: "icon",
-			Text: "text"
-		};
-
 		AnchorBarRenderer.renderBarContent = function (rm, oToolbar) {
 			if (oToolbar._bHasButtonsBar) {
 
@@ -64,7 +58,7 @@ sap.ui.define(["sap/m/ToolbarRenderer", "sap/ui/core/Renderer", "sap/m/BarInPage
 
 		AnchorBarRenderer.decorateRootElement = function (rm, oToolbar) {
 			ToolbarRenderer.decorateRootElement.apply(this, arguments);
-			if (oToolbar._sHierarchicalSelectMode === _AnchorBarHierarchicalSelectMode.Icon) {
+			if (oToolbar._sHierarchicalSelectMode === AnchorBar._hierarchicalSelectModes.Icon) {
 				rm.addClass("sapUxAPAnchorBarOverflow");
 			}
 		};

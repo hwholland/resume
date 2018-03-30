@@ -2829,56 +2829,6 @@
 		oInput.destroy();
 	});
 
-	QUnit.test("Tabular Suggestions - Set selection via keyboard", function(assert) {
-		var oInput = createInputWithTabularSuggestions(),
-				fnChangeCallback = this.spy(),
-				fnSuggestionItemSelectedCallback = this.spy();
-
-		oInput.attachChange(fnChangeCallback);
-		oInput.attachSuggestionItemSelected(fnSuggestionItemSelectedCallback);
-
-		oInput.placeAt("content");
-		sap.ui.getCore().applyChanges();
-
-		oInput._$input.focus().val("Au").trigger("input");
-		this.clock.tick(300);
-
-		sap.ui.test.qunit.triggerKeydown(document.activeElement, "40"); // bottom (arrow)
-		sap.ui.test.qunit.triggerKeydown(document.activeElement, "ENTER");
-
-		assert.equal(fnChangeCallback.callCount, 1, "change event is fired once");
-		assert.equal(fnSuggestionItemSelectedCallback.callCount, 1, "suggestionItemSelected event is fired once");
-		assert.equal(fnChangeCallback.calledAfter(fnSuggestionItemSelectedCallback), true, "change event is called after suggestionItemSelected event");
-
-		oInput.destroy();
-	});
-
-	QUnit.test("Tabular Suggestions - Set selection on focus out", function(assert) {
-		var oInput = createInputWithTabularSuggestions(),
-				fnChangeCallback = this.spy(),
-				fnSuggestionItemSelectedCallback = this.spy();
-
-		oInput.attachChange(fnChangeCallback);
-		oInput.attachSuggestionItemSelected(fnSuggestionItemSelectedCallback);
-
-		oInput.placeAt("content");
-		sap.ui.getCore().applyChanges();
-
-		oInput._$input.focus().val("Au").trigger("input");
-		this.clock.tick(300);
-
-		sap.ui.test.qunit.triggerKeydown(document.activeElement, "40"); // bottom (arrow)
-
-		// simulate focus out
-		oInput._oSuggestionPopup.close();
-
-		assert.equal(fnChangeCallback.callCount, 1, "change event is fired once");
-		assert.equal(fnSuggestionItemSelectedCallback.callCount, 1, "suggestionItemSelected event is fired once");
-		assert.equal(fnChangeCallback.calledAfter(fnSuggestionItemSelectedCallback), true, "change event is called after suggestionItemSelected event");
-
-		oInput.destroy();
-	});
-
 	QUnit.test("Tabular Suggestions - Set selected row filter function", function(assert) {
 		var oInput = createInputWithTabularSuggestions();
 		// Remove the SuggestionRowValidator function for the test.
@@ -2984,59 +2934,6 @@
 		oInput.destroy();
 
 	});
-
-	QUnit.module("Input clone", {
-		beforeEach: function () {
-			this.oTabularInputToClone = createInputWithTabularSuggestions();
-			// Remove the SuggestionRowValidator function for the cloning tests.
-			this.oTabularInputToClone.setSuggestionRowValidator(null);
-			this.oInputToClone = new sap.m.Input("inp2", {
-				showSuggestion: true,
-				suggestionItems: [
-					new sap.ui.core.Item({ text: "Test 1" }),
-					new sap.ui.core.Item({ text: "Test 2" }),
-					new sap.ui.core.Item({ text: "Test 3" })
-				]
-			});
-		},
-		afterEach: function () {
-			this.oTabularInputToClone.destroy();
-			this.oInputToClone.destroy();
-		}
-	});
-
-	QUnit.test("List Suggestions - cloning", function (assert) {
-		var oInputClone  = this.oInputToClone.clone();
-		assert.equal(oInputClone.getSuggestionItems().length, 3, "Should have 3 suggestion items");
-	});
-
-	QUnit.test("Tabular Suggestions - cloning", function (assert) {
-		var oInputClone  = this.oTabularInputToClone.clone();
-
-		assert.equal(oInputClone.getSuggestionRows().length, 10, "Should have 3 suggestion rows");
-		assert.equal(oInputClone.getSuggestionColumns().length, 5, "Should have 4 suggestion columns");
-	});
-
-	QUnit.test("Tabular Suggestions - fnRowResultFilter cloning", function (assert) {
-		var fnCallback = sinon.spy();
-		this.oTabularInputToClone.setRowResultFunction(fnCallback);
-		var oInputClone  = this.oTabularInputToClone.clone();
-
-		assert.equal(fnCallback, oInputClone._fnRowResultFilter, "_fnRowResultFilter should be cloned");
-	});
-
-	QUnit.test("Tabular Suggestions - selectedRow cloning", function (assert) {
-		var fnRowResultFilter = function (oColumnListItem) {
-			return "The selected item: " + oColumnListItem.getCells()[0].getText();
-		};
-		this.oTabularInputToClone.setRowResultFunction(fnRowResultFilter);
-		this.oTabularInputToClone.setSelectedRow(this.oTabularInputToClone.getSuggestionRows()[0]);
-
-		var oInputClone  = this.oTabularInputToClone.clone();
-
-		assert.equal(oInputClone.getValue(), "The selected item: Auch ein gutes Ding", "The selectedRow association should be cloned");
-	});
-
 </script>
 
 </head>

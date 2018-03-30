@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.SemanticPageDraftIndicator.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.SemanticPageDraftIndicator.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.SemanticPageDraftIndicator.Page",
 			dependencies : {
 				libs : [
 					"sap.m"

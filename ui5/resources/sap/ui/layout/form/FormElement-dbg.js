@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -21,7 +21,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Element', 'sap/ui/base/ManagedO
 	 * @extends sap.ui.core.Element
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -45,9 +45,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Element', 'sap/ui/base/ManagedO
 			/**
 			 * Label of the fields. Can either be a <code>Label</code> control or a string.
 			 * If a <code>Label</code> control is used, the properties of the <code>Label</code> can be set.
-			 * If no assignment between <code>Label</code> and the fields is set via (<code>labelFor</code> property of the <code>Label</code>),
-			 * it will be done automatically by the <code>FormElement</code>.
-			 * In this case the <code>Label</code> is assigned to the fields of the <code>FormElement</code>.
+			 * If no assignment between <code>Label</code> and the fields is set via (<code>labelFor</code> property of the <code>Label</code>), it will be done automatically by the
+			 * <code>FormElement</code>. In this case the <code>Label</code> is assigned to the fields of the <code>FormElement</code>.
 			 */
 			label : {type : "sap.ui.core.Label", altTypes : ["string"], multiple : false},
 
@@ -57,16 +56,14 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Element', 'sap/ui/base/ManagedO
 			_label : {type : "sap.ui.core.Label", multiple : false, visibility: "hidden"},
 
 			/**
-			 * Form controls that belong together to be displayed in one row of a <code>Form</code>.
+			 * Formular controls that belong together to be displayed in one row of a <code>Form</code>.
 			 *
-			 * <b>Warning:</b> Do not put any layout or other container controls in here.
-			 * This could damage the visual layout, keyboard support and screen-reader support.
-			 * Only form controls are allowed. Views are also not supported.
-			 * Allowed controls implement the interface <code>sap.ui.core.IFormContent</code>.
+			 * <b>Note:</b> Do not put any layout controls in here. This could destroy the visual layout,
+			 * keyboard support and screen-reader support.
 			 */
 			fields : {type : "sap.ui.core.Control", multiple : true, singularName : "field"}
 		},
-		designtime: "sap/ui/layout/designtime/form/FormElement.designtime"
+		designTime : true
 	}});
 
 	FormElement.prototype.init = function(){
@@ -115,10 +112,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Element', 'sap/ui/base/ManagedO
 					oOldLabel.isDisplayOnly = oOldLabel._sapuiIsDisplayOnly;
 					oOldLabel._sapuiIsDisplayOnly = undefined;
 				}
-				if (oOldLabel.isWrapping) {
-					oOldLabel.isWrapping = oOldLabel._sapuiIsWrapping;
-					oOldLabel._sapuiIsWrapping = undefined;
-				}
 			}
 		}
 
@@ -134,9 +127,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Element', 'sap/ui/base/ManagedO
 				}
 				if (this._oLabel.isDisplayOnly) {
 					this._oLabel.isDisplayOnly = _labelIsDisplayOnly;
-				}
-				if (this._oLabel.setWrapping) {
-					this._oLabel.setWrapping(true);
 				}
 			} else {
 				this._oLabel.setText(oLabel);
@@ -154,10 +144,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Element', 'sap/ui/base/ManagedO
 			if (oLabel && oLabel.isDisplayOnly) {
 				oLabel._sapuiIsDisplayOnly = oLabel.isDisplayOnly;
 				oLabel.isDisplayOnly = _labelIsDisplayOnly;
-			}
-			if (oLabel && oLabel.isWrapping) {
-				oLabel._sapuiIsWrapping = oLabel.isWrapping;
-				oLabel.isWrapping = _labelIsWrapping;
 			}
 		}
 
@@ -422,21 +408,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Element', 'sap/ui/base/ManagedO
 		}
 
 		return false;
-
-	}
-
-	/*
-	 * overwrite Labels isWrapping function to set wrapping as default.
-	 *
-	 * If Wrapping is set explicitly on the Label, this is used.
-	 */
-	function _labelIsWrapping(){
-
-		if (this.getWrapping && !this.isPropertyInitial("wrapping")) {
-			return this.getWrapping();
-		}
-
-		return true;
 
 	}
 

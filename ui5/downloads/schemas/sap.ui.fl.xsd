@@ -59,9 +59,32 @@
 <xsd:documentation>Indicates that Execute on Selection is visible in the Save Variant and the Manage Variants dialogs.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute name="showShare" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Indicates that Share is visible in the Save Variant and the Manage Variants dialogs. Share allows you to share variants with other
+users.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute name="showSetAsDefault" type="xsd:boolean">
 <xsd:annotation>
 <xsd:documentation>Indicates that set as default is visible in the Save Variant and the Manage Variants dialogs.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showFavorites" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Indicates if favorites can be created.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="industrySolutionMode" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If set to&lt;code&gt;true&lt;/code&gt;, the scenario is an industry-specific solution.&lt;br&gt;
+&lt;b&gt;Node:&lt;/b&gt;This flag is only used internally in the app variant scenarios.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="vendorLayer" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Indicates if the vendor layer is active.&lt;br&gt;
+&lt;b&gt;Node:&lt;/b&gt;This flag is only used internally in the app variant scenarios.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="manualVariantKey" type="xsd:boolean">
@@ -70,29 +93,30 @@
 &lt;b&gt;Node:&lt;/b&gt;This flag is only used internally in the app variant scenarios.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute name="showSave" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Determine the visibility of the 'Save' button in the variant list control.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showSaveAs" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Determine the visibility of the 'Save As' button in the variant list control.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showManage" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Determine the visibility of the 'Manage' button in the variant list control.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showVariantListFooter" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Determine the visibility of the footer of the variant list.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute name="inErrorState" type="xsd:boolean">
 <xsd:annotation>
 <xsd:documentation>Indicates that the control is in error state. If set to &lt;code&gt;true&lt;/code&gt; error message will be displayed whenever the variant is
 opened.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="editable" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Indicates that the control is in edit state. If set to &lt;code&gt;false&lt;/code&gt; the footer of the views list will be hidden.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="modelName" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Determines the name of the model. The binding context will be defined by the current ID.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; In a UI adaptation scenario, this property is not used at all because the model name is &lt;i&gt;$FlexVariants&lt;/i&gt;</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="updateVariantInURL" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Determines the intention of setting the current variant based on passed information.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; The VariantManagement control does not react in any way to this property.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="for" type="xsd:string">
@@ -108,11 +132,6 @@ opened.</xsd:documentation>
 <xsd:attribute name="manage" type="xsd:string">
 <xsd:annotation>
 <xsd:documentation>This event is fired when users apply changes to variants in the Manage Variants dialog.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="initialized" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>This event is fired when the model and context are set.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 </xsd:extension>

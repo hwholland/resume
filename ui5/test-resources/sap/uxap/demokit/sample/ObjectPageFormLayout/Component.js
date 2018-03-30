@@ -4,11 +4,7 @@ sap.ui.define(["sap/ui/core/UIComponent"], function (UIComponent) {
 	var Component = UIComponent.extend("sap.uxap.sample.ObjectPageFormLayout.Component", {
 
 		metadata: {
-			rootView: {
-				"viewName": "sap.uxap.sample.ObjectPageFormLayout.ObjectPageFormLayout",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.uxap.sample.ObjectPageFormLayout.ObjectPageFormLayout",
 			dependencies: {
 				libs: [
 					"sap.m"

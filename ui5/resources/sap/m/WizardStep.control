@@ -26,13 +26,9 @@ The icon is visualized in the progress navigation part of the Wizard control.
 &lt;b&gt;Note:&lt;/b&gt; In order for the icon to be displayed, each step in the Wizard should have
 this property defined, otherwise the default numbering will be displayed.</documentation>
         </property>
-        <property since="1.32" group="Behavior" defaultValue="true" type="sap.ui.core/boolean" name="validated">
+        <property group="Behavior" defaultValue="true" type="sap.ui.core/boolean" name="validated">
             <documentation>Indicates whether or not the step is validated.
 When a step is validated a Next button is visualized in the Wizard control.</documentation>
-        </property>
-        <property since="1.54" group="Appearance" defaultValue="false" type="sap.ui.core/boolean" name="optional">
-            <documentation>Indicates whether or not the step is optional.
-When a step is optional an &quot;(Optional)&quot; label is displayed under the step's title.</documentation>
         </property>
     </properties>
     <events>
@@ -50,12 +46,12 @@ or on &lt;code&gt;nextStep&lt;/code&gt; method call from the app developer.</doc
         </aggregation>
     </aggregations>
     <associations>
-        <association since="1.32" cardinality="0..n" type="sap.m/WizardStep" name="subsequentSteps">
+        <association cardinality="0..n" type="sap.m/WizardStep" name="subsequentSteps">
             <documentation>This association is used only when the &lt;code&gt;enableBranching&lt;/code&gt; property of the Wizard is set to true.
 Use the association to store the next steps that are about to come after the current.
 If this is going to be a final step - leave this association empty.</documentation>
         </association>
-        <association since="1.32" cardinality="0..1" type="sap.m/WizardStep" name="nextStep">
+        <association cardinality="0..1" type="sap.m/WizardStep" name="nextStep">
             <documentation>The next step to be taken after the step is completed.
 Set this association value in the complete event of the current WizardStep.</documentation>
         </association>

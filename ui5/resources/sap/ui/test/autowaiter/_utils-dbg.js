@@ -1,33 +1,25 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 sap.ui.define([
-	"jquery.sap.global",
-	'sap/ui/thirdparty/URI'
-], function ($, URI) {
+	"jquery.sap.global"
+], function ($) {
 	"use strict";
-
-	var oUriParams = new URI().search(true);
-	var bForceResolveStackTrace = ["false", undefined].indexOf(oUriParams.opaFrameIEStackTrace) < 0;
 
 	function resolveStackTrace() {
 		var oError = new Error();
-
-		var sStack = "No stack trace available";
+		var sStack;
 		if (oError.stack) {
 			sStack = oError.stack;
-		} else if (bForceResolveStackTrace) {
-			// in IE11 the stack is not yet available on error construction
-			// error throwing is too expensive in IE11 so skip it
-			// unless explicitly requested with opaFrameIEStackTrace URI parameter
-			try {
-				throw oError;
-			} catch (err) {
-				sStack = err.stack;
-			}
+		}
+		// in IE the stack is not yet available on error construction
+		try {
+			throw oError;
+		} catch (err) {
+			sStack = err.stack;
 		}
 		return sStack.replace(/^Error\s/, "");
 	}

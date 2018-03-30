@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -229,9 +229,8 @@
                                  <li class="li">
                                     					
                                     <div class="p">Search for the following
-                                       						line:<pre class="pre codeblock prettyprint">&lt;button id=&quot;HeapOfShards---app--myButton&quot; data-sap-ui=&quot;HeapOfShards---app--myButton&quot; aria-describedby=&quot;__text1&quot;
-	class=&quot;sapMBtn sapMBtnBase sapMBtnInverted&quot;&gt;
-&lt;/button&gt;</pre>
+                                       						line:<pre class="pre codeblock prettyprint">&lt;button id=&quot;__xmlview0--myButton&quot; data-sap-ui=&quot;__xmlview0--myButton&quot; aria-describedby=&quot;__text1&quot; 
+class=&quot;sapMBtn sapMBtnBase sapMBtnInverted&quot;&gt;</pre>
                                        </div>
                                     
                                     					
@@ -271,9 +270,9 @@
                                     
                                     					
                                     <div class="p">The edited element should now look like this:
-                                       						<pre class="pre codeblock prettyprint">&lt;button id=&quot;HeapOfShards---app--myButton&quot; data-sap-ui=&quot;HeapOfShards---app--myButton&quot; aria-describedby=&quot;__text1&quot;
-	class=&quot;sapMBtn sapMBtnBase sapMBtnInverted sapUiLargeMargin&quot;&gt;
-&lt;/button&gt;</pre>
+                                       						<pre class="pre codeblock prettyprint">&lt;button id=&quot;__xmlview0--myButton&quot; data-sap-ui=&quot;__xmlview0--myButton&quot; aria-describedby=&quot;__text1&quot; 
+class=&quot;sapMBtn sapMBtnBase <span class="ph emphasis emphasis">sapUiLargeMargin</span> sapMBtnInverted&quot;&gt;
+</pre>
                                        </div>
                                     
                                     				
@@ -315,12 +314,11 @@
                                     <li class="li">
                                        						
                                        <p class="p">Switch to the <span class="ph uicontrol">Console</span> tab and enter
-                                          								<samp class="ph codeph">$(&quot;#HeapOfShards---app--myButton&quot;)</samp></p>
+                                          							<samp class="ph codeph">$(&quot;#myButton&quot;)</samp></p>
                                        
                                        						
                                        <div class="p">The console displays the DOM element structure of the
-                                          							button:<pre class="pre codeblock prettyprint">Q.fn.init&#xA0;[button#HeapOfShards---app--myButton.sapMBtn.sapMBtnBase.sapMBtnInverted, 
-context: document, selector: &quot;#HeapOfShards---app--myButton&quot;]</pre>
+                                          							button:<pre class="pre codeblock prettyprint">[prevObject: Q.fn.init(1), context: document, selector: &quot;#myButton&quot;]</pre>
                                           </div>
                                        
                                        					
@@ -340,7 +338,7 @@ context: document, selector: &quot;#HeapOfShards---app--myButton&quot;]</pre>
                                     <li class="li">
                                        						
                                        <p class="p">In the <span class="ph uicontrol">Console</span> tab, enter
-                                          								<samp class="ph codeph">myView=sap.ui.getCore().byId(&quot;HeapOfShards---app&quot;)</samp>.
+                                          								<samp class="ph codeph">myView=sap.ui.getCore().byId(&quot;__xmlview0&quot;)</samp>.
                                        </p>
                                        
                                        					
@@ -355,8 +353,7 @@ context: document, selector: &quot;#HeapOfShards---app--myButton&quot;]</pre>
                                        
                                        						
                                        <div class="p">The console displays the <span class="ph"><span class="ph pname">OpenUI5</span></span> structure of the button
-                                          							control:<pre class="pre codeblock prettyprint">f&#xA0;{bAllowTextSelection: true, mEventRegistry: {&#x2026;}, 
-sId: &quot;HeapOfShards---app--myButton&quot;, mProperties: PropertyBag, mAggregations: {&#x2026;},&#xA0;&#x2026;}</pre>
+                                          							control:<pre class="pre codeblock prettyprint">f {bAllowTextSelection: true, mEventRegistry: Object, sId: &quot;__xmlview0--myButton&quot;, mProperties: d, mAggregations: Object&#x2026;}</pre>
                                           </div>
                                        
                                        						
@@ -379,7 +376,7 @@ sId: &quot;HeapOfShards---app--myButton&quot;, mProperties: PropertyBag, mAggreg
                                           <table summary="" id="loioeadd60ae907646bbb838866566b23182__simpletable_xtw_wxt_vz" border="1" class="simpletable">
                                              <tr class="sthead">
                                                 								
-                                                <th valign="bottom" align="left" id="d75905e290" class="stentry" width="50%">
+                                                <th valign="bottom" align="left" id="d72365e293" class="stentry" width="50%">
                                                    									
                                                    <p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> Control
                                                    </p>
@@ -388,7 +385,7 @@ sId: &quot;HeapOfShards---app--myButton&quot;, mProperties: PropertyBag, mAggreg
                                                 </th>
                                                 
                                                 								
-                                                <th valign="bottom" align="left" id="d75905e299" class="stentry" width="50%">
+                                                <th valign="bottom" align="left" id="d72365e302" class="stentry" width="50%">
                                                    									
                                                    <p class="p">DOM Element</p>
                                                    
@@ -400,17 +397,17 @@ sId: &quot;HeapOfShards---app--myButton&quot;, mProperties: PropertyBag, mAggreg
                                              
                                              <tr class="strow">
                                                 								
-                                                <td valign="top" headers="d75905e290" class="stentry">
+                                                <td valign="top" headers="d72365e293" class="stentry">
                                                    									
-                                                   <p class="p"><samp class="ph codeph">sap.ui.getCore().byId(&quot;HeapOfShards---app--myButton&quot;)</samp></p>
+                                                   <p class="p"><samp class="ph codeph">myView.byId(&quot;myButton&quot;)</samp></p>
                                                    
                                                    								
                                                 </td>
                                                 
                                                 								
-                                                <td valign="top" headers="d75905e299" class="stentry">
+                                                <td valign="top" headers="d72365e302" class="stentry">
                                                    									
-                                                   <p class="p"><samp class="ph codeph">$(&quot;#HeapOfShards---app--myButton&quot;) </samp></p>
+                                                   <p class="p"><samp class="ph codeph">$(&quot;#myButton&quot;)</samp></p>
                                                    
                                                    								
                                                 </td>
@@ -461,15 +458,15 @@ sId: &quot;HeapOfShards---app--myButton&quot;, mProperties: PropertyBag, mAggreg
                                     <li class="li">
                                        						
                                        <div class="p">In the console, you see the following error
-                                          							message:<pre class="pre codeblock prettyprint">TypeError: oEvent.getSourceXYZ is not a function
-at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="ph emphasis emphasis">App.controller.js</span>?eval:<span class="ph emphasis emphasis">20</span>:69)
+                                          							message:<pre class="pre codeblock prettyprint">TypeError: evt.getSourceXYZ is not a function
+at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="ph emphasis emphasis">App.controller.js</span>?eval:<span class="ph emphasis emphasis">19</span>:18)
 ...</pre>
                                           </div>
                                        
                                        						
                                        <p class="p">This means that an error occurred in the <samp class="ph codeph">onPress</samp> function in the
                                           								<samp class="ph codeph">App.controller.js</samp> file at line
-                                          							<samp class="ph codeph">20</samp>.
+                                          							<samp class="ph codeph">19</samp>.
                                        </p>
                                        
                                        					
@@ -482,7 +479,7 @@ at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="
                                           							source code where you can see that it wasn&apos;t the generic
                                           								<samp class="ph codeph">getSource</samp> function that was called, but an
                                           							undefined
-                                          							<samp class="ph codeph">getSourceXYZ</samp>.<pre class="pre codeblock prettyprint">sMessage = this.getResourceBundle().getText(&quot;buttonOk&quot;, [oEvent.getSourceXYZ().getId()])</pre>
+                                          							<samp class="ph codeph">getSourceXYZ</samp>.<pre class="pre codeblock prettyprint">sMessage=evt.getSourceXYZ().getId() + &quot; Pressed&quot;;</pre>
                                           </div>
                                        
                                        					
@@ -528,8 +525,8 @@ at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="
                                  				
                                  <li class="li">
                                     					
-                                    <div class="p">Set a breakpoint in line 20 by clicking on the line number of the following line:
-                                       						<pre class="pre codeblock prettyprint">sMessage = this.getResourceBundle().getText(&quot;buttonOk&quot;, [oEvent.getSourceXYZ().getId()]);</pre>
+                                    <div class="p">Set a breakpoint in line 19 by clicking on the line number before the following line:
+                                       						<pre class="pre codeblock prettyprint">sMessage=evt.getSourceXYZ().getId() + &quot; Pressed&quot;;</pre>
                                        </div>
                                     
                                     				
@@ -542,7 +539,7 @@ at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="
                                     </p>
                                     
                                     					
-                                    <p class="p">The debugger stops at line 20.</p>
+                                    <p class="p">The debugger stops at line 19.</p>
                                     
                                     				
                                  </li>
@@ -550,11 +547,11 @@ at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="
                                  				
                                  <li class="li">
                                     					
-                                    <div class="p">In line 20, replace <samp class="ph codeph">getSourceXYZ()</samp> with <samp class="ph codeph">getSource()</samp> and
+                                    <div class="p">In line 19, replace <samp class="ph codeph">getSourceXYZ()</samp> with <samp class="ph codeph">getSource()</samp> and
                                        						press <span class="keys">
                                           							<kbd class="key">Ctrl</kbd>
                                           							 + <kbd class="key">S</kbd>
-                                          						</span>:<pre class="pre codeblock prettyprint">sMessage = this.getResourceBundle().getText(&quot;buttonOk&quot;, [oEvent.getSource<span class="ph emphasis emphasis">XYZ</span>().getId()]);</pre>
+                                          						</span>:<pre class="pre codeblock prettyprint">sMessage=evt.getSource<span class="ph emphasis emphasis">XYZ</span>().getId() + &quot; Pressed&quot;;</pre>
                                        </div>
                                     
                                     				
@@ -567,8 +564,8 @@ at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="
                                     </p>
                                     
                                     					
-                                    <p class="p">The message toast is now displayed on the web page with the following message:
-                                       							<span class="ph uicontrol">&quot;HeapOfShards---app--myButton&quot; pressed</span>
+                                    <p class="p">The message toast is now displayed on the web page with the following message: <span class="ph uicontrol">o
+                                          							__xmlview0--myButton Pressed</span>
                                        					
                                     </p>
                                     
@@ -577,18 +574,6 @@ at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="
                                  
                                  			
                               </ol>
-                              
-                              			
-                              <aside class="note note  insertion"><span class="title">Note</span> 
-                                 				
-                                 <p class="p">You can also use the <span class="ph uicontrol">Pause on exception</span> button and select
-                                    						<span class="ph uicontrol">Pause on caught exceptions</span> on the top right of the
-                                    						<span class="ph uicontrol">Sources</span> tab to pause the execution before an
-                                    					exception occurs without setting breakpoints.
-                                 </p>
-                                 
-                                 			
-                              </aside>
                               
                               		
                            </section>

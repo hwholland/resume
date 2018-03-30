@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -11,19 +11,15 @@ sap.ui.define(['./ContextBinding'],
 
 
 	/**
-	 * Creates a new ClientContextBinding.
-	 *
-	 * This constructor should only be called by subclasses or model implementations, not by application or control code.
-	 * Such code should use {@link sap.ui.model.Model#bindContext Model#bindContext} on the corresponding model implementation instead.
-	 *
-	 * @param {sap.ui.model.Model} oModel Model instance that this binding is created for and that it belongs to
-	 * @param {string} sPath Binding path to be used for this binding, syntax depends on the concrete subclass
-	 * @param {sap.ui.model.Context} oContext Binding context relative to which a relative binding path will be resolved
-	 * @param {object} [mParameters] Map of optional parameters as defined by subclasses; this class does not introduce any own parameters
+	 * Constructor for ClientContextBinding
 	 *
 	 * @class
-	 * The ContextBinding is a specific binding for setting a context for the model.
+	 * The ContextBinding is a specific binding for a setting context for the model
 	 *
+	 * @param {sap.ui.model.Model} oModel
+	 * @param {String} sPath
+	 * @param {Object} oContext
+	 * @param {Object} [mParameters]
 	 * @abstract
 	 * @public
 	 * @alias sap.ui.model.ClientContextBinding
@@ -42,7 +38,7 @@ sap.ui.define(['./ContextBinding'],
 
 	});
 
-	/*
+	/**
 	 * @see sap.ui.model.ContextBinding.prototype.refresh
 	 */
 	ClientContextBinding.prototype.refresh = function(bForceUpdate) {
@@ -58,8 +54,8 @@ sap.ui.define(['./ContextBinding'],
 		}, true);
 	};
 
-	/*
-	 * @see sap.ui.model.ContextBinding.prototype.initialize
+	/**
+	 * @see sap.ui.model.ContextBinding.prototype.refresh
 	 */
 	ClientContextBinding.prototype.initialize = function() {
 		var that = this;
@@ -70,7 +66,7 @@ sap.ui.define(['./ContextBinding'],
 		}, true);
 	};
 
-	/*
+	/**
 	 * @see sap.ui.model.ContextBinding.prototype.setContext
 	 */
 	ClientContextBinding.prototype.setContext = function(oContext) {

@@ -1,34 +1,11 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/EnabledPropagator',
-	'sap/ui/core/IconPool',
-	'./delegate/ValueStateMessage',
-	'sap/ui/core/message/MessageMixin',
-	'sap/ui/core/library',
-	'sap/ui/Device',
-	'./InputBaseRenderer',
-	'jquery.sap.keycodes'
-],
-function(
-	jQuery,
-	library,
-	Control,
-	EnabledPropagator,
-	IconPool,
-	ValueStateMessage,
-	MessageMixin,
-	coreLibrary,
-	Device,
-	InputBaseRenderer
-	) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/ui/core/EnabledPropagator', 'sap/ui/core/IconPool', './delegate/ValueStateMessage', 'sap/ui/core/message/MessageMixin', 'sap/ui/core/library', 'sap/ui/Device', 'jquery.sap.keycodes'],
+	function(jQuery, library, Control, EnabledPropagator, IconPool, ValueStateMessage, MessageMixin, coreLibrary, Device) {
 	"use strict";
 
 	// shortcut for sap.ui.core.TextDirection
@@ -53,7 +30,7 @@ function(
 	 * @implements sap.ui.core.IFormContent
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -160,7 +137,7 @@ function(
 				}
 			}
 		},
-		designtime: "sap/m/designtime/InputBase.designtime"
+		designTime : true
 	}});
 
 	EnabledPropagator.call(InputBase.prototype);

@@ -1,26 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.ObjectListItem.
-sap.ui.define([
-	'./ListItemBase',
-	'./library',
-	'sap/ui/core/IconPool',
-	'sap/m/ObjectNumber',
-	'sap/ui/core/library',
-	'./ObjectListItemRenderer'
-],
-function(
-	ListItemBase,
-	library,
-	IconPool,
-	ObjectNumber,
-	coreLibrary,
-	ObjectListItemRenderer
-	) {
+sap.ui.define(['./ListItemBase', './library', 'sap/ui/core/IconPool', 'sap/m/ObjectNumber', 'sap/ui/core/library'],
+	function(ListItemBase, library, IconPool, ObjectNumber, coreLibrary) {
 		"use strict";
 
 
@@ -50,10 +36,8 @@ function(
 		 *
 		 * @class
 		 * ObjectListItem is a display control that provides summary information about an object as a list item. The ObjectListItem title is the key identifier of the object. Additional text and icons can be used to further distinguish it from other objects. Attributes and statuses can be used to provide additional meaning about the object to the user.
-		 *
-		 * <b>Note:</b> The control must only be used in the context of a list.
 		 * @extends sap.m.ListItemBase
-		 * @version 1.54.2
+		 * @version 1.52.5
 		 *
 		 * @constructor
 		 * @public
@@ -105,31 +89,28 @@ function(
 
 				/**
 				 * Sets the favorite state for the ObjectListItem.<br><br>
-				 *
+				 * <b>Note:</b> As this property is deprecated, we recommend you use the <code>markers</code> aggregation - add <code>sap.m.ObjectMarker</code> with type <code>sap.m.ObjectMarkerType.Favorite</code>.
+				 * You should use either this property or the <code>markers</code> aggregation, using both may lead to unpredicted behavior.<br><br>
 				 * @since 1.16.0
-				 * @deprecated as of version 1.42.0, replaced by <code>markers</code> aggregation.
-				 * Add {@link sap.m.ObjectMarker} with type <code>sap.m.ObjectMarkerType.Favorite</code>.
-				 * You should use either this property or the <code>markers</code> aggregation, using both may lead to unpredicted behavior.
+				 * @deprecated Since version 1.42.0.
 				 */
 				markFavorite : {type : "boolean", group : "Misc", defaultValue : null, deprecated: true},
 
 				/**
 				 * Sets the flagged state for the ObjectListItem.<br><br>
-				 *
+				 * <b>Note:</b> As this property is deprecated, we recommend you use the <code>markers</code> aggregation - add <code>sap.m.ObjectMarker</code> with type <code>sap.m.ObjectMarkerType.Flagged</code>.
+				 * You should use either this property or the <code>markers</code> aggregation, using both may lead to unpredicted behavior.<br><br>
 				 * @since 1.16.0
-				 * @deprecated as of version 1.42.0, replaced by <code>markers</code> aggregation.
-				 * Add {@link sap.m.ObjectMarker} with type <code>sap.m.ObjectMarkerType.Flagged</code>.
-				 * You should use either this property or the <code>markers</code> aggregation, using both may lead to unpredicted behavior.
+				 * @deprecated Since version 1.42.0.
 				 */
 				markFlagged : {type : "boolean", group : "Misc", defaultValue : null, deprecated: true},
 
 				/**
 				 * If set to true, the ObjectListItem can be marked with icons such as favorite and flag.<br><br>
-				 *
+				 * <b>Note:</b> This property is valid only if you are using the already deprecated properties - <code>markFlagged</code>, <code>markFavorite</code>, and <code>markLocked</code>.
+				 * If you are using the <code>markers</code> aggregation, the visibility of the markers depends on what is set in the aggregation itself.<br><br>
 				 * @since 1.16.0
-				 * @deprecated as of version 1.42.0, replaced by <code>markers</code> aggregation.
-				 * This property is valid only if you are using the already deprecated properties - <code>markFlagged</code>, <code>markFavorite</code>, and <code>markLocked</code>.
-				 * If you are using the <code>markers</code> aggregation, the visibility of the markers depends on what is set in the aggregation itself.
+				 * @deprecated Since version 1.42.0.
 				 */
 				showMarkers : {type : "boolean", group : "Misc", defaultValue : null, deprecated: true},
 
@@ -162,11 +143,10 @@ function(
 
 				/**
 				 * Sets the locked state of the ObjectListItem.<br><br>
-				 *
-				 * @since 1.28
-				 * @deprecated as of version 1.42.0, replaced by <code>markers</code> aggregation.
-				 * Add {@link sap.m.ObjectMarker} with type <code>sap.m.ObjectMarkerType.Locked</code>.
+				 * <b>Note:</b> As this property is deprecated, we recommend you use the <code>markers</code> aggregation - add <code>sap.m.ObjectMarker</code> with type <code>sap.m.ObjectMarkerType.Locked</code>.
 				 * You should use either this property or the <code>markers</code> aggregation, using both may lead to unpredicted behavior.<br><br>
+				 * @since 1.28
+				 * @deprecated Since version 1.42.0.
 				 */
 				markLocked : {type : "boolean", group : "Misc", defaultValue : false, deprecated: true}
 			},
@@ -199,7 +179,7 @@ function(
 				 */
 				_objectNumber: {type: "sap.m.ObjectNumber", multiple: false, visibility: "hidden"}
 			},
-			designtime: "sap/m/designtime/ObjectListItem.designtime"
+			designTime: true
 		}});
 
 		/**

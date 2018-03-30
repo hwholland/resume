@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	return UIComponent.extend("sap.m.sample.Feed.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.Feed.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.Feed.Page",
 			dependencies : {
 				libs : [
 					"sap.m"

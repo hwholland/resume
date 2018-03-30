@@ -6,8 +6,8 @@
 <meta name="abstract" content="To integrate a new view, you can either add it to index.html or nest it into another view."/>
 <meta name="description" content="To integrate a new view, you can either add it to index.html or nest it into another view."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=21612358367001017"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=21612358367001017"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=33386641964726205"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=33386641964726205"/>
 <title>Integrate a New View</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -23,9 +23,10 @@
 		view.</p>
 
 		<div class="section prereq p" id="loio5da1208e40364ff59ce12fb50a067c45__prereq_N10015_N10012_N10001"><div class="tasklabel"><h2 class="sectiontitle tasklabel">Prerequisites</h2></div>
-			<p class="p">If you create a new view for an existing <span class="ph pname">SAPUI5</span> application project,
-				the view needs to be manually called.</p>
+			<p class="p">If you create a new view for an existing <span class="ph pname">SAPUI5</span> application project, the view needs to be
+				manually called.</p>
 
+			
 		</div>
 
 		<section class="section procedure"><div class="ol steps tasklabel"><h2 class="sectiontitle tasklabel">Procedure</h2></div><div class="li step p" id="loio5da1208e40364ff59ce12fb50a067c45__step_N10022_N1001E_N10012_N10001">
@@ -35,18 +36,19 @@
 
 					<li class="li choice">
 						<p class="p">All Views can be nested independent of the view type. Each view type
-							behaves like any <span class="ph pname">SAPUI5</span> control.
-							The <samp class="ph codeph">viewName</samp> property defines, which views are
-							embedded. To nest a view, proceed according to the given examples: </p>
+							behaves like any <span class="ph pname">SAPUI5</span> control. The <samp class="ph codeph">viewName</samp> property
+							defines, which views are embedded. To nest a view, proceed according to
+							the given examples: </p>
 
 					</li>
 
 				</ul>
 
 				<div class="itemgroup stepxmp">For XML view type:
-					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View controllerName="sap.hcm.Address" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"&gt;
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;core:View controllerName="sap.hcm.Address" xmlns="sap.ui.commons" xmlns:core="sap.ui.core"
+           xmlns:html="http://www.w3.org/1999/xhtml"&gt;
    &lt;Panel&gt;
-      &lt;mvc:JSView id="myJSView" viewName="sap.hcm.Bankaccount" /&gt;
+      &lt;core:JSView id="myJSView" viewName="sap.hcm.Bankaccount" /&gt;
    &lt;/Panel&gt;
 &lt;core:View&gt;</pre></div>
 
@@ -66,6 +68,7 @@
 				</div>
 			</div>
 </section>
+		
 	</div>
 
 </div></div>

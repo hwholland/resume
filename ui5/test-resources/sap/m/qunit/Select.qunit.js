@@ -8202,7 +8202,7 @@
 		oSelect.destroy();
 	});
 
-	QUnit.module("Events");
+	QUnit.module("change event");
 
 	QUnit.test("change of selected item onChange should not re-trigger change event", function (assert) {
 		var oItem1 =  new sap.ui.core.Item({key: "1", text : "1"}),
@@ -8230,21 +8230,6 @@
 		assert.strictEqual(oSelect.getSelectedItem(), oItem1, "The selected item is correct");
 
 		// cleanup
-		oSelect.destroy();
-	});
-
-
-	QUnit.test("Tab handling shouldn't mark the event", function(assert) {
-		var oSelect = new sap.m.Select(),
-			$oTabNextEvent = jQuery.Event("tabNextTestEvent"),
-			$oTabPreviousEvent = jQuery.Event("tabPreviousTestEvent");
-
-		oSelect.onsaptabnext($oTabNextEvent);
-		assert.notOk($oTabNextEvent.isMarked(), "The event isn't marked by the onsaptabnext method");
-
-		oSelect.onsaptabprevious($oTabPreviousEvent);
-		assert.notOk($oTabPreviousEvent.isMarked(), "The event isn't marked by the onsaptabprevious method");
-
 		oSelect.destroy();
 	});
 
@@ -8365,34 +8350,7 @@
 		oSelect.destroy();
 	});
 
-	QUnit.module("Accessibility");
-
-	QUnit.test("Label for IconOnly Select", function (assert) {
-		var aItems = [
-			new sap.ui.core.Item({key: "Item1", text: "Item1"}),
-			new sap.ui.core.Item({key: "Item2", text: "Item2"})
-		];
-
-		var oIconOnlySelect = new sap.m.Select("iconOnlySelect", {
-			icon: "sap-icon//search",
-			type: "IconOnly",
-			items: aItems
-		});
-
-		var oStandardSelect = new sap.m.Select("standardSelect", {
-			items: aItems
-		});
-
-		oIconOnlySelect.placeAt("content");
-		oStandardSelect.placeAt("content");
-		sap.ui.getCore().applyChanges();
-
-		assert.strictEqual(document.getElementById("iconOnlySelect-label").innerHTML, "", "No label text is rendered for IconOnly select");
-		assert.notStrictEqual(document.getElementById("standardSelect-label").innerHTML, "", "Label text is rendered for standard select");
-
-		oIconOnlySelect.destroy();
-		oStandardSelect.destroy();
-	});
+	QUnit.module("getAccessibilityInfo");
 
 	QUnit.test("getAccessibilityInfo", function (assert) {
 		var oSelect = new sap.m.Select({

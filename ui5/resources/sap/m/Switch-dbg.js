@@ -1,28 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.Switch.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/EnabledPropagator',
-	'sap/ui/core/IconPool',
-	'sap/ui/core/theming/Parameters',
-	'./SwitchRenderer'
-],
-function(
-	jQuery,
-	library,
-	Control,
-	EnabledPropagator,
-	IconPool,
-	Parameters,
-	SwitchRenderer
-	) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/ui/core/EnabledPropagator', 'sap/ui/core/IconPool', 'sap/ui/core/theming/Parameters'],
+	function(jQuery, library, Control, EnabledPropagator, IconPool, Parameters) {
 		"use strict";
 
 		// shortcut for sap.m.touch
@@ -42,7 +26,7 @@ function(
 		 * @extends sap.ui.core.Control
 		 *
 		 * @author SAP SE
-		 * @version 1.54.2
+		 * @version 1.52.5
 		 *
 		 * @constructor
 		 * @public
@@ -112,8 +96,7 @@ function(
 						state: { type: "boolean" }
 					}
 				}
-			},
-			designtime: "sap/m/designtime/Switch.designtime"
+			}
 		}});
 
 		IconPool.insertFontFaceStyle();
@@ -458,9 +441,9 @@ function(
 		/**
 		 * Change the switch state between on and off.
 		 *
-		 * @param {boolean} bState The new state - true for 'on' and false for 'off'
+		 * @param {boolean} bState
 		 * @public
-		 * @returns {sap.m.Switch} <code>this</code> to allow method chaining.
+		 * @return {sap.m.Switch} <code>this</code> to allow method chaining.
 		 */
 		Switch.prototype.setState = function(bState) {
 			this.setProperty("state", bState, true);

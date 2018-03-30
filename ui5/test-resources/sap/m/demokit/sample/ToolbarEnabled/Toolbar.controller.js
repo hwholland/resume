@@ -5,7 +5,7 @@ sap.ui.define(['sap/ui/core/mvc/Controller'],
 	var ToolbarController = Controller.extend("sap.m.sample.ToolbarEnabled.Toolbar", {
 		onCheckBoxSelect: function (oEvent) {
 			var bEnabled = oEvent.getParameter("selected");
-			this.byId("toolbar").setEnabled(bEnabled);
+			this.getView().byId("toolbar").setEnabled(bEnabled);
 		}
 	});
 

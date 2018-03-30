@@ -1,20 +1,15 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.ObjectAttribute.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/library',
-	'sap/m/Text',
-	'./ObjectAttributeRenderer'
-],
-function(jQuery, library, Control, coreLibrary, Text, ObjectAttributeRenderer) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/ui/core/library'],
+	function(jQuery, library, Control, coreLibrary) {
 	"use strict";
+
+
 
 	// shortcut for sap.ui.core.TextDirection
 	var TextDirection = coreLibrary.TextDirection;
@@ -35,7 +30,7 @@ function(jQuery, library, Control, coreLibrary, Text, ObjectAttributeRenderer) {
 	 * <code>text</code> property is styled and acts as a link. In this case the <code>text</code>
 	 * property must also be set, as otherwise there will be no link displayed for the user.
 	 * @extends sap.ui.core.Control
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -46,7 +41,6 @@ function(jQuery, library, Control, coreLibrary, Text, ObjectAttributeRenderer) {
 	var ObjectAttribute = Control.extend("sap.m.ObjectAttribute", /** @lends sap.m.ObjectAttribute.prototype */ { metadata : {
 
 		library : "sap.m",
-		designtime: "sap/m/designtime/ObjectAttribute.designtime",
 		properties : {
 
 			/**
@@ -102,13 +96,18 @@ function(jQuery, library, Control, coreLibrary, Text, ObjectAttributeRenderer) {
 		}
 	}});
 
+	ObjectAttribute.MAX_LINES = {
+		SINGLE_LINE: 1,
+		MULTI_LINE: 2
+	};
+
 	/**
 	 *  Initializes member variables.
 	 *
 	 * @private
 	 */
 	ObjectAttribute.prototype.init = function() {
-		this.setAggregation('_textControl', new Text());
+		this.setAggregation('_textControl', new sap.m.Text());
 	};
 
 	/**
@@ -123,7 +122,7 @@ function(jQuery, library, Control, coreLibrary, Text, ObjectAttributeRenderer) {
 			sTextDir = this.getTextDirection(),
 			oParent = this.getParent(),
 			bPageRTL = sap.ui.getCore().getConfiguration().getRTL(),
-			iMaxLines = ObjectAttributeRenderer.MAX_LINES.MULTI_LINE,
+			iMaxLines = ObjectAttribute.MAX_LINES.MULTI_LINE,
 			bWrap = true,
 			oppositeDirectionMarker = '';
 
@@ -143,7 +142,7 @@ function(jQuery, library, Control, coreLibrary, Text, ObjectAttributeRenderer) {
 		//if attribute is used inside responsive ObjectHeader or in ObjectListItem - only 1 line
 		if (oParent instanceof sap.m.ObjectListItem) {
 			bWrap = false;
-			iMaxLines = ObjectAttributeRenderer.MAX_LINES.SINGLE_LINE;
+			iMaxLines = ObjectAttribute.MAX_LINES.SINGLE_LINE;
 		}
 
 		this._setControlWrapping(oAttrAggregation, bWrap, iMaxLines);
@@ -160,7 +159,7 @@ function(jQuery, library, Control, coreLibrary, Text, ObjectAttributeRenderer) {
 		if (oAttrAggregation instanceof sap.m.Link) {
 			oAttrAggregation.setProperty('wrapping', bWrap, true);
 		}
-		if (oAttrAggregation instanceof Text) {
+		if (oAttrAggregation instanceof sap.m.Text) {
 			oAttrAggregation.setProperty('maxLines', iMaxLines, true);
 		}
 	};
@@ -208,7 +207,7 @@ function(jQuery, library, Control, coreLibrary, Text, ObjectAttributeRenderer) {
 	 * @returns {boolean} true if ObjectAttribute's text is empty or only consists of whitespaces
 	 */
 	ObjectAttribute.prototype._isEmpty = function() {
-		if (this.getAggregation('customContent') && !(this.getAggregation('customContent') instanceof sap.m.Link || this.getAggregation('customContent') instanceof Text)) {
+		if (this.getAggregation('customContent') && !(this.getAggregation('customContent') instanceof sap.m.Link || this.getAggregation('customContent') instanceof sap.m.Text)) {
 			jQuery.sap.log.warning("Only sap.m.Link or sap.m.Text are allowed in \"sap.m.ObjectAttribute.customContent\" aggregation");
 			return true;
 		}

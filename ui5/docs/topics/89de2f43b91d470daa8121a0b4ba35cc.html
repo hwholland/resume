@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -133,7 +133,7 @@
                               
                               <img xmlns="" class="inline  " id="loio89de2f43b91d470daa8121a0b4ba35cc__image_shs_rkh_bt" src="loioec746bc8018543fda1fae5230367dfc5_LowRes.png">
                               
-                           </div><span class="figcap">Navigation Flow of the Master-Detail App</span></div>
+                           </div><span class="figcap"><span class="enumeration fig-enumeration">Figure 173: </span>Navigation Flow of the Master-Detail App</span></div>
                         
                         
                         <p class="p">The two main views <span class="ph uicontrol">Master</span> and <span class="ph uicontrol">Object</span> each have a route and two targets configured. When the route matches
@@ -144,13 +144,10 @@
                         </p>
                         
                         
-                        <p class="p">Here is a sample implementation for navigating from the <span class="ph uicontrol">Master</span> to the
-                           <span class="ph uicontrol">Object</span> page. First you have to implement a press handler on the
-                           <samp class="ph codeph">ListItem</samp>. Inside, you extract the current ID of the object pressed by the
-                           user by using its <samp class="ph codeph">bindingContext</samp>. Since we want to navigate to the &#x201C;object&#x201D;
-                           route, you need to supply the mandatory <samp class="ph codeph">objectId</samp> parameter and pass it to the
-                           <samp class="ph codeph">navTo</samp> function, as described <span class="ph">in the <a class="xref" href="https://sapui5.hana.ondemand.com/sdk/#/api/sap.ui.core.routing.Router/methods/navTo" target="_blank" alt="https://sapui5.hana.ondemand.com/sdk/#/api/sap.ui.core.routing.Router/methods/navTo" title="https://sapui5.hana.ondemand.com/sdk/#/api/sap.ui.core.routing.Router/methods/navTo">sap.ui.core.routing.Routing#navTo</a> section</span> of the <span class="ph uicontrol">API
-                              Reference</span> in the Demo Kit and shown here:
+                        <p class="p">Here is a sample implementation for navigating from the <span class="ph uicontrol">Master</span> to the <span class="ph uicontrol">Object</span> page. First you have to
+                           implement a press handler on the <samp class="ph codeph">ListItem</samp>. Inside, you extract the current ID of the object pressed by the user by using its
+                           <samp class="ph codeph">bindingContext</samp>. Since we want to navigate to the &#x201C;object&#x201D; route, you need to supply the mandatory <samp class="ph codeph">objectId</samp> parameter
+                           and pass it to the <samp class="ph codeph">navTo</samp> function, as described <span class="ph">in the <a class="xref" href="../../#/api/sap.ui.core.routing.Router/methods/navTo" target="_top" alt="#/api/sap.ui.core.routing.Router/methods/navTo" title="#/api/sap.ui.core.routing.Router/methods/navTo">sap.ui.core.routing.Routing#navTo</a> section</span> of the <span class="ph uicontrol">API Reference</span> in the Demo Kit and shown here:
                         </p>
                         
                         <pre class="pre codeblock prettyprint lang-js">/**

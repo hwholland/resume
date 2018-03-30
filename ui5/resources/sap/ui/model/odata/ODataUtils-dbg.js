@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -13,8 +13,8 @@
  */
 
 // Provides class sap.ui.model.odata.ODataUtils
-sap.ui.define(['jquery.sap.global', './Filter', 'sap/ui/model/Sorter', 'sap/ui/core/format/DateFormat'],
-	function(jQuery, ODataFilter, Sorter, DateFormat) {
+sap.ui.define(['jquery.sap.global', './Filter', 'sap/ui/model/Sorter', 'sap/ui/model/Filter', 'sap/ui/core/format/DateFormat'],
+	function(jQuery, ODataFilter, Sorter, Filter, DateFormat) {
 	"use strict";
 
 	var rDecimal = /^([-+]?)0*(\d+)(\.\d+|)$/,
@@ -449,9 +449,6 @@ sap.ui.define(['jquery.sap.global', './Filter', 'sap/ui/model/Sorter', 'sap/ui/c
 			this.oDateTimeFormat = DateFormat.getDateInstance({
 				pattern: "'datetime'''yyyy-MM-dd'T'HH:mm:ss''"
 			});
-			this.oDateTimeFormatMs = DateFormat.getDateInstance({
-				pattern: "'datetime'''yyyy-MM-dd'T'HH:mm:ss.SSS''"
-			});
 			this.oDateTimeOffsetFormat = DateFormat.getDateInstance({
 				pattern: "'datetimeoffset'''yyyy-MM-dd'T'HH:mm:ss'Z'''"
 			});
@@ -480,17 +477,10 @@ sap.ui.define(['jquery.sap.global', './Filter', 'sap/ui/model/Sorter', 'sap/ui/c
 				}
 				break;
 			case "Edm.DateTime":
-				var oDate = new Date(vValue);
-
-				if (oDate.getMilliseconds() > 0) {
-					sValue = this.oDateTimeFormatMs.format(oDate, true);
-				} else {
-					sValue = this.oDateTimeFormat.format(oDate, true);
-				}
+				sValue = this.oDateTimeFormat.format(new Date(vValue), true);
 				break;
 			case "Edm.DateTimeOffset":
-				var oDate = new Date(vValue);
-				sValue = this.oDateTimeOffsetFormat.format(oDate, true);
+				sValue = this.oDateTimeOffsetFormat.format(new Date(vValue), true);
 				break;
 			case "Edm.Guid":
 				sValue = "guid'" + vValue + "'";

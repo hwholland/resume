@@ -22,11 +22,11 @@ sap.ui.require([
 				.done(function(oFakeVariantResponse) {
 					this.oVariant = {};
 					this.oVariantDef = oFakeVariantResponse.variantSection["idMain1--variantManagementOrdersTable"].variants[0];
-					this.oVariantFileContent = Variant.createInitialFileContent(this.oVariantDef);
-					this.oVariant = new Variant(this.oVariantFileContent);
+					this.oVariant = new Variant(this.oVariantDef);
 					done();
 				}.bind(this));
 
+			sandbox.stub(Utils, "getCurrentLayer").returns("VENDOR");
 		},
 		afterEach: function() {
 			sap.ushell = this.ushellStore;
@@ -59,17 +59,7 @@ sap.ui.require([
 	});
 
 	QUnit.test("when getNamespace is called", function(assert) {
-		assert.equal(this.oVariant.getNamespace(), "sap.ui.rta.test.Demo.md.Component", "then reference is returned as namespace");
-	});
-
-	QUnit.test("when setNamespace is called", function(assert) {
-		assert.equal(this.oVariant.getNamespace(), "sap.ui.rta.test.Demo.md.Component");
-		this.oVariant.setNamespace("apps/ReferenceAppId/variants/");
-		assert.equal(this.oVariant.getNamespace(), "apps/ReferenceAppId/variants/", "the namespace has been changed");
-	});
-
-	QUnit.test("when getControlChanges is called", function(assert) {
-		assert.strictEqual(this.oVariant.getControlChanges(), this.oVariantDef.controlChanges, "then the control changes are returned");
+		assert.strictEqual(this.oVariant.getNamespace(), "sap.ui.rta.test.Demo.md.Component", "then reference is returned as namespace");
 	});
 
 	QUnit.test("when getId is called", function(assert) {
@@ -77,9 +67,6 @@ sap.ui.require([
 	});
 
 	QUnit.test("when getContent is called", function(assert) {
-		this.oVariantDef.content.self = this.oVariantDef.content.namespace + this.oVariantDef.content.fileName + "." + "ctrl_variant";
-		this.oVariantDef.content.support.sapui5Version = sap.ui.version;
-		this.oVariantDef.content.validAppVersions = {};
 		assert.deepEqual(this.oVariant.getContent(), this.oVariantDef.content);
 	});
 
@@ -126,13 +113,12 @@ sap.ui.require([
 		assert.equal(this.oVariant.getState(), Variant.states.DIRTY);
 	});
 
-	QUnit.test("when _isReadOnlyDueToLayer is called for different layer", function(assert) {
-		sandbox.stub(Utils, "getCurrentLayer").returns("CUSTOMER");
+	QUnit.test("when _isReadOnlyDueToLayer is called", function(assert) {
+		// check for different layer
+		this.oVariantDef.content.layer = "CUSTOMER";
 		assert.equal(this.oVariant._isReadOnlyDueToLayer(), true);
-	});
-
-	QUnit.test("when _isReadOnlyDueToLayer is called for same layer", function(assert) {
-		sandbox.stub(Utils, "getCurrentLayer").returns("VENDOR");
+		// check for same layer
+		this.oVariantDef.content.layer = "VENDOR";
 		this.oVariant = new Variant(this.oVariantDef);
 		assert.equal(this.oVariant._isReadOnlyDueToLayer(), false);
 	});
@@ -157,12 +143,6 @@ sap.ui.require([
 		assert.equal(sComponent, this.oVariantDef.content.reference);
 	});
 
-	QUnit.test("when setComponent is called", function(assert) {
-		assert.equal(this.oVariant.getComponent(), "sap.ui.rta.test.Demo.md.Component");
-		this.oVariant.setComponent("AppVariantId");
-		assert.equal(this.oVariant.getComponent(), "AppVariantId", "the component has been changed");
-	});
-
 	QUnit.test("when isUserDependent is called", function(assert) {
 		assert.ok(!this.oVariant.isUserDependent());
 	});
@@ -184,94 +164,40 @@ sap.ui.require([
 
 	QUnit.test("when createInitialFileContent is called", function(assert) {
 		var oExpectedInfo = {
-			"content": {
-				"fileName": "variant0",
-				"fileType": "ctrl_variant",
-				"reference": "sap.ui.rta.test.Demo.md.Component",
-				"variantManagementReference": "idMain1--variantManagementOrdersTable",
-				"variantReference": "",
-				"packageName": "$TMP",
-				"self": "sap.ui.rta.test.Demo.md.Componentvariant0.ctrl_variant",
-				"content": {
-					"title": "variant A"
-				},
-				"layer": "VENDOR",
-				"texts": {
-					"TextDemo": {
-						"value": "Text for TextDemo",
-						"type": "myTextType"
-					}
-				},
-				"namespace": "sap.ui.rta.test.Demo.md.Component",
-				"creation": "",
-				"originalLanguage": Utils.getCurrentLanguage(),
-				"conditions": {},
-				"support": {
-					"generator": "Change.createInitialFileContent",
-					"service": "",
-					"user": "",
-					"sapui5Version": sap.ui.version
-				},
-				"validAppVersions": {}
+			"fileName": "variant0",
+			"title": "variant A",
+			"fileType": "ctrl_variant",
+			"reference": "sap.ui.rta.test.Demo.md.Component",
+			"variantManagementReference": "idMain1--variantManagementOrdersTable",
+			"variantReference": "",
+			"packageName": "$TMP",
+			"self": "sap.ui.rta.test.Demo.md.Componentvariant0.ctrl_variant",
+			"content": {},
+			"layer": "VENDOR",
+			"texts": {
+				"TextDemo": {
+					"value": "Text for TextDemo",
+					"type": "myTextType"
+				}
 			},
-			"controlChanges": [],
-			"variantChanges": {}
+			"namespace": "sap.ui.rta.test.Demo.md.Component",
+			"creation": "",
+			"originalLanguage": "",
+			"conditions": {},
+			"support": {
+				"generator": "Variant.createInitialFileContent",
+				"service": "",
+				"user": "",
+				"sapui5Version": sap.ui.version
+			},
+			"validAppVersions": {}
 		};
 
-		var oVariantSpecificData = {
-				content: this.oVariantDef.content
-		};
-		oVariantSpecificData.isVariant = true;
-		var oVariantFileContent = Variant.createInitialFileContent(oVariantSpecificData);
+		oExpectedInfo.originalLanguage = Utils.getCurrentLanguage();
+
+		var oVariantFileContent = Variant.createInitialFileContent(this.oVariantDef.content);
 
 		assert.deepEqual(oVariantFileContent, oExpectedInfo, "then correct initial file content set");
-	});
-
-	QUnit.test("when createInitialFileContent is called with generator", function(assert) {
-		var sGenerator = "RTA";
-		var oExpectedInfo = {
-			"content": {
-				"fileName": "variant0",
-				"fileType": "ctrl_variant",
-				"reference": "sap.ui.rta.test.Demo.md.Component",
-				"variantManagementReference": "idMain1--variantManagementOrdersTable",
-				"variantReference": "",
-				"packageName": "$TMP",
-				"self": "sap.ui.rta.test.Demo.md.Componentvariant0.ctrl_variant",
-				"content": {
-					"title": "variant A"
-				},
-				"layer": "VENDOR",
-				"texts": {
-					"TextDemo": {
-						"value": "Text for TextDemo",
-						"type": "myTextType"
-					}
-				},
-				"namespace": "sap.ui.rta.test.Demo.md.Component",
-				"creation": "",
-				"originalLanguage": Utils.getCurrentLanguage(),
-				"conditions": {},
-				"support": {
-					"generator": sGenerator,
-					"service": "",
-					"user": "",
-					"sapui5Version": sap.ui.version
-				},
-				"validAppVersions": {}
-			},
-			"controlChanges": [],
-			"variantChanges": {}
-		};
-
-		var oVariantSpecificData = {
-				content: this.oVariantDef.content
-		};
-		oVariantSpecificData.isVariant = true;
-		oVariantSpecificData.generator = sGenerator;
-		var oVariantFileContent = Variant.createInitialFileContent(oVariantSpecificData);
-
-		assert.deepEqual(oVariantFileContent, oExpectedInfo, "then correct initial file content set with generator");
 	});
 
 	QUnit.test("when _isReadOnlyDueToOriginalLanguage ", function(assert) {

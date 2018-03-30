@@ -1,28 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.DateRangeSelection.
-sap.ui.define([
-	'jquery.sap.global',
-	'sap/ui/Device',
-	'./DatePicker',
-	'./library',
-	'sap/ui/core/LocaleData',
-	'sap/ui/core/format/DateFormat',
-	'./DateRangeSelectionRenderer'
-],
-	function(
-	jQuery,
-	Device,
-	DatePicker,
-	library,
-	LocaleData,
-	DateFormat,
-	DateRangeSelectionRenderer
-	) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/Device', './DatePicker', './library', 'sap/ui/core/LocaleData', 'sap/ui/core/format/DateFormat'],
+	function(jQuery, Device, DatePicker, library, LocaleData, DateFormat) {
 	"use strict";
 
 	/**
@@ -110,8 +94,7 @@ sap.ui.define([
 	 * compact mode and provides a touch-friendly size in cozy mode.
 	 *
 	 * @extends sap.m.DatePicker
-	 * @version 1.54.2
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -139,17 +122,18 @@ sap.ui.define([
 
 			/**
 			 * Start date of the range.
-			 * @deprecated since version 1.22.0, replaced by <code>dateValue</code> property of the {@link sap.m.DateTimeField}
+			 * @deprecated Since version 1.22.0
+			 * Use <code>dateValue</code> instead.
 			 */
 			from : {type : "object", group : "Misc", defaultValue : null, deprecated: true},
 
 			/**
 			 * End date of the range.
-			 * @deprecated since version 1.22.0, replaced by <code>secondDateValue</code> property
+			 * @deprecated Since version 1.22.0
+			 * Use <code>secondDateValue</code> instead.
 			 */
 			to : {type : "object", group : "Misc", defaultValue : null, deprecated: true}
-		},
-		designtime: "sap/m/designtime/DateRangeSelection.designtime"
+		}
 	}});
 
 	/**
@@ -421,7 +405,7 @@ sap.ui.define([
 	 */
 	DateRangeSelection.prototype.setDateValue = function(oDateValue) {
 
-		if (this._isValidDate(oDateValue)) {
+		if (oDateValue && !(oDateValue instanceof Date)) {
 			throw new Error("Date must be a JavaScript date object; " + this);
 		}
 
@@ -438,7 +422,7 @@ sap.ui.define([
 
 	DateRangeSelection.prototype.setSecondDateValue = function(oSecondDateValue) {
 
-		if (this._isValidDate(oSecondDateValue)) {
+		if (oSecondDateValue && !(oSecondDateValue instanceof Date)) {
 			throw new Error("Date must be a JavaScript date object; " + this);
 		}
 

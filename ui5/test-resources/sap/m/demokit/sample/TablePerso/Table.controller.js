@@ -20,7 +20,7 @@ sap.ui.define([
 
 			// init and activate controller
 			this._oTPC = new TablePersoController({
-				table: this.byId("productsTable"),
+				table: this.getView().byId("productsTable"),
 				//specify the first part of persistence ids e.g. 'demoApp-productsTable-dimensionsCol'
 				componentName: "demoApp",
 				persoService: DemoPersoService

@@ -1,32 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.DatePicker.
-sap.ui.define([
-	'jquery.sap.global',
-	'sap/ui/Device',
-	'./InputBase',
-	'./DateTimeField',
-	'sap/ui/core/date/UniversalDate',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/library',
-	"./DatePickerRenderer"
-],
-	function(
-	jQuery,
-	Device,
-	InputBase,
-	DateTimeField,
-	UniversalDate,
-	library,
-	Control,
-	coreLibrary,
-	DatePickerRenderer
-	) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/Device', './InputBase', './DateTimeField', 'sap/ui/core/date/UniversalDate', './library', 'sap/ui/core/Control', 'sap/ui/core/library'],
+	function(jQuery, Device, InputBase, DateTimeField, UniversalDate, library, Control, coreLibrary) {
 	"use strict";
 
 
@@ -113,7 +93,7 @@ sap.ui.define([
 	 * the close event), or select Cancel.
 	 *
 	 * @extends sap.m.DateTimeField
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -205,7 +185,7 @@ sap.ui.define([
 				}
 			}
 		},
-		designtime: "sap/m/designtime/DatePicker.designtime"
+		designTime : true
 	}});
 
 
@@ -479,7 +459,7 @@ sap.ui.define([
 
 	DatePicker.prototype.setMinDate = function(oDate) {
 
-		if (this._isValidDate(oDate)) {
+		if (oDate && !(oDate instanceof Date)) {
 			throw new Error("Date must be a JavaScript date object; " + this);
 		}
 
@@ -518,7 +498,7 @@ sap.ui.define([
 
 	DatePicker.prototype.setMaxDate = function(oDate) {
 
-		if (this._isValidDate(oDate)) {
+		if (oDate && !(oDate instanceof Date)) {
 			throw new Error("Date must be a JavaScript date object; " + this);
 		}
 
@@ -999,8 +979,7 @@ sap.ui.define([
 				this._oDateRange.setStartDate(new Date(oDate.getTime()));
 			}
 		} else {
-			var oInitialFocusedDateValue = this.getInitialFocusedDateValue();
-			var oFocusDate = oInitialFocusedDateValue ? oInitialFocusedDateValue : new Date();
+			var oFocusDate = new Date();
 			var iMaxTimeMillis = this._oMaxDate.getTime() + 86400000 /* one day in milliseconds */;
 
 			if (oFocusDate.getTime() < this._oMinDate.getTime() || oFocusDate.getTime() > iMaxTimeMillis) {
@@ -1226,11 +1205,7 @@ sap.ui.define([
 	}
 
 	/**
-	 * Fired when the input operation has finished and the value has changed.
-	 *
-	 * <b>Note:</b> Fired only when a new date is selected. If you change the month or year from the picker but not
-	 * select a new date from the newly selected month/year, the value of the <code>sap.m.DatePicker</code> won't be
-	 * updated and no change event will be fired.
+	 * This event gets fired when the input operation has finished and the value has changed.
 	 *
 	 * @name sap.m.DatePicker#change
 	 * @event

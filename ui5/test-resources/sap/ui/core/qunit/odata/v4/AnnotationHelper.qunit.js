@@ -1,20 +1,20 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
 	"jquery.sap.global",
-	"sap/ui/base/SyncPromise",
 	"sap/ui/core/Icon",
 	"sap/ui/model/Context",
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/model/odata/_AnnotationHelperBasics",
 	"sap/ui/model/odata/v4/_AnnotationHelperExpression",
 	"sap/ui/model/odata/v4/AnnotationHelper",
+	"sap/ui/model/odata/v4/lib/_SyncPromise",
 	"sap/ui/model/odata/v4/ODataMetaModel"
-], function (jQuery, SyncPromise, Icon, BaseContext, JSONModel, Basics, Expression,
-		AnnotationHelper, ODataMetaModel) {
+], function (jQuery, Icon, BaseContext, JSONModel, Basics, Expression, AnnotationHelper,
+		_SyncPromise, ODataMetaModel) {
 	/*global QUnit, sinon */
 	/*eslint no-warning-comments: 0 */
 	"use strict";
@@ -134,9 +134,13 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.module("sap.ui.model.odata.v4.AnnotationHelper", {
 		beforeEach : function () {
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oLogMock = sinon.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
+		},
+
+		afterEach : function () {
+			this.oLogMock.verify();
 		}
 	});
 
@@ -158,7 +162,7 @@ sap.ui.require([
 			sPath;
 
 		this.mock(oMetaModel).expects("fetchEntityContainer").atLeast(1)
-			.returns(SyncPromise.resolve(mScope));
+			.returns(_SyncPromise.resolve(mScope));
 
 		for (sPath in mFixture) {
 			assert.strictEqual(

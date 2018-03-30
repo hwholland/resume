@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.uxap.sample.ObjectPageDynamicSideContentBtn.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.uxap.sample.ObjectPageDynamicSideContentBtn.ObjectPageDynamicSideContentBtn",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.uxap.sample.ObjectPageDynamicSideContentBtn.ObjectPageDynamicSideContentBtn",
 			dependencies : {
 				libs : [
 					"sap.ui.layout"

@@ -1,28 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.unified.FileUploader.
-sap.ui.define([
-	'jquery.sap.global',
-	'sap/ui/core/Control',
-	'./library',
-	'sap/ui/core/LabelEnablement',
-	'sap/ui/core/library',
-	'sap/ui/Device',
-	"./FileUploaderRenderer",
-	'jquery.sap.keycodes'
-], function(
-	jQuery,
-	Control,
-	library,
-	LabelEnablement,
-	coreLibrary,
-	Device,
-	FileUploaderRenderer
-) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control', './library', 'sap/ui/core/LabelEnablement', 'sap/ui/core/library', 'sap/ui/Device', 'jquery.sap.keycodes'],
+	function(jQuery, Control, library, LabelEnablement, coreLibrary, Device) {
 	"use strict";
 
 
@@ -44,7 +28,7 @@ sap.ui.define([
 	 * @implements sap.ui.core.IFormContent, sap.ui.unified.IProcessableBlobs
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -55,7 +39,6 @@ sap.ui.define([
 
 		interfaces : ["sap.ui.core.IFormContent", "sap.ui.unified.IProcessableBlobs"],
 		library : "sap.ui.unified",
-		designtime: "sap/ui/unified/designtime/FileUploader.designtime",
 		properties : {
 
 			/**
@@ -541,24 +524,12 @@ sap.ui.define([
 	};
 
 	FileUploader.prototype.setTooltip = function(oTooltip) {
-		var sTooltip,
-			sapUiFupInputMaskDOM;
-
 		this._refreshTooltipBaseDelegate(oTooltip);
 		this.setAggregation("tooltip", oTooltip, true);
-
 		if (this.oFileUpload) {
 			if (typeof oTooltip  === "string") {
-				sTooltip = this.getTooltip_AsString();
-				sapUiFupInputMaskDOM = this.$().find(".sapUiFupInputMask")[0];
-
-				if (sTooltip) {
-					this.oFileUpload.setAttribute("title", sTooltip);
-					sapUiFupInputMaskDOM && sapUiFupInputMaskDOM.setAttribute("title", sTooltip);
-				} else {
-					this.oFileUpload.removeAttribute("title");
-					sapUiFupInputMaskDOM && sapUiFupInputMaskDOM.removeAttribute("title");
-				}
+				jQuery(this.oFileUpload).attr("title", jQuery.sap.encodeHTML(oTooltip));
+				this.$().find(".sapUiFupInputMask").attr("title", jQuery.sap.encodeHTML(oTooltip));
 			}
 		}
 		return this;
@@ -698,8 +669,7 @@ sap.ui.define([
 	};
 
 	/**
-	 * Returns the DOM element that should be focused, when the focus is set onto the control.
-	 * @returns {Element} The DOM element that should be focused
+	 * Returns the DOM element that should be focused when focus is set onto the control.
 	 */
 	FileUploader.prototype.getFocusDomRef = function() {
 		return this.$("fu").get(0);
@@ -893,14 +863,12 @@ sap.ui.define([
 
 
 	/**
-	 * Clears the content of the <code>FileUploader</code>.
+	 * Clears the content of the FileUploader. The attached additional data however is retained.
 	 *
-	 * <b>Note:</b> The attached additional data however is retained.
-	 *
+	 * @type void
 	 * @public
 	 * @since 1.25.0
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
-	 * @returns {sap.ui.unified.FileUploader} The <code>sap.ui.unified.FileUploader</code> instance
 	 */
 	FileUploader.prototype.clear = function () {
 		var uploadForm = this.getDomRef("fu_form");
@@ -1050,7 +1018,7 @@ sap.ui.define([
 
 
 	/**
-	 * Starts the upload (as defined by uploadUrl).
+	 * Starts the upload (as defined by uploadUrl)
 	 *
 	 * @param {boolean} [bPreProcessFiles] Set to <code>true</code> to allow pre-processing of the files before sending the request.
 	 * As a result, the <code>upload</code> method becomes asynchronous. See {@link sap.ui.unified.IProcessableBlobs} for more information.
@@ -1087,30 +1055,20 @@ sap.ui.define([
 	/**
 	 * Aborts the currently running upload.
 	 *
-	 * @param {string} sHeaderParameterName
-	 *                 The name of the parameter within the <code>headerParameters</code> aggregation to be checked.
-	 *
-	 *                 <b>Note:</b> aborts the request, sent with a header parameter with the provided name.
-	 *                 The parameter is taken into account if the sHeaderParameterValue parameter is provided too.
-	 *
-	 * @param {string} sHeaderParameterValue
-	 *                 The value of the parameter within the <code>headerParameters</code> aggregation to be checked.
-	 *
-	 *                 <b>Note:</b> aborts the request, sent with a header parameter with the provided value.
-	 *                 The parameter is taken into account if the sHeaderParameterName parameter is provided too.
+	 * @type void
 	 * @public
 	 * @since 1.24.0
 	 * @ui5-metamodel This method also will be described in the UI5 (legacy) designtime metamodel
 	 */
-	FileUploader.prototype.abort = function(sHeaderParameterName, sHeaderParameterValue) {
+	FileUploader.prototype.abort = function(sHeaderCheck, sValueCheck) {
 		if (!this.getUseMultipart()) {
 			var iStart = this._aXhr.length - 1;
 			for (var i = iStart; i > -1 ; i--) {
-				if (sHeaderParameterName && sHeaderParameterValue) {
+				if (sHeaderCheck && sValueCheck) {
 					for (var j = 0; j < this._aXhr[i].requestHeaders.length; j++) {
 						var sHeader = this._aXhr[i].requestHeaders[j].name;
 						var sValue = this._aXhr[i].requestHeaders[j].value;
-						if (sHeader == sHeaderParameterName && sValue == sHeaderParameterValue) {
+						if (sHeader == sHeaderCheck && sValue == sValueCheck) {
 							this._aXhr[i].xhr.abort();
 							this.fireUploadAborted({
 								"fileName": this._aXhr[i].fileName,
@@ -1366,7 +1324,7 @@ sap.ui.define([
 				var formData = new window.FormData();
 				var name = this.FUEl.name;
 				for (var l = 0; l < aFiles.length; l++) {
-					this._appendFileToFormData(formData, name, aFiles[l]);
+					formData.append(name, aFiles[l], aFiles[l].name);
 				}
 				formData.append("_charset_", "UTF-8");
 				var data = this.FUDataEl.name;
@@ -1394,24 +1352,6 @@ sap.ui.define([
 		}
 
 		return this;
-	};
-
-	/**
-	 * Append a file to passed FormData object handling special case where there is a Blob or window.File with a name
-	 * parameter passed.
-	 * @param {object} oFormData receiving FormData object
-	 * @param {string} sFieldName name of the form field
-	 * @param {object} oFile object to be appended
-	 * @private
-	 */
-	FileUploader.prototype._appendFileToFormData = function (oFormData, sFieldName, oFile) {
-		// BCP: 1770523801 We pass third parameter 'name' only for instance of 'Blob' that has a 'name'
-		// parameter to prevent the append method failing on Safari browser.
-		if (oFile instanceof window.Blob && oFile.name) {
-			oFormData.append(sFieldName, oFile, oFile.name);
-		} else {
-			oFormData.append(sFieldName, oFile);
-		}
 	};
 
 	/*
@@ -1707,7 +1647,7 @@ sap.ui.define([
 			$browse.attr("type', 'button"); // The default type of button is submit that's why on click of label there are submit of the form. This way we are avoiding the submit of form.
 			$browse.click(function(e) {
 				e.preventDefault();
-				this.FUEl.click(); // The default behaviour on click on label is to open "open file" dialog. The only way to attach click event that is transferred from the label to the button is this way. AttachPress and attachTap don't work in this case.
+				this.ontap(); // The default behaviour on click on label is to open "open file" dialog. The only way to attach click event that is transferred from the label to the button is this way. AttachPress and attachTap don't work in this case.
 			}.bind(this));
 		}
 	};

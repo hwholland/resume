@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.InputPassword.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.InputPassword.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.InputPassword.V",
 			dependencies : {
 				libs : [
 					"sap.m",

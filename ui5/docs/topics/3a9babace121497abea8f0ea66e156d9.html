@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -880,7 +880,7 @@ init : function() {
     this.setModel(i18nModel, &quot;i18n&quot;);
      
     // set data model
-    var m = new sap.ui.model.odata.v2.ODataModel(sServiceUrl);
+    var m = new sap.ui.model.odata.ODataModel(sServiceUrl, {json: true,loadMetadataAsync: true});
     this.setModel(m);</pre>
                               
                               <p class="p">Return to the <samp class="ph codeph">manifest.json</samp> file:
@@ -1406,7 +1406,7 @@ init : function() {
     this.setModel(i18nModel, &quot;i18n&quot;);
      
     // set data model
-    var m = new sap.ui.model.odata.v2.ODataModel(sServiceUrl);
+    var m = new sap.ui.model.odata.ODataModel(sServiceUrl, {json: true,loadMetadataAsync: true});
     this.setModel(m);</pre>
                                     
                                     <p class="p">Apply the following changes:</p>

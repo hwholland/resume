@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -131,7 +131,8 @@
                            			
                            <p class="p">The following shows an XML fragment dialog example: </p>
                            
-                           			<pre class="pre codeblock prettyprint lang-xml">&lt;Dialog xmlns=&quot;sap.m&quot; title=&quot;XML Fragment Dialog&quot;&gt;
+                           			<pre class="pre codeblock prettyprint lang-xml">
+&lt;Dialog xmlns=&quot;sap.ui.commons&quot; title=&quot;XML Fragment Dialog&quot;&gt;
     &lt;TextView text=&quot;{/dialogText}&quot; /&gt;
     &lt;buttons&gt;
         &lt;Button text=&quot;Close&quot; press=&quot;closeDialog&quot;/&gt;
@@ -148,14 +149,14 @@
                            			<pre class="pre codeblock prettyprint lang-js">
 sap.ui.jsfragment(&quot;testdata.fragments.JSFragmentDialog&quot;, {
     createContent: function(oController) {
-        var oDialog = new sap.m.Dialog({title: &quot;JavaScript Fragment Dialog&quot;});
+        var oDialog = new sap.ui.commons.Dialog({title: &quot;JavaScript Fragment Dialog&quot;});
         
-        var oText = new sap.m.Input({text: &quot;{/dialogText}&quot;});
+        var oText = new sap.ui.commons.TextView({text: &quot;{/dialogText}&quot;});
         oDialog.addContent(oText);
         
-        var oButton = new sap.m.Button({
+        var oButton = new sap.ui.commons.Button({
             text: &quot;Close&quot;,
-            press: function(){oDialog.close();}
+            press: function(){oDialog .close();}
         });
         oDialog.addButton(oButton);
 

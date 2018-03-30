@@ -1,63 +1,26 @@
 /*
  * ! UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.QuickViewPage
 sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/IconPool',
-	'sap/ui/layout/form/SimpleForm',
-	'sap/ui/layout/VerticalLayout',
-	'sap/ui/layout/HorizontalLayout',
-	'./Page',
-	'./Button',
-	'./Bar',
-	'./Title',
-	'./Image',
-	'./Link',
-	'./Text',
-	'./Label',
-	'./HBox',
-	'sap/ui/core/Icon',
-	'sap/ui/core/Title',
-	'sap/ui/core/CustomData',
-	'sap/ui/core/library',
-	'sap/ui/layout/library',
-	'sap/ui/Device',
-	'sap/ui/layout/form/ResponsiveGridLayout',
-	'./QuickViewPageRenderer'
-],
-	function(
-		jQuery,
-		library,
-		Control,
-		IconPool,
-		SimpleForm,
-		VerticalLayout,
-		HorizontalLayout,
-		Page,
-		Button,
-		Bar,
-		Title,
-		Image,
-		Link,
-		Text,
-		Label,
-		HBox,
-		Icon,
-		CoreTitle,
-		//SimpleForm is loading ResponsiveGridLayout too late, only need as a dependency
-		CustomData,
-		coreLibrary,
-		layoutLibrary,
-		Device,
-		ResponsiveGridLayout,
-		QuickViewPageRenderer
-		) {
+			'jquery.sap.global', './library', 'sap/ui/core/Control',
+				'sap/ui/core/IconPool', 'sap/ui/layout/form/SimpleForm',
+				'sap/ui/layout/VerticalLayout', 'sap/ui/layout/HorizontalLayout',
+				'./Page', './Button', './Bar',
+				'./Title', './Image', './Link', './Text',
+				'./Label', './HBox', 'sap/ui/core/Icon', 'sap/ui/core/Title',
+				'sap/ui/core/CustomData', 'sap/ui/core/library', 'sap/ui/layout/library', 'sap/ui/Device',  'sap/ui/layout/form/ResponsiveGridLayout'],
+		function(jQuery, library, Control,
+					IconPool, SimpleForm,
+					VerticalLayout, HorizontalLayout,
+					Page, Button, Bar,
+					Title, Image, Link, Text,
+					Label, HBox, Icon, CoreTitle,
+				 //SimpleForm is loading ResponsiveGridLayout too late, only need as a dependency
+					CustomData, coreLibrary, layoutLibrary, Device, ResponsiveGridLayout) {
 			"use strict";
 
 			// shortcut for sap.m.URLHelper
@@ -88,7 +51,7 @@ sap.ui.define([
 			* @extends sap.ui.core.Control
 			*
 			* @author SAP SE
-			* @version 1.54.2
+			* @version 1.52.5
 			*
 			* @constructor
 			* @public

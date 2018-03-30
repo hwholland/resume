@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -230,21 +230,31 @@
                               
                               			
                               <div class="p">Here&apos;s how to do it:
-                                 				<pre class="pre codeblock prettyprint lang-js">	var oInput = new sap.m.Input({
-		value:&apos;Hello World&apos;
-	});
-...
-	<span class="ph emphasis emphasis">oInput.setBusy(true);</span>
-</pre>
+                                 				<pre class="pre codeblock prettyprint lang-js">var oMyListBox = new sap.ui.commons.ListBox({
+    tooltip : &quot;Country&quot;,
+    editable : false,
+    width : &quot;200px&quot;,
+    height : &quot;200px&quot;,
+    items : [ new sap.ui.core.ListItem({
+        text : &quot;I&apos;m an item, and you?&quot;
+    }) ]
+ }).placeAt(&quot;uiArea1&quot;);
+
+<span class="ph emphasis emphasis">oMyListBox.setBusy(true);</span></pre>
                                  The
                                  				following code shows how you define the default state of a control as
                                  					<samp class="ph codeph">busy</samp> so that it will be displayed as busy when it has been
-                                 				rendered:<pre class="pre codeblock prettyprint lang-js">	var oInput = new sap.m.Input({
-		value:&apos;Hello World&apos;,
-		<span class="ph emphasis emphasis">busy: true
+                                 				rendered:<pre class="pre codeblock prettyprint lang-js">var oMyListBox = new sap.ui.commons.ListBox({
+    <span class="ph emphasis emphasis">busy : true,
 </span>
-	});
-</pre>
+    tooltip : &quot;Country&quot;,
+    editable : false,
+    width : &quot;200px&quot;,
+    height : &quot;200px&quot;,
+    items : [ new sap.ui.core.ListItem({
+        text : &quot;I&apos;m an item, and you?&quot;
+    }) ]
+ }).placeAt(&quot;uiArea1&quot;);</pre>
                                  </div>
                               
                               			

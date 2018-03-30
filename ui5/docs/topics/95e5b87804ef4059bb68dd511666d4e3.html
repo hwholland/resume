@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -150,7 +150,7 @@
                                     				
                                     				<img xmlns="" class="inline  " id="loio95e5b87804ef4059bb68dd511666d4e3__image_evz_xmq_st" src="loio8f2176b473a54bbd87e8287732e4eb8e_HiRes.png">
                                     			
-                                 </div><span class="figcap">Only the upcoming meet-ups are shown</span></div>
+                                 </div><span class="figcap"><span class="enumeration fig-enumeration">Figure 125: </span>Only the upcoming meet-ups are shown</span></div>
                               
                               		
                            </section>
@@ -213,7 +213,7 @@
                                     				
                                     				<img xmlns="" class="inline  " id="loio95e5b87804ef4059bb68dd511666d4e3__image_zh2_5nq_st" src="loio4992f37e491c432995eaae0712ba1a59_HiRes.png">
                                     			
-                                 </div><span class="figcap">No data visible</span></div>
+                                 </div><span class="figcap"><span class="enumeration fig-enumeration">Figure 126: </span>No data visible</span></div>
                               
                               			
                               <div class="p">Since the function import call is not simulated automatically by the mock server, we
@@ -247,60 +247,32 @@
                            <section class="section" type="webapp/localService/mockserver.js">
                               <h2 class="section_title" style="font-size: 1.15em;">webapp/localService/mockserver.js</h2>
                               			
-                              			<pre class="pre codeblock prettyprint lang-js">sap.ui.define([
-	<span class="ph emphasis emphasis">&quot;jquery.sap.global&quot;,
+                              			<pre class="pre codeblock prettyprint lang-js">...
+oMockServer.simulate(&quot;localService/metadata.xml&quot;, {
+	sMockdataBaseUrl : &quot;localService/mockdata&quot;,
+	bGenerateMissingMockData : true
+});
+<span class="ph emphasis emphasis">var aRequests = oMockServer.getRequests();
+aRequests.push({
+    method: &quot;GET&quot;,
+    path: new RegExp(&quot;FindUpcomingMeetups(.*)&quot;), 
+    response: function(oXhr, sUrlParams) {
+    	jQuery.sap.log.debug(&quot;Incoming request for FindUpcomingMeetups&quot;);
+    	var today = new Date();
+	 	today.setHours(0); // or today.toUTCString(0) due to timezone differences
+	 	today.setMinutes(0);
+	 	today.setSeconds(0);
+    	var oResponse = jQuery.sap.sjax({
+        	url: &quot;/Meetups?$filter=EventDate ge &quot; + &quot;/Date(&quot; + today.getTime() + &quot;)/&quot;
+    	});
+    	oXhr.respondJSON(200, {}, JSON.stringify(oResponse.data));
+    	return true;
+    }
+});
+oMockServer.setRequests(aRequests);
 </span>
-	&quot;sap/ui/core/util/MockServer&quot;
-], function(<span class="ph emphasis emphasis">jQuery, </span>MockServer) {
-	&quot;use strict&quot;;
-
-	return {
-		/**
-		 * Initializes the mock server.
-		 * You can configure the delay with the URL parameter &quot;serverDelay&quot;.
-		 * The local mock data in this folder is returned instead of the real data for testing.
-		 * @public
-		 */
-		init: function() {
-			// create
-			var oMockServer = new MockServer({
-				rootUri: &quot;/&quot;
-			});
-
-			oMockServer.simulate(&quot;../localService/metadata.xml&quot;, {
-				sMockdataBaseUrl: &quot;../localService/mockdata&quot;,
-				bGenerateMissingMockData: true
-			});
-
-			<span class="ph emphasis emphasis">// handling mocking a function import call step
-			var aRequests = oMockServer.getRequests();
-			aRequests.push({
-				method: &quot;GET&quot;,
-				path: new RegExp(&quot;FindUpcomingMeetups(.*)&quot;),
-				response: function(oXhr, sUrlParams) {
-					jQuery.sap.log.debug(&quot;Incoming request for FindUpcomingMeetups&quot;);
-					var today = new Date();
-					today.setHours(0); // or today.toUTCString(0) due to timezone differences
-					today.setMinutes(0);
-					today.setSeconds(0);
-					jQuery.ajax({
-						url: &quot;/Meetups?$filter=EventDate ge &quot; + &quot;/Date(&quot; + (today.getTime())+ &quot;)/&quot;,
-						dataType : &apos;json&apos;,
-						async: false,
-						success : function(oData) {
-							oXhr.respondJSON(200, {}, JSON.stringify(oData));
-						}
-					});
-					return true;
-				}
-			});
-			oMockServer.setRequests(aRequests);
-</span>
-
-			// handling custom URL parameter step
-			var fnCustom = function(oEvent) {
-...
-</pre>
+var fnCustom = function(oEvent) {
+...</pre>
                               
                               			<div class="p">We push a new request handler to mock the function import call as follows:
                                  <ol class="ol" id="loio95e5b87804ef4059bb68dd511666d4e3__ol_nrr_rqq_st">
@@ -447,7 +419,7 @@ oMockServer.simulate(&quot;localService/metadata.xml&quot;, {
                                                 								
                                                 								<img xmlns="" class="inline  " id="loio95e5b87804ef4059bb68dd511666d4e3__image_osp_hqd_tt" src="loio1117f6cfc5ca4f82904904479db79077_HiRes.png">
                                                 							
-                                             </div><span class="figcap">Editing mock data in <span xmlns="" class="ph pname">SAP Web IDE</span></span></div>
+                                             </div><span class="figcap"><span class="enumeration fig-enumeration">Figure 127: </span>Editing mock data in <span xmlns="" class="ph pname">SAP Web IDE</span></span></div>
                                           
                                           						
                                        </li>

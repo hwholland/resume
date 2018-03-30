@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -209,7 +209,7 @@
                         		
                         <p class="p">Also, the mobile/hybrid package excludes certain types of files which are typically not needed.
                            			Your mileage may vary, so you might need to add the respective files for the
-                           			requirements of your specific app. The <samp class="ph codeph">library-preload.js</samp> files which
+                           			requirements of your specific app. The <samp class="ph codeph">library-preload.json</samp> files which
                            			contain all controls from a library to reduce the number of HTTP requests are not
                            			required in hybrid apps because there is no HTTP latency. <span class="ph pname">SAPUI5</span> will by default try to
                            			access them, so you might see a failed attempt to load these files in the log file or
@@ -219,7 +219,8 @@
                            			tag:
                         </p>
                         
-                        		<pre class="pre codeblock prettyprint">data-sap-ui-preload=&quot;&quot;</pre>
+                        		<pre class="pre codeblock prettyprint">data-sap-ui-preload=&quot;&quot;
+</pre>
                         
                         		<div class="section">
                            <section class="section" type="Optimization of the Package Size">
@@ -245,8 +246,7 @@
                                  				
                                  <li class="li">
                                     					
-                                    <p class="p">In each of the <samp class="ph codeph">/resources/sap/* ... */themes</samp> folders, you can delete all
-                                       						theme folders except the one for the theme you are using.
+                                    <p class="p">In each of the <samp class="ph codeph">/resources/sap/* ... */themes</samp> folders, you can delete all theme folders except the one for the them you are using.
                                     </p>
                                     
                                     				
@@ -296,10 +296,11 @@
                               			
                               <p class="p">Example:</p>
                               
-                              			<pre class="pre codeblock prettyprint lang-html">&lt;script&gt;
+                              			<pre class="pre codeblock prettyprint lang-html">
+&lt;script&gt;
 &lt;!-- put the following code in the beginning of the application code --&gt;
 function appReady(){
-    sap.ui.getCore().setModel(new sap.ui.model.odata.v2.ODataModel(&lt;ODATA_URL&gt;));
+    sap.ui.getCore().setModel(new sap.ui.model.odata.ODataModel(&lt;ODATA_URL&gt;, false));
 }
 &lt;!-- bind to the deviceready event --&gt;
 document.addEventListener(&quot;deviceready&quot;, appReady, false);

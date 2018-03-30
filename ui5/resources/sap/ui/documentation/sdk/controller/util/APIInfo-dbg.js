@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -25,7 +25,7 @@ sap.ui.define(['jquery.sap.global'],
 		function getIndexJsonPromise() {
 
 			if (oLibraryDataCache["index"]) {
-				return Promise.resolve(oLibraryDataCache["index"]);
+				return oLibraryDataCache["index"];
 			}
 
 			return new Promise(function (resolve, reject) {
@@ -50,7 +50,7 @@ sap.ui.define(['jquery.sap.global'],
 		function getDeprecatedPromise() {
 
 			if (oLibraryDataCache["deprecated"]) {
-				return Promise.resolve(oLibraryDataCache["deprecated"]);
+				return oLibraryDataCache["deprecated"];
 			}
 
 			return new Promise(function (resolve, reject) {
@@ -73,7 +73,7 @@ sap.ui.define(['jquery.sap.global'],
 		function getExperimentalPromise() {
 
 			if (oLibraryDataCache["experimental"]) {
-				return Promise.resolve(oLibraryDataCache["experimental"]);
+				return oLibraryDataCache["experimental"];
 			}
 
 			return new Promise(function (resolve, reject) {
@@ -106,7 +106,7 @@ sap.ui.define(['jquery.sap.global'],
 
 			jQuery.ajax({
 				async: false,
-				url : sTestResourcesRoot + sLibraryName.replace(/\./g, '/') + '/designtime/apiref/api.json',
+				url : sTestResourcesRoot + sLibraryName.replace(/\./g, '/') + '/designtime/api.json',
 				dataType : 'json',
 				success : function(vResponse) {
 					oResponse = vResponse.symbols;
@@ -137,7 +137,7 @@ sap.ui.define(['jquery.sap.global'],
 				// Fetch library data, then cache it no matter the result
 				jQuery.ajax({
 					async: true,
-					url : sTestResourcesRoot + sLibraryName.replace(/\./g, '/') + '/designtime/apiref/api.json',
+					url : sTestResourcesRoot + sLibraryName.replace(/\./g, '/') + '/designtime/api.json',
 					dataType : 'json',
 					success : function(vResponse) {
 						var aResult = vResponse.symbols || [];

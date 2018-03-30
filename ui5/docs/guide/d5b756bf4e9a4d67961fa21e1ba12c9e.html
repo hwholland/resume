@@ -6,8 +6,8 @@
 <meta name="abstract" content="Example of a button control that is extended with additional events."/>
 <meta name="description" content="Example of a button control that is extended with additional events."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=10167291772593301"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=10167291772593301"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8112652707528272"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8112652707528272"/>
 <title>Extending Buttons with Additional Events</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -25,8 +25,9 @@
                 <samp class="ph codeph">hover</samp> event when the mouse enters its area, use the following
             code:</p>
 
-		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.m.Button.extend("HoverButton", { // call the new Control type "HoverButton" 
-                                                // and let it inherit from sap.m.Button
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+sap.ui.commons.Button.extend("HoverButton", { // call the new Control type "HoverButton" 
+                                                // and let it inherit from sap.ui.commons.Button
       metadata: {
           events: {
               "hover" : {}  // this Button has also a "hover" event, in addition to "press" of the normal Button
@@ -39,7 +40,7 @@
       },
 
       renderer: {} // add nothing, just inherit the ButtonRenderer as is; 
-                   // In this case (since the renderer is not changed) you could also specify this explicitly with:  renderer:"sap.m.ButtonRenderer"
+                   // In this case (since the renderer is not changed) you could also specify this explicitly with:  renderer:"sap.ui.commons.ButtonRenderer"
                    // (means you reuse the ButtonRenderer instead of creating a new view
   });</pre></div>
 

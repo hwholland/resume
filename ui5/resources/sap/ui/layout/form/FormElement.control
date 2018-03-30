@@ -16,18 +16,15 @@ A &lt;code&gt;FormElement&lt;/code&gt; is a combination of one label and differe
         <aggregation cardinality="0..1" type="sap.ui.core/Label" name="label">
             <documentation>Label of the fields. Can either be a &lt;code&gt;Label&lt;/code&gt; control or a string.
 If a &lt;code&gt;Label&lt;/code&gt; control is used, the properties of the &lt;code&gt;Label&lt;/code&gt; can be set.
-If no assignment between &lt;code&gt;Label&lt;/code&gt; and the fields is set via (&lt;code&gt;labelFor&lt;/code&gt; property of the &lt;code&gt;Label&lt;/code&gt;),
-it will be done automatically by the &lt;code&gt;FormElement&lt;/code&gt;.
-In this case the &lt;code&gt;Label&lt;/code&gt; is assigned to the fields of the &lt;code&gt;FormElement&lt;/code&gt;.</documentation>
+If no assignment between &lt;code&gt;Label&lt;/code&gt; and the fields is set via (&lt;code&gt;labelFor&lt;/code&gt; property of the &lt;code&gt;Label&lt;/code&gt;), it will be done automatically by the
+&lt;code&gt;FormElement&lt;/code&gt;. In this case the &lt;code&gt;Label&lt;/code&gt; is assigned to the fields of the &lt;code&gt;FormElement&lt;/code&gt;.</documentation>
         </aggregation>
         <aggregation visibility="hidden" cardinality="0..1" type="sap.ui.core/Label" name="_label"/>
         <aggregation cardinality="0..n" type="sap.ui.core/Control" name="fields">
-            <documentation>Form controls that belong together to be displayed in one row of a &lt;code&gt;Form&lt;/code&gt;.
+            <documentation>Formular controls that belong together to be displayed in one row of a &lt;code&gt;Form&lt;/code&gt;.
 
-&lt;b&gt;Warning:&lt;/b&gt; Do not put any layout or other container controls in here.
-This could damage the visual layout, keyboard support and screen-reader support.
-Only form controls are allowed. Views are also not supported.
-Allowed controls implement the interface &lt;code&gt;sap.ui.core.IFormContent&lt;/code&gt;.</documentation>
+&lt;b&gt;Note:&lt;/b&gt; Do not put any layout controls in here. This could destroy the visual layout,
+keyboard support and screen-reader support.</documentation>
         </aggregation>
     </aggregations>
     <methods>

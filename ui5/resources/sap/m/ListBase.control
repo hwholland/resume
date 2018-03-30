@@ -202,15 +202,6 @@ Calling the &lt;code&gt;preventDefault&lt;/code&gt; method of the event cancels 
                 </parameter>
             </parameters>
         </event>
-        <event allowPreventDefault="true" since="1.54" name="beforeOpenContextMenu">
-            <documentation>Fired when the context menu is opened.
-When the context menu is opened, the binding context of the item is set to the given &lt;code&gt;contextMenu&lt;/code&gt;.</documentation>
-            <parameters>
-                <parameter type="sap.m/ListItemBase" name="listItem">
-                    <documentation>Item in which the context menu was opened.</documentation>
-                </parameter>
-            </parameters>
-        </event>
     </events>
     <aggregations default="items">
         <aggregation bindable="bindable" cardinality="0..n" type="sap.m/ListItemBase" name="items">
@@ -226,12 +217,6 @@ When the context menu is opened, the binding context of the item is set to the g
         </aggregation>
         <aggregation cardinality="0..1" since="1.16" type="sap.m/Toolbar" name="infoToolbar">
             <documentation>A toolbar that is placed below the header to show extra information to the user.</documentation>
-        </aggregation>
-        <aggregation cardinality="0..n" since="1.54" type="sap.ui.core/dnd/DragDropBase" name="dragDropConfig">
-            <documentation>Defines the drag-and-drop configuration.</documentation>
-        </aggregation>
-        <aggregation cardinality="0..1" since="1.54" type="sap.ui.core/IContextMenu" name="contextMenu">
-            <documentation>Defines the context menu of the items.</documentation>
         </aggregation>
     </aggregations>
     <associations>

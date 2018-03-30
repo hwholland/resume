@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.define([
@@ -23,11 +23,11 @@ sap.ui.define([
 
 	var MainController = Controller.extend("sap.ui.core.sample.odata.v4.ListBinding.Main", {
 		cancelChangeTeamBudget : function (oEvent) {
-			this.byId("ChangeTeamBudgetDialog").close();
+			this.getView().byId("ChangeTeamBudgetDialog").close();
 		},
 
 		cancelChangeManagerOfTeam : function (oEvent) {
-			this.byId("ChangeManagerOfTeamDialog").close();
+			this.getView().byId("ChangeManagerOfTeamDialog").close();
 		},
 
 		changeTeamBudget : function (oEvent) {
@@ -73,7 +73,7 @@ sap.ui.define([
 		},
 
 		getEmployeeByID : function (oEvent) {
-			var oOperation = this.byId("GetEmployeeByID").getObjectBinding();
+			var oOperation = this.getView().byId("GetEmployeeByID").getObjectBinding();
 
 			oOperation.setParameter("EmployeeID",
 					this.getView().getModel("search").getProperty("/EmployeeID"))
@@ -86,7 +86,7 @@ sap.ui.define([
 		},
 
 		getEmployeeMaxAge : function (oEvent) {
-			this.byId("GetEmployeeMaxAge").getObjectBinding().execute();
+			this.getView().byId("GetEmployeeMaxAge").getObjectBinding().execute();
 		},
 
 		onBeforeRendering : function () {
@@ -137,7 +137,7 @@ sap.ui.define([
 
 		onEmployeeSelect : function (oEvent) {
 			var oContext = oEvent.getParameters().listItem.getBindingContext();
-			this.byId("EmployeeEquipments").setBindingContext(oContext);
+			this.getView().byId("EmployeeEquipments").setBindingContext(oContext);
 		},
 
 		onEquipmentsChanged : function (oEvent) {
@@ -148,7 +148,7 @@ sap.ui.define([
 		},
 
 		onEquipmentsRefresh : function (oEvent) {
-			this.byId("Equipments").getBinding("items").refresh();
+			this.getView().byId("Equipments").getBinding("items").refresh();
 		},
 
 		onInit : function () {
@@ -225,7 +225,7 @@ sap.ui.define([
 
 		onUpdateEmployee : function (oEvent) {
 //			var oEmployeeContext = oEvent.getSource().getBindingContext(),
-//				aItems = this.byId("Employees").getItems();
+//				aItems = this.getView().byId("Employees").getItems();
 //
 //			oEmployeeContext.getModel().read(oEmployeeContext.getPath(), true)
 //				.then(function (oEntityInstance) {
@@ -239,19 +239,23 @@ sap.ui.define([
 		},
 
 		openChangeTeamBudgetDialog : function (oEvent) {
-			var oUiModel = this.getView().getModel("ui");
+			var oView = this.getView(),
+				oUiModel = oView.getModel("ui");
 
 			// TODO There must be a simpler way to copy values from the model to our parameters
-			oUiModel.setProperty("/TeamID", this.byId("Team_Id").getBinding("text").getValue());
-			oUiModel.setProperty("/Budget", this.byId("Budget").getBinding("text").getValue());
-			this.byId("ChangeTeamBudgetDialog").open();
+			oUiModel.setProperty("/TeamID", oView.byId("Team_Id").getBinding("text").getValue());
+			oUiModel.setProperty("/Budget", oView.byId("Budget").getBinding("text").getValue());
+			oView.byId("ChangeTeamBudgetDialog").open();
 		},
 
 		openChangeManagerOfTeamDialog : function (oEvent) {
+			var oView = this.getView(),
+				oUiModel = oView.getModel("ui");
+
 			// TODO There must be a simpler way to copy values from the model to our parameters
-			this.getView().getModel("ui").setProperty("/ManagerID",
-				this.byId("ManagerID").getBinding("text").getValue());
-			this.byId("ChangeManagerOfTeamDialog").open();
+			oUiModel.setProperty("/ManagerID",
+				oView.byId("ManagerID").getBinding("text").getValue());
+			oView.byId("ChangeManagerOfTeamDialog").open();
 		},
 
 		// *********************************************************************************
@@ -267,7 +271,8 @@ sap.ui.define([
 				sSelectedId,
 				bSortDesc,
 				oTable,
-				oSortModel = this.getView().getModel('sort');
+				oView = this.getView(),
+				oSortModel = oView.getModel('sort');
 
 			oEvent.getSource().getCustomData().forEach(function (oCustomData) {
 				mCustomData[oCustomData.getKey()] = oCustomData.getValue();
@@ -301,7 +306,7 @@ sap.ui.define([
 				this.mSorters[sId].unshift(new Sorter(sProperty, bSortDesc, sId === "Equipments"));
 			}
 
-			oTable = this.byId(sId);
+			oTable = oView.byId(sId);
 			aSelectedContexts = oTable.getSelectedContexts();
 			oBinding = oTable.getBinding("items");
 			// restore selection after sort

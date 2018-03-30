@@ -245,7 +245,7 @@ sap.ui.define([
 			handleGroupModeChange: function (oEvent) {
 				var selectedItem = oEvent.getParameter("selectedItem");
 				if (selectedItem) {
-					var oPC1 = this.byId("PC1");
+					var oPC1 = this.getView().byId("PC1");
 					oPC1.setGroupAppointmentsMode(selectedItem.getKey());
 				}
 			},
@@ -253,8 +253,7 @@ sap.ui.define([
 			handleAppointmentSelect: function (oEvent) {
 				var oAppointment = oEvent.getParameter("appointment");
 				if (oAppointment) {
-					var sSelected = oAppointment.getSelected() ? "selected" : "deselected";
-					MessageBox.show("'" + oAppointment.getTitle() + "' " + sSelected + ". \n Selected appointments: " + this.byId("PC1").getSelectedAppointments().length);
+					MessageBox.show("Appointment selected: " + oAppointment.getTitle());
 				} else {
 					var aAppointments = oEvent.getParameter("appointments"),
 						sValue = aAppointments.length + " Appointments selected";
@@ -263,7 +262,7 @@ sap.ui.define([
 			},
 
 			handleIntervalSelect: function (oEvent) {
-				if (this.byId("PC1").getViewKey() === "nonWorking"){
+				if (this.getView().byId("PC1").getViewKey() === "nonWorking"){
 					this.handleNonWorkingSpecialDates(oEvent);
 				} else {
 					var oPC = oEvent.oSource,
@@ -305,7 +304,7 @@ sap.ui.define([
 			 When it's for a second time - it removes it.
 			 */
 			handleNonWorkingSpecialDates: function (oEvent){
-				var oPC1 = this.byId("PC1"),
+				var oPC1 = this.getView().byId("PC1"),
 					aSpecialDates = oPC1.getSpecialDates() || [],
 					oStartDate = oEvent.getParameter("startDate");
 
@@ -329,20 +328,20 @@ sap.ui.define([
 			sap.m.Select should be visible only for months view because only there is a grouping.
 			 */
 			determineControlsVisibility: function () {
-				var bLabelVisible = this.byId("PC1").getViewKey() === "nonWorking",
-					bSelectVisible = this.byId("PC1").getViewKey() === "M";
-				this.byId("label").setVisible(bLabelVisible);
-				this.byId("select").setVisible(bSelectVisible);
+				var bLabelVisible = this.getView().byId("PC1").getViewKey() === "nonWorking",
+					bSelectVisible = this.getView().byId("PC1").getViewKey() === "M";
+				this.getView().byId("label").setVisible(bLabelVisible);
+				this.getView().byId("select").setVisible(bSelectVisible);
 			},
 
 			handleSelectionFinish: function(oEvent) {
 				var aSelectedKeys = oEvent.getSource().getSelectedKeys();
-				this.byId("PC1").setBuiltInViews(aSelectedKeys);
+				this.getView().byId("PC1").setBuiltInViews(aSelectedKeys);
 			},
 
 			onPress: function (oEvent) {
 				if (!oEvent.getParameter("pressed")) {
-					this.byId("PC1").addView(
+					this.getView().byId("PC1").addView(
 						new sap.m.PlanningCalendarView({
 							key: "A",
 							intervalType: sap.ui.unified.CalendarIntervalType.Hour,
@@ -353,7 +352,7 @@ sap.ui.define([
 							showSubIntervals: true
 						})
 					);
-					this.byId("PC1").addView(
+					this.getView().byId("PC1").addView(
 						new sap.m.PlanningCalendarView({
 							key: "D",
 							intervalType: sap.ui.unified.CalendarIntervalType.Day,
@@ -364,7 +363,7 @@ sap.ui.define([
 							showSubIntervals: true
 						})
 					);
-					this.byId("PC1").addView(
+					this.getView().byId("PC1").addView(
 						new sap.m.PlanningCalendarView({
 							key: "M",
 							intervalType: sap.ui.unified.CalendarIntervalType.Month,
@@ -375,7 +374,7 @@ sap.ui.define([
 							showSubIntervals: true
 						})
 					);
-					this.byId("PC1").addView(
+					this.getView().byId("PC1").addView(
 						new sap.m.PlanningCalendarView({
 							key: "nonWorking",
 							intervalType: sap.ui.unified.CalendarIntervalType.Day,
@@ -385,9 +384,9 @@ sap.ui.define([
 							intervalsL: 9
 						})
 					);
-					this.byId("PC1").setViewKey("D");
+					this.getView().byId("PC1").setViewKey("D");
 				} else {
-					this.byId("PC1").destroyViews();
+					this.getView().byId("PC1").destroyViews();
 				}
 			}
 

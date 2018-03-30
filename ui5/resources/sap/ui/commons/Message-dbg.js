@@ -1,18 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.commons.Message.
-sap.ui.define([
-  'jquery.sap.global',
-  './Dialog',
-  './library',
-  'sap/ui/core/Control',
-  "./MessageRenderer"
-],
-	function(jQuery, Dialog, library, Control, MessageRenderer) {
+sap.ui.define(['jquery.sap.global', './Dialog', './library', 'sap/ui/core/Control'],
+	function(jQuery, Dialog, library, Control) {
 	"use strict";
 
 
@@ -26,7 +20,7 @@ sap.ui.define([
 	 * @class
 	 * Creates the "Message"s to be supplied to the "MessageBar" Control.
 	 * @extends sap.ui.core.Control
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public

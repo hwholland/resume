@@ -3,11 +3,11 @@
 <html lang="en-us">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta name="abstract" content="Displays the titles of the sections and subsections in the ObjectPageLayout and allows the user to scroll to the respective content."/>
-<meta name="description" content="Displays the titles of the sections and subsections in the ObjectPageLayout and allows the user to scroll to the respective content."/>
+<meta name="abstract" content="The AnchorBar control contains buttons that ease navigation and scrolling within sections and/or subsections of an ObjectPageLayout control."/>
+<meta name="description" content="The AnchorBar control contains buttons that ease navigation and scrolling within sections and/or subsections of an ObjectPageLayout control."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=2932589027039795"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=2932589027039795"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=18258214251693672"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=18258214251693672"/>
 <title>Anchor Bar</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -19,97 +19,100 @@
 	<h1 class="title topictitle1">Anchor Bar</h1>
 
 	
-	<div class="body conbody"><p class="shortdesc">Displays the titles of the sections and subsections in the
-			<samp class="ph codeph">ObjectPageLayout</samp> and allows the user to scroll to the respective
-		content.</p>
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">AnchorBar</samp> control contains buttons that ease navigation and
+		scrolling within sections and/or subsections of an <samp class="ph codeph">ObjectPageLayout</samp>
+		control.</p>
 
-		<div class="section" id="loio370b67986497463187336fa130aebbf1__section_zyk_srs_ncb"><div class="section_title">Overview</div><div type="Overview">
+		<div class="section"><div class="section_title">Anchor Bar Responsiveness</div><div type="Anchor Bar Responsiveness">
 			
-			<p class="p">The anchor bar is an automatically generated internal menu that shows the titles of the
-				sections and subsections and allows the user to scroll to the respective section and
-				subsection content.</p>
-
-			<div class="fig fignone" id="loio370b67986497463187336fa130aebbf1__fig_znw_wpt_ncb"><div class="figcontainer">
-				
-				<img class="image" id="loio370b67986497463187336fa130aebbf1__image_a4w_wpt_ncb" src="loio7023c14765ae4e47924fe6ee29baf8c3_HiRes.png"/>
-			<div class="figcap">Anchor Bar with Sections and Subsections</div></div></div>
-
-			<p class="p">When the user scrolls the page content, the anchor bar remains at the top of the screen.</p>
+			<div class="p">The <span class="ph"><span class="ph pname">OpenUI5</span></span> control that is used
+				for rendering the Anchor Bar is the <samp class="ph codeph">sap.uxap.AnchorBar</samp> control,
+				which extends <samp class="ph codeph">sap.m.Toolbar</samp>. The control that is used for rendering
+				the navigation buttons is <samp class="ph codeph">sap.m.Button</samp>. When items in the Anchor
+				Bar are clicked, the page scrolls down to the corresponding
+					<samp class="ph codeph">sap.uxap.ObjectPageSectionBase</samp>. When the application scrolls,
+				the Anchor Bar remains at the top of the screen.<div class="note note"><span class="notetitle">Note</span> In some applications or in
+					some rendering modes of applications, it may not be desirable or necessary to
+					display the Anchor Bar. In these cases, the Anchor Bar can be hidden using the
+						<samp class="ph codeph">setShowAnchorBar</samp> function.</div>
+</div>
 
 		</div></div>
 
-		<div class="section" id="loio370b67986497463187336fa130aebbf1__section_xxc_xc1_4cb"><div class="section_title">Usage</div><div type="Usage">
+		<div class="section"><div class="section_title">Rules for Displaying Sections and Subsections</div><div type="Rules for Displaying Sections and Subsections">
 			
-			<p class="p">The anchor bar is displayed by default. You can hide it by using the
-					<samp class="ph codeph">showAnchorBar</samp> property:</p>
+			<div class="p">The following rules are applied to display the contents of the
+					<samp class="ph codeph">ObjectPageLayout</samp> correctly. Each rule is applied to the output
+				of the preceding rule.<ol class="ol" id="loio370b67986497463187336fa130aebbf1__ol_j3m_vbj_ls">
+					<li class="li">
+						<p class="p">If the subsection content is empty, do not display this subsection.</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;ObjectPageLayout id="ObjectPageLayout" showAnchorBar="false"&gt;
-&lt;/ObjectPageLayout&gt;</pre></div>
+					</li>
 
-			<p class="p">In some apps or in some rendering modes of apps, it may not be desirable or necessary to
-				display the anchor bar. In these cases, you can hide it using the
-					<samp class="ph codeph">setShowAnchorBar</samp> function.</p>
+					<li class="li">
+						<p class="p">If the section content is empty, do not display this section.</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oObjectPage.setShowAnchorBar(false);</pre></div>
+					</li>
 
-			<p class="p">The <samp class="ph codeph">toggleAnchorBar</samp> event is fired by the <samp class="ph codeph">ObjectPageLayout</samp>
-				control when the anchor bar is switched from moving to fixed.</p>
+					<li class="li">
+						<p class="p">If a section without a title contains only one subsection with a title, the section will
+							get the title of the subsection (<samp class="ph codeph">SectionTitle</samp> =
+								<samp class="ph codeph">SubsectionTitle</samp> and
+								<samp class="ph codeph">SubsectionTitle</samp>=<samp class="ph codeph">NULL</samp>)</p>
 
-			<p class="p">An additional option for displaying the anchor bar is to use a
-					<samp class="ph codeph">sap.m.IconTabBar</samp> control instead of the default
-					<samp class="ph codeph">sap.uxap.AnchorBar</samp>. This is done with the
-					<samp class="ph codeph">useIconTabBar</samp> boolean property. If set to
-				<samp class="ph codeph">true</samp>, it will also set <samp class="ph codeph">showAnchorBar</samp> to
-					<samp class="ph codeph">false</samp> in order to avoid showing two navigation bars. This is
-				how it looks in the two views:</p>
+					</li>
 
-			<p class="p">XML view:</p>
+					<li class="li">
+						<p class="p">If the <samp class="ph codeph">ObjectPageLayout</samp> contains only one section, no
+							Anchor Bar will be displayed.</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;ObjectPageLayout id="ObjectPageLayout" useIconTabBar="true"&gt;
-&lt;/ObjectPageLayout&gt;</pre></div>
+					</li>
 
-			<p class="p">JavaScript:</p>
+					<li class="li">
+						<p class="p">If there are more than one sections, the first section will not have a title.</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oObjectPage.setUseIconTabBar(true);</pre></div>
+					</li>
 
-			
+				</ol>
+</div>
+
 		</div></div>
 
 		<div class="section"><div class="section_title">Custom Anchor Bar Buttons</div><div type="Custom Anchor Bar Buttons">
 			
 			<p class="p">By default, you don’t need to specify anything for a
 					<samp class="ph codeph">sap.uxap.ObjectPageSectionBase</samp> to have its button included in
-				the anchor bar. At runtime, the <samp class="ph codeph">ObjectPageLayout</samp> control creates a
-				button that has the same text as the corresponding section title. However, you may
-				want to use your own control for rendering the anchor bar button instead of the
-				default <samp class="ph codeph">sap.m.Button</samp>. You can specify the custom control at
+				the Anchor Bar. At runtime, the <samp class="ph codeph">ObjectPageLayout</samp> control will
+				create a button which has the same text as the corresponding section title. However,
+				you may want to use your own control for rendering the Anchor Bar button instead of
+				the default <samp class="ph codeph">sap.m.Button</samp>. You can specify the custom control at
 					<samp class="ph codeph">sap.uxap.ObjectPageSectionBase</samp> level, as shown here:</p>
 
 			
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;ObjectPageSection&gt;
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;ObjectPageSection&gt;
     &lt;customAnchorBarButton&gt;
         &lt;m:Button text="Employee Info"/&gt;
     &lt;/customAnchorBarButton&gt;
 &lt;/ObjectPageSection&gt;</pre></div>
 
 			
-			<p class="p">Scrolling is handled automatically, so you don't need to add anything to enable this feature.
-				However, if you want to handle the <samp class="ph codeph">press</samp> event differently, then
-				you can add an event handler to the button and can also optionally customize the
-				button.</p>
+			<p class="p">The scrolling is handled automatically, so you don't need to add anything to enable this
+				feature. However, if you want to handle the press event differently, then you can
+				add an event handler to the button and can also optionally customize the button.</p>
 
 			
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;ObjectPageSection&gt;
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;ObjectPageSection&gt;
     &lt;customAnchorBarButton&gt;
         &lt;m:Button text="Employee Info" press="handleAnchorBarPress" type="Transparent"/&gt;
     &lt;/customAnchorBarButton&gt;
 &lt;/ObjectPageSection&gt;</pre></div>
 
 			
-			<p class="p">Here is an example showing the usage of custom controls for the anchor bar buttons: </p>
+			<p class="p">Here is a complete example showing the usage of custom controls for the Anchor Bar
+				buttons: </p>
 
 			
-				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;ObjectPageLayout id="ObjectPageLayout"&gt;       
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;ObjectPageLayout id="ObjectPageLayout"&gt;       
     &lt;headerTitle&gt;
         &lt;ObjectPageHeader id="headerExpandedGrid" /&gt;
     &lt;/headerTitle&gt;
@@ -136,11 +139,6 @@
 
 	</div>
 
-	<div class="related-links"> 
-<div class="relinfo"><div class="relinfotitle ">Related Information</div>
-<div><a class="link" href="../../docs/api/symbols/sap.uxap.AnchorBar.html" alt="../../docs/api/symbols/sap.uxap.AnchorBar.html" title="../../docs/api/symbols/sap.uxap.AnchorBar.html">API Reference: <samp class="ph codeph">sap.uxap.AnchorBar</samp></a></div>
-</div>
-</div>
 </div></div>
 
 </body>

@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.InputKeyValue.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.InputKeyValue.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.InputKeyValue.V",
 			dependencies : {
 				libs : [
 					"sap.m",

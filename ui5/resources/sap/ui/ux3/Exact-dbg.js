@@ -1,36 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.ux3.Exact.
-sap.ui.define([
-    'jquery.sap.global',
-    'sap/ui/commons/Button',
-    'sap/ui/commons/Menu',
-    'sap/ui/commons/SearchField',
-    'sap/ui/commons/TextView',
-    'sap/ui/core/Control',
-    './ExactArea',
-    './ExactAttribute',
-    './ExactBrowser',
-    './library',
-    "./ExactRenderer"
-],
-	function(
-	    jQuery,
-		Button,
-		Menu,
-		SearchField,
-		TextView,
-		Control,
-		ExactArea,
-		ExactAttribute,
-		ExactBrowser,
-		library,
-		ExactRenderer
-	) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/commons/Button', 'sap/ui/commons/Menu', 'sap/ui/commons/SearchField', 'sap/ui/commons/TextView', 'sap/ui/core/Control', './ExactArea', './ExactAttribute', './ExactBrowser', './library'],
+	function(jQuery, Button, Menu, SearchField, TextView, Control, ExactArea, ExactAttribute, ExactBrowser, library) {
 	"use strict";
 
 
@@ -47,7 +23,7 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -73,12 +49,12 @@ sap.ui.define([
 			/**
 			 * Defines the 'Settings' button in the browse section tool bar
 			 */
-			settingsMenu : {type : "sap.ui.commons.Menu", multiple : false, forwarding: {idSuffix: "-browser", aggregation: "optionsMenu"}},
+			settingsMenu : {type : "sap.ui.commons.Menu", multiple : false},
 
 			/**
 			 * The attributes which shall be available to refine the search
 			 */
-			attributes : {type : "sap.ui.ux3.ExactAttribute", multiple : true, singularName : "attribute", forwarding: {idSuffix: "-browser", aggregation: "attributes"}},
+			attributes : {type : "sap.ui.ux3.ExactAttribute", multiple : true, singularName : "attribute"},
 
 			/**
 			 * Controls managed by the Exact control
@@ -177,6 +153,24 @@ sap.ui.define([
 
 	//*** Overridden API functions ***
 
+
+	Exact.prototype.getSettingsMenu = function() {
+		return this._browser.getOptionsMenu();
+	};
+
+
+	Exact.prototype.setSettingsMenu = function(oSettingsMenu) {
+		this._browser.setOptionsMenu(oSettingsMenu);
+		return this;
+	};
+
+
+	Exact.prototype.destroySettingsMenu = function() {
+		this._browser.destroyOptionsMenu();
+		return this;
+	};
+
+
 	Exact.prototype.getResultText = function() {
 		return this._resultText.getText();
 	};
@@ -186,6 +180,45 @@ sap.ui.define([
 		this._resultText.setText(sResultText);
 		return this;
 	};
+
+
+	Exact.prototype.getAttributes = function() {
+		return this._browser.getAttributes();
+	};
+
+
+	Exact.prototype.insertAttribute = function(oAttribute, iIndex) {
+		this._browser.insertAttribute(oAttribute, iIndex);
+		return this;
+	};
+
+
+	Exact.prototype.addAttribute = function(oAttribute) {
+		this._browser.addAttribute(oAttribute);
+		return this;
+	};
+
+
+	Exact.prototype.removeAttribute = function(vElement) {
+		return this._browser.removeAttribute(vElement);
+	};
+
+
+	Exact.prototype.removeAllAttributes = function() {
+		return this._browser.removeAllAttributes();
+	};
+
+
+	Exact.prototype.indexOfAttribute = function(oAttribute) {
+		return this._browser.indexOfAttribute(oAttribute);
+	};
+
+
+	Exact.prototype.destroyAttributes = function() {
+		this._browser.destroyAttributes();
+		return this;
+	};
+
 
 
 	/**

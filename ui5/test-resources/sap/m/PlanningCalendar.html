@@ -10,7 +10,6 @@
 		<script src="shared-config.js"></script>
 		<script src="../../../resources/sap-ui-core.js"
 			id="sap-ui-bootstrap"
-			data-sap-ui-language="en_US"
 			data-sap-ui-libs="sap.m, sap.ui.unified">
 		</script>
 
@@ -80,8 +79,7 @@
 			title: "Legend",
 			content: [oLegend],
 			endButton: new sap.m.Button({
-				text: "Close",
-				press: function (oEvent) {
+				text: "Close", press: function (oEvent) {
 					oDialog.close();
 				}
 			})
@@ -371,7 +369,6 @@
 			icon: "sap-icon://header",
 			type: sap.m.ButtonType.Transparent,
 			pressed: true,
-			tooltip: "Toggle planning calendar showIntervalHeaders property",
 			press: function(oEvent) {
 				var oPC = sap.ui.getCore().byId("PC1");
 				var bPressed = oEvent.getParameter("pressed");
@@ -382,7 +379,6 @@
 		var oButtonShowRowHeaders = new sap.m.ToggleButton("B_ShowRowHead", {
 			icon: "sap-icon://person-placeholder",
 			type: sap.m.ButtonType.Transparent,
-			tooltip: "Toggle planning calendar showRowHeaders property",
 			pressed: true,
 			press: function(oEvent) {
 				var oPC = sap.ui.getCore().byId("PC1");
@@ -405,7 +401,6 @@
 		var oButtonLegend = new sap.m.Button("B_Legend", {
 			icon: "sap-icon://legend",
 			type: sap.m.ButtonType.Transparent,
-			tooltip: "Open PlanningCalendar legend",
 			press: handleLegend
 		});
 
@@ -413,7 +408,6 @@
 			icon: "sap-icon://resize-vertical",
 			type: sap.m.ButtonType.Transparent,
 			pressed: false,
-			tooltip:"Toggle appointmentsReducedHeight property",
 			press: function(oEvent) {
 				var oPC = sap.ui.getCore().byId("PC1");
 				var bPressed = oEvent.getParameter("pressed");
@@ -461,13 +455,13 @@
 			tooltip: "Toggle Day Names Line",
 			type: sap.m.ButtonType.Transparent,
 			press: function (oEvent) {
-				oPC1.setShowDayNamesLine(oEvent.getParameter("pressed"));
+				oPC1.setShowDayNamesLine(!oPC1.getShowDayNamesLine());
 			}
 		});
 
 		var oButtonToggleCustomViews = new sap.m.ToggleButton({
 			icon: "sap-icon://chart-table-view",
-			tooltip: "Toggle custom predefined custom views",
+			tooltip: "Add custom views",
 			type: sap.m.ButtonType.Transparent,
 			press: function (oEvent) {
 				if (oEvent.getParameter("pressed")) {
@@ -1051,15 +1045,6 @@
 								startDate: new Date(2015, 0, 6),
 								type: sap.ui.unified.CalendarDayType.Type02,
 								tooltip: "Heilige 3 Könige"
-							}),
-							new sap.ui.unified.DateTypeRange({
-								startDate: new Date(2015, 0, 10),
-								type: sap.ui.unified.CalendarDayType.Type01,
-								tooltip: "Lunch"
-							}),
-							new sap.ui.unified.DateTypeRange({
-								startDate: new Date(2015, 0, 6),
-								type: sap.ui.unified.CalendarDayType.NonWorking
 							}),
 							new sap.ui.unified.DateTypeRange({
 								startDate: new Date(2015, 1, 1),

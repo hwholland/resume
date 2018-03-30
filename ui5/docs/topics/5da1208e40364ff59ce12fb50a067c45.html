@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -127,10 +127,11 @@
                               <h2 class="sectiontitle tasklabel">Prerequisites</h2>
                            </div>
                            			
-                           <p class="p">If you create a new view for an existing <span class="ph pname">SAPUI5</span> application project,
-                              				the view needs to be manually called.
+                           <p class="p">If you create a new view for an existing <span class="ph pname">SAPUI5</span> application project, the view needs to be
+                              				manually called.
                            </p>
                            
+                           			
                            		
                         </div>
                         
@@ -149,9 +150,9 @@
                                  <li class="li choice">
                                     						
                                     <p class="p">All Views can be nested independent of the view type. Each view type
-                                       							behaves like any <span class="ph pname">SAPUI5</span> control.
-                                       							The <samp class="ph codeph">viewName</samp> property defines, which views are
-                                       							embedded. To nest a view, proceed according to the given examples: 
+                                       							behaves like any <span class="ph pname">SAPUI5</span> control. The <samp class="ph codeph">viewName</samp> property
+                                       							defines, which views are embedded. To nest a view, proceed according to
+                                       							the given examples: 
                                     </p>
                                     
                                     					
@@ -162,9 +163,10 @@
                               
                               				
                               <div class="itemgroup stepxmp">For XML view type:
-                                 					<pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View controllerName=&quot;sap.hcm.Address&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot; xmlns=&quot;sap.m&quot;&gt;
+                                 					<pre class="pre codeblock prettyprint lang-xml">&lt;core:View controllerName=&quot;sap.hcm.Address&quot; xmlns=&quot;sap.ui.commons&quot; xmlns:core=&quot;sap.ui.core&quot;
+           xmlns:html=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
    &lt;Panel&gt;
-      &lt;mvc:JSView id=&quot;myJSView&quot; viewName=&quot;sap.hcm.Bankaccount&quot; /&gt;
+      &lt;core:JSView id=&quot;myJSView&quot; viewName=&quot;sap.hcm.Bankaccount&quot; /&gt;
    &lt;/Panel&gt;
 &lt;core:View&gt;</pre>
                                  
@@ -188,6 +190,7 @@
                            </div>
                            
                         </section>
+                        		
                         	
                      </div>
                      

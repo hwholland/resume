@@ -5,14 +5,14 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Developing Controls</title>
+      <title>Developing Content</title>
       <link rel="icon" href="themes/sap-default/img/favicon.ico" type="image/x-icon">
       <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="abstract" content="You can create own content for OpenUI5. To develop controls in JavaScript, you can either extend existing controls or create new ones.">
+      <meta name="abstract" content="You can create own content, like new controls, for OpenUI5. If you want to contribute to OpenUI5, you have to consider our guidelines and recommendations with regard to, for example, product standards, file names and encoding.">
       
-      <meta name="description" content="You can create own content for OpenUI5. To develop controls in JavaScript, you can either extend existing controls or create new ones.">
+      <meta name="description" content="You can create own content, like new controls, for OpenUI5. If you want to contribute to OpenUI5, you have to consider our guidelines and recommendations with regard to, for example, product standards, file names and encoding.">
       <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"753b32617807462d9af483a437874b36.html","previousTopicHref":"c44813ddee80464985d62c1f852b4a17.html"}</script>
       <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
       <script type="text/javascript">
@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -114,18 +114,14 @@
                   <div id="content-toolbar" class="toolbar hide-for-small"></div>
                   <div class="page concept  - topic-topic concept-concept " id="loio8dcab0011d274051808f959800cabf9f">
                      
-                     <h1 class="title topictitle1" hidden>Developing Controls</h1>
+                     <h1 class="title topictitle1" hidden>Developing Content</h1>
                      
                      <div class="body conbody">
-                        <p class="shortdesc" hidden>You can create own content for <span class="ph"><span class="ph pname">OpenUI5</span></span>. To develop controls in
-                           		JavaScript, you can either extend existing controls or create new ones.
+                        <p class="shortdesc" hidden>You can create own content, like new controls, for <span class="ph"><span class="ph pname">OpenUI5</span></span>. If you want to
+                           		contribute to <span class="ph"><span class="ph pname">OpenUI5</span></span>, you have
+                           		to consider our guidelines and recommendations with regard to, for example, product
+                           		standards, file names and encoding.
                         </p>
-                        
-                        		
-                        <aside class="note note  insertion"><span class="title">Note</span> If you want to contribute to <span class="ph"><span class="ph pname">OpenUI5</span></span>, you have to
-                           			consider our guidelines and recommendations with regard to, for example, product
-                           			standards, file names and encoding.
-                        </aside>
                         
                         		
                         <p class="p">As a control developer, you create or modify UI libraries and their pieces, i.e. controls and types. You define the set of
@@ -136,33 +132,6 @@
                            produces HTML output which
                            			is styled by means of CSS. Such style sheets are another important part of a UI library.
                         </p>
-                        
-                        		
-                        <p class="p">Controls can be defined on the fly without a library definition or running generation
-                           			steps. These controls are also called <dfn class="term">notepad controls</dfn>.
-                        </p>
-                        
-                        		
-                        <p class="p">When you want to develop several controls for reuse in different applications, we
-                           			recommend creating a control library instead of using these notepad controls. Control
-                           			libraries have additional features such as automatic support for theming and
-                           			right-to-left languages, but the implementation of the controls is the same as for
-                           			notepad controls.
-                        </p>
-                        
-                        		
-                        <aside class="note note  insertion"><span class="title">Note</span> 
-                           			
-                           <p class="p">This functionality is not restricted to controls. It can also be used to create or
-                              				extend arbitrary objects, such as components, that are derived from
-                              					<samp class="ph codeph">sap.ui.base.ManagedObject</samp>. <span class="ph">For more
-                                 					information, see <a class="xref" href="../../#/api/sap.ui.base.ManagedObject" target="_top" alt="#/api/sap.ui.base.ManagedObject" title="#/api/sap.ui.base.ManagedObject">API Reference:
-                                    							<samp class="ph codeph">sap.ui.base.ManagedObject</samp></a>.</span>
-                              				
-                           </p>
-                           
-                           		
-                        </aside>
                         
                         	
                      </div>
@@ -176,63 +145,7 @@
                               
                            </div>
                            
-                           <div><strong><a class="link" href="../../#/topic/bd039ed5f99e4d3f8d020b0da62f9d85.html" title="The library.js file is a JavaScript file that contains the JavaScript code for all enumeration types provided by the library as well as library-specific initialization code that is independent from the controls in the library." target="_top">The library.js File</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/c78c07c094e04ccfaab659378a1707c7.html" title="Modules do not only require and use functionality from other modules, they also expose their own functionality to the outside. In asynchronous module definition (AMD) syntax, there are several ways to expose such functionality." target="_top">Creating Control and Class Modules</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/7b52540d9d8c4e00b9723151622bbb64.html" title="Control metadata consists of properties, events, as well as aggregations and associations." target="_top">Defining the Control Metadata</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/91f0a8dc6f4d1014b6dd926db0e91070.html" title="After defining the metadata of a control, you add the method implementation to the control." target="_top">Adding Method Implementations</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/a53ec81aca59413cac86267b0fd5c787.html" title="Some controls have different behaviors between running on different device types (mobile, desktop, tablet)." target="_top">Device-specific Behavior of Controls</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/91f184586f4d1014b6dd926db0e91070.html" title="Examples how to create and extend controls in OpenUI5." target="_top">Examples for Creating and Extending Controls</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/91f393916f4d1014b6dd926db0e91070.html" title="OpenUI5 provides three classes for control rendering: sap.ui.core.Control, sap.ui.core.RenderManager, and sap.ui.core.Renderer." target="_top">Writing a Control Renderer</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/76b7d5065cf64304a1d2841046043c34.html" title="Some UI elements can have animations like page transitions or dynamic buttons. There may be cases where the animation has to be suppressed, for example, for performance reasons or for specific users. As a control developer, you have to make sure that your control supports the animation modes that are offered to the users." target="_top">Implementing Animation Modes</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/91f19f036f4d1014b6dd926db0e91070.html" title="OpenUI5 provides mechanisms for observing the moving focus in an application page for controls. This information is then preserved for refocusing elements after rerendering. The focus triggers event firing. However, due to the high degree of flexibility in control rendering, a functionality tailored to the respective controls is required. For this, the framework provides helper functions for the implementation of focus handling." target="_top">Implementing Focus Handling</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/91f203236f4d1014b6dd926db0e91070.html" title="The helper class sap.ui.core.delegate.ItemNavigation supports item navigation in lists." target="_top">Item Navigation - Supporting Keyboard Handling in List-like Controls</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/91f2c24b6f4d1014b6dd926db0e91070.html" title="OpenUI5 supports right-to-left directionality (RTL) in controls." target="_top">Right-to-Left Support in Controls</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/10b14c7284ba48a185ae2046db470706.html" title="Adjacent controls within the tab chain can be grouped. Within such a group, F6 skips all controls of the group and moves the focus to the first control in the tab chain of the next group. Shift F6 moves the focus to the first control of the previous group. Adjacent tab chain elements between groups are automatically handled as one group. For nested groups, the most concrete group is used." target="_top">Defining Groups for Fast Navigation (F6)</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/d6bab27b5dc041b29b419bae8ae8f1d1.html" title="Composite controls are implemented by reusing other controls." target="_top">Composite Controls</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/694b3568fcc94f089ac7515d6fadbd5d.html" title="If you are developing OpenUI5 controls, you have to be aware of the accessibility aspects. A deeper understanding is needed, so that all accessibility requirements are met." target="_top">Accessibility Aspects for OpenUI5</a></strong><br>
-                              
-                           </div>
-                           
-                           <div><strong><a class="link" href="../../#/topic/3f472df7cb364ab48541566d5cb1821e.html" target="_top">Writing a Control: FAQ</a></strong><br>
+                           <div><strong><a class="link" href="../../#/topic/91f1703b6f4d1014b6dd926db0e91070.html" title="For developing controls for OpenUI5 in JavaScript, you can either extend existing controls or create new controls." target="_top">Developing OpenUI5 Controls</a></strong><br>
                               
                            </div>
                            

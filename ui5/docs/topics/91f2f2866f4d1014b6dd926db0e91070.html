@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -112,19 +112,18 @@
             <div id="d4h5-main-content" class="grid_8 alpha omega" style="margin: 0 0.5em;">
                <section>
                   <div id="content-toolbar" class="toolbar hide-for-small"></div>
-                  <div class="page concept  - topic-topic concept-concept " id="loio91f2f2866f4d1014b6dd926db0e91070">
+                  <div class="page topic  - topic-topic " id="loio91f2f2866f4d1014b6dd926db0e91070">
                      
                      <h1 class="title topictitle1" hidden>Number Format</h1>
                      
-                     <div class="body conbody">
-                        <p class="shortdesc" hidden>The <samp class="ph codeph">sap.ui.core.format.NumberFormat</samp> class can be used to parse a
-                           string representing a number (float or integer) into a JavaScript <samp class="ph codeph">number</samp>
-                           and vice versa (also known as <samp class="ph codeph">format</samp>).
+                     <div class="body">
+                        <p class="shortdesc" hidden>The <samp class="ph codeph">sap.ui.core.format.NumberFormat</samp> class can be used to parse a string representing a number (float or integer) into a JavaScript
+                           <samp class="ph codeph">number</samp> and vice versa (also known as <samp class="ph codeph">format</samp>).
                         </p>
                         
                         
-                        <p class="p"><samp class="ph codeph">NumberFormat</samp> uses the parameters defined for the current locale. These
-                           parameters can be overwritten on each instance by setting the format options.
+                        <p class="p"><samp class="ph codeph">NumberFormat</samp> uses the parameters defined for the current locale. These parameters can be overwritten on each instance by setting the
+                           format options.
                         </p>
                         
                         
@@ -183,9 +182,8 @@
                               <h2 class="section_title" style="font-size: 1.15em;">Instantiation</h2>
                               
                               
-                              <div class="p">The instantiation of <samp class="ph codeph">sap.ui.core.format.NumberFormat</samp> is done by
-                                 calling <samp class="ph codeph">getter</samp> defined on <samp class="ph codeph">NumberFormat</samp> (and not by
-                                 using the
+                              <div class="p">The instantiation of <samp class="ph codeph">sap.ui.core.format.NumberFormat</samp> is done by calling <samp class="ph codeph">getter</samp> defined on
+                                 <samp class="ph codeph">NumberFormat</samp> (and not by using the
                                  constructor).<pre class="pre codeblock prettyprint lang-js">var oIntegerFormat = sap.ui.core.format.NumberFormat.getIntegerInstance();
 // or
 var oFloatFormat = sap.ui.core.format.NumberFormat.getFloatInstance();
@@ -431,7 +429,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                  
                                  
                                  <p xmlns="" class="p">To format a number in compact format, set the option <samp class="ph codeph">style</samp> to
-                                    either <samp class="ph codeph">short</samp> or <samp class="ph codeph">long</samp>. These styles control
+                                    either <samp class="ph codeph">short</samp> or <samp class="ph codeph">long</samp>. These styles  control
                                     which version of scale name is used. For example, 1000000 is formatted as
                                     <span class="ph uicontrol">1M</span> with <samp class="ph codeph">short</samp> and <span class="ph uicontrol">1
                                        Million</span> with <samp class="ph codeph">long</samp>.
@@ -519,7 +517,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                        
                                        <div class="table-wrapper tablenoborder">
                                           <table summary="" id="loio91f2f2866f4d1014b6dd926db0e91070__table_wdt_rpl_2y" class="table" frame="border" border="1" rules="all">
-                                             <caption xmlns="http://www.w3.org/1999/xhtml"><span class="tablecap"><span class="tablecap">Rounding Modes (with decimals parameter set to 1)</span></span></caption>
+                                             <caption xmlns="http://www.w3.org/1999/xhtml"><span class="tablecap"><span class="tablecap"><span class="enumeration fig-enumeration">Table 33: </span>Rounding Modes (with decimals parameter set to 1)</span></span></caption>
                                              
                                              <colgroup>
                                                 <col width="11.11111111111111%">
@@ -547,7 +545,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                 
                                                 <tr class="row">
                                                    
-                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d189144e435">
+                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d205089e433">
                                                       
                                                       <p class="p">Number</p>
                                                       
@@ -555,7 +553,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </th>
                                                    
                                                    
-                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d189144e441">
+                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d205089e439">
                                                       
                                                       <p class="p"><samp class="ph codeph">FLOOR</samp></p>
                                                       
@@ -563,7 +561,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </th>
                                                    
                                                    
-                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d189144e448">
+                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d205089e446">
                                                       
                                                       <p class="p"><samp class="ph codeph">CEILING</samp></p>
                                                       
@@ -571,7 +569,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </th>
                                                    
                                                    
-                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d189144e455">
+                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d205089e453">
                                                       
                                                       <p class="p"><samp class="ph codeph">TOWARDS_ZERO</samp></p>
                                                       
@@ -579,7 +577,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </th>
                                                    
                                                    
-                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d189144e462">
+                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d205089e460">
                                                       
                                                       <p class="p"><samp class="ph codeph">AWAY_FROM_ZERO</samp></p>
                                                       
@@ -587,7 +585,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </th>
                                                    
                                                    
-                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d189144e470">
+                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d205089e468">
                                                       
                                                       <p class="p"><samp class="ph codeph">HALF_FLOOR</samp></p>
                                                       
@@ -595,7 +593,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </th>
                                                    
                                                    
-                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d189144e477">
+                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d205089e475">
                                                       
                                                       <p class="p"><samp class="ph codeph">HALF_CEILING</samp></p>
                                                       
@@ -603,7 +601,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </th>
                                                    
                                                    
-                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d189144e484">
+                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d205089e482">
                                                       
                                                       <p class="p"><samp class="ph codeph">HALF_TOWARDS_ZERO</samp></p>
                                                       
@@ -611,7 +609,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </th>
                                                    
                                                    
-                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d189144e491">
+                                                   <th class="entry" valign="top" width="11.11111111111111%" id="d205089e489">
                                                       
                                                       <p class="p"><samp class="ph codeph">HALF_AWAY_FROM_ZERO</samp></p>
                                                       
@@ -629,7 +627,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                 
                                                 <tr class="row">
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e435 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e433 ">
                                                       
                                                       <p class="p">2.21</p>
                                                       
@@ -637,7 +635,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e441 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e439 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -645,7 +643,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e448 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e446 ">
                                                       
                                                       <p class="p">2.3</p>
                                                       
@@ -653,7 +651,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e455 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e453 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -661,7 +659,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e462 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e460 ">
                                                       
                                                       <p class="p">2.3</p>
                                                       
@@ -669,7 +667,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e470 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e468 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -677,7 +675,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e477 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e475 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -685,7 +683,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e484 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e482 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -693,7 +691,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e491 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e489 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -706,7 +704,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                 
                                                 <tr class="row">
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e435 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e433 ">
                                                       
                                                       <p class="p">2.25</p>
                                                       
@@ -714,7 +712,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e441 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e439 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -722,7 +720,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e448 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e446 ">
                                                       
                                                       <p class="p">2.3</p>
                                                       
@@ -730,7 +728,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e455 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e453 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -738,7 +736,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e462 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e460 ">
                                                       
                                                       <p class="p">2.3</p>
                                                       
@@ -746,7 +744,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e470 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e468 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -754,7 +752,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e477 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e475 ">
                                                       
                                                       <p class="p">2.3</p>
                                                       
@@ -762,7 +760,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e484 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e482 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -770,7 +768,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e491 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e489 ">
                                                       
                                                       <p class="p">2.3</p>
                                                       
@@ -783,7 +781,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                 
                                                 <tr class="row">
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e435 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e433 ">
                                                       
                                                       <p class="p">2.29</p>
                                                       
@@ -791,7 +789,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e441 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e439 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -799,7 +797,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e448 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e446 ">
                                                       
                                                       <p class="p">2.3</p>
                                                       
@@ -807,7 +805,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e455 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e453 ">
                                                       
                                                       <p class="p">2.2</p>
                                                       
@@ -815,7 +813,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e462 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e460 ">
                                                       
                                                       <p class="p">2.3</p>
                                                       
@@ -823,7 +821,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e470 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e468 ">
                                                       
                                                       <p class="p">2.3.</p>
                                                       
@@ -831,7 +829,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e477 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e475 ">
                                                       
                                                       <p class="p">2.3</p>
                                                       
@@ -839,7 +837,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e484 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e482 ">
                                                       
                                                       <p class="p">2.3</p>
                                                       
@@ -847,7 +845,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e491 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e489 ">
                                                       
                                                       <p class="p">2.3</p>
                                                       
@@ -860,7 +858,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                 
                                                 <tr class="row">
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e435 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e433 ">
                                                       
                                                       <p class="p">-2.21</p>
                                                       
@@ -868,7 +866,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e441 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e439 ">
                                                       
                                                       <p class="p">-2.3</p>
                                                       
@@ -876,7 +874,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e448 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e446 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -884,7 +882,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e455 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e453 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -892,7 +890,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e462 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e460 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -900,7 +898,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e470 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e468 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -908,7 +906,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e477 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e475 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -916,7 +914,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e484 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e482 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -924,7 +922,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e491 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e489 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -937,7 +935,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                 
                                                 <tr class="row">
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e435 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e433 ">
                                                       
                                                       <p class="p">-2.25</p>
                                                       
@@ -945,7 +943,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e441 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e439 ">
                                                       
                                                       <p class="p">-2.3</p>
                                                       
@@ -953,7 +951,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e448 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e446 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -961,7 +959,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e455 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e453 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -969,7 +967,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e462 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e460 ">
                                                       
                                                       <p class="p">-2.3</p>
                                                       
@@ -977,7 +975,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e470 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e468 ">
                                                       
                                                       <p class="p">-2.3</p>
                                                       
@@ -985,7 +983,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e477 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e475 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -993,7 +991,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e484 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e482 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -1001,7 +999,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e491 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e489 ">
                                                       
                                                       <p class="p">-2.3</p>
                                                       
@@ -1014,7 +1012,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                 
                                                 <tr class="row">
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e435 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e433 ">
                                                       
                                                       <p class="p">-2.29</p>
                                                       
@@ -1022,7 +1020,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e441 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e439 ">
                                                       
                                                       <p class="p">-2.3</p>
                                                       
@@ -1030,7 +1028,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e448 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e446 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -1038,7 +1036,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e455 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e453 ">
                                                       
                                                       <p class="p">-2.2</p>
                                                       
@@ -1046,7 +1044,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e462 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e460 ">
                                                       
                                                       <p class="p">-2.3</p>
                                                       
@@ -1054,7 +1052,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e470 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e468 ">
                                                       
                                                       <p class="p">-2.3</p>
                                                       
@@ -1062,7 +1060,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e477 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e475 ">
                                                       
                                                       <p class="p">-2.3</p>
                                                       
@@ -1070,7 +1068,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e484 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e482 ">
                                                       
                                                       <p class="p">-2.3</p>
                                                       
@@ -1078,7 +1076,7 @@ oFloatFormat.format(123.456); // returns 123.5 (non-shortified number takes the 
                                                    </td>
                                                    
                                                    
-                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d189144e491 ">
+                                                   <td class="entry" valign="top" width="11.11111111111111%" headers="d205089e489 ">
                                                       
                                                       <p class="p">-2.3</p>
                                                       
@@ -1179,11 +1177,10 @@ oCurrencyFormat.format(1234.567, &quot;JPY&quot;); // returns JPY1,235 (default 
                                  <p xmlns="" class="p subsectiontitle">Parsing a number</p>
                                  
                                  
-                                 <p xmlns="" class="p">A formatted number which contains a locale-dependent grouping separator, decimal
-                                    point, or percentage sign can be parsed into a number object using
-                                    <samp class="ph codeph">sap.ui.core.format.NumberFormat</samp>. Those number string may
-                                    not be correctly parsed by using <samp class="ph codeph">parseInt</samp> or
-                                    <samp class="ph codeph">parseFloat</samp> in JavaScript.
+                                 <p xmlns="" class="p">A formatted number which contains a locale-dependent grouping separator, decimal point, or percentage sign can be parsed into
+                                    a number object
+                                    using <samp class="ph codeph">sap.ui.core.format.NumberFormat</samp>. Those number string may not be correctly parsed by using <samp class="ph codeph">parseInt</samp>
+                                    or <samp class="ph codeph">parseFloat</samp> in JavaScript.
                                  </p>
                                  
                                  <pre xmlns="" class="pre codeblock prettyprint lang-js">// Locale object is created and set to the format in order to have a user locale independent formatter.
@@ -1200,9 +1197,9 @@ oFloatFormat.parse(&quot;12.34%&quot;); // returns 0.1234</pre>
                                  <p xmlns="" class="p subsectiontitle">Parsing a currency number</p>
                                  
                                  
-                                 <p xmlns="" class="p">A formatted currency number that contains a currency symbol or code can be parsed
-                                    into two parts: the number itself and the currency code. The result is returned
-                                    in an array.
+                                 <p xmlns="" class="p">A formatted currency number that contains a currency symbol or code can be parsed into two parts: the number itself and the
+                                    currency code.
+                                    The result is returned in an array.
                                  </p>
                                  
                                  <pre xmlns="" class="pre codeblock prettyprint lang-js">// Locale object is created and set to the format in order to have a user locale independent formatter.
@@ -1225,8 +1222,6 @@ oCurrencyFormat.parse(&quot;JP&#xA5;1,235&quot;); // returns [JPY|1235,]</pre>
                            <div class="relinfotitle ">Related Information</div>
                            
                            <div><a class="link" href="../../#/api/sap.ui.core.format.NumberFormat" target="_top" alt="#/api/sap.ui.core.format.NumberFormat" title="#/api/sap.ui.core.format.NumberFormat">API Reference: <samp class="ph codeph">sap.ui.core.format.NumberFormat</samp></a></div>
-                           
-                           <div><a class="extlink" href="http://help.sap.com/disclaimer?site=https://blogs.sap.com/2018/02/15/ui5ers-buzz-24-new-possibilities-to-format-numbers-in-ui5/" target="_blank" alt="https://blogs.sap.com/2018/02/15/ui5ers-buzz-24-new-possibilities-to-format-numbers-in-ui5/" title="https://blogs.sap.com/2018/02/15/ui5ers-buzz-24-new-possibilities-to-format-numbers-in-ui5/">UI5ers Buzz #24: New Possibilities to Format Numbers in UI5<img src="themes/sap-default/img/sap_link.png" class="link-sap" alt="Information published on SAP site" title="Information published on SAP site" border="0"></a></div>
                            
                         </div>
                         

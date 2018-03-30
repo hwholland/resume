@@ -210,7 +210,7 @@ state for partially selected.
 &lt;h3&gt;Usage&lt;/h3&gt;
 
 You can set the width of the element containing the box and the label manually with the use
-of the &lt;code&gt;width&lt;/code&gt; property. If the text exceeds the available width, it is truncated.
+of the &lt;code&gt;width&lt;code&gt; property. If the text exceeds the available width, it is truncated.
 
 &lt;b&gt;Note:&lt;/b&gt; When &lt;code&gt;useEntireWidth&lt;/code&gt; property is set to &lt;code&gt;true&lt;/code&gt;, the value of the
 &lt;code&gt;width&lt;/code&gt; property is applied to the control as a whole (box and label). If
@@ -219,43 +219,15 @@ of the &lt;code&gt;width&lt;/code&gt; property. If the text exceeds the availabl
 The touchable area for toggling the &lt;code&gt;CheckBox&lt;/code&gt; ends where the text ends.
 
 If the width allows more space than the text requires, white space is added.
-The text can be positioned manually in this space using the &lt;code&gt;textAlign&lt;/code&gt; property.
+The text can be positioned manually in this space using the &lt;code&gt;textAlign&lt;code&gt; property.
 
-&lt;b&gt;Note:&lt;/b&gt; Keep in mind that setting the &lt;code&gt;textAlign&lt;/code&gt; property to &lt;code&gt;Right&lt;/code&gt;
+&lt;b&gt;Note:&lt;/b&gt; Keep in mind that setting the &lt;code&gt;textAlign&lt;code&gt; property to &lt;code&gt;Right&lt;/code&gt;
 can result in a large amount of white space between the box and the text.
 
 You can disable the &lt;code&gt;CheckBox&lt;/code&gt; by setting the &lt;code&gt;enabled&lt;/code&gt; property to &lt;code&gt;false&lt;/code&gt;,
 or use the &lt;code&gt;CheckBox&lt;/code&gt; in read-only mode by setting the &lt;code&gt;editable&lt;/code&gt; property to false.
 
 &lt;b&gt;Note:&lt;/b&gt; Disabled and read-only states shouldn't be used together.</xsd:documentation>
-</xsd:annotation>
-</xsd:element>
-<xsd:element name="ColorPalette" type="n2:_ColorPaletteType" substitutionGroup="n0:Control">
-<xsd:annotation>
-<xsd:documentation>Represents a predefined range of colors for easier selection.
-
-&lt;h3&gt;Overview&lt;/h3&gt;
-The &lt;code&gt;ColorPalette&lt;/code&gt; provides the users with a range of predefined colors.
-
-You can customize them with the use of the &lt;code&gt;colors&lt;/code&gt; property.
-You can specify a &lt;code&gt;defaultColor&lt;/code&gt; and display a "Default color" button
-for the user to choose directly. You can display a "More colors..." button
-that opens an additional color picker for the user to choose specific colors
-that are not present in the predefined range.
-
-&lt;h3&gt;Usage&lt;/h3&gt;
-
-The palette is intended for users, who don't want to check and remember the
-different values of the colors and spend large amount of time to configure the
-right color through the color picker.
-
-The control can be embedded in a form or can be opened as popover (by use of thin
-wrapper control &lt;code&gt;sap.m.ColorPalettePopover&lt;code&gt;).</xsd:documentation>
-</xsd:annotation>
-</xsd:element>
-<xsd:element name="ColorPalettePopover" type="n2:_ColorPalettePopoverType" substitutionGroup="n0:Control">
-<xsd:annotation>
-<xsd:documentation>A thin wrapper over {@link sap.m.ColorPalette} allowing the latter to be used in a popover.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="Column" type="n2:_ColumnType" substitutionGroup="n0:Element">
@@ -487,9 +459,7 @@ compact mode and provides a touch-friendly size in cozy mode.</xsd:documentation
 </xsd:element>
 <xsd:element name="DateTimeField" type="n2:_DateTimeFieldType" substitutionGroup="n2:InputBase">
 <xsd:annotation>
-<xsd:documentation>The &lt;code&gt;sap.m.DateTimeField&lt;/code&gt; control provides a basic functionality for date/time input controls.
-
-To be extended by date and time picker controls. For internal use only.</xsd:documentation>
+<xsd:documentation>The &lt;code&gt;sap.m.DateTimeField&lt;/code&gt; control provides a basic functionality for date/time input controls.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="DateTimeInput" type="n2:_DateTimeInputType" substitutionGroup="n0:Control">
@@ -1033,8 +1003,7 @@ in the documentation for an introduction to subclasses of &lt;code&gt;sap.m.List
 </xsd:element>
 <xsd:element name="ListItemBase" type="n2:_ListItemBaseType" substitutionGroup="n0:Control">
 <xsd:annotation>
-<xsd:documentation>ListItemBase contains the base features of all specific list items.
-&lt;b&gt;Note:&lt;/b&gt; If not mentioned otherwise in the individual subclasses, list items must only be used in the &lt;code&gt;items&lt;/code&gt; aggregation of &lt;code&gt;sap.m.ListBase&lt;/code&gt; controls.</xsd:documentation>
+<xsd:documentation>ListItemBase contains the base features of all specific list items.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="MaskInput" type="n2:_MaskInputType" substitutionGroup="n2:InputBase">
@@ -1123,9 +1092,7 @@ With the message concept, MessagePopover provides a way to centrally manage mess
 The message popover is triggered from a messaging button in the footer toolbar. If an error has occurred at any validation point,
 the total number of messages should be incremented, but the user's work shouldn't be interrupted.
 &lt;h3&gt;Responsive Behavior&lt;/h3&gt;
-On mobile phones, the message popover is automatically shown in full screen mode.&lt;br&gt;
-On desktop and tablet, the message popover opens in a popover.&lt;br&gt;
-On desktop the opened popover is resizable if it is placed in a {@link sap.m.Toolbar}, {@link sap.m.Bar} or used in {@link sap.f.semantic.SemanticPage}</xsd:documentation>
+On mobile phones, the message popover is automatically shown in full screen mode.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="MessagePopoverItem" type="n2:_MessagePopoverItemType" substitutionGroup="n2:MessageItem">
@@ -1329,9 +1296,7 @@ additional text and icons can be used to further distinguish it from other objec
 </xsd:element>
 <xsd:element name="ObjectListItem" type="n2:_ObjectListItemType" substitutionGroup="n2:ListItemBase">
 <xsd:annotation>
-<xsd:documentation>ObjectListItem is a display control that provides summary information about an object as a list item. The ObjectListItem title is the key identifier of the object. Additional text and icons can be used to further distinguish it from other objects. Attributes and statuses can be used to provide additional meaning about the object to the user.
-
-&lt;b&gt;Note:&lt;/b&gt; The control must only be used in the context of a list.</xsd:documentation>
+<xsd:documentation>ObjectListItem is a display control that provides summary information about an object as a list item. The ObjectListItem title is the key identifier of the object. Additional text and icons can be used to further distinguish it from other objects. Attributes and statuses can be used to provide additional meaning about the object to the user.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="ObjectMarker" type="n2:_ObjectMarkerType" substitutionGroup="n0:Control">
@@ -1380,12 +1345,11 @@ opens it in a popover.
 &lt;h3&gt;Usage&lt;/h3&gt;
 
 Different behavior and priorities can be set for each control inside the
-&lt;code&gt;OverflowToolbar&lt;/code&gt;, such as certain controls to appear only in the
+&lt;code&gt;OverflowToolbar&lt;/code&gt;, such as certain actions to appear only in the
 overflow area or to never move there. For more information, see
 {@link sap.m.OverflowToolbarLayoutData} and {@link sap.m.OverflowToolbarPriority}.
 
-&lt;h3&gt;Overflow Behavior&lt;/h3&gt;
-By default, only the following controls can move to the overflow area:
+Only the following controls can be moved in the overflow area:
 
 &lt;ul&gt;&lt;li&gt;{@link sap.m.Button}&lt;/li&gt;
 &lt;li&gt;{@link sap.m.CheckBox}&lt;/li&gt;
@@ -1394,10 +1358,7 @@ By default, only the following controls can move to the overflow area:
 &lt;li&gt;{@link sap.m.DateTimeInput}&lt;/li&gt;
 &lt;li&gt;{@link sap.m.DateTimePicker}&lt;/li&gt;
 &lt;li&gt;{@link sap.m.Input}&lt;/li&gt;
-&lt;li&gt;{@link sap.m.Label}&lt;/li&gt;
-&lt;li&gt;{@link sap.m.MenuButton}&lt;/li&gt;
 &lt;li&gt;{@link sap.m.OverflowToolbarButton}&lt;/li&gt;
-&lt;li&gt;{@link sap.m.OverflowToolbarToggleButton}&lt;/li&gt;
 &lt;li&gt;{@link sap.m.SearchField}&lt;/li&gt;
 &lt;li&gt;{@link sap.m.SegmentedButton}&lt;/li&gt;
 &lt;li&gt;{@link sap.m.Select}&lt;/li&gt;
@@ -1405,9 +1366,6 @@ By default, only the following controls can move to the overflow area:
 &lt;li&gt;{@link sap.m.ToggleButton}&lt;/li&gt;
 &lt;li&gt;{@link sap.ui.comp.smartfield.SmartField}&lt;/li&gt;
 &lt;li&gt;{@link sap.ui.comp.smartfield.SmartLabel}&lt;/li&gt;&lt;/ul&gt;
-
-Additionally, any control that implements the {@link sap.m.IOverflowToolbarContent} interface may define
-its behavior (most importantly overflow behavior) when placed inside &lt;code&gt;OverflowToolbar&lt;/code&gt;.
 
 &lt;b&gt;Note:&lt;/b&gt; The &lt;code&gt;OverflowToolbar&lt;/code&gt; is an adaptive container that checks the available
 width and hides the part of its content that doesn't fit. It is intended that simple controls,
@@ -1517,10 +1475,8 @@ to have buttons that show only an icon in the toolbar, but icon and text in the 
 </xsd:element>
 <xsd:element name="PDFViewer" type="n2:_PDFViewerType" substitutionGroup="n0:Control">
 <xsd:annotation>
-<xsd:documentation>&lt;p&gt;This control enables you to display PDF documents within your app.
-It can be embedded in your user interface layout, or you can set it to open in a popup dialog.&lt;/p&gt;
-&lt;p&gt;Please note that the PDF Viewer control can be fully displayed on desktop devices only. On mobile
-devices, only the toolbar with a download button is visible.&lt;/p&gt;</xsd:documentation>
+<xsd:documentation>This control enables you to display PDF documents within your app.
+It can be embedded in your user interface layout, or you can set it to open in a popup dialog.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="Page" type="n2:_PageType" substitutionGroup="n0:Control">
@@ -1649,7 +1605,7 @@ overwrites the default value for property &lt;code&gt;columnWidth&lt;/code&gt; t
 <xsd:annotation>
 <xsd:documentation>Row in the {@link sap.m.PlanningCalendar}.
 
-This element holds the data of one row in the {@link sap.m.PlanningCalendar}. Once the header information (for example, person information)
+This element holds the data of one row in the @link sap.m.PlanningCalendar}. Once the header information (e.g. person information)
 is assigned, the appointments are assigned.</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
@@ -1790,14 +1746,7 @@ A wrapper control {@link sap.m.RadioButtonGroup RadioButtonGroup} can be used in
 &lt;li&gt;You want have more than 8 options. Use a {@link sap.m.Select drop-down} instead.&lt;/li&gt;
 &lt;li&gt;When the options are mutually exclusive e.g. ON/OFF. Use a {@link sap.m.Switch switch} instead.&lt;/li&gt;
 &lt;li&gt;Avoid using horizontally aligned radio buttons as they will be cut off on phones.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;b&gt;Note:&lt;/b&gt; The order in which the RadioButtons will be selected one after another is determined upon instantiation of the control.
-This order is consistent with the ARIA attributes for position, which the same button will receive when added to specific group.
-
-&lt;b&gt;Example:&lt;/b&gt; If three buttons are created (&lt;code&gt;button1, button2, button3&lt;/code&gt;) in consecutive order, initially they will have the same positions
-and TAB order. However if after that &lt;code&gt;button1&lt;/code&gt; and &lt;code&gt;button3&lt;/code&gt; are moved to a new group and then &lt;code&gt;button2&lt;/code&gt; is added to the
-same group, their TAB order and position in this group will be &lt;code&gt;button1, button3, button2&lt;/code&gt;.</xsd:documentation>
+&lt;/ul&gt;</xsd:documentation>
 </xsd:annotation>
 </xsd:element>
 <xsd:element name="RadioButtonGroup" type="n2:_RadioButtonGroupType" substitutionGroup="n0:Control">
@@ -3410,6 +3359,11 @@ If only one version of image is provided, set this value to false to avoid the a
 <xsd:documentation>Show or hide busy indicator in the carousel when loading pages after swipe.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
+<xsd:attribute name="busyIndicatorSize" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>Size of the busy indicators which can be displayed in the carousel.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute name="arrowsPlacement" type="n2:_CarouselArrowsPlacementType">
 <xsd:annotation>
 <xsd:documentation>Defines where the carousel's arrows are placed. Default is &lt;code&gt;sap.m.CarouselArrowsPlacement.Content&lt;/code&gt; used to
@@ -3505,24 +3459,6 @@ The getter will return the control id</xsd:documentation>
 <xsd:documentation>Accepts the core enumeration ValueState.type that supports 'None', 'Error', 'Warning' and 'Success'.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute name="displayOnly" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Determines whether the &lt;code&gt;CheckBox&lt;/code&gt; is in display only state.
-
-When set to &lt;code&gt;true&lt;/code&gt;, the &lt;code&gt;CheckBox&lt;/code&gt; is not interactive, not editable, not focusable
-and not in the tab chain. This setting is used for forms in review mode.
-
-&lt;Note:&gt; When the property &lt;code&gt;enabled&lt;/code&gt; is set to &lt;code&gt;false&lt;/code&gt; this property has no effect.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="wrapping" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Determines whether the label's text is wrapped.
-
-When set to &lt;code&gt;false&lt;/code&gt; (default), the label's text
-is truncated with ellipsis at the end.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute name="ariaDescribedBy" type="xsd:string">
 <xsd:annotation>
 <xsd:documentation>Association to controls / IDs which describe this control (see WAI-ARIA attribute aria-describedby).</xsd:documentation>
@@ -3536,57 +3472,6 @@ is truncated with ellipsis at the end.</xsd:documentation>
 <xsd:attribute name="select" type="xsd:string">
 <xsd:annotation>
 <xsd:documentation>Event is triggered when the control status is changed by the user by selecting or deselecting the checkbox.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:extension>
-</xsd:complexContent>
-</xsd:complexType>
-<!--type definition for UIElement 'sap.m.ColorPalette'-->
-<xsd:complexType name="_ColorPaletteType">
-<xsd:complexContent>
-<xsd:extension base="n0:_ControlType">
-<xsd:sequence/>
-<xsd:attribute name="colors" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Defines the List of colors displayed in the palette. Minimum is 2 colors, maximum is 15 colors.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="colorSelect" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Fired when the user selects a color.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-</xsd:extension>
-</xsd:complexContent>
-</xsd:complexType>
-<!--type definition for UIElement 'sap.m.ColorPalettePopover'-->
-<xsd:complexType name="_ColorPalettePopoverType">
-<xsd:complexContent>
-<xsd:extension base="n0:_ControlType">
-<xsd:attribute name="defaultColor" type="n0:_CSSColorType">
-<xsd:annotation>
-<xsd:documentation>The color, which the app developer will receive when end-user chooses the "Default color" button.
-See event {@link sap.m.ColorPalettePopover#colorSelect}.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="colors" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Defines the List of colors displayed in the palette. Minimum is 2 colors, maximum is 15 colors.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="showDefaultColorButton" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Indicates if the button for default color selection is available.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="showMoreColorsButton" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Denotes if the color has been chosen by selecting the "Default Color" button (true or false)</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="colorSelect" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Fired when the user selects a color.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 </xsd:extension>
@@ -3639,14 +3524,14 @@ See event {@link sap.m.ColorPalettePopover#colorSelect}.</xsd:documentation>
 </xsd:attribute>
 <xsd:attribute name="hAlign" type="n0:_TextAlignType">
 <xsd:annotation>
-<xsd:documentation>Defines the horizontal alignment of the column content.
+<xsd:documentation>Horizontal alignment of the column content. Available alignment settings are "Begin", "Center", "End", "Left", and "Right".
 
-NOTE: Text controls with a &lt;code&gt;textAlign&lt;/code&gt; property inherits the horizontal alignment.</xsd:documentation>
+NOTE: Control with a "textAlign" property inherits the horizontal alignment.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="vAlign" type="n0:_VerticalAlignType">
 <xsd:annotation>
-<xsd:documentation>Defines the vertical alignment of the cells in a column.
+<xsd:documentation>Vertical alignment of the cells in a column. Possible values are "Inherit", "Top", "Middle", "Bottom"
 This property does not affect the vertical alignment of header and footer.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
@@ -4071,20 +3956,6 @@ the &lt;code&gt;dateValue&lt;/code&gt; will be instantiated according to the par
 &lt;code&gt;value&lt;/code&gt;.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute name="initialFocusedDateValue" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Holds a reference to a JavaScript Date Object to define the initially focused
-date/time when the picker popup is opened.
-
-&lt;b&gt;Notes:&lt;/b&gt;
-&lt;ul&gt;
-&lt;li&gt;Setting this property does not change the &lt;code&gt;value&lt;/code&gt; property.&lt;/li&gt;
-&lt;li&gt;Depending on the context this property is used in ({@link sap.m.TimePicker},
-{@link sap.m.DatePicker} or {@link sap.m.DateTimePicker}), it takes into account only the time part, only
-the date part or both parts of the JavaScript Date Object.&lt;/li&gt;
-&lt;/ul&gt;</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 </xsd:extension>
 </xsd:complexContent>
 </xsd:complexType>
@@ -4329,7 +4200,7 @@ If you use data-binding on value property with type sap.ui.model.type.Date you c
 </xsd:attribute>
 <xsd:attribute name="contentWidth" type="n0:_CSSSizeType">
 <xsd:annotation>
-<xsd:documentation>Preferred width of content in Dialog. This property affects the width of dialog on phone in landscape mode, tablet or desktop, because the dialog has a fixed width on phone in portrait mode. If the preferred width is less than the minimum width of the dialog or more than the available width of the screen, it will be overwritten by the min or max value. The current mininum value of dialog width on tablet is 400px.</xsd:documentation>
+<xsd:documentation>Preferred width of content in Dialog. This property affects the width of dialog on phone in landscape mode, tablet or desktop, because the dialog has a fixed width on phone in portrait mode. If the preferred width is less than the minimum width of dilaog or more than the available width of the screen, it will be overwritten by the min or max value. The current mininum value of dialog width on tablet is 400px.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="contentHeight" type="n0:_CSSSizeType">
@@ -5275,20 +5146,9 @@ NOTE: This property can be set true, if growing property is set "true" and if yo
 <xsd:documentation>Number of pixels to scroll when the user chooses Next or Previous buttons. Relevant only for desktop.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute name="scrollStepByItem" type="xsd:int">
-<xsd:annotation>
-<xsd:documentation>Number of items to scroll when the user chose Next or Previous buttons. Relevant only for desktop.
-Have priority over 'ScrollStep'. Have to be positive number.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute name="scrollTime" type="xsd:int">
 <xsd:annotation>
 <xsd:documentation>Scroll animation time in milliseconds.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="showOverflowItem" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Indicates whether the incomplete item on the edge of visible area is displayed or hidden.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="showDividers" type="xsd:boolean">
@@ -5484,11 +5344,7 @@ If this content is set, it is displayed instead of the general content inside th
 </xsd:attribute>
 <xsd:attribute name="showAll" type="xsd:boolean">
 <xsd:annotation>
-<xsd:documentation>Enables special visualization for disabled filter (show all items).
-&lt;b&gt;Note:&lt;/b&gt; You can use this property when you use &lt;code&gt;IconTabBar&lt;/code&gt; as a filter.
-In order for it to be displayed correctly, the other tabs in the filter should consist of an icon, text and an optional count.
-It can be set to true for the first tab filter.
-You can find more detailed guidelines at https://experience.sap.com/fiori-design-web/icontabbar/#tabs-as-filters.</xsd:documentation>
+<xsd:documentation>Enables special visualization for disabled filter (show all items).</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="icon" type="n0:_URIType">
@@ -5543,20 +5399,6 @@ If bandwidth is key for the application, set this value to false.</xsd:documenta
 <xsd:element ref="n0:Control"/>
 <xsd:element ref="n0:Fragment"/>
 <xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
-</xsd:choice>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="dragDropConfig" minOccurs="0">
-<xsd:annotation>
-<xsd:documentation>Defines the drag-and-drop configuration via {@link sap.ui.core.dnd.DragDropInfo}
-This configuration is set internally by the control</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType>
-<xsd:sequence>
-<xsd:choice minOccurs="0" maxOccurs="unbounded">
-<xsd:element ref="n0:DragDropInfo"/>
-<xsd:element ref="n0:Fragment"/>
 </xsd:choice>
 </xsd:sequence>
 </xsd:complexType>
@@ -5724,16 +5566,6 @@ If bandwidth is the key for the application, set this value to false.</xsd:docum
 <xsd:attribute name="backgroundRepeat" type="xsd:string">
 <xsd:annotation>
 <xsd:documentation>Defines whether the source image is repeated when the output DOM element is bigger than the source. This property is set on the output DOM element using CSS style 'background-repeat'. This property takes effect only when the 'mode' property is set to sap.m.ImageMode.Background.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="ariaDescribedBy" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Association to controls / ids which describe this control (see WAI-ARIA attribute aria-describedby).</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="ariaLabelledBy" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Association to controls / ids which label this control (see WAI-ARIA attribute aria-labelledBy).</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="tap" type="xsd:string">
@@ -6157,11 +5989,6 @@ When the property is set to true and associated input field is empty an asterisk
 If set to true the &lt;code&gt;Label&lt;/code&gt; will wrap, when set to false the &lt;code&gt;Label&lt;/code&gt; will be truncated and replaced with ellipsis which is the default behavior.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute name="vAlign" type="n0:_VerticalAlignType">
-<xsd:annotation>
-<xsd:documentation>Specifies the vertical alignment of the &lt;code&gt;Label&lt;/code&gt; related to the tallest and lowest element on the line.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute name="labelFor" type="xsd:string">
 <xsd:annotation>
 <xsd:documentation>Association to the labeled control.
@@ -6260,16 +6087,6 @@ When left blank, the text defines the size.</xsd:documentation>
 <xsd:annotation>
 <xsd:documentation>Defines the link target URI. Supports standard hyperlink behavior. If a JavaScript action should be triggered,
 this should not be set, but instead an event handler for the &lt;code&gt;press&lt;/code&gt; event should be registered.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="validateUrl" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Defines whether the link target URI should be validated.
-
-If validation fails, the value of the &lt;code&gt;href&lt;/code&gt; property will still be set, but will not be applied to the DOM.
-
-&lt;b&gt;Note:&lt;/b&gt; Additional whitelisting of URLs is allowed through
-{@link jQuery.sap/methods/jQuery.sap.addUrlWhitelist jQuery.sap.addUrlWhitelist}.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="wrapping" type="xsd:boolean">
@@ -6403,33 +6220,6 @@ If validation fails, the value of the &lt;code&gt;href&lt;/code&gt; property wil
 <xsd:choice minOccurs="0">
 <xsd:element ref="n2:Toolbar"/>
 <xsd:element ref="n0:Fragment"/>
-</xsd:choice>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="dragDropConfig" minOccurs="0">
-<xsd:annotation>
-<xsd:documentation>Defines the drag-and-drop configuration.</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType>
-<xsd:sequence>
-<xsd:choice minOccurs="0" maxOccurs="unbounded">
-<xsd:element ref="n0:DragDropBase"/>
-<xsd:element ref="n0:Fragment"/>
-</xsd:choice>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="contextMenu" minOccurs="0">
-<xsd:annotation>
-<xsd:documentation>Defines the context menu of the items.</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType>
-<xsd:sequence>
-<xsd:choice minOccurs="0">
-<xsd:element ref="n0:Control"/>
-<xsd:element ref="n0:Fragment"/>
-<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
 </xsd:choice>
 </xsd:sequence>
 </xsd:complexType>
@@ -6601,12 +6391,6 @@ Calling the &lt;code&gt;preventDefault&lt;/code&gt; method of the event cancels 
 <xsd:attribute name="itemPress" type="xsd:string">
 <xsd:annotation>
 <xsd:documentation>Fires when an item is pressed unless the item's &lt;code&gt;type&lt;/code&gt; property is &lt;code&gt;Inactive&lt;/code&gt;.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="beforeOpenContextMenu" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Fired when the context menu is opened.
-When the context menu is opened, the binding context of the item is set to the given &lt;code&gt;contextMenu&lt;/code&gt;.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 </xsd:extension>
@@ -7032,22 +6816,6 @@ Use this aggregation when the "description" (sap.m.Text) control needs to be rep
 </xsd:sequence>
 </xsd:complexType>
 </xsd:element>
-<xsd:element name="buttons" minOccurs="0">
-<xsd:annotation>
-<xsd:documentation>The buttons displayed under the description text.
-
-&lt;b&gt;Note:&lt;/b&gt; Buttons added to this aggregation are both vertically and horizontally
-centered. Depending on the available space, they may be rendered on several lines.</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType>
-<xsd:sequence>
-<xsd:choice minOccurs="0" maxOccurs="unbounded">
-<xsd:element ref="n2:Button"/>
-<xsd:element ref="n0:Fragment"/>
-</xsd:choice>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
 </xsd:sequence>
 <xsd:attribute name="text" type="xsd:string">
 <xsd:annotation>
@@ -7088,14 +6856,6 @@ Can be used to hide the header of the MessagePage when it's embedded in another 
 <xsd:attribute name="textDirection" type="n0:_TextDirectionType">
 <xsd:annotation>
 <xsd:documentation>Determines the element's text directionality with enumerated options. By default, the control inherits text direction from the DOM.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="enableFormattedText" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Defines whether the value set in the &lt;code&gt;description&lt;/code&gt; property is displayed
-as formatted text in HTML format.
-
-For details regarding supported HTML tags, see {@link sap.m.FormattedText}</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="ariaDescribedBy" type="xsd:string">
@@ -7454,7 +7214,7 @@ The default value is false.
 </xsd:attribute>
 <xsd:attribute name="tokenUpdate" type="xsd:string">
 <xsd:annotation>
-<xsd:documentation>Fired when the tokens aggregation changed due to a user interaction (add / remove token)</xsd:documentation>
+<xsd:documentation>Fired when the tokens aggregation changed (add / remove token)</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 </xsd:extension>
@@ -8040,18 +7800,29 @@ If bandwidth is the key for the application, set this value to &lt;code&gt;false
 <xsd:attribute name="markFavorite" type="xsd:boolean">
 <xsd:annotation>
 <xsd:documentation>Sets the favorite state for the &lt;code&gt;ObjectHeader&lt;/code&gt;. The &lt;code&gt;showMarkers&lt;/code&gt;
-property must be set to &lt;code&gt;true&lt;/code&gt; for this property to take effect.</xsd:documentation>
+property must be set to &lt;code&gt;true&lt;/code&gt; for this property to take effect.
+
+&lt;b&gt;Note:&lt;/b&gt; As this property is deprecated, we recommend that you use the &lt;code&gt;markers&lt;/code&gt;
+aggregation - add &lt;code&gt;sap.m.ObjectMarker&lt;/code&gt; with type &lt;code&gt;sap.m.ObjectMarkerType.Favorite&lt;/code&gt;.
+You should use either this property or the &lt;code&gt;markers&lt;/code&gt; aggregation, using both may lead to unpredicted behavior.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="markFlagged" type="xsd:boolean">
 <xsd:annotation>
 <xsd:documentation>Sets the flagged state for the &lt;code&gt;ObjectHeader&lt;/code&gt;. The &lt;code&gt;showMarkers&lt;/code&gt; property
-must be set to &lt;code&gt;true&lt;/code&gt; for this property to take effect.</xsd:documentation>
+must be set to &lt;code&gt;true&lt;/code&gt; for this property to take effect.
+
+&lt;b&gt;Note:&lt;/b&gt; As this property is deprecated, we recommend that you use the &lt;code&gt;markers&lt;/code&gt;
+aggregation - add &lt;code&gt;sap.m.ObjectMarker&lt;/code&gt; with type &lt;code&gt;sap.m.ObjectMarkerType.Flagged&lt;/code&gt;.
+You should use either this property or the &lt;code&gt;markers&lt;/code&gt; aggregation, using both may lead to unpredicted behavior.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="showMarkers" type="xsd:boolean">
 <xsd:annotation>
-<xsd:documentation>If set to &lt;code&gt;true&lt;/code&gt;, the &lt;code&gt;ObjectHeader&lt;/code&gt; can be marked with icons such as favorite and flag.</xsd:documentation>
+<xsd:documentation>If set to &lt;code&gt;true&lt;/code&gt;, the &lt;code&gt;ObjectHeader&lt;/code&gt; can be marked with icons such as favorite and flag.
+
+&lt;b&gt;Note:&lt;/b&gt; This property is valid only if you are using the already deprecated properties - &lt;code&gt;markFlagged&lt;/code&gt; and &lt;code&gt;markFavorite&lt;/code&gt;.
+If you are using the &lt;code&gt;markers&lt;/code&gt; aggregation, the visibility of the markers depends on what is set in the aggregation itself.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="showTitleSelector" type="xsd:boolean">
@@ -8365,17 +8136,23 @@ If bandwidth is key for the application, set this value to false.</xsd:documenta
 </xsd:attribute>
 <xsd:attribute name="markFavorite" type="xsd:boolean">
 <xsd:annotation>
-<xsd:documentation>Sets the favorite state for the ObjectListItem.&lt;br&gt;&lt;br&gt;</xsd:documentation>
+<xsd:documentation>Sets the favorite state for the ObjectListItem.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Note:&lt;/b&gt; As this property is deprecated, we recommend you use the &lt;code&gt;markers&lt;/code&gt; aggregation - add &lt;code&gt;sap.m.ObjectMarker&lt;/code&gt; with type &lt;code&gt;sap.m.ObjectMarkerType.Favorite&lt;/code&gt;.
+You should use either this property or the &lt;code&gt;markers&lt;/code&gt; aggregation, using both may lead to unpredicted behavior.&lt;br&gt;&lt;br&gt;</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="markFlagged" type="xsd:boolean">
 <xsd:annotation>
-<xsd:documentation>Sets the flagged state for the ObjectListItem.&lt;br&gt;&lt;br&gt;</xsd:documentation>
+<xsd:documentation>Sets the flagged state for the ObjectListItem.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Note:&lt;/b&gt; As this property is deprecated, we recommend you use the &lt;code&gt;markers&lt;/code&gt; aggregation - add &lt;code&gt;sap.m.ObjectMarker&lt;/code&gt; with type &lt;code&gt;sap.m.ObjectMarkerType.Flagged&lt;/code&gt;.
+You should use either this property or the &lt;code&gt;markers&lt;/code&gt; aggregation, using both may lead to unpredicted behavior.&lt;br&gt;&lt;br&gt;</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="showMarkers" type="xsd:boolean">
 <xsd:annotation>
-<xsd:documentation>If set to true, the ObjectListItem can be marked with icons such as favorite and flag.&lt;br&gt;&lt;br&gt;</xsd:documentation>
+<xsd:documentation>If set to true, the ObjectListItem can be marked with icons such as favorite and flag.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Note:&lt;/b&gt; This property is valid only if you are using the already deprecated properties - &lt;code&gt;markFlagged&lt;/code&gt;, &lt;code&gt;markFavorite&lt;/code&gt;, and &lt;code&gt;markLocked&lt;/code&gt;.
+If you are using the &lt;code&gt;markers&lt;/code&gt; aggregation, the visibility of the markers depends on what is set in the aggregation itself.&lt;br&gt;&lt;br&gt;</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="numberState" type="n0:_ValueStateType">
@@ -8406,7 +8183,9 @@ By default the item number inherits the text direction from its parent.</xsd:doc
 </xsd:attribute>
 <xsd:attribute name="markLocked" type="xsd:boolean">
 <xsd:annotation>
-<xsd:documentation>Sets the locked state of the ObjectListItem.&lt;br&gt;&lt;br&gt;</xsd:documentation>
+<xsd:documentation>Sets the locked state of the ObjectListItem.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Note:&lt;/b&gt; As this property is deprecated, we recommend you use the &lt;code&gt;markers&lt;/code&gt; aggregation - add &lt;code&gt;sap.m.ObjectMarker&lt;/code&gt; with type &lt;code&gt;sap.m.ObjectMarkerType.Locked&lt;/code&gt;.
+You should use either this property or the &lt;code&gt;markers&lt;/code&gt; aggregation, using both may lead to unpredicted behavior.&lt;br&gt;&lt;br&gt;</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 </xsd:extension>
@@ -8477,7 +8256,7 @@ Visibility states are as follows:
 </xsd:attribute>
 <xsd:attribute name="state" type="n0:_ValueStateType">
 <xsd:annotation>
-<xsd:documentation>Determines the object number's value state. Setting this state will cause the number to be rendered in state-specific colors.</xsd:documentation>
+<xsd:documentation>Determines the object number's value state. Setting this state will cause the number to be rendered in state-specific colors (only blue-crystal theme).</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="unit" type="xsd:string">
@@ -8517,13 +8296,6 @@ Visibility states are as follows:
 <xsd:documentation>Defines the ObjectStatus text.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute name="active" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Indicates if the &lt;code&gt;ObjectStatus&lt;/code&gt; text and icon can be clicked/tapped by the user.
-
-&lt;b&gt;Note:&lt;/b&gt; If you set this property to &lt;code&gt;true&lt;/code&gt;, you have to also set the &lt;code&gt;text&lt;/code&gt; or &lt;code&gt;icon&lt;/code&gt; property.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute name="state" type="n0:_ValueStateType">
 <xsd:annotation>
 <xsd:documentation>Defines the text value state.</xsd:documentation>
@@ -8550,11 +8322,6 @@ Available options for the text direction are LTR (left-to-right) and RTL (right-
 <xsd:attribute name="ariaDescribedBy" type="xsd:string">
 <xsd:annotation>
 <xsd:documentation>Association to controls / IDs, which describe this control (see WAI-ARIA attribute aria-describedby).</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="press" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Fires when the user clicks/taps on active text.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 </xsd:extension>
@@ -9368,10 +9135,7 @@ parent container. Can be set to a percent, pixel, or em value.</xsd:documentatio
 <xsd:attribute name="source" type="n0:_URIType">
 <xsd:annotation>
 <xsd:documentation>Specifies the path to the PDF file to display. Can be set to a relative or
-an absolute path.&lt;br&gt;
-Optionally, this property can also be set to a data URI path or a blob URL
-in all major web browsers except Internet Explorer and Microsoft Edge, provided
-that this data URI or blob URL is whitelisted in advance.</xsd:documentation>
+an absolute path.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="errorMessage" type="xsd:string">
@@ -10027,30 +9791,13 @@ the &lt;code&gt;minDate&lt;/code&gt; is set to the first date of the month in wh
 The views should be specified by their keys.
 
 The default predefined views and their keys are available at
-{@link sap.m.PlanningCalendarBuiltInView}.
+{@link sap.m.PlanningCalendarBuiltInViews}.
 
 &lt;b&gt;Note:&lt;/b&gt; If set, all specified views will be displayed along
 with any custom views (if available). If not set and no custom
 views are available, all default views will be displayed.
 If not set and there are any custom views available, only the
 custom views will be displayed.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="stickyHeader" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Determines whether the header area will remain visible (fixed on top) when the rest of the content is scrolled out of view.
-
-The sticky header behavior is automatically disabled on phones in landscape mode for better visibility of the content.
-
-&lt;b&gt;Note:&lt;/b&gt; There is limited browser support, hence the API is in experimental state.
-Browsers that currently support this feature are Chrome (desktop and mobile), Safari (desktop and mobile) and Edge 41.
-
-There are also some known issues with respect to the scrolling behavior and focus handling. A few are given below:
-
-When the PlanningCalendar is placed in certain layout containers, for example the &lt;code&gt;GridLayout&lt;/code&gt; control,
-the column headers do not fix at the top of the viewport. Similar behavior is also observed with the &lt;code&gt;ObjectPage&lt;/code&gt; control.
-
-This API should not be used in production environment.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="ariaLabelledBy" type="xsd:string">
@@ -10118,6 +9865,12 @@ The new value can be obtained using the &lt;code&gt;sap.m.PlanningCalendar#getSt
 </xsd:complexType>
 </xsd:element>
 </xsd:sequence>
+<xsd:attribute name="standardItems" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Determines the standard items related to the calendar days, such as today, selected, working, non-working.
+Values must be one of &lt;code&gt;sap.ui.unified.StandardCalendarLegendItem&lt;/code&gt;.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
 <xsd:attribute name="itemsHeader" type="xsd:string">
 <xsd:annotation>
 <xsd:documentation>Defines the text displayed in the header of the items list. It is commonly related to the calendar days.</xsd:documentation>
@@ -10170,19 +9923,6 @@ than one interval, they are not displayed.
 </xsd:sequence>
 </xsd:complexType>
 </xsd:element>
-<xsd:element name="dragDropConfig" minOccurs="0">
-<xsd:annotation>
-<xsd:documentation>Defines the drag-and-drop configuration via {@link sap.ui.core.dnd.DragDropInfo}</xsd:documentation>
-</xsd:annotation>
-<xsd:complexType>
-<xsd:sequence>
-<xsd:choice minOccurs="0" maxOccurs="unbounded">
-<xsd:element ref="n0:DragDropBase"/>
-<xsd:element ref="n0:Fragment"/>
-</xsd:choice>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
 </xsd:sequence>
 <xsd:attribute name="title" type="xsd:string">
 <xsd:annotation>
@@ -10229,48 +9969,6 @@ cause unwanted results if you have more than one selected row in your binding.</
 <xsd:attribute name="key" type="xsd:string">
 <xsd:annotation>
 <xsd:documentation>Defines the identifier of the row.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="enableAppointmentsDragAndDrop" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Determines whether the appointments in the row are draggable.
-
-The drag and drop interaction is visualized by a placeholder highlighting the area where the
-appointment can be dropped by the user.
-
-Specifics based on the intervals (hours, days or months) displayed in the &lt;code&gt;PlanningCalendar&lt;/code&gt; views:
-
-Hours:&lt;br&gt;
-For views where the displayed intervals are hours, the placeholder snaps on every interval
-of 30 minutes. After the appointment is dropped, the appointmentDrop event is fired, containing
-the new start and end JavaScript date objects.&lt;br&gt;
-For example, an appointment with start date "Nov 13 2017 12:17:00" and end date "Nov 13 2017 12:45:30"
-lasts for 27 minutes and 30 seconds. After dragging and dropping to a new time, the possible new
-start date has time that is either "hh:00:00" or "hh:30:00" because of the placeholder that can
-snap on every 30 minutes. The new end date is calculated to be 27 minutes and 30 seconds later
-and would be either "hh:27:30" or "hh:57:30".
-
-Days:&lt;br&gt;
-For views where intervals are days, the placeholder highlights the whole day and after the
-appointment is dropped the appointmentDrop event is fired. The event contains the new start and
-end JavaScript date objects with changed date but the original time (hh:mm:ss) is preserved.
-
-Months:&lt;br&gt;
-For views where intervals are months, the placeholder highlights the whole month and after the
-appointment is dropped the appointmentDrop event is fired. The event contains the new start and
-end JavaScript date objects with changed month but the original date and time is preserved.
-
-&lt;b&gt;Notes:&lt;/b&gt;
-&lt;ul&gt;
-&lt;li&gt;In "One month" view, the appointments are not draggable on small screen (as there they are
-displayed as a list below the dates). Group appointments are also not draggable&lt;/li&gt;
-&lt;li&gt;Appointments can be dragged only within their original PlanningCalendarRow&lt;/li&gt;
-&lt;/ul&gt;</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="appointmentDrop" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Fired if an appointment is dropped.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 </xsd:extension>
@@ -10570,10 +10268,7 @@ Popover detects if there's sap.m.NavContainer, sap.m.Page, or sap.m.ScrollContai
 </xsd:attribute>
 <xsd:attribute name="percentValue" type="xsd:float">
 <xsd:annotation>
-<xsd:documentation>Specifies the numerical value in percent for the length of the progress bar.
-
-&lt;b&gt;Note:&lt;/b&gt; If a value greater than 100 is provided, the &lt;code&gt;percentValue&lt;/code&gt; is set to 100.
-In other cases of invalid value, &lt;code&gt;percentValue&lt;/code&gt; is set to its default of 0.</xsd:documentation>
+<xsd:documentation>Specifies the numerical value in percent for the length of the progress bar.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="showValue" type="xsd:boolean">
@@ -11278,8 +10973,7 @@ If the value is lower/higher than the allowed minimum/maximum, a warning message
 </xsd:attribute>
 <xsd:attribute name="showCloseButton" type="xsd:boolean">
 <xsd:annotation>
-<xsd:documentation>Determines if a close button should be inserted into the dialog's header dynamically to close the dialog. This property only takes effect on phone.
-&lt;b&gt;Note:&lt;/b&gt; The close button could be placed only in a sap.m.Bar if a sap.m.Toolbar is passed as a header - the property will not take effect.</xsd:documentation>
+<xsd:documentation>Determines if a close button should be inserted into the dialog's header dynamically to close the dialog. This property only takes effect on phone.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="resizable" type="xsd:boolean">
@@ -12592,16 +12286,6 @@ If bandwidth is key for the application, set this value to false.</xsd:documenta
 &lt;ul&gt;&lt;b&gt;Note:&lt;/b&gt; &lt;li&gt;The value of the &lt;code&gt;step&lt;/code&gt; property should not contain more digits after the decimal point than what is set to the &lt;code&gt;displayValuePrecision&lt;/code&gt; property, as it may lead to an increase/decrease that is not visible for the user. For example, if the &lt;code&gt;value&lt;/code&gt; is set to 1.22 and the &lt;code&gt;displayValuePrecision&lt;/code&gt; is set to one digit after the decimal, the user will see 1.2. In this case, if the &lt;code&gt;value&lt;/code&gt; of the &lt;code&gt;step&lt;/code&gt; property is set to 1.005 and the user selects &lt;code&gt;increase&lt;/code&gt;, the resulting value will increase to 1.2261 but the displayed value will remain as 1.2 as it will be rounded to the first digit after the decimal point.&lt;/li&gt; &lt;li&gt;Depending on what is set for the &lt;code&gt;value&lt;/code&gt; and the &lt;code&gt;displayValuePrecision&lt;/code&gt; properties, it is possible the displayed value to be rounded to a higher number, for example to 3.0 when the actual value is 2.99.&lt;/li&gt;&lt;/ul&gt;</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
-<xsd:attribute name="stepMode" type="n2:_StepInputStepModeTypeType">
-<xsd:annotation>
-<xsd:documentation>Defines the calculation mode for the provided &lt;code&gt;step&lt;code&gt; and &lt;code&gt;largerStep&lt;/code&gt;.
-
-If the user increases/decreases the value by &lt;code&gt;largerStep&lt;/code&gt;, this calculation will consider
-it as well. For example, if the current &lt;code&gt;value&lt;/code&gt; is 3, &lt;code&gt;step&lt;/code&gt; is 5,
-&lt;code&gt;largerStep&lt;/code&gt; is 5 and the user chooses PageUp, the calculation logic will consider
-the value of 3x5=15 to decide what will be the next &lt;code&gt;value&lt;/code&gt;.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute name="largerStep" type="xsd:float">
 <xsd:annotation>
 <xsd:documentation>Increases/decreases the value with a larger value than the set step only when using the PageUp/PageDown keys.
@@ -12663,31 +12347,6 @@ the field and a label (see aggregation &lt;code&gt;labelFor&lt;/code&gt; of &lt;
 
 The value should be between 0 (default) and 20.
 In case the value is not valid it will be set to the default value.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="description" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Determines the description text after the input field, for example units of measurement, currencies.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="fieldWidth" type="n0:_CSSSizeType">
-<xsd:annotation>
-<xsd:documentation>Determines the distribution of space between the input field
-and the description text . Default value is 50% (leaving the other
-50% for the description).
-
-&lt;b&gt;Note:&lt;/b&gt; This property takes effect only if the
-&lt;code&gt;description&lt;/code&gt; property is also set.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="textAlign" type="n0:_TextAlignType">
-<xsd:annotation>
-<xsd:documentation>Defines the horizontal alignment of the text that is displayed inside the input field.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="validationMode" type="n2:_StepInputValidationModeType">
-<xsd:annotation>
-<xsd:documentation>Defines when the validation of the typed value will happen. By default this happens on focus out.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="ariaLabelledBy" type="xsd:string">
@@ -12924,27 +12583,6 @@ Alternate row coloring is not available for the High Contrast Black/White themes
 <xsd:annotation>
 <xsd:documentation>Defines the layout in which the table pop-in rows are rendered.
 &lt;b&gt;Note:&lt;/b&gt; The &lt;code&gt;demandPopin&lt;/code&gt; and &lt;code&gt;minScreenWidth&lt;/code&gt; properties of the &lt;code&gt;Column&lt;/code&gt; control must be configured appropriately.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="sticky" type="n2:_StickyType">
-<xsd:annotation>
-<xsd:documentation>Defines the section of the &lt;code&gt;sap.m.Table&lt;/code&gt; control that remains fixed at the top of the page during vertical scrolling as long as the table is in the viewport.
-
-&lt;b&gt;Note:&lt;/b&gt; There is limited browser support, hence the API is in experimental state.
-Browsers that currently support this feature are Chrome (desktop and mobile), Safari (desktop and mobile) and Edge 41.
-
-There are also some known issues with respect to the scrolling behavior and focus handling. A few are given below:
-
-If the table is placed in certain layout containers, for example, the &lt;code&gt;sap.ui.layout.Grid&lt;/code&gt; control,
-the column headers are not fixed at the top of the viewport. Similar behavior is also observed with the &lt;code&gt;sap.m.ObjectPage&lt;/code&gt; control.
-
-This API should not be used in a productive environment.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="beforeOpenContextMenu" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Fired when the context menu is opened.
-When the context menu is opened, the binding context of the item is set to the given &lt;code&gt;contextMenu&lt;/code&gt;.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 </xsd:extension>
@@ -13474,7 +13112,7 @@ The corresponding properties of the title control are ignored.</xsd:documentatio
 </xsd:attribute>
 <xsd:attribute name="tokenUpdate" type="xsd:string">
 <xsd:annotation>
-<xsd:documentation>Fired when the tokens aggregation changed due to a user interaction (add / remove token)</xsd:documentation>
+<xsd:documentation>Fired when the tokens aggregation changed (add / remove token)</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 </xsd:extension>
@@ -13536,15 +13174,7 @@ property depends on the used theme and the &lt;code&gt;design&lt;/code&gt; prope
 <xsd:attribute name="design" type="n2:_ToolbarDesignType">
 <xsd:annotation>
 <xsd:documentation>Defines the toolbar design.
-
-&lt;b&gt;Note:&lt;/b&gt; Design settings are theme-dependent. They also determine the default height of the toolbar.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="style" type="n2:_ToolbarStyleType">
-<xsd:annotation>
-<xsd:documentation>Defines the visual style of the &lt;code&gt;Toolbar&lt;/code&gt;.
-
-&lt;b&gt;Note:&lt;/b&gt; The visual styles are theme-dependent.</xsd:documentation>
+Note: Design settings are theme-dependent. They also determine the default height of the toolbar.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="ariaLabelledBy" type="xsd:string">
@@ -14409,12 +14039,6 @@ this property defined, otherwise the default numbering will be displayed.</xsd:d
 <xsd:annotation>
 <xsd:documentation>Indicates whether or not the step is validated.
 When a step is validated a Next button is visualized in the Wizard control.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="optional" type="xsd:boolean">
-<xsd:annotation>
-<xsd:documentation>Indicates whether or not the step is optional.
-When a step is optional an "(Optional)" label is displayed under the step's title.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="subsequentSteps" type="xsd:string">
@@ -15685,11 +15309,6 @@ information, see {@link sap.m.Page#backgroundDesign}.</xsd:documentation>
 <xsd:enumeration value="Transparent">
 <xsd:annotation>
 <xsd:documentation>transparent type</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-<xsd:enumeration value="Ghost">
-<xsd:annotation>
-<xsd:documentation>ghost type</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 <xsd:enumeration value="Up">
@@ -17103,78 +16722,6 @@ Please note: it is decided by the control whether or not sap.m.Size.Responsive i
 </xsd:enumeration>
 </xsd:restriction>
 </xsd:simpleType>
-<xsd:simpleType name="_StepInputStepModeTypeType">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="AdditionAndSubtraction">
-<xsd:annotation>
-<xsd:documentation>Choosing increase/decrease button will add/subtract the &lt;code&gt;step&lt;/code&gt; value
-to/from the current value. For example, if &lt;code&gt;step&lt;/code&gt; is 5, current
-&lt;code&gt;value&lt;/code&gt; is 17 and increase button is chosen, the result will be 22 (5+17).
-
-&lt;b&gt;Note:&lt;/b&gt; Using keyboard PageUp/PageDown will add/subtract the &lt;code&gt;step&lt;/code&gt;
-multiplied by the &lt;code&gt;largerStep&lt;/code&gt; values to/from the current
-&lt;code&gt;value&lt;/code&gt;. For example, if &lt;code&gt;step&lt;/code&gt; is 5, &lt;code&gt;largerStep&lt;/code&gt;
-is 3, current &lt;code&gt;value&lt;/code&gt; is 17 and PageUp is chosen, the result would be 32 (5*3+17).
-
-For more information, see {@link sap.m.StepInput}'s &lt;code&gt;step&lt;/code&gt;,
-&lt;code&gt;largerStep&lt;/code&gt; and &lt;code&gt;stepMode&lt;/code&gt; properties.</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-<xsd:enumeration value="Multiple">
-<xsd:annotation>
-<xsd:documentation>Pressing increase/decrease button will increase/decrease the current
-&lt;code&gt;value&lt;/code&gt; to the closest number that is divisible by the
-&lt;code&gt;step&lt;/code&gt;.
-
-For example, if &lt;code&gt;step&lt;/code&gt; is 5, current &lt;code&gt;value&lt;/code&gt; is 17 and
-increase button is chosen, the result will be 20 as it is the closest larger number
-that is divisible by 5.
-
-&lt;b&gt;Note:&lt;/b&gt; Using keyboard PageUp/PageDown will increase/decrease the current
-&lt;code&gt;value&lt;/code&gt; to the closest number that is divisible by the multiplication of
-the &lt;code&gt;step&lt;/code&gt; and the &lt;code&gt;largerStep&lt;/code&gt; values. For example, if
-&lt;code&gt;step&lt;/code&gt; is 5, &lt;code&gt;largerStep&lt;/code&gt; is 3, current &lt;code&gt;value&lt;/code&gt; is
-17 and PageUp is chosen, the result would be 30 as it is the closest larger number
-that is divisible by 15.
-
-The logic above will work only if both &lt;code&gt;step&lt;/code&gt; and
-&lt;code&gt;largerStep&lt;/code&gt; are integers.
-
-For more information, see {@link sap.m.StepInput}'s &lt;code&gt;step&lt;/code&gt;,
-&lt;code&gt;largerStep&lt;/code&gt; and &lt;code&gt;stepMode&lt;/code&gt; properties.</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:simpleType name="_StepInputValidationModeType">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="FocusOut">
-<xsd:annotation>
-<xsd:documentation>Validation happens on &lt;code&gt;FocusOut&lt;/code&gt;.</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-<xsd:enumeration value="LiveChange">
-<xsd:annotation>
-<xsd:documentation>Validation happens on &lt;code&gt;LiveChange&lt;/code&gt;.</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:simpleType name="_StickyType">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="None">
-<xsd:annotation>
-<xsd:documentation>No area remains in a fixed position.</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-<xsd:enumeration value="ColumnHeaders">
-<xsd:annotation>
-<xsd:documentation>Only column headers remain in a fixed position.
-If no column headers are available, this option behaves the same as &lt;code&gt;None&lt;/code&gt;.</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-</xsd:restriction>
-</xsd:simpleType>
 <xsd:simpleType name="_StringFilterOperatorType">
 <xsd:restriction base="xsd:string">
 <xsd:enumeration value="Equals">
@@ -17232,20 +16779,6 @@ If no column headers are available, this option behaves the same as &lt;code&gt;
 </xsd:enumeration>
 </xsd:restriction>
 </xsd:simpleType>
-<xsd:simpleType name="_TimePickerMaskModeType">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="On">
-<xsd:annotation>
-<xsd:documentation>&lt;code&gt;MaskInput&lt;/code&gt; is enabled for the &lt;code&gt;sap.m.TimePicker&lt;/code&gt;.</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-<xsd:enumeration value="Off">
-<xsd:annotation>
-<xsd:documentation>&lt;code&gt;MaskInput&lt;/code&gt; is disabled for the &lt;code&gt;sap.m.TimePicker&lt;/code&gt;.</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-</xsd:restriction>
-</xsd:simpleType>
 <xsd:simpleType name="_ToolbarDesignType">
 <xsd:restriction base="xsd:string">
 <xsd:enumeration value="Auto">
@@ -17266,20 +16799,6 @@ If no column headers are available, this option behaves the same as &lt;code&gt;
 <xsd:enumeration value="Solid">
 <xsd:annotation>
 <xsd:documentation>The toolbar has a solid background. Its content will be rendered in a standard way.</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:simpleType name="_ToolbarStyleType">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="Standard">
-<xsd:annotation>
-<xsd:documentation>Default visual style dependent on the used theme.</xsd:documentation>
-</xsd:annotation>
-</xsd:enumeration>
-<xsd:enumeration value="Clear">
-<xsd:annotation>
-<xsd:documentation>Simplified visual style dependent on the used theme.</xsd:documentation>
 </xsd:annotation>
 </xsd:enumeration>
 </xsd:restriction>

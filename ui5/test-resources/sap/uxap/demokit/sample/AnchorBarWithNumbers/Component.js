@@ -3,11 +3,7 @@ sap.ui.define(["sap/ui/core/UIComponent"], function (UIComponent) {
 
 	return UIComponent.extend("sap.uxap.sample.AnchorBarWithNumbers.Component", {
 		metadata: {
-			rootView: {
-				"viewName": "sap.uxap.sample.AnchorBarWithNumbers.AnchorBarWithNumbers",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.uxap.sample.AnchorBarWithNumbers.AnchorBarWithNumbers",
 			dependencies: {
 				libs: [
 					"sap.m"

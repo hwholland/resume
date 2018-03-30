@@ -514,13 +514,6 @@ If not set the day names are shown inside the single days.</xsd:documentation>
 </xsd:complexType>
 </xsd:element>
 </xsd:sequence>
-<xsd:attribute name="standardItems" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Determines the standard items related to the calendar days, such as, today, selected, working and non-working.
-Values must be one of &lt;code&gt;sap.ui.unified.StandardCalendarLegendItem&lt;/code&gt;.
-Note: for versions 1.50 and 1.52, this property was defined in the the subclass &lt;code&gt;sap.m.PlanningCalendarLegend&lt;/code&gt;</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
 <xsd:attribute name="columnWidth" type="n0:_CSSSizeType">
 <xsd:annotation>
 <xsd:documentation>Defines the width of the created columns in which the items are arranged.</xsd:documentation>
@@ -1087,18 +1080,6 @@ See the types sap.ui.unified.ContentSwitcherAnimation for default implementation
 <xsd:attribute name="value" type="xsd:float">
 <xsd:annotation>
 <xsd:documentation>Determines the currency value.</xsd:documentation>
-</xsd:annotation>
-</xsd:attribute>
-<xsd:attribute name="stringValue" type="xsd:string">
-<xsd:annotation>
-<xsd:documentation>Determines the currency value as a string.
-
-String value is useful if you want to store really big values. If there are more than 21 digits
-before the decimal point or if the number starts with “0.” followed by more than five zeros, it is
-represented in exponential form. In these cases use the &lt;code&gt;stringValue&lt;/code&gt; property to keep the number in
-decimal format.
-
-&lt;b&gt;Note:&lt;/b&gt; If set, it will take precedence over the &lt;code&gt;value&lt;/code&gt; property.</xsd:documentation>
 </xsd:annotation>
 </xsd:attribute>
 <xsd:attribute name="currency" type="xsd:string">
@@ -2116,14 +2097,8 @@ If not set the day names are shown inside the single days.</xsd:documentation>
 </xsd:element>
 <xsd:element name="specialDates" minOccurs="0">
 <xsd:annotation>
-<xsd:documentation>&lt;code&gt;DateRange&lt;/code&gt; with type to visualize special days in the Calendar.
-
-&lt;b&gt;Note:&lt;/b&gt; If one day is assigned to more than one DateTypeRange, only the first one
-will be used. The only exception is when one of the types is
-&lt;code&gt;NonWorking&lt;/code&gt;, then you can have both &lt;code&gt;NonWorking&lt;/code&gt;
-and the other type.
-For example, you can have &lt;code&gt;NonWorking&lt;/code&gt; + &lt;code&gt;Type01&lt;/code&gt;
-but you can't have &lt;code&gt;Type01&lt;/code&gt; + &lt;code&gt;Type02&lt;/code&gt;.</xsd:documentation>
+<xsd:documentation>Date Range with type to visualize special days in the Calendar.
+If one day is assigned to more than one Type, only the first one will be used.</xsd:documentation>
 </xsd:annotation>
 <xsd:complexType>
 <xsd:sequence>

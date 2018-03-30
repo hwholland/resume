@@ -1,35 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.ListItemBase.
-sap.ui.define([
-	'jquery.sap.global',
-	'./library',
-	'sap/ui/core/Control',
-	'sap/ui/core/IconPool',
-	'sap/ui/core/Icon',
-	'sap/m/Button',
-	'sap/ui/model/BindingMode',
-	'sap/ui/Device',
-	'sap/m/CheckBox',
-	'./ListItemBaseRenderer',
-	'jquery.sap.keycodes'
-],
-function(
-	jQuery,
-	library,
-	Control,
-	IconPool,
-	Icon,
-	Button,
-	BindingMode,
-	Device,
-	CheckBox,
-	ListItemBaseRenderer
-) {
+sap.ui.define(['jquery.sap.global', './library', 'sap/ui/core/Control', 'sap/ui/core/IconPool', 'sap/ui/core/Icon', 'sap/m/Button', 'sap/ui/model/BindingMode', 'sap/ui/Device', 'jquery.sap.keycodes'],
+	function(jQuery, library, Control, IconPool, Icon, Button, BindingMode, Device) {
 	"use strict";
 
 
@@ -57,11 +34,10 @@ function(
 	 *
 	 * @class
 	 * ListItemBase contains the base features of all specific list items.
-	 * <b>Note:</b> If not mentioned otherwise in the individual subclasses, list items must only be used in the <code>items</code> aggregation of <code>sap.m.ListBase</code> controls.
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
@@ -141,7 +117,7 @@ function(
 			 */
 			detailPress : {}
 		},
-		designtime: "sap/m/designtime/ListItemBase.designtime"
+		designTime : true
 	}});
 
 	ListItemBase.getAccessibilityText = function(oControl, bDetectEmpty) {
@@ -403,14 +379,13 @@ function(
 	};
 
 	/**
-	 * Returns the accessibility announcement for the content.
-	 *
+	 * Returns the accessibility announcement for the content
 	 * Hook for the subclasses.
 	 *
 	 * @returns {string}
 	 * @protected
-	 * @name sap.m.ListItemBase.prototype.getContentAnnouncement
-	 * @function
+	 * ListItemBase.prototype.getContentAnnouncement = function() {
+	 * };
 	 */
 
 	/*
@@ -552,7 +527,7 @@ function(
 			return this._oMultiSelectControl;
 		}
 
-		this._oMultiSelectControl = new CheckBox({
+		this._oMultiSelectControl = new sap.m.CheckBox({
 			id : this.getId() + "-selectMulti",
 			activeHandling : false,
 			selected : this.getSelected()
@@ -820,7 +795,7 @@ function(
 	ListItemBase.prototype.ontap = function(oEvent) {
 
 		// do not handle already handled events
-		if (this._eventHandledByControl || window.getSelection().toString()) {
+		if (this._eventHandledByControl) {
 			return;
 		}
 
@@ -1146,24 +1121,6 @@ function(
 		}
 
 		this.informList("ArrowUpDown", oEvent);
-	};
-
-	ListItemBase.prototype.oncontextmenu = function(oEvent) {
-		// context menu is not required on the group header.
-		if (this._bGroupHeader) {
-			return;
-		}
-
-		// do not handle already handled events
-		// allow the context menu to open on the SingleSelect or MultiSelect control
-		// is(":focusable") check is required as IE sets activeElement also  to text controls
-		if (jQuery(document.activeElement).is(":focusable") &&
-			document.activeElement !== this.getDomRef() &&
-			oEvent.srcControl !== this.getModeControl()) {
-			return;
-		}
-
-		this.informList("ContextMenu", oEvent);
 	};
 
 	// inform the list for the vertical navigation

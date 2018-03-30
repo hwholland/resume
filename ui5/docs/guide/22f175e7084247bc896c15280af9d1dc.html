@@ -6,8 +6,8 @@
 <meta name="abstract" content="The following section explains step-by-step how to easily write tests for OpenUI5 apps."/>
 <meta name="description" content="The following section explains step-by-step how to easily write tests for OpenUI5 apps."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3307711378467936"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3307711378467936"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4628830069011629"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4628830069011629"/>
 <title>Getting Started with OPA5</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -19,7 +19,7 @@
 	<h1 class="title topictitle1">Getting Started with OPA5</h1>
 
 	
-	<div class="body conbody"><p class="shortdesc">The following section explains step-by-step how to easily write tests for <span class="ph"><span class="ph pname">OpenUI5</span></span> apps.</p>
+	<div class="body"><p class="shortdesc">The following section explains step-by-step how to easily write tests for <span class="ph"><span class="ph pname">OpenUI5</span></span> apps.</p>
 
 		<p class="p">We assume a simple app that displays a button on the page after a random time between 0 and 10
 			seconds. After pressing the button, the text on the button changes. Again, this may take
@@ -251,13 +251,13 @@
 			</div><div class="sectiondiv subsection">
 				<p class="p subsectiontitle"><span class="ph emphasis emphasis">Starting an App in an iFrame</span></p>
 
-				<p class="p">You can run the app being tested in an iFrame. You can start only one iFrame at a time. An
-					error will be thrown if you try to start an iFrame when one is already launched
-					or if you try to teardown the iFrame before it is started. If an iFrame element
-					is already present on the page, it will be used. The iFrame and test window must
-					be in the same domain. For example, if you have the <samp class="ph codeph">test.html</samp>
-					file next to the <samp class="ph codeph">index.html</samp> file, you can start your app with
-					the following code:</p>
+				<p class="p">You can run the app being tested in an iFrame. You can start only one iFrame at a
+					time. An error will be logged on every subsequent attempt at starting an iFrame.
+					An error is thrown if a teardown is attempted before the iFrame is started. If
+					an iFrame element is already present on the page, it will be used. The iFrame
+					and test window must be in the same domain. For example, if you have the
+						<samp class="ph codeph">test.html</samp> file next to the <samp class="ph codeph">index.html</samp>
+					file, you can start your app with the following code:</p>
 
 				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 new sap.ui.test.Opa5().iStartMyAppInAFrame("index.html?responderOn=true");</pre></div>

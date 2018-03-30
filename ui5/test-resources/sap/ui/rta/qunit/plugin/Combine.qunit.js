@@ -15,7 +15,6 @@ sap.ui.define([
 	'sap/m/OverflowToolbar',
 	'sap/m/OverflowToolbarButton',
 	'sap/m/CheckBox',
-	'sap/ui/dt/SelectionManager',
 	// should be last:
 	'sap/ui/thirdparty/sinon',
 	'sap/ui/thirdparty/sinon-ie',
@@ -33,8 +32,7 @@ function(
 	Panel,
 	OverflowToolbar,
 	OverflowToolbarButton,
-	CheckBox,
-	SelectionManager
+	CheckBox
 ) {
 	'use strict';
 
@@ -251,10 +249,10 @@ function(
 
 		afterEach : function(assert) {
 			sandbox.restore();
-			this.oDesignTime.destroy();
 			this.oPanel.destroy();
 			this.oPanel2.destroy();
 			this.OverflowToolbar.destroy();
+			this.oDesignTime.destroy();
 		}
 	});
 
@@ -262,7 +260,7 @@ function(
 		fnSetOverlayDesigntimeMetadata(this.oButton1Overlay, {});
 		fnSetOverlayDesigntimeMetadata(this.oButton2Overlay, {});
 
-		sandbox.stub(SelectionManager.prototype, "get").returns(
+		sandbox.stub(this.oDesignTime, "getSelection").returns(
 				[this.oButton1Overlay, this.oButton2Overlay]);
 
 		assert.strictEqual(
@@ -278,7 +276,7 @@ function(
 		fnSetOverlayDesigntimeMetadata(this.oButton1Overlay, DEFAULT_DTM);
 		fnSetOverlayDesigntimeMetadata(this.oButton2Overlay, oDesignTimeMetadata2);
 
-		sandbox.stub(SelectionManager.prototype, "get").returns(
+		sandbox.stub(this.oDesignTime, "getSelection").returns(
 				[this.oButton1Overlay, this.oButton2Overlay]);
 
 		assert.strictEqual(
@@ -292,7 +290,7 @@ function(
 
 	QUnit.test("when only one control is selected", function(assert) {
 		fnSetOverlayDesigntimeMetadata(this.oButton1Overlay, DEFAULT_DTM);
-		sandbox.stub(SelectionManager.prototype, "get").returns([this.oButton1Overlay]);
+		sandbox.stub(this.oDesignTime, "getSelection").returns([this.oButton1Overlay]);
 
 		assert.strictEqual(
 			this.oCombinePlugin.isAvailable(this.oButton1Overlay), false,
@@ -303,7 +301,7 @@ function(
 	});
 
 	QUnit.test("when controls which enabled-function delivers false are selected", function(assert) {
-		sandbox.stub(SelectionManager.prototype, "get").returns([
+		sandbox.stub(this.oDesignTime, "getSelection").returns([
 			this.oButton1Overlay,
 			this.oButton2Overlay
 		]);
@@ -319,7 +317,7 @@ function(
 	});
 
 	QUnit.test("when a control without changetype is selected", function(assert) {
-		sandbox.stub(SelectionManager.prototype, "get").returns([
+		sandbox.stub(this.oDesignTime, "getSelection").returns([
 			this.oButton1Overlay,
 			this.oButton4Overlay
 		]);
@@ -335,7 +333,7 @@ function(
 	});
 
 	QUnit.test("when controls from different relevant containers are selected", function(assert) {
-		sandbox.stub(SelectionManager.prototype, "get").returns([
+		sandbox.stub(this.oDesignTime, "getSelection").returns([
 			this.oButton1Overlay,
 			this.oButton5Overlay
 		]);
@@ -353,7 +351,7 @@ function(
 	QUnit.test("when handleCombine is called with two selected elements", function(assert) {
 		var spy = sandbox.spy(this.oCombinePlugin, "fireElementModified");
 
-		sandbox.stub(SelectionManager.prototype, "get").returns([
+		sandbox.stub(this.oDesignTime, "getSelection").returns([
 			this.oButton1Overlay,
 			this.oButton2Overlay
 		]);
@@ -372,7 +370,7 @@ function(
 	});
 
 	QUnit.test("when Controls of different type with same change type are selected", function(assert) {
-		sandbox.stub(SelectionManager.prototype, "get").returns([
+		sandbox.stub(this.oDesignTime, "getSelection").returns([
 			this.oOverflowToolbarButton1Overlay,
 			this.oButton6Overlay
 		]);
@@ -393,7 +391,7 @@ function(
 			return bIsAvailable;
 		}.bind(this));
 		sinon.stub(this.oCombinePlugin, "handleCombine", function(oSelectedElement){
-			assert.equal(oSelectedElement, this.oButton6Overlay.getElement(), "the 'handler' method is called with the right element");
+			assert.equal(oSelectedElement, this.oButton6Overlay.getElementInstance(), "the 'handler' method is called with the right element");
 		}.bind(this));
 		sinon.stub(this.oCombinePlugin, "isEnabled", function(oOverlay){
 			assert.equal(oOverlay, this.oButton6Overlay, "the 'enabled' function calls isEnabled with the correct overlay");
@@ -410,7 +408,7 @@ function(
 	});
 
 	QUnit.test("when Controls of different type with different change type are selected", function(assert) {
-		sandbox.stub(SelectionManager.prototype, "get").returns([
+		sandbox.stub(this.oDesignTime, "getSelection").returns([
 			this.oOverflowToolbarButton1Overlay,
 			this.oCheckBox1Overlay
 		]);

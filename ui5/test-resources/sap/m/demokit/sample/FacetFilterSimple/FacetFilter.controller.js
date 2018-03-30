@@ -29,12 +29,12 @@ sap.ui.define([
 				text: "{Category}"
 			}));
 			oTable.bindItems(oBindingInfo);
-			this.byId("idVBox").addItem(oTable);
+			this.getView().byId("idVBox").addItem(oTable);
 		},
 
 		_applyFilter: function(oFilter) {
 			// Get the table (last thing in the VBox) and apply the filter
-			var aVBoxItems = this.byId("idVBox").getItems();
+			var aVBoxItems = this.getView().byId("idVBox").getItems();
 			var oTable = aVBoxItems[aVBoxItems.length - 1];
 			oTable.getBinding("items").filter(oFilter);
 		},

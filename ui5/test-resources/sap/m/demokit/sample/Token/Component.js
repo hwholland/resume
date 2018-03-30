@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.Token.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.Token.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.Token.Page",
 			dependencies : {
 				libs : [
 					"sap.m",

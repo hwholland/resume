@@ -3,11 +3,7 @@ sap.ui.define(["sap/ui/core/UIComponent"], function (UIComponent) {
 
 	var Component = UIComponent.extend("sap.uxap.sample.ObjectPageHeaderWithAllControls.Component", {
 		metadata: {
-			rootView: {
-				"viewName": "sap.uxap.sample.ObjectPageHeaderWithAllControls.ObjectPageHeaderWithAllControls",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.uxap.sample.ObjectPageHeaderWithAllControls.ObjectPageHeaderWithAllControls",
 			dependencies: {
 				libs: [
 					"sap.m",
@@ -51,8 +47,7 @@ sap.ui.define(["sap/ui/core/UIComponent"], function (UIComponent) {
 						"../SharedBlocks/personal/PersonalBlockPart2.view.xml",
 						"employee.json",
 						"products.json",
-						"Popover.fragment.xml",
-						"PopoverLock.fragment.xml"
+						"Popover.fragment.xml"
 					]
 				}
 			}

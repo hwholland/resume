@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -19,6 +19,8 @@ sap.ui.define(["sap/m/library", "sap/ui/Device", "sap/ui/core/InvisibleText"],
 	 */
 	var FacetFilterRenderer = {
 	};
+	// create ARIA announcements
+	var mAriaAnnouncements = {};
 
 
 	/**
@@ -140,7 +142,16 @@ sap.ui.define(["sap/m/library", "sap/ui/Device", "sap/ui/core/InvisibleText"],
 	 * @protected
 	 */
 	FacetFilterRenderer.getAriaAnnouncement = function(sKey, sBundleText) {
-		return InvisibleText.getStaticId("sap.m", sBundleText || "FACETFILTER_" + sKey.toUpperCase());
+		if (mAriaAnnouncements[sKey]) {
+			return mAriaAnnouncements[sKey];
+		}
+
+		sBundleText = sBundleText || "FACETFILTER_" + sKey.toUpperCase();
+		mAriaAnnouncements[sKey] = new InvisibleText({
+			text : sap.ui.getCore().getLibraryResourceBundle("sap.m").getText(sBundleText)
+		}).toStatic().getId();
+
+		return mAriaAnnouncements[sKey];
 	};
 
 

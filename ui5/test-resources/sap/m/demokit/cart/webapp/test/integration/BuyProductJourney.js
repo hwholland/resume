@@ -62,17 +62,7 @@ sap.ui.define([
 		When.onTheCategory.iGoToTheCartPage();
 
 		// Assertions
-		Then.onTheCart.iShouldSeeTheProductInMyCart()
-			.and.iTeardownMyApp();
-	});
-
-	opaTest("Should start the app with a bookmarkable cart product", function (Given, When, Then) {
-		//Arrangement
-		Given.iStartMyApp(true,{
-			hash: "#/cart/HT-1254"
-		});
-		//Assertions
-		Then.onTheProduct.iShouldSeeTheRightProduct();
+		Then.onTheCart.iShouldSeeTheProductInMyCart();
 	});
 
 	opaTest("Should navigate to checkout", function (Given, When, Then) {
@@ -91,7 +81,7 @@ sap.ui.define([
 
 		// Assertions
 		Then.onHome.iShouldSeeTheCategoryList().
-			and.iShouldSeeSomeEntriesInTheCategoryList();
+		and.iShouldSeeSomeEntriesInTheCategoryList();
 	});
 
 
@@ -139,8 +129,8 @@ sap.ui.define([
 		When.onCheckout.iEnterCreditCardInformation("My name", "1234567891234567", "13", "01/2020");
 
 		// Assertions
-		Then.onCheckout.iShouldNotSeeTheStep4Button("creditCardStep").
-			and.iShouldSeeTheFooterWithTheErrorButton();
+		Then.onCheckout.iShouldNotSeeTheStep4Button("creditCardStep").and.
+		iShouldSeeTheFooterWithTheErrorButton();
 	});
 
 	opaTest("Should see a message popover window", function (Given, When, Then) {
@@ -156,7 +146,7 @@ sap.ui.define([
 
 		// Actions
 		When.onCheckout.iPressTheCloseButton().
-			and.iEnterCreditCardInformation("My name", "1234567891234567", "123", "01/2020");
+		and.iEnterCreditCardInformation("My name", "1234567891234567", "123", "01/2020");
 
 		// Assertions
 		Then.onCheckout.iShouldSeeTheStep4Button();
@@ -245,14 +235,14 @@ sap.ui.define([
 	});
 
 
-	opaTest("Should navigate to Delivery Type Step", function (Given, When, Then) {
+		opaTest("Should navigate to Delivery Type Step", function (Given, When, Then) {
 
-		// Actions
-		When.onCheckout.iPressOnTheNextStepButton();
+			// Actions
+			When.onCheckout.iPressOnTheNextStepButton();
 
-		// Assertions
-		Then.onCheckout.iShouldSeeTheDeliveryTypeStep();
-	});
+			// Assertions
+			Then.onCheckout.iShouldSeeTheDeliveryTypeStep();
+		});
 
 	opaTest("Should navigate to order summary", function (Given, When, Then) {
 
@@ -294,21 +284,10 @@ sap.ui.define([
 	opaTest("Should invalidate Step 4 Button", function (Given, When, Then) {
 
 		// Actions
-		When.onCheckout.iEnterCashOnDeliveryText("FirstName", "LastName", "+4911111111", "inf");
-
-		// Assertions
-		Then.onCheckout.iShouldNotSeeTheStep4Button("cashOnDeliveryStep").
-			and.iShouldGetErrorMessageTextDoesNotMatchTypeForEmailField("inf");
-	});
-
-	opaTest("Should invalidate Step 4 Button", function (Given, When, Then) {
-
-		// Actions
 		When.onCheckout.iEnterCashOnDeliveryText("FirstName", "LastName", "+4911111111", "inf.shop.com");
 
 		// Assertions
-		Then.onCheckout.iShouldNotSeeTheStep4Button("cashOnDeliveryStep").
-			and.iShouldGetErrorMessageTextDoesNotMatchTypeForEmailField("inf.shop.com");
+		Then.onCheckout.iShouldNotSeeTheStep4Button("cashOnDeliveryStep");
 	});
 
 	opaTest("Should activate Step 4 Button", function (Given, When, Then) {

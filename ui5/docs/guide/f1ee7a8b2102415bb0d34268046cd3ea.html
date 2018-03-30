@@ -6,8 +6,8 @@
 <meta name="abstract" content="Data binding supports the export of data in a specific format so that the data can be used in other programs."/>
 <meta name="description" content="Data binding supports the export of data in a specific format so that the data can be used in other programs."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8839639661548159"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8839639661548159"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7423763502965836"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7423763502965836"/>
 <title>Using Data Binding for Data Export</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -16,24 +16,22 @@
 <body class="" id="loiof1ee7a8b2102415bb0d34268046cd3ea">
 <div id="wrapper"><div id="container">
 
-    
-    <h1 class="title topictitle1">Using Data Binding for Data Export</h1>
+	<h1 class="title topictitle1">Using Data Binding for Data Export</h1>
 
-    
-    
-    <div class="body"><p class="shortdesc">Data binding supports the export of data in a specific format so that the data can be
+	
+	<div class="body"><p class="shortdesc">Data binding supports the export of data in a specific format so that the data can be
         used in other programs.</p>
 
-        <p class="p">To export data, load the necessary modules as shown in the following example:</p>
+		<p class="p">To export data, load the necessary modules as shown in the following example:</p>
 
-        <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 jQuery.sap.require("sap.ui.core.util.Export");
 jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");</pre></div>
 
-        <p class="p">The following code snippet uses a JSON model as basis for the export. You can also use
-            other models, such as the OData model.</p>
+		<p class="p">The following code snippet uses a JSON model as basis for the export. You can also use
+			other models, such as the OData model.</p>
 
-        <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 var oModel = new sap.ui.model.json.JSONModel([
     {
         firstname: "Al",
@@ -58,10 +56,10 @@ var oModel = new sap.ui.model.json.JSONModel([
 ]);
 </pre></div>
 
-        <p class="p">In the next step, create the data export object and pass the required information for the
-            export to the object:</p>
+		<p class="p">In the next step, create the data export object and pass the required information for the
+			export to the object:</p>
 
-        <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 var oExport = new sap.ui.core.util.Export({
 
     // Type that will be used to generate the content. Own ExportType's can be created to support other formats
@@ -99,13 +97,13 @@ var oExport = new sap.ui.core.util.Export({
 });
 </pre></div>
 
-        <p class="p">The export class provides a generate method that triggers the generation process and
-            returns a jQuery Promise object. The done handler is called when the generation process
-            has finished. If you use the OData model, this happens asynchronously. The always
-            handler is also called when the generation has failed. When the generation has finished
-            and the export object is no longer needed, destroy the export object.</p>
+		<p class="p">The export class provides a generate method that triggers the generation process and returns a
+            jQuery Promise object. The done handler is called when the generation process has
+            finished. If you use the OData model, this happens asynchronously. The always handler is
+            also called when the generation has failed. When the generation has finished and the
+            export object is no longer needed, destroy the export object.</p>
 
-        <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 oExport.generate().done(function(sContent) {
     console.log(sContent);
 }).always(function() {
@@ -113,29 +111,29 @@ oExport.generate().done(function(sContent) {
 });
 </pre></div>
 
-        <p class="p">The above example provides the following output:</p>
+		<p class="p">The above example provides the following output:</p>
 
-        <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">First name;Last name
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">First name;Last name
 Al;Dente
 Andy;Friese
 Anita;Mann
 Doris;Schutt
 Kenya;Dewit</pre></div>
 
-        <p class="p">You can directly save the file by triggering a download. This calls the generate method
-            internally and uses the file util class (<samp class="ph codeph">sap.ui.core.util.File</samp>) to
-            trigger the download.</p>
+		<p class="p">You can directly save the file by triggering a download. This calls the generate method
+			internally and uses the file util class (<samp class="ph codeph">sap.ui.core.util.File</samp>) to
+			trigger the download.</p>
 
-        <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 oExport.saveFile().always(function() {
     this.destroy();
 });
 </pre></div>
 
-        <div class="section"><div class="section_title">Export Types</div><div type="Export Types">
-            
-            <p class="p">You can use the CSV export type out of the box, or define other export types. The
-                concept is similar to custom notepad controls, see <a class="xref" href="8dcab0011d274051808f959800cabf9f.html" title="You can create own content for OpenUI5. To develop controls in JavaScript, you can either extend existing controls or create new ones.">Developing Controls</a>. The generate method is called
+		<div class="section"><div class="section_title">Export Types</div><div type="Export Types">
+			
+			<p class="p">You can use the CSV export type out of the box, or define other export types. The concept is
+                similar to custom notepad controls, see <a class="xref" href="91f1703b6f4d1014b6dd926db0e91070.html" title="For developing controls for OpenUI5 in JavaScript, you can either extend existing controls or create new controls.">Developing OpenUI5 Controls</a>. The generate method is called
                 and should return the created file as a string.</p>
 
             <div class="note note"><span class="notetitle">Note</span> 
@@ -143,7 +141,7 @@ oExport.saveFile().always(function() {
 
             </div>
 
-            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 sap.ui.core.util.ExportType.extend("my.own.ExportType", {
 
     init: function() {
@@ -307,17 +305,17 @@ var oModel = new sap.ui.model.json.JSONModel([
 &lt;/rows&gt;
 </pre></div>
 
-        </div></div>
+		</div></div>
 
-        <div class="section"><div class="section_title">Integration in Controls</div><div type="Integration in Controls">
-            
-            <p class="p"><samp class="ph codeph">sap.ui.table.Table</samp></p>
+		<div class="section"><div class="section_title">Integration in Controls</div><div type="Integration in Controls">
+			
+			<p class="p"><samp class="ph codeph">sap.ui.table.Table</samp></p>
 
-            <p class="p">The <samp class="ph codeph">exportData</samp> method creates an export instance and fills the rows
-                and columns with the table's rows/column definition, if not defined otherwise. This
-                also includes filters and sorters that have been applied to the columns.</p>
+			<p class="p">The <samp class="ph codeph">exportData</samp> method creates an export instance and fills the rows
+				and columns with the table's rows/column definition, if not defined otherwise. This
+				also includes filters and sorters that have been applied to the columns.</p>
 
-            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
 jQuery.sap.require("sap.ui.core.util.Export");
 jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
 
@@ -330,9 +328,9 @@ oTable.exportData({
 });
 </pre></div>
 
-        </div></div>
+		</div></div>
 
-    </div>
+	</div>
 
 </div></div>
 

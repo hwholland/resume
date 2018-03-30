@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.DateTimeInput.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.DateTimeInput.DateTimeInputGroup",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.DateTimeInput.DateTimeInputGroup",
 			dependencies : {
 				libs : [
 					"sap.m",

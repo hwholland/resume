@@ -24,8 +24,7 @@
             <documentation>Width of the Table.</documentation>
         </property>
         <property group="Appearance" type="sap.ui.core/int" name="rowHeight">
-            <documentation>The height of the row content in pixel. The actual row height is also influenced by other factors, such as the border width.
-If no value is set, a default height is applied based on the content density configuration.</documentation>
+            <documentation>Height of a row of the Table in pixel.</documentation>
         </property>
         <property group="Appearance" type="sap.ui.core/int" name="columnHeaderHeight">
             <documentation>Height of the column header of the Table in pixel.</documentation>
@@ -277,7 +276,6 @@ the index maintained in the column aggregation.</documentation>
         </event>
         <event allowPreventDefault="true" since="1.21.0" name="cellContextmenu">
             <documentation>fired when the user clicks a cell of the table.</documentation>
-            <deprecation since="1.54">replaced by &lt;code&gt;beforeOpenContextMenu&lt;/code&gt;.</deprecation>
             <parameters>
                 <parameter type="sap.ui.core/Control" name="cellControl">
                     <documentation>The control of the cell.</documentation>
@@ -297,21 +295,6 @@ the index maintained in the column aggregation.</documentation>
                 </parameter>
                 <parameter type="any" name="rowBindingContext">
                     <documentation>Row binding context of the selected cell.</documentation>
-                </parameter>
-            </parameters>
-        </event>
-        <event allowPreventDefault="true" since="1.54" name="beforeOpenContextMenu">
-            <documentation>Fired when the user requests the context menu for a table cell.</documentation>
-            <parameters>
-                <parameter type="sap.ui.core/int" name="rowIndex">
-                    <documentation>Row index where the context menu opens.</documentation>
-                </parameter>
-                <parameter type="sap.ui.core/int" name="columnIndex">
-                    <documentation>Column index where the context menu opens.
-This is the index of the column in the &lt;code&gt;columns&lt;/code&gt; aggregation.</documentation>
-                </parameter>
-                <parameter type="sap.ui.core/IContextMenu" name="contextMenu">
-                    <documentation>Context menu</documentation>
                 </parameter>
             </parameters>
         </event>
@@ -343,15 +326,11 @@ The event even is fired when setFirstVisibleRow is called programmatically.</doc
             <documentation>Control or text of footer section of the Table (if not set it will be hidden)</documentation>
         </aggregation>
         <aggregation cardinality="0..1" type="sap.ui.core/Toolbar" name="toolbar">
-            <documentation>Toolbar of the Table
-If not set, no toolbar area will be rendered.
-Note: The CSS class sapMTBHeader-CTX is applied on the given toolbar.</documentation>
+            <documentation>Toolbar of the Table (if not set it will be hidden)</documentation>
             <deprecation since="1.38">This aggregation is deprecated, use the &lt;code&gt;extension&lt;/code&gt; aggregation instead.</deprecation>
         </aggregation>
         <aggregation cardinality="0..n" type="sap.ui.core/Control" name="extension">
-            <documentation>Extension section of the Table.
-If not set, no extension area will be rendered.
-Note: In case a &lt;code&gt;sap.m.Toolbar&lt;/code&gt; is used as header the CSS class sapMTBHeader-CTX should be applied on this toolbar via &lt;code&gt;addStyleClass&lt;/code&gt;.</documentation>
+            <documentation>Extension section of the Table (if not set it will be hidden)</documentation>
         </aggregation>
         <aggregation bindable="bindable" cardinality="0..n" type="sap.ui.table/Column" name="columns">
             <documentation>Columns of the Table</documentation>
@@ -400,15 +379,6 @@ The following restrictions apply:
   &lt;li&gt;Texts in draggable rows cannot be selected.&lt;/li&gt;
   &lt;li&gt;The text of input fields in draggable rows can be selected, but not dragged.&lt;/li&gt;
 &lt;/ul&gt;</documentation>
-        </aggregation>
-        <aggregation cardinality="0..1" since="1.54" type="sap.ui.core/IContextMenu" name="contextMenu">
-            <documentation>Defines the context menu for the table.
-
-&lt;b&gt;Note:&lt;/b&gt; The context menu will also be available for the row selectors as well as in the row actions cell of the table control.
-
-The custom context menu will not be shown in the group header rows and the sum row of the &lt;code&gt;AnalyticalTable&lt;/code&gt; control.
-
-If this aggregation is set, then the &lt;code&gt;enableCellFilter&lt;/code&gt; property will have no effect.</documentation>
         </aggregation>
     </aggregations>
     <associations>

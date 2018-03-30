@@ -1,17 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.ui.commons.layout.BorderLayout.
-sap.ui.define([
-    'jquery.sap.global',
-    'sap/ui/commons/library',
-    'sap/ui/core/Control',
-    "./BorderLayoutRenderer"
-],
-	function(jQuery, library, Control, BorderLayoutRenderer) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/commons/library', 'sap/ui/core/Control'],
+	function(jQuery, library, Control) {
 	"use strict";
 
 
@@ -28,11 +23,11 @@ sap.ui.define([
 	 * @extends sap.ui.core.Control
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @constructor
 	 * @public
-	 * @deprecated as of version 1.38, replaced by {@link sap.m.Page}
+	 * @deprecated Since version 1.38. Instead, use the <code>sap.m.Page</code> control.
 	 * @alias sap.ui.commons.layout.BorderLayout
 	 * @ui5-metamodel This control/element also will be described in the UI5 (legacy) designtime metamodel
 	 */
@@ -42,8 +37,9 @@ sap.ui.define([
 		properties : {
 
 			/**
-			 * The RTL setting swaps the areas Begin and End.
-			 * @deprecated as of version 1.5.2, replaced by the global configuration for the page
+			 * The RTL setting swaps the areas Begin and End. Since version 1.5.2, this property is deprecated and ignored as it conflicts with the central configuration for the page.
+			 * @deprecated Since version 1.5.2.
+			 * RTL should not be configured on control level but is determined by a global configuration.
 			 */
 			rtl : {type : "boolean", group : "Appearance", defaultValue : false, deprecated: true},
 

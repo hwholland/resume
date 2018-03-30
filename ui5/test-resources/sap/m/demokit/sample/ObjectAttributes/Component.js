@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.ObjectAttributes.Component", {
 
 		metadata: {
-			rootView: {
-				"viewName": "sap.m.sample.ObjectAttributes.V",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.m.sample.ObjectAttributes.V",
 			dependencies: {
 				libs: [
 					"sap.m", "sap.ui.layout"

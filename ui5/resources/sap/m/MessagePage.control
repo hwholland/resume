@@ -43,12 +43,6 @@ Can be used to hide the header of the MessagePage when it's embedded in another 
         <property group="Appearance" defaultValue="Inherit" type="sap.ui.core/TextDirection" name="textDirection">
             <documentation>Determines the element's text directionality with enumerated options. By default, the control inherits text direction from the DOM.</documentation>
         </property>
-        <property since="1.54" group="Appearance" defaultValue="false" type="sap.ui.core/boolean" name="enableFormattedText">
-            <documentation>Defines whether the value set in the &lt;code&gt;description&lt;/code&gt; property is displayed
-as formatted text in HTML format.
-
-For details regarding supported HTML tags, see {@link sap.m.FormattedText}</documentation>
-        </property>
     </properties>
     <events>
         <event allowPreventDefault="false" since="1.28.1" name="navButtonPress">
@@ -66,23 +60,8 @@ Use this aggregation when the &quot;text&quot; (sap.m.Text) control needs to be 
 Use this aggregation when the &quot;description&quot; (sap.m.Text) control needs to be replaced with an sap.m.Link control.
 &quot;description&quot; and &quot;textDirection&quot; setters can be used for this aggregation.</documentation>
         </aggregation>
-        <aggregation cardinality="0..n" since="1.54" type="sap.m/Button" name="buttons">
-            <documentation>The buttons displayed under the description text.
-
-&lt;b&gt;Note:&lt;/b&gt; Buttons added to this aggregation are both vertically and horizontally
-centered. Depending on the available space, they may be rendered on several lines.</documentation>
-        </aggregation>
-        <aggregation visibility="hidden" cardinality="0..1" type="sap.m/Bar" name="_internalHeader">
-            <documentation>A header bar which is managed internally by the MessagePage control.</documentation>
-        </aggregation>
-        <aggregation visibility="hidden" cardinality="0..1" type="sap.m/FormattedText" name="_formattedText">
-            <documentation>The formatted text which is used when enableFormattedText is true.</documentation>
-        </aggregation>
-        <aggregation visibility="hidden" cardinality="0..1" type="sap.m/Text" name="_text">
-            <documentation>The text displayed under the icon.</documentation>
-        </aggregation>
-        <aggregation visibility="hidden" cardinality="0..1" type="sap.m/Text" name="_description">
-            <documentation>The description displayed under the text when enableFormattedText is false.</documentation>
+        <aggregation visibility="hidden" cardinality="0..1" type="sap.m/Page" name="_page">
+            <documentation>A Page control which is managed internally by the MessagePage control.</documentation>
         </aggregation>
     </aggregations>
     <associations>

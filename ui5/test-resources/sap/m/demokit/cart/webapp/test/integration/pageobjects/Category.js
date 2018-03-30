@@ -6,14 +6,7 @@ sap.ui.define([
 	'sap/ui/test/matchers/BindingPath',
 	'sap/ui/test/matchers/Properties',
 	'sap/ui/test/actions/Press'
-], function (
-	Opa5,
-	PropertyStrictEquals,
-	AggregationFilled,
-	AggregationLengthEquals,
-	BindingPath,
-	Properties,
-	Press) {
+], function (Opa5, PropertyStrictEquals, AggregationFilled, AggregationLengthEquals, BindingPath, Properties,Press) {
 	"use strict";
 
 	Opa5.createPageObjects({

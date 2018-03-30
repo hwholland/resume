@@ -6,10 +6,9 @@ sap.ui.require([
 	"sap/ui/fl/Change",
 	"sap/ui/fl/LrepConnector",
 	"sap/ui/fl/Cache",
-	"sap/ui/fl/registry/Settings",
-	"sap/m/MessageBox"
+	"sap/ui/fl/registry/Settings"
 ],
-function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector, Cache, Settings, MessageBox) {
+function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector, Cache, Settings) {
 	"use strict";
 	sinon.config.useFakeTimers = false;
 
@@ -74,15 +73,8 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 		});
 	});
 
-	QUnit.test("when getChangesForComponent is called with no change cacheKey", function (assert) {
-		var oSettingsStoreInstanceStub = this.stub(Settings, "_storeInstance");
-		return this.oChangePersistence.getChangesForComponent({cacheKey : "<NO CHANGES>"}).then(function (aChanges) {
-			assert.equal(aChanges.length, 0, "then empty array is returned");
-			assert.equal(oSettingsStoreInstanceStub.callCount, 0 , "the _storeInstance function of the fl.Settings was not called.");
-		});
-	});
-
-	QUnit.test("when getChangesForComponent is called with a variantSection when changes section is not empty", function (assert) {
+	QUnit.test("when getChangesForComponent is called with a variantSection", function (assert) {
+		var done = assert.async();
 		var oMockedWrappedContent = {
 			"changes" : {
 				"changes": [{
@@ -95,215 +87,37 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 					"variantManagementId" : {
 						"variants" : [{
 							"content" : {
-								"content" : {
-									"title": "variant 0"
-								},
-								"fileName": "variant0"
+								"fileName": "variant0",
+								"title": "variant 0"
 							},
-							"controlChanges" : [],
-							"variantChanges" : {}
+							"changes" : []
 						},
 							{
 								"content" : {
-									"content" : {
-										"title": "variant 1"
-									},
-									"fileName": "variant1"
-								},
-								"controlChanges" : [],
-								"variantChanges" : {}
-							}]
-					}
-				}
-			}
-		};
-
-		var fnSetChangeFileContentSpy = this.spy(this.oChangePersistence._oVariantController, "_setChangeFileContent");
-		var fnLoadInitialChangesStub = this.stub(this.oChangePersistence._oVariantController, "loadInitialChanges").returns([]);
-		var fnApplyChangesOnVariantManagementStub = this.stub(this.oChangePersistence._oVariantController, "_applyChangesOnVariantManagement");
-		this.stub(Cache, "getChangesFillingCache").returns(Promise.resolve(oMockedWrappedContent));
-
-		return this.oChangePersistence.getChangesForComponent().then(function () {
-			assert.ok(fnSetChangeFileContentSpy.calledOnce, "then _setChangeFileContent of VariantManagement called once as file content is not set");
-			assert.ok(fnLoadInitialChangesStub.calledOnce, "then loadDefaultChanges of VariantManagement called for the first time");
-			assert.ok(fnApplyChangesOnVariantManagementStub.calledOnce, "then applyChangesOnVariantManagement called once for one variant management reference, as file content is not set");
-		}).then(function () {
-			this.oChangePersistence.getChangesForComponent().then(function () {
-				assert.ok(fnSetChangeFileContentSpy.calledOnce, "then _setChangeFileContent of VariantManagement not called again as file content is set");
-				assert.ok(fnLoadInitialChangesStub.calledTwice, "then loadDefaultChanges of VariantManagement called again");
-				assert.ok(fnApplyChangesOnVariantManagementStub.calledOnce, "then applyChangesOnVariantManagement not called again as file content is set\"");
-			});
-		}.bind(this));
-	});
-
-	QUnit.test("when getChangesForComponent is called with a variantSection and changes section is empty", function (assert) {
-		var oMockedWrappedContent = {
-			"changes" : {
-				"changes": [],
-				"variantSection" : {
-					"variantManagementId" : {
-						"variants" : [{
-							"content" : {
-								"content" : {
-									"title": "variant 0"
-								},
-								"fileName": "variant0"
-							},
-							"controlChanges" : [],
-							"variantChanges" : {}
-						},
-							{
-								"content" : {
-									"content" : {
-										"title": "variant 1"
-									},
-									"fileName": "variant1"
-								},
-								"controlChanges" : [],
-								"variantChanges" : {}
-							}]
-					}
-				}
-			}
-		};
-
-		var fnSetChangeFileContentSpy = this.spy(this.oChangePersistence._oVariantController, "_setChangeFileContent");
-		var fnLoadInitialChangesStub = this.stub(this.oChangePersistence._oVariantController, "loadInitialChanges").returns([]);
-		var fnApplyChangesOnVariantManagementStub = this.stub(this.oChangePersistence._oVariantController, "_applyChangesOnVariantManagement");
-		this.stub(Cache, "getChangesFillingCache").returns(Promise.resolve(oMockedWrappedContent));
-
-		return this.oChangePersistence.getChangesForComponent().then(function () {
-			assert.ok(fnSetChangeFileContentSpy.calledOnce, "then _setChangeFileContent of VariantManagement called once as file content is not set");
-			assert.ok(fnLoadInitialChangesStub.calledOnce, "then loadDefaultChanges of VariantManagement called for the first time");
-			assert.ok(fnApplyChangesOnVariantManagementStub.calledOnce, "then applyChangesOnVariantManagement called once for one variant management reference, as file content is not set");
-		}).then(function () {
-			this.oChangePersistence.getChangesForComponent().then(function () {
-				assert.ok(fnSetChangeFileContentSpy.calledOnce, "then _setChangeFileContent of VariantManagement not called again as file content is set");
-				assert.ok(fnLoadInitialChangesStub.calledTwice, "then loadDefaultChanges of VariantManagement called again");
-				assert.ok(fnApplyChangesOnVariantManagementStub.calledOnce, "then applyChangesOnVariantManagement not called again as file content is set\"");
-			});
-		}.bind(this));
-	});
-
-	QUnit.test("when getChangesForComponent is called with 'ctrl_variant' and 'ctrl_variant_change' fileTypes", function (assert) {
-		var aWrappedContent = {
-			changes: {
-				changes: [
-					{
-						fileName: "variant0",
-						fileType: "ctrl_variant",
-						variantManagementReference: "varMgmt"
-					},
-					{
-						fileName: "variant0",
-						fileType: "ctrl_variant_change",
-						changeType: "setTitle",
-						variantReference: "variant0"
-					}
-				]
-			}
-		};
-		this.stub(Cache, "getChangesFillingCache").returns(Promise.resolve(aWrappedContent));
-		return this.oChangePersistence.getChangesForComponent().then(function (aChanges) {
-			assert.equal(aChanges[0].getId(), aWrappedContent.changes.changes[0].fileName, "then change with 'ctrl_variant' fileType received");
-			assert.equal(aChanges[1].getId(), aWrappedContent.changes.changes[1].fileName, "then change with 'ctrl_variant_change' fileType received");
-		});
-	});
-
-	QUnit.test("when getChangesForComponent is called with includeCtrlVariants and includeVariants set to true", function(assert) {
-		var oMockedWrappedContent = {
-			"changes" : {
-				"changes": [
-					{
-						fileName: "change0",
-						fileType: "change",
-						selector: {
-							id: "controlId"
-						}
-					}
-				],
-				"variantSection" : {
-					"variantManagementId" : {
-						"variants" : [
-							{
-								"content" : {
-									"fileName": "variant0",
-									"content" : {
-										"title": "variant 0"
-									},
-									"fileType": "ctrl_variant",
-									"variantManagementReference": "variantManagementId"
-								},
-								"controlChanges": [
-									{
-										"variantReference":"variant0",
-										"fileName":"controlChange0",
-										"fileType":"change",
-										"content":{},
-										"selector":{
-											"id":"selectorId"
-										}
-									}
-								],
-								"variantChanges": {
-									"setTitle": [
-										{
-											"fileName":"variantChange0",
-											"fileType": "ctrl_variant_change",
-											"selector": {
-												"id" : "variant0"
-											}
-										}
-									]
-								},
-								"changes" : []
-							},
-							{
-								"content" : {
-									"content" : {
-										"title": "variant 1"
-									},
 									"fileName": "variant1",
-									"fileType": "ctrl_variant",
-									"variantManagementReference": "variantManagementId"
-								},
-								"controlChanges": [
-								],
-								"variantChanges": {
-									"setTitle": [
-										{
-											"fileName":"variantChange1",
-											"fileType": "ctrl_variant_change",
-											"selector": {
-												"id" : "variant1"
-											}
-										}
-									]
+									"title": "variant 1"
 								},
 								"changes" : []
-							}
-						],
-						"variantManagementChanges": {
-							"setDefault" : [{
-								"fileName": "setDefault",
-								"fileType": "ctrl_variant_management_change",
-								"content": {
-									"defaultVariant":"variant0"
-								},
-								"selector": {
-									"id": "variantManagementId"
-								}
 							}]
-						}
 					}
 				}
 			}
 		};
+		var fnSetChangeFileContentSpy = this.spy(this.oChangePersistence._oVariantController, "_setChangeFileContent");
+		var fnLoadDefaultChangesStub = this.stub(this.oChangePersistence._oVariantController, "loadDefaultChanges").returns([]);
 
 		this.stub(Cache, "getChangesFillingCache").returns(Promise.resolve(oMockedWrappedContent));
-		return this.oChangePersistence.getChangesForComponent({includeCtrlVariants: true, includeVariants: true}).then(function(aChanges) {
-			assert.equal(aChanges.length, 8, "then all the variant related changes are part of the response");
-		});
+
+		return this.oChangePersistence.getChangesForComponent().then(function () {
+			assert.ok(fnSetChangeFileContentSpy.calledOnce, "then _setChangeFileContent of VariantManagement called once as file content is not set");
+			assert.ok(fnLoadDefaultChangesStub.calledOnce, "then loadDefaultChanges of VariantManagement called once as file content is not set");
+		}).then(function () {
+			this.oChangePersistence.getChangesForComponent().then(function () {
+				assert.ok(fnSetChangeFileContentSpy.calledOnce, "then _setChangeFileContent of VariantManagement not called again as file content is set");
+				assert.ok(fnLoadDefaultChangesStub.calledOnce, "then loadDefaultChanges of VariantManagement not called again as file content is set");
+				done();
+			});
+		}.bind(this));
 	});
 
 	QUnit.test("getChangesForComponent shall not bind the messagebundle as a json model into app component if no VENDOR change is available", function(assert) {
@@ -313,26 +127,26 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 		}));
 		var mPropertyBag = {};
 		mPropertyBag.oComponent = this._oComponentInstance;
-		return this.oChangePersistence.getChangesForComponent(mPropertyBag).then(function(changes) {
+		return this.oChangePersistence.getChangesForComponent(mPropertyBag).then(function() {
 			var oModel = this._oComponentInstance.getModel("i18nFlexVendor");
 			assert.equal(oModel, undefined);
 		}.bind(this));
 	});
 
-	QUnit.test("getChangesForComponent shall not bind the messagebundle as a json model into app component if no VENDOR change is available", function(assert) {
+	QUnit.test("getChangesForComponent shall bind the messagebundle as a json model into app component if no VENDOR change is available", function(assert) {
 		this.stub(Cache, "getChangesFillingCache").returns(Promise.resolve({
 			changes: { changes: [{
-				fileType: "change",
-				selector: {
-					id: "controlId"
-				},
-				layer : "VENDOR"
-			}] },
+					fileType: "change",
+					selector: {
+						id: "controlId"
+					},
+					layer : "VENDOR"
+				}] },
 			messagebundle: {"i_123": "translatedKey"}
 		}));
 		var mPropertyBag = {};
 		mPropertyBag.oComponent = this._oComponentInstance;
-		return this.oChangePersistence.getChangesForComponent(mPropertyBag).then(function(changes) {
+		return this.oChangePersistence.getChangesForComponent(mPropertyBag).then(function() {
 			var oModel = this._oComponentInstance.getModel("i18nFlexVendor");
 			assert.notEqual(oModel, undefined);
 		}.bind(this));
@@ -346,21 +160,14 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 		});
 	});
 
-	QUnit.test("getChangesForComponent shall return the changes for the component when variantSection is empty", function(assert) {
-		this.stub(Cache, "getChangesFillingCache").returns(Promise.resolve(
-			{
-				changes: {
-					changes: [
-						{
-							fileName: "change1",
-							fileType: "change",
-							selector: {
-								id: "controlId"
-							}
-						}]
-				},
-				variantSection : {}
-			}));
+	QUnit.test("getChangesForComponent shall return the changes for the component", function(assert) {
+
+		this.stub(Cache, "getChangesFillingCache").returns(Promise.resolve({changes: {changes: [{
+			fileType: "change",
+			selector: {
+				id: "controlId"
+			}
+		}]}}));
 
 		return this.oChangePersistence.getChangesForComponent().then(function(changes) {
 			assert.strictEqual(changes.length, 1, "Changes is an array of length one");
@@ -372,7 +179,6 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 
 		this.stub(Cache, "getChangesFillingCache").returns(Promise.resolve({changes: {changes: [
 			{
-				fileName: "change1",
 				layer: "VENDOR",
 				fileType: "change",
 				selector: {
@@ -380,7 +186,6 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 				}
 			},
 			{
-				fileName: "change2",
 				layer: "CUSTOMER",
 				fileType: "change",
 				selector: {
@@ -388,7 +193,6 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 				}
 			},
 			{
-				fileName: "change3",
 				layer: "USER",
 				fileType: "change",
 				selector: {
@@ -407,7 +211,6 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 
 		this.stub(Cache, "getChangesFillingCache").returns(Promise.resolve({changes: {changes: [
 			{
-				fileName: "change1",
 				layer: "VENDOR",
 				fileType: "change",
 				selector: {
@@ -415,7 +218,6 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 				}
 			},
 			{
-				fileName: "change2",
 				layer: "CUSTOMER",
 				fileType: "change",
 				selector: {
@@ -423,7 +225,6 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 				}
 			},
 			{
-				fileName: "change3",
 				layer: "USER",
 				fileType: "change",
 				selector: {
@@ -441,41 +242,35 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 
 		this.stub(Cache, "getChangesFillingCache").returns(Promise.resolve({changes: {changes: [
 			{
-				fileName: "file1",
 				fileType: "change",
 				changeType: "defaultVariant",
 				layer: "CUSTOMER",
 				selector: { persistencyKey: "SmartFilter_Explored" }
 			},
 			{
-				fileName: "file2",
 				fileType: "change",
 				changeType: "renameGroup",
 				layer: "CUSTOMER",
 				selector: { id: "controlId1" }
 			},
 			{
-				fileName: "file3",
 				filetype: "change",
 				changetype: "removeField",
 				layer: "customer",
 				selector: {}
 			},
 			{
-				fileName: "file4",
 				fileType: "variant",
 				changeType: "filterBar",
 				layer: "CUSTOMER",
 				selector: { persistencyKey: "SmartFilter_Explored" }
 			},
 			{
-				fileName: "file6",
 				fileType: "variant",
 				changeType: "filterBar",
 				layer: "CUSTOMER"
 			},
 			{
-				fileName: "file7",
 				fileType: "change",
 				changeType: "codeExt",
 				layer: "CUSTOMER",
@@ -499,65 +294,55 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 
 		this.stub(Cache, "getChangesFillingCache").returns(Promise.resolve({changes: {changes: [
 			{
-				fileName: "file1",
 				fileType: "change",
 				changeType: "defaultVariant",
 				layer: "CUSTOMER",
 				selector: { persistencyKey: "SmartFilter_Explored" }
 			},
 			{
-				fileName: "file2",
 				fileType: "change",
 				changeType: "defaultVariant",
 				layer: "CUSTOMER",
 				selector: {}
 			},
 			{
-				fileName: "file3",
 				fileType: "change",
 				changeType: "renameGroup",
 				layer: "CUSTOMER",
 				selector: { id: "controlId1" }
 			},
 			{
-				fileName: "file4",
 				fileType: "variant",
 				changeType: "filterBar",
 				layer: "CUSTOMER",
 				selector: { persistencyKey: "SmartFilter_Explored" }
 			},
 			{
-				fileName: "file5",
 				fileType: "variant",
 				changeType: "filterBar",
 				layer: "CUSTOMER"
 			},
 			{
-				fileName: "file6",
 				fileType: "variant",
 				changeType: "filterBar",
 				layer: "CUSTOMER"
 			},
 			{
-				fileName: "file7",
 				fileType: "change",
 				changeType: "codeExt",
 				layer: "CUSTOMER",
 				selector: { id: "controlId2" }
 			},
 			{
-
 				fileType: "somethingelse"
 			},
 			{
-				fileName: "file8",
 				fileType: "change",
 				changeType: "appdescr_changes",
 				layer: "CUSTOMER"
 			}
 		]}}));
 
-		var fnWarningLogStub = sandbox.stub(jQuery.sap.log, "warning");
 
 		return this.oChangePersistence.getChangesForComponent({includeVariants : true}).then(function(changes) {
 			assert.strictEqual(changes.length, 5, "both standard UI changes and smart variants were returned");
@@ -571,8 +356,6 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 			assert.ok(changes[3].getChangeType() === "codeExt", "and change type codeExt");
 			assert.ok(changes[4]._oDefinition.fileType === "change", "fifth change has file type change");
 			assert.notOk(changes[4].getSelector() , "and does not have selector");
-			assert.ok(fnWarningLogStub.calledOnce, "then the a log for warning is called once");
-			assert.ok(fnWarningLogStub.calledWith, "A change without fileName is detected and excluded from component: MyComponent", "with correct component name");
 		});
 	});
 
@@ -739,87 +522,6 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 
 		return this.oChangePersistence.getChangesForComponent({ignoreMaxLayerParameter : true}).then(function(oChanges) {
 			assert.strictEqual(oChanges.length, 5, "filtering is ignored, all changes are returned");
-		});
-	});
-
-	QUnit.test("getChangesForVariant does nothing if entry in variant changes map is available", function(assert) {
-		var aStubChanges = [
-			{
-				fileName:"change1",
-				fileType: "change",
-				layer: "USER",
-				selector: { id: "controlId" },
-				dependentSelector: []
-			}
-		];
-		var oStubGetChangesForComponent = this.stub(this.oChangePersistence, "getChangesForComponent");
-		this.oChangePersistence._mVariantsChanges["SmartFilterBar"] = aStubChanges;
-		return this.oChangePersistence.getChangesForVariant("someProperty", "SmartFilterBar", {}).then(function(aChanges) {
-			assert.deepEqual(aChanges, aStubChanges);
-			sinon.assert.notCalled(oStubGetChangesForComponent);
-		});
-	});
-
-	QUnit.test("getChangesForVariant call getChangesForComponent and filter results after that if entry in variant changes map is not available", function(assert) {
-		var oPromise = new Promise(function(resolve, reject){
-			setTimeout(function(){
-				resolve({changes: {changes: [
-							{
-								fileName: "change1",
-								fileType: "change",
-								changeType: "defaultVariant",
-								layer: "CUSTOMER",
-								selector: { persistencyKey: "SmartFilter_Explored" },
-								originalLanguage: "EN"
-							},
-							{
-								fileName: "change2",
-								fileType: "change",
-								changeType: "defaultVariant",
-								layer: "CUSTOMER",
-								selector: {}
-							},
-							{
-								fileName: "change3",
-								fileType: "change",
-								changeType: "renameGroup",
-								layer: "CUSTOMER",
-								selector: { id: "controlId1" }
-							},
-							{
-								fileName: "variant1",
-								fileType: "variant",
-								changeType: "filterBar",
-								layer: "CUSTOMER",
-								selector: { persistencyKey: "SmartFilter_Explored" },
-								originalLanguage: "EN"
-							},
-							{
-								fileName: "variant2",
-								fileType: "variant",
-								changeType: "filterBar",
-								layer: "CUSTOMER"
-							},
-							{
-								fileName: "change4",
-								fileType: "change",
-								changeType: "codeExt",
-								layer: "CUSTOMER",
-								selector: { id: "controlId2" }
-							},
-							{
-								fileType: "change",
-								changeType: "appdescr_changes",
-								layer: "CUSTOMER"
-							}
-						]}});
-			}, 100);
-		});
-		this.stub(Cache, "getChangesFillingCache").returns(oPromise);
-		var oPromise1 = this.oChangePersistence.getChangesForVariant("persistencyKey", "SmartFilter_Explored", {includeVariants: true});
-		var oPromise2 = this.oChangePersistence.getChangesForVariant("persistencyKey", "SmartFilter_Explored", {includeVariants: true});
-		return Promise.all([oPromise1, oPromise2]).then(function(values){
-			assert.deepEqual(values[0], values[1]);
 		});
 	});
 
@@ -1339,152 +1041,6 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 		});
 	});
 
-	QUnit.test("when calling transportAllUIChanges successfully", function(assert) {
-		var oMockTransportInfo = {
-			packageName : "PackageName",
-			transport : "transportId"
-		};
-		var oMockNewChange = {
-			packageName : "$TMP",
-			fileType : "change",
-			id : "changeId2",
-			namespace : "namespace",
-			getDefinition : function(){
-				return {
-					packageName : this.packageName,
-					fileType : this.fileType
-				};
-			},
-			getId : function(){
-				return this.id;
-			},
-			getNamespace : function(){
-				return this.namespace;
-			},
-			setResponse : function(oDefinition){
-				this.packageName = oDefinition.packageName;
-			},
-			getPackage : function(){
-				return this.packageName;
-			}
-		};
-		var aMockLocalChanges = [oMockNewChange];
-
-		sandbox.stub(Utils, "getClient").returns('');
-		var fnOpenTransportSelectionStub = sandbox.stub(this.oChangePersistence._oTransportSelection, "openTransportSelection").returns(Promise.resolve(oMockTransportInfo));
-		var fnCheckTransportInfoStub = sandbox.stub(this.oChangePersistence._oTransportSelection, "checkTransportInfo").returns(true);
-		var fnGetChangesForComponentStub = sandbox.stub(this.oChangePersistence, "getChangesForComponent").returns(Promise.resolve(aMockLocalChanges));
-		var fnPrepareChangesForTransportStub = sandbox.stub(this.oChangePersistence._oTransportSelection, "_prepareChangesForTransport").returns(Promise.resolve());
-
-		return this.oChangePersistence.transportAllUIChanges().then(function(){
-			assert.ok(fnOpenTransportSelectionStub.calledOnce, "then openTransportSelection called once");
-			assert.ok(fnCheckTransportInfoStub.calledOnce, "then checkTransportInfo called once");
-			assert.ok(fnGetChangesForComponentStub.calledOnce, "then getChangesForComponent called once");
-			assert.ok(fnPrepareChangesForTransportStub.calledOnce, "then _prepareChangesForTransport called once");
-			assert.ok(fnPrepareChangesForTransportStub.calledWith(oMockTransportInfo, aMockLocalChanges), "then _prepareChangesForTransport called with the transport info and changes array");
-		});
-	});
-
-	QUnit.test("when calling transportAllUIChanges unsuccessfully", function(assert){
-		sandbox.stub(this.oChangePersistence._oTransportSelection, "openTransportSelection").returns(Promise.reject());
-		sandbox.stub(MessageBox, "show");
-		return this.oChangePersistence.transportAllUIChanges().then(function(sResponse){
-			assert.equal(sResponse, "Error", "then Promise.resolve() with error message is returned");
-		});
-	});
-
-	QUnit.test("when calling transportAllUIChanges successfully, but with cancelled transport selection", function(assert){
-		sandbox.stub(this.oChangePersistence._oTransportSelection, "openTransportSelection").returns(Promise.resolve());
-		return this.oChangePersistence.transportAllUIChanges().then(function(sResponse){
-			assert.equal(sResponse, "Cancel", "then Promise.resolve() with cancel message is returned");
-		});
-	});
-
-	QUnit.test("when calling resetChanges", function (assert) {
-		var done = assert.async();
-
-		// changes for the component
-		var oUserChange = new Change({
-			"fileType": "change",
-			"layer": "USER",
-			"fileName": "a",
-			"namespace": "b",
-			"packageName": "c",
-			"changeType": "labelChange",
-			"creation": "",
-			"reference": "",
-			"selector": {
-				"id": "abc123"
-			},
-			"content": {
-				"something": "createNewVariant"
-			}
-		});
-
-		var oVendorChange1 = new Change({
-			"fileType": "change",
-			"layer": "CUSTOMER",
-			"fileName": "a",
-			"namespace": "b",
-			"packageName": "c",
-			"changeType": "labelChange",
-			"creation": "",
-			"reference": "",
-			"selector": {
-				"id": "abc123"
-			},
-			"content": {
-				"something": "createNewVariant"
-			}
-		});
-
-		var oVendorChange2 = new Change({
-			"fileType": "change",
-			"layer": "CUSTOMER",
-			"fileName": "a",
-			"namespace": "b",
-			"packageName": "c",
-			"changeType": "labelChange",
-			"creation": "",
-			"reference": "",
-			"selector": {
-				"id": "abc123"
-			},
-			"content": {
-				"something": "createNewVariant"
-			}
-		});
-
-		var aChanges = [oVendorChange1, oUserChange, oVendorChange2];
-		sandbox.stub(this.oChangePersistence, "getChangesForComponent").returns(Promise.resolve(aChanges));
-
-		// Settings in registry
-		var oSetting = {
-			isKeyUser: true,
-			isAtoAvailable: true,
-			isProductiveSystem: function() {return false;},
-			hasMergeErrorOccured: function() {return false;},
-			isAtoEnabled: function() {return true;}
-		};
-		sandbox.stub(sap.ui.fl.registry.Settings, "getInstance").returns(Promise.resolve(oSetting));
-
-		// LREP Connector
-		var sExpectedUri = "/sap/bc/lrep/changes/" +
-			"?reference=MyComponent" +
-			"&appVersion=1.2.3" +
-			"&layer=CUSTOMER" +
-			"&generator=Change.createInitialFileContent" +
-			"&changelist=ATO_NOTIFICATION";
-		var oLrepStub = sandbox.stub(this.oChangePersistence._oConnector, "send").returns(Promise.resolve());
-
-		this.oChangePersistence.resetChanges("CUSTOMER", "Change.createInitialFileContent").then(function() {
-			assert.ok(oLrepStub.calledOnce, "the LrepConnector is called once");
-			assert.equal(oLrepStub.args[0][0], sExpectedUri, "and with the correct URI");
-			done();
-		});
-	});
-
-
 	QUnit.module("sap.ui.fl.ChangePersistence addChange", {
 		beforeEach: function () {
 			this._mComponentProperties = {
@@ -1708,12 +1264,9 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 
 		this.oServer.autoRespond = true;
 
-		var oAddChangeSpy = sandbox.spy(Cache, "addChange");
-
 		//Call CUT
-		return this.oChangePersistence.saveDirtyChanges(true).then(function(){
+		return this.oChangePersistence.saveAsDirtyChanges("AppVariantId").then(function(){
 			sinon.assert.calledOnce(this.lrepConnectorMock.create);
-			assert.equal(oAddChangeSpy.callCount, 0, "then addChange was never called for the change related to app variants");
 		}.bind(this));
 	});
 
@@ -1820,7 +1373,7 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 		this.oServer.autoRespond = true;
 
 		//Call CUT
-		return this.oChangePersistence.saveDirtyChanges(true).then(function(){
+		return this.oChangePersistence.saveAsDirtyChanges("AppVariantId").then(function(){
 			assert.ok(oCreateStub.calledOnce, "the create method of the connector is called once");
 			assert.deepEqual(oCreateStub.getCall(0).args[0][0], oChangeContent1, "the first change was processed first");
 			assert.deepEqual(oCreateStub.getCall(0).args[0][1], oChangeContent2, "the second change was processed afterwards");
@@ -1864,67 +1417,6 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 		});
 	});
 
-	QUnit.test("Shall not add a variant related change to the cache", function (assert) {
-		var oChangeContent;
-
-		oChangeContent = {
-			"content" : {
-				"title": "variant 0"
-			},
-			"fileName": "variant0",
-			"fileType": "ctrl_variant",
-			"variantManagementReference": "variantManagementId"
-		};
-		this.oChangePersistence.addChange(oChangeContent, this._oComponentInstance);
-
-		oChangeContent = {
-			"variantReference":"variant0",
-			"fileName":"controlChange0",
-			"fileType":"change",
-			"content":{},
-			"selector":{
-				"id":"selectorId"
-			}
-		};
-		this.oChangePersistence.addChange(oChangeContent, this._oComponentInstance);
-
-		oChangeContent = {
-			"fileType": "ctrl_variant_change",
-			"selector": {
-				"id" : "variant0"
-			}
-		};
-		this.oChangePersistence.addChange(oChangeContent, this._oComponentInstance);
-
-		oChangeContent = {
-			"fileName": "setDefault",
-			"fileType": "ctrl_variant_management_change",
-			"content": {
-				"defaultVariant":"variant0"
-			},
-			"selector": {
-				"id": "variantManagementId"
-			}
-		};
-		this.oChangePersistence.addChange(oChangeContent, this._oComponentInstance);
-
-		oChangeContent = {
-			fileName: "Gizorillus",
-			layer: "VENDOR",
-			fileType: "change",
-			changeType: "addField",
-			selector: { "id": "control1" },
-			content: { },
-			originalLanguage: "DE"
-		};
-		this.oChangePersistence.addChange(oChangeContent, this._oComponentInstance);
-
-		var oAddChangeSpy = sandbox.spy(Cache, "addChange");
-		return this.oChangePersistence.saveDirtyChanges().then(function(){
-			assert.equal(oAddChangeSpy.callCount, 1, "then addChange was only called for the change not related to variants");
-		});
-	});
-
 	QUnit.test("(Save As scenario) after a change creation has been saved for the new app variant, the change shall not be added to the cache", function (assert) {
 		var oChangeContent = {
 			fileName: "Gizorillus",
@@ -1940,7 +1432,7 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 
 		//Call CUT
 		return this.oChangePersistence.getChangesForComponent().then(function() {
-			return this.oChangePersistence.saveDirtyChanges(true);
+			return this.oChangePersistence.saveAsDirtyChanges("AppVariantId");
 		}.bind(this))
 			.then(this.oChangePersistence.getChangesForComponent.bind(this.oChangePersistence))
 			.then(function(aChanges) {
@@ -1971,7 +1463,7 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 		}.bind(this));
 	});
 
-	QUnit.test("(Save As scenario) shall remove the change from the dirty changes, after it has been saved for the new app variant", function (assert) {
+	QUnit.test("(Save As scenario) shall remove the change from the dirty changes, after is has been saved for the new app variant", function (assert) {
 		var oChangeContent = {
 			fileName: "Gizorillus",
 			layer: "VENDOR",
@@ -1999,7 +1491,7 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 		//Call CUT
 		return this.oChangePersistence.getChangesForComponent().then(function() {
 			this.oChangePersistence.addChange(oChangeContent, this._oComponentInstance);
-			return this.oChangePersistence.saveDirtyChanges(true);
+			return this.oChangePersistence.saveAsDirtyChanges("AppVariantId");
 		}.bind(this)).then(function() {
 			var aDirtyChanges = this.oChangePersistence.getDirtyChanges();
 			assert.strictEqual(aDirtyChanges.length, 0);
@@ -2095,119 +1587,6 @@ function (ChangePersistence, FlexControllerFactory, Utils, Change, LrepConnector
 			var aDirtyChanges = this.oChangePersistence.getDirtyChanges();
 			assert.strictEqual(aDirtyChanges.length, 0);
 		}.bind(this));
-	});
-
-	QUnit.test("addChangeForVariant should add a new change object into variants changes mapp with pending action is NEW", function(assert) {
-		var mParameters = {
-			id: "changeId",
-			type: "filterBar",
-			ODataService: "LineItems",
-			texts: {variantName: "myVariantName"},
-			content: {
-				filterBarVariant: {},
-				filterbar: [
-					{
-						group: "CUSTOM_GROUP",
-						name: "MyOwnFilterField",
-						partOfVariant: true,
-						visibleInFilterBar: true
-					}
-				]
-			},
-			isVariant: true,
-			packageName: "",
-			isUserDependend: true
-		};
-		var sId = this.oChangePersistence.addChangeForVariant("persistencyKey", "SmartFilterbar", mParameters);
-		assert.equal(sId, "changeId");
-		assert.deepEqual(Object.keys(this.oChangePersistence._mVariantsChanges["SmartFilterbar"]), ["changeId"]);
-		assert.equal(this.oChangePersistence._mVariantsChanges["SmartFilterbar"]["changeId"].getPendingAction(), "NEW");
-	});
-
-	QUnit.test("saveAllChangesForVariant should use the lrep connector to create the change in the backend if pending action is NEW or delete the change if pending action is DELETE", function(assert) {
-		var mParameters = {
-			id: "changeId",
-			type: "filterBar",
-			ODataService: "LineItems",
-			texts: {variantName: "myVariantName"},
-			content: {
-				filterBarVariant: {},
-				filterbar: [
-					{
-						group: "CUSTOM_GROUP",
-						name: "MyOwnFilterField",
-						partOfVariant: true,
-						visibleInFilterBar: true
-					}
-				]
-			},
-			isVariant: true,
-			packageName: "",
-			isUserDependend: true
-		};
-		var sId = this.oChangePersistence.addChangeForVariant("persistencyKey", "SmartFilterbar", mParameters);
-		assert.ok(sId);
-		var oChange = this.oChangePersistence._mVariantsChanges["SmartFilterbar"]["changeId"];
-		assert.equal(oChange.getPendingAction(), "NEW");
-		var oCreateResponse = {response : oChange._oDefinition};
-		var oDeleteResponse = {};
-		this.lrepConnectorMock.create = sinon.stub().returns(Promise.resolve(oCreateResponse));
-		this.lrepConnectorMock.deleteChange = sinon.stub().returns(Promise.resolve(oDeleteResponse));
-
-		return this.oChangePersistence.saveAllChangesForVariant("SmartFilterbar").then(function (aResults) {
-			assert.ok(jQuery.isArray(aResults));
-			assert.equal(aResults.length, 1);
-			assert.strictEqual(aResults[0], oCreateResponse);
-			oChange.markForDeletion();
-			return this.oChangePersistence.saveAllChangesForVariant("SmartFilterbar").then(function (aResults) {
-				assert.ok(jQuery.isArray(aResults));
-				assert.equal(aResults.length, 1);
-				assert.strictEqual(aResults[0], oDeleteResponse);
-				var bIsVariant = true;
-				sinon.assert.calledWith(this.lrepConnectorMock.deleteChange, {
-					sChangeName: "changeId",
-					sChangelist: "",
-					sLayer: "CUSTOMER",
-					sNamespace: "apps/saveChangeScenario/changes/"
-				}, bIsVariant);
-				assert.deepEqual(this.oChangePersistence._mVariantsChanges["SmartFilterbar"], {});
-			}.bind(this));
-		}.bind(this));
-	});
-
-	QUnit.test("saveAllChangesForVariant shall reject if the backend raises an error", function(assert) {
-		var mParameters = {
-			id: "changeId",
-			type: "filterBar",
-			ODataService: "LineItems",
-			texts: {variantName: "myVariantName"},
-			content: {
-				filterBarVariant: {},
-				filterbar: [
-					{
-						group: "CUSTOM_GROUP",
-						name: "MyOwnFilterField",
-						partOfVariant: true,
-						visibleInFilterBar: true
-					}
-				]
-			},
-			isVariant: true,
-			packageName: "",
-			isUserDependend: true
-		};
-		var sId = this.oChangePersistence.addChangeForVariant("persistencyKey", "SmartFilterbar", mParameters);
-		assert.ok(sId);
-		assert.equal(this.oChangePersistence._mVariantsChanges["SmartFilterbar"]["changeId"].getPendingAction(), "NEW");
-		this.lrepConnectorMock.create = sinon.stub().returns(Promise.resolve(Promise.reject({
-			messages: [
-				{text: "Backend says: Boom"}
-			]
-		})));
-
-		this.oChangePersistence.saveAllChangesForVariant("SmartFilterbar")['catch'](function(err) {
-			assert.equal(err.messages[0].text, "Backend says: Boom");
-		});
 	});
 
 	QUnit.module("Given map dependencies need to be updated", {

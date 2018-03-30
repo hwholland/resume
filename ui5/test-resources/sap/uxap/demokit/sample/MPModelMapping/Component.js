@@ -4,11 +4,7 @@ sap.ui.define(["sap/ui/core/UIComponent"], function (UIComponent) {
 	var Component = UIComponent.extend("sap.uxap.sample.MPModelMapping.Component", {
 
 		metadata: {
-			rootView: {
-				"viewName": "sap.uxap.sample.MPModelMapping.ModelMapping",
-				"type": "XML",
-				"async": true
-			},
+			rootView: "sap.uxap.sample.MPModelMapping.ModelMapping",
 			dependencies: {
 				libs: [
 					"sap.m"

@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.ui.layout.sample.Splitter3.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.ui.layout.sample.Splitter3.Splitter",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.ui.layout.sample.Splitter3.Splitter",
 			dependencies : {
 				libs : [
 					"sap.ui.commons",

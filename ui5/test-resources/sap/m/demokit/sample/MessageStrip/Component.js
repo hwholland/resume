@@ -3,11 +3,7 @@ jQuery.sap.declare("sap.m.sample.MessageStrip.Component");
 sap.ui.core.UIComponent.extend("sap.m.sample.MessageStrip.Component", {
 
 	metadata : {
-		rootView : {
-			"viewName": "sap.m.sample.MessageStrip.V",
-			"type": "XML",
-			"async": true
-		},
+		rootView : "sap.m.sample.MessageStrip.V",
 		dependencies : {
 			libs : [
 				"sap.m",

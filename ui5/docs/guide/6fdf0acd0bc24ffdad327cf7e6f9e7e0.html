@@ -6,8 +6,8 @@
 <meta name="abstract" content="We also want to provide our users a way of contacting Harry Hawk. Therefore we will add a link that sends an e-mail to Harry. To achieve that we will convert our data in the model to match the sap.m.URLHelper.normalizeEmail API. As soon as the user changes the name, the e-mail will also change. We will need a custom formatter function for this."/>
 <meta name="description" content="We also want to provide our users a way of contacting Harry Hawk. Therefore we will add a link that sends an e-mail to Harry. To achieve that we will convert our data in the model to match the sap.m.URLHelper.normalizeEmail API. As soon as the user changes the name, the e-mail will also change. We will need a custom formatter function for this."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=09593869169656166"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=09593869169656166"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=05322713826385883"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=05322713826385883"/>
 <title>Step 9: Formatting Values</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -28,7 +28,7 @@
 			<div class="fig fignone" id="loio6fdf0acd0bc24ffdad327cf7e6f9e7e0__fig_r1j_pst_mr"><div class="figcontainer">
 				
 				<img class="image" id="loio6fdf0acd0bc24ffdad327cf7e6f9e7e0__image_fv1_qnh_5s" src="loio116157506b3f48ac8ec53ee05095c0df_HiRes.png"/>
-			<div class="figcap">Address with e-mail link</div></div></div>
+			<div class="figcap">Figure 1: Address with e-mail link</div></div></div>
 
 		</div></div>
 
@@ -41,10 +41,9 @@
 
 		<div class="section"><div class="section_title">webapp/controller/App.controller.js (New)</div><div type="webapp/controller/App.controller.js (New)">
 			
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.define([
-	"sap/ui/core/mvc/Controller"
-], function (Controller) {
-	"use strict";
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.define(["sap/ui/core/mvc/Controller"],
+	function (Controller) {
+		"use strict";
  
 	return Controller.extend("sap.ui.demo.db.controller.App", {
 		formatMail: function(sFirstName, sLastName) {
@@ -65,7 +64,7 @@
 				UI is in sync with the data model.</p>
 
 			<p class="p">In the <samp class="ph codeph">formatter</samp> function, we use the <span class="keyword apiname">sap.m.URLHelper.normalizeEmail</span> function that expects an e-mail address,
-				a mail subject and a text body. When a user chooses the link, the default email client will open with these parameters.<span class="ph">For more information, see <a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.m.URLHelper/methods/normalizeEmail" alt="https://ui5.sap.com/sdk/#/api/sap.m.URLHelper/methods/normalizeEmail" title="https://ui5.sap.com/sdk/#/api/sap.m.URLHelper/methods/normalizeEmail">API
+				a mail subject and a text body. When a user chooses the link, the default email client will open with these parameters.<span class="ph">For more information, see <a class="xref" href="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.m.URLHelper.html#normalizeEmail" alt="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.m.URLHelper.html#normalizeEmail" title="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.m.URLHelper.html#normalizeEmail">API
 						Reference: <samp class="ph codeph">sap.m.URLHelper.normalizeEmail</samp></a>.</span> The <samp class="ph codeph">mailSubject</samp> resource bundle text will
 				contain a placeholder for the first name of the recipient (see below). Therefore, we provide the name with <samp class="ph codeph">[sFirstName]</samp>.</p>
 
@@ -190,7 +189,7 @@ mailBody=Wie geht es dir?</span></pre></div>
 </div>
 </div>
 <div class="relinfo"><div class="relinfotitle ">Related Information</div>
-<div><a class="link" href="07e4b920f5734fd78fdaa236f26236d8.html" title="Data that is presented on the UI often has to be converted so that is human readable and fits to the locale of the user. On the other hand, data entered by the user has to be parsed and validated to be understood by the data source. For this purpose, you use formatters and data types.">Formatting, Parsing, and Validating Data</a></div>
+<div><a class="link" href="07e4b920f5734fd78fdaa236f26236d8.html" title="OpenUI5 supports the definition of custom formatters.">Custom Formatter Functions</a></div>
 </div>
 </div>
 </div></div>

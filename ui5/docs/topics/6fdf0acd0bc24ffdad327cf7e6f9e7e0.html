@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -155,7 +155,7 @@
                                     				
                                     				<img xmlns="" class="inline  " id="loio6fdf0acd0bc24ffdad327cf7e6f9e7e0__image_fv1_qnh_5s" src="loio116157506b3f48ac8ec53ee05095c0df_HiRes.png">
                                     			
-                                 </div><span class="figcap">Address with e-mail link</span></div>
+                                 </div><span class="figcap"><span class="enumeration fig-enumeration">Figure 61: </span>Address with e-mail link</span></div>
                               
                               		
                            </section>
@@ -180,10 +180,9 @@
                            <section class="section" type="webapp/controller/App.controller.js (New)">
                               <h2 class="section_title" style="font-size: 1.15em;">webapp/controller/App.controller.js (New)</h2>
                               			
-                              			<pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.define([
-	&quot;sap/ui/core/mvc/Controller&quot;
-], function (Controller) {
-	&quot;use strict&quot;;
+                              			<pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.define([&quot;sap/ui/core/mvc/Controller&quot;],
+	function (Controller) {
+		&quot;use strict&quot;;
  
 	return Controller.extend(&quot;sap.ui.demo.db.controller.App&quot;, {
 		formatMail: function(sFirstName, sLastName) {
@@ -210,7 +209,7 @@
                               
                               			
                               <p class="p">In the <samp class="ph codeph">formatter</samp> function, we use the <span class="keyword apiname">sap.m.URLHelper.normalizeEmail</span> function that expects an e-mail address,
-                                 				a mail subject and a text body. When a user chooses the link, the default email client will open with these parameters.<span class="ph">For more information, see <a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.m.URLHelper/methods/normalizeEmail" target="_blank" alt="https://ui5.sap.com/sdk/#/api/sap.m.URLHelper/methods/normalizeEmail" title="https://ui5.sap.com/sdk/#/api/sap.m.URLHelper/methods/normalizeEmail">API
+                                 				a mail subject and a text body. When a user chooses the link, the default email client will open with these parameters.<span class="ph">For more information, see <a class="xref" href="../../#/api/sap.m.URLHelper/methods/normalizeEmail" target="_top" alt="#/api/sap.m.URLHelper/methods/normalizeEmail" title="#/api/sap.m.URLHelper/methods/normalizeEmail">API
                                        						Reference: <samp class="ph codeph">sap.m.URLHelper.normalizeEmail</samp></a>.</span> The <samp class="ph codeph">mailSubject</samp> resource bundle text will
                                  				contain a placeholder for the first name of the recipient (see below). Therefore, we provide the name with <samp class="ph codeph">[sFirstName]</samp>.
                               </p>
@@ -387,7 +386,7 @@ mailBody=Wie geht es dir?</span></pre>
                         <div class="relinfo">
                            <div class="relinfotitle ">Related Information</div>
                            
-                           <div><a class="link" href="../../#/topic/07e4b920f5734fd78fdaa236f26236d8.html" title="Data that is presented on the UI often has to be converted so that is human readable and fits to the locale of the user. On the other hand, data entered by the user has to be parsed and validated to be understood by the data source. For this purpose, you use formatters and data types." target="_top">Formatting, Parsing, and Validating Data</a></div>
+                           <div><a class="link" href="../../#/topic/07e4b920f5734fd78fdaa236f26236d8.html" title="OpenUI5 supports the definition of custom formatters." target="_top">Custom Formatter Functions</a></div>
                            
                         </div>
                         

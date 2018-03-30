@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -122,27 +122,25 @@
                         </p>
                         
                         		
-                        <p class="p">The following code snippet gives an example how a change of <samp class="ph codeph">Input</samp>
-                           			results in an alert with its new value when the focus is lost:
+                        <p class="p">The following code snippet gives an example how a change of <samp class="ph codeph">TextField</samp> results
+                           			in an alert with its new value when the focus is lost:
                         </p>
                         
-                        		<pre class="pre codeblock prettyprint lang-html">&lt;script&gt;
+                        		<pre class="pre codeblock prettyprint lang-html">
+&lt;script&gt;
   function handleChange (oEvent) {
     alert (oEvent.getSource().getValue());
   }
 &lt;/script&gt;
 
-&lt;div data-sap-ui-type=&quot;sap.m.Input&quot; data-value=&quot;Change me!&quot; data-change=&quot;handleChange&quot;&gt;&lt;/div&gt;</pre>
-                        
-                        		<p class="p">Currently, <span class="ph"><span class="ph pname">OpenUI5</span></span> only
-                           			supports to specify the name of a callback function. You can define callback functions
-                           			within any class, see the following code example: 
+&lt;div data-sap-ui-type=&quot;sap.ui.commons.TextField&quot; data-value=&quot;Change me!&quot; data-change=&quot;handleChange&quot;&gt;&lt;/div&gt;</pre>
+                        <p class="p">Currently, <span class="ph"><span class="ph pname">OpenUI5</span></span> only supports to specify the name of a callback function. You can define
+                           			callback functions within any class, see the following code example: 
                         </p>
                         
                         		<pre class="pre codeblock prettyprint lang-html">
-&lt;div data-sap-ui-type=&quot;sap.m.Input&quot; data-value=&quot;Change me!&quot; data-change= &quot;my.company.MyClass.handleChange&quot;&gt;&lt;/div&gt;</pre>
-                        
-                        	</div>
+&lt;div data-sap-ui-type=&quot;sap.ui.commons.TextField&quot; data-value=&quot;Change me!&quot; data-change= &quot;my.company.MyClass.handleChange&quot;&gt;&lt;/div&gt;</pre>
+                        </div>
                      
                   </div>
                   

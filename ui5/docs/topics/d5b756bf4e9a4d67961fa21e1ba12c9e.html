@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -125,8 +125,9 @@
                            code:
                         </p>
                         
-                        		<pre class="pre codeblock prettyprint lang-js">sap.m.Button.extend(&quot;HoverButton&quot;, { // call the new Control type &quot;HoverButton&quot; 
-                                                // and let it inherit from sap.m.Button
+                        		<pre class="pre codeblock prettyprint lang-js">
+sap.ui.commons.Button.extend(&quot;HoverButton&quot;, { // call the new Control type &quot;HoverButton&quot; 
+                                                // and let it inherit from sap.ui.commons.Button
       metadata: {
           events: {
               &quot;hover&quot; : {}  // this Button has also a &quot;hover&quot; event, in addition to &quot;press&quot; of the normal Button
@@ -139,7 +140,7 @@
       },
 
       renderer: {} // add nothing, just inherit the ButtonRenderer as is; 
-                   // In this case (since the renderer is not changed) you could also specify this explicitly with:  renderer:&quot;sap.m.ButtonRenderer&quot;
+                   // In this case (since the renderer is not changed) you could also specify this explicitly with:  renderer:&quot;sap.ui.commons.ButtonRenderer&quot;
                    // (means you reuse the ButtonRenderer instead of creating a new view
   });</pre>
                         

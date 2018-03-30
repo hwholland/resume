@@ -6,8 +6,8 @@
 <meta name="abstract" content="You can develop mobile apps as hybrid app consisting of a native app wrapper, for example PhoneGap, and an HTML viewer to display the content on the user interface."/>
 <meta name="description" content="You can develop mobile apps as hybrid app consisting of a native app wrapper, for example PhoneGap, and an HTML viewer to display the content on the user interface."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=48577826094741683"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=48577826094741683"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=45259366481262975"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=45259366481262975"/>
 <title>Development for Hybrid Web Containers</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -69,7 +69,7 @@
 
 		<p class="p">Also, the mobile/hybrid package excludes certain types of files which are typically not needed.
 			Your mileage may vary, so you might need to add the respective files for the
-			requirements of your specific app. The <samp class="ph codeph">library-preload.js</samp> files which
+			requirements of your specific app. The <samp class="ph codeph">library-preload.json</samp> files which
 			contain all controls from a library to reduce the number of HTTP requests are not
 			required in hybrid apps because there is no HTTP latency. <span class="ph pname">SAPUI5</span> will by default try to
 			access them, so you might see a failed attempt to load these files in the log file or
@@ -78,7 +78,8 @@
 				<span class="ph pname">SAPUI5</span> bootstrap script
 			tag:</p>
 
-		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">data-sap-ui-preload=""</pre></div>
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">data-sap-ui-preload=""
+</pre></div>
 
 		<div class="section"><div class="section_title">Optimization of the Package Size</div><div type="Optimization of the Package Size">
 			
@@ -93,8 +94,7 @@
 				</li>
 
 				<li class="li">
-					<p class="p">In each of the <samp class="ph codeph">/resources/sap/* ... */themes</samp> folders, you can delete all
-						theme folders except the one for the theme you are using.</p>
+					<p class="p">In each of the <samp class="ph codeph">/resources/sap/* ... */themes</samp> folders, you can delete all theme folders except the one for the them you are using.</p>
 
 				</li>
 
@@ -122,10 +122,11 @@
 
 			<p class="p">Example:</p>
 
-			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;script&gt;
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">
+&lt;script&gt;
 &lt;!-- put the following code in the beginning of the application code --&gt;
 function appReady(){
-    sap.ui.getCore().setModel(new sap.ui.model.odata.v2.ODataModel(&lt;ODATA_URL&gt;));
+    sap.ui.getCore().setModel(new sap.ui.model.odata.ODataModel(&lt;ODATA_URL&gt;, false));
 }
 &lt;!-- bind to the deviceready event --&gt;
 document.addEventListener("deviceready", appReady, false);

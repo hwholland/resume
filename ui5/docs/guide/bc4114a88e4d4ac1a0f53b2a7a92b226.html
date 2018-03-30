@@ -6,8 +6,8 @@
 <meta name="abstract" content="It's now time to improve the content of the Info tab. We want to see the Posted At date in a formatted way. Based on the age of the post, we either display the time, a textural representation of the day, or the date only."/>
 <meta name="description" content="It's now time to improve the content of the Info tab. We want to see the Posted At date in a formatted way. Based on the age of the post, we either display the time, a textural representation of the day, or the date only."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=07601689803154099"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=07601689803154099"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7462206114650565"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7462206114650565"/>
 <title>Step 15: Writing a Short Date Formatter Using TDD</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -28,11 +28,11 @@
 			<div class="fig fignone" id="loiobc4114a88e4d4ac1a0f53b2a7a92b226__fig_r1j_pst_mr"><div class="figcontainer">
 				
 				<img class="image" id="loiobc4114a88e4d4ac1a0f53b2a7a92b226__image_i2b_kmd_jt" src="loio8ab2798015ec431ab2125632cc37bcc3_HiRes.png"/>
-			<div class="figcap">Unit tests of the formatter</div></div></div>
+			<div class="figcap">Figure 1: Unit tests of the formatter</div></div></div>
 
 			<div class="p">Depending on the current date, we distinguish four different formatting categories,
 				as shown in the table below:
-<div class="table-wrapper tablenoborder"><table summary="" id="loiobc4114a88e4d4ac1a0f53b2a7a92b226__table_hdp_fdd_jt" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Formatting Categories</span></caption>
+<div class="table-wrapper tablenoborder"><table summary="" id="loiobc4114a88e4d4ac1a0f53b2a7a92b226__table_hdp_fdd_jt" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 1: Formatting Categories</span></caption>
 <colgroup><col width="33.333333333333336%"/><col width="33.333333333333336%"/><col width="33.333333333333336%"/></colgroup>
 
 						
@@ -40,17 +40,17 @@
 						
 						<thead class="thead" align="left">
 							<tr class="row">
-								<th class="entry" valign="top" width="33.33333333333333%" id="d10211339e54">
+								<th class="entry" valign="top" width="33.33333333333333%" id="d10387437e54">
 									<p class="p">Category</p>
 
 								</th>
 
-								<th class="entry" valign="top" width="33.33333333333333%" id="d10211339e60">
+								<th class="entry" valign="top" width="33.33333333333333%" id="d10387437e60">
 									<p class="p">Sample Input</p>
 
 								</th>
 
-								<th class="entry" valign="top" width="33.33333333333333%" id="d10211339e66">
+								<th class="entry" valign="top" width="33.33333333333333%" id="d10387437e66">
 									<p class="p">Expected Output (for <samp class="ph codeph">en-US</samp>)</p>
 
 								</th>
@@ -61,17 +61,17 @@
 
 						<tbody class="tbody">
 							<tr class="row">
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e54 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e54 ">
 									<p class="p">Today</p>
 
 								</td>
 
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e60 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e60 ">
 									<p class="p"><kbd class="ph userinput">2013/02/13 12:05:20</kbd></p>
 
 								</td>
 
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e66 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e66 ">
 									<p class="p"><samp class="ph systemoutput">12:05 PM</samp></p>
 
 								</td>
@@ -79,17 +79,17 @@
 							</tr>
 
 							<tr class="row">
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e54 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e54 ">
 									<p class="p">Yesterday</p>
 
 								</td>
 
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e60 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e60 ">
 									<p class="p"><kbd class="ph userinput">2013/02/12 12:05:20</kbd></p>
 
 								</td>
 
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e66 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e66 ">
 									<p class="p"><samp class="ph systemoutput">Yesterday</samp></p>
 
 								</td>
@@ -97,17 +97,17 @@
 							</tr>
 
 							<tr class="row">
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e54 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e54 ">
 									<p class="p">Last 7 days</p>
 
 								</td>
 
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e60 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e60 ">
 									<p class="p"><kbd class="ph userinput">2013/02/08 12:05:20</kbd></p>
 
 								</td>
 
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e66 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e66 ">
 									<p class="p"><samp class="ph systemoutput">Friday</samp></p>
 
 								</td>
@@ -115,17 +115,17 @@
 							</tr>
 
 							<tr class="row">
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e54 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e54 ">
 									<p class="p">Others</p>
 
 								</td>
 
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e60 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e60 ">
 									<p class="p"><kbd class="ph userinput">2011/02/05 12:05:20</kbd></p>
 
 								</td>
 
-								<td class="entry" valign="top" width="33.33333333333333%" headers="d10211339e66 ">
+								<td class="entry" valign="top" width="33.33333333333333%" headers="d10387437e66 ">
 									<p class="p"><samp class="ph systemoutput">Dec 5, 2011</samp></p>
 
 								</td>

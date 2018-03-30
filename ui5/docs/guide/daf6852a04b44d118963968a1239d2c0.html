@@ -6,8 +6,8 @@
 <meta name="abstract" content="Expression binding is an enhancement of the OpenUI5 binding syntax, which allows for providing expressions instead of custom formatter functions."/>
 <meta name="description" content="Expression binding is an enhancement of the OpenUI5 binding syntax, which allows for providing expressions instead of custom formatter functions."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=40155343924002884"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=40155343924002884"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7516376507809668"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7516376507809668"/>
 <title>Expression Binding</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -73,7 +73,7 @@
 				'any'}</samp>. In rare cases, you might also want to specify a different
 			“targetType”, for example “string”, “boolean”, “int” or “float”. For more information
 			how these values relate to OData types, <span class="ph">see the <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.type.html" alt="../../docs/api/symbols/sap.ui.model.odata.type.html" title="../../docs/api/symbols/sap.ui.model.odata.type.html">sap.ui.model.odata.type</a></span> API documentation in the Demo Kit.
-			For more information about <samp class="ph codeph">targetType</samp>, <span class="ph">see the <a class="xref" href="../../docs/api/symbols/sap.ui.base.ManagedObject.html#bindProperty" alt="../../docs/api/symbols/sap.ui.base.ManagedObject.html#bindProperty" title="../../docs/api/symbols/sap.ui.base.ManagedObject.html#bindProperty">sap.ui.base.ManagedObject#bindProperty</a></span> API
+			For more information about <samp class="ph codeph">targetType</samp>, <span class="ph">see the <a class="xref" href="../../docs/api/symbols/sap.ui.base.ManagedObject.html#bindProperty" alt="../../docs/api/symbols/sap.ui.base.ManagedObject.html#bindProperty" title="../../docs/api/symbols/sap.ui.base.ManagedObject.html#bindProperty">sap.ui-base.ManagedObject#bindProperty</a></span> API
 			documentation in the Demo Kit.</p>
 
 		<div class="note note"><span class="notetitle">Note</span> 
@@ -91,6 +91,9 @@
 			binding syntax: <samp class="ph codeph">${path:'...'}</samp>, for example <samp class="ph codeph">"{:= ${path:'target&gt;extensions/[${name} === \'semantics\']/value'} === 'email'}"</samp>. You can use this also to avoid variable replacement by build
 			tools like Maven for special names like <span class="q">“Description”</span> or <span class="q">“Name”</span>.</p>
 
+		<div class="note note"><span class="notetitle">Note</span> If you need to use the character <samp class="ph codeph">{</samp>, for example, for an object name, you
+			have to escape it with <samp class="ph codeph">//</samp>.</div>
+
 		
 <div class="table-wrapper tablenoborder"><table summary="" id="loiodaf6852a04b44d118963968a1239d2c0__table_q1l_f5s_cr" class="table" frame="border" border="1" rules="all">
 <colgroup><col width="50%"/><col width="50%"/></colgroup>
@@ -99,12 +102,12 @@
 				
 				<thead class="thead" align="left">
 					<tr class="row">
-						<th class="entry" valign="top" width="50%" id="d11403410e188">
+						<th class="entry" valign="top" width="50%" id="d11611660e197">
 							<p class="p">Syntax Element</p>
 
 						</th>
 
-						<th class="entry" valign="top" width="50%" id="d11403410e194">
+						<th class="entry" valign="top" width="50%" id="d11611660e203">
 							<p class="p">Symbol</p>
 
 						</th>
@@ -115,12 +118,12 @@
 
 				<tbody class="tbody">
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Literal</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p">number, for example <samp class="ph codeph">42</samp>, <samp class="ph codeph">6.022e+23</samp> or
 									<samp class="ph codeph">-273.15</samp></p>
 
@@ -139,12 +142,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Grouping</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p">(...), for example <samp class="ph codeph">3 * (4 + 10)</samp></p>
 
 						</td>
@@ -152,12 +155,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Unary operator</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p"><samp class="ph codeph">!</samp></p>
 
 							<p class="p"><samp class="ph codeph">+</samp></p>
@@ -171,12 +174,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Multiplicative operator</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p">
 								<samp class="ph codeph">*</samp></p>
 
@@ -189,12 +192,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Additive operator</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p"><samp class="ph codeph">+</samp></p>
 
 							<p class="p"><samp class="ph codeph">-</samp></p>
@@ -204,12 +207,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Relational operator</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p"><samp class="ph codeph">&lt;</samp></p>
 
 							<p class="p"><samp class="ph codeph">&gt;</samp></p>
@@ -223,12 +226,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Strict equality operator</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p"><samp class="ph codeph">===</samp></p>
 
 							<p class="p"><samp class="ph codeph">!==</samp></p>
@@ -238,12 +241,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Binary logical operator </p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p"><samp class="ph codeph">&amp;&amp;</samp></p>
 
 							<p class="p"><samp class="ph codeph">||</samp></p>
@@ -253,12 +256,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Conditional operator</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p"><samp class="ph codeph">?</samp></p>
 
 						</td>
@@ -266,12 +269,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Member access operator with the <samp class="ph codeph">.</samp> operator</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<div class="p">
 								<div class="note note"><span class="notetitle">Note</span> 
 									<p class="p">With these, you can use members and member methods on standard types such as string,
@@ -289,12 +292,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Function call</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p"><samp class="ph codeph">&lt;function name&gt;(...)</samp></p>
 
 							<p class="p">Example:</p>
@@ -314,12 +317,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Array literals</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p"><samp class="ph codeph">[...]</samp>, for example <samp class="ph codeph">[2,3,5,7,11]</samp></p>
 
 						</td>
@@ -327,12 +330,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Property/array access</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p"><samp class="ph codeph">o[...]</samp>, for example <samp class="ph codeph">'foo/bar'.split('/')[1]</samp></p>
 
 						</td>
@@ -340,12 +343,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p"><samp class="ph codeph">in</samp> operator</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p"><samp class="ph codeph">'PI' in Math</samp> (true) or <samp class="ph codeph">0 in []</samp>
 								(false)</p>
 
@@ -354,12 +357,12 @@
 					</tr>
 
 					<tr class="row">
-						<td class="entry" valign="top" width="50%" headers="d11403410e188 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e197 ">
 							<p class="p">Global symbol</p>
 
 						</td>
 
-						<td class="entry" valign="top" width="50%" headers="d11403410e194 ">
+						<td class="entry" valign="top" width="50%" headers="d11611660e203 ">
 							<p class="p"><samp class="ph codeph">Array</samp>, <samp class="ph codeph">Boolean</samp>, <samp class="ph codeph">Date</samp>,
 									<samp class="ph codeph">encodeURIComponent</samp>, <samp class="ph codeph">Infinity</samp>,
 									<samp class="ph codeph">isFinite</samp>, <samp class="ph codeph">isNaN</samp>,
@@ -515,8 +518,8 @@ enabled="{= ${/items}.length&gt;0 }"</pre></div>
 
 	<div class="related-links"> 
 <div class="relinfo"><div class="relinfotitle ">Related Information</div>
-<div><a class="link" href="a2fe8e763014477e87990ff50657a0d0.html" title="Calculated fields enable the binding of multiple properties in different models to a single property of a control.">Composite Binding</a></div>
-<div><a class="link" href="25ab54b0113c4914999c43d07d3b71fe.html" title="Examples how complex syntax can be used for calculated fields in XML, HTML, and JS views.">Examples for Data Binding in Different View Types</a></div>
+<div><a class="link" href="0c803921b1bf4b3a97a038fbd51ef542.html" title="Complex (or &#34;extended&#34;) syntax can be used for calculated fields in declarative views, such as HTML and XML views.">Complex Syntax for Calculated Fields</a></div>
+<div><a class="link" href="25ab54b0113c4914999c43d07d3b71fe.html" title="Example, how complex syntax can be used for calculated fields in XML and HTML views and in JS views.">Using Complex Syntax in XML and HTML Views</a></div>
 <div><a class="link" href="5ee619fc1370463ea674ee04b65ed83b.html" title="The XML templating concept enables you to use an XML view as a template. This template is transformed by an XML preprocessor on the source level, the XML DOM, at runtime just before an OpenUI5 control tree is created from the XML source.">XML Templating</a></div>
 <div><a class="link" href="91f08de06f4d1014b6dd926db0e91070.html" title="OpenUI5 provides several options for the configuration of the OpenUI5 runtime, such as runtime default values and script tag attributes.">Configuration of the OpenUI5 Runtime</a></div>
 </div>

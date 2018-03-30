@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -29,7 +29,7 @@ sap.ui.define([
 	 * @extends sap.ui.base.EventProvider
 	 *
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 *
 	 * @public
 	 * @alias sap.ui.core.message.MessageManager
@@ -329,7 +329,6 @@ sap.ui.define([
 
 	/**
 	 * Deregister MessageProcessor
-	 *
 	 * @param {sap.ui.core.message.MessageProcessor} oProcessor The MessageProcessor
 	 * @public
 	 */
@@ -340,15 +339,11 @@ sap.ui.define([
 	};
 
 	/**
-	 * When using the databinding type system, the validation/parsing of a new property value could fail.
-	 * In this case, a validationError/parseError event is fired. These events bubble up to the core.
-	 * For registered ManagedObjects, the MessageManager attaches to these events and creates a
-	 * <code>sap.ui.core.message.Message</code> (bHandleValidation=true) for each of these errors
-	 * and cancels the event bubbling.
+	 * Register ManagedObject: Validation and Parse errors are handled by the MessageManager for this object
 	 *
 	 * @param {sap.ui.base.ManagedObject} oObject The sap.ui.base.ManagedObject
-	 * @param {boolean} bHandleValidation Handle validationError/parseError events for this object. If set to true,
-	 * the MessageManager creates a Message for each validation/parse error. The event bubbling is canceled in every case.
+	 * @param {boolean} bHandleValidation Handle validation for this object. If set to true validation/parse events creates Messages and cancel event.
+	 * 					If set to false only the event will be canceled, but no messages will be created
 	 * @public
 	 */
 	MessageManager.prototype.registerObject = function(oObject, bHandleValidation) {
@@ -373,6 +368,7 @@ sap.ui.define([
 			jQuery.sap.log.error(this + " : " + oObject.toString() + " is not an instance of sap.ui.base.ManagedObject");
 			return;
 		}
+		//oObject.getMetadata().getStereoType() + getId()
 		oObject.detachValidationSuccess(this._handleSuccess);
 		oObject.detachValidationError(this._handleError);
 		oObject.detachParseError(this._handleError);

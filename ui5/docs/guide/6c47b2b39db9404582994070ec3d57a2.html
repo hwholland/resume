@@ -6,8 +6,8 @@
 <meta name="abstract" content="The OData V2 Model enables binding of controls to data from OData services."/>
 <meta name="description" content="The OData V2 Model enables binding of controls to data from OData services."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6139049858531248"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6139049858531248"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7487675841529322"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7487675841529322"/>
 <title>OData V2 Model</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -19,7 +19,7 @@
 	<h1 class="title topictitle1">OData V2 Model</h1>
 
 	
-	<div class="body conbody"><p class="shortdesc">The OData V2 Model enables binding of controls to data from OData
+	<div class="body"><p class="shortdesc">The OData V2 Model enables binding of controls to data from OData
 		services.</p>
 
 		<p class="p">The OData model is a server-side model, meaning that the data set is only available on
@@ -28,9 +28,10 @@
 			server and shows the returned data.</p>
 
 		<div class="note note"><span class="notetitle">Note</span> 
-			<p class="p">Requests to the back end are triggered by list bindings (<samp class="ph codeph">ODataListBinding</samp>),
-				context bindings (<samp class="ph codeph">ODataContextBinding</samp>), and CRUD functions provided
-				by the <samp class="ph codeph">ODataModel</samp>. Property bindings
+			<p class="p">Requests to the back end are triggered by list bindings
+					(<samp class="ph codeph">ODataListBinding</samp>), element bindings
+					(<samp class="ph codeph">ODataContextBinding</samp>), and CRUD functions provided by the
+					<samp class="ph codeph">ODataModel</samp>. Property bindings
 					(<samp class="ph codeph">ODataPropertyBindings</samp>) do not trigger requests.</p>
 
 		</div>
@@ -47,85 +48,85 @@
 		<p class="p">The following table shows the supported features for both OData models:</p>
 
 		<div class="table-wrapper"><table summary="" id="loio6c47b2b39db9404582994070ec3d57a2__simpletable_hmd_jlr_qr" border="1" class="simpletable"><tr class="sthead">
-				<th valign="bottom" align="left" id="d4921253e70" class="stentry" width="33.333333333333336%">
+				<th valign="bottom" align="left" id="d4992824e70" class="stentry" width="33.333333333333336%">
 					<p class="p">Feature</p>
 
 				</th>
 
-				<th valign="bottom" align="left" id="d4921253e76" class="stentry" width="33.333333333333336%">
+				<th valign="bottom" align="left" id="d4992824e76" class="stentry" width="33.333333333333336%">
 					<p class="p"><samp class="ph codeph">sap.ui.model.odata.v2.ODataModel</samp></p>
 
 				</th>
 
-				<th valign="bottom" align="left" id="d4921253e83" class="stentry" width="33.333333333333336%">
+				<th valign="bottom" align="left" id="d4992824e83" class="stentry" width="33.333333333333336%">
 					<p class="p"><samp class="ph codeph">sap.ui.model.odata.ODataModel</samp></p>
 
 				</th>
 
 			</tr>
 <tr class="strow">
-				<td valign="top" headers="d4921253e70" class="stentry">
+				<td valign="top" headers="d4992824e70" class="stentry">
 					<p class="p">OData version support</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e76" class="stentry">
+				<td valign="top" headers="d4992824e76" class="stentry">
 					<p class="p">2.0</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e83" class="stentry">
+				<td valign="top" headers="d4992824e83" class="stentry">
 					<p class="p">2.0</p>
 
 				</td>
 
 			</tr>
 <tr class="strow">
-				<td valign="top" headers="d4921253e70" class="stentry">
+				<td valign="top" headers="d4992824e70" class="stentry">
 					<p class="p">JSON format</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e76" class="stentry">
+				<td valign="top" headers="d4992824e76" class="stentry">
 					<p class="p">Yes (default)</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e83" class="stentry">
+				<td valign="top" headers="d4992824e83" class="stentry">
 					<p class="p">Yes</p>
 
 				</td>
 
 			</tr>
 <tr class="strow">
-				<td valign="top" headers="d4921253e70" class="stentry">
+				<td valign="top" headers="d4992824e70" class="stentry">
 					<p class="p">XML format</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e76" class="stentry">
+				<td valign="top" headers="d4992824e76" class="stentry">
 					<p class="p">Yes</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e83" class="stentry">
+				<td valign="top" headers="d4992824e83" class="stentry">
 					<p class="p">Yes (default)</p>
 
 				</td>
 
 			</tr>
 <tr class="strow">
-				<td valign="top" headers="d4921253e70" class="stentry">
+				<td valign="top" headers="d4992824e70" class="stentry">
 					<p class="p">Support of two-way binding mode</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e76" class="stentry">
+				<td valign="top" headers="d4992824e76" class="stentry">
 					<p class="p">Yes; for property changes only, not yet implemented for aggregations</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e83" class="stentry">
+				<td valign="top" headers="d4992824e83" class="stentry">
 					<p class="p">Experimental; only properties of one entity can be changed at the same
 						time</p>
 
@@ -133,29 +134,29 @@
 
 			</tr>
 <tr class="strow">
-				<td valign="top" headers="d4921253e70" class="stentry">
+				<td valign="top" headers="d4992824e70" class="stentry">
 					<p class="p">Default binding mode</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e76" class="stentry">
+				<td valign="top" headers="d4992824e76" class="stentry">
 					<p class="p">One-way binding</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e83" class="stentry">
+				<td valign="top" headers="d4992824e83" class="stentry">
 					<p class="p">One-way binding</p>
 
 				</td>
 
 			</tr>
 <tr class="strow">
-				<td valign="top" headers="d4921253e70" class="stentry">
+				<td valign="top" headers="d4992824e70" class="stentry">
 					<p class="p">Client-side sorting and filtering</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e76" class="stentry">
+				<td valign="top" headers="d4992824e76" class="stentry">
 					<p class="p">Yes</p>
 
 					<p class="p"><span class="ph">For
@@ -165,75 +166,75 @@
 
 				</td>
 
-				<td valign="top" headers="d4921253e83" class="stentry">
+				<td valign="top" headers="d4992824e83" class="stentry">
 					<p class="p">No</p>
 
 				</td>
 
 			</tr>
 <tr class="strow">
-				<td valign="top" headers="d4921253e70" class="stentry">
+				<td valign="top" headers="d4992824e70" class="stentry">
 					<p class="p">$batch</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e76" class="stentry">
+				<td valign="top" headers="d4992824e76" class="stentry">
 					<p class="p">Yes; all requests can be batched</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e83" class="stentry">
+				<td valign="top" headers="d4992824e83" class="stentry">
 					<p class="p">Only manual batch requests are possible</p>
 
 				</td>
 
 			</tr>
 <tr class="strow">
-				<td valign="top" headers="d4921253e70" class="stentry">
+				<td valign="top" headers="d4992824e70" class="stentry">
 					<p class="p">Data cache in model</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e76" class="stentry">
+				<td valign="top" headers="d4992824e76" class="stentry">
 					<p class="p">All data is cached in the model</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e83" class="stentry">
+				<td valign="top" headers="d4992824e83" class="stentry">
 					<p class="p">Manually requested data is <span class="ph emphasis emphasis">not</span> cached</p>
 
 				</td>
 
 			</tr>
 <tr class="strow">
-				<td valign="top" headers="d4921253e70" class="stentry">
+				<td valign="top" headers="d4992824e70" class="stentry">
 					<p class="p">Automatic refresh</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e76" class="stentry">
+				<td valign="top" headers="d4992824e76" class="stentry">
 					<p class="p">Yes (default)</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e83" class="stentry">
+				<td valign="top" headers="d4992824e83" class="stentry">
 					<p class="p">Yes</p>
 
 				</td>
 
 			</tr>
 <tr class="strow">
-				<td valign="top" headers="d4921253e70" class="stentry">
+				<td valign="top" headers="d4992824e70" class="stentry">
 					<p class="p">Message handling</p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e76" class="stentry">
+				<td valign="top" headers="d4992824e76" class="stentry">
 					<p class="p">Yes, see <a class="xref" href="62b1481d3e084cb49dd30956d183c6a0.html" title="OpenUI5 provides a central management of UI and server messages.">Managing UI and Server Messages</a></p>
 
 				</td>
 
-				<td valign="top" headers="d4921253e83" class="stentry">
+				<td valign="top" headers="d4992824e83" class="stentry">
 					<p class="p">No</p>
 
 				</td>
@@ -252,11 +253,6 @@
 
 	</div>
 
-	<div class="related-links"> 
-<div class="relinfo"><div class="relinfotitle ">Related Information</div>
-<div><a class="link" href="../../docs/api/symbols/sap.ui.model.odata.v2.ODataModel.html" alt="../../docs/api/symbols/sap.ui.model.odata.v2.ODataModel.html" title="../../docs/api/symbols/sap.ui.model.odata.v2.ODataModel.html">API Reference: <samp class="ph codeph">sap.ui.model.odata.v2.ODataModel</samp></a></div>
-</div>
-</div>
 <div class="topic concept nested1" lang="en-US" id="loio218afa0780da42fd982b72e992fb57d2">
 	<h2 class="title topictitle2">Creating the Model Instance</h2>
 
@@ -313,12 +309,12 @@ var oMetadata = oModel.getServiceMetadata();</pre></div>
 	<div class="body conbody"><p class="shortdesc">For OData services, you can use URL parameters for configuration. <span class="ph"><span class="ph pname">OpenUI5</span></span> sets most URL parameters
 		automatically, according to the respective binding.</p>
 
-		<p class="p">For authentication tokens or general configuration options, for example, you can add additional
-			arguments to the request URL. Some of the parameters must not be included in every
-			request, but should only be added to specific list or context bindings, such as
-				<samp class="ph codeph">$expand</samp> or <samp class="ph codeph">$select</samp>. For this, the binding methods
-			provide the option to pass a map of parameters, which are then included in all requests
-			for this specific binding. The OData model currently only supports
+		<p class="p">For authentication tokens or general configuration options, for example, you can add
+			additional arguments to the request URL. Some of the parameters must not be included in
+			every request, but should only be added to specific aggregation or element bindings,
+			such as <samp class="ph codeph">$expand</samp> or <samp class="ph codeph">$select</samp>. For this, the binding
+			methods provide the option to pass a map of parameters, which are then included in all
+			requests for this specific binding. The OData model currently only supports
 				<samp class="ph codeph">$expand</samp> and <samp class="ph codeph">$select</samp>.</p>
 
 		<p class="p">There are different ways to add URL parameters to the requests:</p>
@@ -671,10 +667,10 @@ oModel.update("/Products(999)", oData, {success: mySuccessHandler, error: myErro
 	
 	<div class="body conbody"><p class="shortdesc"/>
 
-		<p class="p">The <samp class="ph codeph">refresh</samp> function refreshes all data within an OData model. Each binding
-			reloads its data from the server. For list or context bindings, a new request to the
-			back end is triggered. If the XSRF token is no longer valid, it has to be fetched again
-			with a <samp class="ph codeph">read</samp> request to the service document. Data that has been
+		<p class="p">The <samp class="ph codeph">refresh</samp> function refreshes all data within an OData model. Each
+			binding reloads its data from the server. For list or element bindings, a new request to
+			the back end is triggered. If the XSRF token is no longer valid, it has to be fetched
+			again with a <samp class="ph codeph">read</samp> request to the service document. Data that has been
 			imported via manual CRUD requests is <span class="ph emphasis emphasis">not</span> reloaded
 			automatically.</p>
 
@@ -835,6 +831,8 @@ oModel.resetChanges(["/myEntity(0)"]);</pre></div>
 
 		<p class="p">The OData protocol specifies different URL parameters.</p>
 
+		<p class="p"/>
+
 		<div class="section" id="loiobf1fc3b4c9ab4bbc845a3f0e0940c004__section_egd_htz_xbb">
 			<p class="p">You can use these parameters in bindings in addition to the parameters described
 				above:</p>
@@ -885,8 +883,9 @@ oTable.bindRows({
 				<li class="li">
 					<p class="p">Custom query options</p>
 
-					<p class="p">You can use custom query options as input parameters for service operations. When creating
-						the list binding, specify these custom parameter as follows:</p>
+					<p class="p">You can use custom query options as input parameters for service operations.
+						When creating the aggregation binding, specify these custom parameter as
+						follows:</p>
 
 					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oTable.bindRows({
         path: "/Products", 
@@ -1057,7 +1056,7 @@ oTable.bindRows({
 				<div class="fig fignone" id="loio62149734b5c24507868e722fe87a75db__fig_h54_vhf_zbb"><div class="figcontainer">
 					
 					<img class="image" id="loio62149734b5c24507868e722fe87a75db__image_ms1_vhf_zbb" src="loioe2fe691bea0f4181b6d835c11c92e9ba_LowRes.png"/>
-				<div class="figcap">Simple Binding Example</div></div></div>
+				<div class="figcap">Figure 1: Simple Binding Example</div></div></div>
 
 				<p class="p">Without using preliminary contexts, <span class="keyword parmname">Binding 1</span> resolves only
 					after <span class="keyword parmname">Binding 0</span> is resolved.</p>
@@ -1073,19 +1072,19 @@ oTable.bindRows({
 					in the following table:</p>
 
 				
-<div class="table-wrapper tablenoborder"><table summary="" id="loio62149734b5c24507868e722fe87a75db__table_xww_51z_zbb" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Simple Example: Binding Resolution</span></caption>
+<div class="table-wrapper tablenoborder"><table summary="" id="loio62149734b5c24507868e722fe87a75db__table_xww_51z_zbb" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 1: Simple Example: Binding Resolution</span></caption>
 <colgroup><col width="50%"/><col width="50%"/></colgroup>
 
 						
 						
 						<thead class="thead" align="left">
 							<tr class="row">
-								<th class="entry" valign="top" width="50%" id="d4921253e1562">
+								<th class="entry" valign="top" width="50%" id="d4992824e1554">
 									<p class="p">Request Number</p>
 
 								</th>
 
-								<th class="entry" valign="top" width="50%" id="d4921253e1568">
+								<th class="entry" valign="top" width="50%" id="d4992824e1560">
 									<p class="p">Content</p>
 
 								</th>
@@ -1096,12 +1095,12 @@ oTable.bindRows({
 
 						<tbody class="tbody">
 							<tr class="row">
-								<td class="entry" valign="top" width="50%" headers="d4921253e1562 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1554 ">
 									<p class="p">1</p>
 
 								</td>
 
-								<td class="entry" valign="top" width="50%" headers="d4921253e1568 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1560 ">
 									<p class="p"><samp class="ph codeph">GET Products(1)</samp></p>
 
 								</td>
@@ -1109,12 +1108,12 @@ oTable.bindRows({
 							</tr>
 
 							<tr class="row">
-								<td class="entry" valign="top" width="50%" headers="d4921253e1562 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1554 ">
 									<p class="p">2</p>
 
 								</td>
 
-								<td class="entry" valign="top" width="50%" headers="d4921253e1568 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1560 ">
 									<p class="p"><samp class="ph codeph">GET Products(1)/Supplier</samp></p>
 
 								</td>
@@ -1131,7 +1130,7 @@ oTable.bindRows({
 				<div class="fig fignone" id="loio62149734b5c24507868e722fe87a75db__fig_j4y_3bz_zbb"><div class="figcontainer">
 					
 					<img class="image" id="loio62149734b5c24507868e722fe87a75db__image_edg_rcz_zbb" src="loio410269787de249dc8b573954dd0adc86_LowRes.png"/>
-				<div class="figcap">Complex Binding Example</div></div></div>
+				<div class="figcap">Figure 2: Complex Binding Example</div></div></div>
 
 				<p class="p">In this example we add another binding, which will be resolved once
 						<span class="keyword parmname">Binding 0</span> and <span class="keyword parmname">Binding 1</span> are
@@ -1139,19 +1138,19 @@ oTable.bindRows({
 					requests:</p>
 
 				
-<div class="table-wrapper tablenoborder"><table summary="" id="loio62149734b5c24507868e722fe87a75db__table_ssr_ddz_zbb" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Complex Example: Binding Resolution</span></caption>
+<div class="table-wrapper tablenoborder"><table summary="" id="loio62149734b5c24507868e722fe87a75db__table_ssr_ddz_zbb" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 2: Complex Example: Binding Resolution</span></caption>
 <colgroup><col width="50%"/><col width="50%"/></colgroup>
 
 						
 						
 						<thead class="thead" align="left">
 							<tr class="row">
-								<th class="entry" valign="top" width="50%" id="d4921253e1651">
+								<th class="entry" valign="top" width="50%" id="d4992824e1643">
 									<p class="p">Request Number</p>
 
 								</th>
 
-								<th class="entry" valign="top" width="50%" id="d4921253e1657">
+								<th class="entry" valign="top" width="50%" id="d4992824e1649">
 									<p class="p">Content</p>
 
 								</th>
@@ -1162,12 +1161,12 @@ oTable.bindRows({
 
 						<tbody class="tbody">
 							<tr class="row">
-								<td class="entry" valign="top" width="50%" headers="d4921253e1651 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1643 ">
 									<p class="p">1</p>
 
 								</td>
 
-								<td class="entry" valign="top" width="50%" headers="d4921253e1657 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1649 ">
 									<p class="p"><samp class="ph codeph">GET Products(1)</samp></p>
 
 								</td>
@@ -1175,12 +1174,12 @@ oTable.bindRows({
 							</tr>
 
 							<tr class="row">
-								<td class="entry" valign="top" width="50%" headers="d4921253e1651 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1643 ">
 									<p class="p">2</p>
 
 								</td>
 
-								<td class="entry" valign="top" width="50%" headers="d4921253e1657 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1649 ">
 									<p class="p"><samp class="ph codeph">GET Products(1)/Supplier</samp></p>
 
 								</td>
@@ -1188,12 +1187,12 @@ oTable.bindRows({
 							</tr>
 
 							<tr class="row">
-								<td class="entry" valign="top" width="50%" headers="d4921253e1651 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1643 ">
 									<p class="p">3</p>
 
 								</td>
 
-								<td class="entry" valign="top" width="50%" headers="d4921253e1657 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1649 ">
 									<p class="p"><samp class="ph codeph">GET Suppliers(1)/Products</samp></p>
 
 								</td>
@@ -1214,7 +1213,7 @@ oTable.bindRows({
 				<div class="fig fignone" id="loio62149734b5c24507868e722fe87a75db__fig_nym_hgz_zbb"><div class="figcontainer">
 					
 					<img class="image" id="loio62149734b5c24507868e722fe87a75db__image_dtq_jgz_zbb" src="loio57a4d12d4e5d41ecb74298a55b60d0fb_LowRes.png"/>
-				<div class="figcap">Simple Binding Example - Optimized</div></div></div>
+				<div class="figcap">Figure 3: Simple Binding Example - Optimized</div></div></div>
 
 				<p class="p">Here <span class="keyword parmname">Binding 1</span> uses the preliminary context created by
 						<span class="keyword parmname">Binding 0</span>, and thus the request URL can directly be
@@ -1223,19 +1222,19 @@ oTable.bindRows({
 				<p class="p">This now leads to only a single <samp class="ph codeph">$batch</samp> request:</p>
 
 				
-<div class="table-wrapper tablenoborder"><table summary="" id="loio62149734b5c24507868e722fe87a75db__table_mwj_pgz_zbb" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Simple Example: Binding Resolution Optimized</span></caption>
+<div class="table-wrapper tablenoborder"><table summary="" id="loio62149734b5c24507868e722fe87a75db__table_mwj_pgz_zbb" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 3: Simple Example: Binding Resolution Optimized</span></caption>
 <colgroup><col width="50%"/><col width="50%"/></colgroup>
 
 						
 						
 						<thead class="thead" align="left">
 							<tr class="row">
-								<th class="entry" valign="top" width="50%" id="d4921253e1766">
+								<th class="entry" valign="top" width="50%" id="d4992824e1758">
 									<p class="p">Request Number</p>
 
 								</th>
 
-								<th class="entry" valign="top" width="50%" id="d4921253e1772">
+								<th class="entry" valign="top" width="50%" id="d4992824e1764">
 									<p class="p">Content</p>
 
 								</th>
@@ -1246,12 +1245,12 @@ oTable.bindRows({
 
 						<tbody class="tbody">
 							<tr class="row">
-								<td class="entry" valign="top" width="50%" headers="d4921253e1766 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1758 ">
 									<p class="p">1</p>
 
 								</td>
 
-								<td class="entry" valign="top" width="50%" headers="d4921253e1772 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1764 ">
 									<p class="p"><samp class="ph codeph">GET Products(1)</samp></p>
 
 									<p class="p"><samp class="ph codeph">GET Products(1)/Supplier</samp></p>
@@ -1281,7 +1280,7 @@ oTable.bindRows({
 				<div class="fig fignone" id="loio62149734b5c24507868e722fe87a75db__fig_yv1_fhz_zbb"><div class="figcontainer">
 					
 					<img class="image" id="loio62149734b5c24507868e722fe87a75db__image_jcm_ghz_zbb" src="loioe02b1d8006634769b0094215622c626d_LowRes.png"/>
-				<div class="figcap">Complex Binding Example - Optimized</div></div></div>
+				<div class="figcap">Figure 4: Complex Binding Example - Optimized</div></div></div>
 
 				<p class="p">In this example we added another binding to the scenario. <span class="keyword parmname">Binding
 						2</span> is again a relative binding, which can only resolve once
@@ -1291,19 +1290,19 @@ oTable.bindRows({
 				<p class="p">In this case the single, generated request looks like this:</p>
 
 				
-<div class="table-wrapper tablenoborder"><table summary="" id="loio62149734b5c24507868e722fe87a75db__table_ihd_nhz_zbb" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Complex Example: Binding Resolution Optimized</span></caption>
+<div class="table-wrapper tablenoborder"><table summary="" id="loio62149734b5c24507868e722fe87a75db__table_ihd_nhz_zbb" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 4: Complex Example: Binding Resolution Optimized</span></caption>
 <colgroup><col width="50%"/><col width="50%"/></colgroup>
 
 						
 						
 						<thead class="thead" align="left">
 							<tr class="row">
-								<th class="entry" valign="top" width="50%" id="d4921253e1874">
+								<th class="entry" valign="top" width="50%" id="d4992824e1866">
 									<p class="p">Request Number</p>
 
 								</th>
 
-								<th class="entry" valign="top" width="50%" id="d4921253e1880">
+								<th class="entry" valign="top" width="50%" id="d4992824e1872">
 									<p class="p">Content</p>
 
 								</th>
@@ -1314,12 +1313,12 @@ oTable.bindRows({
 
 						<tbody class="tbody">
 							<tr class="row">
-								<td class="entry" valign="top" width="50%" headers="d4921253e1874 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1866 ">
 									<p class="p">1</p>
 
 								</td>
 
-								<td class="entry" valign="top" width="50%" headers="d4921253e1880 ">
+								<td class="entry" valign="top" width="50%" headers="d4992824e1872 ">
 									<p class="p"><samp class="ph codeph">GET Products(1)</samp></p>
 
 									<p class="p"><samp class="ph codeph">GET Products(1)/Supplier</samp></p>
@@ -1362,19 +1361,19 @@ oTable.bindRows({
 						is loaded optimized in one <samp class="ph codeph">$batch</samp>, and the second part is
 						loaded in a separate <samp class="ph codeph">$batch</samp>:</p>
 
-<div class="table-wrapper tablenoborder"><table summary="" id="loio62149734b5c24507868e722fe87a75db__table_zr4_m3z_zbb" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Complex Example: Binding Resolution Optimized</span></caption>
+<div class="table-wrapper tablenoborder"><table summary="" id="loio62149734b5c24507868e722fe87a75db__table_zr4_m3z_zbb" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 5: Complex Example: Binding Resolution Optimized</span></caption>
 <colgroup><col width="50%"/><col width="50%"/></colgroup>
 
 							
 							
 							<thead class="thead" align="left">
 								<tr class="row">
-									<th class="entry" valign="top" width="50%" id="d4921253e2002">
+									<th class="entry" valign="top" width="50%" id="d4992824e1994">
 										<p class="p">Request Number</p>
 
 									</th>
 
-									<th class="entry" valign="top" width="50%" id="d4921253e2008">
+									<th class="entry" valign="top" width="50%" id="d4992824e2000">
 										<p class="p">Content</p>
 
 									</th>
@@ -1385,12 +1384,12 @@ oTable.bindRows({
 
 							<tbody class="tbody">
 								<tr class="row">
-									<td class="entry" valign="top" width="50%" headers="d4921253e2002 ">
+									<td class="entry" valign="top" width="50%" headers="d4992824e1994 ">
 										<p class="p">1</p>
 
 									</td>
 
-									<td class="entry" valign="top" width="50%" headers="d4921253e2008 ">
+									<td class="entry" valign="top" width="50%" headers="d4992824e2000 ">
 										<p class="p"><samp class="ph codeph">GET Products(1)</samp></p>
 
 										<p class="p"><samp class="ph codeph">GET Products(1)/Supplier</samp></p>
@@ -1400,12 +1399,12 @@ oTable.bindRows({
 								</tr>
 
 								<tr class="row">
-									<td class="entry" valign="top" width="50%" headers="d4921253e2002 ">
+									<td class="entry" valign="top" width="50%" headers="d4992824e1994 ">
 										<p class="p">2</p>
 
 									</td>
 
-									<td class="entry" valign="top" width="50%" headers="d4921253e2008 ">
+									<td class="entry" valign="top" width="50%" headers="d4992824e2000 ">
 										<p class="p"><samp class="ph codeph">GET Products(1)/Supplier/Products</samp></p>
 
 									</td>
@@ -1809,25 +1808,25 @@ oHandle.contextCreated().then(function(oContext) {
       <p class="p">Transformations defined at <samp class="ph codeph">EntitySet</samp>:</p>
 
       <div class="table-wrapper"><table summary="" id="loio341823349ed04df1813197f2a0d71db2__simpletable_mrv_c43_qr" border="1" class="simpletable"><tr class="sthead">
-          <th valign="bottom" align="left" id="d4921253e2435" class="stentry" width="50%">
+          <th valign="bottom" align="left" id="d4992824e2427" class="stentry" width="50%">
             <p class="p">OData V2 SAP Extension</p>
 
           </th>
 
-          <th valign="bottom" align="left" id="d4921253e2441" class="stentry" width="50%">
+          <th valign="bottom" align="left" id="d4992824e2433" class="stentry" width="50%">
             <p class="p">Resulting OData V4 Annotation</p>
 
           </th>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2435" class="stentry">
+          <td valign="top" headers="d4992824e2427" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:creatable = "false"
 </pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2441" class="stentry">
+          <td valign="top" headers="d4992824e2433" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.InsertRestrictions": { "Insertable" : { "Bool" : "false" } }
 </pre></div>
 
@@ -1835,13 +1834,13 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2435" class="stentry">
+          <td valign="top" headers="d4992824e2427" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:deletable = "false"
 </pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2441" class="stentry">
+          <td valign="top" headers="d4992824e2433" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.DeleteRestrictions": { "Deletable" : { "Bool" : "false" } }
 </pre></div>
 
@@ -1853,7 +1852,7 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2435" class="stentry">
+          <td valign="top" headers="d4992824e2427" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:deletable-path = "AnyPath"</pre></div>
 
             <p class="p">Where <samp class="ph codeph">AnyPath</samp> is a path expression that identifies a Boolean
@@ -1862,7 +1861,7 @@ oHandle.contextCreated().then(function(oContext) {
 
           </td>
 
-          <td valign="top" headers="d4921253e2441" class="stentry">
+          <td valign="top" headers="d4992824e2433" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.DeleteRestrictions": { "Deletable" : { "Path" : "AnyPath" } }</pre></div>
 
             <div class="note note"><span class="notetitle">Note</span> If both, <samp class="ph codeph">sap:deletable</samp> and <samp class="ph codeph">sap:deletable-path</samp>
@@ -1873,27 +1872,27 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2435" class="stentry">
+          <td valign="top" headers="d4992824e2427" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:label = "foo"</pre></div>
 
             <p class="p">Where <samp class="ph codeph">foo</samp> is any text.</p>
 
           </td>
 
-          <td valign="top" headers="d4921253e2441" class="stentry">
+          <td valign="top" headers="d4992824e2433" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.Label": {"String" : "foo" }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2435" class="stentry">
+          <td valign="top" headers="d4992824e2427" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:pageable = "false"
 </pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2441" class="stentry">
+          <td valign="top" headers="d4992824e2433" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.SkipSupported": {"Bool" : "false" },
 "Org.OData.Capabilities.V1.TopSupported": {"Bool" : "false" }
 </pre></div>
@@ -1902,13 +1901,13 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2435" class="stentry">
+          <td valign="top" headers="d4992824e2427" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:requires-filter = "true"
 </pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2441" class="stentry">
+          <td valign="top" headers="d4992824e2433" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.FilterRestrictions": { "RequiresFilter" : { "Bool" : "true" } }
 </pre></div>
 
@@ -1916,7 +1915,7 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2435" class="stentry">
+          <td valign="top" headers="d4992824e2427" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:searchable = "false"
 </pre></div>
 
@@ -1924,7 +1923,7 @@ oHandle.contextCreated().then(function(oContext) {
 
           </td>
 
-          <td valign="top" headers="d4921253e2441" class="stentry">
+          <td valign="top" headers="d4992824e2433" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.SearchRestrictions": { "Searchable" : { "Bool" : "false" } }
 </pre></div>
 
@@ -1932,13 +1931,13 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2435" class="stentry">
+          <td valign="top" headers="d4992824e2427" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:topable = "false"
 </pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2441" class="stentry">
+          <td valign="top" headers="d4992824e2433" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.TopSupported": {"Bool" : "false" }
 </pre></div>
 
@@ -1946,13 +1945,13 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2435" class="stentry">
+          <td valign="top" headers="d4992824e2427" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:updatable = "false"
 </pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2441" class="stentry">
+          <td valign="top" headers="d4992824e2433" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.UpdateRestrictions": { "Updatable" : { "Bool" : "false" } }
 </pre></div>
 
@@ -1964,7 +1963,7 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2435" class="stentry">
+          <td valign="top" headers="d4992824e2427" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:updatable-path = "AnyPath"</pre></div>
 
             <p class="p">Where <samp class="ph codeph">AnyPath</samp> is a path expression that identifies a Boolean
@@ -1973,7 +1972,7 @@ oHandle.contextCreated().then(function(oContext) {
 
           </td>
 
-          <td valign="top" headers="d4921253e2441" class="stentry">
+          <td valign="top" headers="d4992824e2433" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.UpdateRestrictions": { "Updatable" : { "Path" : "AnyPath" } }</pre></div>
 
             <div class="note note"><span class="notetitle">Note</span> If both, <samp class="ph codeph">sap:updatable</samp> and <samp class="ph codeph">sap:updatable-path</samp>
@@ -1988,26 +1987,26 @@ oHandle.contextCreated().then(function(oContext) {
       <p class="p">Transformations defined at <samp class="ph codeph">Property</samp>:</p>
 
       <div class="table-wrapper"><table summary="" id="loio341823349ed04df1813197f2a0d71db2__simpletable_v5f_pzn_ks" border="1" class="simpletable"><tr class="sthead">
-          <th valign="bottom" align="left" id="d4921253e2683" class="stentry" width="50%">
+          <th valign="bottom" align="left" id="d4992824e2675" class="stentry" width="50%">
             <p class="p">OData V2 SAP Extension</p>
 
           </th>
 
-          <th valign="bottom" align="left" id="d4921253e2689" class="stentry" width="50%">
+          <th valign="bottom" align="left" id="d4992824e2681" class="stentry" width="50%">
             <p class="p">Resulting OData V4 Annotation</p>
 
           </th>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:label = "foo"</pre></div>
 
             <p class="p">Where <samp class="ph codeph">foo</samp> is any text.</p>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.Label": {"String" : "foo" }</pre></div>
 
             <div class="note note"><span class="notetitle">Note</span> The resulting annotation is added at different places, not to the
@@ -2017,7 +2016,7 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:creatable = "true" </pre></div>
 
             <p class="p">and</p>
@@ -2026,7 +2025,7 @@ oHandle.contextCreated().then(function(oContext) {
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Core.V1.Immutable": { "Bool" : "true" }
 </pre></div>
 
@@ -2034,7 +2033,7 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:creatable = "false"</pre></div>
 
             <p class="p">and</p>
@@ -2043,7 +2042,7 @@ oHandle.contextCreated().then(function(oContext) {
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Core.V1.Computed": { "Bool" : "true"}
 </pre></div>
 
@@ -2051,7 +2050,7 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:display-format = "NonNegative"</pre></div>
 
             <div class="note note"><span class="notetitle">Note</span> <samp class="ph codeph">NonNegative</samp> indicates that only non-negative numeric values are
@@ -2061,26 +2060,26 @@ oHandle.contextCreated().then(function(oContext) {
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.IsDigitSequence": { "Bool" : "true" }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:display-format = "UpperCase"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.IsUpperCase": { "Bool" : "true" }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:field-control = "AnyPath"</pre></div>
 
             <p class="p">Where <samp class="ph codeph">AnyPath</samp> is a path expression that identifies a property
@@ -2088,7 +2087,7 @@ oHandle.contextCreated().then(function(oContext) {
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.FieldControl": { "Path" : "AnyPath" }
 </pre></div>
 
@@ -2096,12 +2095,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:filterable = "false"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.FilterRestrictions":
 { "NonFilterableProperties" : [
 { "PropertyPath" : "PropA " },
@@ -2117,7 +2116,7 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:filter-restriction="multi-value"</pre></div>
 
             <p class="p">For example, at a <samp class="ph codeph">BusinessPartnerID</samp> property of a
@@ -2125,7 +2124,7 @@ oHandle.contextCreated().then(function(oContext) {
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.FilterExpressionRestrictions":
 [{ "Property" : { "PropertyPath" : "BusinessPartnerID" },
 "AllowedExpressions" : { "EnumMember":
@@ -2144,21 +2143,21 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:heading = "foo"</pre></div>
 
             <p class="p">Where <samp class="ph codeph">foo</samp> is any text.</p>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.Heading": { "String" : "foo" }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:precision = "AnyPath"
 </pre></div>
 
@@ -2168,7 +2167,7 @@ oHandle.contextCreated().then(function(oContext) {
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Measures.V1.Scale": { "Path" : "AnyPath" }
 </pre></div>
 
@@ -2176,27 +2175,27 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:quickinfo = "foo"</pre></div>
 
             <p class="p">Where <samp class="ph codeph">foo</samp> is any text.</p>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.QuickInfo": { "String" : "foo" }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:required-in-filter = "true"
 </pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <p class="p">If <samp class="ph codeph">sap:required-in-filter</samp> is set to <samp class="ph codeph">TRUE</samp> for the
                 <samp class="ph codeph">PropA</samp> and <samp class="ph codeph">PropC</samp> properties:</p>
 
@@ -2212,12 +2211,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:sortable = "false"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <p class="p">If <samp class="ph codeph">sap:sortable</samp> is set to <samp class="ph codeph">FALSE</samp> for the
                 <samp class="ph codeph">PropA</samp> and <samp class="ph codeph">PropC</samp> properties:</p>
 
@@ -2233,7 +2232,7 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:text = "AnyPath"</pre></div>
 
             <p class="p">Where <samp class="ph codeph">AnyPath</samp> is a path expression that identifies a property in the
@@ -2242,7 +2241,7 @@ oHandle.contextCreated().then(function(oContext) {
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.Text":{ "Path" : "AnyPath" }
 </pre></div>
 
@@ -2250,7 +2249,7 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:unit="WeightUnit"</pre></div>
 
             <p class="p">or</p>
@@ -2265,7 +2264,7 @@ oHandle.contextCreated().then(function(oContext) {
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Measures.V1.Unit": { "Path" : "WeightUnit" }</pre></div>
 
             <p class="p">or</p>
@@ -2277,12 +2276,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:visible="false"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.UI.v1.Hidden" : { "Bool" : "true" }</pre></div>
 
             <p class="p">Deprecated as of SAPUI5 1.44:</p>
@@ -2294,12 +2293,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:aggregation-role="dimension"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Analytics.v1.Dimension" : { "Bool" : "true" }</pre></div>
 
             <div class="note note"><span class="notetitle">Note</span> 
@@ -2311,12 +2310,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:aggregation-role="measure"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Analytics.v1.Measure" : { "Bool" : "true" }</pre></div>
 
             <div class="note note"><span class="notetitle">Note</span> 
@@ -2328,12 +2327,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics="year"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.IsCalendarYear" : {"Bool" : "true"}</pre></div>
 
             <div class="note note"><span class="notetitle">Note</span> 
@@ -2345,12 +2344,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics="yearmonth"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.IsCalendarYearMonth" : {"Bool" : "true"}</pre></div>
 
             <div class="note note"><span class="notetitle">Note</span> 
@@ -2362,12 +2361,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics="yearmonthday"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.IsCalendarDate" : {"Bool" : "true"}</pre></div>
 
             <div class="note note"><span class="notetitle">Note</span> 
@@ -2379,12 +2378,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e2683" class="stentry">
+          <td valign="top" headers="d4992824e2675" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = url</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e2689" class="stentry">
+          <td valign="top" headers="d4992824e2681" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Core.V1.IsURL" : { "Bool" : "true" }
 </pre></div>
 
@@ -2401,24 +2400,24 @@ oHandle.contextCreated().then(function(oContext) {
       <p class="p">Transformation defined at <samp class="ph codeph">NavigationProperty</samp>:</p>
 
       <div class="table-wrapper"><table summary="" id="loio341823349ed04df1813197f2a0d71db2__simpletable_hqv_xtl_tw" border="1" class="simpletable"><tr class="sthead">
-          <th valign="bottom" align="left" id="d4921253e3293" class="stentry" width="50%">
+          <th valign="bottom" align="left" id="d4992824e3285" class="stentry" width="50%">
             <p class="p">OData V2 SAP Extension</p>
 
           </th>
 
-          <th valign="bottom" align="left" id="d4921253e3299" class="stentry" width="50%">
+          <th valign="bottom" align="left" id="d4992824e3291" class="stentry" width="50%">
             <p class="p">Resulting OData V4 Annotation</p>
 
           </th>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3293" class="stentry">
+          <td valign="top" headers="d4992824e3285" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:filterable = "false"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3299" class="stentry">
+          <td valign="top" headers="d4992824e3291" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.FilterRestrictions": {
     "NonFilterableProperties" : [
     { "PropertyPath" : "PropA " },
@@ -2441,12 +2440,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3293" class="stentry">
+          <td valign="top" headers="d4992824e3285" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:creatable = "false"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3299" class="stentry">
+          <td valign="top" headers="d4992824e3291" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.InsertRestrictions": {
 
     "NonInsertableNavigationProperties" : [
@@ -2475,12 +2474,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3293" class="stentry">
+          <td valign="top" headers="d4992824e3285" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:creatable-path="Creatable"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3299" class="stentry">
+          <td valign="top" headers="d4992824e3291" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.InsertRestrictions": {
 
     "NonInsertableNavigationProperties" : [{
@@ -2518,504 +2517,504 @@ oHandle.contextCreated().then(function(oContext) {
         at which the <samp class="ph codeph">sap:semantics</samp> annotation is defined.</p>
 
       <div class="table-wrapper"><table summary="" id="loio341823349ed04df1813197f2a0d71db2__simpletable_o1g_1vh_ls" border="1" class="simpletable"><tr class="sthead">
-          <th valign="bottom" align="left" id="d4921253e3477" class="stentry" width="50%">
+          <th valign="bottom" align="left" id="d4992824e3469" class="stentry" width="50%">
             <p class="p">OData V2 SAP Extension</p>
 
           </th>
 
-          <th valign="bottom" align="left" id="d4921253e3483" class="stentry" width="50%">
+          <th valign="bottom" align="left" id="d4992824e3475" class="stentry" width="50%">
             <p class="p">Resulting OData V4 Annotation</p>
 
           </th>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "currency-code"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <p class="p">see <samp class="ph codeph">sap:unit</samp> above</p>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "unit-of-measure"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <p class="p">see <samp class="ph codeph">sap:unit</samp> above</p>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "name"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "fn" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "givenname"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "n" : { "given" : { "Path" : "PROPERTY" } } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "middlename"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "n" : { "additional" : { "Path" : "PROPERTY" } } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "familyname"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "n" : { "surname" : { "Path" : "PROPERTY" } } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "nickname"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "nickname" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "honorific"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "n" : { "prefix" : { "Path" : "PROPERTY" } } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "suffix"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "n" : { "suffix" : { "Path" : "PROPERTY" } } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "note"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "note" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "photo"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "photo" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "city"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "locality" : { "Path" : "PROPERTY" } } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "street"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "street" : { "Path" : "PROPERTY" } } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "country"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "country" : { "Path" : "PROPERTY" } } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "region"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "region" : { "Path" : "PROPERTY" } } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "zip"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "code" : { "Path" : "PROPERTY" } } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "pobox"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "pobox" : { "Path" : "PROPERTY" } } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "org"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "org" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "org-unit"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "orgunit" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "org-role"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "role" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "title"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "title" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "bday"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "bday" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "dtstart"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "dtstart" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "dtend"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "dtend" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "duration"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "duration" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "class"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "class" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "status"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "status" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "transp"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "transp" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "fbtype"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "fbtype" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "wholeday"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "wholeday" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "location"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "location" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "due"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Task" : { "due" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "completed"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Task" : { "completed" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "percent-complete"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Task" : { "percentcomplete" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "priority"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Task" : { "priority" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "from"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Message" : { "from" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "sender"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Message" : { "sender" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "subject"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Message" : { "subject" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "body"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Message" : { "body" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "received"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Message" : { "received" : { "Path" : "PROPERTY" } }</pre></div>
 
           </td>
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "tel"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <p class="p">At the <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>:</p>
 
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { 
@@ -3034,12 +3033,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "tel";type=cell,work</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <p class="p">At the <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>:</p>
 
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { 
@@ -3062,12 +3061,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "email"</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <p class="p">At the <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>:</p>
 
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { 
@@ -3086,12 +3085,12 @@ oHandle.contextCreated().then(function(oContext) {
 
         </tr>
 <tr class="strow">
-          <td valign="top" headers="d4921253e3477" class="stentry">
+          <td valign="top" headers="d4992824e3469" class="stentry">
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "email";type=work,pref</pre></div>
 
           </td>
 
-          <td valign="top" headers="d4921253e3483" class="stentry">
+          <td valign="top" headers="d4992824e3475" class="stentry">
             <p class="p">At the <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>:</p>
 
             <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { 

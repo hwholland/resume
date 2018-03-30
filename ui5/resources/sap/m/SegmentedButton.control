@@ -25,7 +25,7 @@ to fit proportionally within the control. When no width is set, the control uses
     <events>
         <event allowPreventDefault="false" name="select">
             <documentation>Fires when the user selects a button, which returns the ID and button object.</documentation>
-            <deprecation since="1.52">replaced by &lt;code&gt;selectionChange&lt;/code&gt; event</deprecation>
+            <deprecation since="1.52">use the &lt;code&gt;selectionChange&lt;/code&gt; event instead.</deprecation>
             <parameters>
                 <parameter type="sap.m/Button" name="button">
                     <documentation>Reference to the button, that has been selected.</documentation>
@@ -50,7 +50,7 @@ to fit proportionally within the control. When no width is set, the control uses
     <aggregations default="buttons">
         <aggregation cardinality="0..n" type="sap.m/Button" name="buttons">
             <documentation>The buttons of the SegmentedButton control. The items set in this aggregation are used as an interface for the buttons displayed by the control. Only the properties ID, icon, text, enabled and textDirections of the Button control are evaluated. Setting other properties of the button will have no effect. Alternatively, you can use the createButton method to add buttons.</documentation>
-            <deprecation since="1.28.0">replaced by &lt;code&gt;items&lt;/code&gt; aggregation</deprecation>
+            <deprecation since="1.28.0">Instead use the &quot;items&quot; aggregation.</deprecation>
         </aggregation>
         <aggregation bindable="bindable" cardinality="0..n" since="1.28" type="sap.m/SegmentedButtonItem" name="items">
             <documentation>Aggregation of items to be displayed. The items set in this aggregation are used as an interface for the buttons displayed by the control.
@@ -64,7 +64,7 @@ The &quot;items&quot; and &quot;buttons&quot; aggregations should NOT be used si
         <association cardinality="0..1" type="sap.m/Button" name="selectedButton">
             <documentation>A reference to the currently selected button control. By default or if the association is set to false (null, undefined, &quot;&quot;, false), the first button will be selected.
 If the association is set to an invalid value (for example, an ID of a button that does not exist) the selection on the SegmentedButton will be removed.</documentation>
-            <deprecation since="1.52">replaced by &lt;code&gt;selectedItem&lt;/code&gt; association</deprecation>
+            <deprecation since="1.52">use the &lt;code&gt;selectedItem&lt;/code&gt; association instead.</deprecation>
         </association>
         <association since="1.52" cardinality="0..1" type="sap.m/SegmentedButtonItem" name="selectedItem">
             <documentation>A reference to the currently selected item control.</documentation>

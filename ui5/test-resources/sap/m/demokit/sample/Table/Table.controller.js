@@ -15,8 +15,8 @@ sap.ui.define([
 		},
 
 		onPopinLayoutChanged: function() {
-			var oTable = this.byId("idProductsTable");
-			var oComboBox = this.byId("idPopinLayout");
+			var oTable = this.getView().byId("idProductsTable");
+			var oComboBox = this.getView().byId("idPopinLayout");
 			var sPopinLayout = oComboBox.getSelectedKey();
 			switch (sPopinLayout) {
 				case "Block":
@@ -31,16 +31,6 @@ sap.ui.define([
 				default:
 					oTable.setPopinLayout(sap.m.PopinLayout.Block);
 					break;
-			}
-		},
-
-		onToggleStickyColHdr: function(oEvent) {
-			var oTable = this.byId("idProductsTable");
-			if (oEvent.getParameter("pressed")) {
-				// The API used below is experimental.
-				oTable.setSticky(sap.m.Sticky.ColumnHeaders);
-			} else {
-				oTable.setSticky("None");
 			}
 		}
 	});

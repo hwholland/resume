@@ -1,0 +1,49 @@
+<!DOCTYPE html> <html xml:lang="en" lang="en"><head><meta charset="UTF-8" ><meta name="generator" content="JsDoc + OpenUI5/SAPUI5 template" ><title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.ui.core.Renderer</title><link rel="stylesheet" href="../default.css" ><link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" /><link rel="stylesheet" href="../../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" /><script src="../../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script></head><body><div id="main"><div id="content"><h1 class="classTitle static">Namespace <span class="package">sap.ui.core.</span>Renderer<span class="module"><span>Module: </span><a href="../modules/sap_ui_core_Renderer.html">sap/ui/core/Renderer</a></span></h1><hr><div class="full-description"> Base Class for a Renderer. </div><div class="summary section"><div class="sectionTitle">Method Summary</div><div class="sectionItems"><div class="sectionItem classMethod static"><b class="icon" title="Creates a new static renderer class that extends a given renderer."><a href="sap.ui.core.Renderer.html#.extend"><span class="package">sap.ui.core.Renderer.</span>extend</a></b><span class='signature'>(<span title="(string|object) either the name of the new renderer class (new signature) or the base renderer to extend (deprecated signature)">vName</span>, <span title="(object) methods and/or properties that should be added to the new renderer class">oRendererInfo</span><i class="help" title="Optional parameter">?</i>)</span><span class='description'>Creates a new static renderer class that extends a given renderer.</span></div><div class="sectionItem classMethod static protected"><b class="icon protected" title="Returns the TextAlignment for the provided configuration."><a href="sap.ui.core.Renderer.html#.getTextAlign"><span class="package">sap.ui.core.Renderer.</span>getTextAlign</a></b><span class='signature'>(<span title="(sap.ui.core.TextAlign) the text alignment of the Control">oTextAlign</span>, <span title="(sap.ui.core.TextDirection) the text direction of the Control">oTextDirection</span>)</span><span class='description'>Returns the TextAlignment for the provided configuration.</span></div></div></div><div class="details section"><div class="sectionTitle">Method Detail</div><div class="sectionItems"><div id=".extend" class='sectionItem classMethod static'><div class="itemTitle icon"> sap.ui.core.Renderer.extend<span class="signature">(<span title="(string|object) either the name of the new renderer class (new signature) or the base renderer to extend (deprecated signature)">vName</span>, <span title="(object) methods and/or properties that should be added to the new renderer class">oRendererInfo</span><i class="help" title="Optional parameter">?</i>)</span><span class="light" title="returns object">: object</span></div><div class="full-description"><p>Creates a new static renderer class that extends a given renderer.</p><p>This method can be used with two signatures that are explained below. In both variants, the returned renderer class inherits all properties (methods, fields) from the given parent renderer class. Both variants also add an 'extend' method to the created renderer class that behaves like the new signature of this <code>Renderer.extend</code> method, but creates subclasses of the new class, not of <code>sap.ui.core.Renderer</code>.</p><p><b>New Signature</b><br> In the new signature variant, two parameters must be given: a qualified name for the new renderer (its class name), and an optional object literal that contains methods or fields to be added to the new renderer class.</p><p>This signature has been designed to resemble the class extension mechanism as provided by <a href="sap.ui.base.Object.html#.extend">Object.extend</a>.</p><p><pre class="prettyprint">
+sap.ui.define(['sap/ui/core/Renderer'],
+    function(Renderer) {
+    "use strict";
+
+    var LabelRenderer = Renderer.extend('sap.m.LabelRenderer', {
+        render: function(oRM, oControl) {
+
+            renderPreamble(oRM, oControl);
+
+            // implementation core renderer logic here
+
+            renderPostamble(oRM, oControl);
+
+        },
+
+        renderPreamble : function(oRM, oControl) {
+        ...
+        },
+
+        renderPostamble : function(oRM, oControl) {
+        ...
+        }
+
+    });
+
+    return LabelRenderer;
+});
+</pre></p><p>The extension of Renderers works across multiple levels. A FancyLabelRenderer can extend the above LabelRenderer:</p><p><pre class="prettyprint">
+sap.ui.define(['sap/m/LabelRenderer'],
+    function(LabelRenderer) {
+    "use strict";
+
+    var FancyLabelRenderer = LabelRenderer.extend('sap.mylib.FancyLabelRenderer', {
+        render: function(oRM, oControl) {
+
+            // call base renderer
+            LabelRenderer.renderPreamble(oRM, oControl);
+
+            // ... do your own fancy rendering here
+
+            // call base renderer again
+            LabelRenderer.renderPostamble(oRM, oControl);
+        }
+    });
+
+    return FancyLabelRenderer;
+});
+</pre></p><p><b>Note:</b> the new signature no longer requires the <code>bExport</code> flag to be set for the enclosing <a href="sap.ui.html#.define">sap.ui.define</a> call. The Renderer base class takes care of the necessary global export of the renderer. This allows Non-SAP developers to write a renderer that complies with the documented restriction for <code>sap.ui.define</code> (no use of bExport = true outside sap.ui.core projects).</p><p><b>Deprecated Signature</b><br> The deprecated old signature expects just one parameter: a renderer that should be extended. With that signature the renderer can't be exported globally as the name of the renderer class is not known.</p><p>For compatibility reasons, the class created by the deprecated signature contains a property <code>_super</code> that references the parent class. It shouldn't be used by applications / control developers as it doesn't work reliably for deeper inheritance chains: if the old variant of <code>Renderer.extend</code> is used on two or more levels of the inheritance hierarchy, the <code>_super</code> property of the resulting renderer class will always point to the implementation of the base renderer of the last call to extend. Instead of using <code>this._super</code>, renderer implementations should use the new signature variant and access the base implementation of a method via the AMD reference to the base renderer (as shown in the FancyLabelRenderer example above).</p></div><div class="heading">Parameters:</div><table class="methodItem"><tbody><tr><td class="methodItemType light">string|object</td><td class="methodItemName">vName</td><td class="methodItemDesc">either the name of the new renderer class (new signature) or the base renderer to extend (deprecated signature)</td></tr><tr><td class="methodItemType light">object</td><td class="methodItemName">oRendererInfo<i class="help" title="Optional parameter">?</i></td><td class="methodItemDesc">methods and/or properties that should be added to the new renderer class</td></tr></tbody></table><div class="heading">Returns:</div><table class="methodItem"><tbody><tr><td class="methodItemType light">object</td><td class="methodItemDesc">a new static renderer class that can be enriched further</td></tr></tbody></table></div><div id=".getTextAlign" class='sectionItem classMethod static protected'><div class="itemTitle icon protected"> sap.ui.core.Renderer.getTextAlign<span class="signature">(<span title="(sap.ui.core.TextAlign) the text alignment of the Control">oTextAlign</span>, <span title="(sap.ui.core.TextDirection) the text direction of the Control">oTextDirection</span>)</span><span class="light" title="returns string">: string</span></div><div class="full-description"> Returns the TextAlignment for the provided configuration. </div><div class="heading">Parameters:</div><table class="methodItem"><tbody><tr><td class="methodItemType light"><a href="sap.ui.core.TextAlign.html">sap.ui.core.TextAlign</a></td><td class="methodItemName">oTextAlign</td><td class="methodItemDesc">the text alignment of the Control</td></tr><tr><td class="methodItemType light"><a href="sap.ui.core.TextDirection.html">sap.ui.core.TextDirection</a></td><td class="methodItemName">oTextDirection</td><td class="methodItemDesc">the text direction of the Control</td></tr></tbody></table><div class="heading">Returns:</div><table class="methodItem"><tbody><tr><td class="methodItemType light">string</td><td class="methodItemDesc">the actual text alignment that must be set for this environment</td></tr></tbody></table></div></div></div></div></div></body></html>

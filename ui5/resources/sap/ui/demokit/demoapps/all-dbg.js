@@ -10,10 +10,7 @@ sap.ui.getCore().attachInit(function () {
 
 	sap.ui.require(["sap/ui/core/ComponentContainer"], function (ComponentContainer) {
 		new ComponentContainer({
-			name : "sap.ui.demokit.demoapps",
-			settings : {
-				id : "demoapps"
-			}
+			name : "sap.ui.demokit.demoapps"
 		}).placeAt("content");
 	});
 

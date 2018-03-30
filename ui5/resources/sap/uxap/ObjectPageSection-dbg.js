@@ -1,49 +1,35 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.uxap.ObjectPageSection.
 sap.ui.define([
-    "sap/ui/core/InvisibleText",
-    "./ObjectPageSectionBase",
-    "sap/ui/Device",
-    "sap/m/Button",
-    "sap/ui/core/StashedControlSupport",
-    "./ObjectPageSubSection",
-    "./library",
-    "sap/m/library",
-    "./ObjectPageSectionRenderer"
-], function(
-    InvisibleText,
-	ObjectPageSectionBase,
-	Device,
-	Button,
-	StashedControlSupport,
-	ObjectPageSubSection,
-	library,
-	mobileLibrary,
-	ObjectPageSectionRenderer
-) {
+	"sap/ui/core/InvisibleText",
+	"./ObjectPageSectionBase",
+	"sap/ui/Device",
+	"sap/m/Button",
+	"sap/ui/core/StashedControlSupport",
+	"./ObjectPageSubSection",
+	"./library",
+	"sap/m/library"
+], function (InvisibleText, ObjectPageSectionBase, Device, Button, StashedControlSupport, ObjectPageSubSection, library, mobileLibrary) {
 	"use strict";
 
 	// shortcut for sap.m.ButtonType
 	var ButtonType = mobileLibrary.ButtonType;
 
 	/**
-	 * Constructor for a new <code>ObjectPageSection</code>.
+	 * Constructor for a new ObjectPageSection.
 	 *
-	 * @param {string} [sId] ID for the new control, generated automatically if no ID is given
-	 * @param {object} [mSettings] Initial settings for the new control
+	 * @param {string} [sId] id for the new control, generated automatically if no id is given
+	 * @param {object} [mSettings] initial settings for the new control
 	 *
 	 * @class
-	 * Top-level information container of an {@link sap.uxap.ObjectPageLayout}.
 	 *
-	 * The <code>ObjectPageSection</code>'s purpose is to aggregate subsections.
-	 *
-	 * <b>Note:</b> This control is intended to be used only as part of the <code>ObjectPageLayout</code>.
-	 *
+	 * An ObjectPageSection is the top-level information container of an Object page. Its purpose is to aggregate Subsections.
+	 * Disclaimer: This control is intended to be used only as part of the Object page layout
 	 * @extends sap.uxap.ObjectPageSectionBase
 	 *
 	 * @constructor
@@ -90,7 +76,7 @@ sap.ui.define([
 				 */
 				selectedSubSection: {type: "sap.uxap.ObjectPageSubSection", multiple: false}
 			},
-			designtime: "sap/uxap/designtime/ObjectPageSection.designtime"
+			designTime: true
 		}
 	});
 
@@ -191,17 +177,8 @@ sap.ui.define([
 	 */
 	ObjectPageSection.prototype._getAriaLabelledBy = function () {
 		return new InvisibleText({
-			text: this._getTitle()
+			text: this._getInternalTitle() || this.getTitle()
 		}).toStatic();
-	};
-
-	/**
-	 * Determines if the <code>ObjectPageSection</code> title is visible.
-	 * @private
-	 * @returns {Boolean}
-	 */
-	ObjectPageSection.prototype._isTitleVisible = function () {
-		return this.getShowTitle() && this._getInternalTitleVisible();
 	};
 
 	/**

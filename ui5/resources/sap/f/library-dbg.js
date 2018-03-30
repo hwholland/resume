@@ -1,30 +1,26 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 /**
  * Initialization Code and shared classes of library sap.f.
  */
-sap.ui.define(["sap/ui/base/DataType",
-	"sap/ui/Global",
-	"sap/ui/core/library",
-	"sap/m/library"], // library dependency
-	function(DataType) {
+sap.ui.define(["sap/ui/Global",
+	"sap/ui/core/library", "sap/m/library"], // library dependency
+	function() {
 
 	"use strict";
 
 	// delegate further initialization of this library to the Core
 	sap.ui.getCore().initLibrary({
 		name : "sap.f",
-		version: "1.54.2",
+		version: "1.52.5",
 		dependencies : ["sap.ui.core", "sap.m"],
-		designtime: "sap/f/designtime/library.designtime",
 		types: [
 			"sap.f.LayoutType",
-			"sap.f.DynamicPageTitleArea",
-			"sap.f.DynamicPageTitleShrinkRatio"
+			"sap.f.DynamicPageTitleArea"
 		],
 		controls: [
 			"sap.f.Avatar",
@@ -65,14 +61,7 @@ sap.ui.define(["sap/ui/base/DataType",
 					"unhideControl": "default",
 					"moveControls": "default"
 				},
-				"sap.f.DynamicPageTitle" : "sap/f/flexibility/DynamicPageTitle",
-				"sap.f.semantic.SemanticPage" : {
-					"moveControls": "default"
-				}
-			},
-			//Configuration used for rule loading of Support Assistant
-			"sap.ui.support": {
-				internalRules:true
+				"sap.f.DynamicPageTitle" : "sap/f/flexibility/DynamicPageTitle"
 			}
 		}
 	});
@@ -83,7 +72,7 @@ sap.ui.define(["sap/ui/base/DataType",
 	 * @namespace
 	 * @alias sap.f
 	 * @author SAP SE
-	 * @version 1.54.2
+	 * @version 1.52.5
 	 * @public
 	 */
 	var thisLib = sap.f;
@@ -94,12 +83,11 @@ sap.ui.define(["sap/ui/base/DataType",
 	* @enum {string}
 	* @public
 	* @since 1.50
-	* @deprecated Since version 1.54
 	* @ui5-metamodel This enumeration also will be described in the UI5 (legacy) designtime metamodel
 	*/
 	thisLib.DynamicPageTitleArea = {
 		/**
-		* The area includes the <code>heading</code>, <code>expandedContent</code> and <code>snappedContent</code> aggregations,
+		* The area includes the <code>heading<code>, <code>expandedContent<code> and <code>snappedContent<code> aggregations,
 		* positioned in the beginning area of the {@link sap.f.DynamicPageTitle}.
 		*
 		* @public
@@ -107,7 +95,7 @@ sap.ui.define(["sap/ui/base/DataType",
 		Begin: "Begin",
 
 		/**
-		* The area includes the <code>content</code> aggregation,
+		* The area includes the <code>content<code> aggregation,
 		* positioned in the middle part of the {@link sap.f.DynamicPageTitle}.
 		*
 		* @public
@@ -115,20 +103,6 @@ sap.ui.define(["sap/ui/base/DataType",
 		Middle: "Middle"
 	};
 
-	/**
-	* @classdesc A string type that represents the shrink ratios of the areas within the <code>sap.f.DynamicPageTitle</code>.
-	*
-	* @namespace
-	* @public
-	* @since 1.54
-	* @ui5-metamodel This simple type also will be described in the UI5 (legacy) designtime metamodel
-	*/
-	thisLib.DynamicPageTitleShrinkRatio = DataType.createType('sap.f.DynamicPageTitleShrinkRatio', {
-		isValid : function(vValue) {
-			return /^(([0-9]\d*)(\.\d)?:([0-9]\d*)(\.\d)?:([0-9]\d*)(\.\d)?)$/.test(vValue);
-		}
-
-	}, DataType.getType('string'));
 
 	/**
 	 * Layouts, representing the number of columns to be displayed and their relative widths for a {@link sap.f.FlexibleColumnLayout} control.
@@ -138,8 +112,7 @@ sap.ui.define(["sap/ui/base/DataType",
 	 *
 	 * <b>Note:</b> Please note that on a phone device, due to the limited screen size, only one column can be displayed at a time.
 	 * For all two-column layouts, this column is the <code>Mid</code> column, and for all three-column layouts - the <code>End</code> column,
-	 * even though the respective column may be hidden on desktop and tablet for that particular layout. Therefore some of the names
-	 * (such as <code>ThreeColumnsMidExpandedEndHidden</code> for example) are representative of the desktop scenario only.
+	 * even though the respective column may be hidden on desktop and tablet for that particular layout.
 	 *
 	 * For more information, see {@link topic:3b9f760da5b64adf8db7f95247879086 Types of Layout} in the documentation.
 	 *

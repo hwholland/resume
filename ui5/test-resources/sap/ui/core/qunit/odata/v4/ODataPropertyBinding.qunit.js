@@ -1,12 +1,11 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 sap.ui.require([
 	"jquery.sap.global",
 	"sap/ui/base/ManagedObject",
-	"sap/ui/base/SyncPromise",
 	"sap/ui/model/BindingMode",
 	"sap/ui/model/ChangeReason",
 	"sap/ui/model/PropertyBinding",
@@ -14,12 +13,13 @@ sap.ui.require([
 	"sap/ui/model/odata/v4/Context",
 	"sap/ui/model/odata/v4/lib/_Cache",
 	"sap/ui/model/odata/v4/lib/_Helper",
+	"sap/ui/model/odata/v4/lib/_SyncPromise",
 	"sap/ui/model/odata/v4/ODataBinding",
 	"sap/ui/model/odata/v4/ODataModel",
 	"sap/ui/model/odata/v4/ODataPropertyBinding",
 	"sap/ui/test/TestUtils"
-], function (jQuery, ManagedObject, SyncPromise, BindingMode, ChangeReason, PropertyBinding,
-		TypeString, Context, _Cache, _Helper, asODataBinding, ODataModel, ODataPropertyBinding,
+], function (jQuery, ManagedObject, BindingMode, ChangeReason, PropertyBinding, TypeString,
+		Context, _Cache, _Helper, _SyncPromise, asODataBinding, ODataModel, ODataPropertyBinding,
 		TestUtils) {
 	/*global QUnit, sinon */
 	/*eslint max-nested-callbacks: 0, no-warning-comments: 0 */
@@ -41,7 +41,9 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.module("sap.ui.model.odata.v4.ODataPropertyBinding", {
 		beforeEach : function () {
-			this.oLogMock = this.mock(jQuery.sap.log);
+			this.oSandbox = sinon.sandbox.create();
+
+			this.oLogMock = this.oSandbox.mock(jQuery.sap.log);
 			this.oLogMock.expects("warning").never();
 			this.oLogMock.expects("error").never();
 
@@ -50,7 +52,12 @@ sap.ui.require([
 				serviceUrl : "/service/?sap-client=111",
 				synchronizationMode : "None"
 			});
-			this.mock(this.oModel.oRequestor).expects("request").never();
+			this.oSandbox.mock(this.oModel.oRequestor).expects("request").never();
+		},
+
+		afterEach : function () {
+			// I would consider this an API, see https://github.com/cjohansen/Sinon.JS/issues/614
+			this.oSandbox.verifyAndRestore();
 		},
 
 		/**
@@ -65,8 +72,8 @@ sap.ui.require([
 					update : function () {}
 				};
 
-			this.mock(_Cache).expects("createSingle").returns(oCache);
-			return this.mock(oCache);
+			this.oSandbox.mock(_Cache).expects("createSingle").returns(oCache);
+			return this.oSandbox.mock(oCache);
 		},
 
 		/**
@@ -81,8 +88,8 @@ sap.ui.require([
 					update : function () {}
 			};
 
-			this.mock(_Cache).expects("createProperty").returns(oCache);
-			return this.mock(oCache);
+			this.oSandbox.mock(_Cache).expects("createProperty").returns(oCache);
+			return this.oSandbox.mock(oCache);
 		},
 
 		/**
@@ -111,8 +118,6 @@ sap.ui.require([
 
 				function changeHandler(oEvent) {
 					assert.strictEqual(oControl.getText(), "value", "initialized");
-					assert.strictEqual(oBinding.vValue, "value",
-						"vValue contains the value and can be used to mock a checkUpdate");
 					assert.strictEqual(oEvent.getParameter("reason"), ChangeReason.Change);
 					assert.strictEqual(fnFetchValue.args[0][1], oBinding,
 						"The binding passed itself to fetchValue");
@@ -121,14 +126,14 @@ sap.ui.require([
 				}
 
 				oControl.bindObject("/EntitySet('foo')");
-				oContextBindingMock = that.mock(oControl.getObjectBinding());
+				oContextBindingMock = that.oSandbox.mock(oControl.getObjectBinding());
 				fnFetchValue = oContextBindingMock.expects("fetchValue");
 				fnFetchValue.exactly(iNoOfRequests || 1)
-					.withExactArgs("/EntitySet('foo')/property", sinon.match.object, undefined)
+					.withExactArgs("/EntitySet('foo')/property", sinon.match.object)
 					.returns(Promise.resolve("value"));
 				if (oError) {
 					oContextBindingMock.expects("fetchValue")
-						.withExactArgs("/EntitySet('foo')/property", sinon.match.object, undefined)
+						.withExactArgs("/EntitySet('foo')/property", sinon.match.object)
 						.returns(Promise.reject(oError));
 				}
 				oControl.bindProperty("text", {
@@ -196,21 +201,24 @@ sap.ui.require([
 				oBinding,
 				oCache = {},
 				oContext = Context.create(this.oModel, null, "/EMPLOYEES(ID='42')"),
-				oExpectation = this.mock(this.oModel).expects("bindingCreated");
+				oCreatedBinding;
 
 			if (bAbsolute) {
-				this.mock(_Cache).expects("createProperty")
+				this.oSandbox.mock(_Cache).expects("createProperty")
 					.withExactArgs(sinon.match.same(this.oModel.oRequestor), sPath.slice(1),
 						{"sap-client" : "111"})
 					.returns(oCache);
 			} else {
-				this.mock(_Cache).expects("createProperty").never();
+				this.oSandbox.mock(_Cache).expects("createProperty").never();
 			}
+			this.oSandbox.stub(this.oModel, "bindingCreated", function (oBinding) {
+				oCreatedBinding = oBinding;
+			});
 
 			oBinding = this.oModel.bindProperty(sPath, oContext);
 
 			assert.ok(oBinding instanceof ODataPropertyBinding);
-			sinon.assert.calledWithExactly(oExpectation, sinon.match.same(oBinding));
+			assert.strictEqual(oCreatedBinding, oBinding, "bindingCreated() has been called");
 			assert.strictEqual(oBinding.getModel(), this.oModel);
 			assert.strictEqual(oBinding.getContext(), oContext);
 			assert.strictEqual(oBinding.getPath(), sPath);
@@ -228,21 +236,23 @@ sap.ui.require([
 	//*********************************************************************************************
 	QUnit.test("bindProperty with relative path and !v4.Context", function (assert) {
 		var oBinding,
-			oCachePromise = SyncPromise.resolve(),
+			oCachePromise = _SyncPromise.resolve(),
 			oContext = {getPath : function () {return "/EMPLOYEES(ID='1')";}},
-			oExpectation = this.mock(this.oModel).expects("bindingCreated"),
+			oCreatedBinding,
 			sPath = "Name";
 
-		this.mock(ODataPropertyBinding.prototype).expects("fetchCache")
-			.withExactArgs(sinon.match.same(oContext))
-			.callsFake(function () {
-				this.oCachePromise = oCachePromise;
-			});
+		this.stub(ODataPropertyBinding.prototype, "fetchCache", function (oContext0) {
+			assert.strictEqual(oContext0, oContext);
+			this.oCachePromise = oCachePromise;
+		});
+		this.oSandbox.stub(this.oModel, "bindingCreated", function (oBinding) {
+			oCreatedBinding = oBinding;
+		});
 
 		//code under test
 		oBinding = this.oModel.bindProperty(sPath, oContext);
 
-		sinon.assert.calledWithExactly(oExpectation, sinon.match.same(oBinding));
+		assert.strictEqual(oCreatedBinding, oBinding, "bindingCreated() has been called");
 		assert.strictEqual(oBinding.getModel(), this.oModel);
 		assert.strictEqual(oBinding.getContext(), oContext);
 		assert.strictEqual(oBinding.getPath(), sPath);
@@ -262,10 +272,10 @@ sap.ui.require([
 
 		oModelMock.expects("buildQueryOptions")
 			.withExactArgs(sinon.match.same(mParameters), false).returns(mQueryOptions);
-		this.mock(ODataPropertyBinding.prototype).expects("fetchCache").withExactArgs(null)
-			.callsFake(function () {
-				this.oCachePromise = SyncPromise.resolve();
-			});
+		this.stub(ODataPropertyBinding.prototype, "fetchCache", function (oContext) {
+			assert.strictEqual(oContext, null);
+			this.oCachePromise = _SyncPromise.resolve();
+		});
 
 		// code under test
 		oBinding = this.oModel.bindProperty("/EMPLOYEES(ID='1')/Name", null, mParameters);
@@ -350,7 +360,10 @@ sap.ui.require([
 				this.mock(oBinding).expects("checkUpdate")
 					.withExactArgs(false, "context");
 			}
-			this.mock(oBinding).expects("deregisterChange").withExactArgs();
+			if (oFixture.sInit === "v4") {
+				this.mock(oInitialContext).expects("deregisterChange")
+					.withExactArgs(oBinding.getPath(), sinon.match.same(oBinding));
+			}
 
 			//code under test
 			oBinding.setContext(oTargetContext);
@@ -388,7 +401,7 @@ sap.ui.require([
 		// Note: it is important that automatic type determination runs as soon as possible
 		this.mock(this.oModel.getMetaModel()).expects("fetchUI5Type")
 			.withExactArgs("/.../relative")
-			.returns(SyncPromise.resolve());
+			.returns(_SyncPromise.resolve());
 		oBinding.attachChange(function () {
 			assert.ok(false, "no change event for virtual context");
 		});
@@ -398,53 +411,12 @@ sap.ui.require([
 	});
 
 	//*********************************************************************************************
-	["any", "int"].forEach(function (sType) {
-		[{
-			path : "/EntitySet('foo')/#com.sap.foo.AcFoo"
-		}, {
-			path : "#com.sap.foo.AcFoo",
-			contextPath: "/EntitySet('foo')"
-		}].forEach(function (oFixture) {
-			QUnit.test("checkUpdate: " + (oFixture.contextPath ? "relative path" : "absolute path")
-				+ ", targetType: " + sType + " - allow non primitive value for advertised actions",
-				function (assert) {
-					var oCacheMock = this.getPropertyCacheMock(),
-						oContext = oFixture.contextPath
-							? this.oModel.createBindingContext("/EntitySet('foo')")
-							: undefined,
-						oBinding = this.oModel.bindProperty(oFixture.path, oContext),
-						sResolvedPath = this.oModel.resolve(oFixture.path, oContext),
-						vValue = {};
-
-					oBinding.setType(null, sType);
-					oCacheMock.expects("fetchValue")
-						.withExactArgs("$auto", undefined, sinon.match.func, oBinding)
-						.returns(SyncPromise.resolve(vValue));
-					if (sType !== "any") {
-						this.mock(this.oModel.getMetaModel()).expects("fetchUI5Type")
-							.withExactArgs(sResolvedPath)
-							.returns(SyncPromise.resolve());
-						this.oLogMock.expects("error")
-							.withExactArgs("Accessed value is not primitive",
-								sResolvedPath, sClassName);
-					}
-
-					// code under test
-					return oBinding.checkUpdate().then(function () {
-						assert.strictEqual(oBinding.getValue(),
-							sType === "any" ? vValue : undefined);
-					});
-				});
-		});
-	});
-
-	//*********************************************************************************************
 	// Unit test for scenario in
 	// ODataModel.integration.qunit, @sap.ui.table.Table with VisibleRowCountMode='Auto'
 	QUnit.test("checkUpdate(true): later checkUpdate call resets this.oContext", function (assert) {
 		var oParentBinding = {
 				fetchIfChildCanUseCache : function () {
-					return SyncPromise.resolve(Promise.resolve(true));
+					return _SyncPromise.resolve(Promise.resolve(true));
 				}
 			},
 			oModel = new ODataModel({
@@ -459,7 +431,7 @@ sap.ui.require([
 
 		this.mock(oModel.getMetaModel()).expects("fetchUI5Type")
 			.withExactArgs("/.../relative")
-			.returns(SyncPromise.resolve());
+			.returns(_SyncPromise.resolve());
 
 		// code under test
 		oPromise0 = oBinding.checkUpdate(true);
@@ -490,6 +462,7 @@ sap.ui.require([
 				}),
 				oMetaModelMock = this.mock(oModel.getMetaModel()),
 				oParent = {
+					deregisterChange : function () {},
 					fetchValue : function () {}
 				},
 				oParentMock = this.mock(oParent),
@@ -507,11 +480,11 @@ sap.ui.require([
 			oMetaModelMock.expects("fetchUI5Type")
 				.withExactArgs("/Equipments(1)/SupplierIdentifier")
 				.returns(bMetadataAsync
-					? Promise.reject(oTypeError) : SyncPromise.reject(oTypeError));
+					? Promise.reject(oTypeError) : _SyncPromise.reject(oTypeError));
 			this.oLogMock.expects("warning")
 				.withExactArgs(oTypeError.message, "/Equipments(1)/SupplierIdentifier", sClassName);
-			oParentMock.expects("fetchValue").withExactArgs("/Equipments(1)/SupplierIdentifier",
-					sinon.match.same(oBinding), undefined)
+			oParentMock.expects("fetchValue")
+				.withExactArgs("/Equipments(1)/SupplierIdentifier", sinon.match.same(oBinding))
 				.returns(Promise.reject(oFetchValueError));
 			this.mock(oModel).expects("reportError")
 				.withExactArgs("Failed to read path /Equipments(1)/SupplierIdentifier", sClassName,
@@ -520,10 +493,10 @@ sap.ui.require([
 			// correct context
 			oMetaModelMock.expects("fetchUI5Type")
 				.withExactArgs("/Equipments(1)/EQUIPMENT_2_PRODUCT/SupplierIdentifier")
-				.returns(bMetadataAsync ? Promise.resolve(oType) : SyncPromise.resolve(oType));
+				.returns(bMetadataAsync ? Promise.resolve(oType) : _SyncPromise.resolve(oType));
 			oParentMock.expects("fetchValue")
 				.withExactArgs("/Equipments(1)/EQUIPMENT_2_PRODUCT/SupplierIdentifier",
-					sinon.match.same(oBinding), undefined)
+					sinon.match.same(oBinding))
 				.returns(Promise.resolve(42));
 			oBinding.attachChange(function (oEvent) {
 				var sExpectedReason = iChange ? ChangeReason.Context : ChangeReason.Change;
@@ -533,8 +506,6 @@ sap.ui.require([
 				vCurrentValue = oBinding.vValue;
 				iChange += 1;
 			});
-			// avoid that deregisterChange stumbles over the parent binding mock
-			this.mock(oBinding).expects("deregisterChange");
 
 			oCheckUpdateSpy = this.spy(oBinding, "checkUpdate");
 
@@ -564,7 +535,8 @@ sap.ui.require([
 			that = this;
 
 		this.createTextBinding(assert).then(function (oBinding) {
-			that.mock(oBinding).expects("deregisterChange").withExactArgs();
+			that.oSandbox.mock(oBinding.oContext).expects("deregisterChange")
+				.withExactArgs("property", sinon.match.same(oBinding));
 			assert.strictEqual(oBinding.getValue(), "value", "value before context reset");
 			oBinding.attachChange(fnChangeHandler);
 			oBinding.setContext(); // reset context triggers checkUpdate
@@ -576,7 +548,7 @@ sap.ui.require([
 	QUnit.test("checkUpdate(): read error", function (assert) {
 		var oError = new Error("Expected failure");
 
-		this.mock(this.oModel).expects("reportError").withExactArgs(
+		this.oSandbox.mock(this.oModel).expects("reportError").withExactArgs(
 			"Failed to read path /EntitySet('foo')/property", sClassName,
 			sinon.match.same(oError));
 
@@ -604,7 +576,7 @@ sap.ui.require([
 	QUnit.test("checkUpdate(): read error with force update", function (assert) {
 		var oError = new Error("Expected failure");
 
-		this.mock(this.oModel).expects("reportError").withExactArgs(
+		this.oSandbox.mock(this.oModel).expects("reportError").withExactArgs(
 			"Failed to read path /EntitySet('foo')/property", sClassName,
 			sinon.match.same(oError));
 
@@ -625,7 +597,7 @@ sap.ui.require([
 		var oError = {canceled : true},
 			that = this;
 
-		this.mock(this.oModel).expects("reportError").withExactArgs(
+		this.oSandbox.mock(this.oModel).expects("reportError").withExactArgs(
 			"Failed to read path /EntitySet('foo')/property", sClassName,
 			sinon.match.same(oError));
 
@@ -641,37 +613,8 @@ sap.ui.require([
 	});
 
 	//*********************************************************************************************
-	QUnit.test("checkUpdate(): absolute with sGroupId", function (assert) {
-		var oBinding,
-			oCacheMock = this.getPropertyCacheMock();
-
-		oBinding = this.oModel.bindProperty("/EntitySet('foo')/property");
-		oBinding.setType(null, "any"); // avoid fetchUI5Type()
-		oCacheMock.expects("fetchValue")
-			.withExactArgs("group", undefined, sinon.match.func, oBinding)
-			.returns(SyncPromise.resolve());
-
-		// code under test
-		return oBinding.checkUpdate(false, undefined, "group");
-	});
-
-	//*********************************************************************************************
-	QUnit.test("checkUpdate(): relative with sGroupId", function (assert) {
-		var oContext = Context.create(this.oModel, {/*oParentBinding*/}, "/Me"),
-			oBinding = this.oModel.bindProperty("property", oContext);
-
-		oBinding.setType(null, "any"); // avoid fetchUI5Type()
-		this.mock(oContext).expects("fetchValue")
-			.withExactArgs("property", oBinding, "group")
-			.returns(SyncPromise.resolve());
-
-		// code under test
-		return oBinding.checkUpdate(false, undefined, "group");
-	});
-
-	//*********************************************************************************************
 	QUnit.test("ManagedObject.bindProperty w/ relative path, then bindObject", function (assert) {
-		var oCacheMock = this.mock(_Cache),
+		var oCacheMock = this.oSandbox.mock(_Cache),
 			done = assert.async(),
 			oControl = new TestControl({models : this.oModel});
 
@@ -709,7 +652,7 @@ sap.ui.require([
 		var oContext = Context.create(this.oModel, null, "/EntitySet('bar')"),
 			oBinding = this.oModel.bindProperty("/EntitySet('foo')/property");
 
-		this.mock(oContext).expects("fetchValue").never(); // due to absolute path
+		this.oSandbox.mock(oContext).expects("fetchValue").never(); // due to absolute path
 
 		oBinding.setContext(oContext);
 
@@ -736,7 +679,7 @@ sap.ui.require([
 							});
 						}
 					},
-					oCacheMock = that.mock(_Cache),
+					oCacheMock = that.oSandbox.mock(_Cache),
 					oContextBindingMock,
 					sContextPath = "/EMPLOYEES(ID='42')",
 					iDataReceivedCount = 0,
@@ -751,7 +694,7 @@ sap.ui.require([
 						{"sap-client" : "111"}, false);
 				oControl.bindObject(sContextPath);
 
-				oContextBindingMock = that.mock(oControl.getObjectBinding());
+				oContextBindingMock = that.oSandbox.mock(oControl.getObjectBinding());
 				if (bAbsolute) { // absolute path: use cache on binding
 					sResolvedPath = sPath;
 					oContextBindingMock.expects("fetchValue").never();
@@ -762,13 +705,13 @@ sap.ui.require([
 				} else {
 					sResolvedPath = sContextPath + "/" + sPath;
 					oContextBindingMock.expects("fetchValue")
-						.withExactArgs(sContextPath + "/" + sPath, sinon.match.object, undefined)
+						.withExactArgs(sContextPath + "/" + sPath, sinon.match.object)
 						.returns(Promise.resolve(oValue));
 				}
-				that.mock(that.oModel.getMetaModel()).expects("fetchUI5Type")
+				that.oSandbox.mock(that.oModel.getMetaModel()).expects("fetchUI5Type")
 					.withExactArgs(sResolvedPath)
-					.returns(SyncPromise.resolve(oType));
-				that.mock(oType).expects("formatValue").withExactArgs(oValue, "string");
+					.returns(_SyncPromise.resolve(oType));
+				that.oSandbox.mock(oType).expects("formatValue").withExactArgs(oValue, "string");
 
 				//code under test
 				oControl.bindProperty("text", {path : sPath, events : {
@@ -792,7 +735,6 @@ sap.ui.require([
 
 						assert.strictEqual(oEvent.getSource(), oControl.getBinding("text"),
 							"dataReceived - correct source");
-						assert.deepEqual(oEvent.getParameter("data"), {});
 						assert.strictEqual(iDataRequestedCount, 1);
 						assert.strictEqual(oBinding.getType(), oType);
 						assert.strictEqual(oBinding.getValue(), oValue);
@@ -822,7 +764,7 @@ sap.ui.require([
 						return Promise.resolve(oValue);
 					}
 				},
-				oCacheMock = this.mock(_Cache),
+				oCacheMock = this.oSandbox.mock(_Cache),
 				done = assert.async(),
 				oControl = new TestControl({models : this.oModel}),
 				sPath = "/path",
@@ -830,9 +772,9 @@ sap.ui.require([
 				oTypeError = new Error("Unsupported EDM type...");
 
 			oCacheMock.expects("createProperty").returns(oCache);
-			this.mock(this.oModel.getMetaModel()).expects("fetchUI5Type")
+			this.oSandbox.mock(this.oModel.getMetaModel()).expects("fetchUI5Type")
 				.withExactArgs(sPath)
-				.returns(SyncPromise.reject(oTypeError));
+				.returns(_SyncPromise.reject(oTypeError));
 			this.oLogMock.expects("warning").withExactArgs(oTypeError.message, sPath, sClassName);
 			this.oLogMock.expects("error").withExactArgs("Accessed value is not primitive", sPath,
 				sClassName);
@@ -843,7 +785,6 @@ sap.ui.require([
 					var oBinding = oControl.getBinding("text");
 					assert.strictEqual(oBinding.getType(), undefined);
 					assert.strictEqual(oBinding.getValue(), undefined);
-					assert.deepEqual(oEvent.getParameter("data"), {});
 					assert.strictEqual(oEvent.getParameter("error"), undefined, "no read error");
 					done();
 				}
@@ -869,8 +810,8 @@ sap.ui.require([
 			done = assert.async(),
 			oControl = new TestControl({models : this.oModel});
 
-		this.mock(_Cache).expects("createProperty").returns(oCache);
-		this.mock(this.oModel).expects("reportError").withExactArgs(
+		this.oSandbox.mock(_Cache).expects("createProperty").returns(oCache);
+		this.oSandbox.mock(this.oModel).expects("reportError").withExactArgs(
 			"Failed to read path /path", sClassName, sinon.match.same(oError));
 
 		//code under test
@@ -895,11 +836,11 @@ sap.ui.require([
 		// initial read and after refresh
 		oCacheMock.expects("fetchValue")
 			.withExactArgs("$auto", undefined, sinon.match.func, sinon.match.object)
-			.returns(SyncPromise.resolve("foo"));
+			.returns(_SyncPromise.resolve("foo"));
 		// force non-primitive error
 		oCacheMock.expects("fetchValue")
 			.withExactArgs("$auto", undefined, sinon.match.func, sinon.match.object)
-			.returns(SyncPromise.resolve({}));
+			.returns(_SyncPromise.resolve({}));
 
 		this.oLogMock.expects("error").withExactArgs("Accessed value is not primitive", sPath,
 			sClassName);
@@ -929,8 +870,8 @@ sap.ui.require([
 
 		this.getPropertyCacheMock().expects("fetchValue")
 			.withExactArgs("$auto", undefined, sinon.match.func, sinon.match.object)
-			.returns(SyncPromise.resolve("foo"));
-		this.mock(this.oModel.getMetaModel()).expects("fetchUI5Type").never();
+			.returns(_SyncPromise.resolve("foo"));
+		this.oSandbox.mock(this.oModel.getMetaModel()).expects("fetchUI5Type").never();
 
 		//code under test
 		oControl.bindProperty("text", {
@@ -952,8 +893,8 @@ sap.ui.require([
 
 		this.getPropertyCacheMock().expects("fetchValue")
 			.withExactArgs("$auto", undefined, sinon.match.func, sinon.match.object)
-			.returns(SyncPromise.resolve("foo"));
-		this.mock(this.oModel.getMetaModel()).expects("fetchUI5Type").never();
+			.returns(_SyncPromise.resolve("foo"));
+		this.oSandbox.mock(this.oModel.getMetaModel()).expects("fetchUI5Type").never();
 
 		//code under test
 		oControl.bindProperty("text", {
@@ -977,11 +918,11 @@ sap.ui.require([
 
 		this.getPropertyCacheMock().expects("fetchValue")
 			.withExactArgs("$auto", undefined, sinon.match.func, sinon.match.object)
-			.returns(SyncPromise.resolve("foo"));
-		this.mock(this.oModel.getMetaModel()).expects("fetchUI5Type")
+			.returns(_SyncPromise.resolve("foo"));
+		this.oSandbox.mock(this.oModel.getMetaModel()).expects("fetchUI5Type")
 			.withExactArgs(sPath)
-			.returns(SyncPromise.resolve(oType));
-		this.mock(oType).expects("formatValue")
+			.returns(_SyncPromise.resolve(oType));
+		this.oSandbox.mock(oType).expects("formatValue")
 			.withExactArgs("foo", "string")
 			.returns("*foo*");
 
@@ -1012,13 +953,13 @@ sap.ui.require([
 
 				oCacheMock.expects("fetchValue")
 					.withExactArgs("$auto", undefined, sinon.match.func, sinon.match.object)
-					.returns(SyncPromise.resolve("foo"));
+					.returns(_SyncPromise.resolve("foo"));
 				oCacheMock.expects("fetchValue")
 					.withExactArgs("$auto", undefined, sinon.match.func, sinon.match.object)
-					.returns(SyncPromise.resolve("update")); // 2nd read gets an update
-				this.mock(this.oModel.getMetaModel()).expects("fetchUI5Type")
+					.returns(_SyncPromise.resolve("update")); // 2nd read gets an update
+				this.oSandbox.mock(this.oModel.getMetaModel()).expects("fetchUI5Type")
 					.withExactArgs(sPath) // always requested only once
-					.returns(SyncPromise.reject(oError)); // UI5 type not found
+					.returns(_SyncPromise.reject(oError)); // UI5 type not found
 				this.oLogMock.expects("warning")
 					.withExactArgs("failed type", sPath, sClassName);
 
@@ -1041,25 +982,17 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("forbidden", function (assert) {
-		var oBinding = this.oModel.bindProperty("Name");
+		var oPropertyBinding = this.oModel.bindProperty("Name");
 
 		assert.throws(function () {
-			oBinding.refresh();
+			oPropertyBinding.refresh();
 		}, new Error("Refresh on this binding is not supported"));
-
-		assert.throws(function () {
-			oBinding.resume();
-		}, new Error("Unsupported operation: resume"));
-
-		assert.throws(function () {
-			oBinding.suspend();
-		}, new Error("Unsupported operation: suspend"));
 	});
 
 	//*********************************************************************************************
 	QUnit.test("events", function (assert) {
 		var mParams = {},
-			oMock = this.mock(PropertyBinding.prototype),
+			oMock = this.oSandbox.mock(PropertyBinding.prototype),
 			oPropertyBinding,
 			oReturn = {};
 
@@ -1095,7 +1028,7 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("expression binding", function (assert) {
-		var oCacheMock = this.mock(_Cache),
+		var oCacheMock = this.oSandbox.mock(_Cache),
 			oModel = new ODataModel({
 				serviceUrl : "/service/",
 				synchronizationMode : "None"
@@ -1153,12 +1086,12 @@ sap.ui.require([
 	[undefined, "$direct"].forEach(function (sGroupId) {
 		QUnit.test("getGroupId, binding group ID " + sGroupId , function (assert) {
 			var oBinding = this.oModel.bindProperty("/absolute", undefined, {$$groupId : sGroupId}),
-				oReadPromise = SyncPromise.resolve(),
-				oTypePromise = SyncPromise.resolve(new TypeString());
+				oReadPromise = _SyncPromise.resolve(),
+				oTypePromise = _SyncPromise.resolve(new TypeString());
 
-			this.mock(this.oModel.getMetaModel()).expects("fetchUI5Type")
+			this.oSandbox.mock(this.oModel.getMetaModel()).expects("fetchUI5Type")
 				.returns(oTypePromise);
-			this.mock(oBinding.oCachePromise.getResult()).expects("fetchValue")
+			this.oSandbox.mock(oBinding.oCachePromise.getResult()).expects("fetchValue")
 				.withExactArgs(sGroupId || "$auto", undefined, sinon.match.func, sinon.match.object)
 				.callsArg(2)
 				.returns(oReadPromise);
@@ -1186,18 +1119,17 @@ sap.ui.require([
 
 		this.getPropertyCacheMock().expects("fetchValue")
 			.withExactArgs("$auto", undefined, sinon.match.func, sinon.match.object)
-			.returns(SyncPromise.resolve("HT-1000's Name"));
+			.returns(_SyncPromise.resolve("HT-1000's Name"));
 		oControl = new TestControl({
 			models : this.oModel,
 			text : "{path : '/ProductList(\\'HT-1000\\')/Name'"
 				+ ", type : 'sap.ui.model.odata.type.String'}"
 		});
-		this.mock(oControl.getBinding("text").oCachePromise.getResult())
+		this.oSandbox.mock(oControl.getBinding("text").oCachePromise.getResult())
 			.expects("update").never();
 		// Note: if setValue throws, ManagedObject#updateModelProperty does not roll back!
-		this.mock(this.oModel).expects("reportError")
-			.withExactArgs("Failed to update path /ProductList('HT-1000')/Name", sClassName,
-				sinon.match({message : "Cannot set value on this binding"}));
+		this.oLogMock.expects("error").withExactArgs(
+			"Cannot set value on this binding", "/ProductList('HT-1000')/Name", sClassName);
 
 		// code under test
 		oControl.setText("foo");
@@ -1206,12 +1138,12 @@ sap.ui.require([
 	});
 
 	//*********************************************************************************************
-	QUnit.test("setValue (binding with V2 context): forbidden", function (assert) {
+	QUnit.test("setValue (binding with cache): forbidden", function (assert) {
 		var oControl;
 
 		this.getPropertyCacheMock().expects("fetchValue")
 			.withExactArgs("$auto", undefined, sinon.match.func, sinon.match.object)
-			.returns(SyncPromise.resolve("HT-1000's Name"));
+			.returns(_SyncPromise.resolve("HT-1000's Name"));
 		oControl = new TestControl({
 			models : this.oModel,
 			text : "{path : 'Name'"
@@ -1219,12 +1151,11 @@ sap.ui.require([
 		});
 		oControl.setBindingContext(this.oModel.createBindingContext("/ProductList('HT-1000')"));
 
-		this.mock(oControl.getBinding("text").oCachePromise.getResult())
+		this.oSandbox.mock(oControl.getBinding("text").oCachePromise.getResult())
 			.expects("update").never();
 		// Note: if setValue throws, ManagedObject#updateModelProperty does not roll back!
-		this.mock(this.oModel).expects("reportError")
-			.withExactArgs("Failed to update path /ProductList('HT-1000')/Name", sClassName,
-				sinon.match({message : "Cannot set value on this binding"}));
+		this.oLogMock.expects("error").withExactArgs(
+			"Cannot set value on this binding", "/ProductList('HT-1000')/Name", sClassName);
 
 		// code under test
 		oControl.setText("foo");
@@ -1242,7 +1173,7 @@ sap.ui.require([
 			fnRead = this.getPropertyCacheMock().expects("read");
 
 		fnRead.withExactArgs("$auto", undefined, sinon.match.func, sinon.match.object)
-			.callsArg(2).returns(SyncPromise.resolve("HT-1000's Name"));
+			.callsArg(2).returns(_SyncPromise.resolve("HT-1000's Name"));
 		oControl = new TestControl({
 			models : oModel,
 			text : "{parameters : {'$$groupId' : 'groupId', '$$updateGroupId' : 'updateGroupId'}"
@@ -1250,7 +1181,7 @@ sap.ui.require([
 				+ ", type : 'sap.ui.model.odata.type.String'}"
 		});
 		oPropertyBinding = oControl.getBinding("text");
-		oPropertyBindingCacheMock = this.mock(oPropertyBinding.oCachePromise.getResult());
+		oPropertyBindingCacheMock = this.oSandbox.mock(oPropertyBinding.oCachePromise.getResult());
 		oPropertyBindingCacheMock.expects("update")
 			.withExactArgs("updateGroupId", "Name", "foo", "ProductList('HT-1000')")
 			.returns(Promise.resolve());
@@ -1289,27 +1220,18 @@ sap.ui.require([
 	//TODO error handling, both technical HTTP errors as well as business logic errors
 
 	//*********************************************************************************************
-	[{}, Function].forEach(function (vValue) {
-		QUnit.test("setValue: Not a primitive value: " + vValue, function (assert) {
-			var oError = new Error("Not a primitive value"),
-				oPropertyBinding = this.oModel.bindProperty("/absolute"),
-				oModelMock = this.mock(this.oModel);
+	QUnit.test("setValue: Not a primitive value", function (assert) {
+		var oPropertyBinding = this.oModel.bindProperty("/absolute");
 
-			oPropertyBinding.vValue = "fromServer"; // simulate a read
+		// code under test
+		assert.throws(function () {
+			oPropertyBinding.setValue({});
+		}, new Error("Not a primitive value"));
 
-			oModelMock.expects("reportError")
-				.withExactArgs("Failed to update path /absolute", sClassName,
-					sinon.match({message : oError.message}));
-			this.mock(this.oModel.oMetaModel).expects("fetchUpdateData").never();
-			this.mock(oPropertyBinding).expects("withCache").never();
-
-			// code under test
-			assert.throws(function () {
-				oPropertyBinding.setValue(vValue);
-			}, oError);
-
-			assert.strictEqual(oPropertyBinding.getValue(), "fromServer");
-		});
+		// code under test
+		assert.throws(function () {
+			oPropertyBinding.setValue(Function);
+		}, new Error("Not a primitive value"));
 	});
 
 	//*********************************************************************************************
@@ -1325,7 +1247,7 @@ sap.ui.require([
 			oPromise = Promise.reject(oError),
 			oPropertyBinding = oModel.bindProperty("/ProductList('0')/Name");
 
-		this.mock(oPropertyBinding.oCache).expects("update")
+		this.oSandbox.mock(oPropertyBinding.oCache).expects("update")
 			.withExactArgs("$direct", "Name", "foo", "ProductList('0')")
 			.returns(oPromise);
 		this.oLogMock.expects("error").withExactArgs(sMessage, oError.stack, sClassName);
@@ -1339,136 +1261,102 @@ sap.ui.require([
 	});
 
 	//*********************************************************************************************
-	[{
-		updateGroupId : undefined,
-		value : "foo"
-	}, {
-		updateGroupId : "up",
-		value : null
-	}].forEach(function (oFixture) {
-		var sTitle = "setValue (relative binding) via control, updateGroupId="
-			+ oFixture.updateGroupId;
-		QUnit.test(sTitle, function (assert) {
-			var oParentBinding = this.oModel.bindContext("/BusinessPartnerList('0100000000')"),
-				oContext = oParentBinding.getBoundContext(),
-				oBinding = this.oModel.bindProperty("Address/City", oContext),
-				oBindingMock = this.mock(oBinding),
-				oCache = {
-					update : function () {}
-				},
-				oCacheMock = this.mock(oCache),
-				sCachePath = "~",
-				oError = {},
-				oParentBindingMock = this.mock(oParentBinding),
-				fnUpdate,
-				oUpdatePromise = {},
-				fnWithCache;
+	QUnit.test("setValue (relative binding) via control", function (assert) {
+		var oBindingMock,
+			oCacheMock = this.getSingleCacheMock(),
+			oModel = new ODataModel({
+				groupId : "$direct",
+				serviceUrl : "/service/?sap-client=111",
+				synchronizationMode : "None"
+			}),
+			oModelMock = this.mock(oModel),
+			oMetaModelMock = this.mock(oModel.oMetaModel),
+			oControl = new TestControl({
+				models : oModel,
+				objectBindings : "/BusinessPartnerList('0100000000')"
+			}),
+			oParentBinding = oControl.getObjectBinding(),
+			oContext = oParentBinding.getBoundContext(),
+			oParentBindingMock = this.oSandbox.mock(oParentBinding);
 
-			oBinding.vValue = ""; // simulate a read - intentionally use a falsy value
-
-			this.mock(oBinding).expects("checkSuspended").withExactArgs();
-			this.mock(this.oModel).expects("checkGroupId").withExactArgs(oFixture.updateGroupId);
-			this.mock(this.oModel.oMetaModel).expects("fetchUpdateData")
-				.withExactArgs("Address/City", sinon.match.same(oContext))
-				.returns(SyncPromise.resolve({
-					editUrl : "/BusinessPartnerList('0100000000')",
-					entityPath : "/BusinessPartnerList/0", // unrealistic, but different to editUrl
-					propertyPath : "Address/City"
-				}));
-			fnWithCache = oBindingMock.expects("withCache")
-				.withExactArgs(sinon.match.func, "/BusinessPartnerList/0");
-
-			// code under test
-			oBinding.setValue(oFixture.value, oFixture.updateGroupId);
-
-			// the "Unit" property associated with Address/City
-			oBindingMock.expects("getUnitOrCurrencyPath").withExactArgs().returns("Unit");
-			if (!oFixture.updateGroupId) {
-				oParentBindingMock.expects("getUpdateGroupId").returns("up");
-			}
-			fnUpdate = oCacheMock.expects("update")
-				.withExactArgs("up", "Address/City", oFixture.value, sinon.match.func,
-					"/BusinessPartnerList('0100000000')", sCachePath, "Unit")
-				.returns(oUpdatePromise);
-
-			// code under test: call arg to withCache
-			assert.strictEqual(fnWithCache.firstCall.args[0](oCache, sCachePath, oParentBinding),
-				oUpdatePromise);
-
-			this.mock(this.oModel).expects("reportError").withExactArgs(
-				"Failed to update path /BusinessPartnerList('0100000000')/Address/City", sClassName,
-				sinon.match.same(oError));
-
-			// code under test: call arg to oCache.update
-			fnUpdate.firstCall.args[3](oError);
+		oCacheMock.expects("fetchValue")
+			.withExactArgs("$direct", "Address/City", sinon.match.func, sinon.match.object)
+			.returns(_SyncPromise.resolve("Heidelberg")); // text property of control
+		oControl.applySettings({
+			text : "{path : 'Address/City', type : 'sap.ui.model.odata.type.String'}"
 		});
+		oBindingMock = this.mock(oControl.getBinding("text"));
+		oModelMock.expects("checkGroupId").withExactArgs(undefined);
+		oMetaModelMock.expects("fetchUpdateData")
+			.withExactArgs("Address/City", sinon.match.same(oContext))
+			.returns(_SyncPromise.resolve({
+				editUrl : "/BusinessPartnerList('0100000000')",
+				entityPath : "/BusinessPartnerList/0", // not realistic, but different to editUrl
+				propertyPath : "Address/City"
+			}));
+		oParentBindingMock.expects("updateValue").withExactArgs(undefined, "Address/City", "foo",
+				sinon.match.func, "/BusinessPartnerList('0100000000')", "/BusinessPartnerList/0",
+				"Unit")
+			.returns(Promise.resolve());
+		oBindingMock.expects("getUnitOrCurrencyPath")
+			.withExactArgs("Address/City")
+			.returns("Unit"); // the "Unit" property associated with Address/City
+
+		// code under test
+		oControl.setText("foo");
+
+		oModelMock.expects("checkGroupId").withExactArgs("up");
+		oMetaModelMock.expects("fetchUpdateData")
+			.withExactArgs("Address/City", sinon.match.same(oContext))
+			.returns(_SyncPromise.resolve({
+				editUrl : "/BusinessPartnerList('0100000000')",
+				entityPath : "/BusinessPartnerList/0", // not realistic, but different to editUrl
+				propertyPath : "Address/City"
+			}));
+		oParentBindingMock.expects("updateValue").withExactArgs("up", "Address/City", null,
+				sinon.match.func, "/BusinessPartnerList('0100000000')", "/BusinessPartnerList/0",
+				"Unit")
+			.returns(Promise.resolve());
+		oBindingMock.expects("getUnitOrCurrencyPath")
+			.withExactArgs("Address/City")
+			.returns("Unit");
+
+		// code under test
+		oControl.getBinding("text").setValue(null, "up");
 	});
 
 	//*********************************************************************************************
 	QUnit.test("setValue (relative binding): error handling", function (assert) {
-		var oContext = Context.create(this.oModel, {/*oParentBinding*/}, "/ProductList('HT-1000')"),
+		var oParentBinding = {
+				updateValue : function () {}
+			},
+			oContext = Context.create(this.oModel, oParentBinding, "/ProductList('HT-1000')"),
 			sMessage = "This call intentionally failed",
 			oError = new Error(sMessage),
-			oPropertyBinding = this.oModel.bindProperty("Name", oContext),
-			oUpdatePromise = Promise.reject(oError);
+			oPromise = Promise.resolve(),
+			oPropertyBinding = this.oModel.bindProperty("Name", oContext);
 
-		oPropertyBinding.vValue = "fromServer"; // simulate a read
-
-		this.mock(oPropertyBinding).expects("checkSuspended").withExactArgs();
-		this.mock(this.oModel.oMetaModel).expects("fetchUpdateData")
+		this.oSandbox.mock(this.oModel.oMetaModel).expects("fetchUpdateData")
 			.withExactArgs("Name", sinon.match.same(oContext))
-			.returns(SyncPromise.resolve({
+			.returns(_SyncPromise.resolve({
 				editUrl : "/ProductList('HT-1000')",
 				entityPath : "/ProductList/0", // not realistic, but different to editUrl
 				propertyPath : "Name"
 			}));
-		this.mock(oPropertyBinding).expects("withCache")
-			.withExactArgs(sinon.match.func, "/ProductList/0")
-			.returns(oUpdatePromise);
-		this.mock(this.oModel).expects("reportError").withExactArgs(
+		this.oSandbox.mock(oParentBinding).expects("updateValue")
+			.withExactArgs(undefined, "Name", "foo", sinon.match.func, "/ProductList('HT-1000')",
+				"/ProductList/0", undefined)
+			.callsArgWith(3, oError)
+			.returns(oPromise);
+		this.mock(oPropertyBinding).expects("getUnitOrCurrencyPath").returns(undefined);
+		this.oSandbox.mock(this.oModel).expects("reportError").withExactArgs(
 			"Failed to update path /ProductList('HT-1000')/Name", sClassName,
 			sinon.match.same(oError));
 
 		// code under test
-		oPropertyBinding.setValue("foo", "up");
-
-		return oUpdatePromise.catch(function () {}); // wait, but do not fail
-	});
-
-	//*********************************************************************************************
-	QUnit.test("setValue (relative binding): unset", function (assert) {
-		var oContext = Context.create(this.oModel, {/*oParentBinding*/}, "/ProductList('HT-1000')"),
-			oError = new Error("Must not change a property before it has been read"),
-			oPropertyBinding = this.oModel.bindProperty("Name", oContext);
-
-		this.mock(oPropertyBinding).expects("checkSuspended").withExactArgs();
-		assert.strictEqual(oPropertyBinding.vValue, undefined);
-		this.mock(this.oModel.oMetaModel).expects("fetchUpdateData").never();
-		this.mock(oPropertyBinding).expects("withCache").never();
-		this.mock(this.oModel).expects("reportError")
-			.withExactArgs("Failed to update path /ProductList('HT-1000')/Name", sClassName,
-				sinon.match({message : oError.message}));
-
-		// code under test
-		assert.throws(function () {
-			oPropertyBinding.setValue("foo");
-		}, oError);
-
-		assert.strictEqual(oPropertyBinding.vValue, undefined);
-	});
-
-	//*********************************************************************************************
-	QUnit.test("setValue (relative binding): unchanged", function (assert) {
-		var oContext = Context.create(this.oModel, {/*oParentBinding*/}, "/ProductList('HT-1000')"),
-			oPropertyBinding = this.oModel.bindProperty("Name", oContext);
-
-		oPropertyBinding.vValue = "foo";
-		this.mock(oPropertyBinding).expects("checkSuspended").withExactArgs();
-		this.mock(this.oModel.oMetaModel).expects("fetchUpdateData").never();
-		this.mock(oPropertyBinding).expects("withCache").never();
-
-		// code under test
 		oPropertyBinding.setValue("foo");
+
+		return oPromise;
 	});
 
 	//*********************************************************************************************
@@ -1479,13 +1367,10 @@ sap.ui.require([
 			oPromise = Promise.reject(oError),
 			oPropertyBinding = this.oModel.bindProperty("Name", oContext);
 
-		oPropertyBinding.vValue = "fromServer"; // simulate a read
-
-		this.mock(oPropertyBinding).expects("checkSuspended").withExactArgs();
-		this.mock(this.oModel.oMetaModel).expects("fetchUpdateData")
+		this.oSandbox.mock(this.oModel.oMetaModel).expects("fetchUpdateData")
 			.withExactArgs("Name", sinon.match.same(oContext))
-			.returns(SyncPromise.resolve(Promise.reject(oError)));
-		this.mock(this.oModel).expects("reportError").withExactArgs(
+			.returns(_SyncPromise.resolve(Promise.reject(oError)));
+		this.oSandbox.mock(this.oModel).expects("reportError").withExactArgs(
 			"Failed to update path /ProductList('HT-1000')/Name", sClassName,
 			sinon.match.same(oError));
 
@@ -1497,31 +1382,51 @@ sap.ui.require([
 
 	//*********************************************************************************************
 	QUnit.test("setValue (relative binding): canceled", function (assert) {
-		var oContext = Context.create(this.oModel, {/*oParentBinding*/}, "/ProductList('HT-1000')"),
+		var oParentBinding = {
+				updateValue : function () {}
+			},
+			oContext = Context.create(this.oModel, oParentBinding, "/ProductList('HT-1000')"),
 			oError = new Error(),
-			oPropertyBinding = this.oModel.bindProperty("Name", oContext),
-			oUpdatePromise = Promise.reject(oError);
+			oPromise = Promise.reject(oError),
+			oPropertyBinding = this.oModel.bindProperty("Name", oContext);
 
 		oError.canceled = true;
-		oPropertyBinding.vValue = "fromServer"; // simulate a read
 
-		this.mock(oPropertyBinding).expects("checkSuspended").withExactArgs();
-		this.mock(this.oModel.oMetaModel).expects("fetchUpdateData")
+		this.oSandbox.mock(this.oModel.oMetaModel).expects("fetchUpdateData")
 			.withExactArgs("Name", sinon.match.same(oContext))
-			.returns(SyncPromise.resolve({
+			.returns(_SyncPromise.resolve({
 				editUrl : "/ProductList('HT-1000')",
 				entityPath : "/ProductList/0", // not realistic, but different to editUrl
 				propertyPath : "Name"
 			}));
-		this.mock(oPropertyBinding).expects("withCache")
-			.withExactArgs(sinon.match.func, "/ProductList/0")
-			.returns(oUpdatePromise);
-		this.mock(this.oModel).expects("reportError").never();
+		this.oSandbox.mock(oParentBinding).expects("updateValue")
+			.withExactArgs(undefined, "Name", "foo", sinon.match.func, "/ProductList('HT-1000')",
+				"/ProductList/0", undefined)
+			.returns(oPromise);
+		this.mock(oPropertyBinding).expects("getUnitOrCurrencyPath").returns(undefined);
+		this.oSandbox.mock(this.oModel).expects("reportError").never();
 
 		// code under test
-		oPropertyBinding.setValue("foo", "up");
+		oPropertyBinding.setValue("foo");
 
-		return oUpdatePromise.catch(function () {}); // wait, but do not fail
+		return oPromise.catch(function () {});
+	});
+
+	//*********************************************************************************************
+	QUnit.test("setValue (relative binding w/o context) via control", function (assert) {
+		var oControl = new TestControl({
+				models : this.oModel,
+				text : "{path : 'Note', type : 'sap.ui.model.odata.type.String'}"
+			});
+
+		// Note: if setValue throws, ManagedObject#updateModelProperty does not roll back!
+		this.oLogMock.expects("warning").withExactArgs(
+			"Cannot set value on relative binding without context", "Note", sClassName);
+
+		// code under test
+		oControl.setText("foo");
+
+		assert.strictEqual(oControl.getText(), undefined, "control change is rolled back");
 	});
 
 	//*********************************************************************************************
@@ -1536,8 +1441,8 @@ sap.ui.require([
 			},
 			oPropertyBinding = this.oModel.bindProperty("/absolute");
 
-		this.mock(oDateTimeOffset).expects("setV4");
-		this.mock(oSomeType).expects("setV4").never();
+		this.oSandbox.mock(oDateTimeOffset).expects("setV4");
+		this.oSandbox.mock(oSomeType).expects("setV4").never();
 
 		// code under test
 		oPropertyBinding.setType(null);
@@ -1574,16 +1479,50 @@ sap.ui.require([
 	});
 
 	//*********************************************************************************************
+	QUnit.test("hasPendingChanges: absolute binding", function (assert) {
+		var oPropertyBinding = this.oModel.bindProperty("/absolute"),
+			oResult = {};
+
+		this.oSandbox.mock(oPropertyBinding.oCachePromise.getResult())
+			.expects("hasPendingChangesForPath").withExactArgs("").returns(oResult);
+
+		assert.strictEqual(oPropertyBinding.hasPendingChanges(), oResult);
+	});
+
+	//*********************************************************************************************
+	QUnit.test("hasPendingChanges: relative binding resolved", function (assert) {
+		var oContext = {
+				hasPendingChangesForPath : function () {}
+			},
+			oPropertyBinding,
+			oResult = {};
+
+		this.stub(ODataPropertyBinding.prototype, "fetchCache", function (oContext0) {
+			assert.strictEqual(oContext0, oContext);
+			this.oCachePromise = _SyncPromise.resolve();
+		});
+		oPropertyBinding = this.oModel.bindProperty("Name", oContext);
+		this.oSandbox.mock(oContext).expects("hasPendingChangesForPath").withExactArgs("Name")
+			.returns(oResult);
+
+		assert.strictEqual(oPropertyBinding.hasPendingChanges(), oResult);
+	});
+
+	//*********************************************************************************************
+	QUnit.test("hasPendingChanges: relative binding unresolved", function (assert) {
+		assert.strictEqual(this.oModel.bindProperty("PRODUCT_2_BP").hasPendingChanges(), false);
+	});
+
+	//*********************************************************************************************
 	QUnit.test("refreshInternal", function (assert) {
 		var oBinding = this.oModel.bindProperty("NAME"),
 			oBindingMock = this.mock(oBinding),
 			oContext = Context.create(this.oModel, {}, "/EMPLOYEES/42");
 
-		this.mock(ODataPropertyBinding.prototype).expects("fetchCache").thrice()
-			.withExactArgs(oContext)
-			.callsFake(function () {
-				this.oCachePromise = SyncPromise.resolve();
-			});
+		this.stub(ODataPropertyBinding.prototype, "fetchCache", function (oContext0) {
+			assert.strictEqual(oContext0, oContext);
+			this.oCachePromise = _SyncPromise.resolve();
+		});
 		oBindingMock.expects("checkUpdate").withExactArgs(false, ChangeReason.Context);
 		oBinding.setContext(oContext);
 
@@ -1594,10 +1533,29 @@ sap.ui.require([
 
 		// code under test
 		oBinding.refreshInternal("myGroup", false);
+
+		assert.strictEqual(ODataPropertyBinding.prototype.fetchCache.callCount, 3);
 	});
 
 	//*********************************************************************************************
-	QUnit.test("destroy", function (assert) {
+	QUnit.test("destroy: absolute binding", function (assert) {
+		var oPropertyBinding = this.oModel.bindProperty("/absolute");
+
+		this.oSandbox.mock(oPropertyBinding.oCachePromise.getResult()).expects("deregisterChange")
+			.withExactArgs(undefined, sinon.match.same(oPropertyBinding));
+		this.oSandbox.mock(PropertyBinding.prototype).expects("destroy").on(oPropertyBinding)
+			.withExactArgs("foo", 42);
+		this.oSandbox.mock(this.oModel).expects("bindingDestroyed")
+			.withExactArgs(sinon.match.same(oPropertyBinding));
+
+		// code under test
+		oPropertyBinding.destroy("foo", 42);
+
+		assert.strictEqual(oPropertyBinding.oCachePromise, undefined);
+	});
+
+	//*********************************************************************************************
+	QUnit.test("destroy: relative binding resolved", function (assert) {
 		var oContext = {
 				deregisterChange : function () {},
 				getPath : function () {return "Name";}
@@ -1605,15 +1563,16 @@ sap.ui.require([
 			oPromise = Promise.resolve(),
 			oPropertyBinding;
 
-		this.mock(ODataPropertyBinding.prototype).expects("fetchCache")
-			.withExactArgs(sinon.match.same(oContext)).callsFake(function (oContext0) {
-				// we might become asynchronous due to auto $expand/$select reading $metadata
-				this.oCachePromise = SyncPromise.resolve(oPromise);
-			});
+		this.stub(ODataPropertyBinding.prototype, "fetchCache", function (oContext0) {
+			assert.strictEqual(oContext0, oContext);
+			// we might become asynchronous due to auto $expand/$select reading $metadata
+			this.oCachePromise = _SyncPromise.resolve(oPromise);
+		});
 		oPropertyBinding = this.oModel.bindProperty("Name", oContext);
-		this.mock(oPropertyBinding).expects("deregisterChange").withExactArgs();
-		this.mock(PropertyBinding.prototype).expects("destroy").on(oPropertyBinding);
-		this.mock(this.oModel).expects("bindingDestroyed")
+		this.oSandbox.mock(oContext).expects("deregisterChange")
+			.withExactArgs("Name", sinon.match.same(oPropertyBinding));
+		this.oSandbox.mock(PropertyBinding.prototype).expects("destroy").on(oPropertyBinding);
+		this.oSandbox.mock(this.oModel).expects("bindingDestroyed")
 			.withExactArgs(sinon.match.same(oPropertyBinding));
 
 		// code under test
@@ -1623,6 +1582,17 @@ sap.ui.require([
 		assert.strictEqual(oPropertyBinding.oContext, undefined);
 
 		return oPromise;
+	});
+
+	//*********************************************************************************************
+	QUnit.test("destroy: relative binding unresolved", function (assert) {
+		var oPropertyBinding = this.oModel.bindProperty("PRODUCT_2_BP");
+
+		this.oSandbox.mock(this.oModel).expects("bindingDestroyed")
+			.withExactArgs(sinon.match.same(oPropertyBinding));
+
+		// code under test
+		oPropertyBinding.destroy();
 	});
 
 	//*********************************************************************************************
@@ -1746,56 +1716,8 @@ sap.ui.require([
 				.returns(oFixture.mAnnotations);
 
 			// code under test
-			assert.strictEqual(oBinding.getUnitOrCurrencyPath(), oFixture.sExpectedPath);
-		});
-	});
-
-	//*********************************************************************************************
-	QUnit.test("deregisterChange", function (assert) {
-		var oBinding = this.oModel.bindProperty("/EMPLOYEES('1')/AGE"),
-			oCache = {
-				deregisterChange : function () {}
-			},
-			oMock,
-			sPath = "foo";
-
-		oMock = this.mock(oBinding).expects("withCache").withExactArgs(sinon.match.func)
-			.returns(SyncPromise.resolve());
-
-		// code under test
-		oBinding.deregisterChange();
-
-		// check that the function passed to withCache works as expected
-		this.mock(oCache).expects("deregisterChange")
-			.withExactArgs(sPath, sinon.match.same(oBinding));
-		oMock.firstCall.args[0](oCache, sPath);
-	});
-
-	//*********************************************************************************************
-	QUnit.test("deregisterChange: withCache rejects sync", function (assert) {
-		var oBinding = this.oModel.bindProperty("/EMPLOYEES('1')/AGE"),
-			oError = new Error("fail intentionally");
-
-		this.mock(oBinding).expects("withCache").returns(SyncPromise.reject(oError));
-		this.oLogMock.expects("error").withExactArgs("Error in deregisterChange", oError,
-			sClassName);
-
-		// code under test
-		oBinding.deregisterChange();
-	});
-
-	//*********************************************************************************************
-	[true, false].forEach(function (bCheckUpdate) {
-		QUnit.test("resumeInternal: bCheckUpdate=" + bCheckUpdate, function (assert) {
-			var oContext = Context.create(this.oModel, {}, "/ProductList('42')"),
-				oBinding = this.oModel.bindProperty("Category", oContext),
-				oBindingMock = this.mock(oBinding);
-
-			oBindingMock.expects("fetchCache").withExactArgs(sinon.match.same(oContext));
-			oBindingMock.expects("checkUpdate").exactly(bCheckUpdate ? 1 : 0).withExactArgs();
-
-			// code under test
-			oBinding.resumeInternal(bCheckUpdate);
+			assert.strictEqual(oBinding.getUnitOrCurrencyPath(oFixture.sPathInEntity),
+				oFixture.sExpectedPath);
 		});
 	});
 
@@ -1824,8 +1746,8 @@ sap.ui.require([
 					// code under test
 					oControl.setText(sPhoneNumber);
 
-					// Wait for #setValue to finish (then the response has been processed). The
-					// assertion is only that no error/warning logs happen.
+					// Wait for ODataParentBinding#updateValue to finish (then the response has
+					// been processed). The assertion is only that no error/warning logs happen.
 					resolve();
 				});
 			});

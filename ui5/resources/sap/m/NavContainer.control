@@ -127,29 +127,25 @@ This could be used not only for the initial display, but also if the user wants 
         <method type="sap.ui.core/Control" name="getPage">
             <documentation>Returns the control with the given ID from the &quot;pages&quot; aggregation (if available).</documentation>
             <parameters>
-                <parameter type="sap.ui.core/string" name="pageId">
-                    <documentation>The ID of the aggregated control to find</documentation>
+                <parameter type="sap.ui.core/string" name="id">
+                    <documentation>The ID of the aggregated control to find.</documentation>
                 </parameter>
             </parameters>
         </method>
         <method type="sap.ui.core/Control" name="getCurrentPage">
-            <documentation>Returns the currently displayed page-level control.
+            <documentation>Returns the currently displayed page-level control. Note: it is not necessarily an instance of sap.m.Page, but it could also be an sap.ui.core.View, sap.m.Carousel, or whatever is aggregated.
 
-&lt;b&gt;Note:&lt;/b&gt; Returns &lt;code&gt;undefined&lt;/code&gt; if no page has been added yet,
-otherwise returns an instance of &lt;code&gt;sap.m.Page&lt;/code&gt;,
-&lt;code&gt;sap.ui.core.View&lt;/code&gt;, &lt;code&gt;sap.m.Carousel&lt;/code&gt; or whatever is aggregated.</documentation>
+Returns undefined if no page has been added yet.</documentation>
         </method>
         <method since="1.7.1" type="sap.ui.core/Control" name="getPreviousPage">
             <documentation>Returns the previous page (the page from which the user drilled down to the current page with &quot;to()&quot;).
-
-&lt;b&gt;Note:&lt;/b&gt; this is not the page which the user has seen before, but the page which is the target of the next &quot;back()&quot; navigation.
-If there is no previous page, &lt;code&gt;undefined&lt;/code&gt; is returned.</documentation>
+Note: this is not the page which the user has seen before, but the page which is the target of the next &quot;back()&quot; navigation.
+If there is no previous page, &quot;undefined&quot; is returned.</documentation>
         </method>
         <method type="sap.ui.core/boolean" name="currentPageIsTopPage">
             <documentation>Returns whether the current page is the top/initial page.
 
-&lt;b&gt;Note:&lt;/b&gt; going to the initial page again with a row of &quot;to&quot; navigations causes the initial page to be displayed again,
-but logically one is not at the top level, so this method returns &quot;false&quot; in this case.</documentation>
+Note: going to the initial page again with a row of &quot;to&quot; navigations causes the initial page to be displayed again, but logically one is not at the top level, so this method returns &quot;false&quot; in this case.</documentation>
         </method>
         <method since="1.16.1" type="sap.m/NavContainer" name="insertPreviousPage">
             <documentation>Inserts the page/control with the specified ID into the navigation history stack of the NavContainer.
@@ -183,7 +179,7 @@ Calling this navigation method triggers first the (cancelable) &quot;navigate&qu
                     <documentation>The type of the transition/animation to apply. This parameter can be omitted; then the default is &quot;slide&quot; (horizontal movement from the right).</documentation>
                 </parameter>
                 <parameter type="sap.ui.core/object" name="data">
-                    <documentation>Since version 1.7.1. This optional object can carry any payload data which should be made available to the target page.</documentation>
+                    <documentation>Since version 1.7.1. This optional object can carry any payload data which should be made available to the target page. The &quot;beforeShow&quot; event on the target page will contain this data object as &quot;data&quot; property.</documentation>
                 </parameter>
                 <parameter type="sap.ui.core/object" name="transitionParameters">
                     <documentation>Since version 1.7.1. This optional object can contain additional information for the transition function, like the DOM element which triggered the transition or the desired transition duration.</documentation>

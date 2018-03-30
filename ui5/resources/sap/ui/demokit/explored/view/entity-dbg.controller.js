@@ -1,6 +1,6 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
@@ -137,7 +137,7 @@ sap.ui.define([
 			var oHistory = History.getInstance();
 			var oPrevHash = oHistory.getPreviousHash();
 			var bShowNavButton = Device.system.phone || (!bEntityIsInIndex && !!oPrevHash);
-			this.byId("page").setShowNavButton(bShowNavButton);
+			this.getView().byId("page").setShowNavButton(bShowNavButton);
 
 			// set data model
 			var oModel,
@@ -181,7 +181,7 @@ sap.ui.define([
 			if (!oData.show[sNewTab]) {
 				sNewTab = "samples";
 			}
-			var oTab = this.byId("tabBar");
+			var oTab = this.getView().byId("tabBar");
 			if (sNewTab !== oTab.getSelectedKey() && oTab.getExpanded()) {
 				oTab.setSelectedKey(sNewTab);
 			}

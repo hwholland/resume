@@ -30,6 +30,9 @@ sap.ui.define([
 	});
 
 	opaTest("Should see the not found text for no search results", function(Given, When, Then) {
+		// Arrangements
+		Given.iStartMyApp();
+
 		//Actions
 		When.onTheWorklistPage.iSearchForSomethingWithNoResults();
 

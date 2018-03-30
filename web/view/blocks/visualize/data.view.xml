@@ -1,0 +1,91 @@
+<mvc:View xmlns:c="sap.ui.core" xmlns:dnd="sap.ui.core.dnd" xmlns:form="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:m="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.data="sap.viz.ui5.data" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds">
+            <l:BlockLayout>
+                <l:BlockLayoutRow>
+                    <l:BlockLayoutCell>
+                        <viz:Popover id="idPopOver4"/>
+                        <viz:VizFrame height="300px" id="VizFrame4" uiConfig="{applicationSet:'fiori'}" vizType="combination" width="100%">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset data="{/}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="Title" value="{title}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="Days" value="{days}"/>
+                                        <viz.data:MeasureDefinition name="Resources" value="{resources}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem type="Measure" uid="valueAxis" values="Days"/>
+                                <viz.feeds:FeedItem type="Measure" uid="valueAxis" values="Resources"/>
+                                <viz.feeds:FeedItem type="Dimension" uid="categoryAxis" values="Title"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </l:BlockLayoutCell>
+                    <l:BlockLayoutCell>
+                        <viz:Popover id="idPopOver1"/>
+                        <viz:VizFrame height="300px" id="VizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="stacked_column" width="100%">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset data="{/Requirements}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="Name" value="{Name}"/>
+                                        <viz.data:DimensionDefinition name="Category" value="{Category}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="Rank" value="{Rank}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem id="valueAxisFeed" type="Measure" uid="valueAxis" values="Rank"/>
+                                <viz.feeds:FeedItem id="categoryAxisFeed" type="Dimension" uid="categoryAxis" values="Category"/>
+                                <viz.feeds:FeedItem type="Dimension" uid="color" values="Name"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </l:BlockLayoutCell>
+
+                </l:BlockLayoutRow>
+                <l:BlockLayoutRow>
+
+                    <l:BlockLayoutCell>
+                        <viz:Popover id="idPopOver1"/>
+                        <viz:VizFrame height="300px" id="VizFrame1" uiConfig="{applicationSet:'fiori'}" vizType="pie" width="100%">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset data="{/}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="Workstreams" value="{title}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="Counter" value="{counter}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem type="Measure" uid="size" values="Counter"/>
+                                <viz.feeds:FeedItem type="Dimension" uid="color" values="Workstreams"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </l:BlockLayoutCell>
+                    <l:BlockLayoutCell>
+                        <viz:VizFrame class="sapUiSmallMarginTop" height="300px" id="VizFrame2" uiConfig="{applicationSet:'fiori'}" vizType="heatmap" width="100%">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset data="{tokens>/}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="Title" value="{title}"/>
+                                        <viz.data:DimensionDefinition name="Type" value="{type}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="Days" value="{days}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem type="Measure" uid="color" values="Days"/>
+                                <viz.feeds:FeedItem type="Dimension" uid="categoryAxis" values="Title"/>
+                                <viz.feeds:FeedItem type="Dimension" uid="categoryAxis2" values="Type"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </l:BlockLayoutCell>
+                </l:BlockLayoutRow>
+            </l:BlockLayout>
+</mvc:View>

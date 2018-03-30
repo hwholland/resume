@@ -96,7 +96,7 @@
       <script type="text/javascript" src="js/prettify.js"> </script>
       <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
       <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
-   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+   <body class="en-us sap-default centered navigation-default">
       <div id="d4h5-main-container" class="container_12" role="application">
          <ul id="page-links" class="hidden">
             <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
@@ -128,22 +128,25 @@
                         </p>
                         
                         		
-                        <p class="p">View modification is available for XML views, JS views and HTML views. Below is an
-                           			example that explains how a view modification works. The first code snippet describes
-                           			the <samp class="ph codeph">Sub3.view.xml</samp> view in the delivered standard application.
+                        <p class="p">View modification is available for XML views, JS views and HTML views. Below is an example that
+                           			explains how a view modification works. The first code snippet describes the
+                           				<samp class="ph codeph">Sub3.view.xml</samp> view in the delivered standard application.
                         </p>
                         
-                        		<pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns=&quot;sap.&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;&gt;
+                        		<pre class="pre codeblock prettyprint lang-js">
+&lt;mvc:View xmlns=&quot;sap.ui.commons&quot; xmlns:mvc=&quot;sap.ui.core.mvc&quot;&gt;
     &lt;TextView text=&quot;SAP View &apos;Sub3&apos; - the text after this one is hidden by customizing: &quot;&gt;&lt;/TextView&gt;
     &lt;TextView id=&quot;someCustomizableTextControl&quot; text=&quot;This text is made invisible by customization&quot;&gt;&lt;/TextView&gt;  
-&lt;/mvc:View&gt;</pre>
+&lt;/mvc:View&gt;
+</pre>
                         
                         		<p class="p">The following code snippet describes the extensions for the control
                            				<samp class="ph codeph">someCustomizableTextControl</samp> with the <samp class="ph codeph">visible</samp>
                            			property set to <samp class="ph codeph">false</samp>.
                         </p>
                         
-                        		<pre class="pre codeblock prettyprint lang-js">extensions: {  
+                        		<pre class="pre codeblock prettyprint lang-js">
+extensions: {  
     &quot;sap.ui.viewModifications&quot;: {
         &quot;samples.components.ext.sap.Sub3&quot;: {
             &quot;someCustomizableTextControl&quot;: {
@@ -151,7 +154,8 @@
             }
         }
     }
-}</pre>
+}
+</pre>
                         
                         	</div>
                      

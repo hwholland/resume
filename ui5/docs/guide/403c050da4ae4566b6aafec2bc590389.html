@@ -6,8 +6,8 @@
 <meta name="abstract" content="OpenUI5 uses extension points for extending standard views with custom content. The assignment of a custom view to an extension point is done in component customizing."/>
 <meta name="description" content="OpenUI5 uses extension points for extending standard views with custom content. The assignment of a custom view to an extension point is done in component customizing."/>
 
-<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8936688991336258"/>
-<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8936688991336258"/>
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=12381182669752366"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=12381182669752366"/>
 <title>View Extension</title>
   <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
     <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
@@ -16,12 +16,12 @@
 <body class="" id="loio403c050da4ae4566b6aafec2bc590389">
 <div id="wrapper"><div id="container">
 
-    <h1 class="title topictitle1">View Extension</h1>
+	<h1 class="title topictitle1">View Extension</h1>
 
     
-    <div class="body"><p class="shortdesc"><span class="ph"><span class="ph pname">OpenUI5</span></span> uses extension
-        points for extending standard views with custom content. The assignment of a custom view to
-        an extension point is done in component customizing.</p>
+	<div class="body"><p class="shortdesc"><span class="ph"><span class="ph pname">OpenUI5</span></span> uses extension points for extending standard views with custom content. The
+        assignment of a custom view to an extension point is done in component
+        customizing.</p>
 
         <p class="p">You can add extension points in a standard view to indicate the position within the view
             where you can insert custom content. In XML views, the
@@ -34,7 +34,7 @@
                 <samp class="ph codeph">extension3</samp>. The extension name together with the view name
             identifies an extension point.</p>
 
-        <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns="sap.m"  xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"&gt;
+        <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns="sap.ui.commons"  xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"&gt;
     &lt;core:ExtensionPoint name="extension1" /&gt;
     &lt;TextView text="SAP View 'Sub2' - this one is extended by the customer and there should be a button after this text"&gt;&lt;/TextView&gt;    
     &lt;core:ExtensionPoint name="extension2" /&gt;   
@@ -74,9 +74,9 @@
         <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">[...]
 	var oLayout = new sap.ui.layout.VerticalLayout({
 		content: [
-		          new sap.m.Button({text: "I am preceding the extension point"}),
+		          new sap.ui.commons.Button({text: "I am preceding the extension point"}),
 		          sap.ui.extensionpoint(this, "extension4"),
-		          new sap.m.Button({text: "I am following the extension point"})
+		          new sap.ui.commons.Button({text: "I am following the extension point"})
 		         ]
 	});
 [...]
@@ -99,7 +99,7 @@
                 <samp class="ph codeph">ListItems</samp>, the default list items can be enclosed in an
                     <samp class="ph codeph">&lt;ExtensionPoint&gt;</samp> tag.</p>
 
-            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns="sap.m"  xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"&gt;
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns="sap.ui.commons"  xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"&gt;
     &lt;ListBox items="{/names}"&gt;
         &lt;core:ExtensionPoint name="extension1" /&gt;
             &lt;ListItem text="{firstName} /&gt;
@@ -157,7 +157,7 @@
             <p class="p">Extension content in the custom application in
                     <samp class="ph codeph">CustomFrag1.fragment.xml</samp> file:</p>
 
-            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">&lt;Button xmlns="sap.m" text="This Button is in an Extension Fragment" /&gt;
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">&lt;Button xmlns="sap.ui.commons" text="This Button is in an Extension Fragment" /&gt;
 </pre></div>
 
             <div class="note note"><span class="notetitle">Note</span> You can also add multiple root-level controls using one fragment.</div>
@@ -165,7 +165,7 @@
             <p class="p">Extension content in the custom application in
                     <samp class="ph codeph">CustomSubSubView1.view.xml</samp> file.</p>
 
-            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns="sap.m"  xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"&gt;
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">&lt;mvc:View xmlns="sap.ui.commons"  xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"&gt;
     &lt;core:ExtensionPoint name="extension1" /&gt;
     &lt;TextView text="Customer View 'SubSubView1' - this one extends the original SAP View 'Sub2' - and even custom Views can be extended:"&gt;&lt;/TextView&gt;   
     &lt;core:ExtensionPoint name="extension2" /&gt;   

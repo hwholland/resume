@@ -5,11 +5,7 @@ sap.ui.define(['sap/ui/core/UIComponent'],
 	var Component = UIComponent.extend("sap.m.sample.P13nDialog.Component", {
 
 		metadata : {
-			rootView : {
-				"viewName": "sap.m.sample.P13nDialog.Page",
-				"type": "XML",
-				"async": true
-			},
+			rootView : "sap.m.sample.P13nDialog.Page",
 			dependencies : {
 				libs : [
 					"sap.m",

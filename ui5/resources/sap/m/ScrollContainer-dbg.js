@@ -1,26 +1,12 @@
 /*!
  * UI development toolkit for HTML5 (OpenUI5)
- * (c) Copyright 2009-2018 SAP SE or an SAP affiliate company.
+ * (c) Copyright 2009-2017 SAP SE or an SAP affiliate company.
  * Licensed under the Apache License, Version 2.0 - see LICENSE.txt.
  */
 
 // Provides control sap.m.ScrollContainer
-sap.ui.define([
-	"jquery.sap.global",
-	"./library",
-	"sap/ui/core/Control",
-	"sap/ui/core/delegate/ScrollEnablement",
-	"sap/ui/core/Element",
-	"./ScrollContainerRenderer"
-],
-	function(
-		jQuery,
-		library,
-		Control,
-		ScrollEnablement,
-		Element,
-		ScrollContainerRenderer
-	) {
+sap.ui.define(["jquery.sap.global", "./library", "sap/ui/core/Control", "sap/ui/core/delegate/ScrollEnablement", "sap/ui/core/Element"],
+	function (jQuery, library, Control, ScrollEnablement, Element) {
 		"use strict";
 
 
@@ -37,7 +23,7 @@ sap.ui.define([
 		 * @extends sap.ui.core.Control
 		 *
 		 * @author SAP SE
-		 * @version 1.54.2
+		 * @version 1.52.5
 		 *
 		 * @constructor
 		 * @public
@@ -91,7 +77,7 @@ sap.ui.define([
 					 */
 					content: {type: "sap.ui.core.Control", multiple: true, singularName: "content"}
 				},
-				designtime: "sap/m/designtime/ScrollContainer.designtime"
+				designTime: true
 			}
 		});
 

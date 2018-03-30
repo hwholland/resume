@@ -16,7 +16,7 @@ sap.ui.define([
 
 		// Assertions
 		Then.onTheWorklistPage.theTableShouldHaveAllEntries().
-		and.theTitleShouldDisplayTheTotalAmountOfItems();
+			and.theTitleShouldDisplayTheTotalAmountOfItems();
 	});
 
 	opaTest("Should be able to load 10 more items", function(Given, When, Then) {
