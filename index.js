@@ -37,7 +37,7 @@ const oExpress = require('express'), // Express acts as the HTTP server
  * @property   {String}  sLaunchUrl   Location to access the web application
  * @property   {String}  sYear        Can't remember what this is for
  */
-var sPort = process.env.PORT || 3000,
+var sPort = process.env.PORT || 80,
     sPublicPath = '/ui5',
     sDirectory = __dirname +
             sPublicPath,
@@ -74,6 +74,6 @@ oApp.use("/ui5", oServeIndex(__dirname + sPublicPath, {'icons': true}));
 /* Assign all HTTP destinations, begin listening on the port, and open the local web browser to the web folder to load the index.html file, which is the entrance to the application */
 oRouter.getRoutes();
 oApp.listen(sPort);
-oOpen('http://localhost:3000/web');
+oOpen('http://localhost:80/web');
 
 console.log("resume web-server running at\n  => " + sLaunchUrl + " \nCTRL + C to shutdown");
