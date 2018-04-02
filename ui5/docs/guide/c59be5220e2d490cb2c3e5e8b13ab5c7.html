@@ -1,0 +1,147 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can use hierarchy annotations in ODataTreeBinding to change the tree structure. All changes to the tree structure are performed on the client without the need of additional back-end requests. The accumulated changes can then be submitted back to the service in one go."/>
+<meta name="description" content="You can use hierarchy annotations in ODataTreeBinding to change the tree structure. All changes to the tree structure are performed on the client without the need of additional back-end requests. The accumulated changes can then be submitted back to the service in one go."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=06174839177354341"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=06174839177354341"/>
+<title>Hierarchy Annotations</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc59be5220e2d490cb2c3e5e8b13ab5c7">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Hierarchy Annotations</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You can use hierarchy annotations in <samp class="ph codeph">ODataTreeBinding</samp> to change the
+		tree structure. All changes to the tree structure are performed on the client without the
+		need of additional back-end requests. The accumulated changes can then be submitted back to
+		the service in one go.</p>
+
+		<div class="p">You can edit tree structures in the <samp class="ph codeph">ODataTreeBinding</samp> if the following
+			conditions are met:<ul class="ul" id="loioc59be5220e2d490cb2c3e5e8b13ab5c7__ul_szd_xpb_3y">
+				<li class="li">
+					<p class="p">The OData service provides the
+							<samp class="ph codeph">hierarchy-node-descendant-count-for</samp> annotation (see
+							<a class="xref" href="45250c7f2247410187bca9cfc4760127.html" title="When using a TreeTable together with an OData service, you have to define a minimal set of annotations. In addition to this minimal annotation set, you can also provide the hierarchy-node-descendant-count-for annotation.">Annotations for the Tree Table</a>)</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">The binding is configured to run in <samp class="ph codeph">OperationMode</samp>
+						<samp class="ph codeph">Server</samp> (this is the default value)</p>
+
+				</li>
+
+			</ul>
+</div>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">The following sections explain high-level concepts only. <span class="ph">For more
+					information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v2.ODataTreeBinding.html" alt="../../docs/api/symbols/sap.ui.model.odata.v2.ODataTreeBinding.html" title="../../docs/api/symbols/sap.ui.model.odata.v2.ODataTreeBinding.html">API Reference</a>.</span></p>
+
+		</div>
+
+		<div class="section"><div class="section_title">createEntry(...)</div><div type="createEntry(...)">
+				
+				<p class="p">The <samp class="ph codeph">createEntry</samp> function allows you to create a new transient entity
+				associated with the binding instance. The API is exactly the same as defined in the
+				ODataModel. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v2.ODataModel.html" alt="../../docs/api/symbols/sap.ui.model.odata.v2.ODataModel.html" title="../../docs/api/symbols/sap.ui.model.odata.v2.ODataModel.html">API Reference</a>.</span></p>
+
+			</div></div>
+<div class="section"><div class="section_title">addContexts(parentNode:Context, childNodes[]:Context)</div><div type="addContexts(parentNode:Context, childNodes[]:Context)">
+				
+				<p class="p">The <samp class="ph codeph">addContexts</samp> function allows you to add direct child nodes for a given
+				parent context. The second parameter is an array of
+					<samp class="ph codeph">sap.ui.model.Context</samp> instances. These are either newly created
+				contexts (via <samp class="ph codeph">createEntry</samp>), or existing contexts removed from the
+				same binding instance (via <samp class="ph codeph">removeContext</samp>).</p>
+
+				<p class="p">The contexts added to the binding are added directly underneath the parent context. A shift
+				to a different position is currently not possible.</p>
+
+				<p class="p">Because the data set may be not loaded completely on the client, filter and sort criteria are
+				not regarded for moved or newly created nodes. The reordering will be performed
+				after submitting and saving the changes to the service.</p>
+
+			</div></div>
+<div class="section"><div class="section_title">removeContext(node:Context)</div><div type="removeContext(node:Context)">
+				
+				<p class="p">The <samp class="ph codeph">removeContext</samp> function removes the given context and all nodes beneath
+				it in the subtree. A removed context can be reinserted via the
+					<samp class="ph codeph">addContexts</samp> function.</p>
+
+			</div></div>
+<div class="section"><div class="section_title">submitChanges(...)</div><div type="submitChanges(...)">
+				
+				<p class="p">Submits all accumulated hierarchy changes and formulates the back-end requests accordingly.
+				Only the minimal set of necessary back-end requests is issued. The API is exactly
+				the same as defined in the OData model. <span class="ph">For more
+					information, see the <a class="xref" href="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.ui.model.odata.v2.ODataModel.html" alt="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.ui.model.odata.v2.ODataModel.html" title="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.ui.model.odata.v2.ODataModel.html">API Reference</a>.</span></p>
+
+				<p class="p">When calling <samp class="ph codeph">submitChanges()</samp> on the binding instance, all changes
+				accumulated up to this point are translated into OData requests and then sent to the
+				service. <samp class="ph codeph">ODataTreeBinding</samp> makes sure that only necessary requests
+				are sent. With the OData model v2, <samp class="ph codeph">create</samp> and
+					<samp class="ph codeph">delete</samp> operations are deferred by default, whereas property
+				changes are sent directly to the back end. Since <samp class="ph codeph">ODataTreeBinding</samp>
+				has to submit all changes in one go and change sets can contain mixed operations
+				(such as <samp class="ph codeph">delete</samp> and <samp class="ph codeph">update</samp> operations), the change
+				group related to the binding's entity type has to be deferred.</p>
+
+			<p class="p">This has to be done by the application and provides as much control to application development
+				as possible.</p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">Some back-end systems require that update requests are sent as an <samp class="ph codeph">HTTP PUT</samp>,
+					but the default update method for the OData model is <samp class="ph codeph">MERGE</samp>. You
+					can change this by using <samp class="ph codeph">sap.ui.model.odata.UpdateMethod</samp>.</p>
+
+			</div>
+
+				<div class="note remember"><span class="remembertitle">Remember</span> 
+					<p class="p">The deferral of the change group has to be done before any change operations
+						are performed via the public API of <samp class="ph codeph">ODataTreeBinding</samp>.</p>
+
+				</div>
+
+			<div class="p">The following code snippet shows an example of a controller function that defers a change
+				group for a given entity type. The entity type name is used as key for creating a
+				change group. The ID of the change group itself is
+				arbitrary.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">ensureCorrectChangeGroup: function (sEntityType) {
+    this._sTreeChangeGroup = ("sapTreeHM-" + jQuery.sap.uid());
+     
+    // make sure we have a change group
+    var mChangeGroups = this.oODataModel.getChangeGroups();
+ 
+    // if there is no change group for the entity type yet, create one
+    if (!mChangeGroups[sEntityType]) {
+        mChangeGroups[sEntityType] = {
+            groupId: this._sTreeChangeGroup,
+            single: false
+        };
+        this.oODataModel.setChangeGroups(mChangeGroups);
+        // important: the group has to be deferred
+        this.oODataModel.setDeferredGroups([this._sTreeChangeGroup]);
+    }
+},</pre></div>
+After
+				providing a valid deferred change group, the change group is sent via the OData
+				model by calling <samp class="ph codeph">submitChanges</samp>. The application does not have to
+				provide a change group in the <samp class="ph codeph">submitChanges</samp> call. This is handled
+				internally.</div>
+
+			</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

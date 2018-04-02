@@ -1,0 +1,460 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The sap.ui.table.TreeTable control is a table that includes a hierarchy. It is based on the sap.ui.table.Table control."/>
+<meta name="description" content="The sap.ui.table.TreeTable control is a table that includes a hierarchy. It is based on the sap.ui.table.Table control."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=44777014145203753"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=44777014145203753"/>
+<title>Tree Table</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioa05fe0659b9c49729168a48697ce0000">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Tree Table</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">sap.ui.table.TreeTable</samp> control is a table that includes a
+		hierarchy. It is based on the <samp class="ph codeph">sap.ui.table.Table</samp> control. </p>
+
+		<div class="section collapsible" id="loioa05fe0659b9c49729168a48697ce0000__section_iqn_4tw_pz"><div class="section_title">API Reference</div><div type="API Reference">
+			
+			<p class="p"><span class="ph">For more
+					information, see the API Reference for <a class="xref" href="../../docs/api/symbols/sap.ui.table.TreeTable.html" alt="../../docs/api/symbols/sap.ui.table.TreeTable.html" title="../../docs/api/symbols/sap.ui.table.TreeTable.html"><samp class="ph codeph">sap.ui.table.TreeTable</samp></a> and <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v2.ODataTreeBinding.html" alt="../../docs/api/symbols/sap.ui.model.odata.v2.ODataTreeBinding.html" title="../../docs/api/symbols/sap.ui.model.odata.v2.ODataTreeBinding.html"><samp class="ph codeph">sap.ui.model.odata.v2.ODataTreeBinding</samp></a>.</span></p>
+
+			
+		</div></div>
+
+		<div class="section"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p"><samp class="ph codeph">Table</samp> controls simply set the binding contexts for all rows every
+				time a change in the visual representation is detected. Most of the time, this
+				happens due to a scroll operation by the user.</p>
+
+			<p class="p">For <samp class="ph codeph">TreeTable</samp>s, a common case is the <samp class="ph codeph">expand</samp> operation. If a
+				hierarchy is modifiable, data binding contexts are also reset when the hierarchy is
+				changed, for example, if nodes are removed or added.</p>
+
+			<p class="p">With the aid of <samp class="ph codeph">ODataListBinding</samp> and <samp class="ph codeph">ODataTreeBinding</samp>, a
+				paging mechanism only requests the data entries needed for the currently visualized
+				snapshot of the full data set. Therefore, only a limited and minimal excerpt of the
+				original data set is available on the client.</p>
+
+			<p class="p">This in turn means that all user operations, as well as programmatic API-calls, might trigger
+				back-end requests to get the full data set.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Features</div><div type="Features">
+			
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">The features are only available when using
+							<samp class="ph codeph">sap.ui.model.odata.<span class="ph emphasis emphasis">v2</span>.ODataModel</samp>.</p>
+
+			</div>
+
+			<div class="p"><samp class="ph codeph">ODataTreeBinding</samp> implements the most important set of features that are
+				needed to operate on a tree structure in the back end:<ul class="ul" id="loioa05fe0659b9c49729168a48697ce0000__ul_rvq_fhr_gy">
+					<li class="li">
+						<p class="p">Expanding and collapsing of nodes</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Paging big data sets</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Lazy loading child nodes on expansion of the parent node</p>
+
+					</li>
+
+					<li class="li">
+						<div class="p">Selections:<ul class="ul" id="loioa05fe0659b9c49729168a48697ce0000__ul_oyf_jhr_gy">
+								<li class="li">
+									<p class="p">Adding and removing selection ranges</p>
+
+								</li>
+
+								<li class="li">
+									<p class="p">Clearing the selection</p>
+
+								</li>
+
+								<li class="li">
+									<p class="p">"Select all" </p>
+
+								</li>
+
+							</ul>
+</div>
+
+					</li>
+
+					<li class="li">
+						<div class="p">Hierarchy Maintenance:<ul class="ul" id="loioa05fe0659b9c49729168a48697ce0000__ul_xdw_khr_gy">
+								<li class="li">
+									<p class="p">Adding and removing nodes</p>
+
+								</li>
+
+								<li class="li">
+									<p class="p">Submitting the changed data back to the service </p>
+
+								</li>
+
+							</ul>
+</div>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Different operation modes</p>
+
+					</li>
+
+				</ul>
+</div>
+
+			<div class="p">The following table gives an overview of the supported operation modes: 
+<div class="table-wrapper tablenoborder"><table summary="" id="loioa05fe0659b9c49729168a48697ce0000__table_dt3_vhr_gy" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 1: Operation Modes</span></caption>
+<colgroup><col width="12.5%"/><col width="12.5%"/><col width="12.5%"/><col width="12.5%"/><col width="12.5%"/><col width="12.5%"/><col width="12.5%"/><col width="12.5%"/></colgroup>
+
+						
+						
+						
+						
+						
+						
+						
+						
+						<thead class="thead" align="left">
+							<tr class="row">
+								<th class="entry" valign="top" width="12.5%" id="d8716500e199">
+									<p class="p">Operation Mode</p>
+
+								</th>
+
+								<th class="entry" valign="top" width="12.5%" id="d8716500e205">
+									<p class="p">Data Source</p>
+
+								</th>
+
+								<th class="entry" valign="top" width="12.5%" id="d8716500e211">
+									<p class="p">Paging</p>
+
+								</th>
+
+								<th class="entry" valign="top" width="12.5%" id="d8716500e217">
+									<p class="p">Lazy Loading</p>
+
+								</th>
+
+								<th class="entry" valign="top" width="12.5%" id="d8716500e223">
+									<p class="p">Sorting</p>
+
+								</th>
+
+								<th class="entry" valign="top" width="12.5%" id="d8716500e230">
+									<p class="p">Filtering</p>
+
+								</th>
+
+								<th class="entry" valign="top" width="12.5%" id="d8716500e236">
+									<p class="p">Auto-Expand</p>
+
+								</th>
+
+								<th class="entry" valign="top" width="12.5%" id="d8716500e242">
+									<p class="p">Hierarchy Maintenance</p>
+
+								</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody class="tbody">
+							<tr class="row">
+								<td class="entry" rowspan="3" valign="top" width="12.5%" headers="d8716500e199 ">
+									<p class="p"><span class="ph emphasis emphasis">Server</span></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e205 ">
+									<p class="p"><span class="ph emphasis emphasis">OData hierarchy-annotations minimal
+										set</span></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e211 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_qzb_w31_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e217 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_gbh_w31_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e223 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_uvs_w31_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e230 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_rkw_m31_3y" src="loioecb263eedeee4db99a86c027a36a78bc_LowRes.png" alt="See notes below" title="See notes below"/><sup class="ph sup">1</sup></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e236 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_zd2_n31_3y" src="loioecb263eedeee4db99a86c027a36a78bc_LowRes.png" alt="See notes below" title="See notes below"/><sup class="ph sup">3</sup></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e242 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_umm_gj1_3y" src="loio34293b68a59b4813a2c4b6c85853659e_LowRes.gif" alt="Not supported" title="Not supported"/></p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e205 ">
+									<p class="p"><span class="ph emphasis emphasis">OData hierarchy-annotations with
+												<samp class="ph codeph">hierarchy-node-descendant-count-for</samp></span></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e211 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_blc_1j1_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e217 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_ljx_z31_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e223 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_vft_z31_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e230 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_usn_z31_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e236 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_x3h_z31_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e242 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_xbc_z31_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e205 ">
+									<p class="p"><span class="ph emphasis emphasis">ODatat navigation properties</span></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e211 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_qk5_1j1_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e217 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_qny_1j1_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e223 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_dnf_bj1_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e230 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_iq2_l31_3y" src="loioecb263eedeee4db99a86c027a36a78bc_LowRes.png" alt="See below" title="See below"/><sup class="ph sup">1</sup></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e236 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_jwr_hj1_3y" src="loio34293b68a59b4813a2c4b6c85853659e_LowRes.gif" alt="Not supported" title="Not supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e242 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_n4v_hj1_3y" src="loio34293b68a59b4813a2c4b6c85853659e_LowRes.gif" alt="Not supported" title="Not supported"/></p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" rowspan="3" valign="top" width="12.5%" headers="d8716500e199 ">
+									<p class="p"><span class="ph emphasis emphasis">Client</span></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e205 ">
+									<p class="p"><span class="ph emphasis emphasis">OData hierarchy-annotations minimal
+										set</span></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e211 ">
+									<p class="p">Not relevant</p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e217 ">
+									<p class="p">Not relevant</p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e223 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_vkq_bj1_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e230 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_mnw_bj1_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e236 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_j2m_cj1_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e242 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_op1_3j1_3y" src="loio34293b68a59b4813a2c4b6c85853659e_LowRes.gif" alt="Not supported" title="Not supported"/></p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e205 ">
+									<p class="p"><span class="ph emphasis emphasis">OData hierarchy-annotations with
+												<samp class="ph codeph">hierarchy-node-descendant-count-for</samp></span></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e211 ">
+									<p class="p">Not relevant</p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e217 ">
+									<p class="p">Not relevant</p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e223 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_gsb_dj1_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e230 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_q3f_dj1_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e236 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_sfq_dj1_3y" src="loio9c52f662c4bb48ec9a18918dde208f4f_LowRes.png" alt="Supported" title="Supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e242 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_dn2_3j1_3y" src="loio34293b68a59b4813a2c4b6c85853659e_LowRes.gif" alt="Not supported" title="Not supported"/>
+										<img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_xtb_kj1_3y" src="loioecb263eedeee4db99a86c027a36a78bc_LowRes.png" alt="See notes below" title="See notes below"/><sup class="ph sup">2</sup></p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e205 ">
+									<p class="p"><span class="ph emphasis emphasis">ODatat navigation properties</span></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e211 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_aqy_3j1_3y" src="loio34293b68a59b4813a2c4b6c85853659e_LowRes.gif" alt="Not supported" title="Not supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e217 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_jrb_jj1_3y" src="loio34293b68a59b4813a2c4b6c85853659e_LowRes.gif" alt="Not supported" title="Not supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e223 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_s1s_3j1_3y" src="loio34293b68a59b4813a2c4b6c85853659e_LowRes.gif" alt="Not supported" title="Not supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e230 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_qsp_3j1_3y" src="loio34293b68a59b4813a2c4b6c85853659e_LowRes.gif" alt="Not supported" title="Not supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e236 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_dln_3j1_3y" src="loio34293b68a59b4813a2c4b6c85853659e_LowRes.gif" alt="Not supported" title="Not supported"/></p>
+
+								</td>
+
+								<td class="entry" valign="top" width="12.5%" headers="d8716500e242 ">
+									<p class="p"><img class="image" id="loioa05fe0659b9c49729168a48697ce0000__image_prk_3j1_3y" src="loio34293b68a59b4813a2c4b6c85853659e_LowRes.gif" alt="Not supported" title="Not supported"/></p>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+</div>
+<p class="lines">1) Filtering and searching with the minimal annotation set is only possible with application filters. <span class="ph">For more information, see <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v2.ODataTreeBinding.html#filter" alt="../../docs/api/symbols/sap.ui.model.odata.v2.ODataTreeBinding.html#filter" title="../../docs/api/symbols/sap.ui.model.odata.v2.ODataTreeBinding.html#filter"><samp class="ph codeph">sap.ui.model.odata.v2.ODataTreeBinding.filter</samp></a>.</span> The application filters will be sent with each data request. Control filters are not supported in this case, as the paging and lazy loading mechanisms have a technical limitation on what can be done on the client. Complex OData tree filtering can only be done in the back end, and can only be achieved when using the <samp class="ph codeph">hierarchy-node-descendant-count-for</samp> annotation.<br/>
+2) For services with the <samp class="ph codeph">hierarchy-node-descendant-count-for</samp> annotation, the operation modes <samp class="ph codeph">Client</samp> and <samp class="ph codeph">Auto</samp> will still fall back to the same client-side logic as with the minimal annotation set. This means that hierarchy maintenance is not yet possible for those cases.<br/>
+3) You should never use the <samp class="ph codeph">Auto-Expand</samp> feature for the operation mode <samp class="ph codeph">Server</samp> and an OData service with the minimal annotation set, even though it is supported, because this has a huge impact on performance.<br/>
+<br/>
+The expansion of a tree to a certain level requires a series of sequential back-end requests, which is not feasible for big data sets and applications that contain a huge amount of data. We recommend to use the <samp class="ph codeph">hierarchy-node-descendant-count-for</samp> annotation set. The <samp class="ph codeph">Auto-Expand</samp> feature is fully functional and supported for this annotation without any performance impact.</p>
+</div>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="45250c7f2247410187bca9cfc4760127.html" title="When using a TreeTable together with an OData service, you have to define a minimal set of annotations. In addition to this minimal annotation set, you can also provide the hierarchy-node-descendant-count-for annotation.">Annotations for the Tree Table</a></strong><br/>
+</div>
+<div><strong><a class="link" href="c59be5220e2d490cb2c3e5e8b13ab5c7.html" title="You can use hierarchy annotations in ODataTreeBinding to change the tree structure. All changes to the tree structure are performed on the client without the need of additional back-end requests. The accumulated changes can then be submitted back to the service in one go.">Hierarchy Annotations</a></strong><br/>
+</div>
+<div><strong><a class="link" href="07deec992cab4912893f2d9ec2f29489.html" title="The following section explains some constraints that you have to be aware of when working with the TreeTable.">Tree Table: Constraints</a></strong><br/>
+</div>
+</ul>
+
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fexperience.sap.com%2Ffiori-design-web%2Fui-components%2Ftree-table%2F" alt="https://experience.sap.com/fiori-design-web/ui-components/tree-table/" title="https://experience.sap.com/fiori-design-web/ui-components/tree-table/"><span class="ph pname">SAP Fiori design guidelines</span> for Tree Table<img src="images/sap_link.png" class="link-sap" alt="Information published on SAP site" title="Information published on SAP site" border="0"/></a></div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fwiki.scn.sap.com%2Fwiki%2Fdisplay%2FEmTech%2FSAP%2BAnnotations%2Bfor%2BOData%2BVersion%2B2.0" alt="https://wiki.scn.sap.com/wiki/display/EmTech/SAP+Annotations+for+OData+Version+2.0" title="https://wiki.scn.sap.com/wiki/display/EmTech/SAP+Annotations+for+OData+Version+2.0">SAP Annotations for OData Version 2.0<img src="images/sap_link.png" class="link-sap" alt="Information published on SAP site" title="Information published on SAP site" border="0"/></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>
