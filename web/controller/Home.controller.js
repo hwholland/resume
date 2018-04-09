@@ -67,7 +67,11 @@ sap.ui.define([
 
         onPressSDN: function() {
             window.open("https://people.sap.com/harrison.holland4", "_blank");  
-        }
+        },
+
+        onPressEmail: function () {
+            sap.m.URLHelper.triggerEmail("harrisonholland@gmail.com", "Info Request");
+        },
 
     });
 });
