@@ -55,6 +55,18 @@ sap.ui.define([
             //console.log(this);
             //console.log(this.getView());
             
+        },
+
+        onPressLinkedIn: function() {
+            window.open("https://www.linkedin.com/in/harrisonholland", "_blank");
+        },
+
+        onPressGithub: function() {
+            window.open("https://github.com/hwholland", "_blank");
+        },
+
+        onPressSDN: function() {
+            window.open("https://people.sap.com/harrison.holland4", "_blank");  
         }
 
     });

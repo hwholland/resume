@@ -18,9 +18,10 @@
 				<m:ObjectAttribute active="false" text="harrisonholland@gmail.com" title="Email"/>
 			</layout:VerticalLayout>
 			<layout:VerticalLayout>
-				<m:ObjectAttribute active="true" text="https://www.linkedin.com/in/harrisonholland" title="LinkedIn"/>
-				<m:ObjectAttribute active="true" text="https://github.com/hwholland" title="GitHub"/>
-				<m:ObjectAttribute active="true" text="https://people.sap.com/harrison.holland4" title="SAP Developer Network"/>
+				<m:ObjectAttribute active="true" text="https://www.linkedin.com/in/harrisonholland" title="LinkedIn" press="onPressLinkedIn"/>
+				<m:ObjectAttribute active="true" text="https://github.com/hwholland" title="GitHub" press="onPressGithub"/>
+				<m:ObjectAttribute active="true" text="https://people.sap.com/harrison.holland4
+					" title="SAP Developer Network" press="onPressSDN"/>
 			</layout:VerticalLayout>
 			<layout:HorizontalLayout>
 				<m:Text text="Hello, I'm Harrison.  I have been working in the IT field for 15 years in various roles.  The areas where I have unique knowledge and experience include: abstract systems, data architecture / modeling, and digital security." width="375px"/>
@@ -61,7 +62,7 @@
 			</ObjectPageSection>
 			<ObjectPageSection title="Startups">
 				<subSections>
-					<ObjectPageSubSection title="SOLO">
+					<ObjectPageSubSection title="Solo">
 						<blocks>
 							<entreprenuership:solo columnLayout="auto"/>
 						</blocks>
@@ -74,24 +75,13 @@
 							<entreprenuership:concepts columnLayout="auto"/>
 						</blocks>
 						<moreBlocks>
-							<m:List backgroundDesign="Transparent" class="sapUiLargeMarginBegin" items="{ path: 'tokens&gt;/concepts'}">
-								<m:items>
-									<m:StandardListItem info="{tokens&gt;info}" title="{tokens&gt;text}"/>
-								</m:items>
-							</m:List>
+							<skills:hs columnLayout="auto"/>
 						</moreBlocks>
 					</ObjectPageSubSection>
 					<ObjectPageSubSection title="Discrete Ventures">
 						<blocks>
 							<entreprenuership:social columnLayout="auto"/>
 						</blocks>
-						<moreBlocks>
-							<m:Tokenizer enableMultiLineMode="true" tokens="{ path: 'tokens&gt;/discrete' }">
-								<m:tokens>
-									<m:Token editable="false" key="{tokens&gt;key}" text="{tokens&gt;text}"/>
-								</m:tokens>
-							</m:Tokenizer>
-						</moreBlocks>
 					</ObjectPageSubSection>
 				</subSections>
 			</ObjectPageSection>
@@ -101,6 +91,9 @@
 						<blocks>
 							<consulting:lambweston columnLayout="auto"/>
 						</blocks>
+						<moreBlocks>
+							<skills:lw columnLayout="auto"/>
+						</moreBlocks>
 					</ObjectPageSubSection>
 					<ObjectPageSubSection title="JimmyAsh">
 						<blocks>

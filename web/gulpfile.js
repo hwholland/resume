@@ -9,7 +9,7 @@ var minify = require('gulp-minify');
 var prettydata = require('gulp-pretty-data');
 var gulpif = require('gulp-if');
 var replace = require('gulp-replace');
-rm = require('gulp-rimraf');
+var rm = require('gulp-rimraf');
 
 var gulps = require("gulp-series");
 var prettify = require('gulp-prettify');
@@ -31,7 +31,7 @@ gulp.task(
                 ]
             )
             .pipe(gulpif('./**/*.js', uglify())) //only pass .js files to uglify
-            //.pipe(gulpif('**/*.xml', prettydata({type: 'minify'}))) // only pass .xml to prettydata
+            .pipe(gulpif('**/*.xml', prettydata({type: 'minify'}))) // only pass .xml to prettydata
             .pipe(ui5preload({
                 base: './',
                 namespace: your_project,
