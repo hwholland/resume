@@ -32,33 +32,29 @@
 					<ObjectPageSubSection>
 						<blocks>
 							<layout:BlockLayout>
-								
 								<layout:BlockLayoutRow>
 									<layout:BlockLayoutCell>
-							<viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}" vizType="heatmap" width="100%">
-								<viz:dataset>
-									<viz.data:FlattenedDataset data="{/data/heatmap}">
-										<viz.data:dimensions>
-											<viz.data:DimensionDefinition name="Skills" value="{skills}"/>
-											<viz.data:DimensionDefinition name="Company" value="{company}"/>
-										</viz.data:dimensions>
-										<viz.data:measures>
-											<viz.data:MeasureDefinition name="Volume" value="{level}"/>
-										</viz.data:measures>
-									</viz.data:FlattenedDataset>
-								</viz:dataset>
-								<viz:feeds>
-									<viz.feeds:FeedItem type="Measure" uid="color" values="Volume"/>
-									<viz.feeds:FeedItem type="Dimension" uid="categoryAxis" values="Skills"/>
-									<viz.feeds:FeedItem type="Dimension" uid="categoryAxis2" values="Company"/>
-								</viz:feeds>
-							</viz:VizFrame>
-						</layout:BlockLayoutCell>
-
-
-					</layout:BlockLayoutRow>
-					
-				</layout:BlockLayout>
+										<viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}" vizType="heatmap" width="100%">
+											<viz:dataset>
+												<viz.data:FlattenedDataset data="{/data/heatmap}">
+													<viz.data:dimensions>
+														<viz.data:DimensionDefinition name="Skills" value="{skills}"/>
+														<viz.data:DimensionDefinition name="Company" value="{company}"/>
+													</viz.data:dimensions>
+													<viz.data:measures>
+														<viz.data:MeasureDefinition name="Volume" value="{level}"/>
+													</viz.data:measures>
+												</viz.data:FlattenedDataset>
+											</viz:dataset>
+											<viz:feeds>
+												<viz.feeds:FeedItem type="Measure" uid="color" values="Volume"/>
+												<viz.feeds:FeedItem type="Dimension" uid="categoryAxis" values="Skills"/>
+												<viz.feeds:FeedItem type="Dimension" uid="categoryAxis2" values="Company"/>
+											</viz:feeds>
+										</viz:VizFrame>
+									</layout:BlockLayoutCell>
+								</layout:BlockLayoutRow>
+							</layout:BlockLayout>
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>
@@ -70,11 +66,7 @@
 							<entreprenuership:solo columnLayout="auto"/>
 						</blocks>
 						<moreBlocks>
-							<m:List backgroundDesign="Transparent" class="sapUiLargeMarginBegin" items="{ path: 'tokens&gt;/solo' }">
-								<m:items>
-									<m:StandardListItem info="{tokens&gt;info}" title="{tokens&gt;text}"/>
-								</m:items>
-							</m:List>
+							<skills:solo columnLayout="auto"/>
 						</moreBlocks>
 					</ObjectPageSubSection>
 					<ObjectPageSubSection title="Holland Systems / Big Concepts">
