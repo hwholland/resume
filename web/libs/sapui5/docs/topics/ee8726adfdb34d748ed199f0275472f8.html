@@ -1,0 +1,324 @@
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html lang="en-us" dir="ltr">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Node.js-Based Development Environment</title>
+      <link rel="icon" href="themes/sap-default/img/favicon.ico" type="image/x-icon">
+      <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="abstract" content="Used for modifying OpenUI5. The environment is based on Node.js, used as a server, with a build process that is based on Grunt. This section provides information for the initial setup, development workflow, and tests execution.">
+      
+      <meta name="description" content="Used for modifying OpenUI5. The environment is based on Node.js, used as a server, with a build process that is based on Grunt. This section provides information for the initial setup, development workflow, and tests execution.">
+      <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"98a4d1ded43945e5802dbffc53ffb7b8.html","previousTopicHref":"2d3f5fb63a2f4090942375df80abc39f.html"}</script>
+      <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
+      <script type="text/javascript">
+      
+        d4p.cssGridPath = d4p.dev ? 'html5-themes/modules/960-Responsive-Grid/css/' : 'themes/dita-d4p-classic/css/';
+        var ADAPT_CONFIG = {
+          // Where is your CSS?
+          path: d4p.relativePath + d4p.cssGridPath,
+
+          // false = Only run once, when page first loads.
+          // true = Change on window resize and page tilt.
+          dynamic: true,
+
+          // Optional callback... myCallback(i, width)
+          callback: doc_resize,
+
+          // First range entry is the minimum.
+          // Last range entry is the maximum.
+          // Separate ranges by "to" keyword.
+          range: [
+             // small (size-0)
+            '0px    to 760px  =',
+             // medium (size-1, size-2)
+            '760px  to 980px  = ',
+            '980px  to 1270px = ',
+             // large (size-3, size-5)
+            '1270px to 1600px = ',
+            '1600px to 1940px = ',
+             // extra large (size-6)
+            '1940px to 2540px = ',
+            '2540px           = '
+          ]
+        };
+
+        function doc_resize(i, width)
+        {
+          d4p.setBodyClassfunction(i, width);
+        }
+
+
+        
+      </script>
+      <script type="text/javascript" src="toc-info.js"></script>
+      <script type="text/javascript" src="themes/sap-default/js/script.js"></script>
+      
+      		<!--[if lt IE 9]>
+      			<script>
+      			  var e = ("abbr,article,aside,audio,canvas,datalist,details," +
+      			    "figure,footer,header,hgroup,mark,menu,meter,nav,output," +
+      			    "progress,section,time,video").split(',');
+      			  for (var i = 0; i < e.length; i++) {
+      			    document.createElement(e[i]);
+      			  }
+      			</script>
+      		<![endif]-->
+      
+      <script>
+      function addLoadEvent(func) {
+      var oldonload = window.onload;
+      if (typeof window.onload != 'function') {
+      window.onload = func;
+      } else {
+      window.onload = function() {
+      if (oldonload) {
+      oldonload();
+      }
+      func();
+      }
+      }
+      }
+      
+      addLoadEvent(function() { prettyPrint();
+      if ($('#local-navigation').length) {
+      $('#local-navigation').navigation();
+      }
+      
+      
+      });
+      
+      </script>
+      <script type="text/javascript" src="js/prettify.js"> </script>
+      <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
+      <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
+   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+      <div id="d4h5-main-container" class="container_12" role="application">
+         <ul id="page-links" class="hidden">
+            <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
+            <li><a id="skip-to-localnav" href="#local-navigation">Skip to navigation</a></li>
+            <li><a id="skip-to-footer" href="#footer-container">Skip to footer</a></li>
+         </ul>
+         
+         
+         <div id="d4h5-section-container" class="grid_12" style="padding-top: 0;">
+            
+            
+            
+            <div id="d4h5-main-content" class="grid_8 alpha omega" style="margin: 0 0.5em;">
+               <section>
+                  <div id="content-toolbar" class="toolbar hide-for-small"></div>
+                  <div class="page concept  - topic-topic concept-concept " id="loioee8726adfdb34d748ed199f0275472f8">
+                     
+                     <h1 class="title topictitle1" hidden>Node.js-Based
+                        		Development Environment
+                     </h1>
+                     
+                     <div class="body conbody">
+                        <p class="shortdesc" hidden>Used for modifying <span class="ph pname">OpenUI5</span>.
+                           		The environment is based on Node.js, used as a server, with a build process that is based on
+                           		Grunt. This section provides information for the initial setup, development workflow, and
+                           		tests execution.
+                        </p>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="The Regular Development Process">
+                              <h2 class="section_title" style="font-size: 1.15em;">The Regular Development Process</h2>
+                              			
+                              			
+                              <p class="p">No build process is required, you can simply modify any source file and reload your
+                                 				browser.
+                              </p>
+                              
+                              			
+                              <div class="p">This build-free development process does not deliver optimized runtime performance
+                                 				(for example, there are many small requests, which would not be acceptable for
+                                 				remote connections). There are mainly two mechanisms applied that adapt the
+                                 					sources:
+                                 <ul class="ul" id="loioee8726adfdb34d748ed199f0275472f8__ul_td1_mqq_gs">
+                                    					
+                                    <li class="li">
+                                       						
+                                       <p class="p">The Git repository path contains a folder with the same name as the respective control
+                                          							library (for example, <samp class="ph codeph">sap.m</samp>), which is omitted at
+                                          							runtime. The Node.js-based server is configured to map the
+                                          							locations.
+                                       </p>
+                                       
+                                       					
+                                    </li>
+                                    
+                                    					
+                                    <li class="li">
+                                       						
+                                       <p class="p">The CSS files are transformed (server-side) by the LESS preprocessor during the first
+                                          							request after a CSS file has been modified. This includes mirroring for
+                                          							right-to-left support. After a CSS modification, this first request to
+                                          							the respective <span class="ph filepath">library.css</span> file will take several
+                                          							hundred milliseconds, depending on the amount of CSS involved. This is
+                                          							the LESS processing time.
+                                       </p>
+                                       
+                                       					
+                                    </li>
+                                    
+                                    				
+                                 </ul>
+                                 
+                              </div>
+                              
+                              		
+                           </section>
+                        </div>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="Building SAPUI5">
+                              <h2 class="section_title" style="font-size: 1.15em;">Building SAPUI5</h2>
+                              			
+                              			
+                              <p class="p">Grunt is used to build a production version of <span class="ph"><span class="ph pname">SAPUI5</span></span>. The build
+                                 				result is located inside the directory <span class="ph filepath">target/openui5</span>.
+                              </p>
+                              
+                              			
+                              <p class="p">Usage: <samp class="ph codeph">grunt build</samp></p>
+                              
+                              			
+                              <p class="p">Optionally, you can choose to build selected libraries only or skip copying the
+                                 					<span class="ph filepath">test-resources</span> folder. 
+                              </p>
+                              
+                              			
+                              <p class="p">The build process is responsible for the following tasks:</p>
+                              
+                              			
+                              <div class="p">
+                                 				
+                                 <ul class="ul" id="loioee8726adfdb34d748ed199f0275472f8__ul_osh_brq_gs">
+                                    					
+                                    <li class="li">
+                                       						
+                                       <p class="p">Creation of the bundled <span class="ph filepath">library.css</span> and
+                                          								<span class="ph filepath">library-RTL.css</span> file for all available
+                                          							themes
+                                       </p>
+                                       
+                                       					
+                                    </li>
+                                    
+                                    					
+                                    <li class="li">
+                                       						
+                                       <p class="p">Minification of CSS</p>
+                                       
+                                       					
+                                    </li>
+                                    
+                                    					
+                                    <li class="li">
+                                       						
+                                       <p class="p">Minification of JavaScript (for <span class="ph filepath">library-preload.json</span> files)
+                                       </p>
+                                       
+                                       					
+                                    </li>
+                                    
+                                    					
+                                    <li class="li">
+                                       						
+                                       <p class="p">Merging of the JavaScript modules of the libraries into into a single
+                                          								<span class="ph filepath">library-preload.json</span> file
+                                       </p>
+                                       
+                                       					
+                                    </li>
+                                    
+                                    					
+                                    <li class="li">
+                                       						
+                                       <p class="p">Merging of the most important <span class="ph"><span class="ph pname">SAPUI5</span></span> core
+                                          							files into <span class="ph filepath">sap-ui-core.js</span> (not yet optimized;
+                                          							minification missing)
+                                       </p>
+                                       
+                                       					
+                                    </li>
+                                    
+                                    				
+                                 </ul>
+                                 
+                                 			
+                              </div>
+                              
+                              			
+                              <aside class="note note  insertion"><span class="title">Note</span> 
+                                 				
+                                 <div class="p">If you encounter errors like the one below, re-do the <samp class="ph codeph">npm
+                                       						install</samp> command. There might be new build tools required that need
+                                    					to be downloaded
+                                    					first.<pre class="pre codeblock prettyprint">jit-grunt: Plugin for the &quot;replace&quot; task not found.
+If you have installed the plugin already, please setting the static mapping.
+See https://github.com/shootaroo/jit-grunt#static-mappings
+
+Warning: Task &quot;replace:target&quot; not found. Use --force to continue.</pre>
+                                    </div>
+                                 
+                                 			
+                              </aside>
+                              
+                              		
+                           </section>
+                        </div>
+                        
+                        	
+                     </div>
+                     
+                     <div class="related-links"> <br>
+                        
+                        <div class="childtopics"><strong>In this section:</strong></div>
+                        <ul class="ullinks">
+                           
+                           <div><strong><a class="link" href="../../#/topic/98a4d1ded43945e5802dbffc53ffb7b8.html" title="Installation steps for Node.js" target="_top">Installing the Node.js-Based Development Environment</a></strong><br>
+                              
+                           </div>
+                           
+                           <div><strong><a class="link" href="../../#/topic/0976bc2b589741dcb54ff491a8ddc75b.html" title="Test your development using ESLint or unit tests." target="_top">Testing SAPUI5</a></strong><br>
+                              
+                           </div>
+                           
+                           <div><strong><a class="link" href="../../#/topic/87c3de23b81c4dbc9c55da8aa17ca0f2.html" title="Common installation issues that you might face when using the node.js based development environment" target="_top">Common Installation Issues</a></strong><br>
+                              
+                           </div>
+                           
+                        </ul>
+                        
+                        
+                     </div>
+                  </div>
+                  
+               </section>
+               <div class="clear"></div>
+               
+            </div>
+            <div class="clearfix"></div>
+         </div>
+      </div>
+      <div class="clearfix"></div>
+      <div id="footer-container" class="grid_12">
+         <footer>
+            	
+            <div id="custom-footerSpacer"></div>
+            	
+            
+         </footer>
+         
+         
+      </div>
+   </body>
+</html>

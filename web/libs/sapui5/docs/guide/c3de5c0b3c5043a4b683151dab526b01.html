@@ -1,0 +1,133 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Define custom actions by using the extensions in the app-descriptor file. You can also define these custom actions so that they appear on chart, table, or header toolbar, based on the filter property value (chart/table/global)."/>
+<meta name="description" content="Define custom actions by using the extensions in the app-descriptor file. You can also define these custom actions so that they appear on chart, table, or header toolbar, based on the filter property value (chart/table/global)."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=12949286657602344"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=12949286657602344"/>
+<title>Defining Custom Actions</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc3de5c0b3c5043a4b683151dab526b01">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Defining Custom Actions</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">Define custom actions by using the extensions in the app-descriptor file. You can also
+		define these custom actions so that they appear on chart, table, or header toolbar, based on
+		the filter property value (chart/table/global).</p>
+
+		<div class="section">
+			<p class="p">Use the <samp class="ph codeph">requiresSelection</samp> property to pass a row or record as a context. This
+				ensures that the selection context is available with extensionAPI. Use the
+					<samp class="ph codeph">getSelectedContexts()</samp> API within the
+					<samp class="ph codeph">extensionAPI</samp> class to get the selection context. For buttons in
+				the chart toolbar, pass event ID as a parameter.</p>
+
+			<div class="p">Set <samp class="ph codeph">"global": true</samp> to define a button on the header area. This takes
+				precedence over <samp class="ph codeph">determining</samp> and <samp class="ph codeph">filter</samp> settings
+				that appear on the page
+				header.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"sap.ui5": {
+    "_version": "1.1.0",
+    "extends": {
+        "extensions": {
+            "sap.ui.controllerExtensions": {
+                "sap.suite.ui.generic.template.AnalyticalListPage.view.AnalyticalListPage": {
+                    "controllerName": "analytics2.ext.controller.ALPExt",
+                        "sap.ui.generic.app": {
+                            "ZCostCenterCostQuery0020": {
+                            "EntitySet": "ZCostCenterCostQuery0020",
+                            "Actions": {
+                                "Action A": {
+                                    "id": "ActionA",
+                                    "text": "{{Action A}}",
+                                    "press": "onClickActionA",
+                                    "global": true
+                                },
+                                "Action B": {
+                                    "id": "ActionB_requiresSelection",
+                                    "text": "{{Action B}}",
+                                    "press": "onClickActionB",
+                                    "filter": "table",
+                                    "requiresSelection":true
+                                }
+                                "Action C: {
+                                    "id": "ActionC_requiresSelection",
+                                    "text": "{{Action C}}",
+                                    "press": "onClickActionC",
+                                    "filter": "chart",
+                                    "requiresSelection":true
+                                }
+                                "Action D": {
+                                    "id": "ActionD",
+                                    "text": "{{Action D}}",
+                                    "press": "onClickActionD",
+                                    "filter": "table"
+                                }
+                                "Action E: {
+                                    "id": "ActionE",
+                                    "text": "{{Action E}}",
+                                    "press": "onClickActionE",
+                                    "filter": "chart"
+                                }
+                            } //End of Custom Actions
+                        } // End of entity type ZCostCenterCostQuery0020
+                    }
+                } // End of ALP controllerExtensions       
+            } // End of controllerExternsions
+        }
+    },
+        ....,
+        ....
+}</pre></div>
+</div>
+
+			<div class="p">Custom actions defined in the application’s custom
+				controller:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap.ui.controller("analytics2.ext.controller.ALPExt"){
+    onBeforeRebindTableExtension: function(oEvent){
+        console.log('onBeforeRebindTableExtension called!');
+    },
+    onBeforeRebindChartExtension: function(oEvent){
+        console.log('onBeforeRebindChartExtension called!');
+    },
+    onClickActionA{
+        alert('Button A shows up only in table toolbar and is clicked toolbar!');
+    },
+    onClickActionB{
+        var contexts = this.extensionAPI.getSelectedContexts();
+        alert('Button B which shows up in table toolbar only is clicked!');
+    },
+    onClickActionC{
+        var contexts = this.extensionAPI.getSelectedContexts(oEvent.ID);
+        alert('Button C which shows up in chart toolbar only is clicked!');
+    },
+    onClickActionD{
+        alert('Button D which shows up in table toolbar only is clicked!');
+    },
+    onClickActionE{
+        alert('Button E which shows up in chart toolbar only is clicked!');
+    }
+}
+</pre></div>
+</div>
+
+		</div>
+
+	</div>
+
+<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="9504fb4c9fc741c29bc0cc3c1f5fe83b.html">Extending Analytical List Page</a></div>
+<div><a class="link" href="4117ef96dc874c5cacf4e8be299a6388.html" title="Define custom actions for tables by configuring the app-descriptor and annotation files.">Smart Table Extensions</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

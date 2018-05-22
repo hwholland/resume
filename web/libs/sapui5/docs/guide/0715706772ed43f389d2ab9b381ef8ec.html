@@ -1,0 +1,55 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="If a fragment with a control ID is instantiated twice without giving an ID, a duplicate ID error occurs."/>
+<meta name="description" content="If a fragment with a control ID is instantiated twice without giving an ID, a duplicate ID error occurs."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6232663851028313"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6232663851028313"/>
+<title>IDs in Declarative XML or HTML Fragments</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio0715706772ed43f389d2ab9b381ef8ec">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">IDs in Declarative XML or HTML Fragments</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">If a fragment with a control ID is instantiated twice without giving an ID, a
+		duplicate ID error occurs.</p>
+
+		<div class="p">Given the following XML fragment
+			example:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;HBox xmlns="sap.m"&gt;
+   &lt;Button                    text="Hello World" /&gt;
+   &lt;Button id="btnInFragment" text="Hello World" /&gt;
+&lt;/HBox&gt;</pre></div>
+The
+			first button will always have a generated ID, as, for instance,
+				<samp class="ph codeph">__button2</samp>. This is regardless of how the fragment is instantiated
+			or whether it resides inside a view. </div>
+
+		<div class="p">The second button will either have the ID <samp class="ph codeph">btnInFragment</samp>, in case the
+			fragment is instantiated without giving an ID. This approach is easy to use, but implies
+			the risk of ID collisions when instantiated multiple times:
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.htmlfragment("my.useful.UiPartZ"); // Button ID will not be prefixed</pre></div>
+</div>
+
+		<div class="p">The other possible ID of the second button is <samp class="ph codeph">myFragment--btnInFragment</samp>,
+			in case the fragment is instantiated giving the ID <samp class="ph codeph">myFragment</samp>. You
+			should not rely on the exact syntax of this prefixing.
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.htmlfragment("myFragment", "my.useful.UiPartZ");</pre></div>
+</div>
+
+		<p class="p">It is, however, possible that a containing view may add its prefix. For more information,
+			see <a class="xref" href="f10bf709b05f4adea8f8b8ad9a840247.html" title="For fragments that are used within declarative views, generated IDs are not prefixed.">IDs of Fragments in Views</a>.</p>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The VariantManagement control allows you to handle variants and makes it possible for the user to persist changes carried out on the UI and then later retrieve these changes."/>
+<meta name="description" content="The VariantManagement control allows you to handle variants and makes it possible for the user to persist changes carried out on the UI and then later retrieve these changes."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=1701430558390452"/>
+<title>Step 7: Variant Management</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/framewrapper.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio97fc0eaaf8b045779878ea829586da1a">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 7: Variant Management</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">VariantManagement</samp> control allows you to handle variants and makes
+		it possible for the user to persist changes carried out on the UI and then later retrieve
+		these changes.</p>
+
+		<p class="p">For the smart controls, changes that are persisted include definitions of the filter used to
+			query the results for the table and all changes done to the table with table
+			personalization, visibility of columns and so on. Since we wish to provide stand-alone
+			examples that can run on a local Web server, we do not connect to a real server on which
+			the changes can be persisted so they can be retrieved later. Consequently, in our
+			examples, changes are only kept in the current user session.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<p class="p">Initially, the UI looks as in the previous steps:</p>
+
+			<div class="fig fignone" id="loio97fc0eaaf8b045779878ea829586da1a__fig_xjy_r4q_xs"><div class="figcontainer">
+				
+				<img class="image" id="loio97fc0eaaf8b045779878ea829586da1a__image_kgm_k4q_xs" src="loio398466ecb0aa4178a87bc6730a1d1e61_HiRes.png"/>
+			<div class="figcap">Initial UI Without Personalization</div></div></div>
+
+			<p class="p">We press <span class="ph uicontrol">Filters</span> as shown in step 5 and then
+					<span class="ph uicontrol">Save</span> in the related dialog.</p>
+
+			<div class="fig fignone" id="loio97fc0eaaf8b045779878ea829586da1a__fig_lqr_kdk_js"><div class="figcontainer">
+				
+				<img class="image" id="loio97fc0eaaf8b045779878ea829586da1a__image_u35_22k_js" src="loio551f52552111420e8d0f62501abefa97_HiRes.png"/>
+			<div class="figcap">Specifying the Filter</div></div></div>
+
+			<p class="p">After that, the following dialog is shown:</p>
+
+			<div class="fig fignone" id="loio97fc0eaaf8b045779878ea829586da1a__fig_xks_kdk_js"><div class="figcontainer">
+				
+				<img class="image" id="loio97fc0eaaf8b045779878ea829586da1a__image_mzq_k2k_js" src="loioa51c238874e343e68df92f378c9317e5_HiRes.png"/>
+			<div class="figcap">Defining the Variant Name</div></div></div>
+
+			<p class="p">In this dialog, we specify the name under which this variant is persisted, in our
+				case <kbd class="ph userinput">With Currency EUR.</kbd>. With <span class="ph uicontrol">Set as
+					Default</span>, we can also specify whether this variant is always used
+				initially when navigating to this particular UI (since in our example we only
+				persist within one browser session, this setting has no effect). With
+					<span class="ph uicontrol">Execute on Select</span> we define that the query is fired
+				automatically. The idea behind <span class="ph uicontrol">Share</span> is that some popular but
+				perhaps fairly complicated query settings that are used by several users can be
+				automatically provided to all users. This <span class="ph uicontrol">Share</span> option only
+				has an effect when running on a real server and not on the mock server as in our
+				example. If you choose <span class="ph uicontrol">Share</span>, additional information
+				regarding sharing is required.</p>
+
+			<p class="p">We verify these settings now and return to our main UI:</p>
+
+			<div class="fig fignone" id="loio97fc0eaaf8b045779878ea829586da1a__fig_xts_kdk_js"><div class="figcontainer">
+				
+				<img class="image" id="loio97fc0eaaf8b045779878ea829586da1a__image_xyx_3fk_js" src="loiode20dc14158f45278d6ab17baef53f5a_HiRes.png"/>
+			<div class="figcap">UI with Active Variant</div></div></div>
+
+			<p class="p">We notice that the <span class="ph uicontrol">Currency</span> field is available in the filter
+				bar and that we have already specified <span class="ph uicontrol">EUR</span> as the
+				currency.</p>
+
+			<p class="p">Finally we now customize the table so that we do not see the
+					<samp class="ph codeph">ProductId</samp> column anymore. To do that, we press the
+					<span class="ph uicontrol">Settings</span> icon in the upper right-hand corner of the table
+				and deselect <samp class="ph codeph">ProductId</samp> in the dialog:</p>
+
+			<div class="fig fignone" id="loio97fc0eaaf8b045779878ea829586da1a__fig_xct_kdk_js"><div class="figcontainer">
+				
+				<img class="image" id="loio97fc0eaaf8b045779878ea829586da1a__image_rth_pfk_js" src="loiod07f29ce27f34206bf59f622dd32bd4b_HiRes.png"/>
+			<div class="figcap">Remove <samp class="ph codeph">ProductId</samp></div></div></div>
+
+			<p class="p">Returning to the main UI, we see that only the three columns required are now
+				shown:</p>
+
+			<div class="fig fignone" id="loio97fc0eaaf8b045779878ea829586da1a__fig_y3t_kdk_js"><div class="figcontainer">
+				
+				<img class="image" id="loio97fc0eaaf8b045779878ea829586da1a__image_s4c_tfk_js" src="loio1fd2e4c95ee74225901f55c286e7f355_HiRes.png"/>
+			<div class="figcap">Personalized Table</div></div></div>
+
+			<p class="p"/>
+
+			<div class="fig fignone" id="loio97fc0eaaf8b045779878ea829586da1a__fig_jpt_kdk_js"><div class="figcontainer">
+				
+			<div class="figcap"/></div></div>
+
+			<p class="p">The <span class="ph uicontrol">*</span> right next to the <span class="ph uicontrol">Standard</span>
+				variant indicates that a change has been made. We save this change by choosing the
+				down-arrow symbol and <span class="ph uicontrol">Save As</span> in the dialog, which takes us
+				to a second dialog:</p>
+
+			<div class="fig fignone" id="loio97fc0eaaf8b045779878ea829586da1a__fig_txt_kdk_js"><div class="figcontainer">
+				
+				<img class="image" id="loio97fc0eaaf8b045779878ea829586da1a__image_nsy_yfk_js" src="loio5d8cf84d7d3f4828a7aa0497f9e02c0c_HiRes.png"/>
+			<div class="figcap">Specifying the Variant Name</div></div></div>
+
+			<p class="p">Also, here we have the possibility to set this as default and to share the variant.
+				The latter is similar to the variant for the <samp class="ph codeph">SmartFilterBar</samp>
+				control. After confirming the specified name, you return directly to the main
+				UI.</p>
+
+			<div class="fig fignone" id="loio97fc0eaaf8b045779878ea829586da1a__fig_tcc_bgk_js"><div class="figcontainer">
+				
+				<img class="image" id="loio97fc0eaaf8b045779878ea829586da1a__image_ghg_1qr_xs" src="loio7bbfc177fb4943a5942dc62866ae40cc_HiRes.png"/>
+			<div class="figcap">Variant for the Filter Bar and Variant for the Table</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Explored</span> app in the Demo Kit
+					<span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.07/preview" alt="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.07/preview" title="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.07/preview">Smart Controls - Step 7 - Variant
+						Management</a></span>.</p>
+
+			<p class="p">Since the coding is essentially identical with step 5 and step 6, we do not make any listing
+				apart from the <samp class="ph codeph">view.xml</samp> in which one property value has been
+				changed and <samp class="ph codeph">persistencyKeys</samp> have been specified.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">VariantManagement.view.xml</div><div type="VariantManagement.view.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>&lt;mvc:View 
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	controllerName="sap.ui.demo.smartControls.VariantManagement"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"&gt;
+	&lt;smartFilterBar:SmartFilterBar 
+		id="smartFilterBar"
+		entityType="Product"
+		persistencyKey="SmartFilterPKey"&gt;
+		&lt;smartFilterBar:controlConfiguration&gt;
+			&lt;smartFilterBar:ControlConfiguration
+				key="Category" 
+				visibleInAdvancedArea="true"
+				preventInitialDataFetchInValueHelpDialog="false"&gt;
+			&lt;/smartFilterBar:ControlConfiguration&gt;
+		&lt;/smartFilterBar:controlConfiguration&gt;
+	&lt;/smartFilterBar:SmartFilterBar&gt;
+	&lt;smartTable:SmartTable 
+		id="smartTable_ResponsiveTable"
+		smartFilterId="smartFilterBar" 
+		tableType="ResponsiveTable" 
+		editable="false"
+		entitySet="Products" 
+		useVariantManagement="true"
+		useTablePersonalisation="true" 
+		header="Products" 
+		showRowCount="true"
+		useExportToExcel="false" 
+		enableAutoBinding="true"
+		persistencyKey="SmartTablePKey"&gt;
+	&lt;/smartTable:SmartTable&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="64bde9a8879d4f418e2849f7285dd757.html" title="In this tutorial you learn how to work with smart controls.">Smart Controls</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="19531496ec144fa1bc4adab5bc08527c.html" title="Table personalization offers you a dedicated dialog to specify which columns in the table are visible and in which order, how the data is sorted, whether grouping of the data is active, and whether table entries are filtered.">Step 6: Table Personalization</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="b1d4d261524b4a3da78547ed4283a082.html" title="In this step, we will look at the page variant of the VariantManagement control, an enhanced function of the SmartVariantManagement control that can handle multiple smart controls.">Step 8: Page Variant Management</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="06a4c3ac1cf545a7b51864e7f3aa02da.html" title="The sap.ui.comp.smartvariants.SmartVariantManagement control provides an interface to enable a simple integration of the VariantManagement control and access to the flexibility layer for easy communication.">Smart Variant Management</a></div>
+</div>
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Step 7: Variant Management";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

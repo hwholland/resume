@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+
+		<title>QUnit: CursorLine Qunit Test page</title>
+
+		<script id="sap-ui-bootstrap"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.gantt">
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="../../../../../resources/sap/ui/thirdparty/qunit.css"/>
+		<script src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="application/javascript">
+//		if(!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+//		       jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+//		  }				
+			sap.ui.define(['jquery.sap.global', "sap/ui/base/Object",], function (jQuery, Object) {
+				var AxisTime = Object.extend("mock.AxisTime", {});
+				AxisTime.prototype.timeToView = function(){
+					return 500;
+				};
+				AxisTime.prototype.viewToTime = function() {
+					return new Date(2016, 1, 7, 12, 59, 59);
+				};
+				AxisTime.prototype.getZoomStrategy = function() {
+					return {
+						'1week' : 
+						{
+							smallInterval: {
+								format: 'd.M.',
+								span: 1,
+								unit: 'd3.time.week'
+							}
+						}
+					};
+				};
+				AxisTime.prototype.getCurrentTickTimeIntervalKey = function() {
+					return '1week';
+				}
+				return AxisTime;
+			}, true);
+		
+			sap.ui.require(["sap/gantt/drawer/CursorLine"], function(CursorLine){
+				"use strict";
+				var oCursorLine;
+				var aSvgBodyNode = d3.selectAll(".sapGanttChartSvg"),
+					aSvgHeaderNode = d3.selectAll(".sapGanttChartHeaderSvg"),
+					oAxisTime = new mock.AxisTime(),
+					oLocale = new sap.gantt.config.Locale({
+						timeZone: "CET",
+						utcdiff: "010000",
+						utcsign: "+"
+					}),
+					oSvgPoint = {
+						svgHeight: 500,
+						svgId: "chart",
+						x: 300,
+						y: 20
+					};
+				
+				CursorLine.prototype._getAxisTime = function(elementId) {
+					return oAxisTime;
+				};
+				
+				QUnit.module("CursorLine Module",{
+					setup: function() {
+						oCursorLine = new CursorLine();
+						oCursorLine.drawSvg(aSvgBodyNode, aSvgHeaderNode, oLocale, oSvgPoint);
+					},
+					teardown: function(){
+						oCursorLine.destroySvg(aSvgBodyNode, aSvgHeaderNode);
+						oCursorLine = null;
+					}
+				});
+				QUnit.test("Cursor Line should be draw correctly", function(assert){
+					var $header = jQuery('.sapGanttChartHeaderSvg').find('rect.sapGanttCursorLineHeader');
+					assert.ok($header.length === 1, "CurorLine header not found");
+					
+					var $text = jQuery('.sapGanttChartHeaderSvg').find('text.sapGanttCursorLineLabel');
+					assert.ok($text.length === 1, "CurorLine time label not found");
+					
+					var $body = jQuery('.sapGanttChartSvg').find('rect.sapGanttCursorLineBody');
+					assert.ok($header.length === 1, "CurorLine body not found");
+				});
+				
+				QUnit.test("Cursor Line text label should be correct", function(assert){
+					var $text = jQuery('.sapGanttChartHeaderSvg').find('text.sapGanttCursorLineLabel');
+					assert.equal($text.text(), "7.2.", "CurorLine time label not found");
+				});
+				
+				QUnit.test("Cursor Line should be destroyed", function(assert){
+					oCursorLine.destroySvg(aSvgBodyNode, aSvgHeaderNode);
+					var $header = jQuery('.sapGanttChartHeaderSvg').find('rect.sapGanttCursorLineHeader');
+					assert.ok($header.length === 0, "CurorLine header not removed");
+					
+					var $header = jQuery('.sapGanttChartHeaderSvg').find('rect.sapGanttCursorLineHeader');
+					assert.equal($header.length, 0, "CurorLine header not removed");
+					
+					var $text = jQuery('.sapGanttChartHeaderSvg').find('text.sapGanttCursorLineLabel');
+					assert.equal($text.length, 0, "CurorLine time label not removed");
+					
+					var $body = jQuery('.sapGanttChartSvg').find('rect.sapGanttCursorLineBody');
+					assert.equal($header.length , 0, "CurorLine body not not removed");
+				});
+			});
+
+		</script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+		
+		<svg id="chart-header" class="sapGanttChartHeaderSvg" width="1000" height="100"></svg>
+		<svg id="chart" class="sapGanttChartSvg" width="1000" height="500"></svg>
+	</body>
+</html>

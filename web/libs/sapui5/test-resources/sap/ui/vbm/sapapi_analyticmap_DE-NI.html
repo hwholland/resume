@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link href="style/sapvbistyle.css" type="text/css" rel="stylesheet" />
+
+
+	<script src="../../../../resources/sap-ui-core.js"
+		id="Script1"
+		data-sap-ui-libs="sap.ui.commons,sap.ui.table,sap.ui.vbm"
+		data-sap-ui-theme="sap_bluecrystal" >
+	</script>
+
+	<script>
+
+	// for testing here are some event handlers
+	function onRegionClick( e )
+	{
+		alert( "onRegionClick "  + e.getParameter( "code" ) );
+	};
+
+	function onRegionContextMenu( e )
+	{
+		alert( "onRegionContextMenu: " + e.getParameter( "code" ) );
+	};
+
+   function onClickItem( e )
+   {
+      // click on item 
+      alert( "onClick" + this );
+   };
+
+   function onContextMenuItem( e )
+   {
+      // context menu on item 
+      alert( "onContextMenu" + this );
+   };
+
+	// have some data
+	var oData = 
+		{
+	       regionProperties :
+				[
+					{ "code": "DE-NI", "color": "rgba(184,225,245,1.0)", "tooltip":"Niedersachsen enclosing Bremen" },
+					{ "code": "DE-BE", "color": "rgba(5,71,102,1.0)", 	}
+				]				
+		};
+	
+	// create model and set the data
+	var oModel = new sap.ui.model.json.JSONModel();
+	oModel.setData( oData );
+
+	// change the L0 geojson location to internal folder, due it is not......//
+	// allowed for us to deliver it..........................................//
+	jQuery.sap.require( "sap.ui.vbm.AnalyticMap");
+	sap.ui.vbm.AnalyticMap.GeoJSONURL  =  "media/vbarea/DE-NI.geojson";
+	
+         
+	
+	// create analytic map and bind to model
+	var oVBI = new sap.ui.vbm.AnalyticMap('vbi',
+			{
+					width : "100%",
+					height: "100%",
+					plugin: false,
+                    initialZoom: 8,
+                    initialPosition: "9;52.6;0",
+					regions : {
+						path : "/regionProperties",
+						template: new sap.ui.vbm.Region(  { code: "{code}", color: '{color}', tooltip: '{tooltip}', click: onRegionClick, contextMenu: onRegionContextMenu  } )
+					},
+
+					legend : new sap.ui.vbm.Legend(
+					      {
+					        caption : "Analytic Legend",
+					        items : {
+									path : "/regionProperties",
+									template: new sap.ui.vbm.LegendItem(  { text: "{code}", color: '{color}', tooltip: '{tooltip}' } )
+								}
+					      }
+					),
+					
+					regionClick : onRegionClick,
+					regionContextMenu : onRegionContextMenu
+			});
+
+	
+	oVBI.setModel( oModel );
+	oVBI.placeAt("content");
+
+	// just to test dynamic model changes
+	function onChangeModel1()
+	{
+		oModel.setProperty( "/regionProperties/0/color", "rgba(255,0,0,1.0)" );
+	};
+
+	function onRemoveAllRegions()
+	{
+	   // oVBI.destroyRegions();
+	   oVBI.unbindAggregation( "regions" ); //();
+	   // oVBI.removeAllRegions();
+	};
+	
+	function onGetCurrentZoomlevel()
+	{		
+		if( evtoutput.innerText !== undefined )
+			evtoutput.innerText = oVBI.mVBIContext.GetMainScene().GetCurrentZoomlevel();
+		else
+	  if( evtoutput.textContent !== undefined )
+			evtoutput.textContent = oVBI.mVBIContext.GetMainScene().GetCurrentZoomlevel();	// due to ff
+	};
+	
+	function onGetCentrePos()
+	{
+	   if( evtoutput.innerText !== undefined )
+			evtoutput.innerText = oVBI.mVBIContext.GetMainScene().GetCenterPos();
+		else
+	  if( evtoutput.textContent !== undefined )
+			evtoutput.textContent = oVBI.mVBIContext.GetMainScene().GetCenterPos();	// due to ff
+	};
+	
+	</script>
+
+	<body class="sapUiBody" >
+		  <h1>Visual Business AnalyticMap Sample</h1>
+			<ul>
+				<li> Visual Business AnalyticMap Control with full feature MultiPolygon GeoJSON. </li>
+				<li> The Area consists of multiple parts. </li>
+				<li> At least one part has an exclusion (hole). </li>
+			</ul>
+		 <div class="ratio_box">
+		    <div class="content" id="content"></div>
+		 </div>
+		 <button id="ChangeModel1" onclick="onChangeModel1()" >Change Model</button>
+		 <button id="removeAllRegions" onclick="onRemoveAllRegions()" >Remove all Regions</button>
+		 <br />
+		 <textarea style="width:100%;box-sizing:border-box" id="evtoutput" rows="5" ></textarea>
+	</body>
+</html>

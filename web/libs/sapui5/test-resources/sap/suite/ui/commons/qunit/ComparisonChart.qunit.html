@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Comparison Chart QUnit page</title>
+
+		<!-- UI5 Bootstrap -->
+		<script src="../../../../../../resources/sap-ui-core.js"
+				type="text/javascript"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.suite.ui.commons,sap.m"
+				data-sap-ui-theme="sap_bluecrystal"></script>
+
+		<!-- QUnit libraries -->
+		<link rel="stylesheet"
+			  href="../../../../../../resources/sap/ui/thirdparty/qunit.css"
+			  type="text/css" media="screen" />
+		<script src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+
+		<script>
+			jQuery.sap.initMobile();
+
+			QUnit.module("Rendering", {
+				beforeEach: function() {
+					this.oChart = new sap.suite.ui.commons.ComparisonChart("comparison-chart", {
+						size: "M",
+						scale: "M",
+						view: sap.suite.ui.commons.ComparisonChartView.Normal,
+						data: [
+							new sap.suite.ui.commons.ComparisonData({
+								title: "Americas",
+								value: 10,
+								color: "Good",
+								displayValue: "10M"
+							}),
+							new sap.suite.ui.commons.ComparisonData({
+								title: "EMEA",
+								value: 20,
+								color: "Critical",
+								displayValue: "18M"
+							})],
+						shrinkable: false,
+						height: "400px"
+					}).placeAt("qunit-fixture");
+					sap.ui.getCore().applyChanges();
+				},
+				afterEach: function() {
+					this.oChart.destroy();
+				}
+			});
+
+			QUnit.test("ComparisonChart wrapper is working", function(assert) {
+				assert.ok(jQuery.sap.domById("comparison-chart"), "ComparisonChart was rendered successfully");
+			});
+
+		</script>
+	</head>
+
+	<body>
+		<div id="qunit"></div>
+		<div id="qunit-fixture" class="sapUiBody"></div>
+	</body>
+</html>

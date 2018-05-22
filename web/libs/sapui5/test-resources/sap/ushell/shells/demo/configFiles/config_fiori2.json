@@ -1,0 +1,53 @@
+sapUshellConfig = {
+  "services": {
+    "NavTargetResolution": {
+      "config": {
+        "allowTestUrlComponentConfig": true
+      }
+    },
+    "SupportTicket": {
+      "config": {
+        "enabled": true
+      }
+    },
+    "Notifications": {
+        "config": {
+          "enabled": true,
+        "serviceUrl": '/ushell/test-resources/sap/ushell/demoapps/NotificationsSampleData/model',
+        "pollingIntervalInSeconds": 100
+        }
+    }
+  },
+  "renderers": {
+    "fiori2": {
+      "componentData": {
+        "config": {
+          "enableMergeAppAndShellHeaders": true,
+          "enableUserDefaultParameters": false,
+          "enableMeArea": true,
+          "enableFiori2LoadingDialog": true,
+          "enableNotificationsUI": true,
+          "enableNotifications": true,
+          "enableRecentActivity": true,
+          "applications": {
+            "Shell-home": {
+              "enableNotificationsPreview": true,
+              "enableActionModeMenuButton": true,
+              "enableActionModeFloatingButton": true,
+              "enableTileActionsIcon": false,
+              "enableHideGroups": true
+            }
+          },
+          "title": "Welcome FLP User",
+          "rootIntent": "Shell-home"
+        }
+      }
+    }
+  },
+  "bootstrapPlugins": {
+      "NotificationsSampleData": {
+          "component": "sap.ushell.demo.NotificationsSampleData",
+          "url": "/ushell/test-resources/sap/ushell/demoapps/NotificationsSampleData"
+     }
+  }
+}

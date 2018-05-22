@@ -1,0 +1,50 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6993497800510092"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6993497800510092"/>
+<title>Executing a Configuration</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio69bed7d303e24b88a37578780c9d7ce7">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Executing a Configuration</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">To get a preview of how your configuration looks at runtime, you can execute it using the
+				<span class="ph uicontrol">Execute</span> button on the footer of the APF Configuration
+			Modeler. The configuration is launched in a separate browser window so that you can see
+			the configuration and the corresponding runtime application side by side.</p>
+
+		<p class="p">The configuration preview is generated using the generic APF runtime application. Since
+			the generic APF runtime application does not support filters that use a function to
+			determine the values, there is a restriction in previewing those filters: They are shown
+			in the preview with all values selected by default, but it is not possible to select
+			other values.</p>
+
+		<p class="p">If a request in your configuration requires parameters or mandatory filters that will be
+			handed over by another application in a productive system, for example, by a Smart
+			Business KPI tile, the preview will not work properly. To simulate that the required
+			parameters are handed over to the app, you can configure hidden filters and put them in
+			front of all other filters. This ensures that the preview shows the correct data and you
+			can test your application. The hidden filters do not show up on the runtime user
+			interface. If a context value is handed over from outside at a later stage, this context
+			value will take precedence over the default value in the configuration of the hidden
+			filter, so you do not even have to remove the hidden filter. </p>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

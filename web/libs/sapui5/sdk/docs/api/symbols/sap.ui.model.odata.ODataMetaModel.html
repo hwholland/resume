@@ -1,0 +1,1104 @@
+<!DOCTYPE html><html xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		<title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.ui.model.odata.ODataMetaModel</title>
+		<link rel=stylesheet href="../default.css" type="text/css">
+		
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+				
+				
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+				
+				
+			
+				
+				
+				<link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+				
+			
+		
+	</head>
+
+	<body>
+
+
+		<div id="main">
+			<div id="content">
+
+					<h1 class="classTitle static">
+					
+					Class sap.ui.model.odata.ODataMetaModel
+					</h1>
+					
+						<div class="classRelation extends"><span class="caption">extends </span><a title="sap.ui.model.MetaModel" href="../symbols/sap.ui.model.MetaModel.html">MetaModel</a></div>
+					
+					
+					
+					
+					<hr/>
+
+					
+					
+					<div class="full-description">
+						<p>Implementation of an OData meta model which offers a unified access to both OData v2
+meta data and v4 annotations. It uses the existing <a href="../symbols/sap.ui.model.odata.ODataMetadata.html">sap.ui.model.odata.ODataMetadata</a>
+as a foundation and merges v4 annotations from the existing
+<a href="../symbols/sap.ui.model.odata.ODataAnnotations.html">sap.ui.model.odata.ODataAnnotations</a> directly into the corresponding model element.
+</p><p>
+Also, annotations from the "http://www.sap.com/Protocols/SAPData" namespace are lifted up
+from the <code>extensions</code> array and transformed from objects into simple properties
+with an "sap:" prefix for their name. Note that this happens in addition, thus the
+following example shows both representations. This way, such annotations can be addressed
+via a simple relative path instead of searching an array.
+<pre>
+		{
+			"name" : "BusinessPartnerID",
+			"extensions" : [{
+				"name" : "label",
+				"value" : "Bus. Part. ID",
+				"namespace" : "http://www.sap.com/Protocols/SAPData"
+			}],
+			"sap:label" : "Bus. Part. ID"
+		}
+</pre>
+</p><p>
+This model is read-only and thus only supports
+<a href="../symbols/sap.ui.model.BindingMode.html#.OneTime">OneTime</a> binding mode. No events
+(<a href="../symbols/sap.ui.model.Model.html#event:parseError">parseError</a>,
+<a href="../symbols/sap.ui.model.Model.html#event:requestCompleted">requestCompleted</a>,
+<a href="../symbols/sap.ui.model.Model.html#event:requestFailed">requestFailed</a>,
+<a href="../symbols/sap.ui.model.Model.html#event:requestSent">requestSent</a>) are fired!
+</p><p>
+<b>BEWARE:</b> Access to this OData meta model will fail before the promise returned by
+<a href="#loaded">loaded</a> has been resolved!</p>
+						
+						
+						
+						
+						
+						
+							<br />
+							<i>Since: </i>1.27.0.
+						
+					</div>
+					
+		
+					
+					
+					
+						<div class="summary section">
+							<div class="sectionTitle">Constructor Summary</div>
+							<div class="sectionItems">
+								<div class="sectionItem classConstructor static">
+									<div class="itemName">
+										<b class="icon" title="DO NOT CALL this private constructor for a new ODataMetaModel, but rather use sap.ui.model.odata.ODataModel#getMetaModel instead!">new <a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#constructor">sap.ui.model.odata.ODataMetaModel</a></b>
+										<span class='signature'>(<span title="(sap.ui.model.odata.ODataMetadata) the OData model's meta data object">oMetadata</span>, <span title="(sap.ui.model.odata.ODataAnnotations) the OData model's annotations object">oAnnotations</span>)</span>
+										<span class='description'>DO NOT CALL this private constructor for a new <code>ODataMetaModel</code>, but rather use <a href="../symbols/sap.ui.model.odata.ODataModel.html#getMetaModel">sap.ui.model.odata.ODataModel#getMetaModel</a> instead!</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					
+					
+					
+		
+					
+						<div class="summary section">
+							<div class="sectionTitle">Events borrowed from class <a href="../symbols/sap.ui.model.Model.html">sap.ui.model.Model</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.model.Model.html#event:parseError">parseError</a>, <a href="../symbols/sap.ui.model.Model.html#event:requestCompleted">requestCompleted</a>, <a href="../symbols/sap.ui.model.Model.html#event:requestFailed">requestFailed</a>, <a href="../symbols/sap.ui.model.Model.html#event:requestSent">requestSent</a>
+							</div>
+						</div>
+					
+
+					
+						<div class="summary section">
+							<div class="sectionTitle">Method Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod static">
+									<b class="icon" title="Creates a new subclass of class sap.ui.model.odata.ODataMetaModel with name sClassName and enriches it with the information contained in oClassInfo."><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#.extend">sap.ui.model.odata.ODataMetaModel.extend</a></b><span class='signature'>(<span title="(string) name of the class to be created">sClassName</span>, <span title="(object) object literal with informations about the class">oClassInfo</span><i class="help" title="Optional parameter">?</i>, <span title="(function) constructor function for the metadata object.">FNMetaImpl</span><i class="help" title="Optional parameter">?</i>)</span>
+									<span class='description'>Creates a new subclass of class sap.ui.model.odata.ODataMetaModel with name <code>sClassName</code> and enriches it with the information contained in <code>oClassInfo</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod static">
+									<b class="icon" title="Returns a metadata object for class sap.ui.model.odata.ODataMetaModel."><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#.getMetadata">sap.ui.model.odata.ODataMetaModel.getMetadata</a></b><span class='signature'>()</span>
+									<span class='description'>Returns a metadata object for class sap.ui.model.odata.ODataMetaModel.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns the OData meta model context corresponding to the given OData model path."><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#getMetaContext">getMetaContext</a></b><span class='signature'>(<span title="(string) an absolute path pointing to an entity or property, e.g.">sPath</span><i class="help" title="Optional parameter">?</i>)</span>
+									<span class='description'>Returns the OData meta model context corresponding to the given OData model path.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns the OData association end corresponding to the given entity type's navigation property of given name."><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#getODataAssociationEnd">getODataAssociationEnd</a></b><span class='signature'>(<span title="(object) an entity type as returned by #getODataEntityType getODataEntityType">oEntityType</span>, <span title="(string) the name of a navigation property within this entity type">sName</span>)</span>
+									<span class='description'>Returns the OData association end corresponding to the given entity type's navigation property of given name.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns the OData association set end corresponding to the given entity type's navigation property of given name."><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#getODataAssociationSetEnd">getODataAssociationSetEnd</a></b><span class='signature'>(<span title="(object) an entity type as returned by #getODataEntityType getODataEntityType">oEntityType</span>, <span title="(string) the name of a navigation property within this entity type">sName</span>)</span>
+									<span class='description'>Returns the OData association <b>set</b> end corresponding to the given entity type's navigation property of given name.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns the OData complex type with the given qualified name, either as a path or as an object, as indicated."><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#getODataComplexType">getODataComplexType</a></b><span class='signature'>(<span title="(string) a qualified name, e.g.">sQualifiedName</span>, <span title="(boolean) determines whether the complex type is returned as a path or as an object">bAsPath</span><i class="help" title="Optional parameter">?</i>)</span>
+									<span class='description'>Returns the OData complex type with the given qualified name, either as a path or as an object, as indicated.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns the OData default entity container."><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#getODataEntityContainer">getODataEntityContainer</a></b><span class='signature'>(<span title="(boolean) determines whether the entity container is returned as a path or as an object">bAsPath</span><i class="help" title="Optional parameter">?</i>)</span>
+									<span class='description'>Returns the OData default entity container.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns the OData entity set with the given simple name from the default entity container."><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#getODataEntitySet">getODataEntitySet</a></b><span class='signature'>(<span title="(string) a simple name, e.g.">sName</span>, <span title="(boolean) determines whether the entity type is returned as a path or as an object">bAsPath</span><i class="help" title="Optional parameter">?</i>)</span>
+									<span class='description'>Returns the OData entity set with the given simple name from the default entity container.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns the OData entity type with the given qualified name, either as a path or as an object, as indicated."><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#getODataEntityType">getODataEntityType</a></b><span class='signature'>(<span title="(string) a qualified name, e.g.">sQualifiedName</span>, <span title="(boolean) determines whether the entity type is returned as a path or as an object">bAsPath</span><i class="help" title="Optional parameter">?</i>)</span>
+									<span class='description'>Returns the OData entity type with the given qualified name, either as a path or as an object, as indicated.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns the given OData type's property of given name."><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#getODataProperty">getODataProperty</a></b><span class='signature'>(<span title="(object) a complex type as returned by #getODataComplexType getODataComplexType, or an entity type as returned by #getODataEntityType getODataEntityType">oType</span>, <span title="(string|Array.<string>) the name of a property within this type (e.g.">vName</span>, <span title="(boolean) determines whether the property is returned as a path or as an object">bAsPath</span><i class="help" title="Optional parameter">?</i>)</span>
+									<span class='description'>Returns the given OData type's property of given name.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns a promise which is fulfilled once the meta model data is loaded and can be used."><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#loaded">loaded</a></b><span class='signature'>()</span>
+									<span class='description'>Returns a promise which is fulfilled once the meta model data is loaded and can be used.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Refresh not supported by OData meta model!"><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#refresh">refresh</a></b><span class='signature'>()</span>
+									<span class='description'>Refresh not supported by OData meta model!</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Legacy syntax not supported by OData meta model!"><a href="../symbols/sap.ui.model.odata.ODataMetaModel.html#setLegacySyntax">setLegacySyntax</a></b><span class='signature'>(<span title="(boolean) must not be true!">bLegacySyntax</span>)</span>
+									<span class='description'>Legacy syntax not supported by OData meta model!</span>
+								</div>
+							
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.ui.model.Model.html">sap.ui.model.Model</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.model.Model.html#attachParseError">attachParseError</a>, <a href="../symbols/sap.ui.model.Model.html#attachRequestCompleted">attachRequestCompleted</a>, <a href="../symbols/sap.ui.model.Model.html#attachRequestFailed">attachRequestFailed</a>, <a href="../symbols/sap.ui.model.Model.html#attachRequestSent">attachRequestSent</a>, <a href="../symbols/sap.ui.model.Model.html#bindContext">bindContext</a>, <a href="../symbols/sap.ui.model.Model.html#bindList">bindList</a>, <a href="../symbols/sap.ui.model.Model.html#bindProperty">bindProperty</a>, <a href="../symbols/sap.ui.model.Model.html#bindTree">bindTree</a>, <a href="../symbols/sap.ui.model.Model.html#destroy">destroy</a>, <a href="../symbols/sap.ui.model.Model.html#detachParseError">detachParseError</a>, <a href="../symbols/sap.ui.model.Model.html#detachRequestCompleted">detachRequestCompleted</a>, <a href="../symbols/sap.ui.model.Model.html#detachRequestFailed">detachRequestFailed</a>, <a href="../symbols/sap.ui.model.Model.html#detachRequestSent">detachRequestSent</a>, <a href="../symbols/sap.ui.model.Model.html#fireParseError">fireParseError</a>, <a href="../symbols/sap.ui.model.Model.html#fireRequestCompleted">fireRequestCompleted</a>, <a href="../symbols/sap.ui.model.Model.html#fireRequestFailed">fireRequestFailed</a>, <a href="../symbols/sap.ui.model.Model.html#fireRequestSent">fireRequestSent</a>, <a href="../symbols/sap.ui.model.Model.html#getDefaultBindingMode">getDefaultBindingMode</a>, <a href="../symbols/sap.ui.model.Model.html#getMessagesByPath">getMessagesByPath</a>, <a href="../symbols/sap.ui.model.Model.html#getMetaModel">getMetaModel</a>, <a href="../symbols/sap.ui.model.Model.html#getObject">getObject</a>, <a href="../symbols/sap.ui.model.Model.html#getProperty">getProperty</a>, <a href="../symbols/sap.ui.model.Model.html#isBindingModeSupported">isBindingModeSupported</a>, <a href="../symbols/sap.ui.model.Model.html#isLegacySyntax">isLegacySyntax</a>, <a href="../symbols/sap.ui.model.Model.html#setDefaultBindingMode">setDefaultBindingMode</a>, <a href="../symbols/sap.ui.model.Model.html#setMessages">setMessages</a>, <a href="../symbols/sap.ui.model.Model.html#setSizeLimit">setSizeLimit</a>
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.ui.core.message.MessageProcessor.html">sap.ui.core.message.MessageProcessor</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.core.message.MessageProcessor.html#attachMessageChange">attachMessageChange</a>, <a href="../symbols/sap.ui.core.message.MessageProcessor.html#checkMessage">checkMessage</a>, <a href="../symbols/sap.ui.core.message.MessageProcessor.html#detachMessageChange">detachMessageChange</a>, <a href="../symbols/sap.ui.core.message.MessageProcessor.html#fireMessageChange">fireMessageChange</a>, <a href="../symbols/sap.ui.core.message.MessageProcessor.html#getId">getId</a>
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.ui.base.EventProvider.html">sap.ui.base.EventProvider</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.base.EventProvider.html#attachEvent">attachEvent</a>, <a href="../symbols/sap.ui.base.EventProvider.html#attachEventOnce">attachEventOnce</a>, <a href="../symbols/sap.ui.base.EventProvider.html#detachEvent">detachEvent</a>, <a href="../symbols/sap.ui.base.EventProvider.html#fireEvent">fireEvent</a>, <a href="../symbols/sap.ui.base.EventProvider.html#getEventingParent">getEventingParent</a>, <a href="../symbols/sap.ui.base.EventProvider.html#toString">toString</a>
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.ui.base.Object.html">sap.ui.base.Object</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.base.Object.html#getMetadata">getMetadata</a>
+							</div>
+						</div>
+					
+		
+					
+						<div class="section details">
+							<div class="sectionTitle">
+								Constructor Detail
+							</div>
+							<div class="sectionItems">
+								<div class="sectionItem classItem itemName static">
+									<div class="details"><a name="constructor"> </a>
+										
+										<div class="icon">
+											new <b>sap.ui.model.odata.ODataMetaModel</b>(<span title="(sap.ui.model.odata.ODataMetadata) the OData model's meta data object">oMetadata</span>, <span title="(sap.ui.model.odata.ODataAnnotations) the OData model's annotations object">oAnnotations</span>)
+										</div>
+										
+										<div class="full-description">
+											DO NOT CALL this private constructor for a new <code>ODataMetaModel</code>,
+but rather use <a href="../symbols/sap.ui.model.odata.ODataModel.html#getMetaModel">sap.ui.model.odata.ODataModel#getMetaModel</a> instead!
+										</div>
+										
+										
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{<a href="../symbols/sap.ui.model.odata.ODataMetadata.html">sap.ui.model.odata.ODataMetadata</a>}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oMetadata</b>
+													</td>
+													<td class="methodItemDesc">
+												    the OData model's meta data object
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{<a href="../symbols/sap.ui.model.odata.ODataAnnotations.html">sap.ui.model.odata.ODataAnnotations</a>}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oAnnotations</b>
+													</td>
+													<td class="methodItemDesc">
+												    the OData model's annotations object
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										<!--
+										
+										-->
+										
+						
+									</div>
+								</div>
+							</div>
+						</div>
+					
+		
+					
+		
+					
+					
+					
+						<div class="details section">
+							<div class="sectionTitle">
+								Method Detail
+							</div>
+							<div class="sectionItems">
+								
+									<div class='sectionItem classMethod static'>
+										<a name=".extend"> </a>
+										<div class="itemTitle icon">
+											sap.ui.model.odata.ODataMetaModel.extend<span class="signature">(<span title="(string) name of the class to be created">sClassName</span>, <span title="(object) object literal with informations about the class">oClassInfo</span><i class="help" title="Optional parameter">?</i>, <span title="(function) constructor function for the metadata object.">FNMetaImpl</span><i class="help" title="Optional parameter">?</i>)</span>
+											<span class="light" title="returns function">: function</span>
+										</div>
+										<div class="full-description">
+											Creates a new subclass of class sap.ui.model.odata.ODataMetaModel with name <code>sClassName</code>
+and enriches it with the information contained in <code>oClassInfo</code>.
+</p><p>
+<code>oClassInfo</code> might contain the same kind of information as described in <a href="../symbols/sap.ui.model.MetaModel.html#.extend">sap.ui.model.MetaModel.extend</a>.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sClassName</b>
+													</td>
+													<td class="methodItemDesc">
+												    name of the class to be created
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oClassInfo</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    object literal with informations about the class
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{function}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>FNMetaImpl</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    constructor function for the metadata object. If not given, it defaults to sap.ui.core.ElementMetadata.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{function}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the created class / constructor function
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod static'>
+										<a name=".getMetadata"> </a>
+										<div class="itemTitle icon">
+											sap.ui.model.odata.ODataMetaModel.getMetadata<span class="signature">()</span>
+											<span class="light" title="returns sap.ui.base.Metadata">: <a href="../symbols/sap.ui.base.Metadata.html">sap.ui.base.Metadata</a></span>
+										</div>
+										<div class="full-description">
+											Returns a metadata object for class sap.ui.model.odata.ODataMetaModel.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.ui.base.Metadata.html">sap.ui.base.Metadata</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														metadata object describing thi class
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getMetaContext"> </a>
+										<div class="itemTitle icon">
+											getMetaContext<span class="signature">(<span title="(string) an absolute path pointing to an entity or property, e.g.">sPath</span><i class="help" title="Optional parameter">?</i>)</span>
+											<span class="light" title="returns sap.ui.model.Context">: <a href="../symbols/sap.ui.model.Context.html">sap.ui.model.Context</a></span>
+										</div>
+										<div class="full-description">
+											Returns the OData meta model context corresponding to the given OData model path.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sPath</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    an absolute path pointing to an entity or property, e.g.
+  "/ProductSet(1)/ToSupplier/BusinessPartnerID"; this equals the
+  <a href="http://www.odata.org/documentation/odata-version-2-0/uri-conventions#ResourcePath">
+  resource path</a> component of a URI according to OData v2 URI conventions
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+											<div class="heading">Exceptions:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{Error}</span>  <b></b>
+													</td>
+													<td class="methodItemDesc">
+														in case no context can be determined
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.ui.model.Context.html">sap.ui.model.Context</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the context for the corresponding meta data object, i.e. an entity type or its property,
+  or <code>null</code> in case no path is given
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getODataAssociationEnd"> </a>
+										<div class="itemTitle icon">
+											getODataAssociationEnd<span class="signature">(<span title="(object) an entity type as returned by #getODataEntityType getODataEntityType">oEntityType</span>, <span title="(string) the name of a navigation property within this entity type">sName</span>)</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											Returns the OData association end corresponding to the given entity type's navigation
+property of given name.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oEntityType</b>
+													</td>
+													<td class="methodItemDesc">
+												    an entity type as returned by <a href="#getODataEntityType">getODataEntityType</a>
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sName</b>
+													</td>
+													<td class="methodItemDesc">
+												    the name of a navigation property within this entity type
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the OData association end or <code>null</code> if no such association end is found
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getODataAssociationSetEnd"> </a>
+										<div class="itemTitle icon">
+											getODataAssociationSetEnd<span class="signature">(<span title="(object) an entity type as returned by #getODataEntityType getODataEntityType">oEntityType</span>, <span title="(string) the name of a navigation property within this entity type">sName</span>)</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											Returns the OData association <b>set</b> end corresponding to the given entity type's
+navigation property of given name.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oEntityType</b>
+													</td>
+													<td class="methodItemDesc">
+												    an entity type as returned by <a href="#getODataEntityType">getODataEntityType</a>
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sName</b>
+													</td>
+													<td class="methodItemDesc">
+												    the name of a navigation property within this entity type
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the OData association set end or <code>null</code> if no such association set end is found
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getODataComplexType"> </a>
+										<div class="itemTitle icon">
+											getODataComplexType<span class="signature">(<span title="(string) a qualified name, e.g.">sQualifiedName</span>, <span title="(boolean) determines whether the complex type is returned as a path or as an object">bAsPath</span><i class="help" title="Optional parameter">?</i>)</span>
+											<span class="light" title="returns object|string">: object|string</span>
+										</div>
+										<div class="full-description">
+											Returns the OData complex type with the given qualified name, either as a path or as an
+object, as indicated.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sQualifiedName</b>
+													</td>
+													<td class="methodItemDesc">
+												    a qualified name, e.g. "ACME.Address"
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{boolean}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>bAsPath</b><i class="help" title="Optional parameter">?, Default: false</i>
+													</td>
+													<td class="methodItemDesc">
+												    determines whether the complex type is returned as a path or as an object
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object|string}</span> 
+													</td>
+													<td class="methodItemDesc">
+														(the path to) the complex type with the given qualified name; <code>undefined</code> (for
+  a path) or <code>null</code> (for an object) if no such type is found
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getODataEntityContainer"> </a>
+										<div class="itemTitle icon">
+											getODataEntityContainer<span class="signature">(<span title="(boolean) determines whether the entity container is returned as a path or as an object">bAsPath</span><i class="help" title="Optional parameter">?</i>)</span>
+											<span class="light" title="returns object|string">: object|string</span>
+										</div>
+										<div class="full-description">
+											Returns the OData default entity container.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{boolean}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>bAsPath</b><i class="help" title="Optional parameter">?, Default: false</i>
+													</td>
+													<td class="methodItemDesc">
+												    determines whether the entity container is returned as a path or as an object
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object|string}</span> 
+													</td>
+													<td class="methodItemDesc">
+														(the path to) the default entity container; <code>undefined</code> (for a path) or
+  <code>null</code> (for an object) if no such container is found
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getODataEntitySet"> </a>
+										<div class="itemTitle icon">
+											getODataEntitySet<span class="signature">(<span title="(string) a simple name, e.g.">sName</span>, <span title="(boolean) determines whether the entity type is returned as a path or as an object">bAsPath</span><i class="help" title="Optional parameter">?</i>)</span>
+											<span class="light" title="returns object|string">: object|string</span>
+										</div>
+										<div class="full-description">
+											Returns the OData entity set with the given simple name from the default entity container.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sName</b>
+													</td>
+													<td class="methodItemDesc">
+												    a simple name, e.g. "ProductSet"
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{boolean}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>bAsPath</b><i class="help" title="Optional parameter">?, Default: false</i>
+													</td>
+													<td class="methodItemDesc">
+												    determines whether the entity type is returned as a path or as an object
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object|string}</span> 
+													</td>
+													<td class="methodItemDesc">
+														(the path to) the entity set with the given simple name; <code>undefined</code> (for a
+  path) or <code>null</code> (for an object) if no such set is found
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getODataEntityType"> </a>
+										<div class="itemTitle icon">
+											getODataEntityType<span class="signature">(<span title="(string) a qualified name, e.g.">sQualifiedName</span>, <span title="(boolean) determines whether the entity type is returned as a path or as an object">bAsPath</span><i class="help" title="Optional parameter">?</i>)</span>
+											<span class="light" title="returns object|string">: object|string</span>
+										</div>
+										<div class="full-description">
+											Returns the OData entity type with the given qualified name, either as a path or as an
+object, as indicated.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sQualifiedName</b>
+													</td>
+													<td class="methodItemDesc">
+												    a qualified name, e.g. "ACME.Product"
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{boolean}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>bAsPath</b><i class="help" title="Optional parameter">?, Default: false</i>
+													</td>
+													<td class="methodItemDesc">
+												    determines whether the entity type is returned as a path or as an object
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object|string}</span> 
+													</td>
+													<td class="methodItemDesc">
+														(the path to) the entity type with the given qualified name; <code>undefined</code> (for a
+  path) or <code>null</code> (for an object) if no such type is found
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getODataProperty"> </a>
+										<div class="itemTitle icon">
+											getODataProperty<span class="signature">(<span title="(object) a complex type as returned by #getODataComplexType getODataComplexType, or an entity type as returned by #getODataEntityType getODataEntityType">oType</span>, <span title="(string|Array.<string>) the name of a property within this type (e.g.">vName</span>, <span title="(boolean) determines whether the property is returned as a path or as an object">bAsPath</span><i class="help" title="Optional parameter">?</i>)</span>
+											<span class="light" title="returns object|string">: object|string</span>
+										</div>
+										<div class="full-description">
+											Returns the given OData type's property of given name. If an array is given instead of a
+single name, it is consumed (via <code>Array.prototype.shift</code>) piece by piece until an
+element is encountered which cannot be resolved as a property name of the current type; in
+this case, the last property found is returned and <code>vName</code> contains only the
+remaining names, with <code>vName[0]</code> being the one which was not found.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oType</b>
+													</td>
+													<td class="methodItemDesc">
+												    a complex type as returned by <a href="#getODataComplexType">getODataComplexType</a>, or
+  an entity type as returned by <a href="#getODataEntityType">getODataEntityType</a>
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string|Array.<string>}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>vName</b>
+													</td>
+													<td class="methodItemDesc">
+												    the name of a property within this type (e.g. "Address"), or an array of such names (e.g.
+  <code>["Address", "Street"]</code>) in order to drill-down into complex types;
+  <b>BEWARE</b> that this array is modified by removing each part which is understood!
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{boolean}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>bAsPath</b><i class="help" title="Optional parameter">?, Default: false</i>
+													</td>
+													<td class="methodItemDesc">
+												    determines whether the property is returned as a path or as an object
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object|string}</span> 
+													</td>
+													<td class="methodItemDesc">
+														(the path to) the last OData property found; <code>undefined</code> (for a path) or
+  <code>null</code> (for an object) if no property was found at all
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="loaded"> </a>
+										<div class="itemTitle icon">
+											loaded<span class="signature">()</span>
+											<span class="light" title="returns Promise">: Promise</span>
+										</div>
+										<div class="full-description">
+											Returns a promise which is fulfilled once the meta model data is loaded and can be used.
+It is rejected with a corresponding <code>Error</code> object in case of errors, such as
+failure to load meta data or annotations.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{Promise}</span> 
+													</td>
+													<td class="methodItemDesc">
+														a Promise
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="refresh"> </a>
+										<div class="itemTitle icon">
+											refresh<span class="signature">()</span>
+											<span class="light" title="returns void">: void</span>
+										</div>
+										<div class="full-description">
+											Refresh not supported by OData meta model!
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Exceptions:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{Error}</span>  <b></b>
+													</td>
+													<td class="methodItemDesc">
+														
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="setLegacySyntax"> </a>
+										<div class="itemTitle icon">
+											setLegacySyntax<span class="signature">(<span title="(boolean) must not be true!">bLegacySyntax</span>)</span>
+											<span class="light" title="returns void">: void</span>
+										</div>
+										<div class="full-description">
+											Legacy syntax not supported by OData meta model!
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{boolean}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>bLegacySyntax</b>
+													</td>
+													<td class="methodItemDesc">
+												    must not be true!
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+											<div class="heading">Exceptions:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{Error}</span>  <b></b>
+													</td>
+													<td class="methodItemDesc">
+														if <code>bLegacySyntax</code> is true
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+									</div>
+								
+							</div>
+						</div>
+					
+
+
+
+		</div>
+	</div>
+
+				
+	</body>
+</html>

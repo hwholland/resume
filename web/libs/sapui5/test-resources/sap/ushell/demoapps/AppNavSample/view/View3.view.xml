@@ -1,0 +1,39 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m" controllerName="sap.ushell.demo.AppNavSample.view.View3" xmlns:html="http://www.w3.org/1999/xhtml">
+  <Page title="View3">
+    <content>
+      <VBox>
+        <Label text="on View 3"></Label>
+        <Label text="Navigation to other technologies ... (requires Action-tosu01 / Action-tosu01html to be configured)"></Label>
+        <Link href="{/toView1_href}" text="to View 1 (via link)"
+          tooltip="to View 1 (via link, note the href generation!)"></Link>
+        <Link href="{/toSU01html_href}" text="to SU01 SAPGui 4 HTML (via link)"
+          tooltip="to SU01 SAPGui 4 HTML (via link)"></Link>
+        <Link href="{/toSU01_href}" text="to SU01 SAPGui (Win)"
+          tooltip="to SU01 SAPGui 4 Windows (via link)"></Link>
+        <Link href="{/towdapp_href}" text="to WebDynpro application"
+          tooltip="to webdynpro application (via link)"></Link>
+        <Link href="{/WDANavSource_display}" text="to WebDynpro application"
+          tooltip="to webdynpro NavSource application (may required systeam alias pointing e.g. to U1Y)"></Link>
+        <Link href="{/WDANavTarget_display}" text="to WebDynpro display application"
+          tooltip="to webdynpro WDANavTarget application (may required systeam alias pointing e.g. to U1Y)"></Link>
+        <Label text="Navigation with renaming"></Label>
+        <Link href="{/Action_parameterRename1}" text="parameter renaming case 1"
+          tooltip="to webdynpro application (via link)"></Link>
+        <Link href="{/Action_parameterRename2}" text="parameter renaming case 2"
+          tooltip="rename Parameters case 2"></Link>
+        <Link href="{/Action_parameterRename3}" text="parameter renaming case 3"
+          tooltip="rename Parameters case 3"></Link>
+        <Link href="{/Action_parameterRename4}" text="parameter renaming case 4"
+          tooltip="rename Parameters case 4"></Link>
+        <Link href="{/Action_parameterRename5}" text="parameter renaming case 5"
+          tooltip="rename Parameters case 5 (to WDA!)"></Link>
+        <Link href="{/WDANavTarget_display_X}" text="to WebDynpro display application"
+          tooltip="to webdynpro WDANavTarget application (may required systeam alias pointing e.g. to U1Y)"></Link>
+      </VBox>
+      <Button id="btnRequestReload" text="request reload" press="handleBtn1Press" class="testToView2Btn"></Button>
+      <Button id="setHierarchy" text="Set Hierarchy"
+           press="handleSetHierarchy" />
+    </content>
+  </Page>
+</core:View>

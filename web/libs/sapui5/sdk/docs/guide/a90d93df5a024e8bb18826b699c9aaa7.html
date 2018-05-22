@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="UI messages reference a control. They are handled and processed by the control message processor and are propagated to the message manager."/>
+<meta name="description" content="UI messages reference a control. They are handled and processed by the control message processor and are propagated to the message manager."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9667545641234689"/>
+<title>UI Messages</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loioa90d93df5a024e8bb18826b699c9aaa7">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">UI Messages</h1>
+<div class="body conbody"><p class="shortdesc">UI messages reference a control. They are handled and processed by the control message
+		processor and are propagated to the message manager.</p>
+<p class="p">The most common example for UI messages are validation messages. Validation messages are
+			generated in the <samp class="ph codeph">validation</samp> type of the data binding. If a bound
+			property has an assigned type, the validation can trigger the message creation. To
+			activate the automatic message creation, the following options exist:</p>
+<ul class="ul" id="loioa90d93df5a024e8bb18826b699c9aaa7__ul_qrf_zhp_3r"><li class="li">
+				<p class="p">Component:</p>
+
+				<p class="p">You can activate the automatic message generation in the component metadata or as a parameter
+					when instantiating the component as follows:</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap.ui.core.UIComponent.extend("MyComponent", {
+    metadata  : {
+        version  : "1.0" ,
+        handleValidation  : true,
+    }
+});</pre></div>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">var oComponentContainer = new sap.ui.core.ComponentContainer("MyComponentContainer", {
+    name: "MyComponent",
+    id: "myComponentId",
+    handleValidation: true,
+});</pre></div>
+
+			</li>
+<li class="li">
+				<p class="p">Control</p>
+
+				<p class="p">You can activate automatic message generation for controls by registering the
+					control in the message manager as follows:</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">var oInput = new sap.m.Input({
+    value: { path: "/Products(1)/Price", type: new sap.ui.model.type.Float () }
+});
+
+sap.ui.getCore().getMessageManager().registerObject(oInput, true);</pre></div>
+
+			</li>
+</ul>
+<div class="section"><div class="section_title">Creating UI Messages</div><div type="Creating UI Messages">
+			
+			<p class="p">You can also create UI messages manually and add them to the message manager. If you add the
+				message to a control property that is also validated, your message is deleted when
+				new validation results for that property come in. You can override this behavior by
+				setting the <samp class="ph codeph">persistent</samp> property of the message to
+					<samp class="ph codeph">true</samp>.</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">var oMessageProcessor = new sap.ui.core.message.ControlMessageProcessor();
+var oMessageManager  = sap.ui.getCore().getMessageManager();
+
+oMessageManager.registerMessageProcessor(oMessageProcessor);
+
+var oInput = new sap.m.Input({
+    id: "myInputId",
+    value: { path: "/Products(1)/Price" , type: new sap.ui.model.type.Float() }
+});
+
+oMessageManager.addMessages(
+    new sap.ui.core.message.Message({
+        message: "ZIP codes must have at least 23 digits",
+        type: sap.ui.core.MessageType.Error,
+        target: "/myInputId/value",
+        processor: oMessageProcessor
+     })
+);</pre></div>
+
+		</div></div>
+<div class="section"><div class="section_title">Target</div><div type="Target">
+			
+			<p class="p">The target of a UI message can be empty. In this case, the UI message has no specific target
+				and is relevant for the whole application. If a target is set, the target is a
+				string consisting of a control ID, a slash ("/"), and the name of the property to
+				which the message applies.</p>
+
+			<p class="p">Example: <samp class="ph codeph">label0/text</samp></p>
+
+		</div></div>
+</div>
+<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+</div>
+
+<div class="linklist linklist">
+<div><div><a class="link" href="../../docs/api/symbols/sap.ui.core.message.html" alt="../../docs/api/symbols/sap.ui.core.message.html" title="../../docs/api/symbols/sap.ui.core.message.html">sap.ui.core.message</a></div>
+</div></div>
+</div></div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="UI Messages";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

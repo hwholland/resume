@@ -1,0 +1,39 @@
+<mvc:View
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m"
+        controllerName="sap.uxap.testkit.perfs.LineItemTableController">
+
+    <Table growing="true"
+           items="{model>/Vendors('3511')/SNAV_CONTACT_PERSON}">
+        <columns>
+            <Column>
+                <Text text="Role"/>
+            </Column>
+            <Column>
+                <Text text="Name"/>
+            </Column>
+            <Column>
+                <Text text="Mobile"/>
+            </Column>
+            <Column>
+                <Text text="Phone"/>
+            </Column>
+            <Column>
+                <Text text="Email"/>
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{model>ContactPersonFunctionName}"/>
+                    <Text text="{model>FirstName} {model>LastName}"/>
+                    <Text text="{model>TEL_NUMBER}"/>
+                    <Text text="{model>PhoneNumber1}"/>
+                    <Text text="{model>EmailAddress}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+
+    </Table>
+
+</mvc:View>

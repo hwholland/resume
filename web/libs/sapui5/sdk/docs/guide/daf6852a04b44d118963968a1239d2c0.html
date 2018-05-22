@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="Expression binding is an enhancement of the SAPUI5 binding syntax, which allows for providing expressions instead of custom formatter functions."/>
+<meta name="description" content="Expression binding is an enhancement of the SAPUI5 binding syntax, which allows for providing expressions instead of custom formatter functions."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6630687271218074"/>
+<title>Expression Binding</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loiodaf6852a04b44d118963968a1239d2c0">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Expression Binding</h1>
+<div class="body conbody"><p class="shortdesc">Expression binding is an enhancement of the <span class="ph"><span class="ph pname">SAPUI5</span></span> binding syntax, which allows for
+		providing expressions instead of custom formatter functions.</p>
+<p class="p">This saves the overhead of defining a function and is recommended in cases where the formatter
+			function has a trivial implementation like comparison of values. Expression binding is
+			especially useful in the context of <span class="ph"><span class="ph pname">SAPUI5</span></span> XML templating where XML views with
+			templating are preprocessed so that the <span class="ph"><span class="ph pname">SAPUI5</span></span> controller is a natural place to put
+			custom formatter functions that are not available.</p>
+<p class="p">To use expression binding, you need to enable extended binding syntax via the
+			configuration setting <samp class="ph codeph">xx-bindingSyntax</samp> set to
+			<samp class="ph codeph">complex</samp>.</p>
+<p class="p">An expression binding is specified via <samp class="ph codeph">{=expression}</samp> in an XML view. </p>
+<p class="p"><samp class="ph codeph">expression</samp> complies to a subset of JavaScript expression syntax except
+			for bindings embedded in the expression which are specified like this
+				<samp class="ph codeph">{=${embedded}}</samp>. </p>
+<p class="p">Besides embedded bindings, you can use the following:</p>
+
+<div class="tablenoborder"><table summary="" id="loiodaf6852a04b44d118963968a1239d2c0__table_q1l_f5s_cr" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+<thead class="thead" align="left"><tr class="row"><th class="entry" valign="top" width="50%" id="d4544949e54">
+							<p class="p">Syntax Element</p>
+
+						</th>
+<th class="entry" valign="top" width="50%" id="d4544949e59">
+							<p class="p">Symbol</p>
+
+						</th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Literal</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<p class="p">number, for example <samp class="ph codeph">42</samp>, <samp class="ph codeph">6.022e+23</samp> or
+									<samp class="ph codeph">-273.15</samp></p>
+
+							<p class="p"> object, for example <samp class="ph codeph">{foo: 'bar'}</samp></p>
+
+							<p class="p"> string, for example <samp class="ph codeph">'foo'</samp></p>
+
+							<p class="p"><samp class="ph codeph">null</samp></p>
+
+							<p class="p"><samp class="ph codeph">true</samp></p>
+
+							<p class="p"><samp class="ph codeph">false</samp></p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Grouping</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<p class="p">(...), for example <samp class="ph codeph">3 * (4 + 10)</samp></p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Unary operator</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<p class="p"><samp class="ph codeph">!</samp></p>
+
+							<p class="p"><samp class="ph codeph">+</samp></p>
+
+							<p class="p"><samp class="ph codeph">-</samp></p>
+
+							<p class="p"><samp class="ph codeph">typeof</samp></p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Multiplicative operator</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<p class="p">
+								<samp class="ph codeph">*</samp></p>
+
+							<p class="p"><samp class="ph codeph">/</samp></p>
+
+							<p class="p"><samp class="ph codeph">%</samp></p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Additive operator</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<p class="p"><samp class="ph codeph">+</samp></p>
+
+							<p class="p"><samp class="ph codeph">-</samp></p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Relational operator</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<p class="p"><samp class="ph codeph">&lt;</samp></p>
+
+							<p class="p"><samp class="ph codeph">&gt;</samp></p>
+
+							<p class="p"><samp class="ph codeph">&lt;=</samp></p>
+
+							<p class="p"><samp class="ph codeph">&gt;=</samp></p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Strict equality operator</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<p class="p"><samp class="ph codeph">===</samp></p>
+
+							<p class="p"><samp class="ph codeph">!==</samp></p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Binary logical operator </p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<p class="p"><samp class="ph codeph">&amp;&amp;</samp></p>
+
+							<p class="p"><samp class="ph codeph">||</samp></p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Conditional operator</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<p class="p"><samp class="ph codeph">?</samp></p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Member access operator with the <samp class="ph codeph">.</samp> operator</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<div class="p">
+								<div class="note note"><span class="notetitle">Note</span> 
+									<p class="p">With these, you can use members and member methods on standard types such as String:
+											<samp class="ph codeph">{=${/firstName}.length}</samp>, for example
+											<samp class="ph codeph">${/firstName}.indexOf('S')</samp>.</p>
+
+								</div>
+
+							</div>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Function call</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<p class="p"><samp class="ph codeph">f(...)</samp></p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d4544949e54 ">
+							<p class="p">Global symbol</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d4544949e59 ">
+							<p class="p"><samp class="ph codeph">Math</samp>, <samp class="ph codeph">RegExp</samp> and
+									<samp class="ph codeph">encodeURIComponent</samp></p>
+
+						</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section"><div class="section_title">Simple Example</div><div type="Simple Example">
+			
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">With expression binding you only need the XML view but no controller logic.</p>
+
+			</div>
+
+			<p class="p">The following example shows how you use the custom formatter function to map an XML
+				view to an expression binding in the XML view without controller logic.</p>
+
+			<p class="p">The icon is only displayed if the status property in the view's default model has the value
+					<samp class="ph codeph">critical</samp>. You can use expression binding to replace the
+				formatter function <samp class="ph codeph">myFormatter</samp> in the controller with an expression
+				binding in the XML view. You no longer need to implement any formatter function.</p>
+
+			<p class="p">The application version without expression binding constists of the XML view
+					(<samp class="ph codeph">sample.App.view.xml</samp>) and the controller:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;mvc:View controllerName="sample.App" xmlns="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"&gt;
+...
+  &lt;Icon src="sap-icon://message-warning" visible="{path:'status', formatter:'.myFormatter'}"&gt;
+...
+ 
+&lt;/mvc:View&gt;
+</pre></div>
+
+			<p class="p">Controller (<samp class="ph codeph">sample.App.controller.js</samp>)</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+...
+myFormatter: function(sStatus) {
+  return sStatus === "critical";
+}
+...
+</pre></div>
+
+			<p class="p">When using expression binding, however, you only need the XML view without controller
+				logic (<samp class="ph codeph">sample.App.view.xml</samp>)</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;mvc:View controllerName="sample.app" xmlns="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"&gt;
+...
+  &lt;Icon src="sap-icon://message-warning" visible="{= ${status} === 'critical' }"&gt;
+...
+&lt;/mvc:View&gt;
+</pre></div>
+
+		</div></div>
+<div class="section"><div class="section_title">More Complex Expressions</div><div type="More Complex Expressions">
+			
+			<p class="p">With the expression syntax sketched above it is possible to create more complex expressions as
+				shown in the examples below.</p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">We recommended to use formatter functions instead of very complex and
+					hard-to-read expressions. Some characters that are used by operators, however,
+					need to be escaped in XML, for example the left angle bracket (&lt;) and the
+					ampersand (&amp;), To use these characters, do one of the following: </p>
+
+				<ul class="ul" id="loiodaf6852a04b44d118963968a1239d2c0__ul_rx1_jws_cr"><li class="li">
+						<p class="p">Rephrase the expression to make it more readable, for example, use
+								<samp class="ph codeph">a &gt; b</samp> instead of <samp class="ph codeph">b &amp;lt;
+							a</samp>.</p>
+
+					</li>
+<li class="li">
+						<p class="p">Use a custom formatter function.</p>
+
+					</li>
+</ul>
+
+				<p class="p">For more information about escaping in XML, see the W3C XML specification at <a class="extlink" href="http://help.sap.com/disclaimer?site=http://www.w3.org/TR/xml/#syntax" alt="http://www.w3.org/TR/xml/#syntax" title="http://www.w3.org/TR/xml/#syntax">http://www.w3.org/TR/xml/#syntax<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a>.</p>
+
+			</div>
+
+			<p class="p">Examples for more complex expressions:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;!--Set to visible if the status is critical and the amount is above the threshold (note escaping of &amp;&amp;)--&gt;
+visible="{= ${status} === 'critical' &amp;amp;&amp;amp; ${amount} &gt; 10000 }"</pre></div>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;!--Text for amount level using language-dependent texts from the resource model.--&gt;
+text="{= ${/amount} &gt; 10000 ? ${i18n&gt;/high} : ${i18n&gt;/normal} }"</pre></div>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;!--Set to visible if the rating is VIP, ignoring case or if the order amount is greater than 10,000.--&gt;
+visible="{= ${/rating}.toUpperCase() === 'VIP' || ${/orderAmount} &gt; 10000 }"</pre></div>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;!--Set to visible if the rating contains VIP, ignoring the case. --&gt;
+visible={= RegExp('vip', 'i').test(${/rating}) }</pre></div>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;!--Text is maximum of three values.--&gt;
+text="{= Math.max(${/value1}, ${/value2}, ${/value3}) }"</pre></div>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;!--Control is enabled only if the order status is set.--&gt; 
+enabled="{= ${/orderStatus} !== null }"</pre></div>
+
+		</div></div>
+</div>
+<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="0c803921b1bf4b3a97a038fbd51ef542.html" title="Extended syntax can be used for calculated fields in declarative views, such as HTML and XML views.">Extended Syntax for Calculated Fields</a></div>
+<div><a class="link" href="25ab54b0113c4914999c43d07d3b71fe.html" title="Example, how extended syntax can be used for calculated fields in XML and HTML views and in JS views.">Using Extended Syntax in XML and HTML Views</a></div>
+<div><a class="link" href="5ee619fc1370463ea674ee04b65ed83b.html" title="XML templating lets you use an XML view as a template.">XML Templating in SAPUI5</a></div>
+</div>
+</div></div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Expression Binding";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html><html xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		<title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.ui.model.odata.type.ODataType</title>
+		<link rel=stylesheet href="../default.css" type="text/css">
+		
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+				
+				
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+				
+				
+			
+				
+				
+				<link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+				
+			
+		
+	</head>
+
+	<body>
+
+
+		<div id="main">
+			<div id="content">
+
+					<h1 class="classTitle static">
+					
+					Class sap.ui.model.odata.type.ODataType
+					</h1>
+					
+						<div class="classRelation extends"><span class="caption">extends </span><a title="sap.ui.model.SimpleType" href="../symbols/sap.ui.model.SimpleType.html">SimpleType</a></div>
+					
+					
+					
+						<div class="classRelation subclasses"><span class="caption">known direct subclasses: </span><a title="sap.ui.model.odata.type.Boolean" href="../symbols/sap.ui.model.odata.type.Boolean.html">Boolean</a>, <a title="sap.ui.model.odata.type.DateTimeBase" href="../symbols/sap.ui.model.odata.type.DateTimeBase.html">DateTimeBase</a>, <a title="sap.ui.model.odata.type.Decimal" href="../symbols/sap.ui.model.odata.type.Decimal.html">Decimal</a>, <a title="sap.ui.model.odata.type.Double" href="../symbols/sap.ui.model.odata.type.Double.html">Double</a>, <a title="sap.ui.model.odata.type.Guid" href="../symbols/sap.ui.model.odata.type.Guid.html">Guid</a>, <a title="sap.ui.model.odata.type.Int" href="../symbols/sap.ui.model.odata.type.Int.html">Int</a>, <a title="sap.ui.model.odata.type.Int64" href="../symbols/sap.ui.model.odata.type.Int64.html">Int64</a>, <a title="sap.ui.model.odata.type.Single" href="../symbols/sap.ui.model.odata.type.Single.html">Single</a>, <a title="sap.ui.model.odata.type.String" href="../symbols/sap.ui.model.odata.type.String.html">String</a>, <a title="sap.ui.model.odata.type.Time" href="../symbols/sap.ui.model.odata.type.Time.html">Time</a></div>
+					
+					
+					<hr/>
+
+					
+					
+					<div class="full-description">
+						<p>This class is an abstract base class for all OData primitive types (see <a
+href="http://www.odata.org/documentation/odata-version-2-0/overview#AbstractTypeSystem">
+Edm Types</a>). All sub-types implement the interface of
+<a href="../symbols/sap.ui.model.SimpleType.html">sap.ui.model.SimpleType</a>. That means they implement next to the constructor:
+<ul>
+<li><a href="../symbols/sap.ui.model.SimpleType.html#getName">getName</a></li>
+<li><a href="../symbols/sap.ui.model.SimpleType.html#formatValue">formatValue</a></li>
+<li><a href="../symbols/sap.ui.model.SimpleType.html#parseValue">parseValue</a></li>
+<li><a href="../symbols/sap.ui.model.SimpleType.html#validateValue">validateValue</a></li>
+</ul>
+</p><p>
+All ODataTypes are immutable. All format options and constraints are given to the
+constructor, they cannot be modified later.
+</p><p>
+All ODataTypes use a locale-specific message when throwing an error caused by invalid
+user input (e.g. if <a href="../symbols/sap.ui.model.odata.type.Double.html#parseValue">Double.parseValue</a>
+cannot parse the given value to a number, or if any type's <a href="#validateValue">validateValue</a> gets a <code>null</code>, but the constraint <code>nullable</code> is
+<code>false</code>).</p>
+						
+						
+						
+						
+						
+						
+							<br />
+							<i>Since: </i>1.27.0.
+						
+					</div>
+					
+		
+					
+					
+					
+						<div class="summary section">
+							<div class="sectionTitle">Constructor Summary</div>
+							<div class="sectionItems">
+								<div class="sectionItem classConstructor static">
+									<div class="itemName">
+										<b class="icon" title="Constructor for a new ODataType.">new <a href="../symbols/sap.ui.model.odata.type.ODataType.html#constructor">sap.ui.model.odata.type.ODataType</a></b>
+										<span class='signature'>(<span title="(object) type-specific format options; see sub-types">oFormatOptions</span><i class="help" title="Optional parameter">?</i>, <span title="(object) type-specific constraints (e.g.">oConstraints</span><i class="help" title="Optional parameter">?</i>)</span>
+										<span class='description'>Constructor for a new <code>ODataType</code>.</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					
+					
+					
+		
+					
+
+					
+						<div class="summary section">
+							<div class="sectionTitle">Method Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod static">
+									<b class="icon" title="Creates a new subclass of class sap.ui.model.odata.type.ODataType with name sClassName and enriches it with the information contained in oClassInfo."><a href="../symbols/sap.ui.model.odata.type.ODataType.html#.extend">sap.ui.model.odata.type.ODataType.extend</a></b><span class='signature'>(<span title="(string) name of the class to be created">sClassName</span>, <span title="(object) object literal with informations about the class">oClassInfo</span><i class="help" title="Optional parameter">?</i>, <span title="(function) constructor function for the metadata object.">FNMetaImpl</span><i class="help" title="Optional parameter">?</i>)</span>
+									<span class='description'>Creates a new subclass of class sap.ui.model.odata.type.ODataType with name <code>sClassName</code> and enriches it with the information contained in <code>oClassInfo</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod static">
+									<b class="icon" title="Returns a metadata object for class sap.ui.model.odata.type.ODataType."><a href="../symbols/sap.ui.model.odata.type.ODataType.html#.getMetadata">sap.ui.model.odata.type.ODataType.getMetadata</a></b><span class='signature'>()</span>
+									<span class='description'>Returns a metadata object for class sap.ui.model.odata.type.ODataType.</span>
+								</div>
+							
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.ui.model.SimpleType.html">sap.ui.model.SimpleType</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.model.SimpleType.html#formatValue">formatValue</a>, <a href="../symbols/sap.ui.model.SimpleType.html#parseValue">parseValue</a>, <a href="../symbols/sap.ui.model.SimpleType.html#validateValue">validateValue</a>
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.ui.model.Type.html">sap.ui.model.Type</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.model.Type.html#getName">getName</a>
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.ui.base.Object.html">sap.ui.base.Object</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.base.Object.html#destroy">destroy</a>, <a href="../symbols/sap.ui.base.Object.html#getInterface">getInterface</a>, <a href="../symbols/sap.ui.base.Object.html#getMetadata">getMetadata</a>
+							</div>
+						</div>
+					
+		
+					
+						<div class="section details">
+							<div class="sectionTitle">
+								Constructor Detail
+							</div>
+							<div class="sectionItems">
+								<div class="sectionItem classItem itemName static">
+									<div class="details"><a name="constructor"> </a>
+										
+										<div class="icon">
+											new <b>sap.ui.model.odata.type.ODataType</b>(<span title="(object) type-specific format options; see sub-types">oFormatOptions</span><i class="help" title="Optional parameter">?</i>, <span title="(object) type-specific constraints (e.g.">oConstraints</span><i class="help" title="Optional parameter">?</i>)
+										</div>
+										
+										<div class="full-description">
+											Constructor for a new <code>ODataType</code>.
+										</div>
+										
+										
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oFormatOptions</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    type-specific format options; see sub-types
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oConstraints</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    type-specific constraints (e.g. <code>oConstraints.nullable</code>), see sub-types
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										<!--
+										
+										-->
+										
+						
+									</div>
+								</div>
+							</div>
+						</div>
+					
+		
+					
+		
+					
+					
+					
+						<div class="details section">
+							<div class="sectionTitle">
+								Method Detail
+							</div>
+							<div class="sectionItems">
+								
+									<div class='sectionItem classMethod static'>
+										<a name=".extend"> </a>
+										<div class="itemTitle icon">
+											sap.ui.model.odata.type.ODataType.extend<span class="signature">(<span title="(string) name of the class to be created">sClassName</span>, <span title="(object) object literal with informations about the class">oClassInfo</span><i class="help" title="Optional parameter">?</i>, <span title="(function) constructor function for the metadata object.">FNMetaImpl</span><i class="help" title="Optional parameter">?</i>)</span>
+											<span class="light" title="returns function">: function</span>
+										</div>
+										<div class="full-description">
+											Creates a new subclass of class sap.ui.model.odata.type.ODataType with name <code>sClassName</code>
+and enriches it with the information contained in <code>oClassInfo</code>.
+</p><p>
+<code>oClassInfo</code> might contain the same kind of information as described in <a href="../symbols/sap.ui.model.SimpleType.html#.extend">sap.ui.model.SimpleType.extend</a>.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sClassName</b>
+													</td>
+													<td class="methodItemDesc">
+												    name of the class to be created
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oClassInfo</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    object literal with informations about the class
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{function}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>FNMetaImpl</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    constructor function for the metadata object. If not given, it defaults to sap.ui.core.ElementMetadata.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{function}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the created class / constructor function
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod static'>
+										<a name=".getMetadata"> </a>
+										<div class="itemTitle icon">
+											sap.ui.model.odata.type.ODataType.getMetadata<span class="signature">()</span>
+											<span class="light" title="returns sap.ui.base.Metadata">: <a href="../symbols/sap.ui.base.Metadata.html">sap.ui.base.Metadata</a></span>
+										</div>
+										<div class="full-description">
+											Returns a metadata object for class sap.ui.model.odata.type.ODataType.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.ui.base.Metadata.html">sap.ui.base.Metadata</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														metadata object describing thi class
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+							</div>
+						</div>
+					
+
+
+
+		</div>
+	</div>
+
+				
+	</body>
+</html>

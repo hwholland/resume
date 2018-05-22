@@ -1,0 +1,155 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="OpenUI5 is an HTML UI library, therefore styling is done using Cascading Style Sheets (CSS). This allows for creating an impressive visual experience using a widely known standard technology which is well-accepted on the market."/>
+<meta name="description" content="OpenUI5 is an HTML UI library, therefore styling is done using Cascading Style Sheets (CSS). This allows for creating an impressive visual experience using a widely known standard technology which is well-accepted on the market."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=15846680108840838"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=15846680108840838"/>
+<title>Theming</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio497c27a8ee26426faacd2b8a1751794a">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Theming</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"><span class="ph"><span class="ph pname">OpenUI5</span></span> is an HTML UI
+		library, therefore styling is done using Cascading Style Sheets (CSS). This allows for
+		creating an impressive visual experience using a widely known standard technology which is
+		well-accepted on the market.</p>
+
+		<p class="p">
+			<span class="ph"><span class="ph pname">OpenUI5</span></span> supports you when
+			creating and using different visual designs - called <span class="ph emphasis emphasis">themes</span> - that
+			can be used alternatively and switched on the fly. This way, the same application can
+			look very different, depending on the user's design preference or accessibility
+			requirements. Existing themes can serve as a basis for new themes and, in case of new
+			design trends, it is possible to create a matching theme for all existing applications
+			without modifying the applications. The theme handling is decoupled from application
+			development and done in a separate layer. The <span class="ph"><span class="ph pname">OpenUI5</span></span> library loads the
+			required CSS files and offers ways of switching themes.</p>
+
+		<p class="p">On top of pure CSS, <span class="ph"><span class="ph pname">OpenUI5</span></span> offers
+			a variety of optional features that add value regarding modularization, modification,
+			compatibility, and performance:</p>
+
+		<ul class="ul" id="loio497c27a8ee26426faacd2b8a1751794a__ul_plw_g2t_d4">
+			<li class="li">CSS variables,
+				mixins,
+				color calculations and other functions, provided by the Open Source library <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Flesscss.org%2F" alt="http://lesscss.org/" title="http://lesscss.org/"> LESS<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></li>
+
+			<li class="li">In particular, CSS variables are used for centrally defined and centrally modifiable
+				colors</li>
+
+			<li class="li">Compilation of one CSS file per control library from modular per-control CSS files</li>
+
+			<li class="li">Optimization/compression of CSS size</li>
+
+			<li class="li">Clean browser switch and mobile platform detection available (inside CSS code)</li>
+
+			<li class="li">Base theme (as a basis for a style that is always required to reduce the amount of CSS
+				required for specific themes)</li>
+
+			<li class="li">Generic right-to-left support</li>
+
+		</ul>
+
+		<p class="p">To ensure these functions, <span class="ph"><span class="ph pname">OpenUI5</span></span> uses the following components: </p>
+
+		<ul class="ul" id="loio497c27a8ee26426faacd2b8a1751794a__ul_pwp_fnt_f4">
+			<li class="li">A CSS generator with several functions: LESS processing (CSS variables substitution etc.), merge of CSS files created for different themes and
+				controls for optimal runtime consumption, as well as compression or right-to-left substitution if required.</li>
+
+			<li class="li">The <span class="ph"><span class="ph pname">OpenUI5</span></span> runtime handles the
+				loading of the appropriate CSS file for the control libraries used in the
+				application page by adding <samp class="ph codeph">&lt;style&gt;</samp> tags to the document head.
+				There is also an API available for switching themes, which replaces the CSS URLs and
+				therefore does not modify the application state.</li>
+
+		</ul>
+
+		<div class="section"><div class="section_title">How to Theme Your OpenUI5 Application</div><div type="How to Theme Your OpenUI5 Application">
+			
+			<p class="p">To theme your application, you can choose among a number of options:</p>
+
+			<ul class="ul" id="loio497c27a8ee26426faacd2b8a1751794a__ol_lg1_zmt_mn">
+				<li class="li">Adapt an existing theme by using the UI theme designer, which basically modifies the color
+					scheme, but in a very easy, non-technical manner with instant live preview.
+					Adaptation parameters are limited, but the UI theme designer also lets you add
+					custom CSS, which gives you the freedom to adapt basically everything.</li>
+
+				<li class="li">Create a new theme from scratch, writing every piece of CSS which will then be loaded later.
+					The only requirement is to have <span class="ph filepath">library.css</span> files within a
+					certain folder structure (which also defines the theme name).</li>
+
+				<li class="li">Adapt an existing theme by adding CSS on application level. This is the easiest option and
+					still sufficient for many use cases. You can technically adapt and change
+					everything. The adaptation is rather done on top of an existing theme and only
+					available within the specific application.</li>
+
+			</ul>
+
+			<p class="p">All options except the last one result in a new stand-alone theme which needs to be deployed
+				and referenced by its name in the application and which can be used by any
+				application.</p>
+
+			<p class="p">For all these options, the CSS developer might reduce the styling effort and focus on those
+				controls which are actually used in the application (which in turn decreases the
+				reuse value of the theme in other applications).</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Developing Custom HTML or Your Own Control – What to Bear in Mind</div><div type="Developing Custom HTML or Your Own Control – What to Bear in Mind">
+			
+			<ul class="ul" id="loio497c27a8ee26426faacd2b8a1751794a__ul_u2z_wzw_qn">
+				<li class="li">
+					<p class="p">To ensure that your <span class="ph"><span class="ph pname">OpenUI5</span></span>
+						application's <span class="ph pname">OpenUI5</span> theme can be adapted easily, you
+						should follow some recommendations.</p>
+
+					<p class="p">For more information, see <a class="xref" href="a2c67acd17a948ee89344676762e0c2a.html" title="There are several things you should keep in mind to ensure that an application can actually be themed.">Creating Themable User Interfaces</a>.</p>
+
+				</li>
+
+				<li class="li">To ensure that your custom content fits the colors of the <span class="ph"><span class="ph pname">OpenUI5</span></span> theme used,
+					you can use specific CSS classes.<p class="p">For more information, see <a class="xref" href="ea08f53503da42c19afd342f4b0c9ec7.html" title="OpenUI5 provides a set of essential adjustable colors behind the generic predefined CSS rules that enable custom content to use the respective CSS classes for the required colors.">CSS Classes for Theme Parameters</a>.</p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">More Information</div><div type="More Information">
+			
+			<p class="p"><a class="xref" href="http://help.hana.ondemand.com/theme_designer/frameset.htm" alt="http://help.hana.ondemand.com/theme_designer/frameset.htm" title="http://help.hana.ondemand.com/theme_designer/frameset.htm">UI Theme Designer</a></p>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="e9fc648661d84ed89360bbec3ae02611.html" title="You define which theme is used by your app either in the bootstrap, by using a URL parameter, or by using method sap.ui.getCore.applyTheme.">Setting Themes</a></strong><br/>
+</div>
+<div><strong><a class="link" href="45df6dff504647c686ab9ba72af827f6.html" title="On top of pure CSS, OpenUI5 offers advanced theming concepts and functions which can be used optionally. These concepts are outlined in detail below.">Enhanced Theming Concepts</a></strong><br/>
+</div>
+<div><strong><a class="link" href="a2c67acd17a948ee89344676762e0c2a.html" title="There are several things you should keep in mind to ensure that an application can actually be themed.">Creating Themable User Interfaces</a></strong><br/>
+</div>
+<div><strong><a class="link" href="ea08f53503da42c19afd342f4b0c9ec7.html" title="OpenUI5 provides a set of essential adjustable colors behind the generic predefined CSS rules that enable custom content to use the respective CSS classes for the required colors.">CSS Classes for Theme Parameters</a></strong><br/>
+</div>
+<div><strong><a class="link" href="d0db4d538edb43bca893acd4d6814a40.html" title="Frequently asked questions regarding theming in OpenUI5">Theming FAQ</a></strong><br/>
+</div>
+</ul>
+
+</div>
+</div></div>
+
+</body>
+</html>

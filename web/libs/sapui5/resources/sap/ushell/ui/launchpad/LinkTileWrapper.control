@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<control xmlns="http://www.sap.com/sap.ui.library.xsd" >
+
+	<name>ui/launchpad/LinkTileWrapper</name>
+	<documentation>A link tile to be displayed in the tile container. This control acts as container for specialized tile implementations.</documentation>
+
+	<baseType>sap.ui.core/Control</baseType>
+	<properties>
+		<property group="Misc" name="uuid" type="sap.ui.core/string">
+		</property>
+		<property group="Misc" name="tileCatalogId" type="sap.ui.core/string">
+		</property>
+		<property group="Misc" name="target" type="sap.ui.core/string">
+			<documentation>Hyperlink target</documentation>
+		</property>
+		<property group="Misc" type="sap.ui.core/boolean" name="visible" defaultValue="true">
+		</property>
+		<property group="Misc" name="debugInfo" type="sap.ui.core/string">
+			<documentation>Technical information about the tile which is logged when the tile is clicked</documentation>
+		</property>
+		<property group="Misc" name="animationRendered" type="sap.ui.core/boolean" defaultValue="false">
+		</property>
+		<property group="Misc" name="isLocked" type="sap.ui.core/boolean" defaultValue="false">
+        </property>
+		<property group="Misc" name="tileActionModeActive" type="sap.ui.core/boolean" defaultValue="false">
+		</property>
+        <property group="Misc" name="ieHtml5DnD" type="sap.ui.core/boolean" defaultValue="false">
+        </property>
+	</properties>
+	<aggregations>
+		<aggregation cardinality="0..n" name="tileViews" type="sap.ui.core/Control">
+		</aggregation>
+		<aggregation cardinality="0..n" name="footItems" type="sap.ui.core/Control">
+		</aggregation>
+	</aggregations>
+	<events>
+		<event name="press"></event>
+		<event name="coverDivPress"></event>
+		<event name="afterRendering"></event>
+        <event name="showActions"></event>
+	</events>
+</control>

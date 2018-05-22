@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+<title>QUnit: Details Controller</title>
+
+<base href="../../../../../../../../../">
+<!--[if lte IE 9]><script type="text/javascript">
+		(function() {
+			var baseTag = document.getElementsByTagName('base')[0];
+			baseTag.href = baseTag.href;
+		})();
+		</script><![endif]-->
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="resources/sap-ui-core.js" data-sap-ui-theme="sap_bluecrystal"
+	data-sap-ui-noConflict="true">	
+</script>
+
+<link rel="stylesheet" href="resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+
+<script type="text/javascript">
+sap.ui.require([
+                
+        		"sap/suite/ui/generic/template/ObjectPage/view/Details.controller",
+        		"sap/suite/ui/generic/template/lib/TemplateViewController",
+        		"sap/ui/generic/app/transaction/DraftController",
+        		"sap/suite/ui/generic/template/lib/TemplateComponent",
+        		"sap/ui/generic/app/transaction/TransactionController",
+        		"sap/ui/generic/app/AppComponent",
+        		"sap/ui/core/mvc/XMLView",
+        		"sap/ui/model/json/JSONModel",
+        		"sap/ui/model/odata/v2/ODataModel",
+        		"sap/ui/base/Event",
+    			"sap/m/Button",
+        		"sap/ui/thirdparty/sinon", 
+        		"sap/ui/thirdparty/sinon-qunit"
+
+ ],function(Details,BaseController,DraftContr,TemplateComponent,TransaContr,AppComp,XMLView,JSONModel,ODataModel,Event, MButton) {
+	module("Details Controller", {
+		setup: function() {
+			// simple set up for basic checks sufficient
+			this.oDetails = new Details();
+		},
+		teardown: function() {
+			this.oDetails = null;
+		}		
+		
+	});
+	QUnit.test("Shall be instantiable", function(assert) {
+		assert.ok(this.oDetails, "instance available");
+	});
+	
+	QUnit.test("onInit method available", function(assert) {
+		equal(typeof this.oDetails.onInit, "function", "onInit function availability");
+	});
+	
+	QUnit.test("onPressDraftInfo method available", function(assert) {
+		equal(typeof this.oDetails._templateEventHandlers.onPressDraftInfo, "function", "onPressDraftInfo function availability");
+	});
+	
+	QUnit.test("function onCallAction", function(assert) {
+// todo: check
+		assert.ok(true, "ok");
+		return;
+		var oEvent = sinon.createStubInstance(Event);
+		oEvent.getSource.returns(new MButton());
+		// just call onCallAction with the above mocked objects..
+		this.oDetails._templateEventHandlers.onCallAction(oEvent);
+		assert.ok(true, "ok");
+		// To do enhance test
+
+	});
+
+	
+	
+	QUnit.test("onPressDraftInfo function check", function(assert) {
+	// todo: check
+		assert.ok(true, "ok");
+		return;
+		/* Settings done for getContext function */
+		var oTestView = sinon.createStubInstance(XMLView);
+		var oDraftAdministrativeData = {};
+		var oTVBindingContext = {
+			name: "i'm a binding context",
+			getProperty : function(sProperty) {
+				return oDraftAdministrativeData;
+    			}
+		};
+		// the binding context attached to the view will be retrieved from tvc.getContext via the bvc.
+		oTestView.getBindingContext.returns(oTVBindingContext);
+		oTestView.getBindingContext.returns(oTVBindingContext);		
+		var oUIModel = new JSONModel(); // to have a real json model for setting properties
+		oTestView.getModel.withArgs("ui").returns(oUIModel);
+		 // some normal model
+		var oDataModel = sinon.createStubInstance(ODataModel);
+		oTestView.getModel.returns(oDataModel);				
+		sinon.stub(this.oDetails, "getContext").returns(oTestView);
+		
+		
+		var oEvent = sinon.createStubInstance(Event);
+		oEvent.getSource.returns({getId: function (){
+			return {addDependent:"test"}; 
+				
+		}});
+		var onInitStub = sinon.stub(BaseController.prototype, "fnDraftPopover").returns("");
+		//onInitStub.fnDraftPopover.returns({call: function(){return "test"}});		
+		oResult = this.oDetails._templateEventHandlers.onPressDraftInfo.apply(this.oDetails, [oEvent]);
+		assert.ok(this.oDetails.getContext.calledOnce, "mocked getContext function called by the function onPressDraftInfo");
+		assert.ok(BaseController.prototype.fnDraftPopover.calledOnce, "mocked fnDraftPopover function called by the function onPressDraftInfo");
+		
+		assert.ok(BaseController.prototype.fnDraftPopover.calledOnce, "mocked fnDraftPopover function called by the function onPressDraftInfo");
+	});
+
+});
+</script>     
+</head>
+<body>
+	<div id="qunit"></div>
+</body>
+</html>

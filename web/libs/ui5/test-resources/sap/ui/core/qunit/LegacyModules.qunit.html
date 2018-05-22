@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Legacy modules</title>
+		<script src="../shared-config.js"></script>
+		<script id="sap-ui-bootstrap"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-loglevel="WARNING"
+			data-sap-ui-noConflict="true" >
+		</script>
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" media="screen" />
+		<script src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/qunit-coverage.js"
+			data-sap-ui-cover-only="[jquery.sap.logger.js,sap/ui/app,jquery-ui-core,jquery-ui-datepicker,jquery-ui-position]" 
+			data-sap-ui-cover-never="[sap/ui/thirdparty/]"></script>
+		<script src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+		<script src="../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+		<script>
+			// declare qunit module to avoid double loading below
+			jQuery.sap.declare("sap.ui.thirdparty.qunit");
+
+			function loadAsScript(sModule) {
+				return new Promise(function(resolve,reject) {
+
+					var sUrl = jQuery.sap.getModulePath(sModule, '.js');
+					var oScript = window.document.createElement('SCRIPT');
+					oScript.src = sUrl;
+					oScript.addEventListener('load', function(e) {
+						jQuery.sap.log.info("Javascript resource loaded: " + sModule);
+						resolve();
+					});
+					oScript.addEventListener('error', function(e) {
+						jQuery.sap.log.error("failed to load Javascript resource: " + sModule);
+						resolve();
+					});
+					document.head.appendChild(oScript);
+				});
+			}
+			
+			QUnit.test("Legacy Module: jquery.sap.logger", function(assert) {
+				var info = {
+						name: 'jquery.sap.logger'
+					};				
+				assert.ok(!jQuery.sap.isDeclared(info.name), "module " + info.name + " has not been declared under its legacy name");
+				jQuery.sap.require(info.name);
+				assert.ok(jQuery.sap.isDeclared(info.name), "module " + info.name + " has been declared under its legacy name");
+			});
+
+			QUnit.test("sap.ui.app.MockServer", function(assert) {
+				var info = {
+					name: 'sap.ui.app.MockServer',
+					replacementName: 'sap.ui.core.util.MockServer',
+				};
+				assert.ok(!jQuery.sap.isDeclared(info.name), "module " + info.name + " has not been declared under its legacy name");
+				assert.ok(!jQuery.sap.isDeclared(info.replacementName), "module " + info.replacementName + " has not been declared");
+				// now load via module system
+				jQuery.sap.require(info.name);
+				assert.ok(jQuery.sap.isDeclared(info.name), "module " + info.name + " has been declared under its legacy name");
+				assert.ok(jQuery.sap.isDeclared(info.replacementName), "module " + info.replacementName + " has been declared");
+			});
+
+
+
+			QUnit.module("Legacy Module with Warning", {
+				beforeEach: function() {
+					this.errorThrown = false;
+					this.globalErrorHandler = function(e) {
+						if ( e && e.message && sinon.match(/The file/).and(sinon.match(/has been moved/)).and(sinon.match(/Please update the dependencies accordingly/)).test(e.message) ) {
+							this.errorThrown = true;
+							e.preventDefault();
+							e.stopPropagation();
+						}
+					}.bind(this);
+					window.addEventListener("error", this.globalErrorHandler);
+					var logSpy = this.logSpy = sinon.stub();
+					this.listener = {
+						onLogEntry: function(oLogEntry) {
+							logSpy(oLogEntry.level, oLogEntry.message);
+						}
+					};
+					jQuery.sap.log.addLogListener(this.listener);
+				}, 
+				afterEach: function() {
+					window.removeEventListener("error", this.globalErrorHandler);
+					jQuery.sap.log.removeLogListener(this.listener);
+				}
+			});
+
+			[
+				{
+					name: 'jquery-ui-core',
+					replacementName: 'sap.ui.thirdparty.jqueryui.jquery-ui-core',
+				},
+				{
+					name: 'jquery-ui-datepicker',
+					replacementName: 'sap.ui.thirdparty.jqueryui.jquery-ui-datepicker'
+				},
+				{
+					name: 'jquery-ui-position',
+					replacementName: 'sap.ui.thirdparty.jqueryui.jquery-ui-position',
+					alreadyLoaded: true // sap-ui-core already includes sap/ui/thirdparty/jqueryui/jquery-ui-position
+				},
+				{
+					name: 'sap.ui.model.odata.datajs',
+					replacementName: 'sap.ui.thirdparty.datajs'
+				},
+				{
+					name: 'sap.ui.qunit.qunit',
+					replacementName: 'sap.ui.thirdparty.qunit',
+					alreadyLoaded: true // all unit test already load qunit
+				},
+
+			].forEach(function( info) {
+
+				QUnit.test(info.name, function(assert) {
+					
+					// first check that legacy module hasn't been loaded yet
+					assert.ok(!jQuery.sap.isDeclared(info.name), "module " + info.name + " has not been declared under its legacy name");
+					if ( !info.alreadyLoaded ) {
+						assert.ok(!jQuery.sap.isDeclared(info.replacementName), "module " + info.replacementName + " has not been declared");
+					}
+					
+					var done = assert.async();
+
+					// first try to load the module by bypassing the module system (should fail)
+					var require = jQuery.sap.require;
+					jQuery.sap.require = null;
+					QUnit.config.current.ignoreGlobalErrors = true;
+					loadAsScript(info.name).then(function() {
+
+						QUnit.config.current.ignoreGlobalErrors = false;
+
+						// check that an error has been reported
+						assert.ok(this.errorThrown, "legacy module should throw an error when being executed (bypassing UI5's module system)");
+
+						// restore module system
+						jQuery.sap.require = require;
+
+						// now load via module system
+						jQuery.sap.require(info.name);
+
+						assert.ok(jQuery.sap.isDeclared(info.name), "module " + info.name + " has been declared under its legacy name");
+						assert.ok(jQuery.sap.isDeclared(info.replacementName), "module " + info.replacementName + " has been declared");
+						assert.ok(this.logSpy.calledWith(jQuery.sap.log.Level.WARNING, sinon.match(/The file/).and(sinon.match(/has been moved/)).and(sinon.match(/Please update the dependencies accordingly/))), "legacy module should log a warning when being executed");
+						this.logSpy.reset();
+						done();
+						
+					}.bind(this));
+
+				});
+
+			});
+
+		</script>
+	</head>
+	<body>
+	<div id="qunit"></div>
+	</body>
+</html>

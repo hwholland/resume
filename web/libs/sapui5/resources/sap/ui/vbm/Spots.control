@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<control xmlns="http://www.sap.com/sap.ui.library.xsd" >
+
+	<name>Spots</name>
+	<documentation>Spots aggregation container</documentation>
+
+	<baseType>sap.ui.vbm/VoAggregation</baseType>
+	<events>
+		<event name="click">
+			<documentation>The event is raised when there is a click action on a Spot.</documentation>
+		</event>
+		<event name="contextMenu">
+			<documentation>The event is raised when there is a  right click or a tap and hold action on a Spot.</documentation>
+		</event>
+		<event name="drop">
+			<documentation>The event is raised when something is dropped on a Spot.</documentation>
+		</event>
+	</events>
+	<aggregations default="items">
+		<aggregation cardinality="0..n" name="items" type="sap.ui.vbm/Spot">
+			<documentation>spot object aggregation</documentation>
+		</aggregation>
+		<aggregation cardinality="0..n" name="dragSource" type="sap.ui.vbm/DragSource">
+			<documentation>DragSource aggregation</documentation>
+		</aggregation>
+		<aggregation cardinality="0..n" name="dropTarget" type="sap.ui.vbm/DropTarget">
+			<documentation>DropTarget aggregation</documentation>
+		</aggregation>
+	</aggregations>
+</control>

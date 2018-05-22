@@ -1,0 +1,170 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Multiple, individual analytic chart cards can be combined and displayed within a single card via the view switch feature."/>
+<meta name="description" content="Multiple, individual analytic chart cards can be combined and displayed within a single card via the view switch feature."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9109330885375977"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9109330885375977"/>
+<title>Combining and Viewing Multiple Cards</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioa705039f4db2426e86abcc84f7ccb1e4">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Combining and Viewing Multiple Cards</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Multiple, individual analytic chart cards can be combined and displayed within a single
+		card via the view switch feature. </p>
+
+		<p class="p">The view switch feature is enabled through a dropdown menu below the header area. Applications
+			will have to add configurations to the application descriptor (manifest file) where they
+			can specify the different annotations that make up each of the individual cards, which
+			in turn makes up the combined card. The following is an example setting for one such
+			card:</p>
+
+		<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"card01": {
+ 
+        "id": "card3",
+        "model":"salesOrder",
+        "template":"sap.ovp.cards.chart.analytical",
+        "settings": {        
+            "title": "Sales Order",       
+            "subTitle": "",        
+            "entitySet": "SalesOrderSet",        
+            "tabs": [        
+                {              
+                    "chartAnnotationPath" :"com.sap.vocabularies.UI.v1.Chart#Eval_by_Country",
+                    "dataPointAnnotationPath" :"com.sap.vocabularies.UI.v1.Chart#Eval_by_Country",                  
+                    "selectionAnnotationPath" :"com.sap.vocabularies.UI.v1.SelectionVariant#Eval_by_Country",              
+                    "presentationAnnotationPath" :"com.sap.vocabularies.UI.v1.PresentationVariant#Eval_by_Country",              
+                    "idenfiticationAnnotationPath" :"com.sap.vocabularies.UI.v1.Identification#Eval_by_Country",                  
+                    "value": {{by_Country}}              
+                },
+               {                 
+                    "chartAnnotationPath" : "com.sap.vocabularies.UI.v1.Chart#Eval_by_Supplier",
+                    "selectionAnnotationPath" :"com.sap.vocabularies.UI.v1.SelectionVariant#Eval_by_Supplier",
+                    "dataPointAnnotationPath" :"com.sap.vocabularies.UI.v1.Chart#Eval_by_Supplier",
+                    "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#Eval_by_ Supplier",              
+                    "idenfiticationAnnotationPath" :"com.sap.vocabularies.UI.v1.Identification#Eval_by_Supplier",          
+                    "value": {{by_supplier}}             
+                }          
+            ]
+        }
+}</pre></div>
+
+		</div>
+
+		<div class="p">In the example above, there would be a dropdown within the card that would show two
+			values – <span class="ph uicontrol">By Supplier</span> and <span class="ph uicontrol">By Country</span>.  The
+			annotations to be used when each of these values are chosen are as per the tab setting
+			above the respective value selected from the dropdown. With this feature, each selection
+			from the dropdown could have its own chart with its own filter criteria (annotation path
+				<samp class="ph codeph">selection</samp> ), its own sort criteria (annotation path
+				<samp class="ph codeph">presentation</samp> ), its own navigation criteria (annotation path
+				<samp class="ph codeph">identification</samp> ) or its own chart configuration (annotation path
+				<samp class="ph codeph">chart</samp>). <div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">It's recommended to only use this feature to show content that is very similar
+					and not to use this for unrelated views or have one view that serves as a
+					drilldown page for other views.</p>
+
+			</div>
+</div>
+
+		<div class="section"><div class="section_title">Use Cases</div><div type="Use Cases"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Group By</p>
+
+				<p class="p"><span class="ph uicontrol">Group by </span>could be used if two analytic cards have the same
+					filter and sort criteria, but differ in their group by clause. For example, one
+					card could show show sales by supplier and the other by region. In this case, we
+					could have a single analytic card instead of two. The card title could be
+					"Sales" and the tab entry of the manifest would have two records – one with
+					value "By Supplier" and the other with value "By Region". Both would have the
+					same selection criteria, but would differ in the presentation variant. </p>
+
+				<p class="p">The first records would correspond to a presentation variant that has the value
+					"By Supplier" for the <samp class="ph codeph">GroupBy</samp> property, whereas the second one
+					would have the value "By Region". The identification and chart annotation path
+					would also be different for each of the tab entries.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Sort By</p>
+
+			</div><p class="p"><span class="ph uicontrol">Sort by</span> could be used if two cards have the same
+				filter and navigation criteria, but differ in their sort criteria. For example, both
+				cards show sales grouped by suppliers, but one card shows the top three supplies and
+				the other card shows the bottom three. In this case, we could have a single card
+				instead of two cards and the card title could be "Sales by Supplier" and the tab
+				entry of manifest could have two records – one with value "Top 3 Suppliers" and the
+				other with value "Bottom 3 Suppliers". Both would have the same selection criteria,
+				but would differ in the presentation variant.</p>
+<p class="p"> The first records would
+				correspond to a presentation variant that have <samp class="ph codeph">SortOrder</samp> and
+					<samp class="ph codeph">MaxItems</samp> that correspond to the top three records, whereas the
+				presentation variant of the second record will have a <samp class="ph codeph">SortOrder</samp> and
+					<samp class="ph codeph">MaxItem</samp> that correspond to the bottom three.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Filter</p>
+
+			</div><p class="p">Filter could be used if two cards will have the same presentation
+				variant and navigation criteria, but differ in their filter set. For example both
+				cards shows "Sales" in Region="Europe" and Year="2016", but the first card shows
+				Sales of Country="DE" and second shows Sales of Country="FR". In this case we could
+				use a single card titled "Sales – Europe 2016" and the tab entry of manifest would
+				have two records – one with country values "Germany" and "France". </p>
+<p class="p">Both would
+				have the same presentation, identification and chart/line item annotation, but would
+				differ in their selection annotation due to different filter sets (first card has
+				filters Region="Europe", Year="2016" and Country="DE", whereas the second card would
+				have filters Region="Europe", Year="2016" and Country="FR")</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Examples</p>
+
+			</div>
+<div class="table-wrapper tablenoborder"><table summary="" id="loioa705039f4db2426e86abcc84f7ccb1e4__table_sty_12s_gx" class="table" frame="border" border="1" rules="all">
+					<tbody class="tbody">
+						<tr class="row">
+							<td class="entry" valign="top"><img class="image" id="loioa705039f4db2426e86abcc84f7ccb1e4__image_rv1_22s_gx" src="loio55b683466db648bda3187c0dee39b36a_LowRes.png"/></td>
+
+							<td class="entry" valign="top"><img class="image" id="loioa705039f4db2426e86abcc84f7ccb1e4__image_psl_h2s_gx" src="loiod8883c22e2fb4702957f4ccbccbb25bf_LowRes.png"/></td>
+
+							<td class="entry" valign="top"><img class="image" id="loioa705039f4db2426e86abcc84f7ccb1e4__image_ott_42s_gx" src="loio913a8eb616b140c48475b724e7fc1429_LowRes.png"/></td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top">
+								<p class="p">Group By Card</p>
+
+							</td>
+
+							<td class="entry" valign="top">
+								<p class="p">Sort By Card </p>
+
+							</td>
+
+							<td class="entry" valign="top">
+								<p class="p">Filter Card</p>
+
+							</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+</div>
+</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

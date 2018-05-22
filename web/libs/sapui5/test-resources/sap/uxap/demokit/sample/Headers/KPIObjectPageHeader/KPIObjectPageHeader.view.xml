@@ -1,0 +1,64 @@
+<core:View
+        xmlns:core="sap.ui.core"
+        xmlns="sap.uxap"
+        xmlns:layout="sap.ui.layout"
+        xmlns:m="sap.m"
+        xmlns:suite="sap.suite.ui.commons"
+        xmlns:comp="sap.ui.comp.variants"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:bl="sap.uxap.sample.Headers.block"
+        xmlns:blockcolor="sap.uxap.sample.blockscolor"
+        controllerName="sap.uxap.sample.Headers.KPIObjectPageHeader.KPIObjectPageHeader"
+        height="100%">
+
+
+    <ObjectPageLayout id="ObjectPageLayout">
+        <headerTitle>
+            <ObjectPageHeader id="headerForTest"
+                              headerDesign="Light"
+                              objectTitle="Generic T-Shirt Fa, SIZE AS, Colour blau"
+                              objectSubtitle="AAUFSA000100003002">
+
+                <actions>
+                    <ObjectPageHeaderActionButton icon="sap-icon://action" text="Open in..."/>
+                    <ObjectPageHeaderActionButton icon="sap-icon://refresh" press="changeDesign" text="change design"/>
+                </actions>
+            </ObjectPageHeader>
+        </headerTitle>
+        <headerContent>
+            <layout:VerticalLayout>
+                <m:Label text="PC, Unrestricted-Use Stock"/>
+                <m:ObjectNumber number="219" numberUnit="K"/>
+            </layout:VerticalLayout>
+            <layout:VerticalLayout>
+                <m:Label text="Article Category"/>
+                <m:ObjectNumber unit="Single Material"/>
+            </layout:VerticalLayout>
+            <layout:VerticalLayout>
+                <m:Label text="Article Type"/>
+                <m:ObjectNumber unit="Trading Goods"/>
+            </layout:VerticalLayout>
+        </headerContent>
+        <sections>
+            <ObjectPageSection title="my section 1">
+                <subSections>
+                    <ObjectPageSubSection title="Green">
+                        <blocks>
+                            <blockcolor:BlockGreen id="bg1" />
+                        </blocks>
+                    </ObjectPageSubSection>
+
+                </subSections>
+            </ObjectPageSection>
+            <ObjectPageSection title="my section 2">
+                <subSections>
+                    <ObjectPageSubSection title="Orange">
+                        <blocks>
+                            <blockcolor:BlockOrange id="bo1" />
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+</core:View>

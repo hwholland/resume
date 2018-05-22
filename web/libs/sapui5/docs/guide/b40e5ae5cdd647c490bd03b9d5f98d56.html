@@ -1,0 +1,153 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Some entity sets requires input parameters. You can configure these parameters using the com.sap.vocabularies.UI.v1.SelectionVariant annotation term by setting the Parameters section."/>
+<meta name="description" content="Some entity sets requires input parameters. You can configure these parameters using the com.sap.vocabularies.UI.v1.SelectionVariant annotation term by setting the Parameters section."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=141782991512586"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=141782991512586"/>
+<title>Configuring an EntitySet with Input Parameters</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob40e5ae5cdd647c490bd03b9d5f98d56">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Configuring an EntitySet with Input Parameters</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">Some entity sets requires input parameters. You can configure these parameters using the
+			<samp class="ph codeph">com.sap.vocabularies.UI.v1.SelectionVariant</samp> annotation term by setting
+		the <samp class="ph codeph">Parameters</samp> section.</p>
+
+		<div class="section"><p class="p">In the following examples there are two entity sets - <samp class="ph codeph">SalesShare</samp> and
+                    <samp class="ph codeph">SalesShareParameters</samp> - with associations defined between them.
+                The <samp class="ph codeph">SalesShare</samp> entity set contains the OData information and the
+                    <samp class="ph codeph">SalesShareParameters</samp> defines the input parameters to retrieve
+                from the <samp class="ph codeph">SalesShare</samp> entity set the data which will be displayed in
+                cards. The <samp class="ph codeph">com.sap.vocabularies.UI.v1.SelectionVariant</samp> annotation
+                term contains the input parameters to be applied, so as to trigger the query and
+                display the actual data during runtime.</p>
+<div class="sectiondiv subsection">
+                <p class="p subsectiontitle">OData metadata definition</p>
+
+            </div><div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;?xml version="1.0" encoding="utf-8" standalone="yes" ?&gt;
+&lt;edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:sap="http://www.sap.com/Protocols/SAPData"&gt;
+    &lt;edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0"&gt;
+        &lt;Schema Namespace="sap.smartbusinessdemo.services" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2008/09/edm"&gt;
+            &lt;EntityType Name="SalesShareType" sap:semantics="aggregate"&gt;
+                &lt;Key&gt;
+                    &lt;PropertyRef Name="ID" /&gt;
+                &lt;/Key&gt;
+                &lt;Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="2147483647" sap:filterable="false" /&gt;
+                &lt;Property Name="Country" Type="Edm.String" MaxLength="3" sap:label="Country" sap:aggregation-role="dimension" /&gt;
+                &lt;Property Name="Region" Type="Edm.String" MaxLength="4" sap:label="Region" sap:aggregation-role="dimension" /&gt;
+                &lt;Property Name="ProductID" Type="Edm.String" MaxLength="10" sap:label="Product ID" sap:aggregation-role="dimension" /&gt;
+                &lt;Property Name="Currency" Type="Edm.String" MaxLength="5" sap:label="Currency" sap:aggregation-role="dimension" /&gt;
+                &lt;Property Name="Product" Type="Edm.String" MaxLength="1024" sap:label="Product" sap:aggregation-role="dimension" /&gt;
+                &lt;Property Name="SupplierCompany" Type="Edm.String" MaxLength="80" sap:label="Supplier Company" sap:aggregation-role="dimension" /&gt;
+                &lt;Property Name="BuyerCompany" Type="Edm.String" MaxLength="80" sap:label="Buyer Company" sap:aggregation-role="dimension" /&gt;
+                &lt;Property Name="Year" Type="Edm.String" MaxLength="4" sap:label="Year" sap:aggregation-role="dimension" /&gt;
+                &lt;Property Name="Quarter" Type="Edm.String" MaxLength="2" sap:label="Quarter" sap:aggregation-role="dimension" /&gt;
+                &lt;Property Name="Month" Type="Edm.String" MaxLength="2" sap:label="Month" sap:aggregation-role="dimension" /&gt;
+                &lt;Property Name="TotalSales_CURRENCY" Type="Edm.String" MaxLength="5" sap:semantics="currency-code" /&gt;
+                &lt;Property Name="Sales_CURRENCY" Type="Edm.String" MaxLength="5" sap:semantics="currency-code" /&gt;
+                &lt;Property Name="TotalSales" Type="Edm.Decimal" Precision="15" Scale="2" sap:filterable="false" sap:label="Total Sales" sap:aggregation-role="measure" sap:unit="TotalSales_CURRENCY" /&gt;
+                &lt;Property Name="Sales" Type="Edm.Decimal" Precision="15" Scale="2" sap:filterable="false" sap:label="Sales" sap:aggregation-role="measure" sap:unit="Sales_CURRENCY" /&gt;
+                &lt;Property Name="SalesShare" Type="Edm.Decimal" Precision="12" Scale="5" sap:filterable="false" sap:label="Sales Share" sap:aggregation-role="measure" /&gt;
+            &lt;/EntityType&gt;
+            &lt;EntityType Name="SalesShareParametersType" sap:semantics="parameters"&gt;
+                &lt;Key&gt;
+                    &lt;PropertyRef Name="P_Currency"/&gt;
+                    &lt;PropertyRef Name="P_Country"/&gt;
+                &lt;/Key&gt;
+                &lt;Property Name="P_Currency" Type="Edm.String" Nullable="false" MaxLength="5" sap:label="Currency" sap:parameter="mandatory"/&gt;
+                &lt;Property Name="P_Country" Type="Edm.String" Nullable="false" DefaultValue="3" MaxLength="20" sap:label="CountryCode" sap:parameter="mandatory"/&gt;
+                &lt;NavigationProperty Name="Results" Relationship="sap.smartbusinessdemo.services.SalesShareParameters_SalesShareType" FromRole="SalesShareParametersPrincipal" ToRole="SalesShareDependent"/&gt;
+            &lt;/EntityType&gt;
+ 
+            &lt;Association Name="SalesShareParameters_SalesShareType"&gt;
+                &lt;End Type="sap.smartbusinessdemo.services.SalesShareParametersType" Role="SalesShareParametersPrincipal" Multiplicity="*"/&gt;
+                &lt;End Type="sap.smartbusinessdemo.services.SalesShareType" Role="SalesShareDependent" Multiplicity="*"/&gt;
+            &lt;/Association&gt;
+ 
+ 
+            &lt;EntityContainer Name="SalesShare" m:IsDefaultEntityContainer="true"&gt;
+ 
+                &lt;EntitySet Name="SalesShare" EntityType="sap.smartbusinessdemo.services.SalesShareType"/&gt;
+                &lt;EntitySet Name="SalesShareParameters" EntityType="sap.smartbusinessdemo.services.SalesShareParametersType" sap:addressable="false"/&gt;
+                &lt;AssociationSet Name="SalesShareParameters_SalesShare" Association="sap.smartbusinessdemo.services.SalesShareParameters_SalesShareType"&gt;
+                    &lt;End Role="SalesShareParametersPrincipal" EntitySet="SalesShareParameters"/&gt;
+                    &lt;End Role="SalesShareDependent" EntitySet="SalesShare"/&gt;
+                &lt;/AssociationSet&gt;
+ 
+            &lt;/EntityContainer&gt;
+        &lt;/Schema&gt;
+    &lt;/edmx:DataServices&gt;
+&lt;/edmx:Edmx&gt;</pre></div>
+
+            </div>
+<div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Annotation document containing the filters to be
+                    applied</p>
+
+            </div><div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotations Target="sap.smartbusinessdemo.services.SalesShareType"&gt;
+    &lt;Annotation Term="com.sap.vocabularies.UI.v1.SelectionVariant" Qualifier="params"&gt;
+        &lt;Record&gt;
+            &lt;PropertyValue Property="SelectOptions"&gt;
+                &lt;Collection&gt;
+                &lt;/Collection&gt;
+            &lt;/PropertyValue&gt;
+            &lt;PropertyValue Property="Parameters"&gt;
+                &lt;Collection&gt;
+                    &lt;Record Type="com.sap.vocabularies.UI.v1.Parameter"&gt;
+                        &lt;PropertyValue Property="PropertyName" PropertyPath="P_Currency" /&gt;
+                        &lt;PropertyValue Property="PropertyValue" String="EUR" /&gt;
+                    &lt;/Record&gt;
+                    &lt;Record Type="com.sap.vocabularies.UI.v1.Parameter"&gt;
+                        &lt;PropertyValue Property="PropertyName" PropertyPath="P_Country" /&gt;
+                        &lt;PropertyValue Property="PropertyValue" String="IN" /&gt;
+                    &lt;/Record&gt;
+                &lt;/Collection&gt;
+            &lt;/PropertyValue&gt;
+        &lt;/Record&gt;
+    &lt;/Annotation&gt;
+    ...
+&lt;/Annotations&gt;</pre></div>
+
+            </div>
+<div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Card configuration in the manifest document</p>
+
+            </div><div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"sap.ovp": {
+    ...
+    "cards": {
+        ...
+        "card04": {
+            "model": "salesShare",
+            "template": "sap.ovp.cards.list",
+            "settings": {
+                ...
+                "selectionAnnotationPath" : "com.sap.vocabularies.UI.v1.SelectionVariant#params",
+                "entitySet": "SalesShare"
+            }
+        },
+        ...
+    }
+}</pre></div>
+
+            </div>
+</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

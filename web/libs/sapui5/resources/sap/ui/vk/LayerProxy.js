@@ -1,0 +1,7 @@
+/*!
+ * SAP UI development toolkit for HTML5 (SAPUI5)
+
+        (c) Copyright 2009-2015 SAP SE. All rights reserved
+    
+ */
+sap.ui.define(["jquery.sap.global","./library","sap/ui/base/ManagedObject"],function(q,l,M){"use strict";var g=sap.ui.vk.dvl.getJSONObject;var L=M.extend("sap.ui.vk.LayerProxy",{metadata:{properties:{layerId:"string",veIds:"object[]",name:"string",description:"string",layerMetadata:"object"}},constructor:function(n,a){M.call(this);this._dvl=n?n.getGraphicsCore()._getDvl():null;this._dvlSceneId=n?n._getDvlSceneId():null;this._dvlLayerId=a;}});L.prototype.destroy=function(){this._dvlLayerId=null;this._dvlSceneId=null;this._dvl=null;M.prototype.destroy.call(this);};L.prototype.getLayerId=function(){return this._dvlLayerId;};L.prototype.getVeIds=function(){return g(this._dvl.Scene.RetrieveVEIDs(this._dvlSceneId,this._dvlLayerId));};L.prototype.getName=function(){return g(this._dvl.Scene.RetrieveLayerInfo(this._dvlSceneId,this._dvlLayerId)).name;};L.prototype.getDescription=function(){return g(this._dvl.Scene.RetrieveLayerInfo(this._dvlSceneId,this._dvlLayerId)).description;};L.prototype.getLayerMetadata=function(){return g(this._dvl.Scene.RetrieveMetadata(this._dvlSceneId,this._dvlLayerId)).metadata;};L.prototype.getNodes=function(){return g(this._dvl.Scene.RetrieveLayerInfo(this._dvlSceneId,this._dvlLayerId)).nodes;};delete L.prototype.setDescription;delete L.prototype.setLayerId;delete L.prototype.setLayerMetadata;delete L.prototype.setName;delete L.prototype.setVeIds;return L;});

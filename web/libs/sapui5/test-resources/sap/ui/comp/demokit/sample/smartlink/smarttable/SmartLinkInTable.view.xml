@@ -1,0 +1,17 @@
+<core:View xmlns:core="sap.ui.core" xmlns="sap.m"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:sl="sap.ui.comp.navpopover"
+	controllerName="sap.ui.comp.sample.smartlink.smarttable.SmartLinkInTable" class="sapUiSizeCompact">
+	<Page id="page" title="Customer Line Items" enableScrolling="false" class="sapUiContentPadding">
+		<content>			
+			<smartTable:SmartTable entitySet="LineItemsSet" tableType="AnalyticalTable" useExportToExcel="false" useVariantManagement="false" useTablePersonalisation="false" header="Line Items" showRowCount="true" enableAutoBinding="true">
+				<smartTable:semanticObjectController>
+					<sl:SemanticObjectController navigationTargetsObtained="onNavTargetsObtained" navigate="onNavigate"/>
+				</smartTable:semanticObjectController>
+			</smartTable:SmartTable>
+		</content>
+	</Page>
+</core:View>

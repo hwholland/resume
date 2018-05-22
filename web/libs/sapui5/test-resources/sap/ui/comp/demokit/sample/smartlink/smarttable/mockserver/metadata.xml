@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0"
+	xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+	xmlns:sap="http://www.sap.com/Protocols/SAPData">
+	<edmx:DataServices m:DataServiceVersion="2.0">
+		<Schema Namespace="com.sap.GL.zrha" xml:lang="en"
+			sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">			
+			<EntityType Name="LineItems" sap:label="Line Item"
+				sap:semantics="aggregate" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Id" />
+				</Key>
+				<Property Name="Bukrs" Type="Edm.String" Nullable="false"
+					MaxLength="4" sap:aggregation-role="dimension"
+					sap:label="Company Code"
+					sap:creatable="false" />
+			</EntityType>			
+			
+			<EntityContainer Name="com.sap.GL.zrha_Entities"
+				m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">				
+				<EntitySet Name="LineItemsSet" EntityType="com.sap.GL.zrha.LineItems"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1" />							
+			</EntityContainer>
+
+			<Annotations Target="com.sap.GL.zrha.LineItems" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Term="com.sap.vocabularies.UI.v1.LineItem">
+					<Collection>
+						<Record Type="com.sap.vocabularies.UI.v1.DataField">
+							<PropertyValue Property="Value" Path="Bukrs"/>
+							<PropertyValue Property="Label" String="my Bukrs"/>
+							<Annotation Term="com.sap.vocabularies.UI.v1.Importance" EnumMember="com.sap.vocabularies.UI.v1.ImportanceType/High"/>
+						</Record>
+					</Collection>
+				</Annotation>				
+			</Annotations>				
+			<Annotations Target="com.sap.GL.zrha.LineItems/Bukrs" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Term="com.sap.vocabularies.Common.v1.SemanticObject" String="CompanyCode" />								
+			</Annotations>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

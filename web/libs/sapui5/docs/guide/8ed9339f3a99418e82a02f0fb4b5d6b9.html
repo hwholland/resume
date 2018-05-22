@@ -1,0 +1,170 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The SAP Fiori Master-Detail Application template implements a typical split-screen layout, one of the design patterns that is specified by the SAP Fiori design guidelines."/>
+<meta name="description" content="The SAP Fiori Master-Detail Application template implements a typical split-screen layout, one of the design patterns that is specified by the SAP Fiori design guidelines."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6081956199506762"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6081956199506762"/>
+<title>Master-Detail Template</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio8ed9339f3a99418e82a02f0fb4b5d6b9">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Master-Detail Template</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <span class="ph emphasis emphasis"><span class="ph pname">SAP Fiori</span> Master-Detail Application</span> template implements a typical split-screen layout, one of the design patterns that is specified by the <span class="ph pname">SAP Fiori design guidelines</span>.</p>
+
+		<p class="p">The split-screen layout is optimized for displaying and processing a list of items. On
+			the left side of the screen, users can quickly scan and navigate through the list. On
+			the right side, they then see the details of the selected item, and can trigger related
+			actions or edit the data. Use this template if the users need to review and process
+			different items quickly with minimal navigation. For more information about split-screen
+			floorplans and master-detail apps, see the <span class="ph">
+                                    <a class="xref" href="https://experience.sap.com/fiori-design-web/" alt="https://experience.sap.com/fiori-design-web/" title="https://experience.sap.com/fiori-design-web/"><span class="ph pname" id="loio8ed9339f3a99418e82a02f0fb4b5d6b9__d1776e93">SAP Fiori
+                                            Design Guidelines</span></a></span>.</p>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<div class="p">You have two options: You can use this template to build an <span class="ph emphasis emphasis">app for the
+						<span class="ph pname">SAP Fiori launchpad</span> (<span class="ph pname">FLP</span>)</span> or to
+				build <span class="ph emphasis emphasis">standalone apps</span>.<ul class="ul" id="loio8ed9339f3a99418e82a02f0fb4b5d6b9__d24056e41">
+					<li class="li">
+						<p class="p">If the app runs in <span class="ph pname">FLP</span> it also
+							contains additional features like <span class="ph uicontrol">Save as Tile</span> or
+								<span class="ph uicontrol">Share in SAP Jam</span> that depend on <span class="ph pname">FLP</span> at
+							runtime. This app cannot be run standalone, meaning no
+								<span class="ph filepath">index.html</span> file is created but only files for
+							testing the app in the <span class="ph pname">FLP</span>
+							sandbox.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Only standalone apps contain an <span class="ph filepath">index.html</span> file that
+							is used to start the app.</p>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div>
+
+		<div class="fig fignone" id="loio8ed9339f3a99418e82a02f0fb4b5d6b9__fig_jjm_khh_bt"><div class="figcontainer">
+			
+			<img class="image" id="loio8ed9339f3a99418e82a02f0fb4b5d6b9__image_nvc_lhh_bt" src="loio2d145878ee8d475da971b21419109ce8_HiRes.png"/>
+		<div class="figcap">Screenshot of the Master-Detail App</div></div></div>
+
+		<p class="p">The main control of this app is the <samp class="ph codeph">sap.m.SplitApp</samp> control that displays
+			the <span class="ph uicontrol">Master</span> view with a list of objects on the left side and the
+				<span class="ph uicontrol">Detail</span> view on the right side. When the user presses an
+			object in the master list, the detail page is updated with the context of the selected
+			item.</p>
+
+		<p class="p">The <span class="ph uicontrol">Master</span> view shows the current number of items and a search
+			field that can be used to search through the list items. The number of items are updated
+			automatically and the search filters for a preconfigured field of the list.
+			Functionality for sorting, filtering, and grouping the list is also included in the
+			template as well.</p>
+
+		<p class="p">The <span class="ph uicontrol">Detail</span> page contains a simple object header displaying more
+			details for the selected object, an empty <samp class="ph codeph">sap.m.IconTabBar</samp> that can be
+			enriched with custom app content, and a table of line items that are associated to the
+			selected object in the data model.</p>
+
+		<p class="p">The master list and the line item table are set to <samp class="ph codeph">growing</samp> mode so that
+			initially only the first few items are displayed for performance reasons. Using the
+				<samp class="ph codeph">scrollToLoad</samp> feature, the user can display more items by scrolling
+			down or pressing the trigger at the end of the list.</p>
+
+		<p class="p">We use the semantic <samp class="ph codeph">MasterPage</samp> and <samp class="ph codeph">DetailPage</samp> controls
+			for the content aggregations of the <samp class="ph codeph">sap.m.SplitApp</samp> control. A
+				<samp class="ph codeph">SemanticPage</samp> is an enhanced <samp class="ph codeph">sap.m.Page</samp> that
+			contains controls with a semantic meaning and displays them according to the <span class="ph pname">SAP Fiori design guidelines</span>. <span class="ph">For more details
+				about semantic controls, see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.semantic.SemanticPage/samples" alt="../../explored.html#/entity/sap.m.semantic.SemanticPage/samples" title="../../explored.html#/entity/sap.m.semantic.SemanticPage/samples">sample</a> in the Demo Kit.</span></p>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">As the use cases for apps using a split-screen pattern differ greatly, the template
+				only displays a minimum number of fields on the master and detail page and does not
+				include a line item detail page. You can easily modify the app to add more
+				functionality if needed.</p>
+
+		</div>
+
+		<div class="section" id="loio8ed9339f3a99418e82a02f0fb4b5d6b9__section_els_xvw_k1b"><div class="section_title">Where Can I Find the Master-Detail Template?</div><div type="Where Can I Find the Master-Detail Template?">
+			
+			<div class="p">You can find the template in the following places:<ul class="ul" id="loio8ed9339f3a99418e82a02f0fb4b5d6b9__ul_bfb_dww_k1b">
+					<li class="li">
+						<p class="p"><span class="ph emphasis emphasis"><span class="ph pname">SAP Fiori</span>
+								Master-Detail Application</span> template in <span class="ph pname">SAP Web IDE</span></p>
+
+						<p class="p"><span class="ph">For more information about <span class="ph pname">SAP Web IDE</span>,
+                                    see the documentation for <span class="ph pname">SAP Web IDE</span> on
+                                    the SAP Help Portal at <a class="xref" href="https://help.sap.com/viewer/p/SAP_Web_IDE" alt="https://help.sap.com/viewer/p/SAP_Web_IDE" title="https://help.sap.com/viewer/p/SAP_Web_IDE">https://help.sap.com/viewer/p/SAP_Web_IDE</a>.</span></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><span class="ph emphasis emphasis">Master-Detail Template</span>
+							<span class="ph">and <span class="ph emphasis emphasis">Master-Detail (<span class="ph pname">FLP</span>)
+									Template</span></span>
+							<span class="ph">
+								under <a class="xref" href="../../demoapps.html" alt="../../demoapps.html" title="../../demoapps.html">Demo Apps</a></span>.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">openui5-masterdetail-app</samp> in the <a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fgithub.com%2FSAP" alt="https://github.com/SAP" title="https://github.com/SAP">SAP Repository on
+								GitHub<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></p>
+
+						<p class="p">For more information on how to clone or download the template from
+							GitHub, refer to the template documentation on <a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fgithub.com%2FSAP%2Fopenui5-masterdetail-app%2Fblob%2Fmaster%2FREADME.md" alt="https://github.com/SAP/openui5-masterdetail-app/blob/master/README.md" title="https://github.com/SAP/openui5-masterdetail-app/blob/master/README.md">GitHub<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a> .</p>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="89de2f43b91d470daa8121a0b4ba35cc.html" title="The navigation flow of the Master-Detail app considers both the Master and Detail pages, and is therefore slightly more complex than a typical full-screen scenario.">Navigation</a></strong><br/>
+</div>
+<div><strong><a class="link" href="a92e0aa0d121436885a96e420b26b945.html" title="The Master-Detail app implements a busy indication concept as specified by the SAP Fiori Design Guidelines.">Busy Indication</a></strong><br/>
+</div>
+<div><strong><a class="link" href="ea4e8def934e447a961fb92841d6c025.html" title="The app configures several data models that are used throughout the app to update the views or to store additional configuration options.">Model Instantiation</a></strong><br/>
+</div>
+<div><strong><a class="link" href="f809189153034d7586468e7213aa8cf1.html" title="You can use the following best practices when implementing search, sorting, filtering and grouping functions for a master list in your Master-Detail apps.">Master List Filtering</a></strong><br/>
+</div>
+<div><strong><a class="link" href="034a132eef6e447a887d246a4635626d.html" title="The Send Email feature is a sharing option that can be found in the share menu of each view.">Send Email</a></strong><br/>
+</div>
+<div><strong><a class="link" href="6256083b146e40b896309ead6ccd8751.html" title="The templates include basic testing features, unit tests as well as integration tests for a basic test coverage of the initial app. The tests are written independently of the actual data displayed in the app.">Testing</a></strong><br/>
+</div>
+<div><strong><a class="link" href="a3a0872e88e74476a5efc5d5751c8800.html" title="The following measures help you improve performance when loading data or modules.">Performance</a></strong><br/>
+</div>
+<div><strong><a class="link" href="237531224bb549e28b4a71bef95aa1ad.html" title="The following best practices will help you to make your apps more secure.">Security</a></strong><br/>
+</div>
+<div><strong><a class="link" href="324f0734dd3e467f874328f40353bfa5.html" title="The following section outlines the best practices for ensuring your master-detail apps adapt to different kinds of devices in the best way possible.">Device Adaptation</a></strong><br/>
+</div>
+<div><strong><a class="link" href="b3271882b8a84808939385374d75a880.html" title="Setting stable IDs is crucial if your app is used in combination with certain functions.">Stable IDs</a></strong><br/>
+</div>
+</ul>
+
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="a3ab54ecf7ac493b91904beb2095d208.html" title="With the Demo Kit, we deliver some demo apps that show you how you can use the various features and controls of SAPUI5.">Demo Apps</a></div>
+<div><a class="link" href="7bb04e05f9484e1b95b38a2e48ecef4f.html" title="This part of the documentation gives you guidance on the most common and recommended use cases of the installation, configuration and setup of the UI development toolkit for HTML5 (SAPUI5) development environment.">Development Environment</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

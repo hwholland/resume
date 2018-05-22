@@ -1,0 +1,431 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="This first step is only relevant if you decided to use the SAP Web IDE. In this step, we will set up the worklist app using a template and configure the service to display products in the app. The template includes generic app functionality and tests that can be easily extended with custom functionality for our use case."/>
+<meta name="description" content="This first step is only relevant if you decided to use the SAP Web IDE. In this step, we will set up the worklist app using a template and configure the service to display products in the app. The template includes generic app functionality and tests that can be easily extended with custom functionality for our use case."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=08445513346585487"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=08445513346585487"/>
+<title>Step 1 (Option 1): Creating the Initial App with an App Template in SAP Web IDE</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio0c5dc937271f4f56b5e7d54676199860">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 1 (Option 1): Creating the Initial App with an App Template in <span class="ph pname">SAP Web IDE</span></h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">This first step is only relevant if you decided to use the <span class="ph pname">SAP Web IDE</span>. In this step, we will set up
+		the worklist app using a template and configure the service to display products in the app.
+		The template includes generic app functionality and tests that can be easily extended with
+		custom functionality for our use case.</p>
+
+		<div class="section"><div class="section_title">Prerequisites</div><div type="Prerequisites">
+			
+			<p class="p">Set up your <span class="ph pname">SAP Web IDE</span> and define a
+				destination to the Northwind OData service as described under <a class="xref" href="13ced9493472408999143bc99bbb73b9.html" title="SAP Web IDE is a web-based development environment that is optimized for developing SAPUI5 complex apps using the latest innovations, developing and extending SAP Fiori apps, developing mobile hybrid apps, and extending SAP Web IDE with plug-ins and templates.">App Development Using SAP Web IDE</a>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="p">
+				<div class="fig fignone" id="loio0c5dc937271f4f56b5e7d54676199860__fig_ohj_bqh_b5"><div class="figcontainer">
+					
+					<img class="image" id="loio0c5dc937271f4f56b5e7d54676199860__image_m4j_jqh_b5" src="loio79451b6d729a4810b12adab98f20c571_HiRes.png"/>
+				<div class="figcap">The worklist app</div></div></div>
+
+			</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Create the Initial App Using the Template Wizard</div><div type="Create the Initial App Using the Template Wizard">
+			
+			<ol class="ol" id="loio0c5dc937271f4f56b5e7d54676199860__ol_pts_xrh_b5">
+				<li class="li">
+					<p class="p">Launch <span class="ph pname">SAP Web IDE</span>.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Choose <span class="ph menucascade"><img src="images/navstart.gif" alt="Start of the navigation path" title="Start of the navigation path"/><span class="ph uicontrol">File</span> <img src="images/navstep.gif" alt="Next navigation step" title="Next navigation step"/> <span class="ph uicontrol">New</span> <img src="images/navstep.gif" alt="Next navigation step" title="Next navigation step"/> <span class="ph uicontrol">Project from Template</span><img src="images/navend.gif" alt="End of the navigation path" title="End of the navigation path"/></span></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Select the <span class="ph uicontrol">SAP Fiori Worklist Application</span> template and choose the
+						latest <span class="ph pname">SAPUI5</span>
+						version in the <span class="ph uicontrol">Available Version</span> field. Choose
+							<span class="ph uicontrol">Next</span>.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">On the <span class="ph uicontrol">Basic Information</span> screen, enter
+							<kbd class="ph userinput">MyWorklistApp</kbd> as project name, don't specify an
+						application domain. </p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">On the <span class="ph uicontrol">Data Connection</span> screen, select
+							<span class="ph uicontrol">Service URL</span> in the <span class="ph uicontrol">Sources</span>
+						area.</p>
+
+					<div class="p">Under <span class="ph uicontrol">Service Information</span>, choose <span class="ph uicontrol">Northwind OData
+							Service</span> and enter the URL
+							<kbd class="ph userinput">/V2/Northwind/Northwind.svc/</kbd> . <div class="note note"><span class="notetitle">Note</span> 
+							<p class="p">If you cannot find the Northwind service, create the destination as
+								described under <a class="xref" href="3a16c7a2f1e944deb000db49e5ece6be.html" title="Configure a destination in the SAP Cloud Platform Cockpit in order to bypass the same-origin policy of the browser.">Create a Northwind Destination</a>.</p>
+
+						</div>
+Validate the URL by choosing the <span class="ph uicontrol">Load service
+							metadata</span> button beneath the URL. In the
+							<span class="ph uicontrol">Details</span> area, you should now see the service
+						entities as displayed in the following screenshot: <img class="image" id="loio0c5dc937271f4f56b5e7d54676199860__image_hyf_3xh_b5" src="loiofde0a644c1204b10bb557be2ce105b63_HiRes.png"/><div class="note note"><span class="notetitle">Note</span> 
+							<p class="p">At runtime, the relative URL <span class="ph filepath">/V2/Northwind/Northwind.svc/</span> is prefixed
+								with <span class="ph filepath">/destinations/northwind</span>. As a result, all
+								our Northwind OData requests will be proxied via the
+									<span class="ph uicontrol">Northwind OData Service</span> destination that
+								is defined in the <span class="ph pname">SAP Cloud Platform</span> Cockpit. The destination contains the URL to the resource
+									<span class="ph filepath">http://services.odata.org</span> and has the proxy
+								type <span class="ph uicontrol">Internet</span>. From this configuration the
+								proxy knows where the requests shall go to.</p>
+
+							<p class="p">Instead of <span class="ph filepath">/V2/Northwind/Northwind.svc/</span>, you
+								could also enter the complete URL
+									<span class="ph filepath">http://services.odata.org/V2/Northwind/Northwind.svc/</span>.
+							</p>
+
+						</div>
+Choose <span class="ph uicontrol">Next</span>.</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">On the <span class="ph uicontrol">Template Customization</span> screen, enter the
+						following data:</p>
+
+					
+<div class="table-wrapper tablenoborder"><table summary="" id="loio0c5dc937271f4f56b5e7d54676199860__table_n3d_hyh_b5" class="table pgwide" width="90%" style="table-layout:auto;" frame="border" border="1" rules="all"><caption><span class="tablecap"><span class="ph uicontrol">Application Settings</span></span></caption>
+<colgroup><col width="33.333333333333336%"/><col width="33.333333333333336%"/><col width="33.333333333333336%"/></colgroup>
+
+							
+							
+							
+							<thead class="thead" align="left">
+								<tr class="row">
+									<th class="entry" valign="top" width="33.33333333333333%" id="d694657e247">
+										<p class="p">Field</p>
+
+									</th>
+
+									<th class="entry" valign="top" width="33.33333333333333%" id="d694657e253">
+										<p class="p">Value</p>
+
+									</th>
+
+									<th class="entry" valign="top" width="33.33333333333333%" id="d694657e259">Description</th>
+
+								</tr>
+
+							</thead>
+
+							<tbody class="tbody">
+								<tr class="row">
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e247 ">
+										<p class="p"><span class="ph uicontrol">Title</span></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e253 ">
+										<p class="p"><kbd class="ph userinput">Manage Products</kbd></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e259 ">
+										<p class="p">Title of the app which will displayed as header.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e247 ">
+										<p class="p"><span class="ph uicontrol">Namespace</span></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e253 ">
+										<p class="p"><kbd class="ph userinput">mycompany.myapp</kbd></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e259 ">
+										<p class="p">The application namespace is a unique identifier for your
+											application resources.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e247 ">
+										<p class="p"><span class="ph uicontrol">Description</span></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e253 ">
+										<p class="p"><kbd class="ph userinput">My Worklist App</kbd></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e259 ">
+										<p class="p">Short description of your app.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e247 ">
+										<p class="p"><span class="ph uicontrol">Type</span></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e253 ">
+										<p class="p"><kbd class="ph userinput">Standalone
+										App</kbd></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e259 ">
+										<p class="p">We create a standalone app that can
+										be run without <span class="ph pname">SAP Fiori launchpad</span>
+										(<span class="ph pname">FLP</span>).</p>
+
+										<p class="p">If you choose to build an
+										<span class="ph uicontrol">App for SAP Fiori
+										Launchpad</span>, you automatically
+										get test HTML files with the FLP
+										Sandbox, and the app automatically
+										includes additional features like
+										<span class="ph uicontrol">Save as Tile </span> or
+										<span class="ph uicontrol">Share in SAP
+										Jam</span>.</p>
+
+									</td>
+
+								</tr>
+
+							</tbody>
+
+						</table>
+</div>
+
+					
+<div class="table-wrapper tablenoborder"><table summary="" id="loio0c5dc937271f4f56b5e7d54676199860__table_z25_tyh_b5" class="table pgwide" width="90%" style="table-layout:auto;" frame="border" border="1" rules="all"><caption><span class="tablecap"><span class="ph uicontrol">Data Binding</span></span></caption>
+<colgroup><col width="33.333333333333336%"/><col width="33.333333333333336%"/><col width="33.333333333333336%"/></colgroup>
+
+							
+							
+							
+							<thead class="thead" align="left">
+								<tr class="row">
+									<th class="entry" valign="top" width="33.33333333333333%" id="d694657e397">
+										<p class="p">Field</p>
+
+									</th>
+
+									<th class="entry" valign="top" width="33.33333333333333%" id="d694657e403">
+										<p class="p">Value</p>
+
+									</th>
+
+									<th class="entry" valign="top" width="33.33333333333333%" id="d694657e409">Description</th>
+
+								</tr>
+
+							</thead>
+
+							<tbody class="tbody">
+								<tr class="row">
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e397 ">
+										<p class="p"><span class="ph uicontrol">Object Collection</span></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e403 ">
+										<p class="p"><kbd class="ph userinput">Products</kbd></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e409 ">
+										<p class="p">This is the main entity set that will be displayed in the
+											app. Some of the other fields below are automatically
+											selected depending on this field.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e397 ">
+										<p class="p"><span class="ph uicontrol">Object Collection ID</span></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e403 ">
+										<p class="p"><kbd class="ph userinput">ProductID</kbd></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e409 ">
+										<p class="p">The unique key that is used to identify the object
+											collection.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e397 ">
+										<p class="p"><span class="ph uicontrol">Object Title</span></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e403 ">
+										<p class="p"><kbd class="ph userinput">ProductName</kbd></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e409 ">
+										<p class="p">The display name of the main entity.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e397 ">
+										<p class="p"><span class="ph uicontrol">Object Numeric Attribute</span></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e403 ">
+										<p class="p"><kbd class="ph userinput">UnitsInStock</kbd></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="33.33333333333333%" headers="d694657e409 ">
+										<p class="p">The number displayed next to the product name. In this
+											scenario we pick the <samp class="ph codeph">UnitsInStock</samp>. This
+											represents the stock quantity of the product.</p>
+
+									</td>
+
+								</tr>
+
+							</tbody>
+
+						</table>
+</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Choose <span class="ph uicontrol">Next</span> and <span class="ph uicontrol">Finish</span></p>
+
+					<p class="p"> A new folder <span class="ph filepath">MyWorklistApp</span> is now available in your
+						local workspace. It contains the following files and folders of the initial
+						app:</p>
+
+					<div class="fig fignone" id="loio0c5dc937271f4f56b5e7d54676199860__fig_j5n_pzh_b5"><div class="figcontainer">
+						
+						<img class="image" id="loio0c5dc937271f4f56b5e7d54676199860__image_o5q_v13_b5" src="loio30bd2356770d4070aa32a73d048d1946_HiRes.png"/>
+					<div class="figcap">Folder structure of the initial project</div></div></div>
+
+					<div class="note note"><span class="notetitle">Note</span> 
+						<p class="p">The auto-generated files <span class="ph filepath">project.json</span> and
+								<span class="ph filepath">neo-app.json</span> are only necessary for working
+							with <span class="ph pname">SAP Web IDE</span>.
+							They are not included in case you download the example code from the
+								<span class="ph uicontrol">Samples</span>.</p>
+
+						<p class="p">These three files will not be changed throughout this tutorial, so we
+							will ignore them in the following steps.</p>
+
+					</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Run the app.</p>
+
+					<p class="p">Our component-based app does not have an <span class="ph filepath">index.html</span>
+						file. A component-based app would typically be included in a surrounding
+						container, like the <span class="ph pname">SAP Fiori launchpad</span> and therefore it does not need to
+						have an <span class="ph filepath">index.html</span> file.</p>
+
+					<p class="p">To be able to run the app in different test modes (for example, with or
+						without mock server), there are several HTML files available in the
+							<span class="ph filepath">webapp/test</span> folder.</p>
+
+					<div class="p">To run the app in test mode in <span class="ph pname">SAP Web IDE</span>, choose <span class="ph menucascade"><img src="images/navstart.gif" alt="Start of the navigation path" title="Start of the navigation path"/><span class="ph uicontrol">Run</span> <img src="images/navstep.gif" alt="Next navigation step" title="Next navigation step"/> <span class="ph uicontrol">Run in FLP Sandbox (Mock Server)</span><img src="images/navend.gif" alt="End of the navigation path" title="End of the navigation path"/></span>.<div class="note note"><span class="notetitle">Note</span> 
+							<p class="p">The template comes with two run configurations for <span class="ph pname">SAP Web IDE</span>, you
+								can either run the app with data from a real back-end service
+									(<span class="ph uicontrol">Run in FLP Sandbox</span>) or with local mock
+								data (<span class="ph uicontrol">Run in FLP Sandbox (Mock Server)</span>). </p>
+
+							<p class="p">We choose the mock server option, because then the app will still be
+								able to run even if the back end is unavailable or the service is
+								not implemented yet. We could even configure a delay to make local
+								testing more realistic.</p>
+
+						</div>
+</div>
+
+					<p class="p">You should see the screen, which contains generated mock data.</p>
+
+					<p class="p">When you choose the <span class="ph uicontrol">Back</span> button, you should see an <span class="ph pname">SAP Fiori launchpad</span> with a list
+						of tiles each representing an application. There you will also see the
+							<span class="ph uicontrol">Manage Products</span> tile. Choose that to run our
+						generated app again.</p>
+
+				</li>
+
+			</ol>
+
+			<p class="p">From now on you can quickly run the app by selecting the root folder <span class="ph filepath">MyWorklistApp</span> of your project in <span class="ph pname">SAP Web IDE</span> and pressing the <span class="ph uicontrol">Run</span> button. The system will automatically use the option from the <span class="ph uicontrol">Run</span> menu that you chose last (in this case, the <span class="ph uicontrol">Run with MockServer</span> option).</p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">The texts in the <span class="ph filepath">i18n.properties</span> file are automatically generated based on the template Customizing (OData entity set, entities, properties, and texts). The result can be incorrect texts like "Enter an &lt;Products&gt; name or a part of it." You should therefore revise the generated texts in the <span class="ph filepath">i18n.properties </span> file.</p>
+
+			</div>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="6a6a621c978145ad9eef2b221d2cf21d.html" title="In this tutorial we will build an app using SAPUI5 that, for example, a shop owner can use to manage his product stock levels.">Worklist App</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="9d646de79e3a46ee8143a4b21b332e5e.html" title="In this step, we set up the initial app without SAP Web IDE.">Step 1 (Option 2): Downloading the Code</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="13ced9493472408999143bc99bbb73b9.html" title="SAP Web IDE is a web-based development environment that is optimized for developing SAPUI5 complex apps using the latest innovations, developing and extending SAP Fiori apps, developing mobile hybrid apps, and extending SAP Web IDE with plug-ins and templates.">App Development Using SAP Web IDE</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for sap.ui.comp.personalization.Util</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.m, sap.ui.comp, sap.ui.table, sap.ui.commons">
+	
+</script>
+
+<link rel="stylesheet"
+	href="../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript">
+	(function() {
+
+		jQuery.sap.require("sap.ui.comp.personalization.Util");
+
+		module("API");
+
+		test("isFilterable (via p13nData) - true", function() {
+			// system under test
+			var oColumn = new sap.m.Column({
+				label: new sap.m.Label({
+					text: "test"
+				})
+			});
+			// arrange
+			oColumn.data("p13nData", {
+				columnKey: "key1",
+				filterProperty: "foo"
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isFilterable(oColumn), true);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isFilterable (via Property) - true", function() {
+			// system under test
+			var oColumn = new sap.ui.table.Column({
+				filterProperty: "name",
+				label: new sap.ui.commons.Label({
+					text: "test"
+				})
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isFilterable(oColumn), true);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isFilterable (via p13nData and Property) - false", function() {
+			// system under test
+			var oColumn = new sap.ui.table.Column({
+				filterProperty: "",
+				label: new sap.ui.commons.Label({
+					text: "test"
+				})
+			});
+			// arrange
+			oColumn.data("p13nData", {
+				columnKey: "key1",
+				filterProperty: "foo"
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isFilterable(oColumn), false);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isFilterable (via p13nData and Property) - true", function() {
+			// system under test
+			var oColumn = new sap.ui.table.Column({
+				filterProperty: "name",
+				label: new sap.ui.commons.Label({
+					text: "name"
+				})
+			});
+			oColumn.data("p13nData", {
+				columnKey: "key1",
+				filterProperty: ""
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isFilterable(oColumn), true);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isFilterable (via p13nData) - false", function() {
+			// system under test
+			var oColumn = new sap.m.Column({
+				label: new sap.m.Label({
+					text: "test"
+				})
+			});
+			// arrange
+			oColumn.data("p13nData", {
+				columnKey: "key1",
+				filterProperty: undefined
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isFilterable(oColumn), false);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isFilterable (via p13nData) - not defined attribute", function() {
+			// system under test
+			var oColumn = new sap.m.Column({
+				label: new sap.m.Label({
+					text: "test"
+				})
+			});
+			// arrange
+			oColumn.data("p13nData", {
+				columnKey: "key1"
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isFilterable(oColumn), false);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isGroupable sap.ui.table.AnalyticalColumn (via p13nData and Property) - valid aggregationRole", function() {
+			// system under test
+			var oColumn = new sap.ui.table.AnalyticalColumn({
+				label: new sap.m.Label({
+					text: "test"
+				})
+			});
+			// arrange
+			oColumn.data("p13nData", {
+				columnKey: "key1",
+				aggregationRole: "dimention"
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isGroupable(oColumn), true);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isGroupable sap.ui.table.AnalyticalColumn (via p13nData and Property) - undefined aggregationRole", function() {
+			// system under test
+			var oColumn = new sap.ui.table.AnalyticalColumn({
+				label: new sap.m.Label({
+					text: "test"
+				})
+			});
+			// arrange
+			oColumn.data("p13nData", {
+				columnKey: "key1"
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isGroupable(oColumn), true);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isGroupable sap.ui.table.AnalyticalColumn (via p13nData and Property) - unvalid aggregationRole", function() {
+			// system under test
+			var oColumn = new sap.ui.table.AnalyticalColumn({
+				label: new sap.m.Label({
+					text: "test"
+				})
+			});
+			// arrange
+			oColumn.data("p13nData", {
+				columnKey: "key1",
+				aggregationRole: "measure"
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isGroupable(oColumn), false);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isGroupable sap.ui.table.AnalyticalColumn (via Property) - undefined p13nData", function() {
+			// system under test
+			var oColumn = new sap.ui.table.AnalyticalColumn({
+				label: new sap.m.Label({
+					text: "test"
+				})
+			});
+			// arrange
+
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isGroupable(oColumn), false);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isGroupable sap.m.Column (via p13nData) - valid sortProperty", function() {
+			// system under test
+			var oColumn = new sap.m.Column({
+				label: new sap.m.Label({
+					text: "test"
+				})
+			});
+			// arrange
+			oColumn.data("p13nData", {
+				columnKey: "key1",
+				sortProperty: "name"
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isGroupable(oColumn), true);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isGroupable sap.m.Column (via p13nData) - unvalid sortProperty", function() {
+			// system under test
+			var oColumn = new sap.m.Column({
+				label: new sap.m.Label({
+					text: "test"
+				})
+			});
+			// arrange
+			oColumn.data("p13nData", {
+				columnKey: "key1",
+				sortProperty: undefined
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isGroupable(oColumn), false);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isGroupable sap.m.Column (via p13nData) - undefined p13nData", function() {
+			// system under test
+			var oColumn = new sap.m.Column({
+				label: new sap.m.Label({
+					text: "test"
+				})
+			});
+			// arrange
+			
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isGroupable(oColumn), false);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isGroupable sap.ui.table.Column (via p13nData) - not yet supported", function() {
+			// system under test
+			var oColumn = new sap.ui.table.Column({
+				label: new sap.m.Label({
+					text: "test"
+				})
+			});
+			// arrange
+			oColumn.data("p13nData", {
+				columnKey: "key1",
+				sortProperty: "name"
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isGroupable(oColumn), false);
+			// cleanup
+			oColumn.destroy();
+		});
+		test("getColumnKey - columnKey exists", function() {
+			// system under test
+			var oColumn = new sap.ui.table.Column({
+				label: new sap.ui.commons.Label({
+					text: "name"
+				})
+			});
+			oColumn.data("p13nData", {
+				columnKey: "key1"
+			});
+
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.getColumnKey(oColumn), "key1");
+
+			// cleanup
+			oColumn.destroy();
+		});
+		test("getColumnKey - columnKey does not exist", function() {
+			// system under test
+			var oColumn = new sap.ui.table.Column("columnId", {
+				label: new sap.ui.commons.Label({
+					text: "name"
+				})
+			});
+
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.getColumnKey(oColumn), "columnId");
+
+			// cleanup
+			oColumn.destroy();
+		});
+		test("getColumnKey - columnKey does not exist II", function() {
+			// system under test
+			var oColumn = new sap.ui.table.Column("columnId", {
+				label: new sap.ui.commons.Label({
+					text: "name"
+				})
+			});
+			oColumn.data("p13nData", {
+				filter: "filter"
+			});
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.getColumnKey(oColumn), "columnId");
+
+			// cleanup
+			oColumn.destroy();
+		});
+		test("isConsistent - empty", function() {
+			// system under test
+
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isConsistent([]), true);
+			strictEqual(sap.ui.comp.personalization.Util.isConsistent(null), true);
+
+			// cleanup			
+		});
+		test("isConsistent - all columns support 'columnKey'", function() {
+			// system under test
+			var oColumn1 = new sap.ui.table.Column("columnId1", {
+				label: new sap.ui.commons.Label({
+					text: "Col1"
+				})
+			});
+			oColumn1.data("p13nData", {
+				columnKey: "column1"
+			});
+			var oColumn2 = new sap.ui.table.Column("columnId2", {
+				label: new sap.ui.commons.Label({
+					text: "Col2"
+				})
+			});
+			oColumn2.data("p13nData", {
+				columnKey: "column2"
+			});
+
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isConsistent([
+				oColumn1, oColumn2
+			]), true);
+
+			// cleanup
+			oColumn1.destroy();
+			oColumn2.destroy();
+		});
+		test("isConsistent - all columns do not support 'columnKey'", function() {
+			// system under test
+			var oColumn1 = new sap.ui.table.Column("columnId1", {
+				label: new sap.ui.commons.Label({
+					text: "Col1"
+				})
+			});
+			var oColumn2 = new sap.ui.table.Column("columnId2", {
+				label: new sap.ui.commons.Label({
+					text: "Col2"
+				})
+			});
+
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isConsistent([
+				oColumn1, oColumn2
+			]), true);
+
+			// cleanup
+			oColumn1.destroy();
+			oColumn2.destroy();
+		});
+		test("isConsistent - mixed situation I", function() {
+			// system under test
+			var oColumn1 = new sap.ui.table.Column("columnId1", {
+				label: new sap.ui.commons.Label({
+					text: "Col1"
+				})
+			});
+			oColumn1.data("p13nData", {
+				columnKey: "column1"
+			});
+			var oColumn2 = new sap.ui.table.Column("columnId2", {
+				label: new sap.ui.commons.Label({
+					text: "Col2"
+				})
+			});
+
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isConsistent([
+				oColumn1, oColumn2
+			]), false);
+
+			// cleanup
+			oColumn1.destroy();
+			oColumn2.destroy();
+		});
+		test("isConsistent - mixed situation II", function() {
+			// system under test
+			var oColumn1 = new sap.ui.table.Column("columnId1", {
+				label: new sap.ui.commons.Label({
+					text: "Col1"
+				})
+			});
+			var oColumn2 = new sap.ui.table.Column("columnId2", {
+				label: new sap.ui.commons.Label({
+					text: "Col2"
+				})
+			});
+			oColumn2.data("p13nData", {
+				columnKey: "column2"
+			});
+
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.isConsistent([
+				oColumn1, oColumn2
+			]), false);
+
+			// cleanup
+			oColumn1.destroy();
+			oColumn2.destroy();
+		});
+
+		test("getArrayElementByKey", function() {
+			// system under test 
+
+			// assertions
+			strictEqual(sap.ui.comp.personalization.Util.getArrayElementByKey("", "", []), null);
+			strictEqual(sap.ui.comp.personalization.Util.getArrayElementByKey(), null);
+			strictEqual(sap.ui.comp.personalization.Util.getArrayElementByKey("", "", null), null);
+			deepEqual(sap.ui.comp.personalization.Util.getArrayElementByKey("first", "a", [
+				{
+					first: "a",
+					second: false,
+					third: 1
+				}, {
+					first: "b",
+					second: true,
+					third: 1
+				}
+			]), {
+				first: "a",
+				second: false,
+				third: 1
+			});
+			deepEqual(sap.ui.comp.personalization.Util.getArrayElementByKey("dummy", "a", [
+				{
+					first: "a",
+					second: false,
+					third: 1
+				}
+			]), null);
+			deepEqual(sap.ui.comp.personalization.Util.getArrayElementByKey("dummy", undefined, [
+				{
+					first: "a",
+					second: false,
+					third: 1
+				}
+			]), null);
+			deepEqual(sap.ui.comp.personalization.Util.getArrayElementByKey("dummy", "a", [
+				{
+					first: "a",
+					second: false,
+					third: 1
+				}
+			]), null);
+			deepEqual(sap.ui.comp.personalization.Util.getArrayElementByKey("second", true, [
+				{
+					first: "a",
+					second: true,
+					third: 1
+				}
+			]), {
+				first: "a",
+				second: true,
+				third: 1
+			});
+			deepEqual(sap.ui.comp.personalization.Util.getArrayElementByKey("second", true, [
+				{
+					first: "a",
+					second: false,
+					third: 1
+				}
+			]), null);
+
+			// cleanup			
+		});
+		test("sort", function() {
+			// system under test
+
+			// assertions
+			var aResult = null;
+			var aArray = [
+				{
+					columnKey: "a",
+					index: 2
+				}, {
+					columnKey: "b",
+					index: 3
+				}
+			];
+			aResult = sap.ui.comp.personalization.Util.sort("columnKey", aArray);
+			deepEqual(aResult, aArray);
+			deepEqual(aResult, [
+				{
+					columnKey: "a",
+					index: 2
+				}, {
+					columnKey: "b",
+					index: 3
+				}
+			]);
+
+			aArray = [
+				{
+					columnKey: "b",
+					index: 3
+				}, {
+					columnKey: "a",
+					index: 2
+				}
+			];
+			aResult = sap.ui.comp.personalization.Util.sort("columnKey", aArray)
+			notDeepEqual(aResult, aArray);
+			deepEqual(aResult, [
+				{
+					columnKey: "a",
+					index: 2
+				}, {
+					columnKey: "b",
+					index: 3
+				}
+			]);
+
+			// cleanup
+			aArray = null;
+		});
+		test("_getCustomData", function() {
+			// system under test
+			var oColumn = new sap.ui.table.Column({
+				label: new sap.ui.commons.Label({
+					text: "name"
+				})
+			});
+			// Workaround: call oColumn.data(); failed because expression "{" ... "}" is recognized as binding information in BindingParser.simpleParser
+			var oDataObject = new sap.ui.core.CustomData({
+				key: "p13nData"
+			});
+			oDataObject.setValue('\{"columnKey":"name"}');
+			oColumn.addAggregation("customData", oDataObject, true);
+			// End of Workaround
+
+			// arrange
+			var oCustomData = sap.ui.comp.personalization.Util._getCustomData(oColumn);
+
+			// assertions
+			deepEqual(oCustomData.columnKey, "name");
+
+			// cleanup
+			oDataObject.destroy();
+			oColumn.destroy();
+			oCustomData = null;
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.ui.comp.personalization.Util</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="content"></div>
+</body>
+</html>

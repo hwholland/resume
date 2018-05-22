@@ -1,0 +1,676 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for
+	sap.ui.comp.navpopover.NavigationPopoverHandler</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.ui.comp">
+	
+</script>
+
+<link rel="stylesheet"
+	href="../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+
+<script language="javascript">
+	if (!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+	}
+
+	(function() {
+		jQuery.sap.require("sap.ui.core.Control");
+		jQuery.sap.require("sap.ui.comp.navpopover.NavigationPopoverHandler");
+		jQuery.sap.require("sap.m.Button");
+
+		module("sap.ui.comp.navpopover.NavigationPopoverHandler", {
+			setup: function() {
+				this.oNavigationPopoverHandler = new sap.ui.comp.navpopover.NavigationPopoverHandler({
+					semanticObject: "Test Object",
+					fieldName: "Test Field"
+				});
+			},
+			teardown: function() {
+			}
+		});
+
+		test("Shall be instantiable", function(qUnit) {
+			qUnit.ok(this.oNavigationPopoverHandler);
+		});
+
+		test("Check press eventhandler", function(qUnit) {
+			var oButton = new sap.m.Button({
+				press: function(oEvent) {
+					oNavHandler.openPopover();
+				}
+			});
+			var oNavHandler = new sap.ui.comp.navpopover.NavigationPopoverHandler({
+				semanticObject: "Test Object",
+				//fieldName: "Test Field",
+				control: oButton
+			});
+
+			var oReceivedSemanticAttributes = null;
+			var oSetSemanticAttributes = {
+				a: "Test1",
+				b: null,
+				c: "Test2",
+				__metadata: "blabla"
+			};
+			var oExcpectedSemanticAttributes = {
+				a: "Test1",
+				c: "Test2"
+			};
+			var oReceivedAppStateKey = null;
+
+			var oPopover = {
+				retrieveNavTargets: function() {
+				},
+				setSemanticAttributes: function(oAttributes) {
+					oReceivedSemanticAttributes = oAttributes;
+				},
+				setAppStateKey: function(oKey) {
+					oReceivedAppStateKey = oKey;
+				},
+				setTitle: function(sTitle) {
+				},
+				setSemanticObjectName: function(sSemObj) {
+				},
+				destroy: function() {
+				}
+			};
+
+			var that = this;
+			var fCreatePopover = function() {
+				oNavHandler._oPopover = oPopover;
+			};
+
+			oNavHandler._createPopover = fCreatePopover;
+
+			oNavHandler.getBindingContext = function() {
+				return {
+					getObject: function() {
+						return oSetSemanticAttributes;
+					},
+					getPath: function() {
+						return null;
+					}
+				}
+			};
+
+			oNavHandler.setBindingContext({});
+
+			oButton.firePress();
+
+			qUnit.deepEqual(oReceivedSemanticAttributes, oExcpectedSemanticAttributes, "set semantic attributes have to be given to popover");
+
+			var oEventParams = null;
+			var bBeforePopoverOpensFired = false;
+			oNavHandler.attachBeforePopoverOpens(function(oEvent) {
+				oEventParams = oEvent.getParameters();
+				bBeforePopoverOpensFired = true;
+			});
+
+			oNavHandler._processingPressed = false; //reset press event processing flag
+			oButton.firePress();
+			qUnit.ok(bBeforePopoverOpensFired, "event has been fired");
+			qUnit.equal(oEventParams.semanticObject, "Test Object", "Eventhandler has to provide correct Semantic Object name");
+			qUnit.deepEqual(oEventParams.semanticAttributes, oExcpectedSemanticAttributes, "Eventhandler has to provide correct semantic attributes");
+
+			var oSetSemanticAttributes2 = {
+				a: "Test2",
+				b: "Test2",
+				c: null,
+				__metadata: "myMetadata"
+			};
+			var oExcpectedSemanticAttributes2 = {
+				a: "Test2",
+				b: "Test2",
+				c: null,
+				__metadata: "myMetadata"
+			};
+			oEventParams.setAppStateKey("MyAppKey");
+			oEventParams.setSemanticAttributes(oSetSemanticAttributes2);
+			oEventParams.open();
+
+			qUnit.deepEqual(oReceivedSemanticAttributes, oExcpectedSemanticAttributes2, "set semantic attributes in eventhandler have to be given to popover without changes");
+			qUnit.equal(oReceivedAppStateKey, "MyAppKey", "app state key has to be given to the popover");
+
+			bBeforePopoverOpensFired = false;
+			oButton.firePress();
+			qUnit.ok(oNavHandler._processingPressed, "processing flag is still set");
+			qUnit.ok(!bBeforePopoverOpensFired, "event has not been fired");
+
+			oNavHandler.destroy();
+		});
+
+		test("Check onTargetsObtainedOpenDialog eventhandler", function(qUnit) {
+			var oReceivedMainLinkData;
+			var oReceivedExtraContent;
+			var sReceivedMainNavigationId = null;
+			var bPopoverShowCalled = false;
+			var aAvailableActions = [];
+			this.oNavigationPopoverHandler._oPopover = {
+				getAvailableActions: function() {
+					return aAvailableActions;
+				},
+				getMainNavigation: function() {
+					return null;
+				},
+				getOwnNavigation: function() {
+					return null;
+				},
+				setMainNavigationId: function(sMainNavigationId) {
+					sReceivedMainNavigationId = sMainNavigationId;
+				},
+				setMainNavigation: function(oLinkData) {
+					oReceivedMainLinkData = oLinkData;
+				},
+				show: function() {
+					bPopoverShowCalled = true;
+				},
+				removeAllAvailableActions: function() {
+					aAvailableActions = []
+				},
+				addAvailableAction: function(oAction) {
+					aAvailableActions.push(oAction)
+				},
+				setExtraContent: function(oContent) {
+					oReceivedExtraContent = oContent;
+				},
+				getDirectLink: function() {
+				}
+			};
+
+			this.oNavigationPopoverHandler._onTargetsObtained();
+			qUnit.ok(bPopoverShowCalled, "Popover Show has to be called");
+
+			bPopoverShowCalled = false;
+			var oParams;
+			this.oNavigationPopoverHandler.attachNavigationTargetsObtained(function(oEvent) {
+				oParams = oEvent.getParameters();
+			});
+
+			this.oNavigationPopoverHandler._onTargetsObtained();
+			qUnit.equal(bPopoverShowCalled, false, "With registered event, popover open should not be called");
+
+			var oMainNavigation = {};
+			var oExtraContent = {};
+			var oAction1 = {
+				text: "A1"
+			}, oAction2 = {
+				text: "A2"
+			}, oAction3 = {
+				text: "A3"
+			};
+			var aNewActions = [
+				oAction1, oAction2, oAction3
+			];
+			oParams.show(oMainNavigation, aNewActions, oExtraContent);
+			qUnit.ok(bPopoverShowCalled, "Popover Show has to be called");
+			qUnit.equal(sReceivedMainNavigationId, null, "MainNavigationId should NOT be set from event callback");
+			qUnit.equal(oMainNavigation, oReceivedMainLinkData, "MainNavigationtext should be set from event callback");
+			qUnit.deepEqual(aNewActions, aAvailableActions, "AvailableActions should be set from event callback");
+			qUnit.equal(oExtraContent, oReceivedExtraContent, "ExtraContent should be set from event callback");
+
+			var sMainNavigationId = "MainId";
+			oParams.show(sMainNavigationId, oMainNavigation, aNewActions, oExtraContent);
+			qUnit.ok(bPopoverShowCalled, "Popover Show has to be called");
+			qUnit.equal(sMainNavigationId, sReceivedMainNavigationId, "MainNavigationId should be set from event callback");
+			qUnit.equal(oMainNavigation, oReceivedMainLinkData, "MainNavigationtext should be set from event callback");
+			qUnit.deepEqual(aNewActions, aAvailableActions, "AvailableActions should be set from event callback");
+			qUnit.equal(oExtraContent, oReceivedExtraContent, "ExtraContent should be set from event callback");
+		});
+
+		test("Check setSemanticObjectController", function(qUnit) {
+			var oRegisteredControl1, oRegisteredControl2, oUnregisteredControl1, oUnregisteredControl2;
+
+			var oSOController1 = {
+				registerControl: function(oControl) {
+					oRegisteredControl1 = oControl;
+				},
+				unregisterControl: function(oControl) {
+					oUnregisteredControl1 = oControl;
+				}
+			}
+			var oSOController2 = {
+				registerControl: function(oControl) {
+					oRegisteredControl2 = oControl;
+				},
+				unregisterControl: function(oControl) {
+					oUnregisteredControl2 = oControl;
+				}
+			}
+
+			this.oNavigationPopoverHandler.setSemanticObjectController(oSOController1);
+			qUnit.equal(oRegisteredControl1, this.oNavigationPopoverHandler, "SmartLink has to be registered with Controller1");
+
+			this.oNavigationPopoverHandler.setSemanticObjectController(oSOController2);
+			qUnit.equal(oUnregisteredControl1, this.oNavigationPopoverHandler, "SmartLink has to be unregistered with Controller1");
+			qUnit.equal(oRegisteredControl2, this.oNavigationPopoverHandler, "SmartLink has to be registered with Controller2");
+		});
+
+		test("Check setFieldName", function(qUnit) {
+			var oReceivedControl;
+			var oSOController = {
+				setIgnoredState: function(oControl) {
+					oReceivedControl = oControl;
+				},
+				registerControl: function() {
+				}
+			}
+
+			this.oNavigationPopoverHandler.setSemanticObjectController(oSOController);
+			this.oNavigationPopoverHandler.setFieldName("dummy");
+			qUnit.equal(oReceivedControl, this.oNavigationPopoverHandler, "set fieldname should trigger setIgnoredState on SemanticObjectController");
+		});
+
+		test("Check _createPopover", function(qUnit) {
+
+			jQuery.sap.require("sap.m.Button");
+
+			var that = this;
+			var oButton = new sap.m.Button({
+				press: function(oEvent) {
+					that.oNavigationPopoverHandler.openPopover();
+				}
+			});
+			this.oNavigationPopoverHandler.setControl(oButton);
+
+			var oComponent = new sap.ui.core.Component();
+			oButton.getParent = function() {
+				return {
+					getParent: function() {
+						return oComponent;
+					}
+				};
+			};
+
+			this.oNavigationPopoverHandler._createPopover();
+			qUnit.equal(this.oNavigationPopoverHandler._oPopover.getSource(), oButton.getId(), "Popover has to be created and source set to Button");
+			qUnit.equal(this.oNavigationPopoverHandler._oPopover.getComponent(), oComponent.getId(), "Popover should have Button");
+		});
+
+		/*the method getSemanticObjectValue is called in NavigationPopover._setMainNavigationText.
+		But in case of NavigationPopoverHandler the SourceControl is Button or Image but not NavigationPopoverHandler itself.
+		test("Check getSemanticObjectValue", function(qUnit) {
+			var oSemanticAttributes = {
+				a: "TestA",
+				b: "TestB",
+				c: "TestC"
+			}
+
+			this.oNavigationPopoverHandler.getBindingContext = function() {
+				return {
+					getObject: function() {
+						return oSemanticAttributes;
+					},
+					getPath: function() {
+						return null;
+					}
+				}
+			}
+
+			this.oNavigationPopoverHandler.setSemanticObject("a");
+			qUnit.equal(this.oNavigationPopoverHandler.getSemanticObjectValue(), "TestA", "semantic object value has to be correct according to SemanticObject 'a'");
+
+			this.oNavigationPopoverHandler.setSemanticObject("b");
+			qUnit.equal(this.oNavigationPopoverHandler.getSemanticObjectValue(), "TestB", "semantic object value has to be correct according to SemanticObject 'b'");
+
+			this.oNavigationPopoverHandler.setSemanticObject("c");
+			qUnit.equal(this.oNavigationPopoverHandler.getSemanticObjectValue(), "TestC", "semantic object value has to be correct according to SemanticObject 'c'");
+
+			this.oNavigationPopoverHandler.setSemanticObjectController({
+				getFieldSemanticObjectMap: function() {
+					return {
+						a: "SemanticObjectA",
+						b: "SemanticObjectB",
+						c: "SemanticObjectC",
+					}
+				},
+				registerControl: function() {
+				}
+			});
+			this.oNavigationPopoverHandler._calculateSemanticAttributes();
+
+			this.oNavigationPopoverHandler.setSemanticObject("SemanticObjectA");
+			qUnit.equal(this.oNavigationPopoverHandler.getSemanticObjectValue(), "TestA", "semantic object value has to be correct according to SemanticObject 'a' when SemanticObjectController remaps fields");
+
+			this.oNavigationPopoverHandler.setSemanticObject("SemanticObjectB");
+			qUnit.equal(this.oNavigationPopoverHandler.getSemanticObjectValue(), "TestB", "semantic object value has to be correct according to SemanticObject 'b' when SemanticObjectController remaps fields");
+
+			this.oNavigationPopoverHandler.setSemanticObject("SemanticObjectC");
+			qUnit.equal(this.oNavigationPopoverHandler.getSemanticObjectValue(), "TestC", "semantic object value has to be correct according to SemanticObject 'c' when SemanticObjectController remaps fields");
+
+			this.oNavigationPopoverHandler.setMapFieldToSemanticObject(false);
+			var oSemanticAttributes = this.oNavigationPopoverHandler._calculateSemanticAttributes();
+
+			var oExpectedSemanticAttributes = {
+				SemanticObjectA: "TestA",
+				SemanticObjectB: "TestB",
+				c: "TestC"
+			}
+			qUnit.deepEqual(oSemanticAttributes, oExpectedSemanticAttributes, "semantic attributes map should not contain SmartLink's semantic object as key if mapFieldToSemanticObject is false");
+		});*/
+
+		test("Check getSemanticObjectController", function(qUnit) {
+			var iGetParentCount = 0;
+
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			var oParent = {
+				getParent: function() {
+					return {
+						getParent: function() {
+							return {
+								getSemanticObjectController: function() {
+									return oSemanticObjectController;
+								}
+							}
+						},
+						getSemanticObjectController: function() {
+							return null;
+						}
+					}
+				},
+				invalidate: function() {
+				}
+			}
+
+			this.oNavigationPopoverHandler.getParent = function() {
+				iGetParentCount++;
+				return oParent;
+			}
+
+			this.oNavigationPopoverHandler.setSemanticObjectController(oSemanticObjectController);
+
+			qUnit.equal(this.oNavigationPopoverHandler.getSemanticObjectController(), oSemanticObjectController, "getter has to equal setter");
+			qUnit.equal(iGetParentCount, 0, "no parent should have been called");
+
+			this.oNavigationPopoverHandler.setSemanticObjectController(null);
+			iGetParentCount = 0;
+			qUnit.equal(this.oNavigationPopoverHandler.getSemanticObjectController(), oSemanticObjectController, "getter should find parent semanticObjectController");
+			qUnit.equal(iGetParentCount, 1, "parent should have been called");
+
+			this.oNavigationPopoverHandler.getSemanticObjectController();
+			this.oNavigationPopoverHandler.getSemanticObjectController();
+			qUnit.equal(iGetParentCount, 1, "parent should only be called once");
+
+			this.oNavigationPopoverHandler.getParent = function() {
+				return {
+					getParent: function() {
+						return null;
+					}
+				};
+			};
+			this.oNavigationPopoverHandler.setSemanticObjectController(null);
+			qUnit.equal(this.oNavigationPopoverHandler.getSemanticObjectController(), null, "no semanticObjectController should be found");
+		});
+
+		test("test exit function", function(qUnit) {
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			this.oNavigationPopoverHandler.setSemanticObjectController(oSemanticObjectController);
+			qUnit.equal(oSemanticObjectController._aRegisteredControls.length, 1, "1 control should be registered at the SemanticObjectController");
+
+			this.oNavigationPopoverHandler.exit();
+			qUnit.equal(oSemanticObjectController._aRegisteredControls.length, 0, "0 controls should be registered at the SemanticObjectController after exit");
+		});
+
+		fArrangeForCalculationSemanticAttributes = function(oNavHandler, oFieldSemanticObjectMap, oContext) {
+			oNavHandler.setSemanticObjectController({
+				getFieldSemanticObjectMap: function() {
+					return oFieldSemanticObjectMap;
+				},
+				registerControl: function() {
+				},
+				unregisterControl: function() {
+				}
+			});
+			oNavHandler.getBindingContext = function() {
+				return {
+					getObject: function() {
+						return oContext;
+					},
+					getPath: function() {
+						return null;
+					}
+				}
+			};
+		};
+
+		test("_calculateSemanticAttributes - fieldSemanticObjectMap: ['AccountingDocument', 'ClearingAccountingDocument']", function(qUnit) {
+			// system under test
+			var oNavHandler = new sap.ui.comp.navpopover.NavigationPopoverHandler({
+				fieldName: "ClearingAccountingDocument"
+			});
+
+			// arrange
+			fArrangeForCalculationSemanticAttributes(oNavHandler, {
+				AccountingDocument: "AccountingDocument",
+				ClearingAccountingDocument: "AccountingDocument"
+			}, {
+				AccountingDocument: "1400000016",
+				AmountInCompanyCodeCurrency: "-5.00",
+				AssignmentReference: "",
+				ClearingAccountingDocument: "1600000015",
+				ClearingStatus: "1",
+				__metadata: "dummy"
+			});
+
+			// act				
+			// assert		
+			qUnit.deepEqual(oNavHandler._calculateSemanticAttributes(), {
+				AccountingDocument: "1600000015",
+				AmountInCompanyCodeCurrency: "-5.00",
+				ClearingStatus: "1"
+			});
+
+			// arrange
+			fArrangeForCalculationSemanticAttributes(oNavHandler, {
+				AccountingDocument: "AccountingDocument",
+				ClearingAccountingDocument: "AccountingDocument"
+			}, {
+				ClearingAccountingDocument: "1600000015",
+				AmountInCompanyCodeCurrency: "-5.00",
+				AssignmentReference: "",
+				AccountingDocument: "1400000016",
+				ClearingStatus: "1",
+				__metadata: "dummy"
+			});
+
+			// act				
+			// assert		
+			qUnit.deepEqual(oNavHandler._calculateSemanticAttributes(), {
+				AccountingDocument: "1600000015",
+				AmountInCompanyCodeCurrency: "-5.00",
+				ClearingStatus: "1"
+			});
+
+			// cleanup
+			oNavHandler.destroy();
+		});
+
+		test("_calculateSemanticAttributes - fieldSemanticObjectMap: ['AccountingDocument', 'ClearingAccountingDocument'],  mapFieldToSemanticObject: false", function(qUnit) {
+			// system under test
+			var oNavHandler = new sap.ui.comp.navpopover.NavigationPopoverHandler({
+				fieldName: "ClearingAccountingDocument",
+				mapFieldToSemanticObject: false
+			});
+
+			// arrange
+			fArrangeForCalculationSemanticAttributes(oNavHandler, {
+				AccountingDocument: "AccountingDocument",
+				ClearingAccountingDocument: "AccountingDocument"
+			}, {
+				AccountingDocument: "1400000016",
+				AmountInCompanyCodeCurrency: "-5.00",
+				AssignmentReference: "",
+				ClearingAccountingDocument: "1600000015",
+				ClearingStatus: "1",
+				__metadata: "dummy"
+			});
+
+			// act
+			// assert
+			// Note: if 'semanticObject' property is not set, then mapping takes place
+			qUnit.deepEqual(oNavHandler._calculateSemanticAttributes(), {
+				AccountingDocument: "1600000015",
+				AmountInCompanyCodeCurrency: "-5.00",
+				ClearingStatus: "1"
+			});
+
+			// arrange
+			fArrangeForCalculationSemanticAttributes(oNavHandler, {
+				AccountingDocument: "AccountingDocument",
+				ClearingAccountingDocument: "AccountingDocument"
+			}, {
+				ClearingAccountingDocument: "1600000015",
+				AmountInCompanyCodeCurrency: "-5.00",
+				AssignmentReference: "",
+				AccountingDocument: "1400000016",
+				ClearingStatus: "1",
+				__metadata: "dummy"
+			});
+
+			// act
+			// assert
+			// Note: if 'semanticObject' property is not set, then mapping takes place
+			qUnit.deepEqual(oNavHandler._calculateSemanticAttributes(), {
+				AccountingDocument: "1600000015",
+				AmountInCompanyCodeCurrency: "-5.00",
+				ClearingStatus: "1"
+			});
+
+			// cleanup
+			oNavHandler.destroy();
+		});
+
+		test("_calculateSemanticAttributes - fieldSemanticObjectMap: ['AccountingDocument'], semanticObject: 'AccountingDocument'", function(qUnit) {
+			// system under test	
+			var oNavHandler = new sap.ui.comp.navpopover.NavigationPopoverHandler({
+				fieldName: "ClearingAccountingDocument",
+				semanticObject: "AccountingDocument"
+			});
+
+			// arrange
+			fArrangeForCalculationSemanticAttributes(oNavHandler, {
+				AccountingDocument: "AccountingDocument"
+			}, {
+				AccountingDocument: "1400000016",
+				AmountInCompanyCodeCurrency: "-5.00",
+				AssignmentReference: "",
+				ClearingAccountingDocument: "1600000015",
+				ClearingStatus: "1",
+				__metadata: "dummy"
+			});
+
+			// act
+			// assert		
+			qUnit.deepEqual(oNavHandler._calculateSemanticAttributes(), {
+				AccountingDocument: "1600000015",
+				AmountInCompanyCodeCurrency: "-5.00",
+				ClearingStatus: "1"
+			});
+
+			// arrange
+			fArrangeForCalculationSemanticAttributes(oNavHandler, {
+				AccountingDocument: "AccountingDocument"
+			}, {
+				ClearingAccountingDocument: "1600000015",
+				AmountInCompanyCodeCurrency: "-5.00",
+				AssignmentReference: "",
+				AccountingDocument: "1400000016",
+				ClearingStatus: "1",
+				__metadata: "dummy"
+			});
+
+			// act
+			// assert		
+			qUnit.deepEqual(oNavHandler._calculateSemanticAttributes(), {
+				AccountingDocument: "1600000015",
+				AmountInCompanyCodeCurrency: "-5.00",
+				ClearingStatus: "1"
+			});
+
+			// cleanup
+			oNavHandler.destroy();
+		});
+
+		test("_calculateSemanticAttributes - fieldSemanticObjectMap: ['AccountingDocument'], semanticObject: 'AccountingDocument',  mapFieldToSemanticObject: false", function(qUnit) {
+			// system under test	
+			var oNavHandler = new sap.ui.comp.navpopover.NavigationPopoverHandler({
+				fieldName: "ClearingAccountingDocument",
+				mapFieldToSemanticObject: false,
+				semanticObject: "AccountingDocument"
+			});
+
+			// arrange
+			fArrangeForCalculationSemanticAttributes(oNavHandler, {
+				AccountingDocument: "AccountingDocument"
+			}, {
+				AccountingDocument: "1400000016",
+				AmountInCompanyCodeCurrency: "-5.00",
+				AssignmentReference: "",
+				ClearingAccountingDocument: "1600000015",
+				ClearingStatus: "1",
+				__metadata: "dummy"
+			});
+
+			// act
+			// assert		
+			qUnit.deepEqual(oNavHandler._calculateSemanticAttributes(), {
+				AccountingDocument: "1400000016",
+				AmountInCompanyCodeCurrency: "-5.00",
+				ClearingAccountingDocument: "1600000015",
+				ClearingStatus: "1"
+			});
+
+			// arrange
+			fArrangeForCalculationSemanticAttributes(oNavHandler, {
+				AccountingDocument: "AccountingDocument"
+			}, {
+				ClearingAccountingDocument: "1600000015",
+				AmountInCompanyCodeCurrency: "-5.00",
+				AssignmentReference: "",
+				AccountingDocument: "1400000016",
+				ClearingStatus: "1",
+				__metadata: "dummy"
+			});
+
+			// act
+			// assert		
+			qUnit.deepEqual(oNavHandler._calculateSemanticAttributes(), {
+				ClearingAccountingDocument: "1600000015",
+				AmountInCompanyCodeCurrency: "-5.00",
+				AccountingDocument: "1400000016",
+				ClearingStatus: "1"
+			});
+
+			// cleanup
+			oNavHandler.destroy();
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for qUnit Page for
+		sap.ui.comp.navpopover.NavigationPopoverHandler</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="content"></div>
+</body>
+</html>

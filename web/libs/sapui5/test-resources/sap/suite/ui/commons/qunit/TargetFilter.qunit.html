@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Target Filter QUnit page</title>
+
+    <!-- UI5 Bootstrap -->
+    <script src="../../../../../../resources/sap-ui-core.js"
+            type="text/javascript"
+            id="sap-ui-bootstrap"
+            data-sap-ui-libs="sap.suite.ui.commons,sap.m"
+            data-sap-ui-theme="sap_bluecrystal"></script>
+
+    <!-- QUnit libraries -->
+    <link rel="stylesheet"
+          href="../../../../../../resources/sap/ui/thirdparty/qunit.css"
+          type="text/css" media="screen" />
+    <script src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+    <script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+
+    <script>
+	QUnit.config.autostart = false;
+	jQuery(document).ready(function() {
+		QUnit.start();
+	});
+    jQuery.sap.initMobile();
+
+	var oLinksData = {
+			Sales1: [
+				{ Customer: 'customer1', CNT: 20},
+				{ Customer: 'customer2', CNT: 46},
+				{ Customer: 'customer3', CNT: 71},
+				{ Customer: 'customer4', CNT: 1},
+				{ Customer: 'veryveryveryveryveryverylongcustomer5', CNT: 99},
+				{ Product: 'product1', CNT: 100},
+				{ Country: 'country1', CNT: 98},
+				{ Amount: '10.5', CNT: 23}
+			]
+	};
+	
+    var oConfModel = new sap.ui.model.json.JSONModel();
+    oConfModel.setData(oLinksData);
+    sap.ui.getCore().setModel(oConfModel);
+
+	
+	var oColumn1 = new sap.suite.ui.commons.TargetFilterColumn("Customer", { path: "Customer", title: "Customer",	length: 18 });
+    var oColumn2 = new sap.suite.ui.commons.TargetFilterColumn("Product", { path: "Product", title: "Product", length: 22});
+    var oColumn3 = new sap.suite.ui.commons.TargetFilterColumn("Country", { path: "Country", title: "Country", length: 16});
+    var oColumn4 = new sap.suite.ui.commons.TargetFilterColumn("Amount", { path: "Amount", title: "Amount", length: 30, type: new sap.ui.model.type.Float({minFractionDigits: 2, groupingEnabled: true})});
+    jQuery.sap.require("sap.suite.ui.commons.TargetFilter");
+    var oTargetFilter = new sap.suite.ui.commons.TargetFilter("tf", {
+    	entitySet: "Sales1",
+    	columns: [oColumn1, oColumn2, oColumn3, oColumn4],
+    	selectedColumns:[oColumn1, oColumn2, oColumn3, oColumn4],
+    	measureColumn: new sap.suite.ui.commons.TargetFilterMeasureColumn({path: "CNT"})
+    });
+    
+    oTargetFilter._aQuadrants[0].setColumn("Customer",false);
+    oTargetFilter.placeAt("contentArea");
+
+    module("Rendering tests - sap.suite.ui.commons.TargetFilter");
+	test("Initial Test", function () {
+		ok(jQuery.sap.domById("tf"), "TargetFilter was rendered successfully");
+	});
+
+	test("TargetFilterColumn test", function () {
+		equal(jQuery.sap.byId("tf-quad0-cb-inner").attr("value"), "Customer", "Combo Box obtained correct value");
+		equal(jQuery.sap.byId("tf-quad1-cb-inner").attr("value"), "Product", "Combo Box obtained correct value");
+		equal(jQuery.sap.byId("tf-quad2-cb-inner").attr("value"), "Country", "Combo Box obtained correct value");
+		equal(jQuery.sap.byId("tf-quad3-cb-inner").attr("value"), "Amount", "Combo Box obtained correct value");
+		
+	});
+
+	test("Keywords test", function () {
+		var aLinks = jQuery(".sapSuiteUiTFLine.Quad0");
+		ok(jQuery(".sapSuiteUiTFLine:contains('customer1')").hasClass("Smallest"), "First keyword has correct size");
+		ok(jQuery(".sapSuiteUiTFLine:contains('customer2')").hasClass("Small"), "Second keyword has correct size");
+		ok(jQuery(".sapSuiteUiTFLine:contains('customer3')").hasClass("Medium"), "Third keyword has correct size");
+		ok(jQuery(".sapSuiteUiTFLine:contains('customer4')").hasClass("Smallest"), "Fourth keyword has correct size");
+		ok(jQuery(".sapSuiteUiTFLine:contains('customer4')").hasClass("Hidden"), "Fourth keyword is hidden");
+		ok(jQuery(".sapSuiteUiTFLine:contains('customer5')").hasClass("Large"), "Fifth keyword has correct size");
+	});
+	
+    module("Behavior tests - sap.suite.ui.commons.TargetFilter");
+    
+    asyncTest("Test clicks on keywords", function() {
+		ok(jQuery(".sapSuiteUiTFLine:contains('customer1')").hasClass("sapMLnkSubtle"), "First keyword is subtle");
+		ok(jQuery(".sapSuiteUiTFRightPanelBox").find(".sapMSLITitleOnly:contains('customer1')").length == 0, "First keyword is not in the selection list");
+		jQuery(".sapSuiteUiTFLine:contains('customer1')").click();
+    	setTimeout(function() {
+    		ok(jQuery(".sapSuiteUiTFLine:contains('customer1')").hasClass("sapMLnkEmphasized"), "First keyword became emphasized");
+    		ok(jQuery(".sapSuiteUiTFRightPanelBox").find(".sapMSLITitleOnly:contains('customer1')").length == 1, "First keyword was added to the selection list");
+    		jQuery(".sapSuiteUiTFRightPanelBox").find(".sapMLIBIconDel").click();
+        	setTimeout(function() {
+        		ok(jQuery(".sapSuiteUiTFRightPanelBox").find(".sapMSLITitleOnly:contains('customer1')").length == 0, "First keyword was removed from the selection list");
+        		ok(jQuery(".sapSuiteUiTFLine:contains('customer1')").hasClass("sapMLnkSubtle"), "First keyword became subtle");
+        		ok(jQuery(".sapSuiteUiTFLine:contains('veryveryveryveryveryverylongcustomer5')").hasClass("sapMLnkSubtle"), "Fifth keyword is subtle");
+        		jQuery(".sapSuiteUiTFLine:contains('veryveryveryveryveryverylongcustomer5')").click();
+	            	setTimeout(function() {
+	            		jQuery(".sapSuiteUiTFPopover .sapMBtnEmphasized").tap();
+		            	setTimeout(function() {
+		            		ok(jQuery(".sapSuiteUiTFLine:contains('veryveryveryveryveryverylongcustomer5')").hasClass("sapMLnkEmphasized"), "Fifth keyword became emphasized");
+		            		jQuery(".sapSuiteUiTFLine:contains('veryveryveryveryveryverylongcustomer5')").click();
+			            	setTimeout(function() {
+			            		jQuery(".sapSuiteUiTFPopover .sapMBtnEmphasized").tap();
+				            	setTimeout(function() {
+				            		ok(jQuery(".sapSuiteUiTFLine:contains('veryveryveryveryveryverylongcustomer5')").hasClass("sapMLnkSubtle"), "Fifth keyword became subtle");
+				            		jQuery("#tf-quad0-btn").tap();
+					            	setTimeout(function() {
+					            		jQuery(".sapMSLITitle:contains('customer4')").tap();
+					            		jQuery("#tf-quad0-browser-ok-content").tap();
+						            	setTimeout(function() {
+						            		ok(jQuery(".sapSuiteUiTFRightPanelBox").find(".sapMSLITitleOnly:contains('customer4')").length == 1, "Fourth keyword was added to the selection list");
+							        		start();
+						        		}, 1000);
+					        		}, 1000);
+				        		}, 1000);
+			        		}, 1000);
+		        		}, 1000);
+	        		}, 1000);
+    		}, 1000);
+		}, 1000);
+	});
+/*
+    asyncTest("Test combo box behavior", function() {
+    	jQuery.sap.byId("tf-quad0-cb-arrow").tap();
+    	setTimeout(function() {
+    		jQuery(".sapMSLITitleOnly:contains('Country')").click();
+        	setTimeout(function() {
+        		equal(jQuery.sap.byId("tf-quad0-cb-inner")[0].value, "Country", "Combo Box value correctly updated");
+        		ok(jQuery(".Quad0.sapSuiteUiTFLine:contains('customer1')").length == 0, "Customer related keywords were removed from the quadrant");
+        		ok(jQuery(".Quad0.sapSuiteUiTFLine:contains('country1')").length == 1, "Country related keywords appeared in the the quadrant");
+    			start();
+    		}, 1000);
+		}, 1000);
+	});
+	
+*/
+    </script>
+
+</head>
+
+
+<body>
+    <div id="qunit"></div>
+    <div id="contentArea" class="sapUiBody"></div>
+</body>
+</html>

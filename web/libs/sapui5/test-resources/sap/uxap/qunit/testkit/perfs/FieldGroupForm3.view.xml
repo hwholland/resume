@@ -1,0 +1,43 @@
+<mvc:View
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:l="sap.ui.layout"
+        controllerName="sap.uxap.testkit.perfs.FormController">
+
+        <l:VerticalLayout>
+            <Text  class="sapMH4FontSize" text="Tax Information" />
+
+            <f:Form editable="false"
+                    class="isReadonly">
+                <f:layout>
+                    <f:ResponsiveGridLayout
+                            labelSpanL="{ControlModel>/labelSpanL}"
+                            labelSpanM="{ControlModel>/labelSpanM}"
+                            emptySpanL="{ControlModel>/emptySpanL}"
+                            emptySpanM="{ControlModel>/emptySpanM}"
+                            columnsL="{ControlModel>/columnsL}"
+                            columnsM="{ControlModel>/columnsM}" />
+                </f:layout>
+
+                <f:formContainers>
+
+                    <f:FormContainer>
+                        <f:formElements>
+                            <f:FormElement label="Tax Number">
+                                <f:fields>
+                                    <Text text="{BlockPageData>TaxID1}"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="VAT Number">
+                                <f:fields>
+                                    <Text text="{BlockPageData>VATRegistration}"/>
+                                </f:fields>
+                            </f:FormElement>
+                        </f:formElements>
+                    </f:FormContainer>
+
+                </f:formContainers>
+            </f:Form>
+        </l:VerticalLayout>
+   </mvc:View>

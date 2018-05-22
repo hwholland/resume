@@ -1,0 +1,75 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=36504064810833803"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=36504064810833803"/>
+<title>Action Control</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio5b0b686a3b7a491a9ec654b4f1536fa8">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Action Control</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">You can use action control to display actions by adding the
+				<span class="ph sap-technical-name sap-technical-name">sap:action-for</span> and
+				<span class="ph sap-technical-name sap-technical-name">sap:applicable-path</span> term to your action or
+			function import.</p>
+
+		<p class="p">In the applicable path you specify a boolean property for the entity type which controls
+			whether the function import can be invoked.</p>
+
+		<p class="p">SAP Fiori Elements evaluates the applicable path and sets the visibility of the
+			corresponding action based on the boolean property value.</p>
+
+		<div class="p">If the condition as defined by the applicable-path variable is not fulfilled, the action
+			is hidden or disabled as follows:<ul class="ul" id="loio5b0b686a3b7a491a9ec654b4f1536fa8__ul_ndr_fzl_2y">
+				<li class="li">
+					<p class="p">hidden if on page header level or for inline buttons on a list</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">disabled for header buttons of a list</p>
+
+				</li>
+
+			</ul>
+</div>
+
+		<p class="p">If multi-select is available in a table, the action is allowed if at least one of the
+			marked entries fulfils the condition.</p>
+
+		<p class="p">In the following example, you can see the sap:action-for annotation which normally is
+			generated implicitly by BOPF for any new action.</p>
+
+		<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> Example from the Fiori Reference App Manage
+			Products<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;FunctionImport Name="SEPMRA_C_PD_ProductCopy" 
+ReturnType="SEPMRA_PROD_MAN.SEPMRA_C_PD_ProductType" 
+EntitySet="SEPMRA_C_PD_Product" m:HttpMethod="POST"
+sap:action-for="SEPMRA_PROD_MAN.SEPMRA_C_PD_ProductType" sap:applicable-path="IsActiveEntity"&gt;
+    &lt;Parameter Name="ProductDraftUUID" Type="Edm.Guid" Mode="In"/&gt;
+    &lt;Parameter Name="ActiveProduct" Type="Edm.String" Mode="In" MaxLength="10"/&gt;
+&lt;/FunctionImport&gt;
+</pre></div>
+</div>
+
+		<p class="p">If the action is defined then you must select an item or a line in a list. By default,
+			these actions are disabled until the user selects at least one entity.</p>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

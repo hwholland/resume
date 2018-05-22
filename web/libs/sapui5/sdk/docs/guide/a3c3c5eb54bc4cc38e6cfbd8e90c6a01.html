@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The sap.m.P13nDialog control provides a dialog to personalize tables, such as adapting the order of columns or filtering table content."/>
+<meta name="description" content="The sap.m.P13nDialog control provides a dialog to personalize tables, such as adapting the order of columns or filtering table content."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9503801395697923"/>
+<title>Personalization Dialog</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loioa3c3c5eb54bc4cc38e6cfbd8e90c6a01">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Personalization Dialog </h1>
+<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">sap.m.P13nDialog</samp> control provides a dialog to personalize tables,
+		such as adapting the order of columns or filtering table content.</p>
+<p class="p">For more information
+			about this control, see <a class="xref" href="../../docs/api/symbols/sap.m.P13nDialog.html" alt="../../docs/api/symbols/sap.m.P13nDialog.html" title="../../docs/api/symbols/sap.m.P13nDialog.html">https://sapui5.hana.ondemand.com/sdk/#docs/api/symbols/sap.m.P13nDialog.html</a> and <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.P13nDialog/samples" alt="../../explored.html#/entity/sap.m.P13nDialog/samples" title="../../explored.html#/entity/sap.m.P13nDialog/samples">https://sapui5.hana.ondemand.com/sdk/explored.html#/entity/sap.m.P13nDialog/samples</a>. </p>
+</div>
+<div class="topic concept nested1" id="concept_okf_yjf_hq"><h2 class="title topictitle2">Overview</h2>
+<div class="body conbody"><p class="p">The <samp class="ph codeph">P13nDialog</samp> control offers a personalization dialog and allows the
+				consuming application to define various settings for tables using panels. The panels
+				represent the settings on the user interface. In order to register them to the
+				control, the <samp class="ph codeph">sap.m.P13nPanel</samp> aggregation is used.</p>
+<p class="p">The following panels are available:</p>
+<ul class="ul" id="concept_okf_yjf_hq__ul_ubm_5kf_hq"><li class="li"><samp class="ph codeph">sap.m.P13nSortPanel</samp><p class="p">Defines the sorting in a column in an
+						ascending or descending order.</p>
+</li>
+<li class="li"><samp class="ph codeph">sap.m.P13nFilterPanel</samp><p class="p">Defines filter conditions for a
+						column.</p>
+</li>
+<li class="li"><samp class="ph codeph">sap.m.P13nColumnsPanel</samp><p class="p">Defines the order of the columns in
+						the table and their visibility.</p>
+</li>
+<li class="li"><samp class="ph codeph">sap.m.P13nGroupPanel</samp><p class="p">Defines the grouping of
+					columns.</p>
+</li>
+</ul>
+<p class="p">The following buttons are available in the dialog:</p>
+<ul class="ul" id="concept_okf_yjf_hq__ul_bff_qmf_hq"><li class="li"><span class="ph uicontrol">OK</span><p class="p">Closes the personalization dialog. </p>
+<p class="p">The
+						application consuming the <samp class="ph codeph">P13nDialog</samp> control must in some
+						cases, for example, when sorting and filtering, transfer the settings of the
+						end user to the table.</p>
+</li>
+<li class="li"><span class="ph uicontrol">Cancel</span><p class="p">Closes the personalization dialog.</p>
+<p class="p">All
+						changes made by the end user in the currently opened dialog are
+						rejected.</p>
+</li>
+<li class="li"><span class="ph uicontrol">Restore</span><p class="p">Personalization dialog remains open.</p>
+<p class="p">All changes made
+						by the end user are set back to the initial state.</p>
+<div class="note note"><span class="notetitle">Note</span> The control only
+						offers the visual representation of the table settings on the user
+						interface. The consuming application must ensure the settings are changed in
+						the table.</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="topic concept nested1" id="concept_tq3_5nx_nr"><h2 class="title topictitle2"><samp class="ph codeph">P13nColumnsPanel</samp></h2>
+<div class="body conbody"><p class="p">The <samp class="ph codeph">P13nColumnsPanel</samp> control uses an instance of the <samp class="ph codeph">m.Table</samp>
+				control to visually represent the columns of the related table. All existing columns
+				of the related table will be passed on to the <samp class="ph codeph">P13nColumnsPanel</samp>
+				control using the <samp class="ph codeph">items</samp>
+				aggregation.</p>
+<p class="p">In the <samp class="ph codeph">P13nColumnsPanel</samp> control, the <samp class="ph codeph">columnsItems</samp>
+				aggregation is used to change the columns in a table, for example, if the end user
+				changes the visibility of columns. If the end user clicks <span class="ph uicontrol">Select
+					All</span> in the dialog to make all available columns visible, and if the
+				underlying table contains a large number of colums, this might cause performance to
+				slow down. When this happens, the user receives a corresponding warning triggered by
+				the <samp class="ph codeph">visibleItemsThreshold</samp> property.</p>
+<p class="p">This property needs to be activated and set to the required value, such as '100', by the
+				consuming application, to ensure that the warning message is shown when the user
+				selects <span class="ph uicontrol">OK</span> in the dialog, and the threshold of 100 columns
+				has been exceeded.</p>
+<p class="p">The following picture shows how a <samp class="ph codeph">SmartTable</samp> is placed in an XML
+				view, where the <samp class="ph codeph">visibleItemsThreshold</samp> property is set to 100.</p>
+<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;smartTable:customData&gt;
+&lt;core:CustomData key="p13nDialogSettings"
+value='\{"columns":\{"visible": true, "payload": \{"visibleItemsThreshold": 100\}\}\}'/&gt;
+&lt;/smartTable:customData&gt;
+</pre></div>
+
+			</div>
+</div>
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Personalization Dialog";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

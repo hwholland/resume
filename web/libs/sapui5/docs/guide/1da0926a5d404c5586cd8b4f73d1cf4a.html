@@ -1,0 +1,117 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7430723952626448"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7430723952626448"/>
+<title>Plain Text Facet</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio1da0926a5d404c5586cd8b4f73d1cf4a">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Plain Text Facet</h1>
+
+	<div class="body conbody">
+		<p class="p">You can add a plain text facet to the header area. This type of facet is suitable if you
+			wish to add a single field or block of text with a title, such as a description.  </p>
+
+		<p class="p">A plain text facet shows the label property of the <samp class="ph codeph">UI.ReferenceFacet</samp> as the
+			title. It also shows the value property of the <samp class="ph codeph">DataField</samp> complex type
+			of the <samp class="ph codeph">FieldGroup</samp> annotation as the description.</p>
+
+		<p class="p">To add a plain text facet, use the <samp class="ph codeph">UI.HeaderFacet</samp> term and include the
+				<samp class="ph codeph">UI.ReferenceFacet</samp> complex type, and then reference the
+				<samp class="ph codeph">FieldGroup</samp> annotation.</p>
+
+		<p class="p">This is displayed as shown below within the object page header:</p>
+
+		<div class="fig fignone" id="loio1da0926a5d404c5586cd8b4f73d1cf4a__fig_e2l_y1c_3v"><div class="figcontainer">
+			
+			<img class="image" id="loio1da0926a5d404c5586cd8b4f73d1cf4a__image_m12_v1c_3v" src="loio8fbc998cbf334962871a9fba2569352f_LowRes.png"/>
+		<div class="figcap">Plain Text Facet in Object Header</div></div></div>
+
+		<div class="section"><div class="section_title">Code Samples</div><div type="Code Samples"><p class="p">The following code samples show an example of how to create
+				your annotations for a plain text
+					header:</p>
+<div class="p"><span class="ph emphasis emphasis">UI.ReferenceFacet</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;Record Type="UI.ReferenceFacet"&gt;
+
+    &lt;PropertyValue Property="Label" String="{@i18n&gt;@ProductDescription}"/&gt;
+
+    &lt;PropertyValue Property="Target" AnnotationPath="to_ProductTextInCurrentLang/@UI.FieldGroup#PlainText"/&gt;
+
+&lt;/Record&gt; &lt;/Collection&gt;
+						</pre></div>
+</div>
+<p class="p"><span class="ph emphasis emphasis">UI.FieldGroup</span></p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;Annotation Term="UI.FieldGroup" Qualifier="PlainText"&gt;
+
+    &lt;Record&gt;
+
+        &lt;PropertyValue Property="Data"&gt;
+
+            &lt;Collection&gt;
+
+                &lt;Record Type="UI.DataField"&gt;
+
+                    &lt;PropertyValue Property="Value" Path="Description"/&gt;
+
+                &lt;/Record&gt;
+
+            &lt;/Collection&gt;
+
+        &lt;/PropertyValue&gt;
+
+    &lt;/Record&gt;
+
+&lt;/Annotation&gt;
+</pre></div>
+<p class="p"><span class="ph emphasis emphasis">UI.MultilineText</span></p>
+<p class="p">In
+				addition, you must include a property annotation to indicate that this property
+				contains a multiline text, as shown below:</p>
+<div class="p">
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;Annotations Target="STTA_PROD_MAN.STTA_C_MP_ProductTextType/Description"&gt;
+
+    &lt;Annotation Term="UI.MultiLineText"/&gt;
+
+&lt;/Annotations&gt;
+</pre></div>
+
+			</div>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">CDS Annotations</p>
+
+				<p class="p">If desired, you can set this up using a CDS annotation, as shown below:</p>
+
+				<p class="p"><span class="ph emphasis emphasis">CDS Annotation Definition</span></p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+//@Scope: #ELEMENT
+
+multiLineText: Boolean default true;
+</pre></div>
+
+				<div class="p"><span class="ph emphasis emphasis">CDS
+					Source</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+@UI.multiLineText
+
+Description: String;
+</pre></div>
+</div>
+
+			</div></div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

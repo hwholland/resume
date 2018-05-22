@@ -1,0 +1,269 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for sap.ui.comp.personalization.ColumnHelper</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.m, sap.ui.comp, sap.ui.table, sap.ui.commons">
+	
+</script>
+
+<link rel="stylesheet"
+	href="../../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript">
+	if (!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+	}	
+
+	(function() {
+
+		jQuery.sap.require("sap.ui.comp.personalization.ColumnHelper");
+
+		module("API");
+
+		test("constructor", function() {
+			// system under test
+			var oColumnHelper = new sap.ui.comp.personalization.ColumnHelper();
+
+			// arrange
+
+			// act
+			oColumnHelper.addColumnMap({
+				"columnKeyA": new sap.m.Column(),
+				"columnKeyB": new sap.m.Column()
+			});
+
+			// assertions
+			strictEqual(Object.keys(oColumnHelper._oColumnKey2ColumnMap).length, 2);
+			strictEqual(Object.keys(oColumnHelper._oColumnKeyIsMonkeyPatched).length, 2);
+			strictEqual(Object.keys(oColumnHelper._oStoredColumnMapForColumnKeys).length, 0);
+
+			// cleanup
+			oColumnHelper.destroy();
+		});
+
+		test("destructor", function() {
+			// system under test
+			var oColumnHelper = new sap.ui.comp.personalization.ColumnHelper();
+
+			// arrange
+			var oColA = new sap.m.Column();
+			var oColB = new sap.m.Column();
+			var oColumnMap = {
+				"columnKeyA": oColA,
+				"columnKeyB": oColB
+			};
+			oColumnHelper.addColumnMap(oColumnMap);
+
+			// act
+			oColumnHelper.destroy();
+
+			// assertions
+			ok(!oColumnHelper._oColumnKey2ColumnMap);
+			ok(!oColumnHelper._oColumnKeyIsMonkeyPatched);
+			ok(!oColumnHelper._oStoredColumnMapForColumnKeys);
+			ok(oColA);
+			ok(oColB);
+
+			// cleanup
+
+		});
+
+		test("getColumnMapOfValidColumnKeys - empty 'ignoredColumnKeys'", function() {
+			// system under test
+			var oColumnHelper = new sap.ui.comp.personalization.ColumnHelper();
+
+			// arrange
+			var oColA = new sap.m.Column();
+			var oColB = new sap.m.Column();
+			var oColumnMap = {
+				"columnKeyA": oColA,
+				"columnKeyB": oColB
+			};
+			oColumnHelper.addColumnMap(oColumnMap);
+
+			// act
+			oColumnHelper.getColumnMapOfValidColumnKeys("sort", null);
+			var oMapSort = oColumnHelper.getColumnMapOfValidColumnKeys("sort", []);
+			var oMapFilter = oColumnHelper.getColumnMapOfValidColumnKeys("filter", []);
+
+			// assertions
+			ok(Object.keys(oColumnHelper._oStoredColumnMapForColumnKeys).length, 2);
+			deepEqual(oMapSort, oColumnMap);
+			deepEqual(oMapFilter, oColumnMap);
+
+			// cleanup
+			oColumnHelper.destroy();
+		});
+
+		test("getColumnMapOfValidColumnKeys - filled 'ignoredColumnKeys'", function() {
+			// system under test
+			var oColumnHelper = new sap.ui.comp.personalization.ColumnHelper();
+
+			// arrange
+			var oColA = new sap.m.Column();
+			var oColB = new sap.m.Column();
+			var oColumnMap = {
+				"columnKeyA": oColA,
+				"columnKeyB": oColB
+			};
+			oColumnHelper.addColumnMap(oColumnMap);
+
+			// act
+			var oMapSort = oColumnHelper.getColumnMapOfValidColumnKeys("sort", [
+				"columnKeyA"
+			]);
+			var oMapFilter = oColumnHelper.getColumnMapOfValidColumnKeys("filter", [
+				"columnKeyB"
+			]);
+			var oMapGroup = oColumnHelper.getColumnMapOfValidColumnKeys("group", [
+				"columnKeyB", "columnKeyA"
+			]);
+
+			// assertions
+			ok(Object.keys(oColumnHelper._oStoredColumnMapForColumnKeys).length, 2);
+			deepEqual(oMapSort, {
+				"columnKeyB": oColB
+			});
+			deepEqual(oMapFilter, {
+				"columnKeyA": oColA
+			});
+			deepEqual(oMapGroup, {});
+
+			// cleanup
+			oColumnHelper.destroy();
+		});
+
+		test("getColumnMapOfValidColumnKeys - 'ignoredColumnKeys' filled with dummy entry", function() {
+			// system under test
+			var oColumnHelper = new sap.ui.comp.personalization.ColumnHelper();
+
+			// arrange
+			var oColA = new sap.m.Column();
+			var oColB = new sap.m.Column();
+			var oColumnMap = {
+				"columnKeyA": oColA,
+				"columnKeyB": oColB
+			};
+			oColumnHelper.addColumnMap(oColumnMap);
+
+			// act
+			var oMapSort = oColumnHelper.getColumnMapOfValidColumnKeys("sort", [
+				"columnKeyDummy"
+			]);
+			var oMapFilter = oColumnHelper.getColumnMapOfValidColumnKeys("filter", [
+				"columnKeyB", "columnKeyDummy"
+			]);
+
+			// assertions
+			ok(Object.keys(oColumnHelper._oStoredColumnMapForColumnKeys).length, 2);
+			deepEqual(oMapSort, {
+				"columnKeyA": oColA,
+				"columnKeyB": oColB
+			});
+			deepEqual(oMapFilter, {
+				"columnKeyA": oColA
+			});
+
+			// cleanup
+			oColumnHelper.destroy();
+		});
+
+		test("getColumnMapOfValidColumnKeys - first 'ignoredColumnKeys' is stored", function() {
+			// system under test
+			var oColumnHelper = new sap.ui.comp.personalization.ColumnHelper();
+
+			// arrange
+			var oColA = new sap.m.Column();
+			var oColB = new sap.m.Column();
+			var oColumnMap = {
+				"columnKeyA": oColA,
+				"columnKeyB": oColB
+			};
+			oColumnHelper.addColumnMap(oColumnMap);
+
+			// act
+			var oMapFirst = oColumnHelper.getColumnMapOfValidColumnKeys("sort", [
+				"columnKeyA"
+			]);
+			var oMapSecond = oColumnHelper.getColumnMapOfValidColumnKeys("sort", [
+				"columnKeyB"
+			]);
+
+			// assertions
+			ok(Object.keys(oColumnHelper._oStoredColumnMapForColumnKeys).length, 1);
+			deepEqual(oMapFirst, {
+				"columnKeyB": oColB
+			});
+			deepEqual(oMapSecond, {
+				"columnKeyB": oColB
+			});
+
+			// cleanup
+			oColumnHelper.destroy();
+		});
+
+		test("getColumnMapOfValidColumnKeys - changed columnKeys", function() {
+			// system under test
+			var oColumnHelper = new sap.ui.comp.personalization.ColumnHelper();
+
+			// arrange
+			var oColA = new sap.m.Column();
+			var oColB = new sap.m.Column();
+			var oColC = new sap.m.Column();
+			var oColumnMap = {
+				"columnKeyA": oColA,
+				"columnKeyB": oColB
+			};
+			oColumnHelper.addColumnMap(oColumnMap);
+			var oMapBefore = oColumnHelper.getColumnMapOfValidColumnKeys("sort", [
+				"columnKeyA"
+			]);
+
+			// act
+			oColumnHelper.addColumnMap({
+				"columnKeyC": oColC
+			});
+
+			var oMapAfter = oColumnHelper.getColumnMapOfValidColumnKeys("sort", [
+				"columnKeyA"
+			]);
+
+			// assertions
+			ok(Object.keys(oColumnHelper._oStoredColumnMapForColumnKeys).length, 1);
+			deepEqual(oMapBefore, {
+				"columnKeyB": oColB
+			});
+			deepEqual(oMapAfter, {
+				"columnKeyB": oColB,
+				"columnKeyC": oColC
+			});
+
+			// cleanup
+			oColumnHelper.destroy();
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.ui.comp.personalization.Util</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="content"></div>
+</body>
+</html>

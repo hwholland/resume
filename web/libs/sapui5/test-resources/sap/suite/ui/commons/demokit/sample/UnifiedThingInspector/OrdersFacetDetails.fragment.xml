@@ -1,0 +1,43 @@
+<core:FragmentDefinition
+	xmlns="sap.suite.ui.commons"
+	xmlns:m="sap.m"
+	xmlns:core="sap.ui.core">
+	<UnifiedThingGroup title="Internal Orders" description="4711, Marketing" design="TopIndent">
+		<content>
+			<m:Table threshold="2" inset="false" showUnread="true" scrollToLoad="true">
+				<m:columns>
+					<m:Column hAlign="Begin" width="25%"><m:header><m:Text text="Order Number"/></m:header></m:Column>
+					<m:Column hAlign="Begin" width="25%" demandPopin="true" minScreenWidth="Tablet"><m:header><m:Text text="Description"/></m:header></m:Column>
+					<m:Column hAlign="Begin" width="25%" demandPopin="true"><m:header><m:Text text="Order Type"/></m:header></m:Column>
+					<m:Column hAlign="Begin" demandPopin="true"><m:header><m:Text text="System Status"/></m:header></m:Column>
+				</m:columns>
+				<m:items>
+					<m:ColumnListItem type="Navigation" press="pressOrdersDetails" unread="false">
+						<m:Link text="23000"/>
+						<m:Text text="CeBit Demo"/>
+						<m:Text text="040 Event"/>
+						<m:Text text="Planned"/>
+					</m:ColumnListItem>
+					<m:ColumnListItem type="Navigation" press="pressOrdersDetails" unread="false">
+						<m:Link text="23120"/>
+						<m:Text text="Order 2"/>
+						<m:Text text="040 Event"/>
+						<m:Text text="Released"/>
+					</m:ColumnListItem>
+					<m:ColumnListItem type="Navigation" press="pressOrdersDetails" unread="false">
+						<m:Link text="23230"/>
+						<m:Text text="Order 3"/>
+						<m:Text text="040 Event"/>
+						<m:Text text="Released"/>
+					</m:ColumnListItem>
+					<m:ColumnListItem type="Navigation" press="pressOrdersDetails" unread="false">
+						<m:Link text="21000"/>
+						<m:Text text="Order 4"/>
+						<m:Text text="040 Event"/>
+						<m:Text text="Released"/>
+					</m:ColumnListItem>
+				</m:items>
+			</m:Table>
+		</content>
+	</UnifiedThingGroup>
+</core:FragmentDefinition>

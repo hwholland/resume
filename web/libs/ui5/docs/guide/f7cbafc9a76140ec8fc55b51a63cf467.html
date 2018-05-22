@@ -1,0 +1,89 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="A minimalistic index.html file is needed to test the project configuration. This file contains the OpenUI5 bootstrap and an sap.m.Text control that displays the text &#34;OpenUI5 is loaded successfully!&#34;."/>
+<meta name="description" content="A minimalistic index.html file is needed to test the project configuration. This file contains the OpenUI5 bootstrap and an sap.m.Text control that displays the text &#34;OpenUI5 is loaded successfully!&#34;."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=16687070178287156"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=16687070178287156"/>
+<title>Create an index.html File</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiof7cbafc9a76140ec8fc55b51a63cf467">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Create an index.html File</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">A minimalistic <span class="ph filepath">index.html</span> file is needed to test the project
+		configuration. This file contains the <span class="ph"><span class="ph pname">OpenUI5</span></span> bootstrap and an
+			<samp class="ph codeph">sap.m.Text</samp> control that displays the text "<span class="ph emphasis emphasis"><span class="ph"><span class="ph pname">OpenUI5</span></span> is loaded
+			successfully!</span>".</p>
+
+		<div class="p">
+			<ol class="ol" id="loiof7cbafc9a76140ec8fc55b51a63cf467__ol_dpd_nq3_zs">
+				<li class="li">Choose the <span class="ph uicontrol">New Folder</span> icon in the header toolbar and enter
+						<kbd class="ph userinput">src</kbd> as the folder name.</li>
+
+				<li class="li">Select the newly created folder and create a new <span class="ph filepath">index.html</span> file inside
+					it by choosing the <span class="ph uicontrol">New File</span> icon.</li>
+
+				<li class="li">Paste the following code in the newly created <span class="ph filepath">index.html</span> file and
+					select <span class="ph uicontrol">Save</span>:<div class="p">
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;title&gt;SAPUI5 Walkthrough&lt;/title&gt;
+		&lt;script
+			id="sap-ui-bootstrap"
+			src="/resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_belize"
+			data-sap-ui-modules="sap.m.library"
+			data-sap-ui-compatVersion="edge"
+			data-sap-ui-preload="async" &gt;
+		&lt;/script&gt;
+		&lt;script&gt;
+			sap.ui.getCore().attachInit(function () {
+				new sap.m.Text({
+					text : "<span class="ph"><span class="ph pname">OpenUI5</span></span> is loaded successfully!"
+				}).placeAt("content");
+			});
+		&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body class="sapUiBody" id="content"&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+
+						<div class="note caution"><span class="cautiontitle">Caution</span> 
+							<p class="p">Adapt the path where the resources are located (<samp class="ph codeph">src="/resources/sap-ui-core.js"</samp>) according to your installation.
+								For <span class="ph pname">OpenUI5</span> you can use
+									<samp class="ph codeph">src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"</samp>. 
+							</p>
+
+							<p class="p">You can use this reference to the latest stable version of <span class="ph"><span class="ph pname">OpenUI5</span></span>
+								for the tutorial or for testing purposes, but never use this for productive use. In an actual app, you always have to specify an
+									<span class="ph"><span class="ph pname">OpenUI5</span></span> version explicitly.</p>
+
+							<p class="p">For more information, see <a class="xref" href="2d3eb2f322ea4a82983c1c62a33ec4ae.html" title="OpenUI5 can either be loaded locally with a relative path from a Web server or externally from a Content Delivery Network (CDN).">Variant for Bootstrapping from Content Delivery Network</a>. </p>
+
+						</div>
+
+					</div>
+</li>
+
+			</ol>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The following guidelines help you properly label your controls in order to have good accessibility."/>
+<meta name="description" content="The following guidelines help you properly label your controls in order to have good accessibility."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4849170780288218"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4849170780288218"/>
+<title>Labeling and Tooltips</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio329a029f39e249a1bf89e3ffc006c8e1">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Labeling and Tooltips</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The following guidelines help you properly label your controls in order to have good
+		accessibility.</p>
+
+		
+<div class="table-wrapper tablenoborder"><table summary="" id="loio329a029f39e249a1bf89e3ffc006c8e1__table_vzj_4r3_5s" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Rules and Guidelines for Labeling and Tooltips</span></caption>
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+				
+				
+				<thead class="thead" align="left">
+					<tr class="row">
+						<th class="entry" valign="top" width="50%" id="d2193832e31">
+							<p class="p">Rules and Guidelines</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="50%" id="d2193832e37">
+							<p class="p">Examples</p>
+
+						</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody class="tbody">
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d2193832e31 ">
+							<p class="p">Non-decorative
+									<samp class="ph codeph">sap.m.Image</samp>/<samp class="ph codeph">sap.ui.core.Icon</samp>
+								should provide a meaningful alternative description in the
+									<samp class="ph codeph">alt</samp> property.</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d2193832e37 ">
+							<div class="note sap-example example"><span class="exampletitle">Example</span> 
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Image id="image_not_decorative" src="IMAGE_PATH" alt="This is an image showing an elephant" decorative=false&gt;</pre></div>
+
+							</div>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d2193832e31 ">Interactive
+								<samp class="ph codeph">sap.m.Image</samp>/<samp class="ph codeph">sap.ui.core.Icon</samp> (that
+							has a press handler) should not be decorative.</td>
+
+						<td class="entry" valign="top" width="50%" headers="d2193832e37 ">
+							<div class="note sap-example example"><span class="exampletitle">Example</span> 
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Image src="IMAGE_PATH" alt="This is an image with a press handler" decorative=false press=onImagePress&gt;</pre></div>
+
+							</div>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d2193832e31 ">
+							<p class="p">Icon-only <samp class="ph codeph">sap.m.Button</samp> should have a tooltip.</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d2193832e37 ">
+							<div class="note sap-example example"><span class="exampletitle">Example</span> 
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Button icon="sap-icon://action" press="onPress" alt="An action button" ariaLabelledBy="actionButtonLabel"/&gt;</pre></div>
+
+							</div>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d2193832e31 ">
+							<p class="p">Labels should <span class="ph emphasis emphasis">not</span> have a tooltip.</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d2193832e37 "> </td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d2193832e31 ">
+							<p class="p">Input elements should have labels.</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d2193832e37 "> </td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d2193832e31 ">
+							<p class="p">Button that has a text, should <span class="ph emphasis emphasis">not</span> have a
+								tooltip.</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d2193832e37 ">
+							<div class="note sap-example example"><span class="exampletitle">Example</span> 
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Button text="Default" press="onPress" /&gt;</pre></div>
+
+							</div>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d2193832e31 ">
+							<p class="p"><samp class="ph codeph">Aria-labelledby</samp> and
+									<samp class="ph codeph">aria-describedby</samp> associations should point to
+								existing DOM elements.</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d2193832e37 ">
+							<div class="note sap-example example"><span class="exampletitle">Example</span> 
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"> &lt;Page title="Page"&gt;
+  &lt;content&gt;   
+&lt;Button text="Home" ariaLabelledBy="invisibleId"/&gt;   
+&lt;core:InvisibleText id="invisibleId" text="I am a hidden label"/&gt;  
+&lt;/content&gt; 
+&lt;/Page&gt;
+</pre></div>
+
+							</div>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d2193832e31 ">
+							<p class="p">Labels should be connected with the labelled elements via
+									<samp class="ph codeph">labelfor</samp>.</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d2193832e37 ">
+							<div class="note sap-example example"><span class="exampletitle">Example</span> 
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Label text="Name" labelFor="I1"&gt; 
+&lt;Input id="I1"&gt;
+</pre></div>
+
+							</div>
+
+						</td>
+
+					</tr>
+
+				</tbody>
+
+			</table>
+</div>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">If you want to enlarge the size of the standard tooltips, you need to change the
+				system font size. Tooltips are rendered by the browser using native window API and
+				thus their size cannot be influenced by the <span class="ph"><span class="ph pname">OpenUI5</span></span> framework.</p>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

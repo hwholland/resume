@@ -1,0 +1,124 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The sap.f.FlexibleColumnLayout contains 3 instances of sap.m.NavContainer – one for each column."/>
+<meta name="description" content="The sap.f.FlexibleColumnLayout contains 3 instances of sap.m.NavContainer – one for each column."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8102145041562777"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8102145041562777"/>
+<title>Control Structure</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioa254991b7bb040059a95b6a7f551ee51">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Control Structure</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">sap.f.FlexibleColumnLayout</samp> contains 3 instances of
+			<samp class="ph codeph">sap.m.NavContainer</samp>  – one for each column.</p>
+
+		<p class="p">It is logically similar to <samp class="ph codeph">sap.m.SplitContainer</samp>, however, there are two main
+			differences:</p>
+
+		<ul class="ul" id="loioa254991b7bb040059a95b6a7f551ee51__ul_y3x_t3q_5y">
+			<li class="li">Displays up to 3 columns side by side (as opposed to 2 columns)</li>
+
+			<li class="li">The width of the columns is not fixed, but flexible (determined by the
+					<samp class="ph codeph">layout</samp> property)</li>
+
+		</ul>
+
+		<p class="p">The following table respresents how the <samp class="ph codeph">FlexibleColumnLayout</samp> roughly
+			relates to the <samp class="ph codeph">NavContainer</samp> and <samp class="ph codeph">SplitContainer</samp>
+			controls.</p>
+
+		<div class="table-wrapper"><table summary="" id="loioa254991b7bb040059a95b6a7f551ee51__simpletable_n35_jvq_5y" border="1" class="simpletable"><tr class="sthead">
+				<th valign="bottom" align="left" id="d12556082e56" class="stentry" width="33.333333333333336%">
+					<p class="p">Control</p>
+
+				</th>
+
+				<th valign="bottom" align="left" id="d12556082e62" class="stentry" width="33.333333333333336%">
+					<p class="p">API</p>
+
+				</th>
+
+				<th valign="bottom" align="left" id="d12556082e68" class="stentry" width="33.333333333333336%">
+					<p class="p">Number of Pages Displayed</p>
+
+				</th>
+
+			</tr>
+<tr class="strow">
+				<td valign="top" headers="d12556082e56" class="stentry">
+					<p class="p"><samp class="ph codeph">sap.m.NavContainer</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d12556082e62" class="stentry">
+					<p class="p"><samp class="ph codeph">pages</samp> (aggregation)</p>
+
+				</td>
+
+				<td valign="top" headers="d12556082e68" class="stentry">
+					<p class="p">1 page at a time</p>
+
+				</td>
+
+			</tr>
+<tr class="strow">
+				<td valign="top" headers="d12556082e56" class="stentry">
+					<p class="p"><samp class="ph codeph">sap.m.SplitContainer</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d12556082e62" class="stentry">
+					<p class="p"><samp class="ph codeph">masterPages</samp> (aggregation)</p>
+
+					<p class="p"><samp class="ph codeph">detailPages</samp> (aggregation)</p>
+
+				</td>
+
+				<td valign="top" headers="d12556082e68" class="stentry">
+					<p class="p">Up to 2 pages at a time (2 instances of <samp class="ph codeph">NavContainer</samp>)</p>
+
+				</td>
+
+			</tr>
+<tr class="strow">
+				<td valign="top" headers="d12556082e56" class="stentry">
+					<p class="p"><samp class="ph codeph">sap.f.FlexibleColumnLayout</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d12556082e62" class="stentry">
+					<p class="p"><samp class="ph codeph">beginColumnPages</samp> (aggregation)</p>
+
+					<p class="p"><samp class="ph codeph">midColumnPages</samp> (aggregation)</p>
+
+					<p class="p"><samp class="ph codeph">endColumnPages</samp> (aggregation)</p>
+
+					<p class="p"><samp class="ph codeph">layout</samp> (property of type <samp class="ph codeph">sap.f.LayoutType</samp>,
+						determining the relative widths of the 3 <samp class="ph codeph">NavContainers</samp>)</p>
+
+				</td>
+
+				<td valign="top" headers="d12556082e68" class="stentry">
+					<p class="p">Up to 3 pages at a time (3 instances of <samp class="ph codeph">NavContainer</samp>)</p>
+
+				</td>
+
+			</tr>
+</table></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

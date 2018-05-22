@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for
+	sap.ui.comp.personalization.DimeasureController</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.ui.comp, sap.ui.table, sap.ui.commons">
+	
+</script>
+
+<link rel="stylesheet"
+	href="../../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+<!-- use the sinon faketimers for this test -->
+<script type="text/javascript">
+	sinon.config.useFakeTimers = true;
+</script>
+
+<script type="text/javascript">
+	/*globals QUnit, sinon*/
+
+	if (!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+	}
+	
+	(function(QUnit, sinon) {
+		jQuery.sap.require("sap.ui.comp.personalization.Controller");
+		jQuery.sap.require("sap.ui.comp.personalization.DimeasureController");
+		jQuery.sap.require("sap.m.ColumnListItem");
+		jQuery.sap.require("sap.m.P13nColumnsItem");
+		jQuery.sap.require("sap.chart.Chart");
+
+		QUnit.module("Properties", {
+			beforeEach: function() {
+			},
+			afterEach: function() {
+			}
+		});
+
+		QUnit.test("Shall be instantiable to check that DimeasureController exist", function(assert) {
+			ok(new sap.ui.comp.personalization.DimeasureController());
+		});
+
+		QUnit.test("_isSemanticEqual", function(assert) {
+			// system under test
+			var oDimeasureController = new sap.ui.comp.personalization.DimeasureController();
+			// arrange
+
+			// act			 
+
+			// assertions
+			assert.strictEqual(oDimeasureController._isSemanticEqual({
+				dimeasure: {
+					dimeasureItems: [
+						{
+							columnKey: "A"
+						}, {
+							columnKey: "B"
+						}
+					]
+				}
+			}, {
+				dimeasure: {
+					dimeasureItems: [
+						{
+							columnKey: "A"
+						}
+					]
+				}
+			}), false);
+			assert.strictEqual(oDimeasureController._isSemanticEqual({
+				dimeasure: {
+					dimeasureItems: [
+						{
+							columnKey: "A",
+							index: 1
+						}, {
+							columnKey: "B",
+							index: 0
+						}
+					]
+				}
+			}, {
+				dimeasure: {
+					dimeasureItems: [
+						{
+							columnKey: "B",
+							index: 0
+						}, {
+							columnKey: "A",
+							index: 1
+						}
+					]
+				}
+			}), true);
+			assert.strictEqual(oDimeasureController._isSemanticEqual({
+				dimeasure: {
+					dimeasureItems: [
+						{
+							columnKey: "A",
+							index: 0
+						}
+					]
+				}
+			}, {
+				dimeasure: {
+					dimeasureItems: [
+						{
+							columnKey: "A"
+						}
+					]
+				}
+			}), false);
+			assert.strictEqual(oDimeasureController._isSemanticEqual({
+				dimeasure: {
+					chartTypeKey: "a",
+					dimeasureItems: []
+				}
+			}, {
+				dimeasure: {
+					dimeasureItems: []
+				}
+			}), false);
+			assert.strictEqual(oDimeasureController._isSemanticEqual({
+				dimeasure: {
+					chartTypeKey: "a",
+					dimeasureItems: []
+				}
+			}, {
+				dimeasure: {
+					dimeasureItems: [],
+					chartTypeKey: "a"
+				}
+			}), true);
+		});
+
+		test("SetChartType", function() {
+			// system under test
+			var oDimeasureController = new sap.ui.comp.personalization.DimeasureController();
+
+			// arrange
+			var oChart;
+			var oModel = new sap.ui.model.json.JSONModel({
+				persistentData: {
+					dimeasure: {
+						chartTypeKey: "",
+						dimeasureItems: []
+					}
+				}
+			});
+			oDimeasureController.setModel(oModel, "$sapuicomppersonalizationBaseController");
+			oDimeasureController.setTable(new sap.ui.comp.personalization.ChartWrapper({
+				chart: oChart = new sap.chart.Chart
+			}));
+
+			// act			
+			oDimeasureController.getModel("$sapuicomppersonalizationBaseController").setData({
+				persistentData: {
+					dimeasure: {
+						chartTypeKey: "oldChartType",
+						dimeasureItems: []
+					}
+				}
+			});
+			oChart.setChartType("newChartType");
+
+			// assertions
+			equal(oDimeasureController.getModel("$sapuicomppersonalizationBaseController").getData().persistentData.dimeasure.chartTypeKey, "newChartType");
+
+			// cleanup			
+			oDimeasureController.destroy();
+			oChart.destroy();
+			oModel.destroy();
+		});
+
+	}(QUnit, sinon));
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.ui.comp.personalization.DimeasureController</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="content"></div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=29346583641728674"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=29346583641728674"/>
+<title>Aggregation</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiod4e69addc9ee4a6088441840eb0af509">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Aggregation</h1>
+
+	
+	<div class="body"><p class="shortdesc"/>
+
+		<p class="p">This control is defined by the <samp class="ph codeph">swipeContent</samp> aggregation of the list or table.
+      You can add any control as <samp class="ph codeph">swipeContent</samp>, but keep in mind that your content
+      cannot be higher than a list item. See the following examples: </p>
+
+		<ul class="ul" id="loiod4e69addc9ee4a6088441840eb0af509__ul_kcr_tyn_2j">
+			<li class="li">
+				<p class="p">Button <samp class="ph codeph">swipeContent</samp></p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+&lt;List
+    headerText="Products"
+    items="{/ProductCollection}" &gt;
+    &lt;StandardListItem
+      title="{Name}"
+      description="{ProductId}"
+      icon="{ProductPicUrl}" 
+      iconDensityAware="false"
+      iconInset="false" /&gt;
+    <span class="ph emphasis emphasis">&lt;swipeContent&gt;
+      &lt;Button
+        text="Delete Item"
+        type="Reject"
+        press="handleReject" /&gt;
+    &lt;/swipeContent&gt;</span>
+  &lt;/List&gt;
+ </pre></div>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Control combination as <samp class="ph codeph">swipeContent</samp></p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+new sap.m.List({
+    swipeContent : new sap.m.HBox({
+        items : [
+      &lt;List
+    headerText="Products"
+    items="{/ProductCollection}" &gt;
+    &lt;StandardListItem
+      title="{Name}"
+      description="{ProductId}"
+      icon="{ProductPicUrl}" 
+      iconDensityAware="false"
+      iconInset="false" /&gt;
+    <span class="ph emphasis emphasis">&lt;swipeContent&gt;
+      &lt;Button
+        text="Delete Item"
+        type="Reject"
+        press="handleReject" /&gt;
+    &lt;/swipeContent&gt;</span>
+  &lt;/List&gt;
+</pre></div>
+
+			</li>
+
+		</ul>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

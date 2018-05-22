@@ -1,0 +1,85 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m" controllerName="sap.ushell.demo.AppNavSample.view.Detail"
+    xmlns:html="http://www.w3.org/1999/xhtml">
+
+    <Page title="Detail">
+        <content>
+            <VBox>
+                <HBox>
+                    <Label text="Current user:" />
+                    <Text text="{UserInfo>/userId}" />
+                </HBox>
+                <List headerText="Application Startup Parameters" noDataText="No startup parameters passed"
+                    items="{path: 'startupParameters>/parameters'}">
+                    <DisplayListItem label="{startupParameters>key}"
+                        value="{startupParameters>value}" />
+                </List>
+                <Label text="AppState Key (if present)" labelFor="AppStateKey" />
+                <Input type="Text" enabled="false" id="AppStateKey"
+                    value="{AppState>/appstate/appStateKey}" />
+                <List headerText="App State Parameters" noDataText="No appstate parameters"
+                    items="{path: 'AppState>/appstate/parameters'}">
+                    <InputListItem label="{AppState>name}" tooltip="{AppState>name}">
+                        <Input id="UserDefaultValue" value="{AppState>value}" type="Text"
+                            enabled="false" />
+                    </InputListItem>
+                </List>
+                <Label text="Received AppState (JSON.stringified)" />
+                <TextArea cols="90" rows="3" enabled="false" id="fas2"
+                    value="{AppState>/appstate/stringifiedAppstate}" />
+                <Link href="{/DefaultApp_display_href}" text="cross app link (Default App)"
+                    tooltip="Back to Fiori Sandbox Default Application (note href is generated!)"></Link>
+                <Link href="{/AppNavSample_display_args_href}" text="our app other startup!"
+                    tooltip="Same application, differen}t startup parameter ( new date), this triggers and application reload! (note href is generated!)"></Link>
+                <Link href="{/AppNavSample_urlparamescaping_href}"
+                    text="our app weird parameter name (encoding of parameters)!"
+                    tooltip="Same application, different startup parameter (/UI2/PAR=...), this triggers and application reload! (note href is generated!)"></Link>
+                <Link href="{/AppNavSample_urlparamescaping2_href}"
+                    text="our app weird parameter name (encoding of parameters 2x)!"
+                    tooltip="Same application, different startup parameter (/UI2/PAR=...&amp;/UI2/ZPAR=XXX ), this triggers and application reload! (note href is generated!)"></Link>
+                <Link href="{/AppNavSample_toourupWithView1AsStartup}"
+                    text="our app with explicit View Selection via Startup parameter! (View1 is selected)!"
+                    tooltip="Same application, explicit View selection (View=View1) this triggers an application reload"></Link>
+                <Link href="{/AppNavSample_longurl}" text="our app long URL parameters (URL Shortening)"
+                    tooltip="Same application, different startup parameter with url shortening, trigger app reload"></Link>
+                <Link href="{/toWdaIntentNavigationTest}" text="wda with appstate"
+                    tooltip="WDA navigation with appstate"></Link>
+                <Link href="{/toWDANavTarget_display}" text="other wda with appstate"
+                    tooltip="#WDANavTarget-display with appstate and url shortening"></Link>
+                <Link href="{/toWDANavTarget_displayCompressed}" text="wda with appstate, compacted parameters"
+                    tooltip="#WDANavTarget-display with appstate and url shortening"></Link>
+                <Link href="{/toNonExistentApp}" text="non existent app -&gt; error dialog"
+                    tooltip="Application does not exists"></Link>
+                <Link href="{/AppNavSample_crashing}" text="our app, crash on startup"
+                    tooltip="Same application, different parameter CRASHME triggers exception in startup"></Link>
+                <Link href="{/toView1_href}" text="to View1" tooltip="to View2 (href generated!)"></Link>
+                <Link href="{/toView2_href}" text="to View2" tooltip="to View2 (href generated!)"></Link>
+                <Link href="{/toView3_href}" text="to View3" tooltip="to View3 (href generated!)"></Link>
+                <Link href="{/toHome}" text="to Home" tooltip="to home (&quot;#&quot;)"></Link>
+                <Link href="{/toShellHome}"
+                    text="to Shell-home (bad way, not recommended, only for testing!)"
+                    tooltip="to Shell-home"></Link>
+                <Link href="{/anIsUrlSupportedUrl1}" text="a supported URL"
+                    tooltip="a supported URL (FLP assigned to user)" enabled="{/anIsUrlSupportedUrl1Enabled}"></Link>
+                <Link href="{/anIsUrlSupportedUrl2}"
+                    text="a not supported URL (intent Action-notexisting not configured for user)"
+                    tooltip="a not supported URL" enabled="{/anIsUrlSupportedUrl2Enabled}"></Link>
+                <Link href="{/anIsUrlSupportedUrl3}" text="a supported (foreign) URL"
+                    tooltip="a supported (foreign) URL" enabled="{/anIsUrlSupportedUrl3Enabled}"></Link>
+                <Link href="{/anIsUrlSupportedUrl4}" text="a supported URL (weird hash)"
+                    tooltip="a weird hash, (supported!)" enabled="{/anIsUrlSupportedUrl4Enabled}"></Link>
+                <Link href="{/AppNavSample_urlWrongEscaping}" text="link to some app, wrong escaped"
+                    tooltip="result of getSemanticObject Link direclty in link, flawed usage"></Link>
+                <Link href="{/AppNavSample_urlCorrectEscaping}" text="link to some app, correct escaped"
+                    tooltip="result of getSemanticObjectLink transformed via hrefToExternal , correct pattern"></Link>
+                <Link href="{/appNavSample2WithInnerRoute}" text="link to another app with an inner-app route (only for testing, do not copy this pattern!)"
+                    tooltip="for testing that the own component's router is stopped before the new component is initialized"></Link>
+                <Button text="toView1" press="handleBtn1Press"></Button>
+                <Button text="toOurApp new Shell Hash via navigateTo" press="handleBtn2Press"></Button>
+                <Button text="toOurApp long url!" press="handleBtnLongUrlPress"></Button>
+                <Button text="Cross Application Navigation 'Back'" press="handleBtnBackPress"></Button>
+                <Button text="Cross Application Navigation '#'" press="handleBtnHomePress"></Button>
+            </VBox>
+        </content>
+    </Page>
+</core:View>

@@ -1,0 +1,111 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Modules do not only require and use functionality from other modules, they also expose their own functionality to the outside. In asynchronous module definition (AMD) syntax, there are several ways to expose such functionality."/>
+<meta name="description" content="Modules do not only require and use functionality from other modules, they also expose their own functionality to the outside. In asynchronous module definition (AMD) syntax, there are several ways to expose such functionality."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7075889156575969"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7075889156575969"/>
+<title>Creating Control and Class Modules</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc78c07c094e04ccfaab659378a1707c7">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Creating Control and Class Modules</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Modules do not only require and use functionality from other modules, they also expose
+		their own functionality to the outside. In asynchronous module definition (AMD) syntax,
+		there are several ways to expose such functionality.</p>
+
+		<p class="p"> However, <span class="ph"><span class="ph pname">SAPUI5</span></span> only
+			supports the "module return value".</p>
+
+		<div class="p">If you want to export the "module value" of an AMD module under a global name, you have
+			two options:<ul class="ul" id="loioc78c07c094e04ccfaab659378a1707c7__ul_sqy_w32_2z">
+				<li class="li">You rely on the <span class="ph"><span class="ph pname">SAPUI5</span></span> methods that
+					already do the exposure as a side effect, such as:<ul class="ul" id="loioc78c07c094e04ccfaab659378a1707c7__ul_esf_z32_2z">
+						<li class="li">
+							<p class="p">Classes created by the <samp class="ph codeph">extend</samp> method</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Libraries that call <samp class="ph codeph">initLibrary()</samp> in their
+									<samp class="ph codeph">library.js</samp> module</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Renderers that are created with
+									<samp class="ph codeph">sap.ui.core.Renderer.extend(“….”)</samp></p>
+
+						</li>
+
+					</ul>
+</li>
+
+				<li class="li">
+					<p class="p">You set the fourth parameter <samp class="ph codeph">bExport of sap.ui.define(sModuleName, aDependencies, vFactory, bExport)</samp> to <samp class="ph codeph">true</samp>.
+						This will expose the module value under the global name that is derived from
+						the module name.</p>
+
+					<p class="p">The global JavaScript namespace is based on a "slash to dot replacement".</p>
+
+					<div class="note note"><span class="notetitle">Note</span> 
+						<p class="p">The resulting namespace might not have the expected result if the AMD
+							module name contains dots!</p>
+
+					</div>
+
+				</li>
+
+			</ul>
+</div>
+
+		<p class="p">In control and class modules, you should not use global variables at all. When you derive
+			a custom control from an existing superclass via the the <samp class="ph codeph">extend</samp> method,
+			the resulting subclass is returned.</p>
+
+		<p class="p">You can store the return value of the extend function in a local variable, make changes
+			to the prototype and then return this variable as the modules return value.</p>
+
+		<p class="p">JSDoc for the class should use the <samp class="ph codeph">@alias</samp> tag to make sure that the
+			variable is known under the global name in the generated JSDoc.</p>
+
+		<p class="p">The <samp class="ph codeph">extend</samp> function makes sure that the respective namespace is
+			created:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define(["sap/ui/base/Object", "sap/ui/model/json/JSONModel"], function (BaseObject, JSONModel) {
+  
+    var Foo = BaseObject.extend("foo.bar.MyClass", /** @lends foo.bar.MyClass */ {
+  
+      constructor: function(sId, mProperties) {
+        this.mId = sId || Utils.createGUID();
+      }
+    });
+ 
+    Foo.prototype.ownMethod = function (a) {
+        return a * 2;
+    };
+  
+    // return the module value, in this example a class
+    return Foo;
+});</pre></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="f6fba4c6e1cb49c7b355319ac9c8d1cd.html" title="Full example of a class definition, including JSDoc">Example for Defining a Class</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html><html xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		<title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.ui.core.LabelEnablement</title>
+		<link rel=stylesheet href="../default.css" type="text/css">
+		
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+				
+				
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+				
+				
+			
+				
+				
+				<link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+				
+			
+		
+	</head>
+
+	<body>
+
+
+		<div id="main">
+			<div id="content">
+
+					<h1 class="classTitle static protected">
+					
+					Namespace sap.ui.core.LabelEnablement
+					</h1>
+					
+					
+					
+					
+					<hr/>
+
+					
+					
+					<div class="full-description">
+						<p>Helper functionality for enhancement of a Label with common label functionality.</p>
+						
+						
+						
+						
+						
+						
+					</div>
+					
+		
+					
+					
+					
+					
+					
+		
+					
+
+					
+						<div class="summary section">
+							<div class="sectionTitle">Method Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod static protected">
+									<b class="icon protected" title="This function should be called on a label control to enrich it's functionality."><a href="../symbols/sap.ui.core.LabelEnablement.html#.enrich">sap.ui.core.LabelEnablement.enrich</a></b><span class='signature'>(<span title="(sap.ui.core.Control) the label control which should be enriched with further label functionality.">oControl</span>)</span>
+									<span class='description'>This function should be called on a label control to enrich it's functionality.</span>
+								</div>
+							
+								<div class="sectionItem classMethod static">
+									<b class="icon" title="Returns an array of ids of the labels referencing the given element"><a href="../symbols/sap.ui.core.LabelEnablement.html#.getReferencingLabels">sap.ui.core.LabelEnablement.getReferencingLabels</a></b><span class='signature'>(<span title="(sap.ui.core.Element) the element whose accessibility state should be rendered">oElement</span>)</span>
+									<span class='description'>Returns an array of ids of the labels referencing the given element</span>
+								</div>
+							
+								<div class="sectionItem classMethod static protected">
+									<b class="icon protected" title="Helper function for the label control to render the html 'for' attribute."><a href="../symbols/sap.ui.core.LabelEnablement.html#.writeLabelForAttribute">sap.ui.core.LabelEnablement.writeLabelForAttribute</a></b><span class='signature'>(<span title="(sap.ui.core.RenderManager) The RenderManager that can be used for writing to the render-output-buffer.">oRenderManager</span>, <span title="(sap.ui.core.Label) The label for which the 'for' html attribute should be written to the render-output-buffer.">oLabel</span>)</span>
+									<span class='description'>Helper function for the label control to render the html 'for' attribute.</span>
+								</div>
+							
+							</div>
+						</div>
+					
+		
+					
+		
+					
+		
+					
+					
+					
+						<div class="details section">
+							<div class="sectionTitle">
+								Method Detail
+							</div>
+							<div class="sectionItems">
+								
+									<div class='sectionItem classMethod static protected'>
+										<a name=".enrich"> </a>
+										<div class="itemTitle icon protected">
+											sap.ui.core.LabelEnablement.enrich<span class="signature">(<span title="(sap.ui.core.Control) the label control which should be enriched with further label functionality.">oControl</span>)</span>
+											
+										</div>
+										<div class="full-description">
+											This function should be called on a label control to enrich it's functionality.
+</p><p>
+<b>Usage:</b>
+The function can be called with a control prototype:
+<code>
+sap.ui.core.LabelEnablement.enrich(my.Label.prototype);
+</code>
+Or the function can be called on instance level in the init function of a label control:
+<code>
+my.Label.prototype.init: function(){
+   sap.ui.core.LabelEnablement.enrich(this);
+}
+</code>
+</p><p>
+<b>Preconditions:</b>
+The given control must implement the interface sap.ui.core.Label and have an association 'labelFor' with cardinality 0..1.
+This function extends existing API functions. Ensure not to override this extensions AFTER calling this function.
+</p><p>
+<b>What does this function do?</b>
+</p><p>
+A mechanismn is added that ensures that a bidirectional reference between the label and it's labeled control is established:
+The label references the labeled control via the html 'for' attribute (@see sap.ui.core.LabelEnablement#writeLabelForAttribute).
+If the labeled control supports the aria-labelledby attribute. A reference to the label is added automatically.
+</p><p>
+In addition an alternative to apply a for reference without influencing the labelFor association of the API is applied (e.g. used by Form).
+For this purpose the functions setAlternativeLabelFor and getLabelForRendering are added.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{<a href="../symbols/sap.ui.core.Control.html">sap.ui.core.Control</a>}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oControl</b>
+													</td>
+													<td class="methodItemDesc">
+												    the label control which should be enriched with further label functionality.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+											<div class="heading">Exceptions:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														 <b></b>
+													</td>
+													<td class="methodItemDesc">
+														Error if the given control cannot be enriched to violated preconditions (see above)
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod static'>
+										<a name=".getReferencingLabels"> </a>
+										<div class="itemTitle icon">
+											sap.ui.core.LabelEnablement.getReferencingLabels<span class="signature">(<span title="(sap.ui.core.Element) the element whose accessibility state should be rendered">oElement</span>)</span>
+											<span class="light" title="returns string[]">: string[]</span>
+										</div>
+										<div class="full-description">
+											Returns an array of ids of the labels referencing the given element
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{<a href="../symbols/sap.ui.core.Element.html">sap.ui.core.Element</a>}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oElement</b>
+													</td>
+													<td class="methodItemDesc">
+												    the element whose accessibility state should be rendered
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{string[]}</span> 
+													</td>
+													<td class="methodItemDesc">
+														an array of ids of the labels referencing the given element
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod static protected'>
+										<a name=".writeLabelForAttribute"> </a>
+										<div class="itemTitle icon protected">
+											sap.ui.core.LabelEnablement.writeLabelForAttribute<span class="signature">(<span title="(sap.ui.core.RenderManager) The RenderManager that can be used for writing to the render-output-buffer.">oRenderManager</span>, <span title="(sap.ui.core.Label) The label for which the 'for' html attribute should be written to the render-output-buffer.">oLabel</span>)</span>
+											
+										</div>
+										<div class="full-description">
+											Helper function for the label control to render the html 'for' attribute. This function should be called
+at the desired location in the renderer code of the label control.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{<a href="../symbols/sap.ui.core.RenderManager.html">sap.ui.core.RenderManager</a>}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oRenderManager</b>
+													</td>
+													<td class="methodItemDesc">
+												    The RenderManager that can be used for writing to the render-output-buffer.
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{<a href="../symbols/sap.ui.core.Label.html">sap.ui.core.Label</a>}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oLabel</b>
+													</td>
+													<td class="methodItemDesc">
+												    The label for which the 'for' html attribute should be written to the render-output-buffer.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+										
+									</div>
+								
+							</div>
+						</div>
+					
+
+
+
+		</div>
+	</div>
+
+				
+	</body>
+</html>

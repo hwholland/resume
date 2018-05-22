@@ -1,0 +1,881 @@
+<!DOCTYPE html><html xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		<title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.apf.ui.representations.representationInterface</title>
+		<link rel=stylesheet href="../default.css" type="text/css">
+		
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+				
+				
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+				
+				
+			
+				
+				
+				<link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+				
+			
+		
+	</head>
+
+	<body>
+
+
+		<div id="main">
+			<div id="content">
+
+					<h1 class="classTitle static">
+					
+					Class sap.apf.ui.representations.representationInterface
+					</h1>
+					
+					
+					
+					
+					<hr/>
+
+					
+					
+					<div class="full-description">
+						<p>This is not a runtime class, but it describes the interface that a representation (chart) has to implement for to interact with the APF.</p>
+						
+						
+							<p class="tagExperimental"><span class="title">Experimental API:</span><span class="desc">The complete interface is subject to ongoing work and not yet stable (as of Version 1.24.0).</span></p> 
+						
+						
+						
+						
+						
+					</div>
+					
+		
+					
+					
+					
+						<div class="summary section">
+							<div class="sectionTitle">Constructor Summary</div>
+							<div class="sectionItems">
+								<div class="sectionItem classConstructor static">
+									<div class="itemName">
+										<b class="icon" title="">new <a href="../symbols/sap.apf.ui.representations.representationInterface.html#constructor">sap.apf.ui.representations.representationInterface</a></b>
+										<span class='signature'>(<span title="(sap.apf.ui.representations.RepresentationInterfaceProxy) specific interface proxy for communication between the representation and APF.">dependencies</span>, <span title="(object) Configuration object that allows to define representation specific configuration values.">configuration</span>)</span>
+										<span class='description'></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					
+					
+					
+		
+					
+
+					
+						<div class="summary section">
+							<div class="sectionTitle">Method Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Called on representation by binding when a representation type is set."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#adoptSelection">adoptSelection</a></b><span class='signature'>(<span title="(object) Source representation implementing the representationInterface.">oSourceRepresentation</span>)</span>
+									<span class='description'>Called on representation by binding when a representation type is set.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="This method uses the serialization information from serialized data and sets the selection to representation based on mode and selection string returned."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#deserialize">deserialize</a></b><span class='signature'>(<span title="(object) object">oSerializationInformation</span>)</span>
+									<span class='description'>This method uses the serialization information from serialized data and sets the selection to representation based on mode and selection string returned.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns the alternate representation of current step (i.e."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#getAlternateRepresentation">getAlternateRepresentation</a></b><span class='signature'>()</span>
+									<span class='description'>Returns the alternate representation of current step (i.e.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns data for representation type"><a href="../symbols/sap.apf.ui.representations.representationInterface.html#getData">getData</a></b><span class='signature'>()</span>
+									<span class='description'>Returns data for representation type</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="This method has to be implemented so that binding can determine which method has to be used for the filter retrieval from a representations."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#getFilterMethodType">getFilterMethodType</a></b><span class='signature'>()</span>
+									<span class='description'>This method has to be implemented so that binding can determine which method has to be used for the filter retrieval from a representations.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="This method holds the logic to draw the content to be shown on main representation area."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#getMainContent">getMainContent</a></b><span class='signature'>()</span>
+									<span class='description'>This method holds the logic to draw the content to be shown on main representation area.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns meta data for representation type"><a href="../symbols/sap.apf.ui.representations.representationInterface.html#getMetaData">getMetaData</a></b><span class='signature'>()</span>
+									<span class='description'>Returns meta data for representation type</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="The method returns the constructor arguments which will be used to create toggle representation."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#getParameter">getParameter</a></b><span class='signature'>()</span>
+									<span class='description'>The method returns the constructor arguments which will be used to create toggle representation.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="This method holds the logic to draw the content to be printed."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#getPrintContent">getPrintContent</a></b><span class='signature'>()</span>
+									<span class='description'>This method holds the logic to draw the content to be printed.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Additionally to parameters being set in the request configuration and filter values that are derived from the path logic, a request can be enriched with additional options such as $top, $skip and $orderby."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#getRequestOptions">getRequestOptions</a></b><span class='signature'>()</span>
+									<span class='description'>Additionally to parameters being set in the request configuration and filter values that are derived from the path logic, a request can be enriched with additional options such as <b>$top</b>, <b>$skip</b> and <b>$orderby</b>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="This is the basic method with which the step can detect data selected in the chart."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#getSelectionAsArray">getSelectionAsArray</a></b><span class='signature'>()</span>
+									<span class='description'>This is the basic method with which the step can detect data selected in the chart.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="This method holds the logic to draw the content to be shown on thumbnail area."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#getThumbnailContent">getThumbnailContent</a></b><span class='signature'>()</span>
+									<span class='description'>This method holds the logic to draw the content to be shown on thumbnail area.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="This method holds the logic to draw the content to be shown as tooltip for a thumbnail."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#getTooltipContent">getTooltipContent</a></b><span class='signature'>()</span>
+									<span class='description'>This method holds the logic to draw the content to be shown as tooltip for a thumbnail.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="This method holds the logic to remove all selection from the chart."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#removeAllSelection">removeAllSelection</a></b><span class='signature'>()</span>
+									<span class='description'>This method holds the logic to remove all selection from the chart.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="This method returns the selection for serialization."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#serialize">serialize</a></b><span class='signature'>()</span>
+									<span class='description'>This method returns the selection for serialization.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="The binding sets the data (received from the request) that has to be visualized."><a href="../symbols/sap.apf.ui.representations.representationInterface.html#setData">setData</a></b><span class='signature'>(<span title="(sap.apf.core.Metadata) oMetadata holds meta information about the received data.">oMetadata</span>, <span title="(array) Data response from the request.">aDataResponse</span>)</span>
+									<span class='description'>The binding sets the data (received from the request) that has to be visualized.</span>
+								</div>
+							
+							</div>
+						</div>
+					
+		
+					
+						<div class="section details">
+							<div class="sectionTitle">
+								Constructor Detail
+							</div>
+							<div class="sectionItems">
+								<div class="sectionItem classItem itemName static">
+									<div class="details"><a name="constructor"> </a>
+										
+										<div class="icon">
+											new <b>sap.apf.ui.representations.representationInterface</b>(<span title="(sap.apf.ui.representations.RepresentationInterfaceProxy) specific interface proxy for communication between the representation and APF.">dependencies</span>, <span title="(object) Configuration object that allows to define representation specific configuration values.">configuration</span>)
+										</div>
+										
+										<div class="full-description">
+											
+										</div>
+										
+										
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{<a href="../symbols/sap.apf.ui.representations.RepresentationInterfaceProxy.html">sap.apf.ui.representations.RepresentationInterfaceProxy</a>}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>dependencies</b>
+													</td>
+													<td class="methodItemDesc">
+												    specific interface proxy for communication between the representation and APF.<br>
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>configuration</b>
+													</td>
+													<td class="methodItemDesc">
+												    Configuration object that allows to define representation specific configuration values.<br>Fixed interface property names:<ul><li><b>alternateRepresentationTypeId</b>: A reference to a representation type in analytical configuration<li><b>alternateRepresentationType</b>: A property dynamically added to the parameter object by APF core based on reference in alternateRepresentationTypeId and containingconfiguration values of the representation type ID referenced by alternateRepresentationTypeId.</ul>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										<!--
+										
+										-->
+										
+						
+									</div>
+								</div>
+							</div>
+						</div>
+					
+		
+					
+		
+					
+					
+					
+						<div class="details section">
+							<div class="sectionTitle">
+								Method Detail
+							</div>
+							<div class="sectionItems">
+								
+									<div class='sectionItem classMethod'>
+										<a name="adoptSelection"> </a>
+										<div class="itemTitle icon">
+											adoptSelection<span class="signature">(<span title="(object) Source representation implementing the representationInterface.">oSourceRepresentation</span>)</span>
+											
+										</div>
+										<div class="full-description">
+											Called on representation by binding when a representation type is set.Intention is to trigger transfer of selections that might exist on a representation (source) that is replaced by the "new" representation (target) to be set.Therefore the target representation receives a reference pointing to the source representation.In order to check whether selection transfer is possible the target representation initiates a negotiation process with the source representations (3-way-handshake).If a common method can be determined between target and source representation the selection will be exchanged.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oSourceRepresentation</b>
+													</td>
+													<td class="methodItemDesc">
+												    Source representation implementing the representationInterface.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="deserialize"> </a>
+										<div class="itemTitle icon">
+											deserialize<span class="signature">(<span title="(object) object">oSerializationInformation</span>)</span>
+											
+										</div>
+										<div class="full-description">
+											This method uses the serialization information from serialized data and sets the selection to representation based on mode and selection string returned.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oSerializationInformation</b>
+													</td>
+													<td class="methodItemDesc">
+												    
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getAlternateRepresentation"> </a>
+										<div class="itemTitle icon">
+											getAlternateRepresentation<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											Returns the alternate representation of current step (i.e. list representation for the charts)
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														oAlternateRepresentation
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getData"> </a>
+										<div class="itemTitle icon">
+											getData<span class="signature">()</span>
+											<span class="light" title="returns array">: array</span>
+										</div>
+										<div class="full-description">
+											Returns data for representation type
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{array}</span> 
+													</td>
+													<td class="methodItemDesc">
+														aDataResponse
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getFilterMethodType"> </a>
+										<div class="itemTitle icon">
+											getFilterMethodType<span class="signature">()</span>
+											<span class="light" title="returns sap.apf.constants.filterMethodTypes">: sap.apf.constants.filterMethodTypes</span>
+										</div>
+										<div class="full-description">
+											This method has to be implemented so that binding can determine which method has to be used for the filter retrieval from a representations.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{sap.apf.constants.filterMethodTypes}</span> 
+													</td>
+													<td class="methodItemDesc">
+														The filter method type the representation supports
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getMainContent"> </a>
+										<div class="itemTitle icon">
+											getMainContent<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											This method holds the logic to draw the content to be shown on main representation area.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														oUiObject The UI object that has to be shown in main representation area. Example: Line chart instance for a line chart representation.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getMetaData"> </a>
+										<div class="itemTitle icon">
+											getMetaData<span class="signature">()</span>
+											<span class="light" title="returns sap.apf.core.EntityTypeMetadata">: sap.apf.core.EntityTypeMetadata</span>
+										</div>
+										<div class="full-description">
+											Returns meta data for representation type
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{sap.apf.core.EntityTypeMetadata}</span> 
+													</td>
+													<td class="methodItemDesc">
+														metadata
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getParameter"> </a>
+										<div class="itemTitle icon">
+											getParameter<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											The method returns the constructor arguments which will be used to create toggle representation.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														oParameters
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getPrintContent"> </a>
+										<div class="itemTitle icon">
+											getPrintContent<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											This method holds the logic to draw the content to be printed.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														oUiObject The UI object that has to be printed. Example: Line chart instance for a line chart representation.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getRequestOptions"> </a>
+										<div class="itemTitle icon">
+											getRequestOptions<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											Additionally to parameters being set in the request configuration and filter values that are derived from the path logic,
+a request can be enriched with additional options such as <b>$top</b>, <b>$skip</b> and <b>$orderby</b>.<p>
+Dependent on the actual options a representation may require for a request, an object containing the correspondent properties may be returned by this method.
+<br>In case no additional options are required an empty object should be returned.<p>
+</p><p>
+The supported optional properties of the return object are:
+<ul><li><b>paging</b>: An object containing optional properties<ul><li><b>top</b> for OData system query option $top <br>A numeric value is expected<li><b>skip</b> for query string option $skip<br> A numeric value is expected
+<li><b>inlineCount</b> for OData system query option $inlineCount<br>A boolean value 'true' is expected if inline count is requested</ul>
+<li><b>orderby</b> for OData system query option $orderby: Values could be of type<ul>
+   <li><b>string</b> that holds a property name (in this case the default sort order 'ascending' is applied)
+ <li><b>object</b> with properties:<ul>
+   <li>'property' A string containing the property name is expected.
+   <li>'descending' A boolean value 'true' is expected, if descending sort order is required for the property. If omitted default sort order 'ascending' is applied.
+ </ul>
+ <li><b>array</b> holding objects with properties 'property' and 'descending' as described above.</ul>
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														Example:
+<pre class="javascript">
+{ paging : {
+		top : 10,
+		skip : 30,
+		inlineCount : true
+ },
+ orderby : [ 
+		{ property : "nameProperty1",
+		}, {
+		property : "nameProperty2",
+		descending : true
+		}
+ ]
+}
+</pre>
+See also <a href="http://www.odata.org/documentation/odata-version-2-0/uri-conventions/">http://www.odata.org/documentation/odata-version-2-0/uri-conventions/</a>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getSelectionAsArray"> </a>
+										<div class="itemTitle icon">
+											getSelectionAsArray<span class="signature">()</span>
+											<span class="light" title="returns number[]">: number[]</span>
+										</div>
+										<div class="full-description">
+											This is the basic method with which the step can detect data selected in the chart.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{number[]}</span> 
+													</td>
+													<td class="methodItemDesc">
+														An array with indices is returned.<br>E.g. if the first and the third line of the array aDataResponse have been selected,then aIndices = [0, 2]. Counting of indices start from 0.If all data has been selected, and aDataResponse.length == 4, then the array [0,1,2,3] is returned. In general [ 0 .. aDataResponse.length - 1]If no data has been selected at all, then [] is returned.In case of an empty selection, the value undefined has to be returned. An empty selection may occur, when selections in the previous step has been changed,so that the visual selection on the chart is now empty (empty rectangle).
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getThumbnailContent"> </a>
+										<div class="itemTitle icon">
+											getThumbnailContent<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											This method holds the logic to draw the content to be shown on thumbnail area.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														oUiObject The UI object that has to be shown in thumbnail area. Example: Line chart instance for a line chart representation.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getTooltipContent"> </a>
+										<div class="itemTitle icon">
+											getTooltipContent<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											This method holds the logic to draw the content to be shown as tooltip for a thumbnail.It will be shown inside a tooltip Popup when the thumbnail content overflows the thumbnail container area with a gradient effect to indicate that it is overflowing.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														oUiObject The UI object that has to be shown as tooltip for a thumbnail. Example: Detailed content of a form representation.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="removeAllSelection"> </a>
+										<div class="itemTitle icon">
+											removeAllSelection<span class="signature">()</span>
+											
+										</div>
+										<div class="full-description">
+											This method holds the logic to remove all selection from the chart. It also updates the step.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="serialize"> </a>
+										<div class="itemTitle icon">
+											serialize<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											This method returns the selection for serialization. This is required for the Persisting selection of current representation.It includes selection mode and selections.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														oSerializationInformation
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="setData"> </a>
+										<div class="itemTitle icon">
+											setData<span class="signature">(<span title="(sap.apf.core.Metadata) oMetadata holds meta information about the received data.">oMetadata</span>, <span title="(array) Data response from the request.">aDataResponse</span>)</span>
+											
+										</div>
+										<div class="full-description">
+											The binding sets the data (received from the request) that has to be visualized. The array aDataResponse is shared between all representationsof a step and the binding. When lines are moved, deleted or changed, you modify the visualization of the original data! When displaying the data, one can determine which recordis selected by aSelectedIndices.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{sap.apf.core.Metadata}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oMetadata</b>
+													</td>
+													<td class="methodItemDesc">
+												    oMetadata holds meta information about the received data.
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{array}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>aDataResponse</b>
+													</td>
+													<td class="methodItemDesc">
+												    Data response from the request.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+										
+									</div>
+								
+							</div>
+						</div>
+					
+
+
+
+		</div>
+	</div>
+
+				
+	</body>
+</html>

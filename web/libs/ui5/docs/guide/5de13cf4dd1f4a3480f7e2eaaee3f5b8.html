@@ -1,0 +1,130 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The sap.ui.model.odata.v4.ODataModel is the model implementation for consuming an OData V4 service."/>
+<meta name="description" content="The sap.ui.model.odata.v4.ODataModel is the model implementation for consuming an OData V4 service."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6794111309752283"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6794111309752283"/>
+<title>OData V4 Model</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio5de13cf4dd1f4a3480f7e2eaaee3f5b8">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">OData V4 Model</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">sap.ui.model.odata.v4.ODataModel</samp>
+		 is the model implementation for consuming an OData V4 service.</p>
+
+		<div class="note restriction"><span class="restrictiontitle">Restriction</span> 
+			<p class="p">Due to the limited feature scope of this version of the <span class="ph"><span class="ph pname">OpenUI5</span></span> OData V4 model,
+				check that all required features are in place before developing applications. Double
+				check the detailed documentation of the features, as certain parts of a feature may
+				be missing although you might expect these parts as given. While we aimed at being
+				compatible with existing controls, some controls might not work due to small
+				incompatibilities compared to sap.ui.model.odata.(v2.)ODataModel, or due to missing
+				features in the model (like tree binding). This also applies to SmartControls
+				(sap.ui.comp) and Fiori Elements which do not support the SAPUI5 OData V4 model in
+				general as well as to controls like TreeTable and AnalyticalTable which are not
+				supported in conjunction with the SAPUI5 OData V4 model. The interface for
+				applications has been changed for easier and more efficient use of the model.</p>
+
+			<p class="p">For a summary of these changes, see <a class="xref" href="abd4d7c7548d4c29ab8364d3904a6d74.html" title="This section outlines the main differences between the OData V2 and OData V4 models.">Changes Compared to OData V2 Model</a>.</p>
+
+		</div>
+
+		<div class="p">The OData V4 model supports the following: <ul class="ul" id="loio5de13cf4dd1f4a3480f7e2eaaee3f5b8__ul_ztz_twy_vv">
+				<li class="li">
+					<p class="p">Read access</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Updating properties of OData entities (in entity sets and contained entities) via
+						two-way-binding</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Deleting entities</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Operation (function and action) execution</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Grouping data requests in a batch request</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Server-side sorting and filtering </p>
+
+				</li>
+
+			</ul>
+<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">The OData V4 model documentation contains several code samples. <span class="ph">These
+						refer to the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.sample.odata.v4.SalesOrders/preview" alt="../../explored.html#/sample/sap.ui.core.sample.odata.v4.SalesOrders/preview" title="../../explored.html#/sample/sap.ui.core.sample.odata.v4.SalesOrders/preview">Sales Orders</a> sample in the Demo
+						Kit.</span></p>
+
+			</div>
+</div>
+
+	</div>
+
+	<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="9613f1f2d88747cab21896f7216afdac.html" title="One OData V4 model instance can only cover one OData service. This section describes the creation of a model instance in more detail.">Model Instantiation and Data Access</a></strong><br/>
+</div>
+<div><strong><a class="link" href="54e0ddf695af4a6c978472cecb01c64d.html" title="Bindings connect OpenUI5 view elements to model data, allowing changes in the model to be reflected in the view element and vice versa.">Bindings</a></strong><br/>
+</div>
+<div><strong><a class="link" href="1a010d3b92c34226a96f202ec27e9217.html" title="The OData V4 model supports certain events intended for applications, and others that are to be used for controls, as outlined in this section.">Binding Events</a></strong><br/>
+</div>
+<div><strong><a class="link" href="5338bd1f9afb45fb8b2af957c3530e8f.html" title="The OData V4 Model supports server side filtering on lists.">Filtering</a></strong><br/>
+</div>
+<div><strong><a class="link" href="d2ce3f51e5e34198b0c1a7f6ddd98def.html" title="The OData V4 model supports server side sorting on lists.">Sorting</a></strong><br/>
+</div>
+<div><strong><a class="link" href="ab267a6b958e46a28f3437154b2a1b2f.html" title="The OData V4 model supports the access to value list metadata and data.">Value Lists</a></strong><br/>
+</div>
+<div><strong><a class="link" href="b54f7895b7594c61a83fa7257fa9d13f.html" title="The OData V4 model supports OData operations (ActionImport, FunctionImport, bound Actions and bound Functions). Unbound parameters are limited to primitive values.">OData Operations</a></strong><br/>
+</div>
+<div><strong><a class="link" href="74142a38e3d4467c8d6a70b28764048f.html" title="OData V4 allows you to group multiple operations into a single HTTP request payload, as described in the official OData V4 specification Part 1, Batch Requests (see the link under Related Information for more details).">Batch Control</a></strong><br/>
+</div>
+<div><strong><a class="link" href="7f29fb3ce5964d8090038a9d3cdf5060.html" title="Each OData V4 model offers access via getMetaModel to a corresponding metadata model sap.ui.model.odata.v4.ODataMetaModel, which is read-only and offers access to OData V4 metadata in a streamlined JSON format (see links under Related Information for more details). Only one-time bindings are supported by this model because the metadata is immutable.">Meta Model for OData V4</a></strong><br/>
+</div>
+<div><strong><a class="link" href="5a0d286c5606424b8e0d663c87445733.html" title="The OData V4 model offers the features described below which influence performance.">Performance Aspects</a></strong><br/>
+</div>
+<div><strong><a class="link" href="1232241b99d7437ba3614698d53dfa4b.html" title="Certain methods derived from OpenUI5 model and binding superclasses are not supported in OData V4 model classes or have limited support.">Unsupported Superclass Methods and Events</a></strong><br/>
+</div>
+<div><strong><a class="link" href="abd4d7c7548d4c29ab8364d3904a6d74.html" title="This section outlines the main differences between the OData V2 and OData V4 models.">Changes Compared to OData V2 Model</a></strong><br/>
+</div>
+<div><strong><a class="link" href="fd715d97ebf842739697c9a0f276f0c0.html" title="The OData V4 model supports loading of additional annotation files.">Additional Annotation Files</a></strong><br/>
+</div>
+<div><strong><a class="link" href="c9723f8265f644af91c0ed941e114d46.html" title="The ODataListBinding#create method creates a new entity. Users can interact with a newly created entity even before it has been sent to the server.">Creating an Entity</a></strong><br/>
+</div>
+<div><strong><a class="link" href="2613ebc835764abd9aefd2e6fa8b7392.html" title="The Context.delete method deletes an entity on the server and updates the user interface accordingly.">Deleting an Entity</a></strong><br/>
+</div>
+<div><strong><a class="link" href="365bdbd737034334a38a6fef07345196.html" title="The OpenUI5 framework can consume OData V2 Services in a non-intrusive way as if working directly with OData V4.">Consuming OData V2 Services with the OData V4 Model</a></strong><br/>
+</div>
+</ul>
+
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="abd4d7c7548d4c29ab8364d3904a6d74.html" title="This section outlines the main differences between the OData V2 and OData V4 models.">Changes Compared to OData V2 Model</a></div>
+<div><a class="link" href="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.ui.model.odata.v4.ODataModel.html" alt="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.ui.model.odata.v4.ODataModel.html" title="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.ui.model.odata.v4.ODataModel.html">sap.ui.model.odata.v4.ODataModel</a></div>
+<div><a class="link" target="_blank" href="../../explored.html#/sample/sap.ui.core.sample.odata.v4.SalesOrders/preview" alt="../../explored.html#/sample/sap.ui.core.sample.odata.v4.SalesOrders/preview" title="../../explored.html#/sample/sap.ui.core.sample.odata.v4.SalesOrders/preview">Sample: Sales Orders</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

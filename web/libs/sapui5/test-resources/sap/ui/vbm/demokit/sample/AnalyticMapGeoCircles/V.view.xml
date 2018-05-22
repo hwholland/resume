@@ -1,0 +1,61 @@
+<mvc:View
+	controllerName="sap.ui.vbm.sample.AnalyticMapGeoCircles.C"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:vbm="sap.ui.vbm"
+   height="100%"
+   displayBlock="true">
+   <Page
+       showHeader = "false"
+       enableScrolling="false">
+		<vbm:AnalyticMap 
+		    id="vbi"
+		    width="100%"
+		    height="100%"
+		    regionClick="onRegionClick"
+			regionContextMenu="onRegionContextMenu"
+			regions ="{/regionProperties}">
+		    <vbm:regions>
+				<vbm:Region 	        
+				    code="{code}" 
+				    color="{color}"
+				    tooltip = "{tooltip}"/>
+			</vbm:regions>
+			<vbm:GeoCircles
+		        items="{/CirclesGeoDist}"
+			    click="onClickItem" 
+			    contextMenu="onContextMenuItem" >
+				<vbm:GeoCircle 
+				    position="{A}" 
+				    tooltip="{D}" 
+				    radius="{E}"
+				    color="{B}"
+				    colorBorder="{C}"
+				    click="onClickCircle" 
+				    contextMenu="onContextMenuCircle"/>
+			</vbm:GeoCircles>
+			<vbm:GeoCircles>
+				<vbm:GeoCircle 
+				    position="-10;0;0" 
+				    tooltip="This is a GeoCircle" 
+				    radius="1000000"
+				    color="RGBA(128,255,128,100)"
+				    colorBorder="RGBA(180,255,255,255)"
+				    click="onClickCircle" 
+				    contextMenu="onContextMenuCircle"/>
+			</vbm:GeoCircles>   
+		</vbm:AnalyticMap>
+		<footer>
+			<Toolbar>
+		        <ToolbarSpacer/>
+		        	<Button 
+				        id="ZoomButton"
+						icon="sap-icon://zoom-in"
+						tooltip="Zoom in to EU"
+						enabled="true"
+						press="onZoomIn" />
+	      </Toolbar>
+	    </footer>
+	 </Page>
+</mvc:View>

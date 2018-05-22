@@ -1,0 +1,1949 @@
+{
+	"$schema-ref": "http://schemas.sap.com/sapui5/designtime/api.json/1.0",
+	"version": "1.38.33",
+	"library": "sap.ui.generic.app",
+	"symbols": [
+		{
+			"kind": "namespace",
+			"name": "sap.ui.generic.app",
+			"basename": "app",
+			"resource": "sap/ui/generic/app/library.js",
+			"module": "sap/ui/generic/app/library",
+			"static": true,
+			"visibility": "public",
+			"description": "SAPUI5 library that provides generic reuse functionality which can be used by Applications."
+		},
+		{
+			"kind": "class",
+			"name": "sap.ui.generic.app.ApplicationController",
+			"basename": "ApplicationController",
+			"resource": "sap/ui/generic/app/ApplicationController.js",
+			"module": "sap/ui/generic/app/ApplicationController",
+			"static": true,
+			"visibility": "public",
+			"since": "1.32.0",
+			"description": "Application Controller.",
+			"experimental": {
+				"since": "1.32.0"
+			},
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "oModel",
+						"type": "sap.ui.model.odata.v2.ODataModel",
+						"optional": false,
+						"description": "The OData model currently used"
+					},
+					{
+						"name": "oView",
+						"type": "sap.ui.core.mvc.View",
+						"optional": false,
+						"description": "The current view"
+					}
+				],
+				"description": "Constructor for application controller."
+			},
+			"methods": [
+				{
+					"name": "destroy",
+					"visibility": "public",
+					"description": "Frees all resources claimed during the life-time of this instance.",
+					"experimental": {
+						"since": "1.32.0"
+					}
+				},
+				{
+					"name": "executeSideEffects",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution of the action"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						},
+						{
+							"name": "aSourceProperties",
+							"type": "array",
+							"optional": false,
+							"description": "An array of properties of the given context or properties in a 1:1 association\nfor those side effects shall be executed"
+						},
+						{
+							"name": "aSourceEntities",
+							"type": "array",
+							"optional": false,
+							"description": "An array of entities (navigation properties) for those side effects shall be\nexecuted"
+						}
+					],
+					"description": "executes annotated side effect for properties/navigation properties or navigation entities. If no properties\nor entities are passed the unspecified side effect is executed which reads either the annotated targets of the\nunspecified side effect or in case of no available annotation a complete model refresh"
+				},
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.ui.generic.app.ApplicationController with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.base.Object.extend Object.extend}."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.ui.generic.app.ApplicationController."
+				},
+				{
+					"name": "getNewActionContext",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise"
+					},
+					"since": "1.38",
+					"parameters": [
+						{
+							"name": "sFunctionName",
+							"type": "string",
+							"optional": false
+						},
+						{
+							"name": "oEntityContext",
+							"type": "object",
+							"optional": false,
+							"description": "The given binding context of the object on which the action is called"
+						},
+						{
+							"name": "mParameters",
+							"type": "map",
+							"optional": false,
+							"description": "Parameters to control the behavior of the request"
+						}
+					],
+					"description": "Creates a context for an action call (OData function import)",
+					"experimental": {}
+				},
+				{
+					"name": "getTransactionController",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.generic.app.transaction.TransactionController",
+						"description": "The transaction controller instance"
+					},
+					"description": "Returns the current transaction controller instance."
+				},
+				{
+					"name": "invokeActions",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution of the action"
+					},
+					"parameters": [
+						{
+							"name": "sFunctionName",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the function or action"
+						},
+						{
+							"name": "aContext",
+							"type": "array",
+							"optional": false,
+							"description": "The given binding contexts"
+						},
+						{
+							"name": "mParameters",
+							"type": "map",
+							"optional": false,
+							"description": "Parameters to control the behavior of the request"
+						}
+					],
+					"description": "Invokes an action for every provided context where the properties are taken as input from.\nThe changes are submitted directly to the back-end."
+				},
+				{
+					"name": "propertyChanged",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution of the action"
+					},
+					"parameters": [
+						{
+							"name": "sEntitySet",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the entity set"
+						},
+						{
+							"name": "sProperty",
+							"type": "string",
+							"optional": false,
+							"description": "Path identifying the changed property"
+						},
+						{
+							"name": "oBinding",
+							"type": "object",
+							"optional": false,
+							"description": "The binding associated with the changed property"
+						},
+						{
+							"name": "oControl",
+							"type": "sap.ui.comp.smartfield.SmartField",
+							"optional": false,
+							"description": "The SmartField that changed the property"
+						}
+					],
+					"description": "Notifies the application controller of a change of a property. Please note that the method is not meant for productive use currently. It is\nexperimental.",
+					"experimental": {
+						"since": "1.32.0"
+					}
+				},
+				{
+					"name": "registerGroupChange",
+					"visibility": "public",
+					"parameters": [
+						{
+							"name": "sGroupId",
+							"type": "string",
+							"optional": false,
+							"description": "The group id where changes were done"
+						}
+					],
+					"description": "Registers a change for the given group id.",
+					"experimental": {
+						"since": "1.32.0"
+					}
+				},
+				{
+					"name": "registerView",
+					"visibility": "public",
+					"parameters": [
+						{
+							"name": "oView",
+							"type": "sap.ui.core.odata.mvc.View",
+							"optional": false,
+							"description": "The view to be registered"
+						}
+					],
+					"description": "Registers the given view with the Application Controller.",
+					"experimental": {
+						"since": "1.32.0"
+					}
+				}
+			]
+		},
+		{
+			"kind": "class",
+			"name": "sap.ui.generic.app.navigation.service.NavError",
+			"basename": "NavError",
+			"resource": "sap/ui/generic/app/navigation/service/NavError.js",
+			"module": "sap/ui/generic/app/navigation/service/NavError",
+			"static": true,
+			"visibility": "public",
+			"extends": "sap.ui.base.Object",
+			"description": "An object that provides error handling information during runtime.",
+			"ui5-metadata": {
+				"stereotype": "object"
+			},
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "sErrorCode",
+						"type": "string",
+						"optional": false,
+						"description": "The code for an internal error of a consumer that allows you to track the source locations"
+					}
+				]
+			},
+			"methods": [
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.ui.generic.app.navigation.service.NavError with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.base.Object.extend}."
+				},
+				{
+					"name": "getErrorCode",
+					"visibility": "public",
+					"returnValue": {
+						"type": "string",
+						"description": "The error code of the error"
+					},
+					"description": "Returns the error code with which the instance has been created."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.ui.generic.app.navigation.service.NavError."
+				}
+			]
+		},
+		{
+			"kind": "class",
+			"name": "sap.ui.generic.app.navigation.service.NavigationHandler",
+			"basename": "NavigationHandler",
+			"resource": "sap/ui/generic/app/navigation/service/NavigationHandler.js",
+			"module": "sap/ui/generic/app/navigation/service/NavigationHandler",
+			"static": true,
+			"visibility": "public",
+			"extends": "sap.ui.base.Object",
+			"description": "Creates a new NavigationHandler class by providing the required environment.\n\n<b>Note:</b> This class requires that the UShell Navigation Service API CrossApplicationNavigation is available and initialized.",
+			"ui5-metadata": {
+				"stereotype": "object"
+			},
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "oController",
+						"type": "object",
+						"optional": false,
+						"description": "UI5 controller that contains a router and a component; typically the main controller of your application,\nfor example, a subclass of the sap.ca.scfld.md.controller.BaseFullscreenController if scaffolding is used"
+					},
+					{
+						"name": "sParamHandlingMode",
+						"type": "string",
+						"optional": true,
+						"defaultValue": "SelVarWins",
+						"description": "Mode to be used to handle conflicts when merging URL parameters and the SelectionVariant class, see {@link sap.ui.generic.app.navigation.service.ParamHandlingMode}"
+					}
+				]
+			},
+			"methods": [
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.ui.generic.app.navigation.service.NavigationHandler with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.base.Object.extend}."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.ui.generic.app.navigation.service.NavigationHandler."
+				},
+				{
+					"name": "mixAttributesAndSelectionVariant",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "Instance of {@link sap.ui.generic.app.navigation.service.SelectionVariant}"
+					},
+					"parameters": [
+						{
+							"name": "mSemanticAttributes",
+							"type": "object",
+							"optional": false,
+							"description": "Object containing key/value pairs"
+						},
+						{
+							"name": "sSelectionVariant",
+							"type": "string",
+							"optional": false,
+							"description": "The selection variant in string format as provided by the SmartFilterBar control"
+						},
+						{
+							"name": "iSuppressionBehavior",
+							"type": "integer",
+							"optional": true,
+							"defaultValue": "sap.ui.generic.app.navigation.service.SuppressionBehavior.standard",
+							"description": "Indicates whether semantic attributes with special values\n(see {@link sap.ui.generic.app.navigation.service.SuppressionBehavior suppression behavior}) must be suppressed before they are combined with the selection variant;\nseveral {@link sap.ui.generic.app.navigation.service.SuppressionBehavior suppression behaviors} can be combined with the bitwise OR operator (|)"
+						}
+					],
+					"description": "Combines the given parameters and selection variant into a new selection variant containing properties from both, with the parameters \noverriding existing properties in the selection variant. The new selection variant does not contain any parameters. All parameters are merged into select options.\nThe output of this function, converted to a JSON string, can be used for the {@link #.navigate NavigationHandler.navigate} method.",
+					"examples": [
+						{
+							"text": "<code>\nvar mSemanticAttributes = { \"Customer\" : \"C0001\" };\nvar sSelectionVariant = oSmartFilterBar.getDataSuiteFormat();\nvar oNavigationHandler = new sap.ui.generic.app.navigation.service.NavigationHandler(oController);\nvar sNavigationSelectionVariant = oNavigationHandler.mixAttributesAndSelectionVariant(mSemanticAttributes, sSelectionVariant).toJSONString();\n// Optionally, you can specify one or several suppression behaviors. Several suppression behaviors are combined with the bitwise OR operator, e.g.\n// var iSuppressionBehavior = sap.ui.generic.app.navigation.service.SuppressionBehavior.raiseErrorOnNull | sap.ui.generic.app.navigation.service.SuppressionBehavior.raiseErrorOnUndefined;\n// var sNavigationSelectionVariant = oNavigationHandler.mixAttributesAndSelectionVariant(mSemanticAttributes, sSelectionVariant, iSuppressionBehavior).toJSONString();\n\noNavigationHandler.navigate(\"SalesOrder\", \"create\", sNavigationSelectionVariant);\n</code>"
+						}
+					]
+				},
+				{
+					"name": "navigate",
+					"visibility": "public",
+					"static": true,
+					"parameters": [
+						{
+							"name": "sSemanticObject",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the semantic object of the target app"
+						},
+						{
+							"name": "sActionName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the action of the target app"
+						},
+						{
+							"name": "vNavigationParameters",
+							"type": "object|string",
+							"optional": true,
+							"description": "Navigation parameters as an object with key/value pairs or as a stringified JSON object"
+						},
+						{
+							"name": "oInnerAppData",
+							"type": "object",
+							"optional": true,
+							"parameterProperties": {
+								"selectionVariant": {
+									"name": "selectionVariant",
+									"type": "string",
+									"optional": true,
+									"description": "Stringified JSON object as returned, for example, from getDataSuiteFormat() of the SmartFilterBar control"
+								},
+								"tableVariantId": {
+									"name": "tableVariantId",
+									"type": "string",
+									"optional": true,
+									"description": "ID of the SmartTable variant"
+								},
+								"customData": {
+									"name": "customData",
+									"type": "object",
+									"optional": true,
+									"description": "Object that can be used to store arbitrary data"
+								}
+							},
+							"description": "Object for storing current state of the app"
+						},
+						{
+							"name": "fnOnError",
+							"type": "function",
+							"optional": true,
+							"description": "Callback that is called if an error occurs during navigation <br>\n<b>Parameters:</b>\n<table>\n<tr><td align=\"center\">{object}</td><td><b>oError</b></td><td>Error object (instance of {@link sap.ui.generic.app.navigation.service.NavError}) that describes\nwhich kind of error occurred</td>\n<tr><td align=\"center\">{string}</td><td><b>oError.errorCode</b></td><td>Code to identify the error</td>\n<tr><td align=\"center\">{string}</td><td><b>oError.type</b></td><td>Severity of the error (info/warning/error)</td>\n<tr><td align=\"center\">{array}</td><td><b>oError.params</b></td><td>An array of objects (typically strings) that describe additional value parameters\nrequired for generating the message</td>\n</table>"
+						}
+					],
+					"description": "Triggers a cross-app navigation after saving the inner and the cross-app states.",
+					"examples": [
+						{
+							"text": "<code>\nvar oNavigationHandler = new sap.ui.generic.app.navigation.service.NavigationHandler(oController);\nvar sSemanticObject = \"SalesOrder\";\nvar sActionName = \"create\";\n\n//simple parameters as Object\nvar vNavigationParameters = {\n\t\tCompanyCode : \"0001\",\n\t\tCustomer : \"C0001\"\n};\n\n//or as selection variant\nvar oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();\noSelectionVariant.addSelectOption(\"CompanyCode\", \"I\", \"EQ\", \"0001\");\noSelectionVariant.addSelectOption(\"Customer\", \"I\", \"EQ\", \"C0001\");\nvNavigationParameters = oSelectionVariant.toJSONString(); \n\n//or directly from SmartFilterBar\nvNavigationParameters = oSmartFilterBar.getDataSuiteFormat();\n\n//app state for back navigation\nvar oInnerAppData = {\n\t\tselectionVariant : oSmartFilterBar.getDataSuiteFormat(),\n\t\ttableVariantId : oSmartTable.getCurrentVariantId(),\n\t\tcustomData : oMyCustomData\n};\n\n// callback function in case of errors\nvar fnOnError = function(oError){\n\t\tvar oi18n = oController.getView().getModel(\"i18n\").getResourceBundle();\n\t\toError.setUIText({oi18n : oi18n, sTextKey : \"OUTBOUND_NAV_ERROR\"});\n\t\toError.showMessageBox();\n};\n\noNavigationHandler.navigate(sSemanticObject, sActionName, vNavigationParameters, oInnerAppData, fnOnError);\n</code>"
+						}
+					]
+				},
+				{
+					"name": "parseNavigation",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "A Promise object to monitor when all the actions of the function have been executed. If the execution is successful, the extracted app state,\nthe startup parameters, and the type of navigation are returned, see also the example above. The app state is an object that contains\nthe following information:\n<ul>\n<li><code>oAppData.oSelectionVariant</code>: An instance of {@link sap.ui.generic.app.navigation.service.SelectionVariant} containing only\nparameters/select options that are related to navigation</li>\n<li><code>oAppData.selectionVariant</code>: The navigation-related selection variant as a JSON-formatted string</li>\n<li><code>oAppData.oDefaultedSelectionVariant</code>: An instance of {@link sap.ui.generic.app.navigation.service.SelectionVariant} containing\nonly the parameters/select options that are set by user default data</li>\n<li><code>oAppData.bNavSelVarHasDefaultsOnly</code>: A Boolean flag that indicates whether only defaulted parameters and\nno navigation parameters are present (<b>Note:</b> If no navigation parameters are available, bNavSelVarHasDefaultsOnly\nis<code>true</code>, even also no defaulted parameters may be available)</li>\n</ul>\nIf the navigation-related selection variant is empty, it is replaced by a copy of the defaulted selection variant.<br>\nThe navigation type is an enumeration type of type {@link sap.ui.generic.app.navigation.service.NavType} (possible values are initial,\nURLParams, xAppState, and iAppState).<br>\n<b>Note:</b> If the navigation type is {@link sap.ui.generic.app.navigation.service.NavType.iAppState} oAppData has two additional properties\n<ul>\n<li><code>oAppData.tableVariantId</code></li>\n<li><code>oAppData.customData</code></li>\n</ul>\nwhich return the inner app data as stored in {@link #.navigate navigate} or {@link #.storeInnerAppState storeInnerAppState}.\n<code>oAppData.oDefaultedSelectionVariant</code> is an empty selection variant and <code>oAppData.bNavSelVarHasDefaultsOnly</code>\nis <code>false</code> in this case.<br>\n<b>Note:</b> If the navigation type is {@link sap.ui.generic.app.navigation.service.NavType.initial} oAppData is an empty object!<br>\nIf an error occurs, an error object of type {@link sap.ui.generic.app.navigation.service.NavError}, URL parameters (if available) and the type of\nnavigation are returned."
+					},
+					"description": "Parses the incoming URL and returns a Promise. If this method detects a back navigation, the inner app state is returned\nin the resolved Promise. Otherwise startup parameters will be merged into the app state provided by cross app navigation, and a combined\napp state will be returned. The conflict resolution can be influenced with sParamHandlingMode defined in the constructor.",
+					"examples": [
+						{
+							"text": "<code>\nvar oNavigationHandler = new sap.ui.generic.app.navigation.service.NavigationHandler(oController);\nvar oParseNavigationPromise = oNavigationHandler.parseNavigation();\n\noParseNavigationPromise.done(function(oAppData, oStartupParameters, sNavType){\n\t\toSmartFilterBar.setDataSuiteFormat(oAppData.selectionVariant);\n\t\t// oAppData.oSelectionVariant can be used to manipulate the selection variant\n\t\t// oAppData.oDefaultedSelectionVariant contains the parameters which are set by user defaults\n\t\t// oAppData.bNavSelVarHasDefaultsOnly indicates whether only defaulted parameters and no navigation parameters are present\n});\noParseNavigationPromise.fail(function(oError, oURLParameters, sNavType){\n\t\t// if e.g. the xapp state could not be loaded, nevertheless there may be URL parameters available \n\t\t//some error handling\n});\n</code>"
+						}
+					]
+				},
+				{
+					"name": "processBeforeSmartLinkPopoverOpens",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "A Promise object to monitor when all actions of the function have been executed; if the execution is successful, the modified oTableEventParameters is returned;\nif an error occurs, an error object of type {@link sap.ui.generic.app.navigation.service.NavError} is returned"
+					},
+					"parameters": [
+						{
+							"name": "oTableEventParameters",
+							"type": "object",
+							"optional": false,
+							"description": "The parameters made available by the SmartTable control when the SmartLink control has been clicked, an instance of a PopOver object"
+						},
+						{
+							"name": "sSelectionVariant",
+							"type": "string",
+							"optional": false,
+							"description": "Stringified JSON object as returned, for example, from getDataSuiteFormat() of the SmartFilterBar control"
+						},
+						{
+							"name": "mInnerAppData",
+							"type": "object",
+							"optional": true,
+							"parameterProperties": {
+								"selectionVariant": {
+									"name": "selectionVariant",
+									"type": "string",
+									"optional": true,
+									"description": "Stringified JSON object as returned, for example, from getDataSuiteFormat() of the the SmartFilterBar control; if provided, the selection\nis merged into the semantic attributes"
+								},
+								"tableVariantId": {
+									"name": "tableVariantId",
+									"type": "string",
+									"optional": true,
+									"description": "ID of the SmartTable variant"
+								},
+								"customData": {
+									"name": "customData",
+									"type": "object",
+									"optional": true,
+									"description": "Object that can be used to store additional app-specific data"
+								}
+							},
+							"description": "Object containing the current state of the app. If provided, opening the Popover is deferred until the inner app data is saved in a consistent way."
+						}
+					],
+					"description": "Processes navigation-related tasks related to beforePopoverOpens event handling for the SmartLink control and returns a Promise object.\nIn particular, the following tasks are performed before the SmartLink popover can be opened:\n<ul>\n\t<li>If <code>mInnerAppData</code> is provided, this inner app state is saved for back navigation at a later time.</li>\n\t<li>The table event parameters (semantic attributes) and the selection variant data are combined by calling the\n\t\t\tmethod {@link #.mixAttributesAndSelectionVariant mixAttributesAndSelectionVariant}.</li>\n\t<li>The combined data is saved as the cross app state to be handed over to the target app, and the corresponding sap-xapp-state key is set in the URL.</li>\n\t<li>All single selections (\"including equal\") of the combined selection data are passed to the SmartLink popover as semantic attributes.</li>\n\t<li>The method <code>oTableEventParameters.open()</code> is called. Note that this does not really open the popover, but the SmartLink control proceeds\n\t\t\twith firing the event <code>navigationTargetsObtained</code>.</li>\n</ul>",
+					"examples": [
+						{
+							"text": "<code>\n//event handler for the smart link event \"beforePopoverOpens\"\n\tonBeforePopoverOpens: function(oEvent) {\n\t\tvar oTableEventParameters = oEvent.getParameters();\n\n\t\tvar mInnerAppData = {\n\t\t\tselectionVariant : oSmartFilterBar.getDataSuiteFormat(),\n\t\t\ttableVariantId : oSmartTable.getCurrentVariantId(),\n\t\t\tcustomData : oMyCustomData\n\t\t};\n\n\t\tvar oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();\n\t\toSelectionVariant.addSelectOption(\"CompanyCode\", \"I\", \"EQ\", \"0001\");\n\t\toSelectionVariant.addSelectOption(\"Customer\", \"I\", \"EQ\", \"C0001\");\n\t\tvar sSelectionVariant= oSelectionVariant.toJSONString();\n\n\t\tvar oNavigationHandler = new sap.ui.generic.app.navigation.service.NavigationHandler(oController);\n\t\tvar oSmartLinkPromise = oNavigationHandler.processBeforeSmartLinkPopoverOpens(oTableEventParameters, sSelectionVariant, mInnerAppData);\n\n\t\toSmartLinkPromise.done(function(oTableEventParameters){\n\t\t\t// here you can add coding that should run after all app states are saved and the semantic attributes are set\n\t\t});\n\n\t\toSmartLinkPromise.fail(function(oError){\n\t\t//some error handling\n\t\t});\n};\n</code>"
+						}
+					]
+				},
+				{
+					"name": "storeInnerAppState",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "A Promise object to monitor when all the actions of the function have been executed; if the execution is successful, the app state key is returned;\nif an error occurs, an object of type {@link sap.ui.generic.app.navigation.service.NavError} is returned"
+					},
+					"parameters": [
+						{
+							"name": "mInnerAppData",
+							"type": "object",
+							"optional": false,
+							"parameterProperties": {
+								"selectionVariant": {
+									"name": "selectionVariant",
+									"type": "string",
+									"optional": false,
+									"description": "Stringified JSON object as returned, for example, from getDataSuiteFormat() of the SmartFilterBar control"
+								},
+								"tableVariantId": {
+									"name": "tableVariantId",
+									"type": "string",
+									"optional": true,
+									"description": "ID of the SmartTable variant"
+								},
+								"customData": {
+									"name": "customData",
+									"type": "object",
+									"optional": true,
+									"description": "Object that can be used to store additional app-specific data"
+								}
+							},
+							"description": "Object containing the current state of the app"
+						},
+						{
+							"name": "bImmediateHashReplace",
+							"type": "boolean",
+							"optional": true,
+							"defaultValue": true,
+							"description": "If set to false, the inner app hash will not be replaced until storing is successful;\ndo not set to false if you cannot react to the resolution of the Promise, for example, when calling the beforeLinkPressed event"
+						}
+					],
+					"description": "Changes the URL according to the current app state and stores the app state for later retrieval.",
+					"examples": [
+						{
+							"text": "<code>\nvar oNavigationHandler = new sap.ui.generic.app.navigation.service.NavigationHandler(oController);\nvar mInnerAppData = {\n\t\tselectionVariant : oSmartFilterBar.getDataSuiteFormat(),\n\t\ttableVariantId : oSmartTable.getCurrentVariantId(),\n\t\tcustomData : oMyCustomData\n};\n\nvar oStoreInnerAppStatePromise = oNavigationHandler.storeInnerAppState(mInnerAppData);\n\noStoreInnerAppStatePromise.done(function(sAppStateKey){\n\t//your inner app state is saved now, sAppStateKey was added to URL\n\t//perform actions that must run after save\n});\n\noStoreInnerAppStatePromise.fail(function(oError){\n\t\t//some error handling\n});\n</code>"
+						}
+					]
+				}
+			]
+		},
+		{
+			"kind": "enum",
+			"name": "sap.ui.generic.app.navigation.service.NavType",
+			"basename": "NavType",
+			"resource": "sap/ui/generic/app/library.js",
+			"module": "sap/ui/generic/app/library",
+			"static": true,
+			"visibility": "public",
+			"description": "A static enumeration type which indicates the type of inbound navigation",
+			"properties": [
+				{
+					"name": "iAppState",
+					"visibility": "public",
+					"static": true,
+					"type": "string",
+					"description": "Back navigation with sap-iapp-state parameter"
+				},
+				{
+					"name": "initial",
+					"visibility": "public",
+					"static": true,
+					"type": "string",
+					"description": "Initial startup without any navigation or default parameters"
+				},
+				{
+					"name": "URLParams",
+					"visibility": "public",
+					"static": true,
+					"type": "string",
+					"description": "Basic cross-app navigation with URL parameters only (without sap-xapp-state) or initial start with default parameters"
+				},
+				{
+					"name": "xAppState",
+					"visibility": "public",
+					"static": true,
+					"type": "string",
+					"description": "Cross-app navigation with sap-xapp-state parameter (and URL parameters), defaulted parameters may be added"
+				}
+			]
+		},
+		{
+			"kind": "enum",
+			"name": "sap.ui.generic.app.navigation.service.ParamHandlingMode",
+			"basename": "ParamHandlingMode",
+			"resource": "sap/ui/generic/app/library.js",
+			"module": "sap/ui/generic/app/library",
+			"static": true,
+			"visibility": "public",
+			"description": "A static enumeration type which indicates the conflict resolution method when merging URL parameters into select options",
+			"properties": [
+				{
+					"name": "InsertInSelOpt",
+					"visibility": "public",
+					"static": true,
+					"type": "undefined",
+					"description": "The conflict resolution adds URL parameters to the SelectionVariant"
+				},
+				{
+					"name": "SelVarWins",
+					"visibility": "public",
+					"static": true,
+					"type": "undefined",
+					"description": "The conflict resolution favors the SelectionVariant over URL parameters"
+				},
+				{
+					"name": "URLParamWins",
+					"visibility": "public",
+					"static": true,
+					"type": "undefined",
+					"description": "The conflict resolution favors the URL parameters over the SelectionVariant. Caution: In case of cross-app navigation\na navigation parameter value from the source app is overwritten by a default, if a default is maintained in the launchpad\ndesigner for this parameter in the target app!"
+				}
+			]
+		},
+		{
+			"kind": "class",
+			"name": "sap.ui.generic.app.navigation.service.SelectionVariant",
+			"basename": "SelectionVariant",
+			"resource": "sap/ui/generic/app/navigation/service/SelectionVariant.js",
+			"module": "sap/ui/generic/app/navigation/service/SelectionVariant",
+			"static": true,
+			"visibility": "public",
+			"extends": "sap.ui.base.Object",
+			"description": "Creates a new instance of a SelectionVariant class. If no parameter is passed, \nan new empty instance is created whose ID has been set to <code>\"\"</code>.\nPassing a JSON-serialized string complying to the Selection Variant Specification will parse it,\nand the newly created instance will contain the same information.",
+			"ui5-metadata": {
+				"stereotype": "object"
+			},
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "vSelectionVariant",
+						"type": "string|object",
+						"optional": true,
+						"description": "If of type <code>string</code>, the selection variant is JSON-formatted;\nif of type <code>object</code>, the object represents a selection variant"
+					}
+				]
+			},
+			"methods": [
+				{
+					"name": "addParameter",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "This instance to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "sName",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the parameter to be set; the <code>null</code> value is not allowed"
+						},
+						{
+							"name": "sValue",
+							"type": "string",
+							"optional": false,
+							"description": "The value of the parameter to be set"
+						}
+					],
+					"description": "Sets the value of a parameter called <code>sName</code> to the new value <code>sValue</code>.\nIf the parameter has already been set before, its value is overwritten."
+				},
+				{
+					"name": "addSelectOption",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "This instance to allow method chaining."
+					},
+					"parameters": [
+						{
+							"name": "sPropertyName",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the property for which the selection range is added"
+						},
+						{
+							"name": "sSign",
+							"type": "string",
+							"optional": false,
+							"description": "The sign of the range (<b>I</b>nclude or <b>E</b>xclude)"
+						},
+						{
+							"name": "sOption",
+							"type": "string",
+							"optional": false,
+							"description": "The option of the range (<b>EQ</b> for \"equals\", <b>NE</b> for \"not equals\",\n<b>LE</b> for \"less or equals\", <b>GE</b> for \"greater or equals\", <b>LT</b> for \"less than\" (and not equals),\n<b>GT</b> for \"greater than\" (and not equals), <b>BT</b> for \"between\", or <b>CP</b> for \"contains pattern\"\n(ABAP-styled pattern matching with the asterisk as wildcard)"
+						},
+						{
+							"name": "sLow",
+							"type": "string",
+							"optional": false,
+							"description": "The single value or the lower boundary of the interval; the <code>null</code> value is not allowed"
+						},
+						{
+							"name": "sHigh",
+							"type": "string",
+							"optional": true,
+							"description": "Set only if sOption is <b>BT</b>: the upper boundary of the interval;\nmust be <code>undefined</code> or <code>null</code> in all other cases"
+						}
+					],
+					"description": "Adds a new range to the list of select options for a given parameter."
+				},
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.ui.generic.app.navigation.service.SelectionVariant with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.base.Object.extend}."
+				},
+				{
+					"name": "getFilterContextUrl",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "string",
+						"description": "The current context URL for the filters"
+					},
+					"description": "Gets the current context URL intended for the filters."
+				},
+				{
+					"name": "getID",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "string",
+						"description": "The identification of the selection variant as made available during construction"
+					},
+					"description": "Returns the identification of the selection variant."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.ui.generic.app.navigation.service.SelectionVariant."
+				},
+				{
+					"name": "getParameter",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "string",
+						"description": "The value of parameter <code>sName</code>; returning the value <code>null</code> not possible"
+					},
+					"parameters": [
+						{
+							"name": "sName",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the parameter to be returned"
+						}
+					],
+					"description": "Returns the value of the parameter called <code>sName</code> if it has been set.\nIf the parameter has never been set or has been removed, <code>undefined</code> is returned."
+				},
+				{
+					"name": "getParameterContextUrl",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "string",
+						"description": "The current context URL for the parameters"
+					},
+					"description": "Gets the current context URL intended for the parameters."
+				},
+				{
+					"name": "getParameterNames",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "array",
+						"description": "the list of parameter names which are valid"
+					},
+					"description": "Returns the set of parameter names available in this selection variant"
+				},
+				{
+					"name": "getSelectOption",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "array",
+						"description": "If <code>sPropertyName</code> is an invalid name of a property or no range exists, <code>undefined</code>\nis returned; otherwise, an immutable array of ranges is returned. Each entry of the array is an object with the \nfollowing properties:\n<ul>\n<li><code>Sign</code>: The sign of the range</li>\n<li><code>Option</code>: The option of the range</li>\n<li><code>Low</code>: The low value of the range; returning value <code>null</code> is not possible</li>\n<li><code>High</code>: The high value of the range; if this value is not necessary, <code>null</code> is used</li>\n</ul>\nFor further information about the meaning of the attributes, refer to method <code>addSelectOption</code>."
+					},
+					"parameters": [
+						{
+							"name": "sPropertyName",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the property for which the set of select options/ranges is returned"
+						}
+					],
+					"description": "Returns the set of select options/ranges available for a given property name."
+				},
+				{
+					"name": "getSelectOptionsPropertyNames",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "array",
+						"description": "The list of property names available for this instance"
+					},
+					"description": "Returns the names of the properties available for this instance."
+				},
+				{
+					"name": "getText",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "string",
+						"description": "the current description of this selection variant."
+					},
+					"description": "Returns the current text / description of this selection variant."
+				},
+				{
+					"name": "getValue",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "array",
+						"description": "The ranges in the select options for the specified property or a range-converted representation of a parameter is returned.\nIf both lookups fail, <code>undefined</code> is returned. <br />\nThe returned ranges have the format:\n<ul>\n<li><code>Sign</code>: The sign of the range</li>\n<li><code>Option</code>: The option of the range</li>\n<li><code>Low</code>: The low value of the range; returning the value <code>null</code> is not possible</li>\n<li><code>High</code>: The high value of the range; if this value is not necessary, <code>null</code> (but does exist)</li>\n</ul>\nFor further information on the meaning of the attributes, refer to method {@link #.addSelectOption addSelectOption}."
+					},
+					"parameters": [
+						{
+							"name": "sName",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the attribute for which the value is retrieved"
+						}
+					],
+					"description": "First tries to retrieve the set of select options/ranges available for <code>sName</code> as property name. If successful, \nthis array of selections is being returned. If it fails, an attempt to find a parameter, whose name is <code>sName</code>, is\nmade. If the latter succeeds, the single value is converted to fit into an array of selections to make it \ntype compatible with ranges. This array is then returned. <br />\nIf neither a select option nor a parameter could be found, <code>undefined</code> is returned."
+				},
+				{
+					"name": "isEmpty",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "boolean",
+						"description": "If set to <code>true</code>  there are no parameters and no select options available in\nthe selection variant; <code>false</code> otherwise."
+					},
+					"description": "Returns <code>true</code> if the selection variant does neither contain parameters\nnor ranges."
+				},
+				{
+					"name": "massAddSelectOption",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "This instance to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "sPropertyName",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the property for which the set of select options is added"
+						},
+						{
+							"name": "aSelectOptions",
+							"type": "array",
+							"optional": false,
+							"description": "Set of select options to be added"
+						}
+					],
+					"description": "Adds a set of select options to the list of select options for a given parameter."
+				},
+				{
+					"name": "removeParameter",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "This instance to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "sName",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the parameter to be removed"
+						}
+					],
+					"description": "Removes a parameter called <code>sName</code> from the selection variant."
+				},
+				{
+					"name": "removeSelectOption",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "This instance to allow method chaining."
+					},
+					"parameters": [
+						{
+							"name": "sName",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the select option to be removed"
+						}
+					],
+					"description": "Removes a select option called <code>sName</code> from the selection variant."
+				},
+				{
+					"name": "renameParameter",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "This instance to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "sNameOld",
+							"type": "string",
+							"optional": false,
+							"description": "The current name of the parameter to be renamed"
+						},
+						{
+							"name": "sNameNew",
+							"type": "string",
+							"optional": false,
+							"description": "The new name of the parameter"
+						}
+					],
+					"description": "Renames a parameter called <code>sNameOld</code> to <code>sNameNew</code>. If a parameter or a select option with\nthe name <code>sNameNew</code> already exist, an error is thrown. If a parameter with the name <code>sNameOld</code>\ndoes not exist, nothing is changed."
+				},
+				{
+					"name": "renameSelectOption",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "This instance to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "sNameOld",
+							"type": "string",
+							"optional": false,
+							"description": "The current name of the select option property to be renamed"
+						},
+						{
+							"name": "sNameNew",
+							"type": "string",
+							"optional": false,
+							"description": "The new name of the select option property"
+						}
+					],
+					"description": "Renames a select option called <code>sNameOld</code> to <code>sNameNew</code>. If a select option or a parameter\nwith the name <code>sNameNew</code> already exist, an error is thrown. If a select option with the name <code>sNameOld</code>\ndoes not exist, nothing is changed."
+				},
+				{
+					"name": "setFilterContextUrl",
+					"visibility": "public",
+					"static": true,
+					"parameters": [
+						{
+							"name": "sURL",
+							"type": "string",
+							"optional": false,
+							"description": "The URL of the filters"
+						}
+					],
+					"description": "Sets the context URL intended for the filters."
+				},
+				{
+					"name": "setID",
+					"visibility": "public",
+					"static": true,
+					"parameters": [
+						{
+							"name": "sId",
+							"type": "string",
+							"optional": false,
+							"description": "The new identification of the selection variant"
+						}
+					],
+					"description": "Sets the identification of the selection variant."
+				},
+				{
+					"name": "setParameterContextUrl",
+					"visibility": "public",
+					"static": true,
+					"parameters": [
+						{
+							"name": "sURL",
+							"type": "string",
+							"optional": false,
+							"description": "The URL of the parameter context"
+						}
+					],
+					"description": "Sets the context URL intended for the parameters."
+				},
+				{
+					"name": "setText",
+					"visibility": "public",
+					"static": true,
+					"parameters": [
+						{
+							"name": "sNewText",
+							"type": "string",
+							"optional": false,
+							"description": "The new description to be used"
+						}
+					],
+					"description": "Sets the text / description of the selection variant."
+				},
+				{
+					"name": "toJSONObject",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "object",
+						"description": "The external representation of this instance as a JSON object"
+					},
+					"description": "Returns the external representation of the selection variant as JSON object."
+				},
+				{
+					"name": "toJSONString",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "string",
+						"description": "The JSON-formatted representation of this instance in stringified format"
+					},
+					"description": "Serializes this instance into a JSON-formatted string."
+				}
+			]
+		},
+		{
+			"kind": "enum",
+			"name": "sap.ui.generic.app.navigation.service.SuppressionBehavior",
+			"basename": "SuppressionBehavior",
+			"resource": "sap/ui/generic/app/library.js",
+			"module": "sap/ui/generic/app/library",
+			"static": true,
+			"visibility": "public",
+			"description": "A static enumeration type which indicates whether semantic attributes with values <code>null</code>,\n<code>undefined</code> or <code>\"\"</code> (empty string) shall be suppressed, before they are mixed in to the selection variant in the\nmethod {@link sap.ui.generic.app.navigation.service..NavigationHandler.mixAttributesAndSelectionVariant mixAttributesAndSelectionVariant}\nof the {@link sap.ui.generic.app.navigation.service..NavigationHandler NavigationHandler}",
+			"properties": [
+				{
+					"name": "ignoreEmptyString",
+					"visibility": "public",
+					"static": true,
+					"type": "undefined",
+					"description": "Semantic attributes with an empty string are ignored, the remaining attributes are mixed in to the selection variant.\nWarning! Consider the impact on Boolean variable values!"
+				},
+				{
+					"name": "raiseErrorOnNull",
+					"visibility": "public",
+					"static": true,
+					"type": "undefined",
+					"description": "Semantic attributes with a <code>null</code> value lead to an {@link sap.fin.central.lib.error.Error error} of type NavigationHandler.INVALID_INPUT"
+				},
+				{
+					"name": "raiseErrorOnUndefined",
+					"visibility": "public",
+					"static": true,
+					"type": "undefined",
+					"description": "Semantic attributes with an <code>undefined</code> value lead to an {@link sap.fin.central.lib.error.Error error} of type NavigationHandler.INVALID_INPUT"
+				},
+				{
+					"name": "standard",
+					"visibility": "public",
+					"static": true,
+					"type": "undefined",
+					"description": "Standard suppression behavior: semantic attributes with a <code>null</code> or an <code>undefined</code> value are ignored,\nthe remaining attributes are mixed in to the selection variant"
+				}
+			]
+		},
+		{
+			"kind": "class",
+			"name": "sap.ui.generic.app.transaction.DraftContext",
+			"basename": "DraftContext",
+			"resource": "sap/ui/generic/app/transaction/DraftContext.js",
+			"module": "sap/ui/generic/app/transaction/DraftContext",
+			"static": true,
+			"visibility": "public",
+			"since": "1.30.0",
+			"description": "The class provides access to information on draft handling that is available in the\n       OData service's metadata as it interprets draft-specific annotations.",
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "oModel",
+						"type": "sap.ui.model.odata.ODataModel",
+						"optional": false,
+						"description": "The OData model currently used"
+					}
+				],
+				"description": "Constructor for meta-model access class."
+			},
+			"methods": [
+				{
+					"name": "checkUpdateOnChange",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if the property is annotated with UpdateOnChange, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "sEntitySet",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the entity set"
+						},
+						{
+							"name": "sProperty",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the property"
+						}
+					],
+					"description": "Checks whether an OData property is annotated with UpdateOnChange. The method is used in context of a validation success event.",
+					"deprecated": {
+						"since": "1.32.0"
+					}
+				},
+				{
+					"name": "destroy",
+					"visibility": "public",
+					"description": "Frees all resources claimed during the life-time of this instance."
+				},
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.ui.generic.app.transaction.DraftContext with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.base.Object.extend Object.extend}."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.ui.generic.app.transaction.DraftContext."
+				},
+				{
+					"name": "getODataDraftFunctionImportName",
+					"visibility": "public",
+					"returnValue": {
+						"type": "string",
+						"description": "The name of the function import to be used"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						},
+						{
+							"name": "sDraftFunctionImport",
+							"type": "string",
+							"optional": false,
+							"description": "The draft function import"
+						}
+					],
+					"description": "Returns the name of the function import to be used."
+				},
+				{
+					"name": "getSemanticKey",
+					"visibility": "public",
+					"returnValue": {
+						"type": "array",
+						"description": "The semantic keys"
+					},
+					"parameters": [
+						{
+							"name": "sEntitySet",
+							"type": "string",
+							"optional": false,
+							"description": "The given entity set"
+						}
+					],
+					"description": "Returns the semantic keys for a given entity set."
+				},
+				{
+					"name": "hasDraft",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if a given entity set is draft-enabled, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						}
+					],
+					"description": "Checks whether an entity set is draft-enabled. The entity set name is derived from the given binding context"
+				},
+				{
+					"name": "hasDraftAdministrativeData",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if administrative data is available, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "sEntitySet",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the entity set"
+						}
+					],
+					"description": "Checks whether administrative data for a given draft is available."
+				},
+				{
+					"name": "hasDraftPreparationAction",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if a given entity set has a draft preparation action, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						}
+					],
+					"description": "Checks whether an entity set has a draft preparation action. The entity set name is derived from the given binding context."
+				},
+				{
+					"name": "hasDraftRoot",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if a given entity set is draft root, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						}
+					],
+					"description": "Checks whether an entity set is draft root. The entity set name is derived from the given binding context."
+				},
+				{
+					"name": "hasDraftValidationFunction",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if a given entity set has a draft validation function, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						}
+					],
+					"description": "Checks whether an entity set has a draft validation function. The entity set name is derived from the given binding context."
+				},
+				{
+					"name": "hasPreserveChanges",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if \"PreserveChanges\" is supported"
+					},
+					"since": "1.38",
+					"description": "Checks if the parameter \"PreserveChanges\" is supported by the edit function.\nIf the edit action is triggered with the parameter set to <code>true</code> the\nABAP application infrastructure will respond with HTTP response code 409 if unsaved \nchanges (from another user) exist."
+				},
+				{
+					"name": "hasSiblingEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if sibling entity is available, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "sEntitySet",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the entity set"
+						}
+					],
+					"description": "Checks whether a sibling entity for a given entity set is available."
+				},
+				{
+					"name": "isDraftEnabled",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if a given entity set is draft-enabled, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "sEntitySet",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the entity set"
+						}
+					],
+					"description": "Checks whether a given entity set is draft-enabled."
+				},
+				{
+					"name": "isDraftRoot",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if a given entity set is draft root, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "sEntitySet",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the entity set"
+						}
+					],
+					"description": "Checks whether a given entity set is a draft root."
+				},
+				{
+					"name": "isSemanticKey",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if a given key is a semantic key, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "sEntitySet",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the entity set"
+						},
+						{
+							"name": "oKeys",
+							"type": "oKeys",
+							"optional": false,
+							"description": "The given key"
+						}
+					],
+					"description": "Checks whether a given key is a semantic key."
+				},
+				{
+					"name": "isTechnicalKey",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if a given key is a technical key, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "sEntitySet",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the entity set"
+						},
+						{
+							"name": "oKeys",
+							"type": "oKeys",
+							"optional": false,
+							"description": "The given key"
+						}
+					],
+					"description": "Checks whether a given key is a technical key."
+				}
+			]
+		},
+		{
+			"kind": "class",
+			"name": "sap.ui.generic.app.transaction.DraftController",
+			"basename": "DraftController",
+			"resource": "sap/ui/generic/app/transaction/DraftController.js",
+			"module": "sap/ui/generic/app/transaction/DraftController",
+			"static": true,
+			"visibility": "public",
+			"since": "1.30.0",
+			"description": "Gives access to runtime draft handling for applications. Assuming state-less communication, each single data modification request (or\n       change set in an OData $batch request) is a \"mini-transaction\", which saves data to the database. The class implements the transactional\n       interaction patterns specified for OData services that support draft documents and provides methods for draft-specific actions, for\n       example validate, prepare, activate.\n\n       Additionally, it handles transactional request processing, ensures concurrency control and correct\n       ETag handling. It provides access to the simple interaction patterns of runtime handling for drafts according to the draft\n       specification. These can be combined as required by client applications. Additionally, error handling is provided to notify client\n       implementations of error situations. The event <code>fatalError</code> is thrown, if fatal errors occur during execution of OData\n       requests.",
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "oModel",
+						"type": "sap.ui.model.odata.ODataModel",
+						"optional": false,
+						"description": "The OData model currently used"
+					},
+					{
+						"name": "oQueue",
+						"type": "sap.ui.generic.app.util.Queue",
+						"optional": false,
+						"description": "Optional HTTP request queue"
+					}
+				],
+				"description": "Constructor for a new draft controller instance."
+			},
+			"methods": [
+				{
+					"name": "activateDraftEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						}
+					],
+					"description": "Submits changes to the back-end and activates a draft entity in the back-end."
+				},
+				{
+					"name": "createEditDraftEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						},
+						{
+							"name": "bPreserveChanges",
+							"type": "boolean",
+							"optional": true,
+							"description": "Set to <code>true</code> to avoid the creation of a new draft when unsaved changes exist in the back-end"
+						}
+					],
+					"description": "Creates an edit draft in the back-end. Additionally, possible changes that have been collected on the client are sent to the back-end."
+				},
+				{
+					"name": "createNewDraftEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution of the request"
+					},
+					"parameters": [
+						{
+							"name": "sEntitySet",
+							"type": "string",
+							"optional": false,
+							"description": "The name of the entity set"
+						},
+						{
+							"name": "sPath",
+							"type": "string",
+							"optional": false,
+							"description": "Path identifying the new entity instance"
+						}
+					],
+					"description": "Creates a new edit draft on the client and sends it to the back-end. Additionally, possible changes that have been collected on the client are\nsent to the back-end."
+				},
+				{
+					"name": "destroy",
+					"visibility": "public",
+					"description": "Frees all resources claimed during the life-time of this instance."
+				},
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.ui.generic.app.transaction.DraftController with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.base.Object.extend Object.extend}."
+				},
+				{
+					"name": "getDraftContext",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.generic.app.transaction.DraftContext",
+						"description": "The current draft context instance"
+					},
+					"description": "Returns the current draft context instance. If no instance exists, it is created lazily."
+				},
+				{
+					"name": "getDraftForActiveEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution"
+					},
+					"since": "1.32.0",
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The binding context of the active entity"
+						}
+					],
+					"description": "Retrieves a possibly existing draft entity for the given active entity using the binding context of the active entity from the back-end."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.ui.generic.app.transaction.DraftController."
+				},
+				{
+					"name": "hasActiveEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if an active entity exists, <code>false</code> otherwise"
+					},
+					"since": "1.32.0",
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						}
+					],
+					"description": "Checks whether an entity has an active entity associated."
+				},
+				{
+					"name": "isActiveEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "<code>true</code>, if a given entity set is active, <code>false</code> otherwise"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						}
+					],
+					"description": "Checks whether an entity set is active. The entity set name is derived from the given binding context"
+				},
+				{
+					"name": "prepareDraftEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						}
+					],
+					"description": "Submits changes to the back-end and prepares an existing draft entity in the back-end for later activation by invoking the preparation action."
+				},
+				{
+					"name": "saveAndPrepareDraftEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						},
+						{
+							"name": "mParameters",
+							"type": "map",
+							"optional": false,
+							"description": "Parameters to control the behavior of the request"
+						}
+					],
+					"description": "Submits changes to the back-end and prepares a draft entity in the back-end for later activation by invoking the preparation action."
+				},
+				{
+					"name": "validateDraftEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						}
+					],
+					"description": "Submits changes to the back-end and prepares an existing draft entity in the back-end for later activation by invoking the validation action."
+				}
+			]
+		},
+		{
+			"kind": "class",
+			"name": "sap.ui.generic.app.transaction.TransactionController",
+			"basename": "TransactionController",
+			"resource": "sap/ui/generic/app/transaction/TransactionController.js",
+			"module": "sap/ui/generic/app/transaction/TransactionController",
+			"static": true,
+			"visibility": "public",
+			"since": "1.30.0",
+			"description": "Assuming state-less communication, each single data modification request (or change set in an OData $batch request) is a\n       \"mini-transaction\", which saves data to the database. The class allows you to submit changes, invoke actions, OData CRUD operations in general,\n       and trigger client-side validations. It ensures concurrency control and correct ETag handling.\n\n       The class gives access to runtime draft handling for applications. Additionally error handling capabilities are provided to notify client \n       implementations of error situations. The event <code>fatalError</code> is thrown, if fatal errors occur during execution of OData requests.",
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "oModel",
+						"type": "sap.ui.model.odata.ODataModel",
+						"optional": false,
+						"description": "The OData model currently used"
+					},
+					{
+						"name": "oQueue",
+						"type": "sap.ui.generic.app.util.Queue",
+						"optional": false,
+						"description": "Optional HTTP request queue"
+					},
+					{
+						"name": "mParams",
+						"type": "map",
+						"optional": false,
+						"parameterProperties": {
+							"noBatchGroups": {
+								"name": "noBatchGroups",
+								"type": "boolean",
+								"optional": false,
+								"description": "Suppresses creation of batch groups"
+							}
+						},
+						"description": "Optional configuration parameters"
+					}
+				],
+				"description": "Constructor for a new transaction controller instance."
+			},
+			"methods": [
+				{
+					"name": "deleteEntities",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> that receives an array with the responses of the delete requests"
+					},
+					"since": "1.38",
+					"parameters": [
+						{
+							"name": "aEntities",
+							"type": "array",
+							"optional": false,
+							"description": "Binding contexts or paths (strings) which identify the entities"
+						},
+						{
+							"name": "mParameters",
+							"type": "map",
+							"optional": false,
+							"description": "Parameters that control the behavior of the request"
+						}
+					],
+					"description": "Submits changes to the backend system and deletes a group of entities in the backend system.\nThese entities can be both draft or active entities.",
+					"experimental": {}
+				},
+				{
+					"name": "deleteEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution"
+					},
+					"parameters": [
+						{
+							"name": "vEntity",
+							"type": "sap.ui.model.Context|string",
+							"optional": false,
+							"description": "Binding context or path of the entity"
+						},
+						{
+							"name": "mParameters",
+							"type": "map",
+							"optional": false,
+							"description": "Parameters that control the behavior of the request"
+						}
+					],
+					"description": "Submits changes to the backend system and deletes an entity in the backend system.\nThis entity can be either a draft or an active entity."
+				},
+				{
+					"name": "destroy",
+					"visibility": "public",
+					"description": "Frees all resources claimed during the life-time of this instance."
+				},
+				{
+					"name": "editEntity",
+					"visibility": "public",
+					"returnValue": {
+						"type": "Promise",
+						"description": "A <code>Promise</code> for asynchronous execution"
+					},
+					"parameters": [
+						{
+							"name": "oContext",
+							"type": "sap.ui.model.Context",
+							"optional": false,
+							"description": "The given binding context"
+						},
+						{
+							"name": "bPreserveChanges",
+							"type": "boolean",
+							"optional": true,
+							"description": "Set to <code>true</code> to avoid the creation of a new draft when unsaved changes exist in the back-end"
+						}
+					],
+					"description": "Prepares an entity for editing. If the entity is active and draft enabled, a new draft document is created. If not, the control is\nautomatically returned to the caller of the method by returning a resolved promise."
+				},
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.ui.generic.app.transaction.TransactionController with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.base.Object.extend Object.extend}."
+				},
+				{
+					"name": "getDraftController",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.generic.app.transaction.DraftController",
+						"description": "The draft controller instance"
+					},
+					"description": "Returns the current draft controller instance."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.ui.generic.app.transaction.TransactionController."
+				},
+				{
+					"name": "resetChanges",
+					"visibility": "public",
+					"description": "Resets changes that have been tracked by the current instance of <code>sap.ui.model.odata.v2.ODatatModel</code>. These changes have been\ncreated by invoking the <code>setProperty</code> method of <code>sap.ui.model.odata.v2.ODatatModel</code>."
+				}
+			]
+		}
+	]
+}

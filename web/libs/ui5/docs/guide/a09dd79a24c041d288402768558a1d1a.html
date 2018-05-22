@@ -1,0 +1,880 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.50 to 1.52."/>
+<meta name="description" content="With this release the UI development toolkit for HTML5 (OpenUI5) is upgraded from version 1.50 to 1.52."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5993901146405397"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5993901146405397"/>
+<title>What's New in OpenUI5 1.52</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioa09dd79a24c041d288402768558a1d1a">
+<div id="wrapper"><div id="container">
+
+    <h1 class="title topictitle1">What's New in <span class="ph"><span class="ph pname">OpenUI5</span></span>
+        1.52</h1>
+
+    
+
+    <div class="body conbody" id="Conbody_WN_SAPUI5_152"><p class="shortdesc">With
+        this release the <span class="ph pname">UI development toolkit for HTML5</span> (<span class="ph"><span class="ph pname">OpenUI5</span></span>) is upgraded from
+        version 1.50 to 1.52.</p>
+
+        
+        <div class="section collapsible expanded" id="loioa09dd79a24c041d288402768558a1d1a__section_rgc_dhg_x1b"><div class="section_title">Improved Features</div><div type="Improved Features"><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">OData V2 Model</p>
+
+                <p class="p">You can now optimize dependent bindings in OData V2 models. The OData V2 model
+                    now supports a <samp class="ph codeph">preliminaryContext</samp> flag. When set to
+                        <samp class="ph codeph">true</samp>, the OData model can bundle the OData calls for
+                    dependent bindings into fewer <samp class="ph codeph">$batch</samp> requests. Two bindings are
+                    considered dependent if one cannot be resolved without the other being resolved
+                    first. For example, a relative binding cannot be resolved without a resolved
+                    absolute binding.</p>
+
+                
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle"><span class="ph"><span class="ph pname">OpenUI5</span></span>
+                    OData V4 Model</p>
+
+                <div class="p">The new version of the <span class="ph"><span class="ph pname">OpenUI5</span></span> The OData V4
+                    model has the following features:<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_apt_cvg_yy">
+                        <li class="li">
+                            <p class="p">Handling of <samp class="ph codeph">Edm.Stream</samp> in read-only mode</p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">Possibility to declare several batch groups as <samp class="ph codeph">$auto</samp>
+                                or <samp class="ph codeph">$direct</samp></p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">Enhancements to the adapter to use the V4 model with an OData V2
+                                service: handling of simple <samp class="ph codeph">$filter</samp> expressions
+                            </p>
+
+                        </li>
+
+                    </ul>
+</div>
+
+                <div class="note caution"><span class="cautiontitle">Caution</span> 
+                    <p class="p"><span class="ph emphasis emphasis">Incompatibility Due to a Bug Fix</span></p>
+
+                    <p class="p">If you call the <a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/getObject" alt="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/getObject" title="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/getObject">sap.ui.model.odata.v4.Context#getObject()</a> or the <a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/requestObject" alt="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/requestObject" title="https://ui5.sap.com/sdk/#/api/sap.ui.model.odata.v4.Context/methods/requestObject">sap.ui.model.odata.v4.Context#requestObject()</a> methods without
+                        a parameter, the expected and documented behavior is that the same result is
+                        returned as if the parameter <samp class="ph codeph">sPath=""</samp> had been specified.
+                        However, due to a bug, the return value wraps the expected output and can
+                        only be accessed using <samp class="ph codeph">.value[0]</samp>, for example
+                            <samp class="ph codeph">oContext.getObject().value[0]</samp>.</p>
+
+                    <p class="p"><span class="ph emphasis emphasis">If you have used this workaround, your application will break as of
+                                <span class="ph"><span class="ph pname">OpenUI5</span></span>
+                            version <span class="ph">1.44.6</span>.</span></p>
+
+                    <p class="p"><span class="ph emphasis emphasis">Solution</span>: If your application needs to run with both the
+                        fixed and unfixed versions of <span class="ph"><span class="ph pname">OpenUI5</span></span>, specify
+                        the <samp class="ph codeph">sPath=""</samp> parameter, for the <samp class="ph codeph">sPath</samp>
+                        parameter. In both cases, you <span class="ph emphasis emphasis">must not</span> use the
+                            <samp class="ph codeph">.value[0]</samp>workaround any more.</p>
+
+                </div>
+
+                <div class="note restriction"><span class="restrictiontitle">Restriction</span> 
+                    <p class="p">Due to the limited feature scope of this version of the <span class="ph"><span class="ph pname">OpenUI5</span></span> OData V4
+                        model, check that all required features are in place before developing
+                        applications. Check the detailed documentation of the features, as certain
+                        parts of a feature may be missing. While we aim to be compatible with
+                        existing controls, some controls might not work due to small
+                        incompatibilities compared to
+                            <samp class="ph codeph">sap.ui.model.odata.(v2.)ODataModel</samp>, or due to missing
+                        features in the model (such as tree binding). This also applies to  controls such as
+                            <samp class="ph codeph">TreeTable</samp> and <samp class="ph codeph">AnalyticalTable</samp>, which
+                        are not supported together with the <span class="ph"><span class="ph pname">OpenUI5</span></span> OData V4
+                        model. The interface for applications has been changed for easier and more
+                        efficient use of the model. For a summary of these changes, see <a class="xref" href="abd4d7c7548d4c29ab8364d3904a6d74.html" title="This section outlines the main differences between the OData V2 and OData V4 models.">Changes Compared to OData V2 Model</a>.</p>
+
+                </div>
+
+                
+                <p class="p">For more
+                    information, see <a class="xref" href="5de13cf4dd1f4a3480f7e2eaaee3f5b8.html" title="The sap.ui.model.odata.v4.ODataModel is the model implementation for consuming an OData V4 service.">OData V4 Model</a>, the
+                        <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.v4.html" alt="../../docs/api/symbols/sap.ui.model.odata.v4.html" title="../../docs/api/symbols/sap.ui.model.odata.v4.html">API Reference</a>, and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.model.odata.v4.ODataModel/samples" alt="../../explored.html#/entity/sap.ui.model.odata.v4.ODataModel/samples" title="../../explored.html#/entity/sap.ui.model.odata.v4.ODataModel/samples">sample</a> in the Demo Kit. </p>
+
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Support Assistant</p>
+
+                <p class="p">Support Assistant has been enhanced with the following features:</p>
+
+                <div class="fig fignone" id="loioa09dd79a24c041d288402768558a1d1a__fig_kf3_wkn_jbb"><div class="figcontainer">
+                    <img class="image" id="loioa09dd79a24c041d288402768558a1d1a__image_ujr_jfh_kbb" src="loio43f74fa14f8a4cfc82c0e31998072d6b_LowRes.png"/>
+                </div></div>
+
+                <div class="p">
+                    <ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_gjg_hy2_lbb">
+                        <li class="li">
+                            <p class="p">Additional rule property <span class="ph uicontrol">Async</span></p>
+
+                            <p class="p">The default value of this property is <samp class="ph codeph">false</samp>. If you
+                                set it to <samp class="ph codeph">true</samp>, a resolve function is passed as a
+                                parameter of the check function to allow you to resolve the
+                                asynchronous operation. Call <samp class="ph codeph">fnResolve</samp> to indicate
+                                that the asynchronous check function has finished. The asynchronous
+                                function waits 10 seconds before it times out. </p>
+
+                        </li>
+
+                        <li class="li">
+                            <div class="p">New options to check the location from which Support Assistant has
+                                been loaded:<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_ph1_ky2_lbb">
+                                    <li class="li">
+                                        <p class="p">When you click the <span class="ph uicontrol">Settings</span> button
+                                            in the Support Assistant toolbar, you can see the URL at
+                                            the bottom of the dialog box. A
+                                                <span class="ph uicontrol">Copy</span> button next to the URL
+                                            allows you to copy the location to the clipboard.</p>
+
+                                    </li>
+
+                                    <li class="li">
+                                        <p class="p">In the <span class="ph uicontrol">Technical Information</span>
+                                            section of the report.</p>
+
+                                    </li>
+
+                                </ul>
+</div>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">Displaying issues and their severity</p>
+
+                            <p class="p">After an analysis run, you can see how many issues of each severity
+                                have been reported for each library. This information is also
+                                available for the individual rules. In the
+                                    <span class="ph uicontrol">Details</span> section for each rule, you can
+                                see a severity icon for each issue generated by that rule.</p>
+
+                            <div class="fig fignone" id="loioa09dd79a24c041d288402768558a1d1a__fig_okl_yb4_mbb"><div class="figcontainer">
+                                <img class="image" id="loioa09dd79a24c041d288402768558a1d1a__image_vdg_1c4_mbb" src="loioefd9a332c5fe479183f03828938e2cf2_HiRes.png"/>
+                            </div></div>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div></div></div>
+
+        <div class="section collapsible expanded" id="loioa09dd79a24c041d288402768558a1d1a__section_sgc_dhg_x1b"><div class="section_title">Improved Controls</div><div type="Improved Controls">
+            
+            <ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_sv4_pqn_jbb">
+                <li class="li"><samp class="ph codeph">sap.f.DynamicPage</samp>:<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_ssy_vkg_4bb">
+                        <li class="li">
+                            <p class="p">Additional visual indicators (arrow buttons) are now available. They
+                                are positioned either below the header (when the header is expanded)
+                                or below the title (when the header is collapsed). The
+                                expanded/collapsed state of the header can be toggled by clicking on
+                                the title or the arrow buttons. Both areas get a darker color when
+                                hovering over them. <span class="ph">For more information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.f.sample.DynamicPageFreeStyle/preview" alt="../../explored.html#/sample/sap.f.sample.DynamicPageFreeStyle/preview" title="../../explored.html#/sample/sap.f.sample.DynamicPageFreeStyle/preview">sample</a>.</span></p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">A new area, designated for breadcrumb navigation, has been introduced
+                                at the top-left area of the title of the page. It is enabled with
+                                the new <samp class="ph codeph">breadcrumbs</samp> aggregation (type
+                                    <samp class="ph codeph">sap.m.IBreadcrumbs</samp>) that belongs to
+                                    <samp class="ph codeph">sap.f.DynamicPageTitle</samp>. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.f.DynamicPageTitle.html" alt="../../docs/api/symbols/sap.f.DynamicPageTitle.html" title="../../docs/api/symbols/sap.f.DynamicPageTitle.html">API Reference</a> and the
+                                        <a class="xref" target="_blank" href="../../explored.html#/sample/sap.f.sample.DynamicPageFreeStyle/preview" alt="../../explored.html#/sample/sap.f.sample.DynamicPageFreeStyle/preview" title="../../explored.html#/sample/sap.f.sample.DynamicPageFreeStyle/preview">sample</a>.</span></p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">The <samp class="ph codeph">sap.f.DynamicPageTitle</samp> has a new
+                                    <samp class="ph codeph">navigationActions</samp> aggregation, which is meant
+                                for buttons with navigation semantics, such as
+                                    <span class="ph uicontrol">Close</span>, <span class="ph uicontrol">Full
+                                screen</span>, and <span class="ph uicontrol">Exit full screen</span>. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.f.DynamicPageTitle.html" alt="../../docs/api/symbols/sap.f.DynamicPageTitle.html" title="../../docs/api/symbols/sap.f.DynamicPageTitle.html">API Reference</a> and the
+                                        <a class="xref" target="_blank" href="../../explored.html#/sample/sap.f.sample.DynamicPageFreeStyle/preview" alt="../../explored.html#/sample/sap.f.sample.DynamicPageFreeStyle/preview" title="../../explored.html#/sample/sap.f.sample.DynamicPageFreeStyle/preview">sample</a>.</span></p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">The <samp class="ph codeph">sap.f.DynamicPageTitle</samp> has two new aggregations:
+                                    <samp class="ph codeph">expandedHeading</samp> and
+                                    <samp class="ph codeph">snappedHeading</samp>. They enable the app to display
+                                different content in the heading for the expanded and collapsed
+                                states of the header. The previous <samp class="ph codeph">heading</samp>
+                                aggregation is not deprecated and works as a replacement for the new
+                                ones. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.f.DynamicPageTitle.html" alt="../../docs/api/symbols/sap.f.DynamicPageTitle.html" title="../../docs/api/symbols/sap.f.DynamicPageTitle.html">API
+                                Reference</a>.</span></p>
+
+                        </li>
+
+                    </ul>
+</li>
+
+                <li class="li"><samp class="ph codeph">sap.f.semantic.SemanticPage</samp>:<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_usy_vkg_4bb">
+                        <li class="li">
+                            <p class="p">The control has a new <samp class="ph codeph">titleContent</samp> aggregation and
+                                    <samp class="ph codeph">titlePrimaryArea</samp> property. The aggregation
+                                allows you as an app developer to place content in the middle of the
+                                title area, displayed in both expanded and collapsed (snapped)
+                                states of the header. The property determines which of the title
+                                areas (<samp class="ph codeph">Begin</samp>, <samp class="ph codeph">Middle</samp>) is primary
+                                (shrinking at a lower rate, remaining visible as long as it can).
+                                    <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.f.semantic.SemanticPage.html" alt="../../docs/api/symbols/sap.f.semantic.SemanticPage.html" title="../../docs/api/symbols/sap.f.semantic.SemanticPage.html">API Reference</a> and the
+                                        <a class="xref" target="_blank" href="../../explored.html#/sample/sap.f.sample.SemanticPageFreeStyle/preview" alt="../../explored.html#/sample/sap.f.sample.SemanticPageFreeStyle/preview" title="../../explored.html#/sample/sap.f.sample.SemanticPageFreeStyle/preview">sample</a>.</span></p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">The new <samp class="ph codeph">navigationActions</samp> aggregation that belongs
+                                to the <samp class="ph codeph">sap.f.DynamicPageTitle</samp> is now utilized when
+                                using the <samp class="ph codeph">closeAction</samp>,
+                                    <samp class="ph codeph">fullScreenAction</samp>, and
+                                    <samp class="ph codeph">exitFullScreenAction</samp> aggregations of the
+                                    <samp class="ph codeph">SemanticPage</samp>. The content added in the
+                                aggregations is automatically positioned in the title in an ordered
+                                way. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.f.DynamicPageTitle.html" alt="../../docs/api/symbols/sap.f.DynamicPageTitle.html" title="../../docs/api/symbols/sap.f.DynamicPageTitle.html">API
+                                Reference</a>.</span></p>
+
+                        </li>
+
+                    </ul>
+</li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.CheckBox</samp>: A new <samp class="ph codeph">useEntireWidth</samp>
+                        Boolean property determines whether the value set for the
+                            <samp class="ph codeph">width</samp> property applies to the whole control or to the
+                        control label only. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.CheckBox.html" alt="../../docs/api/symbols/sap.m.CheckBox.html" title="../../docs/api/symbols/sap.m.CheckBox.html">API Reference</a>.</span></p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.DateRangeSelection</samp>: The binding is improved and the
+                        control now supports date intervals. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.DateRangeSelection.html" alt="../../docs/api/symbols/sap.m.DateRangeSelection.html" title="../../docs/api/symbols/sap.m.DateRangeSelection.html">API Reference</a>.</span></p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.FeedListItem</samp> provides new actions for defining
+                        additional features. You can find the features in an
+                            <samp class="ph codeph">sap.m.ActionSheet</samp> when you press the
+                            <span class="ph uicontrol">Action</span> button. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.FeedListItemAction.html" alt="../../docs/api/symbols/sap.m.FeedListItemAction.html" title="../../docs/api/symbols/sap.m.FeedListItemAction.html">API Reference</a>.</span></p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.MessagePage</samp>: A new <samp class="ph codeph">iconAlt</samp> property
+                        has been introduced. It enables the setting of an <samp class="ph codeph">alt</samp>
+                        attribute for the icon displayed on the <samp class="ph codeph">sap.m.MessagePage</samp>.
+                            <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.MessagePage.html" alt="../../docs/api/symbols/sap.m.MessagePage.html" title="../../docs/api/symbols/sap.m.MessagePage.html">API Reference</a>.</span></p>
+
+                </li>
+
+                <li class="li">
+                    <div class="p"><samp class="ph codeph">sap.m.MessageView</samp> has new default behavior and a new
+                        property. These changes aim to save space on the screen and hide unnecessary
+                            controls.<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_op5_nmk_nbb">
+                            <li class="li">
+                                <p class="p">If only one item is available, the details page for the first
+                                    item is used as the initial page after opening a
+                                        <samp class="ph codeph">MessagePopover</samp> or rendering a
+                                        <samp class="ph codeph">MessageView</samp>.</p>
+
+                            </li>
+
+                            <li class="li">
+                                <p class="p">If there are messages of only one type, the filtering options in
+                                    the header will be hidden.</p>
+
+                            </li>
+
+                            <li class="li">
+                                <p class="p">A new <samp class="ph codeph">showDetailsPageHeader</samp> Boolean property for
+                                    hiding the details page header has been introduced. When set to
+                                        <samp class="ph codeph">false</samp>, no header will be displayed in the
+                                    details section of the message.</p>
+
+                            </li>
+
+                        </ul>
+<span class="ph">For more information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.MessageViewInsideDialog/preview" alt="../../explored.html#/sample/sap.m.sample.MessageViewInsideDialog/preview" title="../../explored.html#/sample/sap.m.sample.MessageViewInsideDialog/preview">Sample</a>.</span></div>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.OverflowToolbar</samp>: Until now, controls needed to be
+                        whitelisted in a central helper class to be allowed to move to the overflow
+                        menu. With the addition of the new
+                            <samp class="ph codeph">sap.m.IOverflowToolbarContent</samp> interface, each control
+                        can now provide this data on its own, without needing to be whitelisted. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.IOverflowToolbarContent.html" alt="../../docs/api/symbols/sap.m.IOverflowToolbarContent.html" title="../../docs/api/symbols/sap.m.IOverflowToolbarContent.html">API Reference</a>.</span></p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.PlanningCalendar</samp>: There is a new
+                            <samp class="ph codeph">showWeekNumbers</samp> property that enables the display of
+                        the calendar week numbers. They are available for the
+                            <span class="ph uicontrol">Days</span>, <span class="ph uicontrol">1 Week</span>, and
+                            <span class="ph uicontrol">1 Month</span> views of the
+                            <samp class="ph codeph">sap.m.PlanningCalendar</samp>. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.PlanningCalendar.html" alt="../../docs/api/symbols/sap.m.PlanningCalendar.html" title="../../docs/api/symbols/sap.m.PlanningCalendar.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.PlanningCalendar/preview" alt="../../explored.html#/sample/sap.m.sample.PlanningCalendar/preview" title="../../explored.html#/sample/sap.m.sample.PlanningCalendar/preview">sample</a>.</span></p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.QuickView</samp> has new default behavior. When the
+                            <span class="ph uicontrol">QuickView</span> is only one page, and when no header is
+                        set, the header is no longer rendered. <span class="ph">For
+                            more information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.QuickView/preview" alt="../../explored.html#/sample/sap.m.sample.QuickView/preview" title="../../explored.html#/sample/sap.m.sample.QuickView/preview">Sample</a>.</span></p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.RatingIndicator</samp> has a new <samp class="ph codeph">editable</samp>
+                        property. When set to <samp class="ph codeph">true</samp>, the control can be edited and
+                        you can rate using the icons. When set to <samp class="ph codeph">false</samp>, the rating
+                        indicator is presented in a non-interactive mode and can be used, for
+                        example, to visualize an aggregated rating score.</p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.SegmentedButton</samp>: After the <samp class="ph codeph">buttons</samp>
+                        aggregation was deprecated in version 1.28, both the <samp class="ph codeph">select</samp>
+                        event and <samp class="ph codeph">selectedButton</samp> association are no longer useful
+                        for the recommended <samp class="ph codeph">items</samp> aggregation. For this reason, the
+                            <samp class="ph codeph">select</samp> event and <samp class="ph codeph">selectedButton</samp>
+                        association are deprecated as of version 1.52 and are replaced by new ones -
+                        the <samp class="ph codeph">selectionChange</samp> event and the
+                            <samp class="ph codeph">selectedItem</samp> association. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.SegmentedButton.html" alt="../../docs/api/symbols/sap.m.SegmentedButton.html" title="../../docs/api/symbols/sap.m.SegmentedButton.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.SegmentedButton/preview" alt="../../explored.html#/sample/sap.m.sample.SegmentedButton/preview" title="../../explored.html#/sample/sap.m.sample.SegmentedButton/preview">sample</a>.</span></p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.Table</samp> and <samp class="ph codeph">sap.ui.table.Table</samp>:
+                        Alternate row styling is now supported with the new
+                            <samp class="ph codeph">alternateRowColors</samp> property. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.Table/overview.html" alt="../../docs/api/symbols/sap.m.Table/overview.html" title="../../docs/api/symbols/sap.m.Table/overview.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.TableAlternateRowColors/preview" alt="../../explored.html#/sample/sap.m.sample.TableAlternateRowColors/preview" title="../../explored.html#/sample/sap.m.sample.TableAlternateRowColors/preview">Sample</a> for
+                                <samp class="ph codeph">sap.m.Table</samp> and the <a class="xref" href="../../docs/api/symbols/sap.ui.table.Table/overview.html" alt="../../docs/api/symbols/sap.ui.table.Table/overview.html" title="../../docs/api/symbols/sap.ui.table.Table/overview.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.TableAlternateRowColors/preview" alt="../../explored.html#/sample/sap.m.sample.TableAlternateRowColors/preview" title="../../explored.html#/sample/sap.m.sample.TableAlternateRowColors/preview">Sample</a> for
+                                <samp class="ph codeph">sap.ui.table.Table</samp>.</span>
+                    </p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.Table</samp>: A new <samp class="ph codeph">popinLayout</samp> property has
+                        been added that defines the layout for pop-in rows. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.Table/controlProperties.html" alt="../../docs/api/symbols/sap.m.Table/controlProperties.html" title="../../docs/api/symbols/sap.m.Table/controlProperties.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.Table/preview" alt="../../explored.html#/sample/sap.m.sample.Table/preview" title="../../explored.html#/sample/sap.m.sample.Table/preview">Sample</a>.</span></p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.Text</samp> has a new <samp class="ph codeph">renderWhitespace</samp>
+                        property. It specifies the rendering of whitespace characters (<samp class="ph codeph">“
+                            “</samp>) and tabs (<samp class="ph codeph">\t</samp>) inside the control. The
+                        default value is <samp class="ph codeph">false</samp>. If set to <samp class="ph codeph">true</samp>,
+                        the browser preserves whitespace characters and tabs. Line breaks
+                            (<samp class="ph codeph">\r\n</samp>, <samp class="ph codeph">\n\r</samp>, <samp class="ph codeph">\r</samp>,
+                            <samp class="ph codeph">\n</samp>) are always visualized unless the
+                            <samp class="ph codeph">wrapping</samp> property is set to <samp class="ph codeph">false</samp>. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.Text.html" alt="../../docs/api/symbols/sap.m.Text.html" title="../../docs/api/symbols/sap.m.Text.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.TextRenderWhitespace/preview" alt="../../explored.html#/sample/sap.m.sample.TextRenderWhitespace/preview" title="../../explored.html#/sample/sap.m.sample.TextRenderWhitespace/preview">Samples</a>.</span></p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.m.Title</samp> has a new <samp class="ph codeph">wrapping</samp> property. It
+                        determines if the title will be wrapped. The default value is
+                            <samp class="ph codeph">false</samp>. If set to <samp class="ph codeph">true</samp>, the entire
+                        title is wrapped. You should only activate the wrapping if the surrounding
+                        container allows flexible heights. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.Title/methods/setWrapping.html" alt="../../docs/api/symbols/sap.m.Title/methods/setWrapping.html" title="../../docs/api/symbols/sap.m.Title/methods/setWrapping.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.TitleWrapping/preview" alt="../../explored.html#/sample/sap.m.sample.TitleWrapping/preview" title="../../explored.html#/sample/sap.m.sample.TitleWrapping/preview">Samples</a>.</span></p>
+
+                </li>
+
+                
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.tnt.NavigationList</samp> and
+                            <samp class="ph codeph">sap.tnt.SideNavigation</samp> have a new
+                            <samp class="ph codeph">selectedItem</samp> association. It allows you to specify
+                        which <samp class="ph codeph">NavigationListItem</samp> will be selected when you load the
+                        page and enables you to change the selected <span class="ph uicontrol">Menu</span> item
+                        using the code. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.tnt.SideNavigation.html" alt="../../docs/api/symbols/sap.tnt.SideNavigation.html" title="../../docs/api/symbols/sap.tnt.SideNavigation.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.tnt.sample.SideNavigation/preview" alt="../../explored.html#/sample/sap.tnt.sample.SideNavigation/preview" title="../../explored.html#/sample/sap.tnt.sample.SideNavigation/preview">Samples</a>.</span></p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.tnt.NavigationListItem</samp> has a new
+                            <samp class="ph codeph">visible</samp> property. It allows you to choose if a
+                            <samp class="ph codeph">NavigationListItem</samp> will be rendered in the
+                            <samp class="ph codeph">NavigationList</samp> or not. By default it is set to
+                            <samp class="ph codeph">true</samp>. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.tnt.NavigationListItem.html" alt="../../docs/api/symbols/sap.tnt.NavigationListItem.html" title="../../docs/api/symbols/sap.tnt.NavigationListItem.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.tnt.sample.NavigationList/preview" alt="../../explored.html#/sample/sap.tnt.sample.NavigationList/preview" title="../../explored.html#/sample/sap.tnt.sample.NavigationList/preview">Samples</a>.</span></p>
+
+                </li>
+
+                
+                
+                
+                
+                
+                
+                
+                <li class="li">
+                    <p class="p"><samp class="ph codeph">sap.ui.table.Table</samp>: You can now use drag and drop for table
+                        rows with aggregation <samp class="ph codeph">dragDropConfig</samp>. <span class="ph">For
+                            more information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.table.Table/aggregations.html" alt="../../docs/api/symbols/sap.ui.table.Table/aggregations.html" title="../../docs/api/symbols/sap.ui.table.Table/aggregations.html">API Reference for the
+                                    <samp class="ph codeph">dragDropConfig</samp> aggregation</a>, the <a class="xref" href="../../docs/api/symbols/sap.ui.core.dnd.html" alt="../../docs/api/symbols/sap.ui.core.dnd.html" title="../../docs/api/symbols/sap.ui.core.dnd.html">API Reference for
+                                    <samp class="ph codeph">sap.ui.core.dnd</samp></a>, the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.table.sample.TreeTable.HierarchyMaintenanceJSONTreeBinding/preview" alt="../../explored.html#/sample/sap.ui.table.sample.TreeTable.HierarchyMaintenanceJSONTreeBinding/preview" title="../../explored.html#/sample/sap.ui.table.sample.TreeTable.HierarchyMaintenanceJSONTreeBinding/preview">Sample for
+                                    <samp class="ph codeph">TreeTable</samp></a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.table.sample.DnD/preview" alt="../../explored.html#/sample/sap.ui.table.sample.DnD/preview" title="../../explored.html#/sample/sap.ui.table.sample.DnD/preview">Sample for
+                                <samp class="ph codeph">Table</samp></a>.</span></p>
+
+                </li>
+
+                <li class="li"><samp class="ph codeph">sap.ui.unified.FileUploader</samp>:<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_tsy_vkg_4bb">
+                        <li class="li">
+                            <p class="p">A new <samp class="ph codeph">valueStateText</samp> property has been introduced to
+                                enable the display of custom messages when a
+                                    <samp class="ph codeph">valueState</samp> is set. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.unified.FileUploader.html" alt="../../docs/api/symbols/sap.ui.unified.FileUploader.html" title="../../docs/api/symbols/sap.ui.unified.FileUploader.html">API
+                                Reference</a>.</span></p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">The new <samp class="ph codeph">xhrSettings</samp> aggregation allows app
+                                developers to specify settings for the internally used
+                                    <samp class="ph codeph">XMLHttpRequest</samp> object when uploading files with
+                                    <samp class="ph codeph">sendXHR=true</samp>. Currently the only supported
+                                setting is <samp class="ph codeph">withCredentials</samp>. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.unified.FileUploader.html" alt="../../docs/api/symbols/sap.ui.unified.FileUploader.html" title="../../docs/api/symbols/sap.ui.unified.FileUploader.html">API
+                                Reference</a>.</span></p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">A new <samp class="ph codeph">sap.ui.unified.IProcessableBlobs</samp> interface has
+                                been implemented and <samp class="ph codeph">sap.ui.unified.FileUploader</samp>
+                                has been updated to use it. It facilitates the implementation of
+                                custom controls that extend the
+                                    <samp class="ph codeph">sap.ui.unified.FileUploader</samp>, for example, to
+                                modify the files before they get uploaded. To enable the feature,
+                                you need to set the <samp class="ph codeph">bPreProcessFiles</samp> parameter of
+                                the <samp class="ph codeph">upload</samp> method to <samp class="ph codeph">true</samp>. As a
+                                result, the method becomes asynchronous. <span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.unified.IProcessableBlobs.html" alt="../../docs/api/symbols/sap.ui.unified.IProcessableBlobs.html" title="../../docs/api/symbols/sap.ui.unified.IProcessableBlobs.html">API
+                                Reference</a>.</span></p>
+
+                        </li>
+
+                    </ul>
+</li>
+
+                <li class="li"><samp class="ph codeph">sap.uxap.ObjectPageLayout</samp> now contains a new type of header.
+                    The new header is flexible and dynamic as opposed to the classic header that has
+                    a specific and predefined layout. To implement the new dynamic header, the app
+                    should provide an instance of the new
+                        <samp class="ph codeph">sap.uxap.ObjectPageDynamicHeaderTitle</samp> control as the value
+                    of the <samp class="ph codeph">headerTitle</samp> aggregation.<p class="p">With the new dynamic header
+                        the following features are available:</p>
+<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_wk3_khb_rbb">
+                        <li class="li">
+                            <p class="p">General-purpose aggregations instead of semantic properties that
+                                allow you to build a custom header layout</p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">An arrow button displayed below the header content and visual
+                                indicators when hovering over the title and the arrow button</p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">The title and the arrow button can be clicked to expand or collapse
+                                the header</p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p">A pin button allowing the header to remain expanded when scrolling
+                                the page or clicking/tapping the title</p>
+
+                        </li>
+
+                        <li class="li">
+                            <p class="p"><samp class="ph codeph">sap.m.OverflowToolbar</samp> is used internally to
+                                implement the <samp class="ph codeph">actions</samp> aggregation, enabling its
+                                features, such as the priority and grouping of the actions.</p>
+
+                        </li>
+
+                    </ul>
+<p class="p"><span class="ph">For more information, see <a class="xref" href="d2ef0099542d44dc868719d908e576d0.html" title="The sap.uxap.ObjectPageLayout control has two types of header - classic header and dynamic header.">Object Page Headers</a>, the <a class="xref" href="../../docs/api/symbols/sap.uxap.ObjectPageDynamicHeaderTitle.html" alt="../../docs/api/symbols/sap.uxap.ObjectPageDynamicHeaderTitle.html" title="../../docs/api/symbols/sap.uxap.ObjectPageDynamicHeaderTitle.html">API Reference</a>, and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.uxap.sample.ObjectPageWithDynamicHeader/preview" alt="../../explored.html#/sample/sap.uxap.sample.ObjectPageWithDynamicHeader/preview" title="../../explored.html#/sample/sap.uxap.sample.ObjectPageWithDynamicHeader/preview">sample</a>.</span></p>
+</li>
+
+            </ul>
+
+        </div></div>
+
+        <div class="section collapsible expanded" id="loioa09dd79a24c041d288402768558a1d1a__section_zdf_pcm_4bb"><div class="section_title">Demo Kit Improvements</div><div type="Demo Kit Improvements"><p class="p">A big thank you to everyone who sent us valuable feedback
+                from many different channels. We are working hard to implement your
+                suggestions.</p>
+<p class="p">With this version, we have improved the performance of the Demo
+                Kit app, enhanced link handling and scrolling, improved quality, solved many issues,
+                and added several new features:</p>
+<div class="sectiondiv subsection">
+                <p class="p subsectiontitle">General</p>
+
+                <ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_jgf_tcm_4bb">
+                    <li class="li">
+                        <p class="p">Compact display mode is always used so that white space is utilized
+                            better for all devices.</p>
+
+                    </li>
+
+                    <li class="li">
+                        <p class="p">Link processing is improved and links can be opened in a new browser
+                            tab.</p>
+
+                    </li>
+
+                    <li class="li">
+                        <p class="p">Performance is improved for initial loading, deep linking, and the
+                                <span class="ph uicontrol">API Reference</span>.</p>
+
+                    </li>
+
+                    <li class="li">
+                        <p class="p">Busy indicators are added.</p>
+
+                    </li>
+
+                    <li class="li">
+                        <p class="p">The error pages are improved and new ones are added.</p>
+
+                    </li>
+
+                    <li class="li">
+                        <p class="p">Global search: Clicking the magnifier icon puts the focus on the search
+                            field.</p>
+
+                    </li>
+
+                    <li class="li">
+                        <p class="p">Visualization of search results on small screens is improved.</p>
+
+                    </li>
+
+                </ul>
+
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Documentation</p>
+
+                <ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_tg3_zcm_4bb">
+                    <li class="li">
+                        <p class="p">The root level node of the documentation tree is removed to improve
+                            usability.</p>
+
+                    </li>
+
+                    <li class="li">
+                        <p class="p">The documentation can be downloaded in PDF format from the
+                                <span class="ph uicontrol">Download</span> button on the landing page of the
+                                <span class="ph uicontrol">Documentation</span> section.</p>
+
+                    </li>
+
+                </ul>
+
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">API Reference</p>
+
+                <p class="p">White spaces are decreased, contrast between the background and the tables is
+                    increased, and the structure of the content is improved.</p>
+
+                <ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_ejr_fdm_4bb">
+                    <li class="li">
+                        <p class="p">The URL hash (#) is updated when selecting sections and subsections and
+                            while scrolling through the page sections.</p>
+
+                    </li>
+
+                    <li class="li">
+                        <p class="p">Thrown exceptions are displayed.</p>
+
+                    </li>
+
+                    <li class="li">
+                        <div class="p">The following information is displayed in the header:<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_icf_hdm_4bb">
+                                <li class="li">
+                                    <p class="p">Cross links to <span class="ph uicontrol">Documentation</span> are
+                                        added.</p>
+
+                                </li>
+
+                                <li class="li">
+                                    <p class="p">Abstract classes are displayed in front of the class
+                                        name.</p>
+
+                                </li>
+
+                                <li class="li">
+                                    <p class="p">Known direct subclasses and known direct implementations are
+                                        displayed. If there is more than one instance, they are
+                                        visualized in a popover.</p>
+
+                                </li>
+
+                                <li class="li">
+                                    <p class="p">Class visibility information is added.</p>
+
+                                </li>
+
+                                <li class="li">
+                                    <p class="p">Library information for a certain namespace is added.</p>
+
+                                </li>
+
+                            </ul>
+</div>
+
+                    </li>
+
+                </ul>
+
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Samples</p>
+
+                <ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_qkm_4dm_4bb">
+                    <li class="li">The cross-links between <span class="ph uicontrol">Samples</span> and <span class="ph uicontrol">API
+                            Reference</span> are more prominent.</li>
+
+                    <li class="li"><span class="ph uicontrol">About</span> sections with descriptions are added for the
+                        tutorial samples.</li>
+
+                </ul>
+
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Tools</p>
+
+                <p class="p">We added a new <span class="ph uicontrol">Tools</span> section in the main navigation after
+                    the <span class="ph uicontrol">Demo Apps</span> section. It contains documentation and
+                    quick navigation to different <span class="ph"><span class="ph pname">OpenUI5</span></span> tools, such
+                    as <span class="ph pname">SAP Web IDE</span>, UI5
+                    Inspector, the icon explorer, the theme parameter toolbox, UI theme designer,
+                    and Build.</p>
+
+                <div class="note note"><span class="notetitle">Note</span> The icon explorer and the theme parameter toolbox were moved from
+                        <span class="ph uicontrol">Demo Apps</span> to the <span class="ph uicontrol">Tools</span>
+                    section.</div>
+
+            </div></div></div>
+
+        <div class="section collapsible expanded" id="loioa09dd79a24c041d288402768558a1d1a__section_vgc_dhg_x1b"><div class="section_title">Documentation and Templates</div><div type="Documentation and Templates">
+            
+            <div class="p">Check out the following new and updated documentation topics:<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_m1y_rzg_4cb">
+                    <li class="li">
+                        <p class="p"><a class="xref" href="ae448243822448d8ba04b4784f4b09a0.html#loioae448243822448d8ba04b4784f4b09a0" title="To make sure that the code is always tested thoroughly before it is included in a productive app, you should use a test runner that automates tests. The test runner can be included in your project setup so that it is called whenever code changes are submitted.">Test Automation</a> that describes the
+                            setup for automated testing with <span class="ph uicontrol">Karma</span></p>
+
+                    </li>
+
+                    <li class="li">
+                        <p class="p"><a class="xref" href="fe7a158313af4590ad60f844e5b43b80.html" title="This section describes the setup of a development project where multiple developers work together on the same code.">Continuous Integration: Ensure Code Quality</a></p>
+
+                    </li>
+
+                    <li class="li">
+                        <p class="p"><a class="xref" href="408b40efed3c416681e1bd8cdd8910d4.html" title="If a web app has performance issues, finding the cause can be both a time-consuming and nerve-consuming task. To help you avoid and solve performance issues in your app, here are some good practices we've discovered while dealing with OpenUI5 apps.">Performance: Speed Up Your App</a></p>
+
+                    </li>
+
+                </ul>
+</div>
+
+            <div class="p">Our tutorials and templates have been updated according to the latest
+                    practices:
+<div class="table-wrapper tablenoborder"><table summary="" id="loioa09dd79a24c041d288402768558a1d1a__table_bqm_nv1_wbb" class="table" frame="void" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+                        
+                        
+                        <thead class="thead" align="left">
+                            <tr class="row">
+                                <th class="entry border_none" valign="top" width="50%" id="d8667152e1380">
+                                    <p class="p">Change</p>
+
+                                </th>
+
+                                <th class="entry border_none" valign="top" width="50%" id="d8667152e1386">
+                                    <p class="p">Why?</p>
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody class="tbody">
+                            <tr class="row">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8667152e1380 ">
+                                    <div class="p">IDs added: <ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_cdr_gw1_wbb">
+                                            <li class="li">
+                                                <div class="p">Component ID in all HTML pages that instantiate a
+                                                  UI component
+                                                  manually<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">new ComponentContainer({
+   height : "100%",
+   name : "sap.ui.demo.worklist",
+   <span class="ph emphasis emphasis">settings : {
+      id : "worklist"
+   }</span>
+})
+</pre></div>
+</div>
+
+                                            </li>
+
+                                            <li class="li">
+                                                <p class="p">IDs for targets in the routing configuration in
+                                                  the <span class="ph filepath">manifest.json</span> descriptor
+                                                  file</p>
+
+                                            </li>
+
+                                        </ul>
+</div>
+
+                                </td>
+
+                                <td class="entry border_none" valign="top" width="50%" headers="d8667152e1386 ">
+                                    <p class="p">Unique IDs are necessary for many tools and testing
+                                        scenarios. If there is no ID specified for an object, it
+                                        gets a generated ID.</p>
+
+                                    <p class="p">For components, this can be confusing in scenarios in which
+                                        more than one component is being used. </p>
+
+                                    <p class="p">For target IDs, this leads to unpredictable view IDs as the
+                                        views are generated by the router in the sequence in which
+                                        they are called.</p>
+
+                                </td>
+
+                            </tr>
+
+                            <tr class="row">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8667152e1380 ">
+                                    <div class="p">Asynchronous processing added:<ul class="ul" id="loioa09dd79a24c041d288402768558a1d1a__ul_o21_gw1_wbb">
+                                            <li class="li">
+                                                <p class="p">In the routing configuration in the
+                                                  <span class="ph filepath">manifest.json</span> descriptor
+                                                  files</p>
+
+                                            </li>
+
+                                            <li class="li">
+                                                <p class="p">Loading of the <samp class="ph codeph">rootView</samp> in the
+                                                  <span class="ph filepath">manifest.json</span> descriptor
+                                                  files</p>
+
+                                            </li>
+
+                                            <li class="li">
+                                                <div class="p">Loading of the <samp class="ph codeph">rootView</samp> in the
+                                                  <span class="ph filepath">Component.js</span>
+                                                  files<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">rootView : {
+                viewName: "sap.m.sample.ActionListItem.List",
+                type: "XML",
+                async: true,
+                id: "app"
+}
+</pre></div>
+</div>
+
+                                            </li>
+
+                                        </ul>
+</div>
+
+                                </td>
+
+                                <td class="entry border_none" valign="top" width="50%" headers="d8667152e1386 ">
+                                    <p class="p">Asynchronous loading of views (or any resources) can be
+                                        faster in modern browsers. The browser can load resources in
+                                        parallel without freezing the UI. So this may improve the
+                                        performance and user experience.</p>
+
+                                    <div class="note note"><span class="notetitle">Note</span> 
+                                        <p class="p">There are rules in the support assistant that check for
+                                            asynchronous loading.</p>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            <tr class="row">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8667152e1380 ">
+                                    <p class="p"><samp class="ph codeph">getView().byId</samp> replaced by
+                                            <samp class="ph codeph">byId</samp> on all controller files</p>
+
+                                </td>
+
+                                <td class="entry border_none" valign="top" width="50%" headers="d8667152e1386 ">
+                                    <p class="p">It is shorter, hence easier to read and type. It even makes
+                                        writing some unit tests easier because developers do not
+                                        need to “stub” the <samp class="ph codeph">getView()</samp> method.</p>
+
+                                </td>
+
+                            </tr>
+
+                            <tr class="row">
+                                <td class="entry border_none" valign="top" width="50%" headers="d8667152e1380 ">
+                                    <p class="p">Namespace of the Walkthrough tutorial renamed from
+                                            <samp class="ph codeph">walkthrough</samp> to <samp class="ph codeph">wt</samp></p>
+
+                                </td>
+
+                                <td class="entry border_none" valign="top" width="50%" headers="d8667152e1386 ">
+                                    <p class="p">Long namespaces can make resource paths pretty long, so this
+                                        is easier to understand.</p>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+</div>
+</div>
+
+        </div></div>
+
+        
+        
+    </div>
+
+</div></div>
+
+</body>
+</html>

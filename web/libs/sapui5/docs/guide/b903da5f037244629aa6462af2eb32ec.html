@@ -1,0 +1,140 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="To add custom columns to a tree table in the list report, follow the steps described below."/>
+<meta name="description" content="To add custom columns to a tree table in the list report, follow the steps described below."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5940741274026298"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5940741274026298"/>
+<title>Example: Adding Columns to a Tree Table in the List Report</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob903da5f037244629aa6462af2eb32ec">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Example: Adding Columns to a Tree Table in the List Report</h1>
+
+	
+	<div class="body taskbody"><p class="shortdesc">To add custom columns to a tree table in the list report, follow the steps described
+              below.</p>
+
+		<div class="section context"><div class="tasklabel"><h2 class="sectiontitle tasklabel">Context</h2></div>
+			<p class="p">The table containing additional columns can look like this: </p>
+
+			<div class="fig fignone" id="loiob903da5f037244629aa6462af2eb32ec__fig_pts_yvc_sz"><div class="figcontainer">
+				
+				<img class="image" id="loiob903da5f037244629aa6462af2eb32ec__image_bv2_bwc_sz" width="1400px" src="loio24fb6d5ffa82433a9751e9a46112282f_LowRes.png"/>
+			<div class="figcap">Custom columns in tree table in the list report</div></div></div>
+
+		</div>
+		<section class="section procedure"><div class="ol steps tasklabel"><h2 class="sectiontitle tasklabel">Procedure</h2></div><ol class="ol steps"><li class="li step stepexpand">
+				<span class="ph cmd">Define a fragment for the view extension</span>
+				<div class="itemgroup info">
+					<p class="p">In the example project webapp/ext/fragments/ListReportTreeTableColumns.fragment.xml, the
+                                          custom column is added to the first position of the tree
+                                          table. You can change the sequence via the
+                                                 <samp class="ph codeph">customData</samp> property
+                                                 <samp class="ph codeph">columnIndex</samp> as shown below.</p>
+
+					<div class="p">
+						<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+							<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;core:FragmentDefinition xmlns:core="sap.ui.core"
+
+       xmlns:table="sap.ui.table" xmlns="sap.m"&gt;
+
+       &lt;table:Column&gt;
+
+              &lt;Label text="Rating" /&gt;
+
+              &lt;table:customData&gt;
+
+                     &lt;core:CustomData key="p13nData"
+
+                            value='\{"columnKey": "Rating", "leadingProperty":"Price", "columnIndex" : "100"}' /&gt;
+
+              &lt;/table:customData&gt;
+
+              &lt;table:template&gt;
+
+                     &lt;RatingIndicator value="{= ${Price} &gt; 500 ? 1:5}"&gt;&lt;/RatingIndicator&gt;
+
+              &lt;/table:template&gt;
+
+       &lt;/table:Column&gt;
+
+       &lt;table:Column&gt;
+
+              &lt;Label text="Test" /&gt;
+
+              &lt;table:customData&gt;
+
+                     &lt;core:CustomData key="p13nData" value='\{"columnKey": "Test", "columnIndex" : "101"}' /&gt;
+
+              &lt;/table:customData&gt;
+
+              &lt;table:template&gt;
+
+                     &lt;Text text="{i18n|sap.suite.ui.generic.template.ListReport|STTA_C_MP_Product&gt;xfld.BreakoutColumnContent}"&gt;&lt;/Text&gt;
+
+              &lt;/table:template&gt;
+
+       &lt;/table:Column&gt;
+
+&lt;/core:FragmentDefinition&gt;
+</pre></div>
+
+						</div>
+
+					</div>
+
+				</div>
+			</li>
+<li class="li step stepexpand">
+				<span class="ph cmd">Register your view extension in the manifest.json file of your
+					application.</span>
+				<div class="itemgroup info">
+					<div class="p">
+						<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+							<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">...
+
+ "extends": {
+
+      "component": "sap.suite.ui.generic.template.ListReport",
+
+      "minVersion": "1.1.0",
+
+      "extensions": {
+
+        "sap.ui.viewExtensions": {
+
+"sap.suite.ui.generic.template.ListReport.view.ListReport": {
+
+            "TreeTableColumnsExtension|STTA_C_MP_Product": {
+
+                  "className": "sap.ui.core.Fragment",
+
+                  "fragmentName": "STTA_MP.ext.fragments.ListReportTreeTableColumns",
+
+                  "type": "XML"
+
+            },… 
+</pre></div>
+
+						</div>
+
+					</div>
+
+				</div>
+			</li>
+</ol>
+</section>
+	</div>
+
+</div></div>
+
+</body>
+</html>

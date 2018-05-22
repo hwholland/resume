@@ -1,0 +1,1436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The implementation sap.ui.model.odata.ODataMetaModel offers a unified access to both OData Version 2.0 metadata and Version 4.0 annotations."/>
+<meta name="description" content="The implementation sap.ui.model.odata.ODataMetaModel offers a unified access to both OData Version 2.0 metadata and Version 4.0 annotations."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=1510563903263522"/>
+<title>Meta Model for OData V2</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/framewrapper.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio341823349ed04df1813197f2a0d71db2">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Meta Model for OData V2</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The implementation <samp class="ph codeph">sap.ui.model.odata.ODataMetaModel</samp> offers a unified
+        access to both OData Version 2.0 metadata and Version 4.0 annotations.</p>
+
+		<p class="p">It uses the existing <samp class="ph codeph">sap.ui.model.odata.ODataMetadata</samp> as a foundation and
+            merges the OData Version 4.0 annotations from the existing
+                <samp class="ph codeph">sap.ui.model.odata.ODataAnnotations</samp> directly into the corresponding
+            entity or property.</p>
+
+        <p class="p">You can get an instance of <samp class="ph codeph">sap.ui.model.odata.ODataMetaModel</samp> from an
+            instance of <samp class="ph codeph">sap.ui.model.odata.v2.ODataModel</samp>, see <a class="xref" href="5ee619fc1370463ea674ee04b65ed83b.html" title="The XML templating concept enables you to use an XML view as a template. This template is transformed by an XML preprocessor on the source level, the XML DOM, at runtime just before an SAPUI5 control tree is created from the XML source.">XML Templating</a>.</p>
+
+        <div class="section"><div class="section_title">Basic Structure</div><div type="Basic Structure">
+            
+            <p class="p">The basic structure of <samp class="ph codeph">sap.ui.model.odata.ODataMetadata</samp> is shown in
+                the following code snippet. It shows you how the most important elements of the
+                entity model are nested. Each of these elements (except <em class="ph i">association set end</em>)
+                can have <samp class="ph codeph">extensions</samp>, that is, XML attribute values from some
+                namespace. The code snippets below show how these extensions are stored and
+                processed.</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"dataServices": {
+    "schema": [{
+      "association": [{
+        "end": []
+      }],
+      "complexType": [{
+        "property": []
+      }],
+      "entityContainer": [{
+        "associationSet": [{
+          "end": []
+        }],
+        "entitySet": [],
+        "functionImport": [{
+          "parameter": []
+        }]
+      }],
+      "entityType": [{
+        "property": [],
+        "navigationProperty": []
+      }]
+    }]
+  }
+}</pre></div>
+
+            <p class="p">The following code snippet gives a closer look and has more properties:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">{
+  "version": "1.0",
+  "dataServices": {
+    "dataServiceVersion": "2.0",
+    "schema": [{
+      "namespace": "GWSAMPLE_BASIC",
+      "entityType": [{
+        "name": "BusinessPartner",
+        "key": {
+          "propertyRef": [{
+            "name": "BusinessPartnerID"
+          }]
+        },
+        "property": [{
+          "name": "BusinessPartnerID",
+          "type": "Edm.String",
+          "nullable": "false",
+          "maxLength": "10"
+        }],
+        "navigationProperty": [{
+          "name": "ToSalesOrders",
+          "relationship": "GWSAMPLE_BASIC.Assoc_BusinessPartner_SalesOrders",
+          "fromRole": "FromRole_Assoc_BusinessPartner_SalesOrders",
+          "toRole": "ToRole_Assoc_BusinessPartner_SalesOrders"
+        }]
+      }],
+      "complexType": [{
+        "name": "CT_Address",
+        "property": [{
+          "name": "City",
+          "type": "Edm.String",
+          "maxLength": "40"
+        }]
+      }],
+      "association": [{
+        "name": "Assoc_BusinessPartner_SalesOrders",
+        "end": [{
+          "type": "GWSAMPLE_BASIC.BusinessPartner",
+          "multiplicity": "1",
+          "role": "FromRole_Assoc_BusinessPartner_SalesOrders"
+        }, {
+          "type": "GWSAMPLE_BASIC.SalesOrder",
+          "multiplicity": "*",
+          "role": "ToRole_Assoc_BusinessPartner_SalesOrders"
+        }],
+        "referentialConstraint": {
+          "principal": {
+            "role": "FromRole_Assoc_BusinessPartner_SalesOrders",
+            "propertyRef": [{
+              "name": "BusinessPartnerID"
+            }]
+          },
+          "dependent": {
+            "role": "ToRole_Assoc_BusinessPartner_SalesOrders",
+            "propertyRef": [{
+              "name": "CustomerID"
+            }]
+          }
+        }
+      }],
+      "entityContainer": [{
+        "name": "GWSAMPLE_BASIC_Entities", 
+        "isDefaultEntityContainer": "true",
+        "entitySet": [{
+          "name": "BusinessPartnerSet",
+          "entityType": "GWSAMPLE_BASIC.BusinessPartner"
+        }],
+        "associationSet": [{
+          "name": "Assoc_BusinessPartner_SalesOrders_AssocS",
+          "association": "GWSAMPLE_BASIC.Assoc_BusinessPartner_SalesOrders",
+          "end": [{
+            "entitySet": "BusinessPartnerSet",
+            "role": "FromRole_Assoc_BusinessPartner_SalesOrders"
+          }, {
+            "entitySet": "SalesOrderSet",
+            "role": "ToRole_Assoc_BusinessPartner_SalesOrders"
+          }]
+        }],
+        "functionImport": [{
+          "name": "SalesOrder_Confirm",
+          "returnType": "GWSAMPLE_BASIC.SalesOrder",
+          "entitySet": "SalesOrderSet",
+          "httpMethod": "POST",
+          "parameter": [{
+            "name": "SalesOrderID",
+            "type": "Edm.String",
+            "mode": "In",
+            "maxLength": "10"
+          }]
+        }]
+      }]
+    }]
+  }}</pre></div>
+
+        </div></div>
+
+    <div class="section"><div class="section_title">Accessing Objects and Properties</div><div type="Accessing Objects and Properties"><p class="p">The objects in the OData meta model
+        are arranged in arrays. <samp class="ph codeph">/dataServices/schema</samp>, for example, is an array of
+        schemas where each schema has an <samp class="ph codeph">entityType</samp> property with an array of
+        entity types, and so on. So, <samp class="ph codeph">/dataServices/schema/0/entityType/16</samp> can be
+        the path to the entity type with name "Order" in the schema with namespace
+        "MySchema".</p>
+<p class="p">However, these paths are not stable: If an entity type with lower index is
+        removed from the schema, the path to "Order" changes to
+          <samp class="ph codeph">/dataServices/schema/0/entityType/15</samp>. To avoid problems with changing
+        indexes, <samp class="ph codeph">getObject</samp> and <samp class="ph codeph">getProperty</samp> support XPath-like
+        queries for the indexes. Each index can be replaced by a query in square brackets. You can,
+        for example, address the schema by using the path
+          <samp class="ph codeph">/dataServices/schema/[${namespace}==='MySchema']</samp> or address the entity by
+        using the path
+          <samp class="ph codeph">/dataServices/schema/[${namespace}==='MySchema']/entityType/[${name}==='Order'</samp>].</p>
+<p class="p">The
+        syntax inside the square brackets corresponds to the expression binding syntax. The query is
+        executed for each object in the array until the result is true (truthy) for the first time.
+        This object is then chosen. To embed such a path into an expression binding, use a complex
+        binding syntax: <samp class="ph codeph">${path:'...'}</samp>. Example: <samp class="ph codeph">{:=
+          ${path:'target&gt;extensions/[${name} === \'semantics\']/value'} ===
+        'email'}</samp></p>
+<p class="p">Each of these queries is self-contained. The query can refer to
+        properties of the current candidate via a relative path, for example
+          <samp class="ph codeph">${name}</samp>, but it <span class="ph emphasis emphasis">cannot</span> refer to variables such as
+          <samp class="ph codeph">${meta&gt;}</samp> that are available in XML templating at that
+        point.</p>
+</div></div>
+
+        <div class="section"><div class="section_title">Extensions</div><div type="Extensions">
+            
+            <p class="p">Extensions are stored as an array of objects, each with a namespace, a name, and a
+                value. Annotations from the "http://www.sap.com/Protocols/SAPData" namespace are
+                lifted up from the <samp class="ph codeph">extensions</samp> array and transformed from objects
+                into simple properties with an <samp class="ph codeph">sap:</samp> prefix added to their name, see
+                line number 8 in the following code snippet.</p>
+
+            <div class="note note"><span class="notetitle">Note</span> 
+                <p class="p">As this happens in addition, the following example shows both representations. By
+                    this, the respective annotations can be addressed via a simple relative path
+                    instead of searching an array.</p>
+
+            </div>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">1  {
+2    "name": "BusinessPartnerID",
+3    "extensions": [{
+4      "name": "label",
+5      "value": "Bus. Part. ID",
+6      "namespace": "http://www.sap.com/Protocols/SAPData"
+7    }],
+8    "sap:label": "Bus. Part. ID"
+9  }</pre></div>
+
+        </div></div>
+
+        <div class="section"><div class="section_title">OData v4 Annotations</div><div type="OData v4 Annotations">
+            
+            <p class="p">Each element of the entity model (except <em class="ph i">association set end</em>) can be
+                annotated. These annotations from the existing
+                    <samp class="ph codeph">sap.ui.model.odata.ODataAnnotations</samp> are merged directly into
+                the corresponding element. The following code snippet shows how the structure from
+                the existing <samp class="ph codeph">sap.ui.model.odata.ODataMetadata</samp>, as explained above
+                and including extensions and constraints such as <samp class="ph codeph">nullable</samp> or
+                    <samp class="ph codeph">maxLength</samp>, is fleshed out with lifted v2 annotations and
+                inlined v4 annotations, such as <samp class="ph codeph">Org.OData.Measures.V1.Unit</samp> or
+                    <samp class="ph codeph">com.sap.vocabularies.UI.v1.Identification</samp>. If you want to
+                navigate the structure, for example for XML templating, it is important to
+                understand this structure.</p>
+
+            <p class="p">ODataMetaModel JSON Format:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>
+"dataServices" : {
+    "schema" : [{
+        "namespace" : "GWSAMPLE_BASIC",
+        "entityType" : [{
+            "name" : "Product",
+            "property" : [{
+                "name" : "ProductID",
+                "type" : "Edm.String",
+                "nullable" : "false",
+                "maxLength" : "10"
+            }, {
+                "name" : "SupplierName",
+                "type" : "Edm.String",
+                "maxLength" : "80",
+                "extensions" : [{
+                  "name" : "label",
+                  "value" : "Company Name",
+                  "namespace" : "http://www.sap.com/Protocols/SAPData"
+                }, {
+                  "name" : "creatable",
+                  "value" : "false",
+                  "namespace" : "http://www.sap.com/Protocols/SAPData"
+                }, {
+                  "name" : "updatable",
+                  "value" : "false",
+                  "namespace" : "http://www.sap.com/Protocols/SAPData"
+                }],
+                "sap:label" : "Company Name",
+                "sap:creatable" : "false",
+                "sap:updatable" : "false"
+                "Org.OData.Core.V1.Computed" : {
+                    "Bool" : "true"
+                }
+            }, {
+                "name" : "WeightMeasure",
+                "type" : "Edm.Decimal",
+                "precision" : "13",
+                "scale" : "3",
+                "Org.OData.Measures.V1.Unit" : {
+                    "Path" : "WeightUnit"
+                }
+            }, {
+                "name" : "WeightUnit",
+                "type" : "Edm.String",
+                "maxLength" : "3"
+            }],
+            "com.sap.vocabularies.UI.v1.DataPoint" : {
+                "Value" : {
+                    "Path" : "WeightMeasure",
+                    "EdmType" : "Edm.Decimal"
+                }
+            },
+            "com.sap.vocabularies.UI.v1.Identification" : [{
+                "Value" : {"Path" : "ProductID"}
+            }, {
+                "Value" : {"Path" : "SupplierName"}
+            }, {
+                "Value" : {"Path" : "WeightMeasure"}
+            }]
+        }]
+    }]
+}</pre></div>
+
+        </div></div>
+
+    <div class="section"><div class="section_title">Enhancement of the OData Meta Model</div><div type="Enhancement of the OData Meta Model">
+      
+      <p class="p">In addition to the easy access to the SAP-specific OData annotations, such as
+          <samp class="ph codeph">sap:label</samp>, corresponding vocabulary-based annotations are mixed in if
+        they are not yet defined in the OData Version 4.0 annotations of the existing
+          <samp class="ph codeph">sap.ui.model.odata.ODataAnnotations</samp>. The following tables show the
+        transformations that are implemented. In the examples shown below, <samp class="ph codeph">AnyPath</samp>
+        is a path expression as defined in the <a class="extlink" href="http://help.sap.com/disclaimer?site=http://docs.oasis-open.org/odata/odata/v4.0/os/part3-csdl/odata-v4.0-os-part3-csdl.html" alt="http://docs.oasis-open.org/odata/odata/v4.0/os/part3-csdl/odata-v4.0-os-part3-csdl.html" title="http://docs.oasis-open.org/odata/odata/v4.0/os/part3-csdl/odata-v4.0-os-part3-csdl.html">OData Version 4.0 specification<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a>, section
+        14.5.12.</p>
+
+      <p class="p">Transformations defined at <samp class="ph codeph">EntitySet</samp>:</p>
+
+      <div class="table-wrapper"><table summary="" id="loio341823349ed04df1813197f2a0d71db2__simpletable_mrv_c43_qr" border="1" class="simpletable"><tr class="sthead">
+          <th valign="bottom" align="left" id="d2708546e220" class="stentry" width="50%">
+            <p class="p">OData V2 SAP Extension</p>
+
+          </th>
+
+          <th valign="bottom" align="left" id="d2708546e226" class="stentry" width="50%">
+            <p class="p">Resulting OData V4 Annotation</p>
+
+          </th>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e220" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:creatable = "false"
+</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e226" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.InsertRestrictions": { "Insertable" : { "Bool" : "false" } }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e220" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:deletable = "false"
+</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e226" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.DeleteRestrictions": { "Deletable" : { "Bool" : "false" } }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e220" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:deletable-path = "AnyPath"</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">AnyPath</samp> is a path expression that identifies a Boolean
+              property in the context of the entity type of the entity set. The value of this
+              property indicates whether the entity can be deleted or not.</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e226" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.DeleteRestrictions": { "Deletable" : { "Path" : "AnyPath" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e220" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:label = "foo"</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">foo</samp> is any text.</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e226" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.Label": {"String" : "foo" }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e220" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:pageable = "false"
+</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e226" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.SkipSupported": {"Bool" : "false" },
+"Org.OData.Capabilities.V1.TopSupported": {"Bool" : "false" }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e220" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:requires-filter = "true"
+</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e226" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.FilterRestrictions": { "RequiresFilter" : { "Bool" : "true" } }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e220" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:searchable = "false"
+</pre></div>
+
+            <p class="p">Alternatively, do not use the <samp class="ph codeph">sap:searchable</samp> annotation.</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e226" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.SearchRestrictions": { "Searchable" : { "Bool" : "false" } }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e220" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:topable = "false"
+</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e226" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.TopSupported": {"Bool" : "false" }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e220" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:updatable = "false"
+</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e226" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.UpdateRestrictions": { "Updatable" : { "Bool" : "false" } }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e220" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:updatable-path = "AnyPath"</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">AnyPath</samp> is a path expression that identifies a Boolean
+              property in the context of the entity type of the entity set. The value of this
+              property indicates whether the entity can be updated or not.</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e226" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.UpdateRestrictions": { "Updatable" : { "Path" : "AnyPath" } }</pre></div>
+
+          </td>
+
+        </tr>
+</table></div>
+
+      <p class="p">Transformations defined at <samp class="ph codeph">Property</samp>:</p>
+
+      <div class="table-wrapper"><table summary="" id="loio341823349ed04df1813197f2a0d71db2__simpletable_v5f_pzn_ks" border="1" class="simpletable"><tr class="sthead">
+          <th valign="bottom" align="left" id="d2708546e420" class="stentry" width="50%">
+            <p class="p">OData V2 SAP Extension</p>
+
+          </th>
+
+          <th valign="bottom" align="left" id="d2708546e426" class="stentry" width="50%">
+            <p class="p">Resulting OData V4 Annotation</p>
+
+          </th>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:label = "foo"</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">foo</samp> is any text.</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.Label": {"String" : "foo" }</pre></div>
+
+            <div class="note note"><span class="notetitle">Note</span> 
+              <p class="p">The resulting annotation is added at different places, not to the
+                  <samp class="ph codeph">Property</samp>.</p>
+
+            </div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:creatable = "true" </pre></div>
+
+            <p class="p">and</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:updatable = "false"</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Core.V1.Immutable": { "Bool" : "true" }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:creatable = "false"</pre></div>
+
+            <p class="p">and</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:updatable = "false"</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Core.V1.Computed": { "Bool" : "true"}
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:display-format = "NonNegative"</pre></div>
+
+            <div class="note note"><span class="notetitle">Note</span> 
+              <p class="p"><samp class="ph codeph">NonNegative</samp> indicates that only non-negative numeric values are
+                provided and persisted, other input leads to errors; intended for
+                  <samp class="ph codeph">Edm.String</samp> fields that are internally stored as
+                  <samp class="ph codeph">NUMC</samp>.</p>
+
+            </div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.IsDigitSequence": { "Bool" : "true" }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:display-format = "UpperCase"</pre></div>
+
+            <p class="p"/>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.IsUpperCase": { "Bool" : "true" }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:field-control = "AnyPath"</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">AnyPath</samp> is a path expression that identifies a property
+              containing a numeric value that controls visibility..</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.FieldControl": { "Path" : "AnyPath" }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:filterable = "false"</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.FilterRestrictions":
+{ "NonFilterableProperties" : [
+{ "PropertyPath" : "PropA " },
+{ "PropertyPath" : "PropC " }] }</pre></div>
+
+            <p class="p">For example, if <samp class="ph codeph">sap:filterable</samp> is set to <samp class="ph codeph">false</samp> for
+              properties <samp class="ph codeph">PropA</samp> and <samp class="ph codeph">PropC</samp>.</p>
+
+            <div class="note note"><span class="notetitle">Note</span> 
+              <p class="p">The resulting annotation is added to the <samp class="ph codeph">EntitySet</samp>, not to the
+                  <samp class="ph codeph">Property</samp>.</p>
+
+            </div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:filter-restriction="multi-value"</pre></div>
+
+            <p class="p">For example, at a <samp class="ph codeph">BusinessPartnerID</samp> property of a
+                <samp class="ph codeph">BusinessPartner</samp> type.</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.FilterExpressionRestrictions":
+[{ "Property" : { "PropertyPath" : "BusinessPartnerID" },
+"AllowedExpressions" : { "EnumMember":
+"com.sap.vocabularies.Common.v1.FilterExpressionType/MultiValue" } }]</pre></div>
+
+            <p class="p">At the corresponding entity set, for example,
+                <samp class="ph codeph">BusinessPartnerSet.multi-value</samp> is mapped to
+                <samp class="ph codeph">MultiValue</samp>, <samp class="ph codeph">single-value</samp> is mapped to
+                <samp class="ph codeph">SingleValue</samp>, and <samp class="ph codeph">interval</samp> is mapped to
+                <samp class="ph codeph">SingleInterval</samp>.</p>
+
+            <div class="note note"><span class="notetitle">Note</span> 
+              <p class="p">The resulting annotation is added to the <samp class="ph codeph">EntitySet</samp>, not to the
+                  <samp class="ph codeph">Property</samp>.</p>
+
+            </div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:heading = "foo"</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">foo</samp> is any text.</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.Heading": { "String" : "foo" }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:precision = "AnyPath"
+</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">AnyPath</samp> is a path expression that identifies a property in the
+              context of the entity type containing the number of significant decimal places for a
+              numeric value.</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Measures.V1.Scale": { "Path" : "AnyPath" }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:quickinfo = "foo"</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">foo</samp> is any text.</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.QuickInfo": { "String" : "foo" }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:required-in-filter = "true"
+</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <p class="p">If <samp class="ph codeph">sap:required-in-filter</samp> is set to <samp class="ph codeph">TRUE</samp> for the
+                <samp class="ph codeph">PropA</samp> and <samp class="ph codeph">PropC</samp> properties:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.FilterRestrictions": {
+"RequiredProperties" : [
+{ "PropertyPath" : "PropA " },
+ { "PropertyPath" : "PropC " }] }</pre></div>
+
+            <div class="note note"><span class="notetitle">Note</span> 
+              <p class="p">The resulting annotation is added to the <samp class="ph codeph">EntitySet</samp>, not to the
+                  <samp class="ph codeph">Property</samp>.</p>
+
+            </div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:sortable = "false"</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <p class="p">If <samp class="ph codeph">sap:sortable</samp> is set to <samp class="ph codeph">FALSE</samp> for the
+                <samp class="ph codeph">PropA</samp> and <samp class="ph codeph">PropC</samp> properties:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Capabilities.V1.SortRestrictions": {
+"NonSortableProperties" : [ 
+{ "PropertyPath" : "PropA " }, 
+{ "PropertyPath" : "PropC " }]}</pre></div>
+
+            <div class="note note"><span class="notetitle">Note</span> 
+              <p class="p">The resulting annotation is added to the <samp class="ph codeph">EntitySet</samp>, not to the
+                  <samp class="ph codeph">Property</samp>.</p>
+
+            </div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:text = "AnyPath"</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">AnyPath</samp> is a path expression that identifies a property in the
+              context of the entity type containing a human-readable text for the value of this
+              property.</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.Text":{ "Path" : "AnyPath" }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:unit="WeightUnit"</pre></div>
+
+            <p class="p">or</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:unit="CurrencyCode"</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">WeightUnit</samp> and <samp class="ph codeph">CurrencyCode</samp> are names of
+              properties in the same entity and <samp class="ph codeph">WeightUnit</samp> points to a property
+              with <samp class="ph codeph">sap-semantics:unit-of-measure</samp> and
+              <samp class="ph codeph">CurrencyCode</samp>points to a property with
+                <samp class="ph codeph">sap-semantics:currency-code</samp>.</p>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Measures.V1.Unit": { "Path" : "WeightUnit" }</pre></div>
+
+            <p class="p">or</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"Org.OData.Measures.V1.ISOCurrency": { "Path" : "CurrencyCode" }
+</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e420" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:visible="false"</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e426" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Common.v1.FieldControl": { "EnumMember" :
+"com.sap.vocabularies.Common.v1.FieldControlType/Hidden" }</pre></div>
+
+          </td>
+
+        </tr>
+</table></div>
+
+      <p class="p">Depending on the value of the <samp class="ph codeph">sap:semantics</samp> annotation, different
+        vocabulary-based annotations are generated. The following transformations are implemented
+        and defined at <samp class="ph codeph">property</samp>. In the examples of the resulting JSON at the
+        "defined at" object, <samp class="ph codeph">PROPERTY</samp> is a placeholder for the name of the property
+        at which the <samp class="ph codeph">sap:semantics</samp> annotation is defined.</p>
+
+      <div class="table-wrapper"><table summary="" id="loio341823349ed04df1813197f2a0d71db2__simpletable_o1g_1vh_ls" border="1" class="simpletable"><tr class="sthead">
+          <th valign="bottom" align="left" id="d2708546e926" class="stentry" width="50%">
+            <p class="p">OData V2 SAP Extension</p>
+
+          </th>
+
+          <th valign="bottom" align="left" id="d2708546e932" class="stentry" width="50%">
+            <p class="p">Resulting OData V4 Annotation</p>
+
+          </th>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "currency-code"</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <p class="p">see <samp class="ph codeph">sap:unit</samp> above</p>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = "unit-of-measure"</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <p class="p">see <samp class="ph codeph">sap:unit</samp> above</p>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = name</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "fn" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = givenname</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "n" : { "given" : { "Path" : "PROPERTY" } } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = middlename</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "n" : { "additional" : { "Path" : "PROPERTY" } } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = familyname</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "n" : { "surname" : { "Path" : "PROPERTY" } } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = nickname</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "nickname" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = honorific</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "n" : { "prefix" : { "Path" : "PROPERTY" } } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = suffix</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "n" : { "suffix" : { "Path" : "PROPERTY" } } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = note</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "note" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = photo</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "photo" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = city</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "locality" : { "Path" : "PROPERTY" } } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = street</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "street" : { "Path" : "PROPERTY" } } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = country</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "country" : { "Path" : "PROPERTY" } } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = region</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "region" : { "Path" : "PROPERTY" } } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = zip</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "code" : { "Path" : "PROPERTY" } } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = pobox</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "adr" : { "pobox" : { "Path" : "PROPERTY" } } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = org</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "org" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = org-unit</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "orgunit" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = org-role</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "role" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = title</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "title" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = bday</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { "bday" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = dtstart</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "dtstart" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = dtend</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "dtend" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = class</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "class" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = status</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "status" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = transp</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "transp" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = fbtype</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "fbtype" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = wholeday</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "wholeday" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = location</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Event" : { "location" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = due</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Task" : { "due" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = completed</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Task" : { "completed" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = percent-complete</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Task" : { "percentcomplete" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = priority</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Task" : { "priority" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = from</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Message" : { "from" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = sender</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Message" : { "sender" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = subject</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Message" : { "subject" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = body</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Message" : { "body" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = received</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Message" : { "received" : { "Path" : "PROPERTY" } }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = tel</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <p class="p">At the <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { 
+"tel" : [{
+"uri" : { "Path" : "ATTRIBUTE" }
+}]}</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">ATTRIBUTE</samp> is the name of the annotated attribute of an
+                <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>.</p>
+
+            <p class="p">At <samp class="ph codeph">Property</samp>:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.IsPhoneNumber" : { "Bool" : "true" }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = tel;type=cell,work</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <p class="p">At the <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { 
+"tel" : [{
+"type" : {
+"EnumMember": "com.sap.vocabularies.Communication.v1.PhoneType/cell"
++ " com.sap.vocabularies.Communication.v1.PhoneType/work"
+},
+"uri" : { "Path" : "ATTRIBUTE" }
+}]}</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">ATTRIBUTE</samp> is the name of the annotated attribute of an
+                <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>.</p>
+
+            <p class="p">At <samp class="ph codeph">Property</samp>:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.IsPhoneNumber" : { "Bool" : "true" }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = email</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <p class="p">At the <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { 
+"address" : [{
+"uri" : { "Path" : "ATTRIBUTE" }
+}]}</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">ATTRIBUTE</samp> is the name of the annotated attribute of an
+                <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>.</p>
+
+            <p class="p">At <samp class="ph codeph">Property</samp>:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.IsEmailAddress" : { "Bool" : "true" }</pre></div>
+
+          </td>
+
+        </tr>
+<tr class="strow">
+          <td valign="top" headers="d2708546e926" class="stentry">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap:semantics = email;type=work,pref</pre></div>
+
+          </td>
+
+          <td valign="top" headers="d2708546e932" class="stentry">
+            <p class="p">At the <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.Contact" : { 
+"email" : [{
+"address" : { "Path" : "ATTRIBUTE" },
+"type" : {
+"EnumMember" : "com.sap.vocabularies.Communication.v1.ContactInformationType/work"
++ "com.sap.vocabularies.Communication.v1.ContactInformationType/preferred"
+}
+}]}</pre></div>
+
+            <p class="p">Where <samp class="ph codeph">ATTRIBUTE</samp> is the name of the annotated attribute of an
+                <samp class="ph codeph">EntityType</samp> or <samp class="ph codeph">ComplexType</samp>.</p>
+
+            <p class="p">At <samp class="ph codeph">Property</samp>:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"com.sap.vocabularies.Communication.v1.IsEmailAddress" : { "Bool" : "true" }</pre></div>
+
+          </td>
+
+        </tr>
+</table></div>
+
+    </div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="5ee619fc1370463ea674ee04b65ed83b.html" title="The XML templating concept enables you to use an XML view as a template. This template is transformed by an XML preprocessor on the source level, the XML DOM, at runtime just before an SAPUI5 control tree is created from the XML source.">XML Templating</a></div>
+<div><a class="link" href="6c47b2b39db9404582994070ec3d57a2.html" title="The OData V2 Model enables binding of controls to data from OData services.">OData V2 Model</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.model.odata.ODataMetaModel.html" alt="../../docs/api/symbols/sap.ui.model.odata.ODataMetaModel.html" title="../../docs/api/symbols/sap.ui.model.odata.ODataMetaModel.html">Class <samp class="ph codeph">sap.ui.model.odata.ODataMetaModel</samp></a></div>
+</div>
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Meta Model for OData V2";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

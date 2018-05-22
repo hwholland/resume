@@ -1,0 +1,1888 @@
+{
+	"$schema-ref": "http://schemas.sap.com/sapui5/designtime/api.json/1.0",
+	"version": "1.38.33",
+	"library": "sap.tnt",
+	"symbols": [
+		{
+			"kind": "namespace",
+			"name": "sap.tnt",
+			"basename": "tnt",
+			"resource": "sap/tnt/library.js",
+			"module": "sap/tnt/library",
+			"static": true,
+			"visibility": "public",
+			"description": "SAPUI5 library with controls specialized for administrative applications."
+		},
+		{
+			"kind": "class",
+			"name": "sap.tnt.NavigationList",
+			"basename": "NavigationList",
+			"resource": "sap/tnt/NavigationList.js",
+			"module": "sap/tnt/NavigationList",
+			"static": true,
+			"visibility": "public",
+			"since": "1.34",
+			"extends": "sap.ui.core.Control",
+			"description": "The NavigationList control is an interactive control, which provides a choice of\ndifferent items, ordered as a list.",
+			"ui5-metadata": {
+				"stereotype": "control",
+				"properties": [
+					{
+						"name": "width",
+						"type": "sap.ui.core.CSSSize",
+						"defaultValue": null,
+						"group": "Dimension",
+						"visibility": "public",
+						"description": "Specifies the width of the control.",
+						"methods": [
+							"getWidth",
+							"setWidth"
+						]
+					},
+					{
+						"name": "expanded",
+						"type": "boolean",
+						"defaultValue": true,
+						"group": "Misc",
+						"visibility": "public",
+						"description": "Specifies if the control is in expanded or collapsed mode.",
+						"methods": [
+							"getExpanded",
+							"setExpanded"
+						]
+					}
+				],
+				"aggregations": [
+					{
+						"name": "items",
+						"singularName": "item",
+						"type": "sap.tnt.NavigationListItem",
+						"cardinality": "0..n",
+						"visibility": "public",
+						"description": "The items displayed in the list.",
+						"methods": [
+							"getItems",
+							"destroyItems",
+							"insertItem",
+							"addItem",
+							"removeItem",
+							"indexOfItem",
+							"removeAllItems"
+						]
+					}
+				],
+				"defaultAggregation": "items",
+				"associations": [
+					{
+						"name": "ariaDescribedBy",
+						"singularName": "ariaDescribedBy",
+						"type": "sap.ui.core.Control",
+						"cardinality": "0..n",
+						"visibility": "public",
+						"description": "Association to controls / IDs, which describe this control (see WAI-ARIA attribute aria-describedby).",
+						"methods": [
+							"getAriaDescribedBy",
+							"addAriaDescribedBy",
+							"removeAriaDescribedBy",
+							"removeAllAriaDescribedBy"
+						]
+					},
+					{
+						"name": "ariaLabelledBy",
+						"singularName": "ariaLabelledBy",
+						"type": "sap.ui.core.Control",
+						"cardinality": "0..n",
+						"visibility": "public",
+						"description": "Association to controls / IDs, which label this control (see WAI-ARIA attribute aria-labelledby).",
+						"methods": [
+							"getAriaLabelledBy",
+							"addAriaLabelledBy",
+							"removeAriaLabelledBy",
+							"removeAllAriaLabelledBy"
+						]
+					}
+				],
+				"events": [
+					{
+						"name": "itemSelect",
+						"visibility": "public",
+						"description": "Fired when an item is selected.",
+						"parameters": {
+							"item": {
+								"name": "item",
+								"type": "sap.ui.core.Item",
+								"description": "The selected item."
+							}
+						},
+						"methods": [
+							"attachItemSelect",
+							"detachItemSelect",
+							"fireItemSelect"
+						]
+					}
+				]
+			},
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "sId",
+						"type": "string",
+						"optional": true,
+						"description": "ID for the new control, generated automatically if no ID is given"
+					},
+					{
+						"name": "mSettings",
+						"type": "object",
+						"optional": true,
+						"description": "Initial settings for the new control"
+					}
+				],
+				"description": "Constructor for a new NavigationList.\n\n\nAccepts an object literal <code>mSettings</code> that defines initial\nproperty values, aggregated and associated objects as well as event handlers.\nSee {@link sap.ui.base.ManagedObject#constructor} for a general description of the syntax of the settings object."
+			},
+			"events": [
+				{
+					"name": "itemSelect",
+					"visibility": "public",
+					"parameters": [
+						{
+							"name": "oControlEvent",
+							"type": "sap.ui.base.Event",
+							"parameterProperties": {
+								"getSource": {
+									"name": "getSource",
+									"type": "sap.ui.base.EventProvider",
+									"optional": false
+								},
+								"getParameters": {
+									"name": "getParameters",
+									"type": "object",
+									"optional": false,
+									"parameterProperties": {
+										"item": {
+											"name": "item",
+											"type": "sap.ui.core.Item",
+											"optional": false,
+											"description": "The selected item."
+										}
+									}
+								}
+							}
+						}
+					],
+					"description": "Fired when an item is selected."
+				}
+			],
+			"methods": [
+				{
+					"name": "addAriaDescribedBy",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "vAriaDescribedBy",
+							"type": "string|sap.ui.core.Control",
+							"optional": false,
+							"description": "the ariaDescribedBy to add; if empty, nothing is inserted"
+						}
+					],
+					"description": "Adds some ariaDescribedBy into the association <code>ariaDescribedBy</code>."
+				},
+				{
+					"name": "addAriaLabelledBy",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "vAriaLabelledBy",
+							"type": "string|sap.ui.core.Control",
+							"optional": false,
+							"description": "the ariaLabelledBy to add; if empty, nothing is inserted"
+						}
+					],
+					"description": "Adds some ariaLabelledBy into the association <code>ariaLabelledBy</code>."
+				},
+				{
+					"name": "addItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oItem",
+							"type": "sap.tnt.NavigationListItem",
+							"optional": false,
+							"description": "the item to add; if empty, nothing is inserted"
+						}
+					],
+					"description": "Adds some item to the aggregation <code>items</code>."
+				},
+				{
+					"name": "attachItemSelect",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oData",
+							"type": "object",
+							"optional": true,
+							"description": "An application-specific payload object that will be passed to the event handler along with the event object when firing the event"
+						},
+						{
+							"name": "fnFunction",
+							"type": "function",
+							"optional": false,
+							"description": "The function to be called when the event occurs"
+						},
+						{
+							"name": "oListener",
+							"type": "object",
+							"optional": true,
+							"description": "Context object to call the event handler with. Defaults to this <code>sap.tnt.NavigationList</code> itself"
+						}
+					],
+					"description": "Attaches event handler <code>fnFunction</code> to the <code>itemSelect</code> event of this <code>sap.tnt.NavigationList</code>.\n\nWhen called, the context of the event handler (its <code>this</code>) will be bound to <code>oListener</code> if specified, \notherwise it will be bound to this <code>sap.tnt.NavigationList</code> itself.\n\nFired when an item is selected."
+				},
+				{
+					"name": "destroyItems",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"description": "Destroys all the items in the aggregation <code>items</code>."
+				},
+				{
+					"name": "detachItemSelect",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "fnFunction",
+							"type": "function",
+							"optional": false,
+							"description": "The function to be called, when the event occurs"
+						},
+						{
+							"name": "oListener",
+							"type": "object",
+							"optional": false,
+							"description": "Context object on which the given function had to be called"
+						}
+					],
+					"description": "Detaches event handler <code>fnFunction</code> from the <code>itemSelect</code> event of this <code>sap.tnt.NavigationList</code>.\n\nThe passed function and listener object must match the ones used for event registration."
+				},
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.tnt.NavigationList with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.core.Control.extend}."
+				},
+				{
+					"name": "fireItemSelect",
+					"visibility": "protected",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "mArguments",
+							"type": "Map",
+							"optional": true,
+							"description": "The arguments to pass along with the event"
+						}
+					],
+					"description": "Fires event <code>itemSelect</code> to attached listeners.\n\nExpects the following event parameters:\n<ul>\n<li><code>item</code> of type <code>sap.ui.core.Item</code>The selected item.</li>\n</ul>"
+				},
+				{
+					"name": "getAriaDescribedBy",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.core.Control[]"
+					},
+					"description": "Returns array of IDs of the elements which are the current targets of the association <code>ariaDescribedBy</code>."
+				},
+				{
+					"name": "getAriaLabelledBy",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.core.Control[]"
+					},
+					"description": "Returns array of IDs of the elements which are the current targets of the association <code>ariaLabelledBy</code>."
+				},
+				{
+					"name": "getExpanded",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "Value of property <code>expanded</code>"
+					},
+					"description": "Gets current value of property <code>expanded</code>.\n\nSpecifies if the control is in expanded or collapsed mode.\n\nDefault value is <code>true</code>."
+				},
+				{
+					"name": "getItems",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem[]"
+					},
+					"description": "Gets content of aggregation <code>items</code>.\n\nThe items displayed in the list."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.tnt.NavigationList."
+				},
+				{
+					"name": "getWidth",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.core.CSSSize",
+						"description": "Value of property <code>width</code>"
+					},
+					"description": "Gets current value of property <code>width</code>.\n\nSpecifies the width of the control."
+				},
+				{
+					"name": "indexOfItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "int",
+						"description": "The index of the provided control in the aggregation if found, or -1 otherwise"
+					},
+					"parameters": [
+						{
+							"name": "oItem",
+							"type": "sap.tnt.NavigationListItem",
+							"optional": false,
+							"description": "The item whose index is looked for"
+						}
+					],
+					"description": "Checks for the provided <code>sap.tnt.NavigationListItem</code> in the aggregation <code>items</code>.\nand returns its index if found or -1 otherwise."
+				},
+				{
+					"name": "insertItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oItem",
+							"type": "sap.tnt.NavigationListItem",
+							"optional": false,
+							"description": "the item to insert; if empty, nothing is inserted"
+						},
+						{
+							"name": "iIndex",
+							"type": "int",
+							"optional": false,
+							"description": "the <code>0</code>-based index the item should be inserted at; for\n             a negative value of <code>iIndex</code>, the item is inserted at position 0; for a value\n             greater than the current size of the aggregation, the item is inserted at\n             the last position"
+						}
+					],
+					"description": "Inserts a item into the aggregation <code>items</code>."
+				},
+				{
+					"name": "removeAllAriaDescribedBy",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.core.Control[]",
+						"description": "An array of the removed elements (might be empty)"
+					},
+					"description": "Removes all the controls in the association named <code>ariaDescribedBy</code>."
+				},
+				{
+					"name": "removeAllAriaLabelledBy",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.core.Control[]",
+						"description": "An array of the removed elements (might be empty)"
+					},
+					"description": "Removes all the controls in the association named <code>ariaLabelledBy</code>."
+				},
+				{
+					"name": "removeAllItems",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem[]",
+						"description": "An array of the removed elements (might be empty)"
+					},
+					"description": "Removes all the controls from the aggregation <code>items</code>.\n\nAdditionally, it unregisters them from the hosting UIArea."
+				},
+				{
+					"name": "removeAriaDescribedBy",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.core.Control",
+						"description": "the removed ariaDescribedBy or <code>null</code>"
+					},
+					"parameters": [
+						{
+							"name": "vAriaDescribedBy",
+							"type": "int|string|sap.ui.core.Control",
+							"optional": false,
+							"description": "The ariaDescribedByto be removed or its index or ID"
+						}
+					],
+					"description": "Removes an ariaDescribedBy from the association named <code>ariaDescribedBy</code>."
+				},
+				{
+					"name": "removeAriaLabelledBy",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.core.Control",
+						"description": "the removed ariaLabelledBy or <code>null</code>"
+					},
+					"parameters": [
+						{
+							"name": "vAriaLabelledBy",
+							"type": "int|string|sap.ui.core.Control",
+							"optional": false,
+							"description": "The ariaLabelledByto be removed or its index or ID"
+						}
+					],
+					"description": "Removes an ariaLabelledBy from the association named <code>ariaLabelledBy</code>."
+				},
+				{
+					"name": "removeItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem",
+						"description": "The removed item or <code>null</code>"
+					},
+					"parameters": [
+						{
+							"name": "vItem",
+							"type": "int|string|sap.tnt.NavigationListItem",
+							"optional": false,
+							"description": "The itemto remove or its index or id"
+						}
+					],
+					"description": "Removes a item from the aggregation <code>items</code>."
+				},
+				{
+					"name": "setExpanded",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "bExpanded",
+							"type": "boolean",
+							"optional": false,
+							"description": "New value for property <code>expanded</code>"
+						}
+					],
+					"description": "Sets a new value for property <code>expanded</code>.\n\nSpecifies if the control is in expanded or collapsed mode.\n\nWhen called with a value of <code>null</code> or <code>undefined</code>, the default value of the property will be restored.\n\nDefault value is <code>true</code>."
+				},
+				{
+					"name": "setWidth",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "sWidth",
+							"type": "sap.ui.core.CSSSize",
+							"optional": false,
+							"description": "New value for property <code>width</code>"
+						}
+					],
+					"description": "Sets a new value for property <code>width</code>.\n\nSpecifies the width of the control.\n\nWhen called with a value of <code>null</code> or <code>undefined</code>, the default value of the property will be restored."
+				}
+			]
+		},
+		{
+			"kind": "class",
+			"name": "sap.tnt.NavigationListItem",
+			"basename": "NavigationListItem",
+			"resource": "sap/tnt/NavigationListItem.js",
+			"module": "sap/tnt/NavigationListItem",
+			"static": true,
+			"visibility": "public",
+			"since": "1.34",
+			"extends": "sap.ui.core.Item",
+			"description": "The NavigationListItem control represents an action, which can be selected by the user.\nIt can provide sub items.",
+			"ui5-metadata": {
+				"properties": [
+					{
+						"name": "icon",
+						"type": "sap.ui.core.URI",
+						"defaultValue": "",
+						"group": "Misc",
+						"visibility": "public",
+						"description": "Specifies the icon for the item.",
+						"methods": [
+							"getIcon",
+							"setIcon"
+						]
+					},
+					{
+						"name": "expanded",
+						"type": "boolean",
+						"defaultValue": true,
+						"group": "Misc",
+						"visibility": "public",
+						"description": "Specifies if the item is expanded.",
+						"methods": [
+							"getExpanded",
+							"setExpanded"
+						]
+					},
+					{
+						"name": "hasExpander",
+						"type": "boolean",
+						"defaultValue": true,
+						"group": "Misc",
+						"visibility": "public",
+						"description": "Specifies if the item has an expander.",
+						"methods": [
+							"getHasExpander",
+							"setHasExpander"
+						]
+					}
+				],
+				"aggregations": [
+					{
+						"name": "items",
+						"singularName": "item",
+						"type": "sap.tnt.NavigationListItem",
+						"cardinality": "0..n",
+						"visibility": "public",
+						"description": "The sub items.",
+						"methods": [
+							"getItems",
+							"destroyItems",
+							"insertItem",
+							"addItem",
+							"removeItem",
+							"indexOfItem",
+							"removeAllItems"
+						]
+					},
+					{
+						"name": "_expandIconControl",
+						"singularName": "_expandIconControl",
+						"type": "sap.ui.core.Icon",
+						"cardinality": "0..1",
+						"visibility": "hidden",
+						"methods": [
+							"get_expandIconControl",
+							"destroy_expandIconControl",
+							"set_expandIconControl"
+						]
+					}
+				],
+				"defaultAggregation": "items",
+				"events": [
+					{
+						"name": "select",
+						"visibility": "public",
+						"description": "Fired when this item is selected.",
+						"parameters": {
+							"item": {
+								"name": "item",
+								"type": "sap.ui.core.Item",
+								"description": "The selected item."
+							}
+						},
+						"methods": [
+							"attachSelect",
+							"detachSelect",
+							"fireSelect"
+						]
+					}
+				]
+			},
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "sId",
+						"type": "string",
+						"optional": true,
+						"description": "ID for the new control, generated automatically if no ID is given"
+					},
+					{
+						"name": "mSettings",
+						"type": "object",
+						"optional": true,
+						"description": "Initial settings for the new control"
+					}
+				],
+				"description": "Constructor for a new NavigationListItem.\n\n\nAccepts an object literal <code>mSettings</code> that defines initial\nproperty values, aggregated and associated objects as well as event handlers.\nSee {@link sap.ui.base.ManagedObject#constructor} for a general description of the syntax of the settings object."
+			},
+			"events": [
+				{
+					"name": "select",
+					"visibility": "public",
+					"parameters": [
+						{
+							"name": "oControlEvent",
+							"type": "sap.ui.base.Event",
+							"parameterProperties": {
+								"getSource": {
+									"name": "getSource",
+									"type": "sap.ui.base.EventProvider",
+									"optional": false
+								},
+								"getParameters": {
+									"name": "getParameters",
+									"type": "object",
+									"optional": false,
+									"parameterProperties": {
+										"item": {
+											"name": "item",
+											"type": "sap.ui.core.Item",
+											"optional": false,
+											"description": "The selected item."
+										}
+									}
+								}
+							}
+						}
+					],
+					"description": "Fired when this item is selected."
+				}
+			],
+			"methods": [
+				{
+					"name": "addItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oItem",
+							"type": "sap.tnt.NavigationListItem",
+							"optional": false,
+							"description": "the item to add; if empty, nothing is inserted"
+						}
+					],
+					"description": "Adds some item to the aggregation <code>items</code>."
+				},
+				{
+					"name": "attachSelect",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oData",
+							"type": "object",
+							"optional": true,
+							"description": "An application-specific payload object that will be passed to the event handler along with the event object when firing the event"
+						},
+						{
+							"name": "fnFunction",
+							"type": "function",
+							"optional": false,
+							"description": "The function to be called when the event occurs"
+						},
+						{
+							"name": "oListener",
+							"type": "object",
+							"optional": true,
+							"description": "Context object to call the event handler with. Defaults to this <code>sap.tnt.NavigationListItem</code> itself"
+						}
+					],
+					"description": "Attaches event handler <code>fnFunction</code> to the <code>select</code> event of this <code>sap.tnt.NavigationListItem</code>.\n\nWhen called, the context of the event handler (its <code>this</code>) will be bound to <code>oListener</code> if specified, \notherwise it will be bound to this <code>sap.tnt.NavigationListItem</code> itself.\n\nFired when this item is selected."
+				},
+				{
+					"name": "destroyItems",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"description": "Destroys all the items in the aggregation <code>items</code>."
+				},
+				{
+					"name": "detachSelect",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "fnFunction",
+							"type": "function",
+							"optional": false,
+							"description": "The function to be called, when the event occurs"
+						},
+						{
+							"name": "oListener",
+							"type": "object",
+							"optional": false,
+							"description": "Context object on which the given function had to be called"
+						}
+					],
+					"description": "Detaches event handler <code>fnFunction</code> from the <code>select</code> event of this <code>sap.tnt.NavigationListItem</code>.\n\nThe passed function and listener object must match the ones used for event registration."
+				},
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.tnt.NavigationListItem with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.core.Item.extend}."
+				},
+				{
+					"name": "fireSelect",
+					"visibility": "protected",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "mArguments",
+							"type": "Map",
+							"optional": true,
+							"description": "The arguments to pass along with the event"
+						}
+					],
+					"description": "Fires event <code>select</code> to attached listeners.\n\nExpects the following event parameters:\n<ul>\n<li><code>item</code> of type <code>sap.ui.core.Item</code>The selected item.</li>\n</ul>"
+				},
+				{
+					"name": "getExpanded",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "Value of property <code>expanded</code>"
+					},
+					"description": "Gets current value of property <code>expanded</code>.\n\nSpecifies if the item is expanded.\n\nDefault value is <code>true</code>."
+				},
+				{
+					"name": "getHasExpander",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "Value of property <code>hasExpander</code>"
+					},
+					"description": "Gets current value of property <code>hasExpander</code>.\n\nSpecifies if the item has an expander.\n\nDefault value is <code>true</code>."
+				},
+				{
+					"name": "getIcon",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.core.URI",
+						"description": "Value of property <code>icon</code>"
+					},
+					"description": "Gets current value of property <code>icon</code>.\n\nSpecifies the icon for the item.\n\nDefault value is <code></code>."
+				},
+				{
+					"name": "getItems",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem[]"
+					},
+					"description": "Gets content of aggregation <code>items</code>.\n\nThe sub items."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.tnt.NavigationListItem."
+				},
+				{
+					"name": "indexOfItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "int",
+						"description": "The index of the provided control in the aggregation if found, or -1 otherwise"
+					},
+					"parameters": [
+						{
+							"name": "oItem",
+							"type": "sap.tnt.NavigationListItem",
+							"optional": false,
+							"description": "The item whose index is looked for"
+						}
+					],
+					"description": "Checks for the provided <code>sap.tnt.NavigationListItem</code> in the aggregation <code>items</code>.\nand returns its index if found or -1 otherwise."
+				},
+				{
+					"name": "insertItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oItem",
+							"type": "sap.tnt.NavigationListItem",
+							"optional": false,
+							"description": "the item to insert; if empty, nothing is inserted"
+						},
+						{
+							"name": "iIndex",
+							"type": "int",
+							"optional": false,
+							"description": "the <code>0</code>-based index the item should be inserted at; for\n             a negative value of <code>iIndex</code>, the item is inserted at position 0; for a value\n             greater than the current size of the aggregation, the item is inserted at\n             the last position"
+						}
+					],
+					"description": "Inserts a item into the aggregation <code>items</code>."
+				},
+				{
+					"name": "removeAllItems",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem[]",
+						"description": "An array of the removed elements (might be empty)"
+					},
+					"description": "Removes all the controls from the aggregation <code>items</code>.\n\nAdditionally, it unregisters them from the hosting UIArea."
+				},
+				{
+					"name": "removeItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem",
+						"description": "The removed item or <code>null</code>"
+					},
+					"parameters": [
+						{
+							"name": "vItem",
+							"type": "int|string|sap.tnt.NavigationListItem",
+							"optional": false,
+							"description": "The itemto remove or its index or id"
+						}
+					],
+					"description": "Removes a item from the aggregation <code>items</code>."
+				},
+				{
+					"name": "setExpanded",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "bExpanded",
+							"type": "boolean",
+							"optional": false,
+							"description": "New value for property <code>expanded</code>"
+						}
+					],
+					"description": "Sets a new value for property <code>expanded</code>.\n\nSpecifies if the item is expanded.\n\nWhen called with a value of <code>null</code> or <code>undefined</code>, the default value of the property will be restored.\n\nDefault value is <code>true</code>."
+				},
+				{
+					"name": "setHasExpander",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "bHasExpander",
+							"type": "boolean",
+							"optional": false,
+							"description": "New value for property <code>hasExpander</code>"
+						}
+					],
+					"description": "Sets a new value for property <code>hasExpander</code>.\n\nSpecifies if the item has an expander.\n\nWhen called with a value of <code>null</code> or <code>undefined</code>, the default value of the property will be restored.\n\nDefault value is <code>true</code>."
+				},
+				{
+					"name": "setIcon",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationListItem",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "sIcon",
+							"type": "sap.ui.core.URI",
+							"optional": false,
+							"description": "New value for property <code>icon</code>"
+						}
+					],
+					"description": "Sets a new value for property <code>icon</code>.\n\nSpecifies the icon for the item.\n\nWhen called with a value of <code>null</code> or <code>undefined</code>, the default value of the property will be restored.\n\nDefault value is <code></code>."
+				}
+			]
+		},
+		{
+			"kind": "class",
+			"name": "sap.tnt.SideNavigation",
+			"basename": "SideNavigation",
+			"resource": "sap/tnt/SideNavigation.js",
+			"module": "sap/tnt/SideNavigation",
+			"static": true,
+			"visibility": "public",
+			"since": "1.34",
+			"extends": "sap.ui.core.Control",
+			"description": "The SideNavigation control is a container, which consists of flexible and fixed parts on top of each other. The flexible part adapts its size to the fixed one.\nThe flexible part has a scrollbar when the content is larger than the available space.\nWhenever the height of the whole control is less than 256 pixels, the scrollbar becomes joint for the two parts.\n\n<b>Note:</b> In order for the SideNavigation to stretch properly, its parent layout control should only be the sap.tnt.ToolPage.",
+			"ui5-metadata": {
+				"stereotype": "control",
+				"properties": [
+					{
+						"name": "expanded",
+						"type": "boolean",
+						"defaultValue": true,
+						"group": "Misc",
+						"visibility": "public",
+						"description": "Specifies if the control is expanded.",
+						"methods": [
+							"getExpanded",
+							"setExpanded"
+						]
+					}
+				],
+				"aggregations": [
+					{
+						"name": "item",
+						"singularName": "item",
+						"type": "sap.tnt.NavigationList",
+						"cardinality": "0..1",
+						"visibility": "public",
+						"bindable": true,
+						"description": "Defines the content inside the flexible part.",
+						"methods": [
+							"getItem",
+							"destroyItem",
+							"setItem",
+							"bindItem",
+							"unbindItem"
+						]
+					},
+					{
+						"name": "fixedItem",
+						"singularName": "fixedItem",
+						"type": "sap.tnt.NavigationList",
+						"cardinality": "0..1",
+						"visibility": "public",
+						"description": "Defines the content inside the fixed part.",
+						"methods": [
+							"getFixedItem",
+							"destroyFixedItem",
+							"setFixedItem"
+						]
+					},
+					{
+						"name": "footer",
+						"singularName": "footer",
+						"type": "sap.tnt.NavigationList",
+						"cardinality": "0..1",
+						"visibility": "public",
+						"description": "Defines the content inside the footer.",
+						"methods": [
+							"getFooter",
+							"destroyFooter",
+							"setFooter"
+						]
+					},
+					{
+						"name": "_topArrowControl",
+						"singularName": "_topArrowControl",
+						"type": "sap.ui.core.Icon",
+						"cardinality": "0..1",
+						"visibility": "hidden",
+						"description": "The top arrow, used for scrolling throw items when SideNavigation is collapsed.",
+						"methods": [
+							"get_topArrowControl",
+							"destroy_topArrowControl",
+							"set_topArrowControl"
+						]
+					},
+					{
+						"name": "_bottomArrowControl",
+						"singularName": "_bottomArrowControl",
+						"type": "sap.ui.core.Icon",
+						"cardinality": "0..1",
+						"visibility": "hidden",
+						"description": "The bottom arrow, used for scrolling throw items when SideNavigation is collapsed.",
+						"methods": [
+							"get_bottomArrowControl",
+							"destroy_bottomArrowControl",
+							"set_bottomArrowControl"
+						]
+					}
+				],
+				"defaultAggregation": "item",
+				"events": [
+					{
+						"name": "itemSelect",
+						"visibility": "public",
+						"description": "Fired when an item is selected.",
+						"parameters": {
+							"item": {
+								"name": "item",
+								"type": "sap.ui.core.Item",
+								"description": "The selected item."
+							}
+						},
+						"methods": [
+							"attachItemSelect",
+							"detachItemSelect",
+							"fireItemSelect"
+						]
+					}
+				]
+			},
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "sId",
+						"type": "string",
+						"optional": true,
+						"description": "ID for the new control, generated automatically if no ID is given"
+					},
+					{
+						"name": "mSettings",
+						"type": "object",
+						"optional": true,
+						"description": "Initial settings for the new control"
+					}
+				],
+				"description": "Constructor for a new SideNavigation.\n\n\nAccepts an object literal <code>mSettings</code> that defines initial\nproperty values, aggregated and associated objects as well as event handlers.\nSee {@link sap.ui.base.ManagedObject#constructor} for a general description of the syntax of the settings object."
+			},
+			"events": [
+				{
+					"name": "itemSelect",
+					"visibility": "public",
+					"parameters": [
+						{
+							"name": "oControlEvent",
+							"type": "sap.ui.base.Event",
+							"parameterProperties": {
+								"getSource": {
+									"name": "getSource",
+									"type": "sap.ui.base.EventProvider",
+									"optional": false
+								},
+								"getParameters": {
+									"name": "getParameters",
+									"type": "object",
+									"optional": false,
+									"parameterProperties": {
+										"item": {
+											"name": "item",
+											"type": "sap.ui.core.Item",
+											"optional": false,
+											"description": "The selected item."
+										}
+									}
+								}
+							}
+						}
+					],
+					"description": "Fired when an item is selected."
+				}
+			],
+			"methods": [
+				{
+					"name": "attachItemSelect",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oData",
+							"type": "object",
+							"optional": true,
+							"description": "An application-specific payload object that will be passed to the event handler along with the event object when firing the event"
+						},
+						{
+							"name": "fnFunction",
+							"type": "function",
+							"optional": false,
+							"description": "The function to be called when the event occurs"
+						},
+						{
+							"name": "oListener",
+							"type": "object",
+							"optional": true,
+							"description": "Context object to call the event handler with. Defaults to this <code>sap.tnt.SideNavigation</code> itself"
+						}
+					],
+					"description": "Attaches event handler <code>fnFunction</code> to the <code>itemSelect</code> event of this <code>sap.tnt.SideNavigation</code>.\n\nWhen called, the context of the event handler (its <code>this</code>) will be bound to <code>oListener</code> if specified, \notherwise it will be bound to this <code>sap.tnt.SideNavigation</code> itself.\n\nFired when an item is selected."
+				},
+				{
+					"name": "bindItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oBindingInfo",
+							"type": "object",
+							"optional": false,
+							"description": "The binding information"
+						}
+					],
+					"description": "Binds aggregation <code>item</code> to model data.\n\nSee {@link sap.ui.base.ManagedObject#bindAggregation ManagedObject.bindAggregation} for a \ndetailed description of the possible properties of <code>oBindingInfo</code>."
+				},
+				{
+					"name": "destroyFixedItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"description": "Destroys the fixedItem in the aggregation <code>fixedItem</code>."
+				},
+				{
+					"name": "destroyFooter",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"description": "Destroys the footer in the aggregation <code>footer</code>."
+				},
+				{
+					"name": "destroyItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"description": "Destroys the item in the aggregation <code>item</code>."
+				},
+				{
+					"name": "detachItemSelect",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "fnFunction",
+							"type": "function",
+							"optional": false,
+							"description": "The function to be called, when the event occurs"
+						},
+						{
+							"name": "oListener",
+							"type": "object",
+							"optional": false,
+							"description": "Context object on which the given function had to be called"
+						}
+					],
+					"description": "Detaches event handler <code>fnFunction</code> from the <code>itemSelect</code> event of this <code>sap.tnt.SideNavigation</code>.\n\nThe passed function and listener object must match the ones used for event registration."
+				},
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.tnt.SideNavigation with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.core.Control.extend}."
+				},
+				{
+					"name": "fireItemSelect",
+					"visibility": "protected",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "mArguments",
+							"type": "Map",
+							"optional": true,
+							"description": "The arguments to pass along with the event"
+						}
+					],
+					"description": "Fires event <code>itemSelect</code> to attached listeners.\n\nExpects the following event parameters:\n<ul>\n<li><code>item</code> of type <code>sap.ui.core.Item</code>The selected item.</li>\n</ul>"
+				},
+				{
+					"name": "getExpanded",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "Value of property <code>expanded</code>"
+					},
+					"description": "Gets current value of property <code>expanded</code>.\n\nSpecifies if the control is expanded.\n\nDefault value is <code>true</code>."
+				},
+				{
+					"name": "getFixedItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList"
+					},
+					"description": "Gets content of aggregation <code>fixedItem</code>.\n\nDefines the content inside the fixed part."
+				},
+				{
+					"name": "getFooter",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList"
+					},
+					"description": "Gets content of aggregation <code>footer</code>.\n\nDefines the content inside the footer."
+				},
+				{
+					"name": "getItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.NavigationList"
+					},
+					"description": "Gets content of aggregation <code>item</code>.\n\nDefines the content inside the flexible part."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.tnt.SideNavigation."
+				},
+				{
+					"name": "setFixedItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oFixedItem",
+							"type": "sap.tnt.NavigationList",
+							"optional": false,
+							"description": "The fixedItem to set"
+						}
+					],
+					"description": "Sets the aggregated <code>fixedItem</code>."
+				},
+				{
+					"name": "setFooter",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oFooter",
+							"type": "sap.tnt.NavigationList",
+							"optional": false,
+							"description": "The footer to set"
+						}
+					],
+					"description": "Sets the aggregated <code>footer</code>."
+				},
+				{
+					"name": "setItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oItem",
+							"type": "sap.tnt.NavigationList",
+							"optional": false,
+							"description": "The item to set"
+						}
+					],
+					"description": "Sets the aggregated <code>item</code>."
+				},
+				{
+					"name": "unbindItem",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"description": "Unbinds aggregation <code>item</code> from model data."
+				}
+			]
+		},
+		{
+			"kind": "class",
+			"name": "sap.tnt.ToolHeader",
+			"basename": "ToolHeader",
+			"resource": "sap/tnt/ToolHeader.js",
+			"module": "sap/tnt/ToolHeader",
+			"static": true,
+			"visibility": "public",
+			"since": "1.34",
+			"extends": "sap.m.OverflowToolbar",
+			"description": "\nThe ToolHeader control is a horizontal container that is most\ncommonly used to display buttons, labels, selects and other various input controls.\n\nThe ToolHeader control is based on sap.m.OverflowToolbar. In addition to the OverflowToolbar,\nthe user can specify where the overflow button is placed.",
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "sId",
+						"type": "string",
+						"optional": true,
+						"description": "ID for the new control, generated automatically if no ID is given"
+					},
+					{
+						"name": "mSettings",
+						"type": "object",
+						"optional": true,
+						"description": "Initial settings for the new control"
+					}
+				],
+				"description": "Constructor for a new ToolHeader."
+			},
+			"methods": [
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.tnt.ToolHeader with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.m.OverflowToolbar.extend}."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.tnt.ToolHeader."
+				}
+			]
+		},
+		{
+			"kind": "class",
+			"name": "sap.tnt.ToolHeaderUtilitySeparator",
+			"basename": "ToolHeaderUtilitySeparator",
+			"resource": "sap/tnt/ToolHeaderUtilitySeparator.js",
+			"module": "sap/tnt/ToolHeaderUtilitySeparator",
+			"static": true,
+			"visibility": "public",
+			"since": "1.16",
+			"extends": "sap.ui.core.Control",
+			"description": "The ToolHeaderUtilitySeparator control is used in the sap.tnt.ToolHeader control\nto specify where the overflow button is placed.",
+			"ui5-metadata": {
+				"stereotype": "control"
+			},
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "sId",
+						"type": "string",
+						"optional": true,
+						"description": "ID for the new control, generated automatically if no ID is given"
+					},
+					{
+						"name": "mSettings",
+						"type": "object",
+						"optional": true,
+						"description": "Initial settings for the new control"
+					}
+				],
+				"description": "Constructor for a new ToolHeaderUtilitySeparator."
+			},
+			"methods": [
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.tnt.ToolHeaderUtilitySeparator with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.core.Control.extend}."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.tnt.ToolHeaderUtilitySeparator."
+				}
+			]
+		},
+		{
+			"kind": "class",
+			"name": "sap.tnt.ToolPage",
+			"basename": "ToolPage",
+			"resource": "sap/tnt/ToolPage.js",
+			"module": "sap/tnt/ToolPage",
+			"static": true,
+			"visibility": "public",
+			"since": "1.34",
+			"extends": "sap.ui.core.Control",
+			"description": "The ToolPage is a layout control, used to put together the parts of a basic tools app - ToolHeader, SideNavigation and contents area.",
+			"ui5-metadata": {
+				"stereotype": "control",
+				"properties": [
+					{
+						"name": "sideExpanded",
+						"type": "boolean",
+						"defaultValue": true,
+						"group": "Misc",
+						"visibility": "public",
+						"description": "Indicates if the side area is expanded. Overrides the expanded property of the sideContent aggregation.",
+						"methods": [
+							"getSideExpanded",
+							"setSideExpanded"
+						]
+					}
+				],
+				"aggregations": [
+					{
+						"name": "header",
+						"singularName": "header",
+						"type": "sap.tnt.ToolHeader",
+						"cardinality": "0..1",
+						"visibility": "public",
+						"description": "The control to appear in the header area.",
+						"methods": [
+							"getHeader",
+							"destroyHeader",
+							"setHeader"
+						]
+					},
+					{
+						"name": "sideContent",
+						"singularName": "sideContent",
+						"type": "sap.tnt.SideNavigation",
+						"cardinality": "0..1",
+						"visibility": "public",
+						"description": "The side menu of the layout.",
+						"methods": [
+							"getSideContent",
+							"destroySideContent",
+							"setSideContent"
+						]
+					},
+					{
+						"name": "mainContents",
+						"singularName": "mainContent",
+						"type": "sap.ui.core.Control",
+						"cardinality": "0..n",
+						"visibility": "public",
+						"description": "The content section.",
+						"methods": [
+							"getMainContents",
+							"destroyMainContents",
+							"insertMainContent",
+							"addMainContent",
+							"removeMainContent",
+							"indexOfMainContent",
+							"removeAllMainContents"
+						]
+					}
+				]
+			},
+			"constructor": {
+				"visibility": "public",
+				"parameters": [
+					{
+						"name": "sId",
+						"type": "string",
+						"optional": true,
+						"description": "ID for the new control, generated automatically if no id is given"
+					},
+					{
+						"name": "mSettings",
+						"type": "object",
+						"optional": true,
+						"description": "Initial settings for the new control"
+					}
+				],
+				"description": "Constructor for a new ToolPage.\n\n\nAccepts an object literal <code>mSettings</code> that defines initial\nproperty values, aggregated and associated objects as well as event handlers.\nSee {@link sap.ui.base.ManagedObject#constructor} for a general description of the syntax of the settings object."
+			},
+			"methods": [
+				{
+					"name": "addMainContent",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.ToolPage",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oMainContent",
+							"type": "sap.ui.core.Control",
+							"optional": false,
+							"description": "the mainContent to add; if empty, nothing is inserted"
+						}
+					],
+					"description": "Adds some mainContent to the aggregation <code>mainContents</code>."
+				},
+				{
+					"name": "destroyHeader",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.ToolPage",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"description": "Destroys the header in the aggregation <code>header</code>."
+				},
+				{
+					"name": "destroyMainContents",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.ToolPage",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"description": "Destroys all the mainContents in the aggregation <code>mainContents</code>."
+				},
+				{
+					"name": "destroySideContent",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.ToolPage",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"description": "Destroys the sideContent in the aggregation <code>sideContent</code>."
+				},
+				{
+					"name": "extend",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "function",
+						"description": "Created class / constructor function"
+					},
+					"parameters": [
+						{
+							"name": "sClassName",
+							"type": "string",
+							"optional": false,
+							"description": "Name of the class being created"
+						},
+						{
+							"name": "oClassInfo",
+							"type": "object",
+							"optional": true,
+							"description": "Object literal with information about the class"
+						},
+						{
+							"name": "FNMetaImpl",
+							"type": "function",
+							"optional": true,
+							"description": "Constructor function for the metadata object; if not given, it defaults to <code>sap.ui.core.ElementMetadata</code>"
+						}
+					],
+					"description": "Creates a new subclass of class sap.tnt.ToolPage with name <code>sClassName</code>\nand enriches it with the information contained in <code>oClassInfo</code>.\n\n<code>oClassInfo</code> might contain the same kind of information as described in {@link sap.ui.core.Control.extend}."
+				},
+				{
+					"name": "getHeader",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.ToolHeader"
+					},
+					"description": "Gets content of aggregation <code>header</code>.\n\nThe control to appear in the header area."
+				},
+				{
+					"name": "getMainContents",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.core.Control[]"
+					},
+					"description": "Gets content of aggregation <code>mainContents</code>.\n\nThe content section."
+				},
+				{
+					"name": "getMetadata",
+					"visibility": "public",
+					"static": true,
+					"returnValue": {
+						"type": "sap.ui.base.Metadata",
+						"description": "Metadata object describing this class"
+					},
+					"description": "Returns a metadata object for class sap.tnt.ToolPage."
+				},
+				{
+					"name": "getSideContent",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.SideNavigation"
+					},
+					"description": "Gets content of aggregation <code>sideContent</code>.\n\nThe side menu of the layout."
+				},
+				{
+					"name": "getSideExpanded",
+					"visibility": "public",
+					"returnValue": {
+						"type": "boolean",
+						"description": "Value of property <code>sideExpanded</code>"
+					},
+					"description": "Gets current value of property <code>sideExpanded</code>.\n\nIndicates if the side area is expanded. Overrides the expanded property of the sideContent aggregation.\n\nDefault value is <code>true</code>."
+				},
+				{
+					"name": "indexOfMainContent",
+					"visibility": "public",
+					"returnValue": {
+						"type": "int",
+						"description": "The index of the provided control in the aggregation if found, or -1 otherwise"
+					},
+					"parameters": [
+						{
+							"name": "oMainContent",
+							"type": "sap.ui.core.Control",
+							"optional": false,
+							"description": "The mainContent whose index is looked for"
+						}
+					],
+					"description": "Checks for the provided <code>sap.ui.core.Control</code> in the aggregation <code>mainContents</code>.\nand returns its index if found or -1 otherwise."
+				},
+				{
+					"name": "insertMainContent",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.ToolPage",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oMainContent",
+							"type": "sap.ui.core.Control",
+							"optional": false,
+							"description": "the mainContent to insert; if empty, nothing is inserted"
+						},
+						{
+							"name": "iIndex",
+							"type": "int",
+							"optional": false,
+							"description": "the <code>0</code>-based index the mainContent should be inserted at; for\n             a negative value of <code>iIndex</code>, the mainContent is inserted at position 0; for a value\n             greater than the current size of the aggregation, the mainContent is inserted at\n             the last position"
+						}
+					],
+					"description": "Inserts a mainContent into the aggregation <code>mainContents</code>."
+				},
+				{
+					"name": "removeAllMainContents",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.core.Control[]",
+						"description": "An array of the removed elements (might be empty)"
+					},
+					"description": "Removes all the controls from the aggregation <code>mainContents</code>.\n\nAdditionally, it unregisters them from the hosting UIArea."
+				},
+				{
+					"name": "removeMainContent",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.ui.core.Control",
+						"description": "The removed mainContent or <code>null</code>"
+					},
+					"parameters": [
+						{
+							"name": "vMainContent",
+							"type": "int|string|sap.ui.core.Control",
+							"optional": false,
+							"description": "The mainContentto remove or its index or id"
+						}
+					],
+					"description": "Removes a mainContent from the aggregation <code>mainContents</code>."
+				},
+				{
+					"name": "setHeader",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.ToolPage",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oHeader",
+							"type": "sap.tnt.ToolHeader",
+							"optional": false,
+							"description": "The header to set"
+						}
+					],
+					"description": "Sets the aggregated <code>header</code>."
+				},
+				{
+					"name": "setSideContent",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.ToolPage",
+						"description": "Reference to <code>this</code> in order to allow method chaining"
+					},
+					"parameters": [
+						{
+							"name": "oSideContent",
+							"type": "sap.tnt.SideNavigation",
+							"optional": false,
+							"description": "The sideContent to set"
+						}
+					],
+					"description": "Sets the aggregated <code>sideContent</code>."
+				},
+				{
+					"name": "setSideExpanded",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.ToolPage",
+						"description": "Pointer to the control instance for chaining"
+					},
+					"parameters": [
+						{
+							"name": "isSideExpanded",
+							"type": "boolean",
+							"optional": false,
+							"description": "defines whether the SideNavigation is expanded."
+						}
+					],
+					"description": "Sets the expand/collapse state of the SideContent."
+				},
+				{
+					"name": "toggleSideContentMode",
+					"visibility": "public",
+					"returnValue": {
+						"type": "sap.tnt.ToolPage",
+						"description": "Pointer to the control instance for chaining."
+					},
+					"description": "Toggles the expand/collapse state of the SideContent."
+				}
+			]
+		}
+	]
+}

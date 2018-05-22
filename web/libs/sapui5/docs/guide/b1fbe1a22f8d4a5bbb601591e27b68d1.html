@@ -1,0 +1,106 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Develop apps using OpenUI5 and the development environment (editor and Web server) of your choice. You can either download all of the sources or refer to the online version of OpenUI5."/>
+<meta name="description" content="Develop apps using OpenUI5 and the development environment (editor and Web server) of your choice. You can either download all of the sources or refer to the online version of OpenUI5."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9512446643175941"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9512446643175941"/>
+<title>App Development Using OpenUI5</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob1fbe1a22f8d4a5bbb601591e27b68d1">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">App Development Using <span class="ph pname">OpenUI5</span></h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Develop apps using <span class="ph pname">OpenUI5</span> and
+		the development environment (editor and Web server) of your choice. You can either download
+		all of the sources or refer to the online version of <span class="ph pname">OpenUI5</span>.</p>
+
+		<div class="section"><div class="section_title">Download OpenUI5</div><div type="Download OpenUI5">
+			
+			<div class="p">The default way of downloading and installing <span class="ph pname">OpenUI5</span> is to get the runtime
+				from the <span class="ph pname">OpenUI5</span> home page
+				at <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fopenui5.org" alt="http://openui5.org" title="http://openui5.org">http://openui5.org<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a> and deploy it on
+				a Web server.<ol class="ol" id="loiob1fbe1a22f8d4a5bbb601591e27b68d1__ol_f1m_q5h_bt">
+					<li class="li">
+						<p class="p">Go to <a class="xref" href="http://openui5.org/download.html#stableRelease" alt="http://openui5.org/download.html#stableRelease" title="http://openui5.org/download.html#stableRelease">http://openui5.org/download.html#stableRelease</a> and choose <span class="ph uicontrol">Download
+								OpenUI5 Runtime</span> to download a ZIP file containing the
+								<span class="ph pname">OpenUI5</span>
+							sources.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Unzip this file and put the entire content on the Web server where your
+							application is running (or you can even package it within your
+							application to deploy it along with the app).</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"> In your application’s main HTML file, load <span class="ph pname">OpenUI5</span> by
+							referring to the <span class="ph filepath">resources/sap-ui-core.js</span> file that
+							was contained in the ZIP file. (See <a class="xref" href="91f1f4536f4d1014b6dd926db0e91070.html" title="Self-contained variant that includes the sap-ui-core.js file in the HTML page">Standard Variant for Bootstrapping</a>.)</p>
+
+					</li>
+
+				</ol>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Using OpenUI5 Sources from a Content Delivery Network</div><div type="Using OpenUI5 Sources from a Content Delivery Network">
+			
+			<p class="p">If you don't want to download the files and don't want to include them in your
+				deployment, you can use the online version of <span class="ph pname">OpenUI5</span>. For more
+				information, see <a class="xref" href="2d3eb2f322ea4a82983c1c62a33ec4ae.html" title="SAPUI5 can either be loaded locally with a relative path from a Web server or externally from a Content Delivery Network (CDN).">Variant for Bootstrapping from Content Delivery Network</a>.</p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">You can find a list of all available <span class="ph pname">OpenUI5</span> versions here:
+						<a class="xref" href="https://openui5.hana.ondemand.com/versionoverview.html" alt="https://openui5.hana.ondemand.com/versionoverview.html" title="https://openui5.hana.ondemand.com/versionoverview.html">https://openui5.hana.ondemand.com/versionoverview.html</a>. </p>
+
+				<p class="p">Only use the <span class="ph uicontrol">Stable</span> version for productive apps. Nevertheless, if you
+					also want to test the <span class="ph uicontrol">Preview</span> version, you are very
+					welcome to send us your feedback!</p>
+
+			</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Consume OpenUI5 Using Bower</div><div type="Consume OpenUI5 Using Bower"><div class="p">You can also use the package management system <span class="ph pname">Bower</span> to develop your application.
+				In this case, you simply add <span class="ph pname">OpenUI5</span> to the
+					<samp class="ph codeph">bower.json</samp> file as a dependency, and it will be included
+				automatically:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">{
+  "name": "some-openui5-app",
+  "description": "Sample of an OpenUI5 app",
+  "private": true,
+  "dependencies": {
+<span class="ph emphasis emphasis">    "openui5-sap.ui.core": "openui5/packaged-sap.ui.core",  
+    "openui5-sap.m": "openui5/packaged-sap.m",  
+    "openui5-themelib_sap_belize": "openui5/packaged-themelib_sap_belize"  
+    }  
+   }  
+</span>
+  }
+}</pre></div>
+</div>
+You
+			can find a sample application using this mechanism and describing its usage on
+			<span class="ph pname">GitHub</span> at <a class="xref" href="https://github.com/SAP/openui5-sample-app" alt="https://github.com/SAP/openui5-sample-app" title="https://github.com/SAP/openui5-sample-app">https://github.com/SAP/openui5-sample-app</a>. <p class="p">For more
+				information on how to install and use <span class="ph pname">Bower</span>, see the
+				<span class="ph pname">Bower</span> home page at <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fbower.io" alt="http://bower.io" title="http://bower.io">http://bower.io<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a>.</p>
+</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

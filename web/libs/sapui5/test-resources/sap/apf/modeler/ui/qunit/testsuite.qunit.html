@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>apf.modeler TestSuite</title>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/qunit/qunit-redirect.js"></script>
+</head>
+<body>
+
+	<script id="sap-ui-bootstrap"
+		src='../../../../../../resources/sap-ui-core.js'>
+		
+	</script>
+	<script>
+		/**
+		 * Method that is called by the Selenium/QUnit framework to retrieve the test suites.  
+		 */
+		function suite() {
+			var suite = new top.jsUnitTestSuite();
+			var contextPath = "/" + window.location.pathname.split("/")[1];
+			var ie9 = (sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version === 9);
+			if (!ie9) {
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tApplicationList.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tPreviewContent.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tRepresentation.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tConfiguration.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tCategory.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tStep.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tConfigurationList.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tTitleAndBreadCrumb.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tToolbar.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tFacetFilter.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tFacetFilterVHR.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tFacetFilterFRR.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tNavigationTarget.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tNavTargetContextMapping.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tSmartFilterBar.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tSmartFilterBarRequest.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/utils/tStaticValuesBuilder.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/utils/tNullObjectChecker.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/utils/tViewValidator.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/utils/tOptionsValueModelBuilder.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/utils/tNavigationHandler.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/utils/tTextPoolHelper.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/utils/tAPFTree.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tNewApplication.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tImportDeliveredContent.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/apf/modeler/ui/tImportFiles.qunit.html");
+			}
+			return suite;
+		}
+	</script>
+</body>
+</html>

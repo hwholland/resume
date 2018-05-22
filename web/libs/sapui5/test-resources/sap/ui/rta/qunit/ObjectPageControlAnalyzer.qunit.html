@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Test Page for sap.ui.rta.controlAnalyzer ObjectPage</title>
+
+		<script id="sap-ui-bootstrap"
+			data-sap-ui-theme="sap_bluecrystal"
+			type="text/javascript"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.ui.rta,sap.uxap"
+			data-sap-ui-resourceroots='{"sap.ui.rta.test": "../testdata/ObjectPageControlAnalyzer/"}'
+			src="../../../../../resources/sap-ui-core.js">
+		</script>
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="text/javascript">
+
+			jQuery.sap.require("sap.ui.rta.controlAnalyzer.ControlAnalyzerFactory");
+			renderComplexView();
+			
+			QUnit.module("Given that an ObjectPageLayout with ObjectPageSections is given...", {
+				beforeEach : function(assert) {
+
+					this.oObjectPageSection1 = new sap.uxap.ObjectPageSection({
+						title: "Section_1",
+						visible : true
+					});
+
+					this.oObjectPageSection2 = new sap.uxap.ObjectPageSection({
+						title: "Section_2",
+						visible : false
+					});
+
+					this.oObjectPageSection3 = new sap.uxap.ObjectPageSection({
+						title: "Section_3",
+						visible : true
+					});
+
+					this.oObjectPageLayout = new sap.uxap.ObjectPageLayout({
+						id : "ObjectPageLayout",
+						sections : [
+							this.oObjectPageSection1,
+							this.oObjectPageSection2,
+							this.oObjectPageSection3
+						]
+					});
+
+					this.oControlAnalyzer = sap.ui.rta.controlAnalyzer.ControlAnalyzerFactory.getControlAnalyzerFor(this.oObjectPageLayout);
+
+				},
+				afterEach : function() {
+					this.oObjectPageLayout.destroy();
+					this.oControlAnalyzer.destroy();
+				}
+			});
+
+			QUnit.test("when the ControlAnalyzer is called for the ObjectPageLayout without filter", function(assert) {
+				var that = this;
+				return this.oControlAnalyzer.prepare().then(function() {
+					var mHiddenElements = that.oControlAnalyzer.getHiddenElements();
+					assert.equal(Object.keys(mHiddenElements).length, 2, "2 hidden sections are returned");
+				 });
+			});
+
+			QUnit.test("when the ControlAnalyzer is called for the ObjectPageLayout with filter", function(assert) {
+				var that = this;
+				return this.oControlAnalyzer.prepare().then(function() {
+					var mAvailableElements = that.oControlAnalyzer.getAvailableElements();
+					assert.equal(Object.keys(mAvailableElements).length, 1, "one available section is returned");
+					var mHiddenElements = that.oControlAnalyzer.getHiddenElements();
+					assert.equal(mHiddenElements.Section_1.fieldLabel, "Section_1", "the title of the section is the one of the hidden section");
+				 });
+			});
+
+			QUnit.test("when the checkTargetZone is called for the ObjectPageLayout", function(assert) {
+				var oAnotherObjectPageLayout = new sap.uxap.ObjectPageLayout();
+
+				assert.strictEqual(this.oControlAnalyzer.checkTargetZone(this.oObjectPageLayout, "sections", this.oObjectPageSection1), true, "sections aggregation inside the same parent ObjectPageLayout is valid for ObjectPageSection");
+				assert.notStrictEqual(this.oControlAnalyzer.checkTargetZone(this.oObjectPageLayout, "header", this.oObjectPageSection1), true, "header aggregation inside the same parent ObjectPageLayout is not valid for ObjectPageSection");
+
+				assert.notStrictEqual(this.oControlAnalyzer.checkTargetZone(oAnotherObjectPageLayout, "sections", this.oObjectPageSection1), true, "sections aggregation inside the different parent ObjectPageLayout is not valid for ObjectPageSection");
+			});
+			
+			QUnit.module("Given that ObjectPageSections are available");
+
+			QUnit.test("When there is an ObjectPageLayout", function(assert) {
+				
+				var oObjectPageLayout = sap.ui.getCore().byId("idMain1--ObjectPageLayout");
+				assert.ok(oObjectPageLayout, "then the ObjectPageLayout is available");
+			});
+
+			QUnit.test("When ObjectPageSections are stashed or invisible", function(assert) {
+				var that = this;
+				var oObjectPageLayout = sap.ui.getCore().byId("idMain1--ObjectPageLayout");
+				this.oControlAnalyzer = sap.ui.rta.controlAnalyzer.ControlAnalyzerFactory.getControlAnalyzerFor(oObjectPageLayout);
+				return this.oControlAnalyzer.prepare().then(function() {
+					var mHiddenElements = that.oControlAnalyzer.getHiddenElements();
+					var mAvailableElements = that.oControlAnalyzer.getAvailableElements();
+					var iStashedSections = 0;
+
+					for (var obj in mAvailableElements) {
+						if (mAvailableElements[obj].visibilityType === "stash") {
+							iStashedSections = iStashedSections + 1;
+						}
+					}
+
+					assert.equal(Object.keys(mHiddenElements).length, 2, "2 not in dialog displayed sections are returned");
+					assert.equal(iStashedSections, 2, "2 stashed sections are returned (including hidden sections)");
+				 });
+			});
+
+			function renderComplexView() {
+				var oView = sap.ui.xmlview("idMain1", "sap.ui.rta.test.ObjectPage");
+				oView.placeAt("test-view");
+			}
+		</script>
+	</head>
+	<body>
+		<h2 id="qunit-banner"></h2>
+	 	<h2 id="qunit-userAgent"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<ol id="qunit-tests"></ol>
+		<div id="test-view"></div>
+	</body>
+</html>

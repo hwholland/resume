@@ -1,0 +1,218 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <link href="style/sapvbistyle.css" type="text/css" rel="stylesheet" />
+
+      <script src="../../../../resources/sap-ui-core.js"
+            id="Script1"
+            data-sap-ui-libs="sap.ui.vbm"
+            data-sap-ui-theme="sap_bluecrystal" >
+      </script>
+
+      <script >
+            var app = {
+	               "SAPVB": {
+		               "version": "2.0",
+		               "xmlns:VB": "VB",
+		               "Windows": {
+			               "Set": {
+				               "Window": {
+					               "id": "W1",
+					               "type": "geo",
+					               "refScene": "S1",
+				               }
+			               }
+		               },
+		               "Scenes": {
+			               "Set": {
+				               "SceneGeo": {
+					               "id": "S1",
+					               "refMapLayerStack": "lsMapQuest",			
+									"VO": {
+										"id": "Spot",
+										"type": "{00100000-2012-0004-B001-64592B8DB964}",
+										"datasource": "Spots",
+										"pos.bind": "Spots.GeoPosition",
+										"scale": "1.0;1.0;1.0",
+										"fxdir": "true",
+										"fxsize": "true"
+									} , 
+                              "VisualFrame": {
+                                 "layerDepth": "4",
+                                 "maxLOD": "15",
+                                 "offsetMaxLOD": "3.5",
+                                 "minLat": "47.7",
+                                 "maxLat": "48.6",
+                                 "minLon": "10.9", 
+                                 "maxLon": "12.1"
+                              }   
+				               }
+			               }
+		               },
+                     "MapProviders": {
+                        "Set": {
+                           "MapProvider": {
+                              "name": "MAPQUEST",
+                              "type": "",
+                              "description": "",
+                              "tileX": "256",
+                              "tileY": "256",
+                              "maxLOD": "19",
+                              "copyright": "Tiles Courtesy of MapQuest © OpenStreetMap under ODbL v1.0",
+                              "Source": [
+                                 {
+                                    "id": "s1",
+                                    "url": "http://otile1.mqcdn.com/tiles/1.0.0/map/{LOD}/{X}/{Y}.png"
+                                 },
+                                 {
+                                    "id": "s2",
+                                    "url": "http://otile2.mqcdn.com/tiles/1.0.0/map/{LOD}/{X}/{Y}.png"
+                                 },
+                                 {
+                                    "id": "s3",
+                                    "url": "http://otile3.mqcdn.com/tiles/1.0.0/map/{LOD}/{X}/{Y}.png"
+                                 },
+                                 {
+                                    "id": "s4",
+                                    "url": "http://otile4.mqcdn.com/tiles/1.0.0/osm/{LOD}/{X}/{Y}.png"
+                                 }
+                              ]
+                           }
+                        }
+                     },
+                     "Data": {
+                         "Set": {
+                            "N": 
+                               {
+                                  "name": "Spots",
+                                  "E": [
+                                     {
+                                        "A": "0",
+                                        "B": "11.45;48.15;0",
+                                        "C": "LTL000421",
+                                        "D": "0"
+                                     },
+                                     {
+                                        "A": "1",
+                                        "B": "10.9;47.7;0",
+                                        "C": "LTL000522",
+                                        "D": "0"
+                                     },
+                                     {
+                                        "A": "2",
+                                        "B": "10.9;48.6;0",
+                                        "C": "LTL000523",
+                                        "D": "0"
+                                     },
+                                     {
+                                        "A": "3",
+                                        "B": "12.1;47.7;0",
+                                        "C": "LTL000522x",
+                                        "D": "0"
+                                     },
+                                     {
+                                        "A": "4",
+                                        "B": "12.1;48.6;0",
+                                        "C": "LTL000523x",
+                                        "D": "0"
+                                     }
+                                  ]
+                               }
+                            
+                         }
+                      },
+                     
+						"DataTypes": {
+							"Set": {
+								"N": [
+									{
+										"name": "Spots",
+										"key": "Key",
+										"A": [
+											{
+												"name": "Key",
+												"alias": "A",
+												"type": "string"
+											},
+											{
+												"name": "GeoPosition",
+												"alias": "B",
+												"type": "vector"
+											},
+											{
+												"name": "Name",
+												"alias": "C",
+												"type": "string"
+											},
+											{
+												"name": "Selected",
+												"alias": "D",
+												"type": "boolean"
+											}
+										]
+									}
+								]
+							}
+						},                      
+                     "MapLayerStacks": {
+                        "Set": {
+                           "MapLayerStack": {
+                              "name": "lsMapQuest",
+                              "MapLayer": {
+                                 "name": "layer1",
+                                 "refMapProvider": "MAPQUEST",
+                                 "opacity": "1.0",
+                                 "colBkgnd": "RGB(255,255,255)"
+                              }
+                           }
+                        }
+                     }
+	               }
+               };
+      </script>
+      <script>
+         // creation of visual business......................................//
+         sap.ui.localResources("vbitestapp");
+ 		
+         // with the callback it is possible to do actions before...........// 
+         // and after the control is rendered...............................//
+       
+         var oCallback = 
+         {
+            onAfterRendering : function()
+            {
+            },
+
+            onBeforeRendering : function()
+            {
+            }
+              };
+
+         // create the visual business control...............................//
+         var oVBI1 = new sap.ui.vbm.VBI('vbiWrap',{
+	         width : 800,
+	         height: 600,
+			config : app
+         });
+
+         // subscribe to callbacks...........................................//       
+         oVBI1.addDelegate( oCallback );
+       
+         // place the control in the dom.....................................//
+         oVBI1.placeAt("content");
+
+         function onBtnZoomIn()
+         {
+            oVBI1.zoomToGeoPosition( 8.643494, 49.303412, 15 );
+         };
+
+      </script>
+</head>
+   <body class="sapUiBody" role="application">
+      <h1> SAP UI5 Visual Business: Visual Frame around Munich </h1>
+      <div id="content"></div>
+      <label for="btnZoomIn">Zoom to Walldorf (must be changed to nearest inside space as target is outside of frame)</label>
+      <button id="btnZoomIn"   onClick="onBtnZoomIn()"> Zoom Test </button>              
+   </body>
+</html>

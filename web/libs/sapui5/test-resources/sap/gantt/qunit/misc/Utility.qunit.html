@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+<title>QUnit: Example - UID Generation</title>
+<script id="sap-ui-bootstrap"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal"
+	data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.gantt">
+</script>
+<link rel="stylesheet" type="text/css" href="../../../../../resources/sap/ui/thirdparty/qunit.css"/>
+<script src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script>		
+	sap.ui.require([
+	"sap/gantt/misc/Utility",
+	"sap/ui/model/Context",
+	"sap/ui/model/Model",
+	"sap/gantt/config/ObjectType"
+	], function (utility, Context, Model) {
+		"use strict";
+		QUnit.module("Test sap.gantt.misc.Utility generateRowUid method", {
+			setup: function () {
+				var config = sap.ui.getCore().getConfiguration();
+				this.originalLanguage = config.getLanguage();
+				config.setLanguage("en");				
+			},
+			teardown: function () {
+				var config = sap.ui.getCore().getConfiguration();
+				config.setLanguage(this.originalLanguage);
+				this.originalLanguage = undefined;
+			}
+		});
+		
+		QUnit.test("test UID generation for row object", function (assert) {
+			var rowDataArray = [{
+				id: "0000",
+				index: 0,
+				rowSpan: 1,
+				chartScheme: "ac_main",
+				contextObj: new Context({sPath: "/data/view/0/root/0"}),
+				data : {
+					id: "0000",
+					plate: "Test001",
+					selected: false,
+					subType: "01",
+					type: "01",
+					uuid: "01_0",
+				}
+			}];
+			rowDataArray[0].contextObj.sPath = "/data/view/0/root/0";
+			var childrenRowDataArray = [{
+				id: "0000",
+				index: 0,
+				rowSpan: 1,
+				chartScheme: "ac_main",
+				data : {
+					id: "0000",
+					plate: "Test001",
+					selected: false,
+					subType: "01",
+					type: "01",
+					uuid: "01_0",
+					children : [{
+						id: "00001",
+						selected: false,
+						type: "04",
+						uuid: "sub_01_0_1"    
+					}]
+				}                                                
+			}];
+			
+			var shapeDataArray = [{
+				  id: "0000",
+				  index: 0,
+				  rowSpan: 1,
+				  chartScheme: "ac_main",
+				  contextObj: new Context({sPath: "/data/view/0/root/0"}),
+			      data : {
+			    	id: "0000",
+					plate: "Test001",
+					selected: false,
+					subType: "01",
+					type: "01",
+					uuid: "01_0",
+					activity: [{
+						endTime: "20140921000000",
+						id: 1,
+						startTime: "20140919000000",
+						status: 2,
+						tooltip: "Activity - First",
+						type: 1
+					}],             
+			    }
+			}];
+			shapeDataArray[0].contextObj.sPath = "/data/view/0/root/0";
+			var shapeChildrenDataArray = [{
+				  id: "0000",
+				  index: 0,
+				  rowSpan: 1,
+				  chartScheme: "ac_main",
+				  bindingObj: {
+					  _aRowIndexMap: [{context: new Context({sPath: "/data/view/0/root/0"})}]
+				  },
+			      data : {
+			    	id: "0000",
+					plate: "Test001",
+					selected: false,
+					subType: "01",
+					type: "01",
+					uuid: "01_0",
+					children: [{
+					    id: "00001",
+						selected: false,
+						type: "04",
+						uuid: "sub_01_0_1",
+						activity: [
+						   {
+							   endTime: "20140930000000",
+							   id: 3,
+							   startTime: "20140929000000",
+							   status: 2,
+							   type: 1 
+						   }     
+						]     
+					}]                        
+			     }
+			}];
+			var oObjectTypesMap = {
+				"01" : new sap.gantt.config.ObjectType({
+					key: "01",
+					description: "Truck",
+					expandedChartSchemeKeys: [
+							{0: "ulc_main"},
+							{1: "ac_expand_overlap"}
+					],
+					mainChartSchemeKey: "ac_main"
+				}),
+				"02" : new sap.gantt.config.ObjectType({
+					key: "02",
+					description: "Trailer",
+					expandedChartSchemeKeys: [
+							{0: "ulc_main"},
+							{1: "ac_expand_overlap"}
+					],
+					mainChartSchemeKey: "ac_main"
+				}),
+				"04" : new sap.gantt.config.ObjectType({	
+					description: "Driver",
+					expandedChartSchemeKeys: [{
+							0: "ac_expand_overlap"
+					}],
+					mainChartSchemeKey: "ac_main"
+				}),
+				"TOL" : new sap.gantt.config.ObjectType({	
+					description: "Freight Order",
+					expandedChartSchemeKeys: [
+							{0: "ulc_main"},
+							{1: "ac_expand_overlap"}
+					],
+					mainChartSchemeKey: "ac_main"
+				}),
+				"05" : new sap.gantt.config.ObjectType({	
+					description: "Handling Resource",
+					mainChartSchemeKey: "bc_hr"
+				})
+			};
+			
+			var aShapeDataNames = ["activity", "order", "bc", "ulc", "relationship", "phase", "task"];
+			//case1: generate uid for row object
+			sap.gantt.misc.Utility.generateRowUid(rowDataArray, oObjectTypesMap, aShapeDataNames),
+			assert.strictEqual(rowDataArray[0].uid,
+					"PATH:0000|SCHEME:ac_main[0]", 
+					"The generated row uid from method generateRowUid is equal with the expected row uid...");
+			//case2: generate uid for children row object
+			/* sap.gantt.misc.Utility.generateRowUid(childrenRowDataArray, oObjectTypesMap, aShapeDataNames);
+			assert.strictEqual(childrenRowDataArray[0].data.children[0].uid,
+					"PATH:0000|00001|SCHEME:ac_main[0]",
+					"The generated children row uid from method generateRowUid is equal with the expected child row uid..."); */
+			//case3: generate uid for shape object
+			sap.gantt.misc.Utility.generateRowUid(shapeDataArray, oObjectTypesMap, aShapeDataNames);
+			assert.strictEqual(shapeDataArray[0].data.activity[0].uid, 
+					"PATH:0000|SCHEME:ac_main[0]|DATA:activity[1]",
+					"The generated shape uid from method generateRowUid is equal with the expected shape uid...");
+			//case4: generate uid for children shape object
+			/* sap.gantt.misc.Utility.generateRowUid(shapeChildrenDataArray, oObjectTypesMap, aShapeDataNames),
+			assert.strictEqual(shapeChildrenDataArray[0].data.children[0].activity[0].uid, 
+					"PATH:0000|00001|DATA:activity[3]", 
+					"The generated shape children uid from method generateRowUid is equal with the expected shape children uid..."); */
+	    });
+	});	
+</script>
+</head>
+<body>
+	<div id="qunit"></div>
+</body>
+</html>

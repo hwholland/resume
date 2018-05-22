@@ -1,0 +1,353 @@
+<!DOCTYPE html><html xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		<title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.apf.core.ReadRequestByRequiredFilter</title>
+		<link rel=stylesheet href="../default.css" type="text/css">
+		
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+				
+				
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+				
+				
+			
+				
+				
+				<link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+				
+			
+		
+	</head>
+
+	<body>
+
+
+		<div id="main">
+			<div id="content">
+
+					<h1 class="classTitle static">
+					
+					Class sap.apf.core.ReadRequestByRequiredFilter
+					</h1>
+					
+					
+					
+					
+					<hr/>
+
+					
+					
+					<div class="full-description">
+						<p>Facade for sap.apf.core.Request for getting data via the OData protocol. This corresponds to a normal HTTP GET method. Creation is done via APF API.In addition to the handed over filter argument in method send(), the required filters and parameter entity set key properties of the configured entity type are applied, which are determined from path filter.</p>
+						
+						
+						
+						
+						
+						
+					</div>
+					
+		
+					
+					
+					
+						<div class="summary section">
+							<div class="sectionTitle">Constructor Summary</div>
+							<div class="sectionItems">
+								<div class="sectionItem classConstructor static">
+									<div class="itemName">
+										<b class="icon" title="">new <a href="../symbols/sap.apf.core.ReadRequestByRequiredFilter.html#constructor">sap.apf.core.ReadRequestByRequiredFilter</a></b>
+										<span class='signature'>(<span title="(object) Injection object.">oInject</span>, <span title="(object) The object represents an OData GET request.">oRequest</span>, <span title="(string) Service defined by the analytical content configuration.">sService</span>, <span title="(string) Entity type defined by the analytical content configuration.">sEntityType</span>)</span>
+										<span class='description'></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					
+					
+					
+		
+					
+
+					
+						<div class="summary section">
+							<div class="sectionTitle">Method Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Returns {sap.apf.core.MetadataFacade} which provides convenience methods for accessing metadata (only for the service document, which is assigned to this read request instance)."><a href="../symbols/sap.apf.core.ReadRequestByRequiredFilter.html#getMetadataFacade">getMetadataFacade</a></b><span class='signature'>(<span title="(string) Service defined by the request configuration.">sService</span>)</span>
+									<span class='description'>Returns {sap.apf.core.MetadataFacade} which provides convenience methods for accessing metadata (only for the service document, which is assigned to this read request instance).</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Executes an OData request."><a href="../symbols/sap.apf.core.ReadRequestByRequiredFilter.html#send">send</a></b><span class='signature'>(<span title="(sap.apf.utils.Filter) oFilter">[]</span>, <span title="(function) The first argument of the callback function is the received data (as Array).">fnCallback</span>, <span title="(Object) An optional object containing additional query string options Format: { orderby : [{ property : , order : }], top : , skip :  }">oRequestOptions</span>)</span>
+									<span class='description'>Executes an OData request.</span>
+								</div>
+							
+							</div>
+						</div>
+					
+		
+					
+						<div class="section details">
+							<div class="sectionTitle">
+								Constructor Detail
+							</div>
+							<div class="sectionItems">
+								<div class="sectionItem classItem itemName static">
+									<div class="details"><a name="constructor"> </a>
+										
+										<div class="icon">
+											new <b>sap.apf.core.ReadRequestByRequiredFilter</b>(<span title="(object) Injection object.">oInject</span>, <span title="(object) The object represents an OData GET request.">oRequest</span>, <span title="(string) Service defined by the analytical content configuration.">sService</span>, <span title="(string) Entity type defined by the analytical content configuration.">sEntityType</span>)
+										</div>
+										
+										<div class="full-description">
+											
+										</div>
+										
+										
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oInject</b>
+													</td>
+													<td class="methodItemDesc">
+												    Injection object.
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oInject.coreApi</b>
+													</td>
+													<td class="methodItemDesc">
+												    Instance of core API.
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oInject.oMessageHandler</b>
+													</td>
+													<td class="methodItemDesc">
+												    The APF Message handler.
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oRequest</b>
+													</td>
+													<td class="methodItemDesc">
+												    The object represents an OData GET request.
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sService</b>
+													</td>
+													<td class="methodItemDesc">
+												    Service defined by the analytical content configuration.
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sEntityType</b>
+													</td>
+													<td class="methodItemDesc">
+												    Entity type defined by the analytical content configuration.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										<!--
+										
+											<dl class="detailList">
+											<dt class="heading">Returns:</dt>
+											
+													<dd><span class="light">{<a href="../symbols/sap.apf.core.ReadRequestByRequiredFilter.html">sap.apf.core.ReadRequestByRequiredFilter</a>}</span> </dd>
+											
+											</dl>
+										
+										-->
+										
+						
+									</div>
+								</div>
+							</div>
+						</div>
+					
+		
+					
+		
+					
+					
+					
+						<div class="details section">
+							<div class="sectionTitle">
+								Method Detail
+							</div>
+							<div class="sectionItems">
+								
+									<div class='sectionItem classMethod'>
+										<a name="getMetadataFacade"> </a>
+										<div class="itemTitle icon">
+											getMetadataFacade<span class="signature">(<span title="(string) Service defined by the request configuration.">sService</span>)</span>
+											<span class="light" title="returns sap.apf.core.MetadataFacade">: sap.apf.core.MetadataFacade</span>
+										</div>
+										<div class="full-description">
+											Returns {sap.apf.core.MetadataFacade} which provides convenience methods for accessing metadata(only for the service document, which is assigned to this read request instance).
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sService</b>
+													</td>
+													<td class="methodItemDesc">
+												    Service defined by the request configuration.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{sap.apf.core.MetadataFacade}</span> 
+													</td>
+													<td class="methodItemDesc">
+														
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="send"> </a>
+										<div class="itemTitle icon">
+											send<span class="signature">(<span title="(sap.apf.utils.Filter) oFilter">[]</span>, <span title="(function) The first argument of the callback function is the received data (as Array).">fnCallback</span>, <span title="(Object) An optional object containing additional query string options Format: { orderby : [{ property : , order : }], top : , skip :  }">oRequestOptions</span>)</span>
+											
+										</div>
+										<div class="full-description">
+											Executes an OData request.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{<a href="../symbols/sap.apf.utils.Filter.html">sap.apf.utils.Filter</a>}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>[]</b>
+													</td>
+													<td class="methodItemDesc">
+												    oFilter
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{function}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>fnCallback</b>
+													</td>
+													<td class="methodItemDesc">
+												    The first argument of the callback function is the received data (as Array). The second argument is {sap.apf.core.EntityTypeMetadata}. The third argument is {sap.apf.core.MessageObject}.
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{<a href="../symbols/Object.html">Object</a>}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oRequestOptions</b>
+													</td>
+													<td class="methodItemDesc">
+												    An optional object containing additional query string optionsFormat: { orderby : [{ property : <property_name>, order : <asc|desc>}], top : <integer>, skip : <integer> }
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+										
+									</div>
+								
+							</div>
+						</div>
+					
+
+
+
+		</div>
+	</div>
+
+				
+	</body>
+</html>

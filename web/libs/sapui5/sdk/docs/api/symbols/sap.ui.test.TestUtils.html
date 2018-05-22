@@ -1,0 +1,189 @@
+<!DOCTYPE html><html xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		<title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.ui.test.TestUtils</title>
+		<link rel=stylesheet href="../default.css" type="text/css">
+		
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+				
+				
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+				
+				
+			
+				
+				
+				<link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+				
+			
+		
+	</head>
+
+	<body>
+
+
+		<div id="main">
+			<div id="content">
+
+					<h1 class="classTitle static">
+					
+					Namespace sap.ui.test.TestUtils
+					</h1>
+					
+					
+					
+					
+					<hr/>
+
+					
+					
+					<div class="full-description">
+						<p>A collection of functions that support QUnit testing.</p>
+						
+						
+						
+						
+						
+						
+							<br />
+							<i>Since: </i>1.27.1.
+						
+					</div>
+					
+		
+					
+					
+					
+					
+					
+		
+					
+
+					
+						<div class="summary section">
+							<div class="sectionTitle">Method Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod static">
+									<b class="icon" title="If a test is wrapped by this function, you can test that locale-dependent texts are created as expected, but avoid checking against the real message text."><a href="../symbols/sap.ui.test.TestUtils.html#.withNormalizedMessages">sap.ui.test.TestUtils.withNormalizedMessages</a></b><span class='signature'>(<span title="(function) the code under test">fnCodeUnderTest</span>)</span>
+									<span class='description'>If a test is wrapped by this function, you can test that locale-dependent texts are created as expected, but avoid checking against the real message text.</span>
+								</div>
+							
+							</div>
+						</div>
+					
+		
+					
+		
+					
+		
+					
+					
+					
+						<div class="details section">
+							<div class="sectionTitle">
+								Method Detail
+							</div>
+							<div class="sectionItems">
+								
+									<div class='sectionItem classMethod static'>
+										<a name=".withNormalizedMessages"> </a>
+										<div class="itemTitle icon">
+											sap.ui.test.TestUtils.withNormalizedMessages<span class="signature">(<span title="(function) the code under test">fnCodeUnderTest</span>)</span>
+											
+										</div>
+										<div class="full-description">
+											If a test is wrapped by this function, you can test that locale-dependent texts are
+created as expected, but avoid checking against the real message text. The function
+ensures that every message retrieved using
+<code>sap.ui.getCore().getLibraryResourceBundle().getText()</code> consists of the key
+followed by all parameters referenced in the bundle's text in order of their numbers.
+</p><p>
+The function uses <a href="http://sinonjs.org/docs/">SSinon.js</a> and expects that it
+has been loaded. It creates a <a href="http://sinonjs.org/docs/#sandbox">Sinon
+sandbox</a> which is available as <code>this</code> in the code under test.
+</p><p>
+<b>Example</b>:
+</p><p>
+In the message bundle a message looks like this:
+<pre>
+EnterNumber=Enter a number with scale {1} and precision {0}.
+</pre>
+This leads to the following results:
+<table>
+<tr><th>Call</th><th>Result</th></tr>
+<tr><td><code>getText("EnterNumber", [10])</code></td>
+  <td>EnterNumber 10 {1}</td></tr>
+<tr><td><code>getText("EnterNumber", [10, 3])</code></td>
+  <td>EnterNumber 10 3</td></tr>
+<tr><td><code>getText("EnterNumber", [10, 3, "foo"])</code></td>
+  <td>EnterNumber 10 3</td></tr>
+</table>
+</p><p>
+<b>Usage</b>:
+<pre>
+test("parse error", function () {
+    sap.ui.test.TestUtils.withNormalizedMessages(function () {
+        var oType = new sap.ui.model.odata.type.Decimal({},
+                       {constraints: {precision: 10, scale: 3});
+
+        throws(function () {
+            oType.parseValue("-123.4567", "string");
+        }, /EnterNumber 10 3/);
+    });
+});
+</pre>
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{function}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>fnCodeUnderTest</b>
+													</td>
+													<td class="methodItemDesc">
+												    the code under test
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+											<dl class="detailList since">
+												<dt class="heading since">Since:</dt>
+												<dd>1.27.1</dd>
+											</dl>
+										
+										
+										
+										
+									</div>
+								
+							</div>
+						</div>
+					
+
+
+
+		</div>
+	</div>
+
+				
+	</body>
+</html>

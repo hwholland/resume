@@ -1,0 +1,88 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="XML views use event handlers as attributes: The attribute name is the event name, such as &#34;press&#34; for a button, and the attribute value is the event handler name."/>
+<meta name="description" content="XML views use event handlers as attributes: The attribute name is the event name, such as &#34;press&#34; for a button, and the attribute value is the event handler name."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=27906178826872485"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=27906178826872485"/>
+<title>Handling Events in XML Views</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob0fb4de7364f4bcbb053a99aa645affe">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Handling Events in XML Views</h1>
+
+	
+	<div class="body"><p class="shortdesc">XML views use event handlers as attributes: The attribute name is the event name, such
+		as "press" for a button, and the attribute value is the event handler name.</p>
+
+		<p class="p">Depending on the syntax of its name, the event handler will be looked up by this name in
+			different locations:</p>
+
+		<ul class="ul" id="loiob0fb4de7364f4bcbb053a99aa645affe__ul_yjb_f42_hq">
+			<li class="li">
+				<p class="p">Names starting with a dot ('.') are always assumed to represent a method in the
+					controller. They are resolved by removing the leading dot and reading the
+					property with the resulting name from the controller instance. These names are
+					'relative' to the view/controller. For example, <samp class="ph codeph">press:
+						".myLocalHandler"</samp> is resolved by <samp class="ph codeph">
+						attachPress(oController["myLocalHandler"], oController);</samp></p>
+
+				<div class="note note"><span class="notetitle">Note</span> This syntax is by intention consistent to the complex binding syntax for
+					formatter functions.</div>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Names containing a dot at a later position are assumed to represent global
+					functions and are resolved by calling <samp class="ph codeph">jQuery.sap.getObject</samp> with
+					the full name. For example, name <samp class="ph codeph">press: "some.global.handler"</samp>
+					is resolved by calling
+						<samp class="ph codeph">attachPress(jQuery.sap.getObject("some.global.handler"),
+						oController);</samp></p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Names without dot are interpreted as a relative name; if nothing is found, they
+					are interpreted as an absolute name. This variant is only supported for backward
+					compatibility. Example:</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">press: "myHandler" --&gt; if ( oController["myHandler"] ) {
+  attachPress(oController["myHandler"], oController);
+} else {
+  attachPress(jQuery.sap.getObject("myHandler"), oController);
+}</pre></div>
+
+			</li>
+
+		</ul>
+
+		<p class="p">Irrespective of where the function was looked up, it will be executed with the controller
+			as the context object (<samp class="ph codeph">this</samp>). This is also true for global event
+			handlers and makes the implementation of generic global handlers easier that may need an
+			easy way back to the controller/view in which they are actually used, for example, to
+			call <samp class="ph codeph">createId</samp> or <samp class="ph codeph">byId</samp>. This should make the
+			development of global event handlers more consistent with controller local event
+			handlers.</p>
+
+		<p class="p">Therefore, the following declaration is equivalent to a call of
+				<samp class="ph codeph">controller.doSomething()</samp> when the button is pressed:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+...
+          &lt;Button text="Press Me" press=".doSomething"/&gt;
+... </pre></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

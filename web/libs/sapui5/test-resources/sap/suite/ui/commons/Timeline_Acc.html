@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Timeline - sap.suite.ui.commons</title>
+
+<!-- UI5 Bootstrap -->
+<script src="../../../../../resources/sap-ui-core.js"
+	type="text/javascript" id="sap-ui-bootstrap"
+	data-sap-ui-libs="sap.suite.ui.commons,sap.m,sap.ui.commons"
+	data-sap-ui-theme="sap_bluecrystal"></script>
+
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+var oData = [ 
+       		{
+       			dateTime : new Date(),
+       			text :  "On his first day as sole CEO at SAP, Bill McDermott addresses employees with a video message and asks for their support to work together to achieve the company’s mission and transform SAP into the cloud company powered by SAP HANA",
+       			userName : "Sarah Social",
+       			title : "added a Note",
+       			filterValue: "Note",
+       			icon : "sap-icon://accept"
+       		},
+       		{
+       			dateTime :  new Date(new Date().getTime() - (1000 * 3600 * 24) * 4).getTime(),
+       			text : "79% of consumers spend at least 50% of total shopping time researching products online 82% of consumers will substitute and switch brands due to an out-of-stock product", 
+       			userName : "Sarah Social",
+       			title : "added a Note about retail reality",
+       			filterValue: "Note",
+       			icon : "sap-icon://accept"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*4).getTime(),
+       			text : "Comments on the retail reality",
+       			userName : "John Smith",
+       			title : "posted a Comment",
+       			filterValue: "Comment",
+       			icon : "sap-icon://activity-items"
+       		},
+       		{
+       			dateTime :  new Date(new Date().getTime() - (1000 * 3600 * 24) * 1).getTime(),
+       			text : "Introducing the First  Collaborative SAP HANA",
+       			userName : "Sam Sales",
+       			title : "added a Note",
+       			filterValue: "Note",
+       			icon : "sap-icon://accept"
+       		},
+       		
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 6).getTime(),
+       			text : "A Call was made on this date. Left message to the customer to call back.",
+       			userName : "Tony Stark",
+       			title : "made the Call",
+       			filterValue: "Call",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 5).getTime(),
+       			text : "Added a comment on the customer call back that the issue is resolved",
+       			userName : "Tony Stark",
+       			title : "posted a Comment",
+       			filterValue: "Comment",
+       			icon : "sap-icon://activity-items"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 2).getTime(),
+       			text : "A Call was made on this date. Need to follow up next week.",
+       			userName : "Sarah Social",
+       			title : "made a Call",
+       			filterValue: "Call",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)).getTime(),
+       			text : "This is my comments appearing in Comment type Item.",
+       			userName : "Sam Sales",
+       			title : "posted a Comment",
+       			filterValue: "Comment",
+       			icon : "sap-icon://activity-items"
+       		},
+       	
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*12).getTime(),
+       			text : "Commented on the issues of Commute",
+       			userName : "Sarah Jones",
+       			title : "posted a Comment",
+       			filterValue: "Comment",
+       			icon : "sap-icon://activity-items"
+       		},
+       		
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)* 10).getTime(),
+       			text : "Sample text for a Note type item",
+       			userName : "John Smith",
+       			title : "added a Note",
+       			filterValue: "Note",
+       			icon : "sap-icon://accept"
+       		},
+       	    {
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 40).getTime(),
+       			text : "Global Learning Center in Dublin, CA, SAP Academy has been hard at work transforming 148 high-potential Millennials (representing 38 countries) into SAP’s next generation of Sales and Presales leaders.", 
+       			userName : "Sarah Jones",
+       			title : "added a Note",
+       			filterValue: "Note",
+       			icon : "sap-icon://accept"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 25).getTime(),
+       			text : "Made a Call to the IT group, reagrding the downtime of servers, need to hear back from them",
+       			userName : "Sarah Jones",
+       			title : "made a Call",
+       			filterValue: "Call",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 30).getTime(),
+       			text : "Made a call to customer and discussed the Timeline changes",
+       			userName : "Tony Stark",
+       			title : "made a Call",
+       			filterValue: "Call",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 5).getTime(),
+       			text : "A Call was made on this date. Need to follow up next week.",
+       			userName : "Tony Stark",
+       			title : "made a Call",
+       			filterValue: "Call",
+       			icon : "sap-icon://outgoing-call"
+       		}
+       		
+       		
+       	];
+ // if both text and content are passed in data, control in content will be shown, not text.
+
+     var timeline = new sap.suite.ui.commons.Timeline({enableBusyIndicator: false});
+//     timeline.setSortOldestFirst(true);
+    	timeline.setData(oData);
+ 	//timeline.placeAt("content");
+ 	
+ 	var oIconCheckBox = new sap.m.CheckBox({
+				text: "Show Icons",
+				width: "70px",
+				selected :true,
+	 		select : function(oEvent){
+	 			if(oIconCheckBox.getSelected())
+	 				timeline.setShowIcons(true);
+		           else 
+		        	   timeline.setShowIcons(false);
+				 	   timeline.setData(oData); }
+	       });
+	
+     var oSortCheckBox = new sap.m.CheckBox({
+			text: "Sort",
+			width: "45px",
+			selected :false,
+    		select : function(oEvent){
+    			if(oSortCheckBox.getSelected())
+	        	  timeline.setSortOldestFirst(false);
+	           else 
+	        	   timeline.setSortOldestFirst(true);
+			 	   timeline.setData(oData); }
+          });
+    
+     
+     var oHdrCheckBox = new sap.m.CheckBox({
+			text: "Show Hdr.",
+			width: "65px",
+			selected :true,
+		select : function(oEvent){
+			if(oHdrCheckBox.getSelected())
+				timeline.setShowHeaderBar(true);
+	           else 
+	        	   timeline.setShowHeaderBar(false);
+     		 	   timeline.setData(oData);
+   }
+    });
+/*     var oBusyCheckBox = new sap.m.CheckBox({
+			text: "Busy Indicator",
+			width: "70px",
+			selected :false,
+ 		select : function(oEvent){
+ 			if(oBusyCheckBox.getSelected())
+ 			    {  timeline.setEnableBusyIndicator(false);
+// 			       timeline.setData(oData);
+   		        }
+	           else 
+	        	   timeline.setEnableBusyIndicator(true);
+ 			       jQuery.sap.delayedCall(60000, this, function() {timeline.setData(oData)});
+//			 	   timeline.setData(oData);
+               }
+       });*/
+  
+     
+     var oToolbar = new sap.m.Toolbar({
+      content: [
+                oIconCheckBox,
+                oHdrCheckBox,
+                oSortCheckBox,
+                
+//                oBusyCheckBox,
+                ]});
+     
+ 	var item1 = new sap.suite.ui.commons.TimelineItem({
+ 		    dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 2).getTime(),
+ 			userName : "Tony Spark",
+ 			title : "made a Call",
+ 			icon : "sap-icon://outgoing-call",
+ 			userNameClickable : true,
+ 			embeddedControl : new sap.m.Button({
+				text: "Click me",
+				width: "90px",
+				press : function() { alert("Hello from Timeline Item");}
+				})
+ 	});
+ 	var l = format_date(item1.getDateTime());
+ 	item1.setFilterValue(l);
+
+	item1.attachUserNameClicked(
+  		function(oControlEvent) { 
+  			alert("Click on Us er Name " + oControlEvent.getSource().getUserName());
+  			var oVCard = new sap.suite.ui.commons.BusinessCard({
+  			    firstTitle:  new sap.ui.commons.Label({id:"vcard1-name-label",text:"White, Helen",tooltip:"White, Helen"}),
+//  			    iconPath: "D:\contact.gif",
+  			    secondTitle: "Sales Contact at Customer Side",
+  			    imageTooltip:"White, Helen",
+  			    width: "424px"
+  			});
+  		}	
+  	);
+ 	var item2 = new sap.suite.ui.commons.TimelineItem({
+ 		    dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*3).getTime(),
+  			text : "Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.",
+ 			userName : "Sarah Social",
+ 			title : "added a Note",
+ 			icon : "sap-icon://accept"
+     });
+ 	var l = format_date(item2.getDateTime());
+ 	item2.setFilterValue(l);
+ 	
+ 	var item3 = new sap.suite.ui.commons.TimelineItem({
+     	dateTime : new Date().getTime(),
+ 		userName : "Tony Spark",
+ 		title : "added a Note",
+ 		icon : "sap-icon://accept"
+ 	});
+ 	var oText = new sap.m.Text();
+ 	oText.setText("Display text in this box from embedded content sap.m.Text");
+ 	item3.setEmbeddedControl(oText);
+ 	var l = format_date(item3.getDateTime());
+ 	item3.setFilterValue(l);
+ 	
+ 	
+ 	var item4 = new sap.suite.ui.commons.TimelineItem({
+     	dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)).getTime(),
+ 		userName : "John Smith",
+ 		title : "made a Call",
+ 		icon : "sap-icon://outgoing-call"
+ 	});
+ 	item4.setEmbeddedControl(new sap.m.Link({
+ 		text : "Link to SAP home page",
+ 		href : "http://www.sap.com",
+ 		target: "_blank"
+ 	}));
+ 	var l = format_date(item4.getDateTime());
+ 	item4.setFilterValue(l);
+ 	
+ 	var objectlistItem = new sap.m.ObjectHeader({
+ 		title:"Attachment.doc", number:"22.83", numberUnit:"USD",
+ 		attributes: [new sap.m.ObjectAttribute({text:"file name"})],
+ 		firstStatus: new sap.m.ObjectStatus({text:"Uploaded", state :sap.ui.core.ValueState.Error })
+ 	});
+ 	var item5 = new sap.suite.ui.commons.TimelineItem({
+     	dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*1).getTime(),
+  		userName : "Sarah Social",
+ 		title : "added some Contents",
+ 		icon : "sap-icon://activity-items",
+ 	});
+ 	item5.setEmbeddedControl(objectlistItem);
+ 	var oFT = new sap.ui.commons.FormattedTextView("oFT");
+ 	var sHtmlText = 'Example to have mixture of text and link: <embed data-index=\"0\">, <embed data-index=\"1\">';
+	sHtmlText += ' Click to navigate to outside links.';
+	oFT.setHtmlText(sHtmlText);
+	oFT.addControl(new sap.ui.commons.Link({
+ 		text : "SAP",
+ 		href : "http://www.sap.com",
+ 		target : "_blank"
+ 	}));
+	oFT.addControl(new sap.ui.commons.Link({
+ 		text : "Google",
+ 		href : "http://www.google.com",
+ 		target : "_blank"
+		}));
+	
+	var l = format_date(item5.getDateTime());
+ 	item5.setFilterValue(l);
+ 	
+ 	var item6 = new sap.suite.ui.commons.TimelineItem({
+ 		dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*16),
+		userName : "John Smith",
+		title : "added a custom text",
+		icon : "sap-icon://activity-items",
+		embeddedControl : oFT
+	});
+ 	
+// 	alert(item6.getDateTime());
+// 	var l = format_date(item6.getDateTime());
+// 	item6.setFilterValue(l);
+ 	
+ 	function format_date(idate){
+ 		
+ 	  	var d = new Date(parseInt(idate));
+ 	   	var year = d.getFullYear();
+   	    var day = d.getDate();
+   	    var month = d.getMonth() + 1;
+//	    if (day<10) { day = '0' + day; }
+//	    if (month<10) {month = '0' + month;}
+   	    var previousDate = month.toString() + '/' +  day.toString() + '/' + year.toString().substr(2,2);
+   	    return previousDate;
+   		}
+
+ 	 	
+ 	var conts = [item1,item2,item3,item4,item5,item6];
+ 	var conts2 = [item1,item2];
+ 	var timeline2 = new sap.suite.ui.commons.Timeline();
+ 	timeline2.setSortOldestFirst(true);
+ 	timeline2.setContent(conts);
+  	
+  	var oModel = new sap.ui.model.odata.ODataModel("/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc/", true);
+  	var tlItem = new sap.suite.ui.commons.TimelineItem({
+    	dateTime : "{OrderDate}",
+		text : "Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.",
+		title : "placed an order",
+		userName : "{CustomerID}",
+		filterValue: "{CustomerID}",
+		icon : "sap-icon://activity-items",
+		userNameClickable : true
+	}); 
+  	tlItem.attachUserNameClicked(
+  		function(oControlEvent) { 
+    			alert("Click on User Name " + oControlEvent.getSource().getUserName());
+  		}	
+  	);
+  	
+ //Bind timeline3 data 	
+  	var timeline3 = new sap.suite.ui.commons.Timeline({enableBusyIndicator: false});
+  	timeline3.setModel(oModel);
+  	timeline3.setShowIcons(false);
+  	timeline3.setWidth("80%");
+  	timeline3.setGrowingThreshold(3);
+  	timeline3.bindAggregation("content", {
+  		path: "/Orders",
+  		template: tlItem
+  	});
+  
+  //	timeline3.setShowMessageStrip(true);
+  	var MessageStrip2 = timeline3.getMessageStrip();
+  	MessageStrip2.setText("There are new messages press refresh");
+  	MessageStrip2.setShowCloseButton(true);
+  	MessageStrip2.setShowIcon(true);
+  	MessageStrip2.setType("Information");
+	MessageStrip2.setCustomIcon("sap-icon://undo");
+    MessageStrip2.setLink(new sap.m.Link({
+        text : "Refresh",
+	 }).attachBrowserEvent('click', 
+	      function(event){
+	                       timeline3.bindAggregation("content", {
+	                              path: "/Orders",
+//	                  	  	      filters: [oFilter],
+	                              template: tlItem
+	                       });
+	}));                 
+
+
+  //Based on Filter rebind the Timeline data on click of New Data	
+  	var oFilter = new sap.ui.model.Filter("CustomerID", sap.ui.model.FilterOperator.EQ, "QUICK");
+	var oButton = new sap.m.Button({
+		text : "Load New Data",
+		press : function() {
+	  	timeline3.bindAggregation("content", {
+	  		path: "/Orders",
+	  		filters: [oFilter],
+	  		template: tlItem
+	  	});
+		}});
+	
+	var oToolbarFlt = new sap.m.Toolbar({
+	      content: [
+	                oButton,   
+	                 ]});
+  	
+	var oButton_Com = new sap.m.Button({
+		text : "Compact",
+		width: "100px",
+		press : function() {
+	  	layh.addStyleClass("sapUiSizeCompact"); 
+		}});
+    var oButton_Coz = new sap.m.Button({
+		text : "Cozy", 
+		width: "100px",
+		press : function() {
+	  	layh.removeStyleClass("sapUiSizeCompact"); 
+		}});
+	
+    var oToolbarMode = new sap.m.Toolbar({
+	      content: [ oButton_Com,oButton_Coz  ]});
+	                 
+   	var panel1 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false,   width : "400px", height : "500px",  text:"Timeline: Text Items with Show Icons, Show Header, Sort", areaDesign: sap.ui.commons.enums.AreaDesign.Transparent});
+ 	panel1.addContent(oToolbar);
+   	panel1.addContent(timeline);
+   	
+   	var panel2 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false,   width : "400px", height : "500px", text:"Timeline: in Scroll Container with embedded controls" , areaDesign: sap.ui.commons.enums.AreaDesign.Transparent });
+//   	panel2.addContent(oToolbarMode);
+   	panel2.addContent(timeline2);
+   	
+   	var panel3 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false,   width : "400px", height : "500px", text:"Timeline: in Scroll Container using oData model binding", areaDesign: sap.ui.commons.enums.AreaDesign.Transparent });
+//	panel3.addContent(oToolbarFlt);
+   	panel3.addContent(timeline3);
+   	
+   	var layh = new sap.ui.commons.layout.HorizontalLayout({ width : "100%", height : "100%" });
+   	var indent = new sap.ui.commons.TextView({ width : '20px' });
+   	var indent2 = new sap.ui.commons.TextView({ width : '20px' });
+
+    layh.addContent(panel2);
+  	layh.addContent(panel3);
+	var layV = new sap.ui.commons.layout.VerticalLayout({ width : "100%", height : "100%" });
+	layV.addContent(layh).addContent(new sap.m.FlexBox({ height : "50px" }));
+	layV.placeAt("content");
+	
+
+</script>
+</head>
+
+<body class="sapUiBody">
+	<div id="content"></div>
+</body>
+</html>

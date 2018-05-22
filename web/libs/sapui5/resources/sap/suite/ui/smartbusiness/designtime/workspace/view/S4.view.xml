@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- SAP Smart Business (c) Copyright 2012-2015 SAP SE. All rights reserved -->
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns="sap.m"
+	controllerName="sap.suite.ui.smartbusiness.designtime.workspace.view.S4" xmlns:html="http://www.w3.org/1999/xhtml"
+	displayBlock="false" height="100%">
+	<Page class="s4workspace">
+	    <headerContent>
+	        <Button icon="sap-icon://up" />
+	        <Button icon="sap-icon://down" />
+	    </headerContent>
+		<content>
+		    <ObjectHeader title="{evaluation>/EVALUATION/TITLE}" titleActive="true"
+				showMarkers="true" markFavorite="{path:'evaluation>/EVALUATION/MANUAL_ENTRY', formatter:'.formatFavoriteMark'}">
+				<attributes>
+					<ObjectAttribute text="{evaluation>/EVALUATION/ID}" visible="{SB_APP_SETTING>/ID_VISIBLE}" />
+					<ObjectAttribute text="{path:'evaluation>/EVALUATION/OWNER_NAME', formatter:'.formatOwnerName'}" />
+				</attributes>
+				<statuses>
+					<ObjectStatus id="evalStatus" text="{parts:[{path:'evaluation>/EVALUATION/IS_ACTIVE'},{path:'evaluation>/EVALUATION/COUNTER'}], formatter:'.formatEvalStatus'}"
+						state="{path:'evaluation>/EVALUATION/IS_ACTIVE', formatter:'sap.suite.ui.smartbusiness.lib.formatters.kpiStatusState'}" />
+				</statuses>
+			</ObjectHeader>
+	<l:Grid defaultIndent="L0 M0 S0" defaultSpan="L12 M12 S12">
+		<l:content>
+			
+			<IconTabBar id="idWorkspaceEvalDetailTab">
+				<items>
+					<IconTabFilter text="{i18n>INFORMATION}">
+						<form:SimpleForm id="idEvalInfoForm" minWidth="1024"
+							maxContainerCols="2" editable="false" layout="ResponsiveGridLayout"
+							labelSpanL="3" labelSpanM="3" emptySpanL="4" emptySpanM="4"
+							columnsL="1" columnsM="1">
+							<form:content>
+								<Label text="{i18n>KPI_TEXT}" design="Bold" />
+								<Text text="{evaluation>/EVALUATION/INDICATOR}"/>
+								<Label text="{i18n>DESCRIPTION}" design="Bold" />
+								<Text text="{evaluation>/EVALUATION/DESCRIPTION}" />
+								<Label text="{i18n>TAGS}" design="Bold" />
+								<HBox items="{evaluation>/TAGS}" id="tags">
+									<items>
+										<Text text="{path:'evaluation>TAG', formatter:'.formatTags'}" />
+									</items>
+								</HBox>
+								<Label text="{i18n>PROPERTIES}" design="Bold" />
+								<HBox items="{evaluation>/PROPERTIES}" id="properties">
+									<items>
+										<Text
+											text="{parts:[{path:'evaluation>NAME'},{path:'evaluation>VALUE'}], formatter:'.formatProperties'}" />
+									</items>
+								</HBox>
+								<Label design="Bold" text="{i18n>ADDITIONAL_LANGUAGES}" />
+								<Link id="kpiAdditionalLanguages"
+								text="{i18n>ADDITIONAL_LANGUAGES}"
+								press="openAdditionalLanguageDialog">
+								</Link>
+							</form:content>
+						</form:SimpleForm>
+					</IconTabFilter>
+					<IconTabFilter text="{i18n>DATA_SOURCE}">
+						<form:SimpleForm id="idEvalDataSourceForm" minWidth="1024"
+							maxContainerCols="2" editable="false" layout="ResponsiveGridLayout"
+							labelSpanL="3" labelSpanM="3" emptySpanL="4" emptySpanM="4"
+							columnsL="1" columnsM="1">
+							<form:content>
+								<Label text="{i18n>HANA_VIEW}" design="Bold" />
+								<Text text="{evaluation>/EVALUATION/VIEW_NAME}" />
+								<Label text="{i18n>ODATA_SERVICE}" design="Bold" />
+								<Text text="{evaluation>/EVALUATION/ODATA_URL}" />
+								<Label text="{i18n>ENTITY_SET}" design="Bold" />
+								<Text text="{evaluation>/EVALUATION/ODATA_ENTITYSET}" />
+								<Label text="{i18n>VALUE_MEASURE}" design="Bold" />
+								<Text text="{evaluation>/EVALUATION/COLUMN_NAME}" />
+								<Label text="{i18n>SCALING_FACTOR}" design="Bold" />
+								<Text text="{path:'evaluation>/EVALUATION/SCALING', formatter:'.formatScalingFactor'}" />
+								<Label text="{i18n>DECIMAL_PRECISION}" design="Bold" />
+								<Text text="{path:'evaluation>/EVALUATION/DECIMAL_PRECISION', formatter:'.formatDecimalPrecision'}" />																
+							</form:content>
+						</form:SimpleForm>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+						
+			<form:SimpleForm id="thresholdTrendId" minWidth="1024" maxContainerCols="4"
+				width="100%" editable="false" layout="ResponsiveGridLayout" title="{i18n>TARGET_THRESHOLD_TREND}"
+				labelSpanL="2" labelSpanM="2" emptySpanL="0" emptySpanM="0" 
+				columnsL="2" columnsM="2">
+				<form:content>
+					<Label text="{i18n>GOAL_TYPE}" design="Bold" >
+					</Label>
+					<Text id="goalType" class="goalValueCss" text="{path:'evaluation>/EVALUATION/GOAL_TYPE', formatter:'.formatGoalType'}" >
+						<layoutData>
+                        	<l:GridData span="L8 M8" />
+                        </layoutData>
+					</Text>
+					<Label text="{i18n>VALUE_TYPE}" design="Bold" >
+                                      </Label>
+					<Text text="{evaluation>/EVALUATION/VALUES_SOURCE}" class="goalValueCss">
+						<layoutData>
+                      	  <l:GridData span="L8 M8" />
+                        </layoutData>
+					</Text>
+					
+					<Text text=" " >
+					<layoutData>
+                            <l:GridData span="L8 M8" />
+                       </layoutData>
+                    </Text>
+					<Label id="CHlabel" text="{path:'evaluation>/EVALUATION/GOAL_TYPE', formatter:'.formatThresholdCriticalHigh'}" design="Bold" />
+					<Text id="CHinput" text="{evaluation>/VALUES_OBJ/CH}" editable="false">
+						<layoutData>
+							<l:GridData span="L8 M8" />
+						</layoutData>
+					</Text>
+					<Label id="WHlabel" text="{path:'evaluation>/EVALUATION/GOAL_TYPE', formatter:'.formatThresholdWarningHigh'}" design="Bold" />
+					<Text id="WHinput" text="{evaluation>/VALUES_OBJ/WH}" editable="false">
+						<layoutData>
+							<l:GridData span="L8 M8" />
+						</layoutData>
+					</Text>
+					<Label id="TAlabel" text="{i18n>TARGET}" design="Bold" />	
+					<Text id="TAinput" text="{evaluation>/VALUES_OBJ/TA}" editable="false">
+						<layoutData>
+							<l:GridData span="L8 M8" />
+						</layoutData>
+					</Text>
+					<Label id="WLlabel" text="{path:'evaluation>/EVALUATION/GOAL_TYPE', formatter:'.formatThresholdWarningLow'}" design="Bold" />	
+					<Text id="WLinput" text="{evaluation>/VALUES_OBJ/WL}" editable="false">
+						<layoutData>
+							<l:GridData span="L8 M8" />
+						</layoutData>
+					</Text>
+					<Label id="CLlabel" text="{path:'evaluation>/EVALUATION/GOAL_TYPE', formatter:'.formatThresholdCriticalLow'}" design="Bold" />	
+					<Text id="CLinput" text="{evaluation>/VALUES_OBJ/CL}" editable="false">
+						<layoutData>
+							<l:GridData span="L8 M8" />
+						</layoutData>
+					</Text>
+					<Label id="TrendLabel" text="{i18n>TREND}" design="Bold" />
+					<Text id="Trendinput" text="{evaluation>/VALUES_OBJ/TC}" editable="false">
+						<layoutData>
+							<l:GridData span="L8 M8" />
+						</layoutData>
+					</Text>
+				</form:content>
+			</form:SimpleForm>
+
+
+
+			<Table id="filterInputParameterTable" inset="false" items="{path:'evaluation>/FILTERS_IP'}" itemPress="handlePressID">
+				<headerToolbar>
+					<Toolbar>
+						<Label text="{i18n>INPUT_PARAMETERS_FILTERS}"></Label>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Text text="{i18n>DIMENSIONS}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>TYPE}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>OPERATOR}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>VALUES_FROM}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>VALUE_TO}" />
+					</Column>
+
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{evaluation>NAME}" />
+							<Text text="{path:'evaluation>TYPE', formatter:'.formatTypeOfFilter'}" />
+							<Text text="{path:'evaluation>OPERATOR', formatter:'.formatOperator'}" />
+							<Text text="{path: 'evaluation>VALUES', formatter:'.formatFilterValue'}" />
+							<Text text="{path: 'evaluation>VALUE_2', formatter:'.formatFilterValue'}" />
+
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<core:Fragment
+				fragmentName="sap.suite.ui.smartbusiness.designtime.workspace.view.tileDdaDetails"
+				type="XML"></core:Fragment>			
+
+		</l:content>
+	</l:Grid>
+	</content>
+	</Page>
+
+</core:View>

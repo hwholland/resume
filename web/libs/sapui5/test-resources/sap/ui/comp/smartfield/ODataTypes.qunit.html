@@ -1,0 +1,376 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>qUnit Page for sap.ui.comp.smartfield.ODataTypes</title>
+
+		<script id="sap-ui-bootstrap" 
+			type="text/javascript"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.ui.comp">
+		</script>
+
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css"	type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+		
+		<script type="text/javascript" src="data/TestModel.data.js"></script>
+
+		<script type="text/javascript">
+		if (!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+			jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		}		
+		
+		(function() {
+			jQuery.sap.require("sap.ui.comp.smartfield.ODataTypes");
+			jQuery.sap.require("sap.ui.model.odata.ODataModel");
+				
+			var oProperty = JSON.parse("{\"property\":{\"name\":\"Description\",\"type\":\"Edm.String\",\"nullable\":\"false\",\"maxLength\":\"80\",\"extensions\":[{\"name\":\"field-control\",\"value\":\"Description_FC\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"sortable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"filterable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"}]},\"extensions\":{\"sap:filterable\":{\"name\":\"filterable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:sortable\":{\"name\":\"sortable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:field-control\":{\"name\":\"field-control\",\"value\":\"Description_FC\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"}},\"typePath\":\"Description\"}");
+						
+			QUnit.module("sap.ui.comp.smartfield.ODataTypes", {
+				beforeEach: function() {
+					var oParent = {
+						getBindingInfo: function() {
+							return null;
+						},
+						getMaxLength: function() {
+							return 0;
+						}
+					};
+					this.oModel = sinon.createStubInstance(sap.ui.model.odata.ODataModel);
+					this.oModel.getServiceMetadata = function() {
+						return oTestModel;
+					};
+					
+					this.oMetaData = new sap.ui.comp.smartfield.ODataTypes(oParent);					
+				},
+				afterEach: function() {
+					this.oMetaData.destroy();
+				}
+			});
+							
+			QUnit.test("Shall be instantiable", function() {
+				assert.ok(this.oMetaData);
+			});
+		
+			QUnit.test("getType shall return custom type", function() {
+				var oResult, oType = { 
+					name: "dummyType"
+				};
+				
+				this.oMetaData._oParent.getBindingInfo = function() {
+					return { 
+						type: oType
+					};
+				};
+				oResult = this.oMetaData.getType({ 
+					property : {
+						"type" : "Edm.Int64"
+					}
+				});
+				
+				assert.equal(oResult.name, "dummyType");
+			});
+			
+			QUnit.test("getType : Int64", function() {
+				var oResult = this.oMetaData.getType({ 
+					property : {
+						"type" : "Edm.Int64"
+					}
+				});
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.Int64, true);
+				
+				oResult = this.oMetaData.getType();
+				assert.equal(!oResult, true);
+				
+				oResult = this.oMetaData.getType({ 
+					property : {
+						"type" : "Edm.Dummy"
+					}
+				});
+				assert.equal(!oResult, true);
+			});
+			
+			QUnit.test("getType : Int32", function() {
+				var oResult = this.oMetaData.getType({ 
+					property : {
+						"type" : "Edm.Int32"
+					}
+				});
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.Int32, true);
+			});
+			
+			QUnit.test("getType : Int16", function() {
+				var oResult = this.oMetaData.getType({ 
+					property : {
+						"type" : "Edm.Int16"
+					}
+				});
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.Int16, true);
+			});
+			
+			QUnit.test("getType : SByte", function() {
+				var oResult = this.oMetaData.getType({ 
+					property : {
+						"type" : "Edm.SByte"
+					}
+				});
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.SByte, true);
+			});
+			
+			QUnit.test("getType : Byte", function() {
+				var oResult = this.oMetaData.getType({ 
+					property : {
+						"type" : "Edm.Byte"
+					}
+				});
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.SByte, true);
+			});
+			
+			QUnit.test("getType : Boolean", function() {
+				var oResult = this.oMetaData.getType({ 
+					property : {
+						"type" : "Edm.Boolean"
+					}
+				});
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.Boolean, true);
+			});
+			
+			QUnit.test("getType : String", function() {
+				var oResult = this.oMetaData.getType({ 
+					property : {
+						"type" : "Edm.String"
+					}
+				});
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.String, true);
+			});
+			
+			QUnit.test("getType : Time", function() {
+				var oResult = this.oMetaData.getType({
+					"property" : {
+						"type" : "Edm.Time"
+					}
+				});
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.Time, true);
+			});
+			
+			QUnit.test("getType : DateTime returning Date", function() {
+				var oResult = this.oMetaData.getType({
+					"property" : {
+						"type" : "Edm.DateTime",
+						"sap:display-format" : "Date"
+					}
+				});
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.DateTime, true);
+			});
+			
+			QUnit.test("getType : DateTime returning DateTime", function() {
+				var oResult = this.oMetaData.getType({
+					"property" : {
+						"type" : "Edm.DateTime",
+						"display-format" : "none",
+						"extensions": [
+							{
+								"name": "display-format",
+								"value": "none",
+								"namespace": ""
+							}
+						]
+					}
+				});
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.DateTime, true);
+			});
+			
+			QUnit.test("getType : DateTimeOffset returning DateTimeOffset", function() {
+				var oResult = this.oMetaData.getType({
+					"property" : {
+						"type" : "Edm.DateTimeOffset"
+					},
+					"extensions" : {
+						"display-format" : {
+							"value" : "Date"
+						}
+					}
+				});
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.DateTimeOffset, true);
+			});
+			
+			QUnit.test("getType", function() {
+				var oProperty, oResult;
+			
+				oProperty = JSON.parse("{\"property\":{\"name\":\"Amount\",\"type\":\"Edm.Decimal\",\"nullable\":\"false\",\"precision\":\"11\",\"scale\":\"2\",\"documentation\":[{\"text\":null,\"extensions\":[{\"name\":\"Summary\",\"value\":\"Preis fÃ¼r externe Verarbeitung.\",\"attributes\":[],\"children\":[],\"namespace\":\"http://schemas.microsoft.com/ado/2008/09/edm\"},{\"name\":\"LongDescription\",\"value\":null,\"attributes\":[],\"children\":[],\"namespace\":\"http://schemas.microsoft.com/ado/2008/09/edm\"}]}],\"extensions\":[{\"name\":\"unit\",\"value\":\"AmountCurrency\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"label\",\"value\":\"Preis\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"sortable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"filterable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"}]},\"extensions\":{\"sap:filterable\":{\"name\":\"filterable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:sortable\":{\"name\":\"sortable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:label\":{\"name\":\"label\",\"value\":\"Preis\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:unit\":{\"name\":\"unit\",\"value\":\"AmountCurrency\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"}},\"typePath\":\"Amount\"}");
+				oResult = this.oMetaData.getType(oProperty);
+				
+				assert.equal(oResult instanceof sap.ui.model.odata.type.Decimal, true);
+			});				
+			
+			QUnit.test("getUOMDisplayFormatter for non-currency", function() {
+				var fFunc, sResult;
+				fFunc = this.oMetaData.getDisplayFormatter({});
+				fFunc("10120.01", "JPY");
+				assert.equal(!!fFunc, true);	
+				
+				sResult = fFunc("10120.01", "*");
+				assert.equal(sResult, "");
+				
+				sResult = fFunc("10120.01");
+				assert.equal(sResult, "");
+			});
+
+			QUnit.test("getUOMDisplayFormatter for currency", function() {
+				var fFunc, sResult;
+				fFunc = this.oMetaData.getDisplayFormatter({}, true);
+				fFunc("10120.01", "JPY");
+				assert.equal(!!fFunc, true);	
+				
+				sResult = fFunc("10120.01", "*");
+				assert.equal(sResult, "");
+				
+				sResult = fFunc("10120.01");
+				assert.equal(sResult, "");
+			});
+			
+			QUnit.test("_getDecimalConstraints", function() {
+				var oProperty, oResult;
+			
+				oProperty = JSON.parse("{\"property\":{\"name\":\"Amount\",\"type\":\"Edm.Decimal\",\"nullable\":\"false\",\"precision\":\"11\",\"scale\":\"2\",\"documentation\":[{\"text\":null,\"extensions\":[{\"name\":\"Summary\",\"value\":\"Preis fÃ¼r externe Verarbeitung.\",\"attributes\":[],\"children\":[],\"namespace\":\"http://schemas.microsoft.com/ado/2008/09/edm\"},{\"name\":\"LongDescription\",\"value\":null,\"attributes\":[],\"children\":[],\"namespace\":\"http://schemas.microsoft.com/ado/2008/09/edm\"}]}],\"extensions\":[{\"name\":\"unit\",\"value\":\"AmountCurrency\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"label\",\"value\":\"Preis\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"sortable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"filterable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"}]},\"extensions\":{\"sap:filterable\":{\"name\":\"filterable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:sortable\":{\"name\":\"sortable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:label\":{\"name\":\"label\",\"value\":\"Preis\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:unit\":{\"name\":\"unit\",\"value\":\"AmountCurrency\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"}},\"typePath\":\"Amount\"}");
+				oResult = this.oMetaData._getDecimalConstraints(oProperty);
+				
+				assert.equal(oResult.scale, 2);
+				assert.equal(oResult.precision, 11);
+			});		
+			
+			QUnit.test("_getDecimalConstraints - no precision", function() {
+				var oProperty, oResult;
+			
+				oProperty = JSON.parse("{\"property\":{\"name\":\"Amount\",\"type\":\"Edm.Decimal\",\"nullable\":\"false\",\"precision\":\"11\",\"scale\":\"2\",\"documentation\":[{\"text\":null,\"extensions\":[{\"name\":\"Summary\",\"value\":\"Preis fÃ¼r externe Verarbeitung.\",\"attributes\":[],\"children\":[],\"namespace\":\"http://schemas.microsoft.com/ado/2008/09/edm\"},{\"name\":\"LongDescription\",\"value\":null,\"attributes\":[],\"children\":[],\"namespace\":\"http://schemas.microsoft.com/ado/2008/09/edm\"}]}],\"extensions\":[{\"name\":\"unit\",\"value\":\"AmountCurrency\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"label\",\"value\":\"Preis\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"sortable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"filterable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"}]},\"extensions\":{\"sap:filterable\":{\"name\":\"filterable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:sortable\":{\"name\":\"sortable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:label\":{\"name\":\"label\",\"value\":\"Preis\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:unit\":{\"name\":\"unit\",\"value\":\"AmountCurrency\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"}},\"typePath\":\"Amount\"}");
+				delete oProperty.property.precision;
+				oResult = this.oMetaData._getDecimalConstraints(oProperty);
+				
+				assert.equal(oResult.scale, 2);
+				assert.equal(!oResult.precision, true);
+			});	
+			
+			QUnit.test("_getMaxLength from OData property", function() {
+				var iLen, oParent; 
+				
+				oParent = {
+					getMaxLength: function() {
+						return 0;
+					},
+					getBindingInfo: function() {
+						return null;
+					}
+				};
+				this.oMetaData._oParent = oParent;
+				
+				iLen = this.oMetaData.getMaxLength({ property: { maxLength: 3 } });
+				assert.equal(iLen, 3);
+				
+				//take the minimum OData and maxLength prop on parent
+				oParent.getMaxLength = function() {
+					return 10;			           
+				};
+				iLen = this.oMetaData.getMaxLength({ property: { maxLength: 5 } });
+				assert.equal(iLen, 5);
+				
+				//take the minimum OData, maxLength prop on parent and constraint
+				oParent.getMaxLength = function() {
+					return 10;			           
+				};
+				
+				iLen = this.oMetaData.getMaxLength({ property: {  maxLength: 5 } }, {
+					constraints : {
+						maxLength: 2
+					}
+				});
+				assert.equal(iLen, 2);
+				
+				//take the minimum OData, maxLength prop on parent and constraints on type
+				oParent.getMaxLength = function() {
+					return 10;			           
+				};
+				
+				iLen = this.oMetaData.getMaxLength({ property: { maxLength: 5 } }, {
+					type: {
+						oConstraints : {
+							maxLength: 2
+						}
+					}
+				});
+				assert.equal(iLen, 2);
+			});
+			
+			QUnit.test("_getStringConstraints", function() {
+				var oParent, oProperty, oResult; 
+				
+				oParent = {
+					getMaxLength: function() {
+						return 3;
+					},
+					getBindingInfo: function() {
+						return {
+							type: {
+								oConstraints : {
+									equals: "00001"
+								}
+							}
+						};
+					}
+				};
+				oProperty = JSON.parse("{\"property\":{\"name\":\"Amount\",\"type\":\"Edm.Decimal\",\"nullable\":\"false\",\"precision\":\"11\",\"scale\":\"2\",\"documentation\":[{\"text\":null,\"extensions\":[{\"name\":\"Summary\",\"value\":\"Preis fÃ¼r externe Verarbeitung.\",\"attributes\":[],\"children\":[],\"namespace\":\"http://schemas.microsoft.com/ado/2008/09/edm\"},{\"name\":\"LongDescription\",\"value\":null,\"attributes\":[],\"children\":[],\"namespace\":\"http://schemas.microsoft.com/ado/2008/09/edm\"}]}],\"extensions\":[{\"name\":\"unit\",\"value\":\"AmountCurrency\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"label\",\"value\":\"Preis\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"sortable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"filterable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"}]},\"extensions\":{\"sap:filterable\":{\"name\":\"filterable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:sortable\":{\"name\":\"sortable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:label\":{\"name\":\"label\",\"value\":\"Preis\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},\"sap:unit\":{\"name\":\"unit\",\"value\":\"AmountCurrency\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"}},\"typePath\":\"Amount\"}");
+				this.oMetaData._oParent = oParent;				
+				oResult = this.oMetaData._getStringConstraints(oProperty);
+				assert.equal(oResult.equals, "00001");
+				assert.equal(oResult.maxLength, 3);
+			});
+										
+		
+			QUnit.test("getCurrencyType", function() {
+				var oProperty, oResult;
+				
+				oProperty = JSON.parse("{\"property\":{\"name\":\"Amount\",\"type\":\"Edm.Decimal\",\"nullable\":\"false\",\"precision\":\"11\",\"scale\":\"2\",\"documentation\":[{\"text\":null,\"extensions\":[{\"name\":\"Summary\",\"value\":\"Price for external processing.\",\"attributes\":[],\"children\":[],\"namespace\":\"http://schemas.microsoft.com/ado/2008/09/edm\"},{\"name\":\"LongDescription\",\"value\":null,\"attributes\":[],\"children\":[],\"namespace\":\"http://schemas.microsoft.com/ado/2008/09/edm\"}]}],\"extensions\":[{\"name\":\"unit\",\"value\":\"AmountCurrency\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"label\",\"value\":\"Price\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"sortable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"},{\"name\":\"filterable\",\"value\":\"false\",\"namespace\":\"http://www.sap.com/Protocols/SAPData\"}],\"sap:unit\":\"AmountCurrency\",\"sap:label\":\"Price\",\"sap:sortable\":\"false\",\"sap:filterable\":\"false\"},\"typePath\":\"Amount\",\"extensions\":{\"sap:filterable\":\"false\",\"sap:sortable\":\"false\",\"sap:label\":\"Price\",\"sap:unit\":\"AmountCurrency\"}}");
+				oResult = this.oMetaData.getCurrencyType();
+				assert.ok(!oResult);
+				
+				oResult = this.oMetaData.getCurrencyType(oProperty);
+				assert.ok(oResult);
+				assert.equal(oResult.oFormatOptions.maxIntegerDigits, 9);
+				//assert.equal(oResult.oFormatOptions.maxFractionDigits, 2);
+				assert.equal(oResult.oFormatOptions.emptyString, 0);				
+				//assert.equal(oResult.oConstraints.precision, 11);
+				//assert.equal(oResult.oConstraints.scale, 2);
+			});
+			
+			QUnit.test("Shall be destructible", function() {
+				this.oMetaData.destroy();
+				assert.ok(this.oMetaData);
+				assert.equal(this.oMetaData._oModel, null);
+			});
+			
+		}());
+		</script>
+	</head>
+	<body id="body" class="sapUiBody">
+		<h1 id="qunit-header">qUnit Page for qUnit Page for sap.ui.comp.smartfield.ODataTypes</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</body>
+</html>

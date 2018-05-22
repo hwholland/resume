@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Test Page for sap.ui.rta.RuntimeAuthoring</title>
+
+		<style>
+			html, body, #qunit-tests {
+				height : 100%;
+			}
+			.sapUiView {
+				height: 100%;
+			}
+
+			#test-view {
+				border: 1px solid grey;
+				position: fixed;
+				bottom: 0;
+				right: 0;
+				width : 50%;
+				height: 50%;
+			}
+		</style>
+
+		<script id="sap-ui-bootstrap"
+				data-sap-ui-theme="sap_bluecrystal"
+				type="text/javascript"
+				data-sap-ui-noConflict="true"
+				data-sap-ui-resourceroots='{"sap.ui.rta.test": "../testdata/rta/"}'
+				data-sap-ui-libs="sap.ui.rta,sap.ui.commons,sap.m,sap.ui.layout,sap.ui.dt"
+				src="../../../../../resources/sap-ui-core.js">
+		</script>
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="text/javascript">
+
+			var oCompCont = new sap.ui.core.ComponentContainer("CompCont1", {
+				name: "sap.ui.rta.test",
+				id: "Comp1",
+				settings: {
+					componentData: {
+						"showAdaptButton" : true
+					}
+				}
+			}).placeAt("test-view");
+
+			jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+			jQuery.sap.require("sap.ui.rta.RuntimeAuthoring");
+			jQuery.sap.require("sap.ui.dt.OverlayRegistry");
+			jQuery.sap.require("sap.ui.rta.controlAnalyzer.ControlAnalyzerFactory");
+			
+			QUnit.module("Given that RuntimeAuthoring is available with a view as rootControl...", {
+				beforeEach : function(assert) {
+					var done = assert.async();
+
+					this.oRta = new sap.ui.rta.RuntimeAuthoring({
+						rootControl : oCompCont.getComponentInstance().getAggregation("rootControl")
+					});
+					this.oRta.attachStart(function() {
+						done();
+					});
+					this.oRta.start();
+					this.oRta._oToolsMenuBottom.adaptUndoRedoEnablement(true,true);
+				},
+				afterEach : function(assert) {
+					this.oRta.exit();
+				}
+			});
+
+			QUnit.test("when RTA gets initialized,", function() {
+				assert.ok(this.oRta, " then RuntimeAuthoring is created");
+				assert.strictEqual(jQuery(".sapUiRTAToolBarTop").length, 1, "then Top Toolbar is visible.");
+				assert.strictEqual(jQuery(".sapUiRTAToolBarBottom").length, 1, "and Bottom Toolbar is visible.");
+			});
+
+			QUnit.test("when command stack is changed,", function() {
+				var oInitialCommandStack = this.oRta.getCommandStack();
+				assert.ok(oInitialCommandStack, "the command stack is automatically created");
+				this.oRta.setCommandStack(new sap.ui.rta.command.Stack());
+				var oNewCommandStack = this.oRta.getCommandStack();
+				assert.notEqual(oInitialCommandStack, oNewCommandStack, "rta getCommandStack returns new command stack");
+			});
+
+			QUnit.test("when two overlays are added to selection", function() {
+				var that = this;
+
+				var oElement1 = sap.ui.getCore().byId("idMain1--GeneralLedgerDocument.Name");
+				var oOverlay1 = sap.ui.dt.OverlayRegistry.getOverlay(oElement1.getId());
+				var oElement2 = sap.ui.getCore().byId("idMain1--GeneralLedgerDocument.CompanyCode");
+				var oOverlay2 = sap.ui.dt.OverlayRegistry.getOverlay(oElement2.getId());
+
+				assert.strictEqual(this.oRta.getSelection().length, 0, "initially there's no selection in RTA");
+
+				var iFired = 0;
+				this.oRta.attachSelectionChange(function(oEvent) {
+					iFired++;
+					assert.deepEqual(that.oRta.getSelection(), oEvent.getParameter("selection"), "the selection event from rta is fired with a coreect selection");
+				});
+
+				oOverlay1.focus();
+				sap.ui.test.qunit.triggerKeydown(oOverlay1.getDomRef(), jQuery.sap.KeyCodes.ENTER);
+				assert.strictEqual(this.oRta.getSelection().length, 1, "after first selection one overlay is selected");
+
+				this.oRta._oDesignTime.setSelectionMode(sap.ui.dt.SelectionMode.Multi);
+				oOverlay2.focus();
+				sap.ui.test.qunit.triggerKeydown(oOverlay2.getDomRef(), jQuery.sap.KeyCodes.ENTER);
+				assert.strictEqual(this.oRta.getSelection().length, 2, "after second selection two overlays are selected");
+
+				assert.strictEqual(iFired, 2, "and selection event from RTA is fired twice");
+			});
+
+			QUnit.test("when RTA is stopped ...", function() {
+				var done = assert.async();
+
+				this.oRta.attachStop(function() {
+					assert.strictEqual(jQuery(".sapUiRTAToolBarTop").length, 0, "... and Toolbar is destroyed.");
+					done();
+				});
+				this.oRta.stop();
+			});
+
+			QUnit.module("Given that RuntimeAuthoring is started without toolbar...", {
+				beforeEach : function(assert) {
+					var done = assert.async();
+
+					this.oRta = new sap.ui.rta.RuntimeAuthoring({
+						rootControl : oCompCont.getComponentInstance().getAggregation("rootControl"),
+						showToolbars : false
+					});
+					this.oRta.attachStart(function() {
+						done();
+					});
+					this.oRta.start();
+				},
+				afterEach : function(assert) {
+					this.oRta.exit();
+				}
+			});
+
+			QUnit.test("when RTA gets initialized,", function() {
+				assert.ok(this.oRta, " then RuntimeAuthoring is created");
+				assert.strictEqual(jQuery(".sapUiRTAToolBarTop").length, 0, "then Top Toolbar is not visible.");
+				assert.strictEqual(jQuery(".sapUiRTAToolBarBottom").length, 0, "and Bottom Toolbar is not visible.");
+			});
+
+			QUnit.done(function( details ) {
+				oCompCont.getComponentInstance().destroy();
+				// If coverage is requested, remove the view to not overlap the coverage result
+				if(QUnit.config.coverage == true && details.failed === 0) {
+					jQuery("#test-view").hide();
+				};
+			});
+		</script>
+	</head>
+	<body>
+		<h1 id="qunit-header">QUnit page for sap.ui.rta.RuntimeAuthoring</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<ol id="qunit-tests"></ol>
+		<div id="test-view"></div>
+	</body>
+</html>

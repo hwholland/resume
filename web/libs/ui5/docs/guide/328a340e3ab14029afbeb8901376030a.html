@@ -1,0 +1,170 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="OpenUI5 comes with several controls which are already able to react to the available screen real estate and resolution by themselves. Some require particular properties to be set, and with some, everything just works out of the box."/>
+<meta name="description" content="OpenUI5 comes with several controls which are already able to react to the available screen real estate and resolution by themselves. Some require particular properties to be set, and with some, everything just works out of the box."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=28393141824544654"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=28393141824544654"/>
+<title>Controls with Built-In Device Adaptation</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio328a340e3ab14029afbeb8901376030a">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Controls with Built-In Device Adaptation</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"><span class="ph"><span class="ph pname">OpenUI5</span></span> comes with several
+		controls which are already able to react to the available screen real estate and resolution
+		by themselves. Some require particular properties to be set, and with some, everything just
+		works out of the box.</p>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">This list does not claim to be comprehensive, but shows some widely used examples
+				outlining the steps you can take to make use of this functionality. For more
+				details, <span class="ph">browse through the <a class="xref" target="_blank" href="../../explored.html" alt="../../explored.html" title="../../explored.html">Samples</a></span> in the Demo Kit and see what <span class="ph"><span class="ph pname">OpenUI5</span></span> has in store for
+				your app.</p>
+
+		</div>
+
+		<div class="section"><div class="section_title">sap.m.SplitApp</div><div type="sap.m.SplitApp">
+			
+			<p class="p">The <samp class="ph codeph">SplitApp</samp> is a control that can act as a root element of an
+				application for mobile and desktop devices. It is designed to be used as the base
+				for applications following the master-detail pattern.</p>
+
+			<p class="p">It maintains two <samp class="ph codeph">NavContainers</samp> if running on tablet or desktop, and
+				one if running on a phone. In default mode, the master <samp class="ph codeph">NavContainer</samp>
+				will always be displayed on desktop screens and on tablets in landscape mode. It
+				will be hidden on tablet-sized screens and can either be swiped in and out (if the
+				device is touch-enabled) or the visibility can be toggled by clicking a button. On
+				phone devices, either the master <samp class="ph codeph">NavContainer</samp> or the detail
+					<samp class="ph codeph">NavContainer</samp> will be shown, and a true forward-backward
+				navigation is established between the two.</p>
+
+			<p class="p">For more information, <span class="ph">see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.SplitApp/samples" alt="../../explored.html#/entity/sap.m.SplitApp/samples" title="../../explored.html#/entity/sap.m.SplitApp/samples">sap.m.SplitApp</a> samples and <a class="xref" href="../../docs/api/symbols/sap.m.SplitApp.html" alt="../../docs/api/symbols/sap.m.SplitApp.html" title="../../docs/api/symbols/sap.m.SplitApp.html">sap.m.SplitApp</a></span> in the <span class="ph uicontrol">API Reference</span> in the Demo Kit.</p>
+
+			<p class="p">As the <samp class="ph codeph">SplitApp</samp> control inherits from
+					<samp class="ph codeph">sap.m.SplitContainer</samp>, you can alter this behavior by setting
+				the corresponding mode property. You can set this property to
+					<samp class="ph codeph">StretchCompressMode</samp>, for instance, if you want the master to
+				always be displayed on tablet-sized screens, irrespective of the current
+				orientation. The different modes that are available are described under <span class="ph"><a class="xref" href="../../docs/api/symbols/sap.m.SplitAppMode.html" alt="../../docs/api/symbols/sap.m.SplitAppMode.html" title="../../docs/api/symbols/sap.m.SplitAppMode.html">sap.m.SplitAppMode</a></span> in the <span class="ph uicontrol">API
+					Reference</span> in the Demo Kit.</p>
+
+			<p class="p">For more information about the <samp class="ph codeph">SplitContainer</samp>, <span class="ph">see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.SplitContainer/samples" alt="../../explored.html#/entity/sap.m.SplitContainer/samples" title="../../explored.html#/entity/sap.m.SplitContainer/samples">sap.m.SplitContainer</a> samples and <a class="xref" href="../../docs/api/symbols/sap.m.SplitContainer.html" alt="../../docs/api/symbols/sap.m.SplitContainer.html" title="../../docs/api/symbols/sap.m.SplitContainer.html">sap.m.SplitContainer</a></span> in the <span class="ph uicontrol">API Reference</span> in the Demo Kit.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">sap.m.Table (also called the “Responsive Table”)</div><div type="sap.m.Table (also called the “Responsive Table”)">
+			
+			<p class="p">One control that is widely used across all kinds of different applications is
+					<samp class="ph codeph">sap.m.Table</samp>, which has several features you can use for device
+				adaptation. On smaller devices, for example, you can set certain properties that
+				will make particular columns pop in instead of being displayed as a normal column,
+				or show and hide columns completely.</p>
+
+			<p class="p">For example, you can set a <samp class="ph codeph">minScreenWidth</samp> for the columns. This will
+				cause columns to only show up if a certain screen width is matched. You can define
+				this <samp class="ph codeph">minScreenWidth</samp> in px or rem, but here you can also use the
+				standard categories that come from the device API (Phone, Tablet, or Desktop). For
+				more information about the device API, see <a class="xref" href="69a8e469fbde46e7b8916250080effbd.html" title="The device API (sap.ui.Device) is an API which provides information about device specifics, like the operating system along with its version, the browser and browser version, screen size, current orientation and support for specific features like touch event support, orientation change and so on.">The Device API</a>.</p>
+
+			<p class="p">Setting the additional property <samp class="ph codeph">demandPopin</samp> to <samp class="ph codeph">true</samp> for a column will also react to the <samp class="ph codeph">minScreenWidth</samp> you specify. In such a case, the column will be shown as a popin on smaller screens, instead of being completely hidden. For more information about responsive tables and their columns, <span class="ph">see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.Table/samples" alt="../../explored.html#/entity/sap.m.Table/samples" title="../../explored.html#/entity/sap.m.Table/samples">sap.m.Table</a> and <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.Column/samples" alt="../../explored.html#/entity/sap.m.Column/samples" title="../../explored.html#/entity/sap.m.Column/samples">sap.m.Column</a> samples and <a class="xref" href="../../docs/api/symbols/sap.m.Table.html" alt="../../docs/api/symbols/sap.m.Table.html" title="../../docs/api/symbols/sap.m.Table.html">sap.m.Table</a></span> in the <span class="ph uicontrol">API Reference</span> in the Demo Kit.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">sap.m.ResponsivePopover</div><div type="sap.m.ResponsivePopover">
+			
+			<p class="p">The <samp class="ph codeph">ResponsivePopover</samp> is actually a combination of the functionality
+				offered by a <samp class="ph codeph">sap.m.Dialog</samp> and a <samp class="ph codeph">sap.m.Popover</samp>.
+				Depending on the device it is displayed on, it will either act as the former (on a
+				phone) or as the latter (on tablets and desktop). For reuse, it is best placed
+				within a fragment, which will be instantiated and displayed on demand, like when a
+				user clicks a certain button, for example.</p>
+
+			<p class="p">The <samp class="ph codeph">ResponsivePopover</samp> does not need any additional properties to
+				achieve proper device adaptation, it can simply be used "as is". There are, however,
+				several properties that only take effect on one particular type of device, as some
+				properties will not make any sense at all for a particular screen size.</p>
+
+			<p class="p">For more details on these properties, <span class="ph">see the documentation and sample for <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.ResponsivePopover/samples" alt="../../explored.html#/entity/sap.m.ResponsivePopover/samples" title="../../explored.html#/entity/sap.m.ResponsivePopover/samples">sap.m.ResponsivePopover</a> in the <span class="ph uicontrol">Samples</span> and <a class="xref" href="../../docs/api/symbols/sap.m.ResponsivePopover.html" alt="../../docs/api/symbols/sap.m.ResponsivePopover.html" title="../../docs/api/symbols/sap.m.ResponsivePopover.html">sap.m.ResponsivePopover</a></span> in the <span class="ph uicontrol">API Reference</span> in the Demo Kit.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">sap.m.OverflowToolbar</div><div type="sap.m.OverflowToolbar">
+			
+			<p class="p">The <samp class="ph codeph">OverflowToolbar</samp> is a special type of toolbar that allows you to
+				decide if elements within should go into an overflow area when space on the screen
+				is limited. All elements going into the overflow area can then be reached by
+				clicking the overflow button.</p>
+
+			<p class="p">As a developer, you can decide if there are elements that will never or always go
+				into the overflow area by adding overflow layout data to particular content.</p>
+
+			<p class="p">For detailed examples and more information about the <samp class="ph codeph">OverflowToolbar</samp>, <span class="ph">see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.OverflowToolbar/samples" alt="../../explored.html#/entity/sap.m.OverflowToolbar/samples" title="../../explored.html#/entity/sap.m.OverflowToolbar/samples">sap.m.OverflowToolbar</a> samples and <a class="xref" href="../../docs/api/symbols/sap.m.OverflowToolbar.html" alt="../../docs/api/symbols/sap.m.OverflowToolbar.html" title="../../docs/api/symbols/sap.m.OverflowToolbar.html">sap.m.OverflowToolbar</a></span> in the <span class="ph uicontrol">API Reference</span> in the Demo Kit.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">sap.m.PullToRefresh</div><div type="sap.m.PullToRefresh">
+			
+			<p class="p">The <samp class="ph codeph">PullToRefresh</samp> control allows users to trigger an update
+				operation with touch or mouse interaction. On touch-enabled devices, the control
+				will automatically be hidden, and users can swipe down the page to trigger it. On
+				mouse-operated devices, the control will always be shown and can be clicked in order
+				to trigger the functionality.</p>
+
+			<p class="p">To use this control, it first needs to be placed within the content of any scroll
+				container. In the corresponding controller, the refresh handler can be implemented,
+				which in this use case would update the list of products in the view.</p>
+
+			<p class="p">To see a full example and read more information about <samp class="ph codeph">PullToRefresh</samp>, <span class="ph">see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.PullToRefresh/samples" alt="../../explored.html#/entity/sap.m.PullToRefresh/samples" title="../../explored.html#/entity/sap.m.PullToRefresh/samples">sap.m.PullToRefresh</a> samples and <a class="xref" href="../../docs/api/symbols/sap.m.PullToRefresh.html" alt="../../docs/api/symbols/sap.m.PullToRefresh.html" title="../../docs/api/symbols/sap.m.PullToRefresh.html">sap.m.PullToRefresh</a></span> in the <span class="ph uicontrol">API Reference</span> in the Demo Kit.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">sap.ui.layout.form.Form</div><div type="sap.ui.layout.form.Form">
+			
+			<p class="p"><samp class="ph codeph">sap.ui.layout.form.Form</samp> is a form that can also adapt to the
+				available screen size, particularly when used with the corresponding
+					<samp class="ph codeph">ResponsiveGridLayout</samp>. A form consists of
+					<samp class="ph codeph">FormContainers</samp>, which in turn contain the fields and their
+				labels. You can define general layout data for a form. For instance, you can decide
+				how many columns you want to display depending on the available screen size, as
+				shown here:</p>
+
+			<div class="p"><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;f:layout&gt;
+	&lt;f:ResponsiveGridLayout
+		columnsL="4"
+		columnsM="2"/&gt;
+&lt;/f:layout&gt;</pre></div>
+(assuming
+				that <samp class="ph codeph">f</samp> is declared as the <samp class="ph codeph">sap.ui.layout.form</samp>
+				namespace under which the <samp class="ph codeph">ResponsiveGridLayout</samp> is also
+				available.)</div>
+
+			<p class="p">On a small screen, there will always be only one column for form containers.</p>
+
+			<p class="p">Furthermore, you can define how much space labels will take when one or more columns
+				are displayed, and you can also specify <samp class="ph codeph">sap.ui.layout.GridData</samp> as
+				layout data on the <samp class="ph codeph">FormContainers</samp>, labels and content fields, as
+				the <samp class="ph codeph">sap.ui.layout.Grid</samp> is used internally in the form.</p>
+
+			<p class="p">For more information about <samp class="ph codeph">sap.ui.layout.form.Form</samp>, <span class="ph">see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.layout.form.Form/samples" alt="../../explored.html#/entity/sap.ui.layout.form.Form/samples" title="../../explored.html#/entity/sap.ui.layout.form.Form/samples">sap.ui.layout.form.Form</a> samples and <a class="xref" href="../../docs/api/symbols/sap.ui.layout.form.Form.html" alt="../../docs/api/symbols/sap.ui.layout.form.Form.html" title="../../docs/api/symbols/sap.ui.layout.form.Form.html">sap.ui.layout.form.Form</a></span> in the <span class="ph uicontrol">API Reference</span> in the Demo Kit.</p>
+
+			<p class="p">For more information about <samp class="ph codeph">ResponsiveGridLayout</samp> and
+					<samp class="ph codeph">GridData</samp>, <span class="ph">see <a class="xref" href="../../docs/api/symbols/sap.ui.layout.form.ResponsiveGridLayout.html" alt="../../docs/api/symbols/sap.ui.layout.form.ResponsiveGridLayout.html" title="../../docs/api/symbols/sap.ui.layout.form.ResponsiveGridLayout.html">sap.ui.layout.form.ResponsiveGridLayout</a> and <a class="xref" href="../../docs/api/symbols/sap.ui.layout.GridData.html" alt="../../docs/api/symbols/sap.ui.layout.GridData.html" title="../../docs/api/symbols/sap.ui.layout.GridData.html">sap.ui.layout.GridData</a></span> in the <span class="ph uicontrol">API
+					Reference</span> in the Demo Kit.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

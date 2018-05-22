@@ -1,0 +1,133 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="For responsive tables, you have to implement two extension points to add a custom column."/>
+<meta name="description" content="For responsive tables, you have to implement two extension points to add a custom column."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7578888480480948"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7578888480480948"/>
+<title>Example: Adding Columns to a Responsive Table on the Object Page</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc174923c270049c4b73d646cc688b8d9">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Example: Adding Columns to a Responsive Table on the Object Page</h1>
+
+	
+	<div class="body taskbody"><p class="shortdesc">For responsive tables, you have to implement two extension points to add a custom
+		column.</p>
+
+		<div class="section context"><div class="tasklabel"><h2 class="sectiontitle tasklabel">Context</h2></div>
+			<p class="p">The table containing additional columns can look like this:</p>
+
+			<div class="fig fignone" id="loioc174923c270049c4b73d646cc688b8d9__fig_ztc_v1j_rz"><div class="figcontainer">
+				
+				<img class="image" id="loioc174923c270049c4b73d646cc688b8d9__image_m1v_x1j_rz" src="loiofe17dacf2f0e44d38d852d660e699951_LowRes.png"/>
+			<div class="figcap">Custom columns in a responsive table on the object page</div></div></div>
+
+			
+			
+		</div>
+		<section class="section procedure"><div class="ol steps tasklabel"><h2 class="sectiontitle tasklabel">Procedure</h2></div><ol class="ol steps"><li class="li step stepexpand">
+				<span class="ph cmd">Define a fragment for the view extension.</span>
+				<div class="itemgroup info"><p class="p">For a custom column in a responsive table, you have to implement two extensions. First,
+						implement the definition of the custom columns and then implement the
+						content of the custom columns. </p>
+<p class="p">In the example project:
+						webapp/ext/fragments/ProductTextResponsiveTableColumns.fragment.xml:</p>
+<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;core:FragmentDefinition xmlns:core="sap.ui.core"
+
+       xmlns="sap.m"&gt;
+
+       &lt;Column&gt;
+
+              &lt;Text text="{i18n|sap.suite.ui.generic.template.ObjectPage|STTA_C_MP_Product&gt;xfld.BreakoutColumn}" /&gt;
+
+              &lt;customData&gt;
+
+                     &lt;core:CustomData key="p13nData"
+
+                            value='\{"columnKey": "Test", "columnIndex" : "101"}' /&gt;
+
+              &lt;/customData&gt;
+
+       &lt;/Column&gt;
+
+&lt;/core:FragmentDefinition&gt;
+</pre></div>
+
+					</div>
+In the example project: ProductTextResponsiveTableCells.fragment.xml:<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m"&gt;
+
+       &lt;Text text="{i18n|sap.suite.ui.generic.template.ObjectPage|STTA_C_MP_Product&gt;xfld.BreakoutColumnContent}"&gt;&lt;/Text&gt;
+
+&lt;/core:FragmentDefinition&gt;
+</pre></div>
+
+					</div>
+</div>
+			</li>
+<li class="li step stepexpand">
+				<span class="ph cmd">Register your view extensions in the manifest.json file of your application as
+					follows:</span>
+				<div class="itemgroup info">
+					<div class="p">
+						<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+							<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">...
+
+ "extends": {
+
+      "component": "sap.suite.ui.generic.template.ListReport",
+
+      "minVersion": "1.1.0",
+
+      "extensions": {
+
+        "sap.ui.viewExtensions": {
+
+"sap.suite.ui.generic.template.ObjectPage.view.Details": {
+
+            "ResponsiveTableColumnsExtension|STTA_C_MP_ProductText|to_ProductText::com.sap.vocabularies.UI.v1.LineItem": {
+
+                  "className": "sap.ui.core.Fragment",
+
+                  "fragmentName": "STTA_MP.ext.fragments.ProductTextResponsiveTableColumns",
+
+                  "type": "XML"
+
+            },
+
+            "ResponsiveTableCellsExtension|STTA_C_MP_ProductText|to_ProductText::com.sap.vocabularies.UI.v1.LineItem": {
+
+                  "className": "sap.ui.core.Fragment",
+
+                  "fragmentName": "STTA_MP.ext.fragments.ProductTextResponsiveTableCells",
+
+                  "type": "XML"
+
+            }    
+
+      }, 
+</pre></div>
+
+						</div>
+
+					</div>
+
+				</div>
+			</li>
+</ol>
+</section>
+	</div>
+
+</div></div>
+
+</body>
+</html>

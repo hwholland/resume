@@ -1,0 +1,515 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=41933090953867935"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=41933090953867935"/>
+<title>Configuring the SAP Smart Business KPI Tile</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio374364eb58444ac5b56b357808603f98">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Configuring the SAP Smart Business KPI Tile</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">The following tasks are performed using the Smart Business modeler apps.</p>
+
+		<p class="p">Prerequisites:</p>
+
+		<ul class="ul" id="loio374364eb58444ac5b56b357808603f98__ul_s2x_jg5_kq">
+			<li class="li"> You have used the SAP Smart Business modeler apps to create the following:<ul class="ul" id="loio374364eb58444ac5b56b357808603f98__ul_hfx_jg5_kq">
+					<li class="li"> A KPI</li>
+
+					<li class="li"> An evaluation </li>
+
+					<li class="li"> A KPI tile</li>
+
+				</ul>
+</li>
+
+			<li class="li"> You have deployed a shipped APF-based application or created your own APF
+				configuration that you want to launch using an SAP Smart Business KPI tile.</li>
+
+		</ul>
+
+		<p class="p">You can now configure the KPI tile using the SAP Smart Business modeler apps. The data
+			you must enter depends on, among other things, whether you use shipped content or
+			content you created yourself.</p>
+
+		<p class="p">You can create a KPI tile for the following use cases:</p>
+
+		
+<div class="table-wrapper tablenoborder"><table summary="" id="loio374364eb58444ac5b56b357808603f98__table_otk_ptp_nw" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+				
+				
+				<thead class="thead" align="left">
+					<tr class="row">
+						<th class="entry" valign="top" width="50%" id="d3607257e60">
+							<p class="p">Use Case</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="50%" id="d3607257e66">
+							<p class="p">Description</p>
+
+						</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody class="tbody">
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d3607257e60 ">
+							<p class="p">Shipped APF-based application – unchanged</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d3607257e66 ">
+							<p class="p">A shipped Business Server Pages (BSP) application that you use as is
+								without making any changes.</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d3607257e60 ">
+							<p class="p">Shipped APF-based application – enhanced</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d3607257e66 ">
+							<p class="p">A shipped BSP application that you have enhanced, that is, you have
+								imported the APF configuration and changed it using the APF
+								Configuration Modeler.</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d3607257e60 ">
+							<p class="p">Generic runtime application</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d3607257e66 ">
+							<p class="p">The generic APF runtime application is used to execute an APF
+								configuration that you created using the APF Configuration
+								Modeler.</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d3607257e60 ">
+							<p class="p">New application</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d3607257e66 ">
+							<p class="p">An application you have created using the APF Configuration Modeler
+								without using the generic runtime application.</p>
+
+							<p class="p">This requires defining your own BSP application and target
+								mapping.</p>
+
+						</td>
+
+					</tr>
+
+				</tbody>
+
+			</table>
+</div>
+
+		<p class="p">The data you must enter also depends on the SAP Smart Business KPI Modeler version you
+			are using. There are two versions of the KPI Modeler available:</p>
+
+		<ul class="ul" id="loio374364eb58444ac5b56b357808603f98__ul_rys_nkb_55">
+			<li class="li">
+				<p class="p">A KPI Modeler for apps that use calculation views, which is used for SAP Business
+					Suite powered by SAP HANA.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">A KPI Modeler for apps that use ABAP CDS views, which is available both for SAP
+					Business Suite powered by SAP HANA and for <span class="ph pname">SAP S/4HANA</span>. </p>
+
+			</li>
+
+		</ul>
+
+		<p class="p">The following sections differentiate the data you must enter depending on the use cases
+			and the KPI Modeler version mentioned above:</p>
+
+		<div class="section collapsible"><div class="section_title">Using the SAP Smart Business Modeler Apps for SAP Business Suite powered by SAP HANA</div><div type="Using the SAP Smart Business Modeler Apps for SAP Business Suite powered by SAP HANA"><p class="p">To configure a KPI tile for an
+				APF-based application, open the <span class="ph uicontrol">Configure KPI Tiles</span> app, go
+				to the <span class="ph uicontrol">Navigation</span> area and select the <span class="ph uicontrol">Other
+					Drill-Down</span> radio button. Select <kbd class="ph userinput">Analysis Path
+					Framework</kbd> as drill-down.</p>
+<p class="p">Depending on your use case, enter the
+				following data:</p>
+
+<div class="table-wrapper tablenoborder"><table summary="" id="loio374364eb58444ac5b56b357808603f98__table_nng_xg5_kq" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="20%"/><col width="20%"/><col width="20%"/><col width="20%"/><col width="20%"/></colgroup>
+
+					
+					
+					
+					
+					
+					<thead class="thead" align="left">
+						<tr class="row">
+							<th class="entry" valign="top" width="20%" id="d3607257e204"> </th>
+
+							<th class="entry" valign="top" width="20%" id="d3607257e206">Shipped BSP Application - Unchanged</th>
+
+							<th class="entry" valign="top" width="20%" id="d3607257e209">Shipped BSP Application – Enhanced</th>
+
+							<th class="entry" valign="top" width="20%" id="d3607257e212">Generic Runtime Application</th>
+
+							<th class="entry" valign="top" width="20%" id="d3607257e215">New Application</th>
+
+						</tr>
+
+					</thead>
+
+					<tbody class="tbody">
+						<tr class="row">
+							<td class="entry" valign="top" width="20%" headers="d3607257e204 "><strong class="ph b">Semantic Object</strong></td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e206 ">As defined in target mapping of the application</td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e209 ">As defined in target mapping of the application</td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e212 ">Prefilled: FioriApplication</td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e215 ">As defined in your own target mapping</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="20%" headers="d3607257e204 "><strong class="ph b">Action</strong></td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e206 ">As defined in target mapping of the application</td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e209 ">As defined in target mapping of the application</td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e212 ">Prefilled: executeAPFConfiguration</td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e215 ">As defined in your own target mapping</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="20%" headers="d3607257e204 "><strong class="ph b">Configuration</strong></td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e206 ">Not applicable</td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e209 ">Select the configuration you want to launch</td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e212 ">Select the configuration you want to launch</td>
+
+							<td class="entry" valign="top" width="20%" headers="d3607257e215 ">Select the configuration you want to launch</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+</div>
+<p class="p">If you use a shipped BSP application, a KPI tile may have been shipped along
+				with it. In this case, semantic object and action are already filled.</p>
+<div class="note note"><span class="notetitle">Note</span> We
+				recommend copying the shipped KPI, evaluation, and tile. You can then adapt them to
+				your needs. </div>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Shipped BSP-Application - Unchanged</p>
+
+				<p class="p">If you want to launch a shipped APF-based application without making any changes
+					to it, entering a configuration title is not required. The configuration can be
+					read directly from the analytical configuration file of the BSP application. The
+					location of this file is specified in the <samp class="ph codeph">manifest.json</samp> file,
+					which is part of the BSP application.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Shipped BSP-Application - Enhanced</p>
+
+				<p class="p">If you have imported the JSON file of a shipped application into the APF
+					Configuration Modeler, ensure that the semantic object entered in the APF
+					Configuration Modeler app is the same as the one you enter here. The semantic
+					object and the action are used to determine the KPIs navigation target. </p>
+
+				<p class="p">You must select a configuration to be able to launch the application. The
+					corresponding configuration ID takes precedence over the location of the
+					analytical configuration file of the BSP application. To select the
+					configuration title, use the value help. The semantic object filters the list of
+					configurations so that only those are listed that have been created for the
+					specified semantic object. A configuration title has a corresponding
+					configuration ID, which is unique.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Generic Runtime Application</p>
+
+				<p class="p">Selecting a configuration is also mandatory if you use the generic runtime
+					application. The generic runtime application does not contain a reference to the
+					location of the analytical configuration file and therefore must be
+					parameterized using a configuration ID. To select the configuration title, use
+					the value help. The semantic object filters the list of configurations so that
+					only those are listed that have been created for the specified semantic object.
+					A configuration title has a corresponding configuration ID, which is unique.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">New Application</p>
+
+				<p class="p">If you have used the APF Configuration Modeler to create a new application,
+					ensure that the semantic object entered in the APF Configuration Modeler app is
+					the same as the one you enter here. The semantic object and the action are used
+					to determine the KPIs navigation target.</p>
+
+				<p class="p">To select the configuration title, use the value help. The semantic object
+					filters the list of configurations so that only those are listed that have been
+					created for the specified semantic object. A configuration title has a
+					corresponding configuration ID, which is unique.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Navigating to the APF Configuration Modeler</p>
+
+				<p class="p">By clicking <span class="ph uicontrol">Save and Configure Drill-Down</span>, you can
+					navigate to the APF Configuration Modeler to view or edit the configuration.
+					This is useful because from here you can navigate directly to the relevant
+					configuration. You cannot search for a configuration in the APF Configuration
+					Modeler itself.</p>
+
+				<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">When you click <span class="ph uicontrol">Save and Configure Drill-Down</span>, your
+						changes are saved as draft, but not yet activated.</p>
+
+				</div>
+
+			</div></div></div>
+
+		<div class="section collapsible"><div class="section_title">Using the SAP Smart Business Modeler Apps for SAP S/4HANA</div><div type="Using the SAP Smart Business Modeler Apps for SAP S/4HANA">
+			
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">The KPI Modeler for <span class="ph pname">SAP S/4HANA</span> may also be
+					used on SAP Business Suite powered by SAP HANA.</p>
+
+			</div>
+
+			<p class="p">To configure a KPI tile for an APF-based application in the SAP Smart Business
+				modeler apps for <span class="ph pname">SAP S/4HANA</span>, open the <span class="ph uicontrol">Create Tile</span> app and select your tile or create a
+				new one. In the <span class="ph uicontrol">Navigation</span> area, go to the <span class="ph uicontrol">Select
+					Drill-Down</span> field and select <kbd class="ph userinput">Analysis Path
+					Framework</kbd>. </p>
+
+			<p class="p">Depending on your use case, enter the following data:</p>
+
+			
+<div class="table-wrapper tablenoborder"><table summary="" id="loio374364eb58444ac5b56b357808603f98__table_prf_cmz_s5" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="25.0620347394541%"/><col width="24.813895781637722%"/><col width="25.0620347394541%"/><col width="25.0620347394541%"/></colgroup>
+
+					
+					
+					
+					
+					<thead class="thead" align="left">
+						<tr class="row">
+							<th class="entry" valign="top" width="25.0620347394541%" id="d3607257e400"> </th>
+
+							<th class="entry" valign="top" width="24.813895781637722%" id="d3607257e402">Shipped BSP Application – Enhanced</th>
+
+							<th class="entry" valign="top" width="25.0620347394541%" id="d3607257e405">Generic Runtime Application</th>
+
+							<th class="entry" valign="top" width="25.0620347394541%" id="d3607257e408">New Application</th>
+
+						</tr>
+
+					</thead>
+
+					<tbody class="tbody">
+						<tr class="row">
+							<td class="entry" valign="top" width="25.0620347394541%" headers="d3607257e400 "><strong class="ph b">Semantic Object</strong></td>
+
+							<td class="entry" valign="top" width="24.813895781637722%" headers="d3607257e402 ">As defined in target mapping of the application</td>
+
+							<td class="entry" valign="top" width="25.0620347394541%" headers="d3607257e405 ">
+								<kbd class="ph userinput">FioriApplication</kbd> (automatically filled based
+								on selected configuration)</td>
+
+							<td class="entry" valign="top" width="25.0620347394541%" headers="d3607257e408 ">As defined in your own target mapping</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="25.0620347394541%" headers="d3607257e400 "><strong class="ph b">Action</strong></td>
+
+							<td class="entry" valign="top" width="24.813895781637722%" headers="d3607257e402 ">As defined in target mapping of the application</td>
+
+							<td class="entry" valign="top" width="25.0620347394541%" headers="d3607257e405 ">
+								<kbd class="ph userinput">executeAPFConfigurationS4HANA</kbd> or
+									<kbd class="ph userinput">executeAPFConfiguration</kbd>(automatically
+								filled based on selected configuration.)</td>
+
+							<td class="entry" valign="top" width="25.0620347394541%" headers="d3607257e408 ">As defined in your own target mapping</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="25.0620347394541%" headers="d3607257e400 "><strong class="ph b">Configuration</strong></td>
+
+							<td class="entry" valign="top" width="24.813895781637722%" headers="d3607257e402 ">Select the configuration you want to launch.</td>
+
+							<td class="entry" valign="top" width="25.0620347394541%" headers="d3607257e405 ">Select the configuration you want to launch.</td>
+
+							<td class="entry" valign="top" width="25.0620347394541%" headers="d3607257e408 ">Select the configuration you want to launch.</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+</div>
+
+			<p class="p">If you use a shipped BSP application, a KPI tile may have been shipped along with it.
+				In this case, semantic object and action are already filled.</p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">We recommend copying the shipped KPI, evaluation, and tile. You can then adapt
+					them to your needs. </p>
+
+			</div>
+
+			<p class="p">By clicking <span class="ph uicontrol">Save and Configure Drill-Down</span>, you can navigate to
+				the APF Configuration Modeler to view or edit the configuration. This is useful
+				because from here you can navigate directly to the relevant configuration. You
+				cannot search for a configuration in the APF Configuration Modeler itself.</p>
+
+		</div></div>
+
+		<div class="section collapsible"><div class="section_title">Launching an APF-Based Application from an SAP Smart Business Generic Drill-Down</div><div type="Launching an APF-Based Application from an SAP Smart Business Generic Drill-Down">
+			
+			<p class="p">Instead of launching an APF-based app from an SAP Smart Business KPI tile, you can
+				first launch an SAP Smart Business generic drill-down app and then navigate to an
+				APF-based app from there using the <span class="ph uicontrol">Open In…</span> menu. In this
+				case, filters set in the generic drill-down app are also handed over as context to
+				the APF-based app.</p>
+
+			<p class="p">To configure the navigation from a generic drill-down app to the APF-based app,
+				proceed as follows:</p>
+
+			<ol class="ol" id="loio374364eb58444ac5b56b357808603f98__ul_ewq_nhz_sw">
+				<li class="li">
+					<p class="p">Open the <span class="ph uicontrol">KPI Workspace</span> app.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Choose your evaluation and switch to edit mode.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Enter the semantic object and, optionally, an action.</p>
+
+				</li>
+
+			</ol>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">If you don’t have your own BSP application and target mapping, but use the APF
+					generic runtime, you must create a target mapping that launches the generic
+					runtime and specifies the configuration as follows:</p>
+
+				<ul class="ul" id="loio374364eb58444ac5b56b357808603f98__ul_qsy_5hz_sw">
+					<li class="li">
+						<p class="p">Name: <samp class="ph codeph">sap-apfconfigurationid</samp></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Value: configuration ID in format <var class="keyword varname">&lt;application
+								ID&gt;</var>.<var class="keyword varname">&lt;configuration ID&gt;</var></p>
+
+					</li>
+
+				</ul>
+
+				<p class="p">You can find the values for the configuration ID in the following places:</p>
+
+				<ul class="ul" id="loio374364eb58444ac5b56b357808603f98__ul_jx1_c3z_sw">
+					<li class="li">
+						<p class="p">application ID: in the app URL behind the parameter "app"</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">configuration ID: in the app URL behind the parameter “config” or in the
+							configuration details in the APF Configuration Modeler app</p>
+
+					</li>
+
+				</ul>
+
+			</div>
+
+		</div></div>
+
+		<div class="section collapsible"><div class="section_title">Application Parameters</div><div type="Application Parameters">
+			
+			<p class="p">You can configure your KPI tile in a way that it launches an APF-based application
+				and immediately opens a specific analysis step and representation. You can do so by
+				entering the following application parameters:</p>
+
+			<ul class="ul" id="loio374364eb58444ac5b56b357808603f98__ul_iqh_cff_tq">
+				<li class="li"> Analysis step:<ul class="ul" id="loio374364eb58444ac5b56b357808603f98__ul_n5h_cff_tq">
+						<li class="li"> Name: <span class="ph sap-technical-name sap-technical-name">sap-apf-step-id</span></li>
+
+						<li class="li"> Value: step ID, for example, “Step-23”</li>
+
+					</ul>
+</li>
+
+				<li class="li"> Representation:<ul class="ul" id="loio374364eb58444ac5b56b357808603f98__ul_o5h_cff_tq">
+						<li class="li"> Name:
+								<span class="ph sap-technical-name sap-technical-name">sap-apf-representation-id</span></li>
+
+						<li class="li"> Value: representation ID, for example, “ Step-23-Representation-1”</li>
+
+					</ul>
+</li>
+
+			</ul>
+
+			<p class="p">You can look up the step ID and representation ID in the JSON file of the
+				configuration. You may have to export your configuration first to get an up-to-date
+				JSON file. You can also find the IDs in the URL of the APF Configuration Modeler
+				while you are editing a step or representation. You can find the step ID behind the
+				parameter "step" and the representation ID behind the parameter "repn".</p>
+
+			<p class="p">Entering a step ID is sufficient; you don’t have to enter a representation ID. If you
+				only enter a step ID, the default representation is used.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

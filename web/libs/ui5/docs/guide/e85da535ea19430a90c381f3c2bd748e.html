@@ -1,0 +1,215 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step we will make the search bookmarkable. This allows users to search for employees in the Employees table and they can bookmark their search query or share the URL."/>
+<meta name="description" content="In this step we will make the search bookmarkable. This allows users to search for employees in the Employees table and they can bookmark their search query or share the URL."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3291582765436263"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3291582765436263"/>
+<title>Step 12: Make a Search Bookmarkable</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioe85da535ea19430a90c381f3c2bd748e">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 12: Make a Search Bookmarkable</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step we will make the search bookmarkable. This allows users to search for
+		employees in the <span class="ph uicontrol">Employees</span> table and they can bookmark their search
+		query or share the URL.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loioe85da535ea19430a90c381f3c2bd748e__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loioe85da535ea19430a90c381f3c2bd748e__image_nsr_scw_zs" src="loiofeb2ddddf2e347e9893512419fe11355_LowRes.png"/>
+			<div class="figcap">Search and sorting bookmarkable</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Samples</span> in the Demo Kit
+					<span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.tutorial.navigation.12/preview" alt="../../explored.html#/sample/sap.ui.core.tutorial.navigation.12/preview" title="../../explored.html#/sample/sap.ui.core.tutorial.navigation.12/preview">Routing and Navigation - Step 12</a></span>
+				.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/manifest.json</div><div type="webapp/manifest.json">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">{
+	"_version": "1.8.0",
+	"sap.app": {
+		...
+	},
+	"sap.ui": {
+		...
+	},
+	"sap.ui5": {
+		...
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "sap.ui.demo.nav.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"transition": "slide",
+				"bypassed": {
+					"target": "notFound"
+				}
+			},
+			"routes": [{
+				"pattern": "",
+				"name": "appHome",
+				"target": "home"
+			}, {
+				"pattern": "employees",
+				"name": "employeeList",
+				"target": "employees"
+			}, {
+				"pattern": "employees/overview<span class="ph emphasis emphasis">:?query:</span>",
+				"name": "employeeOverview",
+				"target": ["employeeOverviewTop", "employeeOverviewContent"]
+
+			}, {
+				"pattern": "employees/{employeeId}",
+				"name": "employee",
+				"target": "employee"
+			}, {
+				"pattern": "employees/{employeeId}/resume:?query:",
+				"name": "employeeResume",
+				"target": "employeeResume"
+			}],
+			"targets": {
+				...
+			}
+		}
+	}
+}</pre></div>
+
+			<p class="p">In order to make the search bookmarkable we have to think about how the pattern of the
+				corresponding route should match the bookmark. We decide to allow
+					<samp class="ph codeph">/#/employees/overview?search=mySearchQueryString</samp> in order to
+				bookmark a search. Therefore, we simply extend our routing configuration a little.
+				We add the optional <samp class="ph codeph">:?query:</samp> parameter to the route
+					<samp class="ph codeph">employeeOverview</samp>. We keep in mind that we want to use
+					<samp class="ph codeph">search</samp> as the URL parameter for the search term that was
+				entered in the search field.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/controller/employee/overview/EmployeeOverviewContent.controller.js</div><div type="webapp/controller/employee/overview/EmployeeOverviewContent.controller.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+	"sap/ui/demo/nav/controller/BaseController",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
+	"sap/ui/model/Sorter"
+], function (BaseController, Filter, FilterOperator, Sorter) {
+	"use strict";
+	return BaseController.extend("sap.ui.demo.nav.controller.employee.overview.EmployeeOverviewContent", {
+		onInit: function () {
+			<span class="ph emphasis emphasis">var oRouter = this.getRouter();</span>
+			this._oTable = this.byId("employeesTable");
+			this._oVSD = null; 
+			this._sSortField = null; 
+			this._bSortDescending = false; 
+			this._aValidSortFields = ["EmployeeID", "FirstName", "LastName"];
+			this._sSearchQuery = null;
+			<span class="ph emphasis emphasis">this._oRouterArgs = null;</span>
+			this._initViewSettingsDialog();
+			<span class="ph emphasis emphasis">// make the search bookmarkable
+			oRouter.getRoute("employeeOverview").attachMatched(this._onRouteMatched, this);</span>
+		},
+		<span class="ph emphasis emphasis">_onRouteMatched : function (oEvent) {
+			// save the current query state
+			this._oRouterArgs = oEvent.getParameter("arguments");
+			this._oRouterArgs.query = this._oRouterArgs["?query"] || {};
+			delete this._oRouterArgs["?query"];
+			if (this._oRouterArgs.query) {
+				// search/filter via URL hash
+				this._applySearchFilter(this._oRouterArgs.query.search);
+			}
+		},</span>
+		onSortButtonPressed : function (oEvent) {
+			this._oVSD.open();
+		},
+		onSearchEmployeesTable : function (oEvent) {
+			<span class="ph emphasis emphasis">var oRouter = this.getRouter();
+			// update the hash with the current search term
+			this._oRouterArgs.query.search = oEvent.getSource().getValue();
+			oRouter.navTo("employeeOverview",this._oRouterArgs, true /*no history*/);</span>
+		},
+		...
+	});
+});</pre></div>
+
+			<p class="p">Now we handle the optional query parameter from the <samp class="ph codeph">employeeOverview</samp> route in our <samp class="ph codeph">EmployeeOverviewContent</samp> controller.
+				First we change the <samp class="ph codeph">onInit</samp> function by adding an event listener for the matched event of the <samp class="ph codeph">employeeOverview</samp>
+				route. Then we buffer the current router arguments as received from the event. If a query is available, the result from
+					<samp class="ph codeph">oEvent.getParameter("arguments")</samp> will contain a <samp class="ph codeph">?query</samp> property with an object of all URL parameters
+				specified, otherwise it is undefined. For an easier access and to always initialize the query, we save the <samp class="ph codeph">?query</samp> object
+				containing all query parameters to <samp class="ph codeph">this._oRouterArgs.query</samp> and delete the duplicate at
+					<samp class="ph codeph">this._oRouterArgs["?query"]</samp>. If we have a search term query at the <samp class="ph codeph">search</samp> key we continue and call
+					<samp class="ph codeph">this._applySearchFilter(this._oRouterArgs.query.search)</samp> to trigger a search based on the search query parameter from the
+				URL.</p>
+
+			<p class="p">Storing the <samp class="ph codeph">arguments</samp> objects internally in the controller is important,
+				because we will use the current arguments when calling <samp class="ph codeph">navTo()</samp> in
+				the search event handler <samp class="ph codeph">onSearchEmployeesTable</samp> and pass on the
+				arguments with the updated search term. We keep the URL and the UI in sync by
+				navigating to the current target again with the current value of the search field
+				from the event’s source. The search value is stored in
+					<samp class="ph codeph">this._oRouterArgs.query.search</samp> together with the other query
+				parameters and it is passed directly to the router again</p>
+
+			<div class="p">That’s it, now our search is bookmarkable and reflected in the URL. Try to access the
+				following pages in your browser:<ul class="ul" id="loioe85da535ea19430a90c381f3c2bd748e__ul_ovj_fsv_ns">
+					<li class="li">
+						<p class="p"><samp class="ph codeph">webapp/index.html#/employees/overview</samp></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">webapp/index.html#/employees/overview?search=</samp></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">webapp/index.html#/employees/overview?search=an</samp></p>
+
+					</li>
+
+				</ul>
+When you change the value in the search field, you see that the hash updates
+				accordingly.</div>
+
+		</div></div>
+
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="1b6dcd39a6a74f528b27ddb22f15af0d.html" title="OpenUI5 comes with a powerful routing API that helps you control the state of your application efficiently. This tutorial will illustrate all major features and APIs related to navigation and routing in OpenUI5 apps by creating a simple and easy to understand mobile app. It represents a set of best practices for applying the navigation and routing features of OpenUI5 to your applications.">Navigation and Routing</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="b01840ec42ef48e6bfd2bc12612f501f.html" title="In this step, we will add a new button to the home page to illustrate the usage of multiple targets for a route. When the button is pressed, a new page opens that contains two parts: a header part at the top and a content part. The content part displays a table of employees that can be sorted and searched. We will use the array notation in the routing configuration to assign multiple targets to a route - a feature that we have not yet introduced.">Step 11: Assign Multiple Targets</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="39759878ae4f48dcad0cf34da1d299f0.html" title="In this step, we will create a button at the top of the table which will change the sorting of the table. When the current sorting state of the table is changed, the sorting state will be reflected in the URL. This illustrates how to make the table sorting bookmarkable.">Step 13: Make Table Sorting Bookmarkable</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

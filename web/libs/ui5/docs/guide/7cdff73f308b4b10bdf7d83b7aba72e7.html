@@ -1,0 +1,325 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Extended change detection offers fine-grained information on the actual data changes. This can be used, for example, to only update the DOM when really necessary and avoid complete rerendering of a huge list whenever data is changed."/>
+<meta name="description" content="Extended change detection offers fine-grained information on the actual data changes. This can be used, for example, to only update the DOM when really necessary and avoid complete rerendering of a huge list whenever data is changed."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=15120807089821797"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=15120807089821797"/>
+<title>Extended Change Detection</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio7cdff73f308b4b10bdf7d83b7aba72e7">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Extended Change Detection</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Extended change detection offers fine-grained information on the actual data changes.
+		This can be used, for example, to only update the DOM when really necessary and avoid
+		complete rerendering of a huge list whenever data is changed.</p>
+
+		<p class="p">The binding base class already offers a <samp class="ph codeph">Change</samp> event, which is fired whenever
+			the bound data has been changed. This is sufficient for bindings like property and
+			context binding. Since lists can contain a huge amount of data, you need more detailed
+			information on the changes to avoid a complete rerendering of the whole list each time
+			data has been changed on the UI.</p>
+
+		<div class="section collapsible expanded" id="loio7cdff73f308b4b10bdf7d83b7aba72e7__section_efm_hht_scb"><div class="section_title">Calculation of Differences</div><div type="Calculation of Differences">
+			
+			<div class="p">When extended change detection is enabled, an algorithm is executed to compare the last
+				returned context array with the current context array and the differences is
+				attached to the array of contexts as an additional property named
+					<samp class="ph codeph">diff</samp> whenever the <samp class="ph codeph">getContexts</samp> method is
+				called. The following results are possible:<ul class="ul" id="loio7cdff73f308b4b10bdf7d83b7aba72e7__ul_zgk_dkt_scb">
+					<li class="li">
+						<p class="p">There is no <samp class="ph codeph">diff</samp> property on the context array</p>
+
+						<p class="p">The data was completely changed or a difference could not be calculated. In this case there
+							is no possibility for fine-grained update, a complete recreation or
+							rerendering is necessary.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">The <samp class="ph codeph">diff</samp> property returns an empty array</p>
+
+						<p class="p">The algorithm has been executed, but could not find any differences
+							between the initial and the current state. This may occur if data within
+							the list has been changed, but detection of updates have not been
+							enabled for the extended change detection.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">The <samp class="ph codeph">diff</samp> property returns an array of different
+							entries</p>
+
+						<p class="p">The difference has been calculated and can be used by the control or application to update
+							dependent structures in a fine grained manner</p>
+
+					</li>
+
+				</ul>
+</div>
+
+			<p class="p">The difference between the state when the list was initially loaded and the current state is
+				provided to the control as an array that contains <samp class="ph codeph">insert</samp> and
+					<samp class="ph codeph">remove</samp> entries that contain the actual changes.</p>
+
+			<div class="note example"><span class="exampletitle">Example</span> 
+				<div class="p">
+					
+<div class="table-wrapper tablenoborder"><table summary="" id="loio7cdff73f308b4b10bdf7d83b7aba72e7__table_dcw_xgt_scb" class="table" frame="void" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+							
+							
+							<tbody class="tbody">
+								<tr class="row">
+									<td class="entry border_none" valign="top" width="50%">
+										<p class="p"><span class="ph emphasis emphasis">Old State</span></p>
+
+									</td>
+
+									<td class="entry border_none" valign="top" width="50%">
+										<p class="p"><span class="ph emphasis emphasis">New State</span></p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry border_none" valign="top" width="50%">
+										<p class="p"><samp class="ph codeph">["one", "two", "three", "four",
+											"five"]</samp></p>
+
+									</td>
+
+									<td class="entry border_none" valign="top" width="50%">
+										<p class="p"><samp class="ph codeph">["one", "three", "four", "five",
+											"six"]</samp></p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry border_none" colspan="2" valign="top">
+										<p class="p"><span class="ph emphasis emphasis">Difference</span></p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry border_none" colspan="2" valign="top">
+										<p class="p"><samp class="ph codeph">[{index: 1, type: "delete"}, {index: 4, type:
+												"insert}]</samp></p>
+
+									</td>
+
+								</tr>
+
+							</tbody>
+
+						</table>
+</div>
+
+				</div>
+
+				<p class="p">The algorithm is implemented in the utility method
+						<samp class="ph codeph">jQuery.sap.arraySymbolDiff</samp>, which tries to calculate the
+					smallest possible difference for the transition from old to the new state. The
+					indexes are calculated in a way that they are valid after all previous steps
+					have been applied, so it can be used in a loop to update an existing array,
+					without any additional index shift needed.</p>
+
+			</div>
+
+			<div class="note caution"><span class="cautiontitle">Caution</span> 
+				<ul class="ul" id="loio7cdff73f308b4b10bdf7d83b7aba72e7__ul_zml_ldw_tcb">
+					<li class="li">
+						<p class="p">Extended change detection calculates the difference between the context arrays returned by
+							calling <samp class="ph codeph">getContexts</samp>. This means, it is completely
+							independent from the <samp class="ph codeph">startIndex</samp> and
+								<samp class="ph codeph">length</samp> parameters. Any additional call to
+								<samp class="ph codeph">getContexts</samp>, either by the app or the control
+							itself, may trigger a difference calculation and may cause update
+							problems. If you want to access the current context of a list binding,
+							you should use <samp class="ph codeph">getCurrentContexts</samp> in your app
+							instead.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">When a <samp class="ph codeph">ListBinding</samp> is firing a <samp class="ph codeph">Refresh</samp> event, the call to
+								<samp class="ph codeph">getContexts</samp> caused by this event is used to inform
+							the <samp class="ph codeph">ListBinding</samp> on the <samp class="ph codeph">startIndex</samp> and
+								<samp class="ph codeph">length</samp> of entries requested by the control. No
+							difference calculation is done on this specific call, as controls do not
+							use the result of this call but instead wait for the data returned by
+							the server.</p>
+
+					</li>
+
+				</ul>
+
+			</div>
+
+		</div></div>
+
+		<div class="section collapsible expanded" id="loio7cdff73f308b4b10bdf7d83b7aba72e7__section_a2g_vht_scb"><div class="section_title">Using Extended Change Detection in App Development</div><div type="Using Extended Change Detection in App Development">
+			
+			<div class="p">If a control you want to use in your app to visualize list entries supports extended
+				change detection, you should make sure that each entity of your model has a unique
+				key to improve performance. <ul class="ul" id="loio7cdff73f308b4b10bdf7d83b7aba72e7__ul_zlq_l3k_5cb">
+					<li class="li">
+						<p class="p">For OData models, the unique keys are automatically provided.</p>
+
+					</li>
+
+					<li class="li">
+						<div class="p">For all other models (like a JSON model), you have to define the keys
+							either by using a key property or by using a function that calculates
+							they key in the binding info of their list binding as in the following
+								example:
+<div class="table-wrapper tablenoborder"><table summary="" id="loio7cdff73f308b4b10bdf7d83b7aba72e7__table_ajv_33t_scb" class="table" frame="void" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+									
+									
+									<thead class="thead" align="left">
+										<tr class="row">
+											<th class="entry border_none" valign="top" width="50%" id="d6027044e246">
+												<p class="p"><samp class="ph codeph">key</samp> property</p>
+
+											</th>
+
+											<th class="entry border_none" valign="top" width="50%" id="d6027044e254">
+												<p class="p"><samp class="ph codeph">key</samp> function</p>
+
+											</th>
+
+										</tr>
+
+									</thead>
+
+									<tbody class="tbody">
+										<tr class="row">
+											<td class="entry border_none" valign="top" width="50%" headers="d6027044e246 ">
+												<div class="p">
+												<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oControl.bindItems({
+  path: "/listData",
+  key: "id"
+});</pre></div>
+
+												</div>
+
+											</td>
+
+											<td class="entry border_none" valign="top" width="50%" headers="d6027044e254 ">
+												<div class="p">
+												<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oControl.bindItems({
+  path: "/listData",
+  key: function(oContext) {
+    return oContext.getProperty("user") + oContext.getProperty("timestamp"); 
+  }
+});</pre></div>
+
+												</div>
+
+											</td>
+
+										</tr>
+
+									</tbody>
+
+								</table>
+</div>
+</div>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+		<div class="section collapsible expanded" id="loio7cdff73f308b4b10bdf7d83b7aba72e7__section_w1g_5ht_scb"><div class="section_title">Using Extended Change Detection in Control Development</div><div type="Using Extended Change Detection in Control Development">
+			
+			<p class="p">Extended change detection is disabled by default. If your control is meant to have only a few
+				children like a toolbar with buttons, you should not activate extended change
+				detection because a copy of the previous state would then always be kept
+				unnecessarily in the binding.</p>
+
+			<p class="p">With extended change detection the control uses specific <samp class="ph codeph">insert</samp> and
+					<samp class="ph codeph">remove</samp> calls only for elements that need to be added or removed
+				instead of recreating all elements of an aggregation or setting new binding contexts
+				on all aggregated elements. </p>
+
+			<div class="p">You activate extended change detection for your control by setting the
+					<samp class="ph codeph">bUseExtendedChangeDetection</samp> property either on the control
+				prototype or a specific control instance. The <samp class="ph codeph">ManagedObject</samp> class
+				takes care of reading and applying the information about the differences to
+				aggregations with the <samp class="ph codeph">enableExtendedChangeDetection</samp> method. The
+				method has the following parameters:<ul class="ul" id="loio7cdff73f308b4b10bdf7d83b7aba72e7__ul_ict_2qp_tcb">
+					<li class="li">
+						<p class="p"><samp class="ph codeph">bDetectUpdates</samp></p>
+
+						<p class="p">Defines whether data changes within the same entity should also be
+							contained in the <samp class="ph codeph">diff</samp>. This is especially relevant when
+							a factory function is used to create child controls, so depending on the
+							data a different control may be created by the same entity. </p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">vKey</samp></p>
+
+						<p class="p">Defines how a unique symbol for each row is calculated, which is then
+							used for the calculation of differences. This can either be a property
+							name (in case the data already has something like a <samp class="ph codeph">key</samp>
+							property) or a function that is able to calculate such a unique key from
+							the entity data.</p>
+
+					</li>
+
+				</ul>
+</div>
+
+			<p class="p">You also have to implement the specific aggregation modifier methods to avoid the rerendering
+				of the complete UI and only to a fine-grained DOM update.</p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">If your control has a custom <samp class="ph codeph">updateAggregation</samp> method (that means control
+					takes care for updating the aggregation) you have to make sure in your
+					implementation that the difference information is interpreted and applied.</p>
+
+			</div>
+
+			<p class="p">For more
+				information, see the <a class="xref" href="https://ui5.sap.com/#/api/sap.ui.base.ManagedObject/methods/bindAggregation" alt="https://ui5.sap.com/#/api/sap.ui.base.ManagedObject/methods/bindAggregation" title="https://ui5.sap.com/#/api/sap.ui.base.ManagedObject/methods/bindAggregation">API Reference:
+						<samp class="ph codeph">sap.ui.base.ManagedObject.bindAggregation</samp></a>.</p>
+
+			
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fui5.sap.com%2F%23%2Fapi%2Fsap.ui.base.ManagedObject%2Fmethods%2FbindAggregation" alt="https://ui5.sap.com/#/api/sap.ui.base.ManagedObject/methods/bindAggregation" title="https://ui5.sap.com/#/api/sap.ui.base.ManagedObject/methods/bindAggregation">API Reference:
+				<samp class="ph codeph">sap.ui.base.ManagedObject.bindAggregation</samp><img src="images/sap_link.png" class="link-sap" alt="Information published on SAP site" title="Information published on SAP site" border="0"/></a></div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fui5.sap.com%2F%23%2Fapi%2Fsap.ui.model.ListBinding%2Fmethods%2FgetContexts" alt="https://ui5.sap.com/#/api/sap.ui.model.ListBinding/methods/getContexts" title="https://ui5.sap.com/#/api/sap.ui.model.ListBinding/methods/getContexts">API Reference:
+				<samp class="ph codeph">sap.ui.Model.ListBinding.getContexts</samp><img src="images/sap_link.png" class="link-sap" alt="Information published on SAP site" title="Information published on SAP site" border="0"/></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

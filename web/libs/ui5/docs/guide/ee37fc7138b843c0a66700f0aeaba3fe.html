@@ -1,0 +1,268 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="When developing OpenUI5 applications, you need to pay attention to the correctness of the resulting HTML. Some vital accessibility features (screen reader and keyboard support) rely on a correct and meaningful structure of the application."/>
+<meta name="description" content="When developing OpenUI5 applications, you need to pay attention to the correctness of the resulting HTML. Some vital accessibility features (screen reader and keyboard support) rely on a correct and meaningful structure of the application."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=743166356326098"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=743166356326098"/>
+<title>General Recommendations</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioee37fc7138b843c0a66700f0aeaba3fe">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">General Recommendations</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">When developing <span class="ph"><span class="ph pname">OpenUI5</span></span> applications, you need to pay attention
+		to the correctness of the resulting HTML. Some vital accessibility features (screen reader
+		and keyboard support) rely on a correct and meaningful structure of the
+		application.</p>
+
+		<div class="section"><div class="section_title">Rules and Guidelines</div><div type="Rules and Guidelines">
+			
+			
+<div class="table-wrapper tablenoborder"><table summary="" id="loioee37fc7138b843c0a66700f0aeaba3fe__table_vzj_4r3_5s" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Accessibility - General Rules and Guidelines</span></caption>
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+					
+					
+					<thead class="thead" align="left">
+						<tr class="row">
+							<th class="entry" valign="top" width="50%" id="d12281835e40">
+								<p class="p">Rules and Recommendations</p>
+
+							</th>
+
+							<th class="entry" valign="top" width="50%" id="d12281835e46">
+								<p class="p">Details</p>
+
+							</th>
+
+						</tr>
+
+					</thead>
+
+					<tbody class="tbody">
+						<tr class="row">
+							<td class="entry" valign="top" width="50%" headers="d12281835e40 ">
+								<p class="p"><span class="ph emphasis emphasis">Don't change the HTML</span></p>
+
+							</td>
+
+							<td class="entry" valign="top" width="50%" headers="d12281835e46 ">
+								<p class="p">Theming (CSS selectors), keyboard handling (tab order) and screen reader support are
+									tightly coupled with the HTML structure of the generated pages.
+									If you change the structure of the elements (for example, from
+									custom JavaScript, HTML or CSS), this could break some or all of
+									the accessibility aspects. In addition, it makes debugging the
+									application more difficult.</p>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="50%" headers="d12281835e40 ">
+								<p class="p"><span class="ph emphasis emphasis">Check the focus persistence</span></p>
+
+							</td>
+
+							<td class="entry" valign="top" width="50%" headers="d12281835e46 ">
+								<div class="p">When opening or closing a dialog or navigating between pages, the focus should stay on
+									the same control as it was on before opening or navigating. If
+									the control no longer exists, the focus should be put on its
+									parent (for example, if the control was inside an action sheet,
+									set the focus on the button which opened the action sheet).<div class="note note"><span class="notetitle">Note</span> 
+										<p class="p">When the parent control cannot receive focus or is no
+											longer available, the focus should go to a control
+											nearby.</p>
+
+									</div>
+</div>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="50%" headers="d12281835e40 ">
+								<p class="p"><span class="ph emphasis emphasis">Initial focus position</span></p>
+
+							</td>
+
+							<td class="entry" valign="top" width="50%" headers="d12281835e46 ">
+								<p class="p">Within an application, the inital focus should be placed on the
+									element that is most likely to be edited or interacted with
+									first (for example, mandatory fields on a form). </p>
+
+								<p class="p">When opening dialogs or new pages, the focus should be on the first focusable element
+									inside the content area.</p>
+
+								<div class="note tip"><span class="tiptitle">Tip</span> 
+									<p class="p">On touch devices, if the first focusable element is a control that would open the soft
+										keyboard, it is better to place the focus
+										elsewhere - on the footer of the dialog or on a control that
+										requires no keyboard input.</p>
+
+									<p class="p">A good practice is to set the focus on the first mandatory
+										element.  </p>
+
+								</div>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="50%" headers="d12281835e40 ">
+								<p class="p"><span class="ph emphasis emphasis">Don't interfere with existing accessibility features
+									</span></p>
+
+							</td>
+
+							<td class="entry" valign="top" width="50%" headers="d12281835e46 ">
+								<p class="p">Overriding code, for example the keyboard tab order, will impact
+									the correct handling and may break the accessibility of the
+									whole application.</p>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="50%" headers="d12281835e40 ">
+								<p class="p"><span class="ph emphasis emphasis">Make sure that each component has a unique
+										ID</span></p>
+
+							</td>
+
+							<td class="entry" valign="top" width="50%" headers="d12281835e46 ">
+								<p class="p">The <span class="ph"><span class="ph pname">OpenUI5</span></span> framework
+									handles the creation of unique IDs automatically. If you pass
+									IDs yourself, make sure that they are unique within the whole
+									application. For more information, see the <cite class="cite">Related
+										Information</cite> section. </p>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="50%" headers="d12281835e40 ">
+								<p class="p"><span class="ph emphasis emphasis">Provide meaningful tooltips for icons, icon buttons and
+										where otherwise appropriate</span>
+								</p>
+
+							</td>
+
+							<td class="entry" valign="top" width="50%" headers="d12281835e46 ">
+								<p class="p">Provide a text alternative for non-text elements and the necessary additional
+									information, in case the text space is insufficient. You should
+									use a tooltip as a label for unlabeled elements only.
+									Additionally, a <samp class="ph codeph">Placeholder</samp> can be used as a
+									label if it is not a formatting hint.</p>
+
+								<div class="note sap-example example"><span class="exampletitle">Example</span> <img class="image" id="loioee37fc7138b843c0a66700f0aeaba3fe__image_rbp_ljl_vs" src="loiofe947a006350426b927d64b6cea908dc_HiRes.png"/></div>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="50%" headers="d12281835e40 ">
+								<p class="p"><span class="ph emphasis emphasis">Tooltips for container controls</span>
+								</p>
+
+							</td>
+
+							<td class="entry" valign="top" width="50%" headers="d12281835e46 ">
+								<div class="p">Container and layout controls such as
+										<samp class="ph codeph">VerticalLayout</samp> or <samp class="ph codeph">Grid</samp>
+									inherit the tooltip property from
+										<samp class="ph codeph">sap.ui.core.Element</samp>.   <div class="note tip"><span class="tiptitle">Tip</span> 
+										<p class="p">We do not recommend setting a tooltip for the whole layout control, as it will not be
+											displayed. You can set the needed tooltips for the
+											individual controls which the container holds. </p>
+
+									</div>
+</div>
+
+							</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+</div>
+
+			<div class="note tip"><span class="tiptitle">Tip</span> 
+				<p class="p">If you are developing your own controls, follow the guidelines listed under <cite class="cite">Related
+						Information</cite>. </p>
+
+			</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Tips for Testing</div><div type="Tips for Testing">
+			
+			<div class="p">Start the application and check each screen element. Check the following:<ul class="ul" id="loioee37fc7138b843c0a66700f0aeaba3fe__ul_fwp_tv3_5s">
+					<li class="li">
+						<p class="p">Does it have a label or a tooltip (hover with the mouse)? </p>
+
+					</li>
+
+					<li class="li">
+						<div class="p">Are the labels and tooltips (fully) visible, clear, accurate, and
+								meaningful?<ul class="ul" id="loioee37fc7138b843c0a66700f0aeaba3fe__ul_d2d_bw3_5s">
+								<li class="li">
+									<p class="p">Is this also true for each input field or for a sequence of
+										input fields? (For example: street and number)?</p>
+
+								</li>
+
+								<li class="li">
+									<p class="p">Is this also true for buttons, icons and images?</p>
+
+								</li>
+
+								<li class="li">
+									<p class="p">Is this also true for grouped information?</p>
+
+								</li>
+
+							</ul>
+</div>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Is the user informed about the required entries and input?</p>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="91f28be26f4d1014b6dd926db0e91070.html" title="Stable IDs are used to identify and modify the controls within the controller during runtime. However, if you reuse or nest these views, these stable IDs are no longer unique. To avoid ambiguity, each view adds its own ID as prefix to all its child controls.">Support for Unique IDs</a></div>
+<div><a class="link" href="3e631addc9094499a74242cba38e6def.html" title="As an application developer, you need to be aware of how the various accessibility aspects, like keyboard handling, are implemented and used.">Keyboard Handling for OpenUI5 Controls for Developers</a></div>
+<div><a class="link" href="656e825c5f1548e6b1d0acb5586f2a2a.html" title="OpenUI5 offers screen reader support in order to aid people with visual impairments. The implementation is based on the ARIA (Accessible Rich Internet Applications) standard.">Screen Reader Support for OpenUI5 Controls</a></div>
+<div><a class="link" href="497c27a8ee26426faacd2b8a1751794a.html" title="OpenUI5 is an HTML UI library, therefore styling is done using Cascading Style Sheets (CSS). This allows for creating an impressive visual experience using a widely known standard technology which is well-accepted on the market.">Theming</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

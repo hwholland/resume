@@ -1,0 +1,120 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8674843063442552"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8674843063442552"/>
+<title>Using Messages</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio239b1922758645e7b451e01ded7f56bc">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Using Messages</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">Two types of messages are used in SAP Fiori elements (List report / object page and analytical
+			list page only):</p>
+
+		<ul class="ul" id="loio239b1922758645e7b451e01ded7f56bc__ul_fzq_wb2_sz">
+			<li class="li">
+				<p class="p">Transient messages</p>
+
+				<p class="p"> Messages that refer to the current function, for example, "Document can't be
+					printed as printer is not available". </p>
+
+				<p class="p">The messages are only valid, and can be displayed, for a short period of time after the user
+					has executed an action or an operation. They are not saved to the database.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">State messages</p>
+
+				<p class="p"> Messages that refer to the state of an instance, for example, "Amount must not be negative". </p>
+
+				<p class="p">These messages are displayed on the UI until the state of the related instance has been
+					corrected, for example, by changing the amount attribute to a positive value.
+					The messages are displayed to the user and also persisted in the back-end
+					system.</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p">By default, messages are handled as follows:</p>
+
+		<ul class="ul" id="loio239b1922758645e7b451e01ded7f56bc__ul_frj_4d2_sz">
+			<li class="li">
+				<p class="p">General</p>
+
+				<ul class="ul" id="loio239b1922758645e7b451e01ded7f56bc__ul_iqw_322_sz">
+					<li class="li">
+						<p class="p">After executing an action, all related transient messages are displayed in a dialog box.
+							All new state messages are shown in a message popover, together with the
+							existing state messages.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Draft operations are handled like actions, for example, activate, prepare, or validate
+							operations. </p>
+
+						<div class="note note"><span class="notetitle">Note</span> Avoid raising transient messages during prepare and validate operations. The user would
+							be able to see them in a dialog box and this UI behavior is not needed
+							in edit mode.</div>
+
+					</li>
+
+					<li class="li">
+						<p class="p">If only one transient success message is raised, this is shown in a toast message. In all
+							other cases, the messages are shown in a dialog box.</p>
+
+					</li>
+
+				</ul>
+
+			</li>
+
+			<li class="li">
+				<p class="p">List report: Only transient messages are displayed, in a dialog box after an action has been
+					executed</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Object page: </p>
+
+				<ul class="ul" id="loio239b1922758645e7b451e01ded7f56bc__ul_ffz_td2_sz">
+					<li class="li">
+						<p class="p">In display mode, only transient messages are displayed after an action has been
+							executed.</p>
+
+					</li>
+
+					<li class="li">In edit mode, all state and transient messages related to the object are displayed in a
+						popover message. The user can open the message for the related object, for
+						example, the displayed sales order. Messages for the items are not
+						displayed. The user has to navigate to the item. The popover also displays
+						client validation messages.</li>
+
+				</ul>
+
+			</li>
+
+		</ul>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

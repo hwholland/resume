@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The sap.ui.comp.smarttable.SmartTable control is used to create different types of tables based on OData metadata. The control allows the user to define personalized table settings."/>
+<meta name="description" content="The sap.ui.comp.smarttable.SmartTable control is used to create different types of tables based on OData metadata. The control allows the user to define personalized table settings."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6596716915353872"/>
+<title>Smart Table</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loiobed8274140d04fc0b9bcb2db42d8bac2">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Smart Table</h1>
+<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">sap.ui.comp.smarttable.SmartTable</samp> control is used to create
+		different types of tables based on OData metadata. The control allows the user to define
+		personalized table settings.</p>
+<p class="p">The frequently asked questions section aims to answer the basic questions that may occur
+			when using the <samp class="ph codeph">SmartTable</samp> control.</p>
+<p class="p">For more information about
+			this control, see <a class="xref" href="../../docs/api/symbols/sap.ui.comp.smarttable.SmartTable.html" alt="../../docs/api/symbols/sap.ui.comp.smarttable.SmartTable.html" title="../../docs/api/symbols/sap.ui.comp.smarttable.SmartTable.html">https://sapui5.hana.ondemand.com/sdk/#docs/api/symbols/sap.ui.comp.smarttable.SmartTable.html</a> and <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.comp.smarttable.SmartTable/samples" alt="../../explored.html#/entity/sap.ui.comp.smarttable.SmartTable/samples" title="../../explored.html#/entity/sap.ui.comp.smarttable.SmartTable/samples">https://sapui5.hana.ondemand.com/sdk/explored.html#/entity/sap.ui.comp.smarttable.SmartTable/samples</a>. </p>
+</div>
+<div class="topic concept nested1" id="concept_afm_qtp_bq"><h2 class="title topictitle2">Overview</h2>
+<div class="body conbody"><p class="p">The <samp class="ph codeph">SmartTable</samp> control is a wrapper control around any <span class="ph pname">SAPUI5</span> table. The control
+				analyzes the <samp class="ph codeph">$metadata</samp> document of an OData service and renders a
+				table for a specific <samp class="ph codeph">entitySet</samp>. </p>
+<p class="p">The control allows the consuming application to build list patterns based on OData
+				services in an efficient and consistent way and thus makes it easy for the user to
+				create tables without much effort. For example, the control enables the automatic
+				creation of columns.</p>
+<p class="p">The consuming application can overwrite the OData default information. The
+					<samp class="ph codeph">SmartTable</samp> control offers you additional built-in features,
+				such as a row count and an export to a spreadsheet application.</p>
+<p class="p">The control is closely linked to the <samp class="ph codeph">VariantManagement</samp>,
+					<samp class="ph codeph">SmartFilterBar</samp>, and <samp class="ph codeph">P13nDialog</samp> controls and
+				also supports the popover of the <samp class="ph codeph">SmartLink</samp> control. For more
+				information on these controls, refer to the relevant documentation.</p>
+</div>
+</div>
+<div class="topic concept nested1" id="concept_v3r_p4v_nr"><h2 class="title topictitle2">Annotations</h2>
+<div class="body conbody"><p class="p">The following table shows a selection of the annotations used by the
+					<samp class="ph codeph">SmartTable</samp> control:</p>
+
+<div class="tablenoborder"><table summary="" id="concept_v3r_p4v_nr__table_p5j_lsv_nr" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 1:
+					Annotations</span></caption>
+<colgroup><col width="25%"/><col width="25%"/><col width="25%"/><col width="25%"/></colgroup>
+<thead class="thead" align="left"><tr class="row"><th class="entry" valign="top" width="25%" id="d4180683e88">
+								<p class="p">Element</p>
+
+							</th>
+<th class="entry" valign="top" width="25%" id="d4180683e93">
+								<p class="p">Annotation</p>
+
+							</th>
+<th class="entry" valign="top" width="25%" id="d4180683e98">Value</th>
+<th class="entry" valign="top" width="25%" id="d4180683e100">
+								<p class="p">Comment</p>
+
+							</th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry" valign="top" width="25%" headers="d4180683e88 ">
+								<p class="p">Initial columns</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e93 "><samp class="ph codeph">LineItem</samp></td>
+<td class="entry" valign="top" width="25%" headers="d4180683e98 "> </td>
+<td class="entry" valign="top" width="25%" headers="d4180683e100 ">
+								<p class="p">Shows the initial columns in the <samp class="ph codeph">SmartTable</samp>
+									control</p>
+
+							</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="25%" headers="d4180683e88 ">
+								<p class="p">Sorting</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e93 ">
+								<p class="p"><samp class="ph codeph">sap:sortable</samp></p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e98 ">
+								<p class="p">Enabled by default when 'null'</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e100 ">
+								<p class="p">Enables sorting for a table column</p>
+
+							</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="25%" headers="d4180683e88 ">
+								<p class="p">Filtering</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e93 ">
+								<p class="p"><samp class="ph codeph">sap:filterable</samp></p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e98 ">
+								<p class="p">Enabled by default when 'null'</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e100 ">
+								<p class="p">Enables filtering for a table column</p>
+
+							</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="25%" headers="d4180683e88 ">
+								<p class="p">Ignoring backend fields</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e93 ">
+								<p class="p"><samp class="ph codeph">sap:visible</samp></p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e98 ">'false'</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e100 ">
+								<p class="p">Disables processing of an OData field of the
+										<samp class="ph codeph">SmartTable</samp>. Fields with value 'false' are
+									not shown on table personalization panels. </p>
+
+							</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="25%" headers="d4180683e88 ">
+								<p class="p">Summed values</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e93 ">
+								<p class="p">
+									<samp class="ph codeph">sap:aggregation-role </samp></p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e98 ">
+								<p class="p">'measure'</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e100 ">
+								<p class="p">Fields with value 'measure' are summed by default in an
+										<samp class="ph codeph">AnalyticalTable</samp> control. Grouping is then
+									disabled for these fields.</p>
+
+							</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="25%" headers="d4180683e88 ">
+								<p class="p">Column width</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e93 ">
+								<p class="p"><samp class="ph codeph">MaxLength/Precision/Scale</samp></p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e98 ">
+								<p class="p"/>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e100 ">
+								<p class="p">Evaluated for the definition of a default column width.
+										<samp class="ph codeph">MaxLength/Precision</samp> determine the initial
+									width of a table column.</p>
+
+							</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="25%" headers="d4180683e88 ">
+								<p class="p">Currency</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e93 ">
+								<p class="p"><samp class="ph codeph">sap:semantics</samp></p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e98 ">
+								<p class="p">'currency-code'</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d4180683e100 ">If an OData field (<samp class="ph codeph">Edm.Decimal</samp>) has a corresponding unit field
+									(<samp class="ph codeph">sap:unit</samp>="&lt;FieldName&gt;"), and the unit field
+								has <samp class="ph codeph">sap:semantics</samp>="currency-code", a compound
+								currency field is created. </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="topic concept nested1" id="concept_x45_ttp_bq"><h2 class="title topictitle2">FAQ</h2>
+<div class="body conbody"><div class="section"><div class="section_title">Question</div><div type="Question">
+				
+				<p class="p">How can I enable personalization for columns I add in the XML view in the
+						<samp class="ph codeph">SmartTable</samp> control?</p>
+
+			</div></div>
+<div class="section"><div class="section_title">Answer</div><div type="Answer">
+				
+				<p class="p">You can specify custom data for the personalization of the columns in your table
+					as shown in the examples.</p>
+
+				<p class="p">Example 1 for a normal aggregation:</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;table:AnalyticalColumn id="Ledger" hAlign="Left" minScreenWidth="Tablet" demandPopin="true"&gt;
+&lt;table:customData&gt;
+&lt;core:CustomData  key="p13nData" value='\{"columnKey": "Ledger","sortProperty": "Ledger", "filterProperty": "Ledger", "type":"numeric"}'/&gt;
+&lt;/table:customData&gt;
+              &lt;Label text="Ledger"/&gt;
+&lt;table:template&gt;
+&lt;Text text="{Ledger}" /&gt;
+&lt;/table:template&gt;
+&lt;/table:AnalyticalColumn&gt;
+</pre></div>
+
+				<p class="p">Example 2 for use of the shortcut notation of <span class="ph"><span class="ph pname">SAPUI5</span></span> in the
+					namespace:</p>
+
+				<p class="p">View namespace part:
+					xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;table:AnalyticalColumn id="CompanyCode" hAlign="Left" minScreenWidth="Tablet" demandPopin="true" sortProperty= "CompanyCode" customData:p13nData='\{"columnKey": "CompanyCode","sortProperty": "CompanyCode", "filterProperty": "CompanyCode", "type":"numeric", "maxLength":"4"}'&gt;
+&lt;Label text="Company Code" /&gt;
+&lt;table:template&gt;
+&lt;Text text="{CompanyCode}" /&gt;
+              &lt;/table:template&gt;
+       &lt;/table:AnalyticalColumn&gt;
+</pre></div>
+
+				<p class="p">In the <samp class="ph codeph">p13nData</samp> object, you can specify the following
+					properties:</p>
+
+				<ul class="ul" id="concept_x45_ttp_bq__ul_err_nyp_bq"><li class="li"><samp class="ph codeph">columnKey</samp><p class="p">A unique key used to save/retrieve/apply
+							personalization for the column</p>
+</li>
+<li class="li"><samp class="ph codeph">sortProperty</samp><p class="p">Similar to the table column property; should
+							point to a OData/model property name</p>
+</li>
+<li class="li"><samp class="ph codeph">filterProperty</samp><p class="p">Similar to the table column property;
+							should point to a OData/model property name</p>
+</li>
+<li class="li"><samp class="ph codeph">type</samp><p class="p">Value can be either <em class="ph i">date</em> or <em class="ph i">numeric</em> or
+								<em class="ph i">empty string</em>; control will be switched accordingly</p>
+</li>
+<li class="li"><samp class="ph codeph">maxLength</samp><p class="p">Numeric value, for example, <em class="ph i">5</em> to
+							restrict number of entries in input fields</p>
+</li>
+<li class="li"><samp class="ph codeph">precision</samp><p class="p">Numeric value for precision </p>
+</li>
+<li class="li"><samp class="ph codeph">scale</samp><p class="p">Numeric value for scale</p>
+</li>
+</ul>
+
+				<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">Some properties that also exist in a table, for example, in
+							<samp class="ph codeph">sortProperty</samp>, will take precedence if specified in both
+						places.</p>
+
+				</div>
+
+			</div></div>
+<div class="section"><div class="section_title">Question</div><div type="Question">
+				
+				<p class="p">Why do I not see data for my manually added column in the XML view? And why do I
+					get an error "Select at least one column to perform the search" even though I
+					have added several columns manually to the <samp class="ph codeph">sap.m.Table</samp> inside
+					the <samp class="ph codeph">SmartTable</samp> control?</p>
+
+			</div></div>
+<div class="section"><div class="section_title">Answer</div><div type="Answer">
+				
+				<p class="p">You need to specify custom data with at least one
+						<samp class="ph codeph">leadingProperty</samp> for the table/columns where there is no
+						<samp class="ph codeph">leadingProperty</samp> available in the control itself so the
+						<samp class="ph codeph">SmartTable</samp> control can fetch data correctly.</p>
+
+				<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;Column &gt; 
+
+    &lt;customData&gt; 
+
+          &lt;core:CustomData key="p13nData" value='\{"columnKey": "Id","leadingProperty": "Id","sortProperty": "Id","filterProperty": "Id"}'/&gt;
+
+     &lt;/customData&gt;
+
+    &lt;Text text="Sales Order" /&gt; 
+
+&lt;/Column&gt;
+
+</pre></div>
+
+					<p class="p">Without this, the <samp class="ph codeph">SmartTable</samp> control cannot recognize the
+						column.</p>
+
+				</div>
+
+			</div></div>
+<div class="section"><div class="section_title">Question</div><div type="Question">
+				
+				<p class="p">How do I handle the visibility of columns in large tables? </p>
+
+			</div></div>
+<div class="section"><div class="section_title">Answer</div><div type="Answer">
+				
+				<p class="p">The <samp class="ph codeph">visibleItemsThreshold</samp> property is used as a custom property
+					in the <samp class="ph codeph">SmartTable</samp> control. The property triggers a warning if
+					the end user selects too many columns in the personalization dialog for a table
+					and the threshold defined for the property is exceeded. The property value is
+					passed on from the XML view via the <samp class="ph codeph">personalization.Controller</samp>
+					to the <samp class="ph codeph">P13nColumnsPanel</samp> control. For more information about
+					this property, see <a class="xref" href="a3c3c5eb54bc4cc38e6cfbd8e90c6a01.html" title="The sap.m.P13nDialog control provides a dialog to personalize tables, such as adapting the order of columns or filtering table content.">Personalization Dialog</a>.</p>
+
+			</div></div>
+<div class="section"><div class="section_title">Question</div><div type="Question">
+				
+				<p class="p">How do I create and pass a search query (<samp class="ph codeph">$search</samp> = 'foo') when
+					using the <samp class="ph codeph">SmartTable</samp> control?</p>
+
+			</div></div>
+<div class="section"><div class="section_title">Answer</div><div type="Answer">
+				
+				<p class="p">Use the <samp class="ph codeph">beforeRebindTable</samp> event and implement this manually.</p>
+
+				<div class="note example" id="concept_x45_ttp_bq__note_N1009A_N10067_N10013_N10001"><span class="exampletitle">Example</span> 
+					<div class="p">
+						<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+							<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>
+onBeforeRebindTable: function(oEvent) {         var
+        mBindingParams = oEvent.getParameter( "bindingParams" );       
+		mBindingParams.parameters[ "custom" ] =
+        {                        "search-focus" :
+        sBasicSearchFieldName, //  the name of the search
+        field                        "search" :
+        sBasicSearchText //  the search text
+        itself!                };  }</pre></div>
+
+						</div>
+
+					</div>
+
+					<p class="p">This will then be used internally when creating the table binding.</p>
+
+				</div>
+
+			</div></div>
+<div class="section"><div class="section_title">Question</div><div type="Question">
+				
+				<p class="p">How do I get data for custom columns (icons, formatters etc.) that are not
+					present in the columns/binding (<samp class="ph codeph">select</samp> = 'ColA,ColB,foo,bar')
+					of the <samp class="ph codeph">SmartTable</samp> control?</p>
+
+			</div></div>
+<div class="section"><div class="section_title">Answer</div><div type="Answer">
+				
+				<p class="p">Use the <samp class="ph codeph">beforeRebindTable</samp> event and implement this manually.</p>
+
+				<div class="note example"><span class="exampletitle">Example</span> 
+					<div class="p">
+						<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+							<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>
+onBeforeRebindTable: function(oEvent) {         var
+        oBindingParams = oEvent.getParameter( "bindingParams" );
+        if  (oBindingParams.parameters.select.search( "SomeIconCode" ) &lt; 0) {                           
+         oBindingParams.parameters.select +=
+         ",SomeIconCode" ;         } }  </pre></div>
+
+						</div>
+
+					</div>
+
+					<p class="p">This will then be used internally when creating the table binding.</p>
+
+				</div>
+
+				<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">For an <samp class="ph codeph">AnalyticalTable</samp> control or
+							<samp class="ph codeph">AnalyticalBinding</samp>, you have to use a dummy column
+							(<samp class="ph codeph">visible</samp>='false') with the
+							<samp class="ph codeph">leadingProperty</samp> you require and the set attribute
+							<samp class="ph codeph">inResult</samp>='true' instead.</p>
+
+				</div>
+
+			</div></div>
+<div class="section"><div class="section_title">Question</div><div type="Question">
+				
+				<p class="p">I would like to pass my own custom sorters, filters, and binding parameters when
+					binding the table data in the <samp class="ph codeph">SmartTable</samp> control. How do I do
+					this?</p>
+
+				<p class="p">And how can I have my own binding implementation for the
+						<samp class="ph codeph">SmartTable</samp> control?</p>
+
+			</div></div>
+<div class="section"><div class="section_title">Answer</div><div type="Answer"><p class="p">You can modify the array of filters before binding is
+					triggered in the <samp class="ph codeph">SmartTable</samp> control by
+					listening
+					to the <samp class="ph codeph">beforeRebindTable</samp> event.</p>
+<p class="p">To enable this, your code
+					should look as follows:</p>
+<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>
+&lt;smartTable:SmartTable entitySet="LineItemsSet" beforeRebindTable="onBeforeRebindTable"…</pre></div>
+
+				</div>
+You can now get the list of filters and sorters to be used in
+				table binding using the following:<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>
+onBeforeRebindTable: function(oEvent) {
+
+              var mBindingParams = oEvent.getParameter("bindingParams");
+
+              var aFilters = mBindingParams.filters
+</pre></div>
+
+				</div>
+<p class="p">With this, you need to set back the value to
+						<samp class="ph codeph">mBindingParams.filters</samp>, and you can pass a new filter array
+					as well.</p>
+<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">In some exceptional cases, you can set
+							<samp class="ph codeph">mBindingParams.preventTableBind</samp> = 'true' to prevent
+						table binding from taking place (optional) and do the binding at a later
+						point in time.  This is shown in the following method:</p>
+
+					<div class="p">
+						<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+							<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>
+someMethod: function() {
+
+           //get the smartTable and call the method rebindTable()
+
+           oSmartTable.rebindTable();
+
+       }
+</pre></div>
+
+						</div>
+
+					</div>
+
+				</div>
+</div></div>
+</div>
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Smart Table";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>RichTextEditor - sap.ui.richtexteditor</title>
+
+<!-- This unit test is tailored for TinyMCE -->
+
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_platinum" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.ui.richtexteditor">
+		</script>
+
+<link rel="stylesheet"
+	href="../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+
+<script>
+
+function containsNamedObject(aObjects, sObjectName) {
+	for (var i = 0, iLen = aObjects.length; i < iLen; ++i) {
+		if (aObjects[i].name === sObjectName) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+asyncTest("Editor initialization", function() {
+	var iReadyCalled = 0;
+	var iBeforeInitCalled = 0;
+	var iChangeCalled = 0;
+
+	ok (iBeforeInitCalled === 0, "No init events have been fired");
+	ok (iReadyCalled === 0, "No ready events have been fired");
+	ok (iChangeCalled === 0, "No change events have been fired");
+
+	var oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+		beforeEditorInit : function() {
+			iBeforeInitCalled++;
+		},
+		ready            : function() {
+			jQuery.sap.delayedCall(200, this, function() {
+				ok (iBeforeInitCalled === 1, "One init events has been fired");
+				ok (iReadyCalled === 1, "One ready events has been fired");
+				ok (iChangeCalled === 0, "No change events have been fired");
+
+				oRichTextEditor.destroy();
+				start();
+			});
+
+			iReadyCalled++;
+		},
+		change           : function() {
+			iChangeCalled++;
+		}
+	});
+	oRichTextEditor.placeAt("rteArea1");
+
+	ok (iBeforeInitCalled === 0, "No init events have been fired");
+	ok (iReadyCalled === 0, "No ready events have been fired");
+	ok (iChangeCalled === 0, "No change events have been fired");
+
+
+});
+
+asyncTest("Plugins", function() {
+	var iReadyCalled = 0;
+	var iBeforeInitCalled = 0;
+	var iChangeCalled = 0;
+
+	ok (iBeforeInitCalled === 0, "No init events have been fired");
+	ok (iReadyCalled === 0, "No ready events have been fired");
+	ok (iChangeCalled === 0, "No change events have been fired");
+
+	var oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+		beforeEditorInit : function() {
+			iBeforeInitCalled++;
+		},
+		ready : function() {
+			jQuery.sap.delayedCall(200, this, function() {
+				equals(iBeforeInitCalled, 1, "One init events has been fired");
+				equals(iReadyCalled, 1, "One ready events has been fired");
+				equals(iChangeCalled, 0, "No change events have been fired");
+
+				oRichTextEditor.destroy();
+				start();
+			});
+
+			iReadyCalled++;
+		},
+		change : function() {
+			iChangeCalled++;
+		}
+	});
+
+	var aAddedPlugins = [ "media", "autolink", "fullscreen", "preview" ];
+	var aRemovedPlugins = [ "media", "preview" ];
+
+	for (var i = 0, iLen = aAddedPlugins.length; i < iLen; ++i) {
+		oRichTextEditor.addPlugin(aAddedPlugins[i]);
+	}
+
+	var aPlugins = oRichTextEditor.getPlugins();
+	for (var i = 0, iLen = aAddedPlugins.length; i < iLen; ++i) {
+		ok(
+			containsNamedObject(aPlugins, aAddedPlugins[i]),
+			"Plugin was correctly added: " + aAddedPlugins[i]
+		);
+	}
+
+	for (var i = 0, iLen = aRemovedPlugins.length; i < iLen; ++i) {
+		oRichTextEditor.removePlugin(aRemovedPlugins[i]);
+	}
+
+	var aPlugins = oRichTextEditor.getPlugins();
+	for (var i = 0, iLen = aRemovedPlugins.length; i < iLen; ++i) {
+		ok(
+			!containsNamedObject(aPlugins, aRemovedPlugins[i]),
+			"Plugin was correctly removed: " + aRemovedPlugins[i]
+		);
+	}
+
+	oRichTextEditor.placeAt("rteArea1");
+
+	ok(iBeforeInitCalled === 0, "No init events have been fired");
+	ok(iReadyCalled === 0, "No ready events have been fired");
+	ok(iChangeCalled === 0, "No change events have been fired");
+
+});
+
+asyncTest("Button Groups", function() {
+	var iReadyCalled = 0;
+	var iBeforeInitCalled = 0;
+	var iChangeCalled = 0;
+
+	ok (iBeforeInitCalled === 0, "No init events have been fired");
+	ok (iReadyCalled === 0, "No ready events have been fired");
+	ok (iChangeCalled === 0, "No change events have been fired");
+
+	var oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+		beforeEditorInit : function() {
+			iBeforeInitCalled++;
+		},
+		ready : function() {
+			jQuery.sap.delayedCall(200, this, function() {
+				ok (iBeforeInitCalled === 1, "One init events has been fired");
+				ok (iReadyCalled === 1, "One ready events has been fired");
+				ok (iChangeCalled === 0, "No change events have been fired");
+
+				oRichTextEditor.destroy();
+				start();
+			});
+
+			iReadyCalled++;
+		},
+		change : function() {
+			iChangeCalled++;
+		}
+	});
+
+	var aButtons = [ {
+		name     : "font-style",
+		visible  : true,
+		row      : 0,
+		priority : 10,
+		buttons  : [
+			"bold", "italic", "underline", "strikethrough"
+		]
+	}, {
+		// Text Align group
+		name     : "text-align",
+		visible  : true,
+		row      : 0,
+		priority : 20,
+		buttons  : [
+			"justifyleft", "justifycenter", "justifyright", "justifyfull"
+		]
+	}, {
+		name     : "font",
+		visible  : false,
+		row      : 0,
+		priority : 30,
+		buttons  : [
+			"fontselect", "fontsizeselect", "forecolor", "backcolor"
+		]
+	}, {
+		name     : "formatselect",
+		visible  : true,
+		row      : 0,
+		priority : 30,
+		buttons  : [
+			"paragraph","h1", "h2", "h3", "h4", "h5", "h6", "pre"
+		]
+	}, {
+		name     : "clipboard",
+		visible  : true,
+		row      : 1,
+		priority : 10,
+		buttons  : [
+			"cut", "copy", "paste"
+		]
+	}, {
+		name     : "structure",
+		visible  : true,
+		row      : 1,
+		priority : 20,
+		buttons  : [
+			"bullist", "numlist", "outdent", "indent"
+		]
+	}];
+
+
+	for (var i = 0, iLen = aButtons.length; i < iLen; ++i) {
+		oRichTextEditor.removeButtonGroup(aButtons[i].name);
+	}
+
+	var aButtonGroups = oRichTextEditor.getButtonGroups();
+	for (var i = 0, iLen = aButtons.length; i < iLen; ++i) {
+		ok(
+			!containsNamedObject(aButtonGroups, aButtons[i].name),
+			"Button Group was correctly removed: " + aButtons[i]
+		);
+	}
+
+	for (var i = 0, iLen = aButtons.length; i < iLen; ++i) {
+		oRichTextEditor.addButtonGroup(aButtons[i]);
+	}
+
+	var aButtonGroups = oRichTextEditor.getButtonGroups();
+	for (var i = 0, iLen = aButtons.length; i < iLen; ++i) {
+		ok(
+			containsNamedObject(aButtonGroups, aButtons[i].name),
+			"Button Group was correctly added: " + aButtons[i]
+		);
+	}
+
+	for (var i = 0, iLen = aButtons.length; i < iLen; ++i) {
+		oRichTextEditor.removeButtonGroup(aButtons[i].name);
+	}
+
+	aButtonGroups = oRichTextEditor.getButtonGroups();
+	for (var i = 0, iLen = aButtons.length; i < iLen; ++i) {
+		ok(
+				!containsNamedObject(aButtonGroups, aButtons[i].name),
+				"Button Group was removed: " + aButtons[i]
+		);
+	}
+
+	oRichTextEditor.setButtonGroups(aButtons);
+
+	aButtonGroups = oRichTextEditor.getButtonGroups();
+	for (var i = 0, iLen = aButtons.length; i < iLen; ++i) {
+		ok(
+			containsNamedObject(aButtonGroups, aButtons[i].name),
+			"Button Group was added: " + aButtons[i].name
+		);
+	}
+
+	oRichTextEditor.placeAt("rteArea1");
+
+	ok(iBeforeInitCalled === 0, "No init events have been fired");
+	ok(iReadyCalled === 0, "No ready events have been fired");
+	ok(iChangeCalled === 0, "No change events have been fired");
+
+});
+
+</script>
+</head>
+<body>
+	<h1 id="qunit-header">qUnit Page for RichTextEditor</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+
+	<div id="rteArea1"></div>
+</body>
+</html>

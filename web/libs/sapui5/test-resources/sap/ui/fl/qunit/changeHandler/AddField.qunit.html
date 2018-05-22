@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+	<title>QUnit - sap.ui.fl.changeHandler.AddField</title>
+
+	<script id="sap-ui-bootstrap" type="text/javascript"
+			src="../../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noconflict="true"
+			data-sap-ui-libs="sap.ui.comp">
+	</script>
+
+
+	<link rel="stylesheet" href="../../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen"/>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+	<script type="text/javascript">
+		jQuery.sap.require("sap.ui.fl.changeHandler.AddField");
+		jQuery.sap.require("sap.ui.comp.smartform.GroupElement");
+		jQuery.sap.require("sap.ui.commons.TextView");
+		jQuery.sap.require("sap.ui.comp.smartform.Group");
+		jQuery.sap.require("sap.ui.comp.smartfield.SmartField");
+		jQuery.sap.require("sap.ui.fl.Change");
+
+		(function (AddFieldChangeHandler, SmartFormGroup, SmartFormGroupElement, TextView, ChangeWrapper,SmartField) {
+
+			module("sap.ui.fl.changeHandler.AddField", {
+				setup: function () {
+					this.stubs = [];
+					this.oChangeHandler = new AddFieldChangeHandler();
+				},
+				teardown: function () {
+					this.stubs.forEach(function (stub) {
+						stub.restore();
+					});
+				}
+			});
+
+
+			test('applyChange - positive test', function () {
+
+				var oChange = {
+					"selector": {
+						"id": "groupkey1"
+					},
+					"content": {
+						"field": {
+							"id": "fieldId1",
+							"index": 0,
+							"jsType": "sap.ui.commons.TextView",
+							"valueProperty": "text",
+							"value": "BindingPath1",
+							"entitySet": "testEntitySet1"
+						}
+					},
+					"texts": {
+						"fieldLabel": {
+							"value": "the field label",
+							"type": "XFLD"
+						}
+					}
+				};
+				var oChangeWrapper = new ChangeWrapper(oChange);
+
+				var oGroup = new SmartFormGroup();
+				var oAddGroupElementSpy = this.spy(oGroup, "insertGroupElement");
+
+				equal(oGroup.getGroupElements().length, 0);
+
+				this.oChangeHandler.applyChange(oChangeWrapper, oGroup);
+
+				ok(oAddGroupElementSpy.calledOnce);
+				equal(oGroup.getGroupElements().length, 1);
+				var oGroupElement = oGroup.getGroupElements()[0];
+				equal(oGroupElement.getLabel(), "the field label");
+				equal(oGroupElement.getElements().length, 1);
+				var oControl = oGroupElement.getElements()[0];
+				equal(oControl.getBindingPath("text"),"BindingPath1");
+
+			});
+			
+			test('applyChange - add smart field', function () {
+
+				var oChange = {
+					"selector": {
+						"id": "groupkey1"
+					},
+					"content": {
+						"field": {
+							"id": "smartfieldId1",
+							"index": 0,
+							"jsType": "sap.ui.comp.smartfield.SmartField",
+							"valueProperty": "value",
+							"value": "BindingPath1",
+							"entitySet": "testEntitySet1"
+						}
+					},
+					"texts": {
+						"fieldLabel": {
+							"value": "the field label",
+							"type": "XFLD"
+						}
+					}
+				};
+				var oChangeWrapper = new ChangeWrapper(oChange);
+
+				var oGroup = new SmartFormGroup();
+				var oAddGroupElementSpy = this.spy(oGroup, "insertGroupElement");
+
+				equal(oGroup.getGroupElements().length, 0);
+
+				this.oChangeHandler.applyChange(oChangeWrapper, oGroup);
+
+				ok(oAddGroupElementSpy.calledOnce);
+				equal(oGroup.getGroupElements().length, 1);
+				var oGroupElement = oGroup.getGroupElements()[0];
+				equal(oGroupElement.getLabel(), "the field label");
+				equal(oGroupElement.getElements().length, 1);
+				var oControl = oGroupElement.getElements()[0];
+				equal(oControl.getBindingPath("value"), "BindingPath1");
+				ok(oControl.getEntitySet);
+				equal(oControl.getEntitySet(),"testEntitySet1");
+
+			});
+
+			test('applyChange - negative test', function () {
+
+				var oChange = {
+					"selector": {
+						"id": "groupkey2"
+					},
+					"content": {
+						"field": {
+							"id": "fieldId2",
+							"index": 0,
+							"jsType": "sap.ui.commons.TextView",
+							"valueProperty": "text",
+							"value": "the TextView text"
+						}
+					},
+					"texts": {
+						"fieldLabel": {
+							"value": "the field label",
+							"type": "XFLD"
+						}
+					}
+				};
+				var oChangeWrapper = new ChangeWrapper(oChange);
+
+				var oGroup = new SmartFormGroup();
+
+				equal(oGroup.getGroupElements().length, 0);
+
+				var sError;
+				try {
+					this.oChangeHandler.applyChange(oChangeWrapper, {});
+				} catch (error) {
+					sError = error.message;
+				}
+
+				equal(sError, "no parent group provided for adding the field");
+
+			});
+
+			test('completeChangeContent', function (){
+				var oChange = {
+					"selector": {
+						"id": "groupkey"
+					}
+				};
+				var oChangeWrapper = new ChangeWrapper(oChange);
+				var oSpecificChangeInfo = {
+				    "index": 0,                       
+					"fieldLabel": "the field label",
+					"jsType": "sap.ui.commons.TextView",
+					"fieldValue": "the TextView text",
+					"valueProperty": "text",
+					"entitySet" : "testEntitySet1",
+					"newControlId" : "the--new--control--id"
+				};
+				this.oChangeHandler.completeChangeContent(oChangeWrapper, oSpecificChangeInfo);
+				equal(oChange.texts.fieldLabel.value, "the field label");
+				equal(oChange.content.field.jsType, "sap.ui.commons.TextView");
+				equal(oChange.content.field.value, "the TextView text");
+				equal(oChange.content.field.valueProperty, "text");
+				equal(oChange.content.field.id, "the--new--control--id");
+				equal(oChange.content.field.index, 0);
+				equal(oChange.content.field.entitySet,"testEntitySet1");
+			});
+
+			test('_getControlClass', function () {
+				var oControlClass = this.oChangeHandler._getControlClass("sap.ui.commons.TextView");
+				equal(oControlClass, TextView);
+			});
+
+		}(sap.ui.fl.changeHandler.AddField, sap.ui.comp.smartform.Group, sap.ui.comp.smartform.GroupElement, sap.ui.commons.TextView, sap.ui.fl.Change, sap.ui.comp.smartfield.SmartField));
+	</script>
+</head>
+<body id="body" class="sapUiBody">
+<h1 id="qunit-header">qUnit Page for sap.ui.fl.changeHandler.AddField</h1>
+
+<h2 id="qunit-banner"></h2>
+
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+<div id="content"></div>
+</body>
+</html>

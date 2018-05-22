@@ -1,0 +1,170 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=617691964234156"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=617691964234156"/>
+<title>An Empty Page Comes Up</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="copy51fe8f410623483097c292514c241eeb">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">An Empty Page Comes Up</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">You find yourself in one of these situations:</p>
+
+		<ul class="ul">
+			<li class="li">
+				<p class="p">The browser shows an empty page: there's no content and no error message is
+					displayed</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">An <samp class="ph codeph">Uncaught Error</samp> message is shown in the developer console</p>
+
+			</li>
+
+		</ul>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone"><div class="figcontainer">
+				
+				<img class="image" id="copy51fe8f410623483097c292514c241eeb__image_xsp_sjh_mz" src="loio873b3c2966e64bc2b080d8f4a5ae70fc_LowRes.png"/>
+			<div class="figcap">The browser displays an empty page and an <samp class="ph codeph">Uncaught Error</samp> is issued in
+					the console</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Root Cause</div><div type="Root Cause">
+			
+			<div class="p">This can happen for one of the following reasons:<ul class="ul" id="copy51fe8f410623483097c292514c241eeb__ul_pf4_cmb_n1b"><li class="li"><p class="p">A critical reference error is prohibiting the app from starting</p>
+</li>
+<li class="li"><p class="p">A syntax error is stopping the execution of your application code</p>
+</li>
+<li class="li"><p class="p">A parsing error has occurred in an XML view</p>
+</li>
+<li class="li"><p class="p">The tag of the control is written with lowercase letters</p>
+</li>
+</ul>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Resolution</div><div type="Resolution"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Console shows <samp class="ph codeph">"ReferenceError: sap is not defined"</samp></p>
+
+				<p class="p">Have a look at the <samp class="ph codeph">resource</samp> path in the bootstrap of the HTML
+					page you are trying to open. The path to the file
+						<samp class="ph codeph">sap-ui-core.js</samp> is probably incorrect and needs to point to
+					the path where the <span class="ph"><span class="ph pname">OpenUI5</span></span> resources
+					are located (typically globally under <samp class="ph codeph">/resources</samp> or locally
+					under <samp class="ph codeph">resources</samp>).</p>
+
+				<p class="p">If you are running the code in <span class="ph pname">SAP Web IDE</span>, you have to
+					configure the <span class="ph filepath">neo-app.json</span> project descriptor (see <a class="xref" href="28fa7538c67e4280a0b7708de2951278.html" title="The neo-app.json file contains all project settings for SAP Web IDE and is created in the root folder of your project. It is a JSON format file consisting of multiple configuration keys. The most important setting for you to configure is the path where the OpenUI5 runtime is located when starting the app.">Create a neo-app.json Project Configuration File</a>).</p>
+
+				<p class="p">Other development environments might need the resources to be copied to the
+					server and referenced relatively to the app (see <a class="xref" href="91f1f4536f4d1014b6dd926db0e91070.html" title="Self-contained variant that includes the sap-ui-core.js file in the HTML page">Standard Variant for Bootstrapping</a>).</p>
+
+				<p class="p"> Alternatively, you can use the CDN version (see <a class="xref" href="2d3eb2f322ea4a82983c1c62a33ec4ae.html" title="OpenUI5 can either be loaded locally with a relative path from a Web server or externally from a Content Delivery Network (CDN).">Variant for Bootstrapping from Content Delivery Network</a>).</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Console shows <samp class="ph codeph">SyntaxError: &lt;error details&gt;</samp></p>
+
+				<p class="p">A JavaScript error in the application code throws an exception and stops all
+					subsequent execution. Take a look at the error details: In most cases, the root
+					cause is mentioned in the first line of the error message.</p>
+
+				<p class="p">The stack trace can provide more context on the execution scope. Analyze it from
+					thoroughly to find a line referencing your application code and start debugging
+					there.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Console shows <samp class="ph codeph">Error: Invalid XML</samp></p>
+
+				<p class="p">If the XML view to be displayed cannot be parsed, <span class="ph"><span class="ph pname">OpenUI5</span></span> stops the
+					execution and throws a parse error. Check the XML view for namespace issues,
+					typos, and missing closing tags. Do a schema validation with an XML validator
+					tool.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Console shows <samp class="ph codeph">Uncaught Error: failed to load 'sap/m/xxxxx.js'</samp></p>
+
+				<p class="p">During the development on Microsoft Windows, your app works fine, but a soon as you deploy it
+					on a Linux system, only an empty page comes up.</p>
+
+				<div class="p">This could happen if you wrote the tag of the control with lowercase letters,
+					because Linux systems use case-sensitive file names.
+<div class="table-wrapper tablenoborder"><table summary="" id="copy51fe8f410623483097c292514c241eeb__table_bmd_tdt_q1b" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+							
+							
+							<thead class="thead" align="left">
+								<tr class="row">
+									<th class="entry" valign="top" width="50%" id="d3811432e207">
+										<p class="p">Correct Example</p>
+
+									</th>
+
+									<th class="entry" valign="top" width="50%" id="d3811432e213">
+										<p class="p">Incorrect Example</p>
+
+									</th>
+
+								</tr>
+
+							</thead>
+
+							<tbody class="tbody">
+								<tr class="row">
+									<td class="entry" valign="top" width="50%" headers="d3811432e207 ">
+										<p class="p"><samp class="ph codeph">&lt;<span class="ph emphasis emphasis">B</span>utton text="Click me" /&gt;</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%" headers="d3811432e213 ">
+										<p class="p"><samp class="ph codeph">&lt;<span class="ph emphasis emphasis">b</span>utton text="Click me" /&gt;</samp></p>
+
+										<p class="p">Error message: <samp class="ph codeph">Uncaught Error: failed to load 'sap/m/button.js'</samp></p>
+
+									</td>
+
+								</tr>
+
+							</tbody>
+
+						</table>
+</div>
+<div class="note tip"><span class="tiptitle">Tip</span> 
+						<p class="p">Control tags always start with capital letters after the namespace like
+								<samp class="ph codeph">&lt;Button&gt;</samp>, <samp class="ph codeph">&lt;l:FixFlex&gt;</samp>,
+								<samp class="ph codeph">&lt;f:SimpleForm&gt;</samp>.</p>
+
+						<p class="p">Aggregations always start with lowercase letters like
+								<samp class="ph codeph">&lt;content&gt;</samp>, <samp class="ph codeph">&lt;l:fixContent&gt;</samp>,
+								<samp class="ph codeph">&lt;f:content&gt;</samp></p>
+
+					</div>
+</div>
+
+			</div></div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

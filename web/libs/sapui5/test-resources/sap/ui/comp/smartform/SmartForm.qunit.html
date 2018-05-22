@@ -1,0 +1,905 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for sap.ui.comp.smartform.SmartForm</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.ui.comp">
+	
+</script>
+
+<link rel="stylesheet"
+	href="../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+<script type="text/javascript" src="data/TestModel.data.js"></script>
+
+
+<script type="text/javascript">
+
+	if(!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+	} 		
+	
+	(function(QUnit, sinon) {
+
+		jQuery.sap.require("sap.ui.comp.smartform.SmartForm");
+		jQuery.sap.require("sap.ui.comp.smartform.Group");
+		jQuery.sap.require("sap.ui.comp.smartform.GroupElement");
+		jQuery.sap.require("sap.ui.comp.smartfield.SmartField");
+		jQuery.sap.require("sap.m.Text");
+		jQuery.sap.require("sap.m.ToolbarSeparator");
+		jQuery.sap.require("sap.ui.layout.form.ResponsiveGridLayout");
+		jQuery.sap.require("sap.ui.comp.smartform.flexibility.FormP13nHandler");
+		jQuery.sap.require("sap.ui.fl.Cache");
+
+		QUnit.module("sap.ui.comp.smartform.SmartForm", {
+			beforeEach: function() {
+
+				//Switch OFF LREP backend request popup
+				//flex framework does resolve any LRep requests for this specific component with the given content -> there are changes = empty and no additional back-end call is needed
+				//_entries[""] -> shall conotain the component name -> in this scenarion it is ""
+				sap.ui.fl.Cache._entries[""] = {
+					promise: Promise.resolve({
+						"changes": {
+							"changes": [],
+							"settings": {
+								"isKeyUser": true,
+								"isAtoAvailable": false,
+								"isProductiveSystem": false,
+								"features": {
+									"addField": [
+										"CUSTOMER", "VENDOR"
+									],
+									"addGroup": [
+										"CUSTOMER", "VENDOR"
+									],
+									"removeField": [
+										"CUSTOMER", "VENDOR"
+									],
+									"removeGroup": [
+										"CUSTOMER", "VENDOR"
+									],
+									"hideControl": [
+										"CUSTOMER", "VENDOR"
+									],
+									"unhideControl": [
+										"CUSTOMER", "VENDOR"
+									],
+									"renameField": [
+										"CUSTOMER", "VENDOR"
+									],
+									"renameGroup": [
+										"CUSTOMER", "VENDOR"
+									],
+									"moveFields": [
+										"CUSTOMER", "VENDOR"
+									],
+									"moveGroups": [
+										"CUSTOMER", "VENDOR"
+									]
+								}
+							}
+						},
+						"componentClassName": "sap.ui.comp.sample.smartform.Component"
+					})
+				};
+
+				this.oSmartForm = new sap.ui.comp.smartform.SmartForm("SmartForm");
+
+				this.oSmartField = new sap.ui.comp.smartfield.SmartField();
+				this.oSmartField.getModel = function(sName) {
+					var oModel;
+
+					if (!sName) {
+						oModel = sinon.createStubInstance(sap.ui.model.odata.ODataModel);
+						oModel.getServiceMetadata = function() {
+							return oTestModel;
+						};
+						oModel.getMetaModel = function() {
+							var oStub = sinon.createStubInstance(sap.ui.model.odata.ODataMetaModel);
+							oStub.oModel = new sap.ui.model.json.JSONModel(oTestModel);
+							oStub.oData = oTestModel;
+							oStub.loaded = function() {
+								return {
+									then: function() {
+									}
+								};
+							}
+							oStub.getObject = function(sPath) {
+								var oNode, aParts = sPath.split("/"), iIndex = 0;
+								if (!aParts[0]) {
+									// absolute path starting with slash
+									oNode = this.oData;
+									iIndex++;
+								}
+								while (oNode && aParts[iIndex]) {
+									oNode = oNode[aParts[iIndex]];
+									iIndex++;
+								}
+								return oNode;
+							};
+							return oStub;
+						};
+						oModel.bindContext = function() {
+							return {
+								attachChange: function() {
+
+								},
+								attachEvents: function() {
+
+								},
+								initialize: function() {
+
+								},
+								getContext: function() {
+									return null;
+								}
+							};
+						};
+						oModel.bindProperty = function() {
+							return {
+								setType: function() {
+
+								},
+								setFormatter: function() {
+
+								},
+								setBindingMode: function() {
+
+								},
+								attachChange: function() {
+
+								},
+								attachEvents: function() {
+
+								},
+								initialize: function() {
+
+								},
+								updateRequired: function() {
+									return false;
+								},
+								detachChange: function() {
+
+								},
+								detachEvents: function() {
+
+								},
+								setContext: function() {
+
+								}
+							};
+						};
+
+						oModel.oMetadata = {
+							bLoaded: true
+						};
+					}
+
+					return oModel;
+
+				};
+				this.oSmartField.getBindingContext = function() {
+					return {
+						sPath: "/Project(71)",
+						getPath: function() {
+							return "/Project(71)";
+						}
+					};
+				};
+				this.oSmartField.getBindingInfo = function(sProperty) {
+					if (sProperty === "value") {
+						return {
+							parts: [
+								{
+									model: undefined,
+									path: "ID"
+								}
+							]
+						};
+					}
+				};
+				this.oSmartField.getBindingPath = function(sProperty) {
+					if (sProperty === "value") {
+						return "ID";
+					}
+				};
+			},
+			afterEach: function() {
+				this.oSmartForm.destroy();
+			}
+		});
+
+		QUnit.test("Shall be instantiable", function(assert) {
+			assert.ok(this.oSmartForm);
+		});
+
+		QUnit.test("onBeforeRendering shall create Form", function(assert) {
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			var oText = new sap.m.Text({
+				"text": "text"
+			});
+			oGroupElement.addElement(oText);
+			oGroupElement.setLabel("elementLabel");
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addAggregation("groupElements", oGroupElement);
+			oGroup.setLabel("groupLabel");
+
+			this.oSmartForm.setProperty("title", "formTitle");
+			this.oSmartForm.addAggregation("groups", oGroup);
+			this.oSmartForm.addCustomData(new sap.ui.core.CustomData({
+				"key": "testKey",
+				"value": "testValue"
+			}));
+
+			this.oSmartForm.onBeforeRendering();
+			var oContent = this.oSmartForm.getAggregation("content");
+
+			var aFormContainer = oContent.getAggregation("formContainers");
+			var aFormElement = aFormContainer[0].getAggregation("formElements");
+			var aField = aFormElement[0].getAggregation("fields");
+			assert.equal(aField[0], oText, "sap.m.Text added to Form successfully");
+			assert.equal(aFormElement[0].getLabel().getText(), "elementLabel", "FormElement label set");
+		});
+
+		QUnit.test("editToggle shall set the smart fields to editable", function(assert) {
+			this.oSmartForm.setEditTogglable(true);
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(this.oSmartField);
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addAggregation("groupElements", oGroupElement);
+			this.oSmartForm.addAggregation("groups", oGroup);
+			this.oSmartForm.onBeforeRendering();
+
+			this.oSmartForm._toggleEditMode(this.oSmartForm);
+			assert.equal(this.oSmartField.getContextEditable(), true, "smart field set to editable");
+		});
+
+		QUnit.test("getVisibleFields shall return property name", function(assert) {
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(this.oSmartField);
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addAggregation("groupElements", oGroupElement);
+			this.oSmartForm.addAggregation("groups", oGroup);
+			this.oSmartForm.onBeforeRendering();
+
+			var aPath = this.oSmartForm.getVisibleProperties();
+			assert.equal(aPath[0], "ID", "property name ID returned");
+		});
+
+		QUnit.test("useHorizonzalLayout shall create form with responsive layout", function(assert) {
+			this.oSmartForm.setUseHorizontalLayout(true);
+			this.oSmartForm.setExpandable(true);
+
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			var oText = new sap.m.Text({
+				"text": "text"
+			});
+			oGroupElement.addElement(oText);
+			oGroupElement.setLabel("elementLabel");
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addAggregation("groupElements", oGroupElement);
+			oGroup.setLabel("groupLabel");
+
+			this.oSmartForm.setProperty("title", "formTitle");
+			this.oSmartForm.addAggregation("groups", oGroup);
+
+			this.oSmartForm.onBeforeRendering();
+			//oGroupElement.onBeforeRendering();
+
+			var aContent = this.oSmartForm.getAggregation("content").getAggregation("content");
+
+			var aFormContainer = aContent[0].getAggregation("formContainers");
+			var aFormElement = aFormContainer[0].getAggregation("formElements");
+			var aField = aFormElement[0].getAggregation("fields");
+			assert.equal(aField[0].getMetadata().getName(), "sap.m.VBox", "VBox added to form");
+			assert.equal(aField[0].getItems()[1], oText, "sap.m.Text added to form successfully");
+		});
+
+		QUnit.test("Layout shall be changeable between ResponsiveLayout and ResponsiveGridLayout", function(assert) {
+			var bUseHorizonzalLayout = false;
+
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			var oText = new sap.m.Text({
+				"text": "text"
+			});
+			oGroupElement.addElement(oText);
+			oGroupElement.setLabel("elementLabel");
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addGroupElement(oGroupElement);
+			oGroup.setLabel("groupLabel");
+			this.oSmartForm.addGroup(oGroup);
+
+			//CUT -> With simple start -> default layout of smartForm shall be a ResponsiveGridLayout
+			this.oSmartForm.onBeforeRendering(); //<-- layout is set here in onBeforeRendering
+			bUseHorizonzalLayout = this.oSmartForm.getUseHorizontalLayout();
+			assert.equal(this.oSmartForm._oForm.getLayout() instanceof sap.ui.layout.form.ResponsiveGridLayout, true, "No ResponsiveGridLayout set for useHorizonzalLayout = " + bUseHorizonzalLayout);
+
+			//CUT -> After change of useHorizonzalLayout to true -> smartForm shall have ResponsiveLayout
+			this.oSmartForm.setUseHorizontalLayout(true)
+			this.oSmartForm.onBeforeRendering(); //<-- layout is set here in onBeforeRendering
+			bUseHorizonzalLayout = this.oSmartForm.getUseHorizontalLayout();
+			assert.equal(this.oSmartForm._oForm.getLayout() instanceof sap.ui.layout.form.ResponsiveLayout, true, "No ResponsiveLayout set for useHorizonzalLayout = " + bUseHorizonzalLayout);
+
+			//CUT -> At change back to useHorizonzalLayout = false -> smartForm shall have ResponsiveGridLayout
+			this.oSmartForm.setUseHorizontalLayout(false)
+			this.oSmartForm.onBeforeRendering(); //<-- layout is set here in onBeforeRendering
+			bUseHorizonzalLayout = this.oSmartForm.getUseHorizontalLayout();
+			assert.equal(this.oSmartForm._oForm.getLayout() instanceof sap.ui.layout.form.ResponsiveGridLayout, true, "No ResponsiveGridLayout set for useHorizonzalLayout = " + bUseHorizonzalLayout);
+		});
+
+		QUnit.test("addCustomData shall be applied to fields", function(assert) {
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(this.oSmartField);
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addAggregation("groupElements", oGroupElement);
+
+			oGroup.addCustomData(new sap.ui.core.CustomData({
+				"key": "testKey",
+				"value": "testValue"
+			}));
+			assert.equal(this.oSmartField.data("testKey"), "testValue", "custom data set to smart field");
+		});
+
+		QUnit.test("removeGroupElement shall remove element via sId", function(assert) {
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement("testId");
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addAggregation("groupElements", oGroupElement);
+			oGroup.removeGroupElement("testId");
+			assert.equal(oGroup.getGroupElements().length, 0, "aggregation groupElements empty");
+		});
+
+		QUnit.test("setEditMode shall set editable on smart fields", function(assert) {
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			this.oSmartField.setEditable(false);
+			assert.ok(this.oSmartField.getEditable() === false);
+
+			var oVBox = new sap.m.VBox({
+				"items": [
+					this.oSmartField
+				]
+			});
+
+			oGroupElement.addElement(oVBox);
+
+			oGroupElement.setEditMode(true);
+			assert.equal(this.oSmartField.getContextEditable(), true, "smart field set to editable");
+		});
+
+		QUnit.test("getSmartFields shall return all smart fields", function(assert) {
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(this.oSmartField);
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addAggregation("groupElements", oGroupElement);
+
+			this.oSmartForm.addAggregation("groups", oGroup);
+
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(new sap.m.Text({
+				"text": "text"
+			}));
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addAggregation("groupElements", oGroupElement);
+
+			this.oSmartForm.addAggregation("groups", oGroup);
+
+			var oSmartField = new sap.ui.comp.smartfield.SmartField();
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(oSmartField);
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addAggregation("groupElements", oGroupElement);
+
+			this.oSmartForm.addAggregation("groups", oGroup);
+
+			var aSmartField = this.oSmartForm.getSmartFields();
+			assert.deepEqual(aSmartField, [
+				this.oSmartField, oSmartField
+			], "smart field returned");
+		});
+
+		QUnit.test("formElement shall be set to visible false if all fields are invisible", function(assert) {
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+
+			oGroupElement.addElement(this.oSmartField);
+
+			var oText = new sap.m.Text({
+				"text": "text"
+			});
+			oGroupElement.addElement(oText);
+
+			var oSmartField = new sap.ui.comp.smartfield.SmartField();
+			oGroupElement.addElement(oSmartField);
+
+			this.oSmartField.setVisible(false);
+			assert.equal(oGroupElement.getFormElement().getVisible(), true, "FormElement still visible if fields visible");
+
+			oSmartField.setVisible(false);
+			assert.equal(oGroupElement.getFormElement().getVisible(), true, "FormElement still visible if fields visible");
+
+			oSmartField.setVisible(true);
+			oText.setVisible(false);
+			oSmartField.setVisible(false);
+			assert.equal(oGroupElement.getFormElement().getVisible(), false, "FormElement hidden if fields not visible");
+			oGroupElement.setVisible(false);
+			oSmartField.setVisible(true);
+			assert.equal(oGroupElement.getFormElement().getVisible(), false, "FormElement still hidden if group element set visible false");
+		});
+
+		QUnit.test("displayBehaviour set via smart form custom data shall be set to smart fields", function(assert) {
+			this.oSmartField.setConfiguration(new sap.ui.comp.smartfield.Configuration({
+				"displayBehaviour": "idOnly"
+			}));
+			var oSmartField = new sap.ui.comp.smartfield.SmartField();
+
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(this.oSmartField);
+			oGroupElement.addElement(oSmartField);
+
+			oGroupElement.addCustomData(new sap.ui.core.CustomData({
+				"key": "defaultDropDownDisplayBehaviour",
+				"value": "idAndDescription"
+			}));
+
+			assert.equal(this.oSmartField.getConfiguration().getDisplayBehaviour(), "idOnly", "do not overwrite settings on smart field level");
+			assert.ok(!oSmartField.getConfiguration());
+			assert.equal(oSmartField.data("defaultDropDownDisplayBehaviour"), "idAndDescription", "value transformed to smart field");
+		});
+
+		QUnit.test("check shall validate smart field", function(assert) {
+			var oSmartField = new sap.ui.comp.smartfield.SmartField();
+			var oStub = this.stub(sap.ui.comp.smartfield.SmartField.prototype, "checkClientError");
+
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(oSmartField);
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addGroupElement(oGroupElement);
+
+			this.oSmartForm.addGroup(oGroup);
+			this.oSmartForm.check();
+
+			assert.equal(oStub.calledOnce, true, "smart field validated");
+		});
+
+		QUnit.test("check with invisible SmartField", function(assert) {
+			var oSmartField = new sap.ui.comp.smartfield.SmartField();
+			oSmartField.setVisible(true);
+			this.stub(oSmartField, "checkClientError").returns(true);
+
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(oSmartField);
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addGroupElement(oGroupElement);
+
+			this.oSmartForm.addGroup(oGroup);
+
+			var aErrors = this.oSmartForm.check();
+			assert.ok(aErrors);
+			assert.ok(aErrors.length === 1);
+
+			oSmartField.setVisible(false);
+			aErrors = this.oSmartForm.check();
+			assert.ok(aErrors);
+			assert.ok(aErrors.length === 0);
+		});
+
+		QUnit.test("check with invisible Group", function(assert) {
+			var oSmartField = new sap.ui.comp.smartfield.SmartField();
+			oSmartField.setVisible(true);
+			this.stub(oSmartField, "checkClientError").returns(true);
+
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(oSmartField);
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.setVisible(true);
+			oGroup.addGroupElement(oGroupElement);
+
+			this.oSmartForm.addGroup(oGroup);
+
+			var aErrors = this.oSmartForm.check();
+			assert.ok(aErrors);
+			assert.ok(aErrors.length === 1);
+
+			oGroup.setVisible(false);
+			aErrors = this.oSmartForm.check();
+			assert.ok(aErrors);
+			assert.ok(aErrors.length === 0);
+		});
+
+		QUnit.test("setEditable: switch to false shall check for client errors", function(assert) {
+
+			this.oSmartForm.setEditable(true);
+			this.oSmartForm.attachEditToggled(function(oEvent) {
+			});
+			var oSmartField = new sap.ui.comp.smartfield.SmartField();
+			this.stub(oSmartField, "checkClientError").returns(true);
+
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(oSmartField);
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			oGroup.addGroupElement(oGroupElement);
+
+			var oStub = this.stub(sap.m.MessageBox, "show");
+			this.oSmartForm.addGroup(oGroup);
+			this.oSmartForm.setEditable(false);
+
+			assert.equal(oStub.calledOnce, true, "Message box displayed");
+		});
+
+		QUnit.test("Aggregation groups - check aggregation override", function(assert) {
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			this.oSmartForm.addGroup(oGroup);
+			this.oSmartForm.removeGroup(oGroup);
+
+			assert.equal(this.oSmartForm.getGroups().length, 0, "Group removed");
+
+			this.oSmartForm.addGroup(oGroup);
+			this.oSmartForm.removeAllAggregation("groups");
+
+			assert.equal(this.oSmartForm.getGroups().length, 0, "Group removed (removeAllAggregation)");
+		});
+
+		QUnit.test("setHorizontalLayoutGroupElementMinWidth shall be propagated to groups", function(assert) {
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			this.oSmartForm.addGroup(oGroup);
+
+			this.oSmartForm.setHorizontalLayoutGroupElementMinWidth(200);
+
+			assert.equal(oGroup.getHorizontalLayoutGroupElementMinWidth(), 200, "Property set to group ");
+		});
+
+		QUnit.test("shows an adaptation button if the adaptation mode and flex change mode is on", function() {
+			this.stub(this.oSmartForm, "_getAddChangeModelToToolbarPromise");
+			this.stub(sap.ui.fl.registry.Settings, "isFlexibilityAdaptationButtonAllowed").returns(true);
+
+			this.oSmartForm._addChangeModeToToolbar();
+
+			sinon.assert.calledOnce(this.oSmartForm._getAddChangeModelToToolbarPromise);
+		});
+
+		QUnit.test("does not show an adaptation button if the adaptation button is not allowed", function() {
+			this.stub(this.oSmartForm, "_getAddChangeModelToToolbarPromise");
+			this.stub(sap.ui.fl.registry.Settings, "isFlexibilityAdaptationButtonAllowed").returns(false);
+
+			this.oSmartForm._addChangeModeToToolbar();
+
+			sinon.assert.notCalled(this.oSmartForm._getAddChangeModelToToolbarPromise);
+		});
+
+		QUnit.test("check that additional added Groups get edit mode inherited from SmartForm", function(assert) {
+			assert.equal(this.oSmartForm.getEditable(), false, "Editable shall be false from default");
+
+			var oGroup = new sap.ui.comp.smartform.Group();
+			sinon.stub(oGroup, "setEditMode");
+
+			//CUT
+			this.oSmartForm.addGroup(oGroup);
+			assert.equal(oGroup.setEditMode.called, true, "For newly added group the edit mode shall be inherited from SmartForm");
+		});
+
+		QUnit.test("does not open adaptation dialog without a loaded metadata model", function(assert) {
+			var done = assert.async();
+
+			var oMetaModelLoadedPromise = new Promise(function(resolve, reject) {
+			});
+			var mockedModel = new sap.ui.model.odata.v2.ODataModel("");
+			this.oSmartForm.setModel(mockedModel);
+
+			this.stub(mockedModel.getMetaModel(), "loaded").returns(oMetaModelLoadedPromise);
+			var oOpenAdaptationDialogStub = this.stub(this.oSmartForm, "_openAdaptationDialog", function() {
+				assert.ok(false, "openAdaptationDialog should not been called");
+				done();
+			});
+
+			//CUT
+			this.oSmartForm._handleAdaptationButtonPress();
+
+			setTimeout(function() {
+				assert.equal(oOpenAdaptationDialogStub.callCount, 0);
+				done();
+			}, 500);
+		});
+
+		QUnit.test("opens adaptation dialog if the metadata model is already loaded", function(assert) {
+			var done = assert.async();
+
+			var fnResolver = function(resolve, reject) {
+				resolve();
+			};
+			var oMetaModelLoadedPromise = new Promise(fnResolver);
+			var mockedModel = new sap.ui.model.odata.v2.ODataModel("");
+			this.oSmartForm.setModel(mockedModel);
+
+			this.stub(mockedModel.getMetaModel(), "loaded").returns(oMetaModelLoadedPromise);
+			var oOpenAdaptationDialogStub = this.stub(this.oSmartForm, "_openAdaptationDialog", function() {
+				assert.ok(true, "stub was called async");
+				done();
+			});
+
+			//CUT
+			this.oSmartForm._handleAdaptationButtonPress();
+		});
+
+		QUnit.test("open adaptation dialog triggers init and show of the FormP13nHandler", function(assert) {
+			var oP13nHandlerStubInit = sinon.stub(sap.ui.comp.smartform.flexibility.FormP13nHandler.prototype, "init");
+			var oP13nHandlerStubShow = sinon.stub(sap.ui.comp.smartform.flexibility.FormP13nHandler.prototype, "show");
+
+			//CUT
+			this.oSmartForm._openAdaptationDialog();
+
+			assert.equal(oP13nHandlerStubInit.callCount, 1);
+			assert.equal(oP13nHandlerStubShow.callCount, 1);
+		});
+
+		QUnit.test("Clone of SmartForm (with aggregation binding)", function(assert) {
+
+			var oSmartForm = new sap.ui.comp.smartform.SmartForm();
+
+			var oData = {
+				groups: [
+					{
+						label: "Group1",
+						name: 'ivan',
+						phone: '123'
+					}, {
+						label: "Group2",
+						name: 'ivan2',
+						phone: '012'
+					}, {
+						label: "Group3",
+						name: 'peter',
+						phone: '456'
+					}, {
+						label: "Group4",
+						name: 'gosho',
+						phone: '789'
+					}
+				]
+			};
+
+			var oModel = new sap.ui.model.json.JSONModel(oData);
+			oSmartForm.setModel(oModel);
+
+			var oGroupTemplate = new sap.ui.comp.smartform.Group({
+				label: "{label}"
+			});
+
+			oSmartForm.bindAggregation("groups", {
+				path: "/groups",
+				template: oGroupTemplate
+			});
+
+			var oClone = oSmartForm.clone();
+
+			assert.equal(oClone.getGroups().length, 4, "groups aggregation cloned");
+		});
+
+		QUnit.test("method _createToolbar", function(assert) {
+
+			var oToolbar = new sap.m.Toolbar("TB1");
+			this.oSmartForm._oToolbar = oToolbar;
+
+			var oButton1 = new sap.m.Button("TB1-button-sfmain-editToggle")
+			this.oSmartForm._oToolbar.addContent(oButton1);
+			var oButton2 = new sap.m.Button(this.oSmartForm.getId() + "-TB1-button-sfmain-check")
+			this.oSmartForm._oToolbar.addContent(oButton2);
+			var oButton3 = new sap.m.Button(this.oSmartForm.getId() + "-TB1-AdaptationButton")
+			this.oSmartForm._oToolbar.addContent(oButton3);
+
+			this.oSmartForm._createToolbar();
+
+			assert.equal(oToolbar.getId() !== this.oSmartForm._oToolbar.getId(), true, "New toolbar created");
+			assert.equal(oButton1.bIsDestroyed, true, "Button1 destroyed");
+			assert.equal(oButton2.bIsDestroyed, true, "Button2 destroyed");
+			assert.equal(oButton3.bIsDestroyed, true, "Button3 destroyed");
+
+		});
+
+		QUnit.test("method _updateClonedElements", function(assert) {
+
+			var oField = new sap.ui.comp.smartfield.SmartField();
+			var oLabel = new sap.m.Label();
+
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(oField);
+			oGroupElement.setLabel(oLabel);
+
+			var oGroup = new sap.ui.comp.smartform.Group({
+				groupElements: [
+					oGroupElement
+				]
+			});
+
+			this.oSmartForm.addGroup(oGroup);
+
+			sinon.stub(sap.ui.comp.smartfield.SmartField.prototype, "getEditable").returns(false);
+			var oStubAttachVisibleChanged = sinon.stub(sap.ui.comp.smartfield.SmartField.prototype, "attachVisibleChanged");
+			var oStubAttachContextEditableChanged = sinon.stub(sap.ui.comp.smartfield.SmartField.prototype, "attachContextEditableChanged");
+			var oStubAttachInnerControlsCreated = sinon.stub(sap.ui.comp.smartfield.SmartField.prototype, "attachInnerControlsCreated");
+
+			this.oSmartForm._updateClonedElements(this.oSmartForm);
+
+			assert.equal(oField.data("editable"), false, "editable set");
+			assert.equal(oStubAttachVisibleChanged.calledOnce, true, "visibleChanged attached");
+			assert.equal(oStubAttachContextEditableChanged.calledOnce, true, "contextEditableChanged attached");
+			assert.equal(oStubAttachInnerControlsCreated.calledOnce, true, "innerControlsCreated attached");
+			assert.equal(oLabel.getLabelFor(), oField.getId(), "labelFor set");
+			sinon.restore(sap.ui.comp.smartfield.SmartField.prototype);
+		});
+
+		QUnit.test("method _propagateGridDataSpan", function(assert) {
+
+			this.oSmartForm.setLayout(new sap.ui.comp.smartform.Layout({
+				gridDataSpan: "L4 M3 S2"
+			}));
+			var oField = new sap.m.Input();
+
+			var oGroupElement = new sap.ui.comp.smartform.GroupElement();
+			oGroupElement.addElement(oField);
+
+			var oGroup = new sap.ui.comp.smartform.Group({
+				groupElements: [
+					oGroupElement
+				]
+			});
+
+			this.oSmartForm.addGroup(oGroup);
+			this.oSmartForm._propagateGridDataSpan();
+
+			assert.equal(oField.getLayoutData().getSpan(), "L4 M3 S2", "GridData set for field");
+		});
+
+		QUnit.test("method _getCurrentSpan", function(assert) {
+
+			this.oSmartForm.setLayout(new sap.ui.comp.smartform.Layout({
+				gridDataSpan: "L4 M3 S2"
+			}));
+			this.oSmartForm._oForm = new sap.ui.layout.form.Form({
+				layout: new sap.ui.layout.form.ResponsiveGridLayout()
+			});
+
+			var oDomRefStub = sinon.stub(sap.ui.comp.smartform.SmartForm.prototype, "getDomRef").returns({
+				clientWidth: 1200
+			});
+			assert.equal(this.oSmartForm._getCurrentSpan(), "4", "span for large size retrieved");
+			oDomRefStub.returns({
+				clientWidth: 700
+			});
+			assert.equal(this.oSmartForm._getCurrentSpan(), "3", "span for medium size retrieved");
+			oDomRefStub.returns({
+				clientWidth: 500
+			});
+			assert.equal(this.oSmartForm._getCurrentSpan(), "2", "span for small size retrieved");
+
+			oDomRefStub.restore();
+		});
+
+		QUnit.test("Clone of SmartForm (without aggregation binding)", function(assert) {
+
+			var oSmartForm = new sap.ui.comp.smartform.SmartForm();
+
+			var oGroup = new sap.ui.comp.smartform.Group({
+				label: "Group1"
+			});
+			oSmartForm.addAggregation("groups", oGroup);
+			var oGroup = new sap.ui.comp.smartform.Group({
+				label: "Group2"
+			});
+			oSmartForm.addAggregation("groups", oGroup);
+
+			var oClone = oSmartForm.clone();
+
+			assert.equal(oClone.getGroups().length, 2, "groups aggregation cloned");
+		});
+
+		QUnit.test("Set focus on 1st editable field (sap.m.TextArea)", function(assert) {
+
+			var oStub = this.stub(sap.m.TextArea.prototype, "focus");
+			var oSmartForm = new sap.ui.comp.smartform.SmartForm();
+
+			var oGroup = new sap.ui.comp.smartform.Group({
+				label: "Group1"
+			});
+			oSmartForm.addAggregation("groups", oGroup);
+			oGroup.addGroupElement(new sap.ui.comp.smartform.GroupElement({
+				elements: [
+					new sap.m.Text({
+						text: "text"
+					})
+				]
+			}));
+
+			var oGroup = new sap.ui.comp.smartform.Group({
+				label: "Group2"
+			});
+			oSmartForm.addAggregation("groups", oGroup);
+			oGroup.addGroupElement(new sap.ui.comp.smartform.GroupElement({
+				elements: [
+					new sap.m.TextArea
+				]
+			}));
+
+			oSmartForm.setFocusOnEditableControl();
+
+			assert.equal(oStub.calledOnce, true, "focus set");
+			oStub.restore();
+		});
+
+		QUnit.test("Set focus on 1st editable field (SmartField)", function(assert) {
+
+			var oStub = this.stub(sap.ui.comp.smartfield.SmartField.prototype, "attachEventOnce");
+			var oSmartForm = new sap.ui.comp.smartform.SmartForm();
+			this.oSmartField.setEditable(false);
+			var oSmartField = new sap.ui.comp.smartfield.SmartField();
+
+			var oGroup = new sap.ui.comp.smartform.Group({
+				label: "Group1"
+			});
+			oSmartForm.addAggregation("groups", oGroup);
+			oGroup.addGroupElement(new sap.ui.comp.smartform.GroupElement({
+				elements: [
+					this.oSmartField, oSmartField
+				]
+			}));
+
+			oSmartForm.setFocusOnEditableControl();
+
+			assert.equal(oStub.calledWith("innerControlsCreated"), true, "focus set");
+			oStub.restore();
+		});
+
+		QUnit.test("method _registerResizeHandler - simulate resize", function(assert) {
+
+			this.oSmartForm.addGroup(new sap.ui.comp.smartform.Group());
+			var oResizeHandlerStub = this.stub(sap.ui.core.ResizeHandler, "register", function(oForm, fResizeHandler) {
+				fResizeHandler();
+				return "ResHandID";
+			});
+			var oGroupStub = this.stub(sap.ui.comp.smartform.Group.prototype, "_updateLineBreaks");
+
+			this.oSmartForm._registerResizeHandler();
+
+			assert.equal(oGroupStub.calledOnce, true, "Line breaks updated");
+			oResizeHandlerStub.restore();
+			oGroupStub.restore();
+		});
+
+	}(QUnit, sinon));
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.ui.comp.smartform.SmartForm</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="content"></div>
+</body>
+</html>

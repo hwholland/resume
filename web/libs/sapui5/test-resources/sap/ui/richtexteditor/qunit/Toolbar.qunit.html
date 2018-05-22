@@ -1,0 +1,1537 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Toolbar- sap.ui.richtexteditor</title>
+
+	<script id="sap-ui-bootstrap" type="text/javascript" src="../../../../../resources/sap-ui-core.js" data-sap-ui-theme="sap_belize" data-sap-ui-noConflict="true" data-sap-ui-libs="sap.m, sap.ui.richtexteditor" data-sap-ui-compatVersion="1.16">
+	</script>
+
+	<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+	<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+	<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+	<!--[if IE]>
+	<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon-ie.js"></script>
+	<![endif]-->
+	<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+	<script>
+		// Enable code coverage
+		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		jQuery.sap.require("sap.ui.richtexteditor.RichTextEditor");
+
+		QUnit.config.testTimeout = 6000;
+		var oResourceBundle = sap.ui.getCore().getLibraryResourceBundle("sap.ui.richtexteditor");
+
+		QUnit.test("Toolbar aggregations", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont: true,
+					showGroupUndo: true
+				}),
+				oRTECustomToolbar;
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+
+				setTimeout(function() {
+					oRichTextEditor._pTinyMCE4Initialized.then(function() {
+						oRTECustomToolbar = oRichTextEditor.getAggregation("_toolbarWrapper");
+						// assert
+						assert.ok(oRTECustomToolbar.getAggregation("_toolbar"),
+									"There should be a toolbar aggregation");
+						assert.ok(oRTECustomToolbar.getAggregation("_customInsertImageDialog"),
+									"There should be a insert image dialog aggregation");
+						assert.ok(oRTECustomToolbar.getAggregation("_customInsertLinkDialog"),
+									"There should be a insert link dialog aggregation");
+						assert.ok(oRTECustomToolbar.getAggregation("_customTextColorDialog"),
+									"There should be a text color dialog aggregation");
+						assert.ok(oRTECustomToolbar.getAggregation("_customBackgroundColorDialog"),
+									"There should be a background color dialog aggregation");
+						assert.ok(oRTECustomToolbar.getAggregation("_customInsertTableDialog"),
+									"There should be a insert table dialog aggregation");
+						//destroy
+						oRichTextEditor.destroy();
+						done();
+					})
+				},0);
+			});
+		});
+
+		QUnit.test("setButtonGroups", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont: true,
+					showGroupUndo: true
+				}),
+				oFontGroup = {
+					name: "font-style",
+					visible: true,
+					row: 0,
+					priority: 10,
+					buttons: [
+						"bold", "italic", "underline", "strikethrough"
+					]
+				},
+				oTextAlignGroup = {
+					// Text Align group
+					name: "text-align",
+					visible: true,
+					row: 0,
+					priority: 20,
+					buttons: [
+						"justifyleft", "justifycenter", "justifyright", "justifyfull"
+					]
+				},
+				oInsertGroup = {
+					name: "insert",
+					visible: false,
+					row: 1,
+					priority: 50,
+					buttons: [
+						"image", "emotions"
+					]
+				};
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function () {
+				var oRTECustomToolbar = oRichTextEditor.getAggregation("_toolbarWrapper"),
+					oToolbar = oRTECustomToolbar.getAggregation("_toolbar");
+
+				// act
+				oRichTextEditor.setButtonGroups([]);
+				//assert
+				assert.strictEqual(oToolbar.getContent().length, 0, "There is no content in the toolbar");
+
+				// act
+				oRichTextEditor.setButtonGroups([oFontGroup]);
+				//assert
+				assert.strictEqual(oToolbar.getContent().length, 4, "There are 4 controls in the toolbar");
+				assert.ok(oRTECustomToolbar._isButtonGroupAdded("font-style"), "The font-style is currently added in the toolbar.");
+
+				//act
+				oRichTextEditor.setButtonGroups([oTextAlignGroup, oInsertGroup]);
+				//assert
+				assert.strictEqual(oToolbar.getContent().length, 2, "There are 2 controls in the toolbar");
+				assert.ok(oRTECustomToolbar._isButtonGroupAdded("insert"), "The Insert group is currently added in the toolbar.");
+				assert.ok(oRTECustomToolbar._isButtonGroupAdded("text-align"), "The TextAlign group is currently added in the toolbar.");
+
+				//destroy
+				oRichTextEditor.destroy();
+				done();
+			});
+		});
+
+		QUnit.test("setButtonGroups + Custom Button", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont: true,
+					customButtons: [new sap.m.Button({
+						id: "idCustomBtn",
+						text: "Custom Button"
+					})]
+				}),
+				oFontGroup = {
+					name: "font-style",
+					visible: true,
+					row: 0,
+					priority: 10,
+					buttons: [
+						"bold", "italic", "underline", "strikethrough"
+					]
+				},
+				oStructureGroup = {
+					name: "structure",
+					visible: true,
+					row: 1,
+					priority: 20,
+					buttons: [
+						"bullist", "numlist", "outdent", "indent"
+					]
+				};
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				var oRTECustomToolbar = oRichTextEditor.getAggregation("_toolbarWrapper"),
+					oToolbar = oRTECustomToolbar.getAggregation("_toolbar"),
+					iGroupButtonCount = 0;
+
+				// act
+				oRichTextEditor.setButtonGroups([]);
+				//assert
+				assert.strictEqual(oToolbar.getContent()[iGroupButtonCount].getId(), "idCustomBtn", "The custom button is added on correct position");
+
+				// act
+				oRichTextEditor.setButtonGroups([oFontGroup]);
+				iGroupButtonCount = oFontGroup.buttons.length;
+				//assert
+				assert.strictEqual(oToolbar.getContent()[iGroupButtonCount].getId(), "idCustomBtn", "The custom button is added on correct position");
+
+				//act
+				oRichTextEditor.setButtonGroups([oFontGroup, oStructureGroup]);
+				iGroupButtonCount = oFontGroup.buttons.length + oStructureGroup.buttons.length;
+				//assert
+				assert.strictEqual(oToolbar.getContent()[iGroupButtonCount].getId(), "idCustomBtn", "The custom button is added on correct position");
+
+				//destroy
+				oRichTextEditor.destroy();
+				done();
+			});
+		});
+
+		QUnit.test("API - RemoveButtonGroup", function (assert) {
+			// arrange
+			var done = assert.async(3),
+					oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+						width: "100%",
+						height: "300px",
+						customToolbar: true
+					});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			var oToolbar = oRichTextEditor.getAggregation("_toolbarWrapper");
+
+			assert.ok(oToolbar._isButtonGroupAdded("text-align"), "The aggregation is currently added in the toolbar.");
+			assert.ok(oToolbar._findGroupedControls("text-align")[0], "The button is in the custom toolbar wrapper.");
+
+			oRichTextEditor.attachReady(function () {
+				// act
+				oToolbar.removeButtonGroup("text-align");
+
+				assert.ok(oToolbar._findGroupedControls("text-align").length === 0, "The button was successfully removed from the toolbar");
+
+				// clean
+				oRichTextEditor.destroy();
+				done();
+			});
+		});
+
+		QUnit.test("API - AddButtonGroupToContent", function (assert) {
+			// arrange
+			var done = assert.async(2),
+					oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+						width: "100%",
+						height: "300px",
+						customToolbar: true
+					}),
+					oButtonGroup = {
+						name: "text-align",
+						visible: true,
+						row: 0,
+						priority: 20,
+						buttons: [
+							"justifyleft", "justifycenter", "justifyright", "justifyfull"
+						]
+					};
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			var oToolbar = oRichTextEditor.getAggregation("_toolbarWrapper");
+
+			assert.ok(oToolbar._isButtonGroupAdded("text-align"), "The aggregation is currently added in the toolbar.");
+			oRichTextEditor.removeButtonGroup("text-align");
+
+			oRichTextEditor.attachReady(function () {
+				// act
+				oToolbar.addButtonGroupToContent(oButtonGroup);
+				assert.ok(oToolbar._findGroupedControls("text-align")[0], "The text-align button was successfully added back in the toolbar");
+
+				// clean
+				oRichTextEditor.destroy();
+				done();
+			});
+		});
+
+		QUnit.test("_synchronizeCustomToolbarStates() - Toggle Buttons", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor("myRTE7", {
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont : true,
+					showGroupUndo : true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				// act
+				oRichTextEditor.getNativeApi().execCommand("Bold");
+
+				setTimeout(function() {
+					oRichTextEditor._pTinyMCE4Initialized.then(function() {
+						// assert
+						assert.equal(sap.ui.getCore().byId(oRichTextEditor.getAggregation("_toolbarWrapper").getAggregation("_toolbar").getId() + "-Bold").getPressed(), true, "The bold button should be pressed");
+
+						//destroy
+						oRichTextEditor.destroy();
+						done();
+					})
+				},0);
+			});
+		});
+
+		QUnit.test("Toolbar control states/selected items should match the applied styles", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor("myRTE8", {
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont : true,
+					showGroupUndo : true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				// act
+				var oActiveEditor = oRichTextEditor.getNativeApi();
+				oActiveEditor.setContent('<span id="mySpan">some</span>');
+				oActiveEditor.selection.select(oActiveEditor.dom.select('span')[0]);
+				sap.ui.getCore().byId(oRichTextEditor.getAggregation("_toolbarWrapper").getAggregation("_toolbar").getId() + "-Bold").firePress();
+				oActiveEditor.execCommand("JustifyCenter");
+				oActiveEditor.execCommand("FontSize", false, "12pt");
+				oActiveEditor.execCommand("FontName", false, '"comic sans ms", sans-serif');
+
+				setTimeout(function() {
+					setTimeout(function() {
+						oRichTextEditor._pTinyMCE4Initialized.then(function() {
+							// assert
+							assert.equal(oActiveEditor.formatter.match("bold"),
+										true,
+										"The bold style should be applied to the editor");
+							assert.equal(oActiveEditor.formatter.match("aligncenter"),
+										true,
+										"The JustifyCenter style should be applied to the editor");
+							assert.equal(sap.ui.richtexteditor.EditorCommands["FontFamily"]["ComicSansMS"].commandValue,
+										'"comic sans ms", sans-serif',
+										"The FontFamily 'Comic Sans MS' style should be applied to the editor");
+							// destroy
+							oRichTextEditor.destroy();
+							done();
+						})
+					},0);
+				}, 0);
+			});
+		});
+
+		QUnit.test("_getColor(sCommand)", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont : true,
+					showGroupUndo : true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				// act
+				var oActiveEditor = oRichTextEditor.getNativeApi();
+				oActiveEditor.setContent('<span id="mySpan">some</span>');
+				oActiveEditor.selection.select(oActiveEditor.dom.select('span')[0]);
+
+				assert.equal(oRichTextEditor.getAggregation("_toolbarWrapper")._getColor('TextColor'),
+						'#000000',
+						"The default text color should be returned");
+				assert.equal(oRichTextEditor.getAggregation("_toolbarWrapper")._getColor('BackgroundColor'),
+						'#ffffff',
+						"The default background color should be returned");
+
+				oActiveEditor.execCommand("ForeColor", false, 'rgb(123, 123, 123)');
+				oActiveEditor.execCommand("HiliteColor", false, 'rgb(123, 123, 123)');
+
+				setTimeout(function() {
+					setTimeout(function() {
+						oRichTextEditor._pTinyMCE4Initialized.then(function() {
+							// assert
+							assert.equal(oRichTextEditor.getAggregation("_toolbarWrapper")._getColor('TextColor'),
+										'rgb(123, 123, 123)',
+										"The colors should be the same");
+							assert.equal(oRichTextEditor.getAggregation("_toolbarWrapper")._getColor('BackgroundColor'),
+										'rgb(123, 123, 123)',
+										"The colors should be the same");
+							// destroy
+							oRichTextEditor.destroy();
+							done();
+						})
+					},0);
+				}, 0);
+			});
+		});
+		QUnit.test("Color Palettes integration", function(assert) {
+			// arrange
+			var done = assert.async(4),
+					oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+						width: "100%",
+						height: "300px",
+						customToolbar: true,
+						showGroupFont : true
+					});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				// act
+				var oActiveEditor = oRichTextEditor.getNativeApi(),
+						oToolbar = oRichTextEditor.getAggregation("_toolbarWrapper"),
+						oFakeEventTextColor = new sap.ui.base.Event();
+						oFakeEventBackgroundColor = new sap.ui.base.Event();
+
+				oFakeEventTextColor.value = "rgb(100, 149, 237)";
+				oFakeEventBackgroundColor.value = "orange";
+
+				assert.equal(oToolbar._getColor('TextColor'),
+						"#000000",
+						"The initial text color should be the default one");
+				assert.equal(oToolbar._getColor('BackgroundColor'),
+						'#ffffff',
+						"The initial background color should be the default one");
+
+				oActiveEditor.setContent('<span id="mySpan">some</span>');
+				oActiveEditor.selection.select(oActiveEditor.dom.select('span')[0]);
+				assert.equal(oToolbar._getColor('TextColor'),
+						'#000000',
+						"The text color should be the default one");
+				assert.equal(oToolbar._getColor('BackgroundColor'),
+						"#ffffff",
+						"The background color should be the default one");
+				oToolbar.getAggregation('_customTextColorDialog')
+						.fireColorSelect(oFakeEventTextColor);
+				oToolbar.getAggregation('_customBackgroundColorDialog')
+						.fireColorSelect(oFakeEventBackgroundColor);
+
+				setTimeout(function() {
+					// assert
+					assert.equal(oToolbar._getColor('TextColor'),
+							"rgb(100, 149, 237)",
+							"The text color should be changed to the color palettes selection");
+					assert.equal(oToolbar._getColor('BackgroundColor'),
+							"orange",
+							"The background color should be changed to the color palettes selection");
+					// destroy
+					oRichTextEditor.destroy();
+					done();
+				},0);
+			});
+		});
+		QUnit.test("_getColor(sCommand) - applying twice the same color", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont : true,
+					showGroupUndo : true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				// act
+				var oActiveEditor = oRichTextEditor.getNativeApi(),
+					oFakeEvent = new sap.ui.base.Event();
+
+				oFakeEvent.value = "rgb(255, 215, 0)";
+
+				oActiveEditor.setContent('<span id="mySpan">some</span>');
+				oActiveEditor.selection.select(oActiveEditor.dom.select('span')[0]);
+				oActiveEditor.execCommand("ForeColor", false, 'gold');
+				oRichTextEditor.getAggregation("_toolbarWrapper")._findGroupedControls('font')[2].firePress();
+				oRichTextEditor.getAggregation("_toolbarWrapper").getAggregation('_customTextColorDialog')
+						.fireColorSelect(oFakeEvent);
+
+				setTimeout(function() {
+					// assert
+					assert.equal(oRichTextEditor.getAggregation("_toolbarWrapper")._getColor('TextColor'),
+								"rgb(255, 215, 0)",
+								"The text color should not be changed to the default one");
+					// destroy
+					oRichTextEditor.destroy();
+					done();
+				},0);
+			});
+		});
+
+		QUnit.test("_synchronizeCustomToolbarStates() - Menu Button", function(assert) {
+			// assert
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont : true,
+					showGroupUndo : true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				// act
+				var oRTEMenuButton = sap.ui.getCore().byId(oRichTextEditor.getAggregation("_toolbarWrapper").getAggregation("_toolbar").getId() + "-TextAlign"),
+					oRTEMenu = oRTEMenuButton.getAggregation("menu");
+
+				oRTEMenu.fireItemSelected({
+					item: oRTEMenu.getAggregation("items")[1]
+				});
+				setTimeout(function() {
+					setTimeout(function() {
+						oRichTextEditor._pTinyMCE4Initialized.then(function() {
+							// assert
+							assert.equal(oRTEMenuButton.getIcon(),
+										"sap-icon://" + sap.ui.richtexteditor.EditorCommands["TextAlign"]["Center"].icon,
+										"The menu button icon should be as the JustifyCenter command icon.");
+							// destroy
+							oRichTextEditor.destroy();
+							done();
+						});
+					},0);
+				}, 0);
+			});
+		});
+
+		QUnit.test("_synchronizeCustomToolbarStates() - Menu Button, selecting the same alignment twice should apply the default one.", function(assert) {
+			// assert
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor("myRTE9", {
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont : true,
+					showGroupUndo : true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				var oRTEMenuButton = sap.ui.getCore().byId(oRichTextEditor.getAggregation("_toolbarWrapper").getAggregation("_toolbar").getId() + "-TextAlign"),
+					oRTEMenu = oRTEMenuButton.getAggregation("menu");
+				// act
+				oRTEMenu.fireItemSelected({item: oRTEMenu.getAggregation("items")[1]})
+						.fireItemSelected({item: oRTEMenu.getAggregation("items")[1]});
+
+				setTimeout(function() {
+					setTimeout(function() {
+						oRichTextEditor._pTinyMCE4Initialized.then(function() {
+							// assert
+							assert.equal(oRTEMenuButton.getIcon(),
+										"sap-icon://" + sap.ui.richtexteditor.EditorCommands["TextAlign"]["Left"].icon,
+										"The menu button icon should be as the default JustifyLeft command icon.");
+							// destroy
+							oRichTextEditor.destroy();
+							done();
+						});
+					},0);
+				}, 0);
+			});
+		});
+
+		QUnit.test("_synchronizeCustomToolbarStates() - Select", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor("myRTE10", {
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont : true,
+					showGroupUndo : true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				// act
+				oRichTextEditor.getNativeApi().execCommand("FontSize", false, "12pt");
+				oRichTextEditor.getNativeApi().execCommand("FontName", false, '"comic sans ms", sans-serif');
+				setTimeout(function() {
+						oRichTextEditor._pTinyMCE4Initialized.then(function() {
+							// assert
+							assert.equal(sap.ui.getCore().byId(oRichTextEditor.getAggregation("_toolbarWrapper").getAggregation("_toolbar").getId() + "-FontFamily").getSelectedItem().getText(),
+										"Comic Sans MS",
+										"The selected item should be 'Comic Sans MS'");
+							// destroy
+							oRichTextEditor.destroy();
+							done();
+						});
+				}, 0);
+			});
+		});
+
+		QUnit.test("Undo/Redo action", function(assert) {
+			// arrange
+			var done = assert.async();
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor("myRTE11", {
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont : true,
+					showGroupUndo : true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				// act
+				oRichTextEditor.getNativeApi().execCommand("Bold", false);
+				oRichTextEditor.getNativeApi().execCommand("Undo", false);
+
+				setTimeout(function() {
+					setTimeout(function() {
+						oRichTextEditor._pTinyMCE4Initialized.then(function() {
+							// assert
+							assert.equal(sap.ui.getCore().byId(oRichTextEditor.getAggregation("_toolbarWrapper").getAggregation("_toolbar").getId() + "-Bold").getPressed(),
+										false,
+										"The bold button should not be pressed");
+							// destroy
+							oRichTextEditor.destroy();
+							done();
+						});
+					},0);
+				}, 0);
+			});
+		});
+
+		QUnit.test("_getFontStyleCommand", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor("myRTE12", {
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			// assert
+			assert.equal(oRichTextEditor.getAggregation("_toolbarWrapper")._getFontStyleCommand(sap.ui.richtexteditor.EditorCommands["FontFamily"]["Verdana"].text), sap.ui.richtexteditor.EditorCommands["FontFamily"]["Verdana"].commandValue);
+
+			// destroy
+			oRichTextEditor.destroy();
+			done();
+		});
+
+		QUnit.test("Custom Dialogs", function(assert) {
+			var openDialog = function (sGroup, sCommand) {
+				// arrange
+				var done = assert.async(),
+					oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+						width: "100%",
+						height: "300px",
+						customToolbar: true,
+						showGroupFont : true,
+						showGroupUndo : true,
+						showGroupInsert : true,
+						showGroupLink : true
+					}),
+					fnAfterClose = function () {
+						assert.ok(!oToolbarWrapper.getAggregation("_custom" + sCommand + "Dialog").isOpen(),
+									"The Insert " + sCommand + " Dialog should closed");
+						// destroy
+						oRichTextEditor.destroy();
+						done();
+					},
+					iCommandPosition = sap.ui.richtexteditor.ButtonGroups[sGroup].indexOf(sCommand),
+					oToolbarWrapper;
+
+				oRichTextEditor.placeAt("rteArea1");
+				sap.ui.getCore().applyChanges();
+
+				oRichTextEditor.attachReady(function() {
+					oToolbarWrapper = oRichTextEditor.getAggregation("_toolbarWrapper");
+					oToolbarWrapper.getAggregation("_custom" + sCommand + "Dialog").attachAfterClose(fnAfterClose);
+					// act
+					oToolbarWrapper._findGroupedControls(sGroup)[iCommandPosition].firePress();
+
+					setTimeout(function() {
+						// assert
+						assert.ok(oToolbarWrapper.getAggregation("_custom" + sCommand + "Dialog").isOpen(),
+									"The Insert " + sCommand + " Dialog should open");
+
+						oToolbarWrapper.getAggregation("_custom" + sCommand + "Dialog").getButtons()[1].firePress();
+					}, 0);
+				});
+			}
+
+			openDialog('insert', 'InsertImage');
+			openDialog('link', 'InsertLink');
+		});
+
+		QUnit.test("Table Dialog", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true
+				}),
+				oInsertTableDialog;
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+			oRichTextEditor.addButtonGroup({
+				name: "table",
+				visible: true,
+				row: 1,
+				priority: "60",
+				buttons: ["table"]
+			});
+			var oTableButtonGroup = sap.ui.richtexteditor.ButtonGroups["table"],
+				iCommandPosition = oTableButtonGroup.indexOf("InsertTable");
+
+			assert.ok(oTableButtonGroup, 'The "table" group should be added');
+			assert.ok(iCommandPosition !== -1, 'Tabe button should exist');
+
+			oRichTextEditor.attachReady(function() {
+				oInsertTableDialog = oRichTextEditor.getAggregation("_toolbarWrapper").getAggregation("_customInsertTableDialog");
+
+				// act
+				oRichTextEditor.getAggregation("_toolbarWrapper")._findGroupedControls("table")[iCommandPosition].firePress();
+
+				setTimeout(function() {
+					// assert
+					assert.ok(oInsertTableDialog.isOpen(),
+								"The Insert Table Dialog should open");
+
+					oRichTextEditor.destroy();
+					done();
+				}, 0);
+			});
+		});
+
+		QUnit.test("Dialogs should have padding", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					showGroupLink: true,
+					customToolbar: true
+				}),
+				oToolbar, oLinkButton, oLinkDialog;
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oToolbar = oRichTextEditor && oRichTextEditor.getAggregation("_toolbarWrapper");
+			oLinkButton = oToolbar && oToolbar._findGroupedControls('link')[0];
+
+			oRichTextEditor.attachReady(function() {
+				// act
+				oLinkButton.firePress();
+				oLinkDialog = oToolbar && oToolbar.getAggregation("_customInsertLinkDialog");
+
+				setTimeout(function() {
+					// assert
+					assert.ok(oLinkDialog.hasStyleClass("sapUiPopupWithPadding"),
+								"The Insert Link Dialog should have padding class applied");
+
+					oRichTextEditor.destroy();
+					done();
+				}, 0);
+			});
+		});
+
+		QUnit.test("FormatBlock with formatselect", function(assert) {
+			// arrange
+			var done = assert.async(),
+					oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+						width: "100%",
+						height: "300px",
+						customToolbar: true
+					}),
+					oInsertTableDialog;
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+			oRichTextEditor.addButtonGroup("formatselect");
+			var oFormatBlockGroup = sap.ui.richtexteditor.ButtonGroups["formatselect"],
+					iCommandPosition = oFormatBlockGroup.indexOf("FormatBlock");
+
+			assert.ok(oFormatBlockGroup, 'The "formatselect" group should be added');
+			assert.ok(iCommandPosition !== -1, 'formatBlock button should exist');
+			sap.ui.getCore().applyChanges();
+			oRichTextEditor.attachReady(function () {
+				// act
+				var oActiveEditor = oRichTextEditor.getNativeApi(),
+						oFormatBlockSelect;
+
+				oActiveEditor.setContent('<span id="mySpan">some</span>');
+				oActiveEditor.selection.select(oActiveEditor.dom.select('span')[0]);
+
+				oRichTextEditor._pTinyMCE4Initialized.then(function () {
+
+					oFormatBlockSelect = oRichTextEditor.getAggregation("_toolbarWrapper")._findGroupedControls('formatselect')[0];
+					assert.equal(oFormatBlockSelect.getSelectedItem().sId, oFormatBlockSelect.getItemAt(0).sId, "The selected item is correct: paragraph");
+
+					oFormatBlockSelect.setSelectedItemId(0);
+					oFormatBlockSelect.fireChange({selectedItem: oFormatBlockSelect.getItems()[0]});
+					oActiveEditor.execCommand("FormatBlock", false, sap.ui.richtexteditor.EditorCommands["FormatBlock"]["Heading1"].commandValue);
+
+					// assert
+					assert.equal(oFormatBlockSelect.getSelectedItem(), oFormatBlockSelect.getItemAt(1), "The selected item is correct: h1");
+					assert.ok(["Heading 1", "h1"].indexOf(oActiveEditor.getDoc().queryCommandValue("FormatBlock")) > -1, "The Heading 1 format should be applied to the editor");
+
+					// destroy
+					oRichTextEditor.destroy();
+					done();
+				}, 0);
+			});
+		});
+
+		QUnit.test("FormatBlock with styleselect", function (assert) {
+			// arrange
+			var done = assert.async(),
+					oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+						width: "100%",
+						height: "300px",
+						customToolbar: true
+					}),
+					oInsertTableDialog;
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+			oRichTextEditor.addButtonGroup("styleselect");
+			var oFormatBlockGroup = sap.ui.richtexteditor.ButtonGroups["styleselect"],
+					iCommandPosition = oFormatBlockGroup.indexOf("FormatBlock");
+
+			assert.ok(oFormatBlockGroup, 'The "formatselect" group should be added');
+			assert.ok(iCommandPosition !== -1, 'formatBlock button should exist');
+			sap.ui.getCore().applyChanges();
+			oRichTextEditor.attachReady(function () {
+				// act
+				var oActiveEditor = oRichTextEditor.getNativeApi(),
+					oFormatBlockSelect;
+
+				oActiveEditor.setContent('<span id="mySpan">some</span>');
+				oActiveEditor.selection.select(oActiveEditor.dom.select('span')[0]);
+
+				oRichTextEditor._pTinyMCE4Initialized.then(function () {
+
+					oFormatBlockSelect = oRichTextEditor.getAggregation("_toolbarWrapper")._findGroupedControls('formatselect')[0];
+					assert.equal(oFormatBlockSelect.getSelectedItem().sId, oFormatBlockSelect.getItemAt(0).sId, "The selected item is correct: paragraph");
+
+					assert.equal(sap.ui.getCore().byId(oFormatBlockSelect.getAriaLabelledBy()[0]).getText(), oResourceBundle.getText("FORMAT_BUTTON_TOOLTIP"), "Then correct invisible text was set for formatBlock");
+
+					oFormatBlockSelect.setSelectedItemId(0);
+					oFormatBlockSelect.fireChange({selectedItem: oFormatBlockSelect.getItems()[0]});
+					oActiveEditor.execCommand("FormatBlock", false, sap.ui.richtexteditor.EditorCommands["FormatBlock"]["Heading1"].commandValue);
+
+					// assert
+					assert.equal(oFormatBlockSelect.getSelectedItem(), oFormatBlockSelect.getItemAt(1), "The selected item is correct: h1");
+					assert.ok(["Heading 1", "h1"].indexOf(oActiveEditor.getDoc().queryCommandValue("FormatBlock")) > -1, "The Heading 1 format should be applied to the editor");
+
+					// destroy
+					oRichTextEditor.destroy();
+					done();
+				}, 0);
+			});
+		});
+
+		QUnit.test("Buttons accessibility", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor("myRTE13", {
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					showGroupFont : true,
+					showGroupUndo : true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				// act
+				setTimeout(function() {
+					oRichTextEditor._pTinyMCE4Initialized.then(function() {
+						// assert
+						var sAriaLabelId0 = oRichTextEditor.getAggregation("_toolbarWrapper")._findGroupedControls('font')[0].getAriaLabelledBy()[0],
+							sAriaLabelId1 = oRichTextEditor.getAggregation("_toolbarWrapper")._findGroupedControls('font')[1].getAriaLabelledBy()[0];
+						assert.equal(sap.ui.getCore().byId(sAriaLabelId0).getText(), oResourceBundle.getText("FONT_FAMILY_TEXT"), "Then correct invisible text was set for fontFamily");
+						assert.equal(sap.ui.getCore().byId(sAriaLabelId1).getText(), oResourceBundle.getText("FONT_SIZE_TEXT"), "Then correct invisible text set was for fontSize");
+
+						//destroy
+						oRichTextEditor.destroy();
+						done();
+					})
+				},0);
+			});
+		});
+
+		QUnit.module("Insert/Edit Image");
+
+		QUnit.test("_generateImageHTML()", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					customToolbar: true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				// assert
+				assert.equal(oRichTextEditor.getAggregation("_toolbarWrapper")._generateImageHTML(), '<img/>', "An IMG tag should be created");
+
+				// destroy
+				oRichTextEditor.destroy();
+				done();
+			});
+		});
+
+		QUnit.test("Insert Image", function(assert) {
+			// arrange
+			var done = assert.async(4),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					customToolbar: true,
+					showGroupInsert : true
+				}),
+				fnAfterClose = function () {
+					oImage = oActiveEditor.dom.select('img')[0];
+
+					assert.equal(oImage.getAttribute('data-sap-ui-rte-image-ratio'), 'false', "The image ratio attribute, should be set to true");
+
+					// destroy
+					oRichTextEditor.destroy();
+					done();
+				},
+				oToolbarWrapper, oImageButton, oImageDialog, oActiveEditor, aImageDialogContent, oImage;
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				oToolbarWrapper = oRichTextEditor.getAggregation("_toolbarWrapper");
+				oImageButton = oToolbarWrapper._findGroupedControls('insert')[0];
+				oImageDialog = oToolbarWrapper.getAggregation("_customInsertImageDialog");
+				aImageDialogContent = oImageDialog && oImageDialog.getContent();
+				oImageDialog.attachAfterClose(fnAfterClose);
+
+				// act
+				oActiveEditor = oRichTextEditor.getNativeApi();
+				// assert
+				assert.ok(!oImageButton.getPressed(), "The image button should not be pressed initially.");
+
+				oImageButton.firePress();
+
+				setTimeout(function() {
+					assert.ok(!aImageDialogContent[6].getEnabled(),
+						"The dimension checkbox should be disabled when there isn't an selected image.");
+
+					aImageDialogContent[1].setValue("../images/screenshot.png");
+					aImageDialogContent[3].setValue("some");
+					oImageDialog.getButtons()[0].firePress();
+				}, 0);
+			});
+		});
+
+		QUnit.test("Create an image and open edit dialog", function(assert) {
+			// arrange
+			var done = assert.async(10),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					customToolbar: true,
+					showGroupInsert : true
+				}),
+				fnAfterClose = function () {
+					oImage = oActiveEditor.dom.select('img')[0];
+					assert.equal(oImage.getAttribute('data-sap-ui-rte-image-ratio'), 'true', "The image ratio attribute, should be set to true");
+					assert.equal(oImage.height, '150', "The image height should be applied correctly.");
+					assert.equal(oImage.width, '300', "The image width should be applied correctly.");
+
+					// destroy
+					oRichTextEditor.destroy();
+					done();
+				},
+				oToolbarWrapper, oImageButton, oImageDialog, oActiveEditor, aImageDialogContent, oImage;
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				oToolbarWrapper = oRichTextEditor.getAggregation("_toolbarWrapper");
+				oImageButton = oToolbarWrapper._findGroupedControls('insert')[0];
+				oImageDialog = oToolbarWrapper.getAggregation("_customInsertImageDialog");
+				aImageDialogContent = oImageDialog && oImageDialog.getContent();
+				oImageDialog.attachAfterClose(fnAfterClose);
+
+				// act
+				oActiveEditor = oRichTextEditor.getNativeApi();
+				oActiveEditor.setContent('<img src="../images/screenshot.png" alt="some" height="100px" width="200px"/>');
+				oImage = oActiveEditor.dom.select('img')[0];
+				oImage.click();
+				oActiveEditor.selection.select(oImage);
+
+				// assert
+				setTimeout(function () {
+					assert.ok(oImageButton.getPressed(), "The image button should be pressed when an image is selected.");
+
+					oImageButton.firePress();
+
+					setTimeout(function() {
+						assert.ok(aImageDialogContent[6].getEnabled(),
+							"The dimension checkbox should be enabled when there is an selected image.");
+						assert.equal(aImageDialogContent[1].getValue(), '../images/screenshot.png',
+							"The value of the source input should be the same as the src value of the image.");
+						assert.equal(aImageDialogContent[3].getValue(), 'some',
+							"The value of the description text input should be the same as the alt of the image.");
+						assert.equal(aImageDialogContent[5].getAggregation("items")[2].getValue(), '100',
+							"The value of the height input should be the same as the height attribute value of the image.");
+						assert.equal(aImageDialogContent[5].getAggregation("items")[0].getValue(), '200',
+							"The value of the width input should be the same as the width attribute value of the image.");
+
+						aImageDialogContent[5].getAggregation("items")[0].setValue('300');
+						aImageDialogContent[6].setSelected(true);
+
+						setTimeout(function() {
+							aImageDialogContent[6].fireSelect();
+
+							setTimeout(function() {
+								assert.equal(aImageDialogContent[5].getAggregation("items")[2].getValue(), '150',
+									"The value of the height input should be calculated according to the ratio.");
+
+								oImageDialog.getButtons()[0].firePress();
+							}, 0);
+						}, 0);
+					}, 0);
+				}, 0);
+			});
+		});
+
+		QUnit.test("Press cancel insert image button", function(assert) {
+			// arrange
+			var done = assert.async(2),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					customToolbar: true,
+					showGroupInsert : true
+				}),
+				fnAfterClose = function () {
+
+					assert.ok(!oImageButton.getPressed(),
+						"Insert image button should not be pressed if inserting of image is cancelled via cancel button.");
+
+					// destroy
+					oRichTextEditor.destroy();
+					done();
+				},
+				oToolbarWrapper, oImageButton, oImageDialog, oActiveEditor, aImageDialogContent, oImage;
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				oToolbarWrapper = oRichTextEditor.getAggregation("_toolbarWrapper");
+				oImageButton = oToolbarWrapper._findGroupedControls('insert')[0];
+				oImageDialog = oToolbarWrapper.getAggregation("_customInsertImageDialog");
+				aImageDialogContent = oImageDialog && oImageDialog.getContent();
+				oImageDialog.attachAfterClose(fnAfterClose);
+
+				// act
+				oActiveEditor = oRichTextEditor.getNativeApi();
+				// assert
+				assert.ok(!oImageButton.getPressed(), "The image button should not be pressed initially.");
+
+				oImageButton.firePress();
+
+				setTimeout(function() {
+					oImageDialog.getButtons()[1].firePress();
+				}, 0);
+			});
+		});
+
+		QUnit.module("Insert/Edit Link");
+
+		QUnit.test("Insert Link", function(assert) {
+				// arrange
+				var done = assert.async(8),
+					oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+						customToolbar: true,
+						showGroupLink : true
+					}),
+					fnAfterClose = function () {
+						assert.equal(oRichTextEditor.getNativeApi().selection.getStart().tagName, "A", "There should be an anchor tag.");
+						assert.ok(oLinkButton.getPressed(), "The link button should be pressed, when an anchor is created.");
+						assert.ok(oUnlinkButton.getEnabled(), "The unlink button should be enabled, when an anchor is selected.");
+
+						oUnlinkButton.firePress();
+
+						setTimeout(function() {
+							assert.ok(!oLinkButton.getPressed(), "When the selection is unlinked, the link button should not be pressed.");
+							assert.ok(!oUnlinkButton.getEnabled(), "When the selection is unlinked, the unlink button should again be disabled.");
+							assert.notEqual(oRichTextEditor.getNativeApi().selection.getStart().tagName, "A",
+								"The selection tag should not be an anchor, if the link is unlinked");
+
+							// destroy
+							oRichTextEditor.destroy();
+							done();
+						}, 0);
+					},
+					oToolbarWrapper, oLinkButton, oUnlinkButton, oLinkDialog;
+
+				oRichTextEditor.placeAt("rteArea1");
+				sap.ui.getCore().applyChanges();
+
+				oRichTextEditor.attachReady(function() {
+					oToolbarWrapper = oRichTextEditor.getAggregation("_toolbarWrapper");
+					oLinkButton = oToolbarWrapper._findGroupedControls('link')[0];
+					oUnlinkButton = oToolbarWrapper._findGroupedControls('link')[1];
+					oLinkDialog = oToolbarWrapper.getAggregation("_customInsertLinkDialog");
+					oLinkDialog.attachAfterClose(fnAfterClose);
+
+					// act
+					var oActiveEditor = oRichTextEditor.getNativeApi();
+					oActiveEditor.setContent('<span id="mySpan">some</span>');
+					oActiveEditor.selection.select(oActiveEditor.dom.select('span')[0].text);
+					oLinkButton.firePress();
+
+					// assert
+					assert.ok(!oLinkButton.getPressed(), "The link button should not be pressed, if the selection is not an anchor.");
+					assert.ok(!oUnlinkButton.getEnabled(), "The unlink button should not be enabled, if the selection is not an anchor.");
+
+					setTimeout(function() {
+						oLinkDialog.getContent()[1].setValue("#");
+						oLinkDialog.getButtons()[0].firePress();
+					}, 0);
+				});
+		});
+
+		QUnit.test("Insert link with no given href value", function(assert) {
+				// arrange
+				var done = assert.async(3),
+					oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+						customToolbar: true,
+						showGroupLink : true
+					}),
+					fnAfterClose = function () {
+						assert.notEqual(oRichTextEditor.getNativeApi().selection.getStart().tagName, "A",
+							"There should not be an anchor tag, since there was no href value passed.");
+						assert.ok(!oLinkButton.getPressed(), "The link button should remain not pressed.");
+						assert.ok(!oUnlinkButton.getEnabled(), "The unlink button should remain disabled.");
+
+						// destroy
+						oRichTextEditor.destroy();
+						done();
+					},
+					oToolbarWrapper, oLinkButton, oUnlinkButton, oLinkDialog;
+
+				oRichTextEditor.placeAt("rteArea1");
+				sap.ui.getCore().applyChanges();
+
+				oRichTextEditor.attachReady(function() {
+					oToolbarWrapper = oRichTextEditor.getAggregation("_toolbarWrapper");
+					oLinkButton = oToolbarWrapper._findGroupedControls('link')[0];
+					oUnlinkButton = oToolbarWrapper._findGroupedControls('link')[1];
+					oLinkDialog = oToolbarWrapper.getAggregation("_customInsertLinkDialog");
+					oLinkDialog.attachAfterClose(fnAfterClose);
+
+					// act
+					var oActiveEditor = oRichTextEditor.getNativeApi();
+					oActiveEditor.setContent('<span id="mySpan">some</span>');
+					oActiveEditor.selection.select(oActiveEditor.dom.select('span')[0].text);
+					oLinkButton.firePress();
+
+					setTimeout(function() {
+						oLinkDialog.getButtons()[0].firePress();
+					}, 0);
+				});
+		});
+
+		QUnit.test("Write text, open dialog and change the text before inserting link", function(assert) {
+				// arrange
+				var done = assert.async(3),
+					oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+						customToolbar: true,
+						showGroupLink : true
+					}),
+					fnAfterClose = function () {
+						assert.equal(oRichTextEditor.getNativeApi().dom.select('a')[0].text, "text",
+							"The text should be changed.");
+
+						// destroy
+						oRichTextEditor.destroy();
+						done();
+					},
+					oToolbarWrapper, oLinkButton, oLinkDialog;
+
+				oRichTextEditor.placeAt("rteArea1");
+				sap.ui.getCore().applyChanges();
+
+				oRichTextEditor.attachReady(function() {
+					oToolbarWrapper = oRichTextEditor.getAggregation("_toolbarWrapper");
+					oLinkButton = oToolbarWrapper._findGroupedControls('link')[0];
+					oLinkDialog = oToolbarWrapper.getAggregation("_customInsertLinkDialog");
+					oLinkDialog.attachAfterClose(fnAfterClose);
+
+					// act
+					var oActiveEditor = oRichTextEditor.getNativeApi();
+					oActiveEditor.setContent('<span id="mySpan">some</span>');
+					oActiveEditor.selection.select(oActiveEditor.dom.select('span')[0].text);
+					oLinkButton.firePress();
+
+					setTimeout(function() {
+						oLinkDialog.getContent()[1].setValue("#");
+						oLinkDialog.getContent()[3].setValue("text");
+						oLinkDialog.getButtons()[0].firePress();
+					}, 0);
+				});
+		});
+
+		QUnit.test("Cancel insert link", function(assert) {
+				// arrange
+				var done = assert.async(3),
+					oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+						customToolbar: true,
+						showGroupLink : true
+					}),
+					fnAfterClose = function () {
+						assert.notEqual(oRichTextEditor.getNativeApi().selection.getStart().tagName, "A",
+							"There should not be an anchor tag, since the cancel button was pressed");
+						assert.ok(!oLinkButton.getPressed(), "The link button should remain not pressed.");
+						assert.ok(!oUnlinkButton.getEnabled(), "The unlink button should remain disabled.");
+
+						// destroy
+						oRichTextEditor.destroy();
+						done();
+					},
+					oToolbarWrapper, oLinkButton, oUnlinkButton, oLinkDialog;
+
+				oRichTextEditor.placeAt("rteArea1");
+				sap.ui.getCore().applyChanges();
+
+				oRichTextEditor.attachReady(function() {
+					oToolbarWrapper = oRichTextEditor.getAggregation("_toolbarWrapper");
+					oLinkButton = oToolbarWrapper._findGroupedControls('link')[0];
+					oUnlinkButton = oToolbarWrapper._findGroupedControls('link')[1];
+					oLinkDialog = oToolbarWrapper.getAggregation("_customInsertLinkDialog");
+					oLinkDialog.attachAfterClose(fnAfterClose);
+
+					// act
+					var oActiveEditor = oRichTextEditor.getNativeApi();
+					oActiveEditor.setContent('<span id="mySpan">some</span>');
+					oActiveEditor.selection.select(oActiveEditor.dom.select('span')[0].text);
+					oLinkButton.firePress();
+
+					setTimeout(function() {
+						oLinkDialog.getContent()[1].setValue("#");
+						oLinkDialog.getButtons()[1].firePress();
+					}, 0);
+				});
+		});
+
+		QUnit.test("Create and open edit dialog", function(assert) {
+				// arrange
+				var done = assert.async(4),
+					oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+						customToolbar: true,
+						showGroupLink : true,
+						width: "100%"
+					}),
+					fnAfterClose = function () {
+						assert.ok(oLinkButton.getPressed(), "The link button should be pressed.");
+						assert.ok(oUnlinkButton.getEnabled(), "The unlink button should be disabled.");
+						// destroy
+						oRichTextEditor.destroy();
+						done();
+					},
+					oToolbarWrapper, oLinkButton, oUnlinkButton, oLinkDialog;
+
+				oRichTextEditor.placeAt("rteArea1");
+				sap.ui.getCore().applyChanges();
+
+				oRichTextEditor.attachReady(function() {
+					oToolbarWrapper = oRichTextEditor.getAggregation("_toolbarWrapper");
+					oLinkButton = oToolbarWrapper._findGroupedControls('link')[0];
+					oUnlinkButton = oToolbarWrapper._findGroupedControls('link')[1];
+					oLinkDialog = oToolbarWrapper.getAggregation("_customInsertLinkDialog");
+					oLinkDialog.attachAfterClose(fnAfterClose);
+
+					// act
+					var oActiveEditor = oRichTextEditor.getNativeApi();
+					oActiveEditor.setContent('<a href="#">some</a>');
+					oActiveEditor.selection.setCursorLocation(oActiveEditor.dom.select('a')[0]);
+					oLinkButton.firePress();
+
+					setTimeout(function() {
+						assert.equal(oLinkDialog.getContent()[1].getValue(), '#',
+							"The value of the url input should be the same as the href value.");
+						assert.equal(oLinkDialog.getContent()[3].getValue(), 'some',
+							"The value of the display text input should be the same as the value of the anchor.");
+						oLinkDialog.getButtons()[1].firePress();
+					}, 0);
+				});
+		});
+
+		QUnit.test("Delete the href value of an existin anchor", function(assert) {
+			// arrange
+			var done = assert.async(),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					customToolbar: true,
+					showGroupLink : true,
+					width: "100%"
+				}),
+				fnAfterClose = function () {
+					assert.ok(!oRichTextEditor.getNativeApi().dom.select('a').length, "The element should be unlinked");
+					// destroy
+					oRichTextEditor.destroy();
+					done();
+				},
+				oToolbarWrapper, oLinkButton, oLinkDialog;
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oRichTextEditor.attachReady(function() {
+				oToolbarWrapper = oRichTextEditor.getAggregation("_toolbarWrapper");
+				oLinkButton = oToolbarWrapper._findGroupedControls('link')[0];
+				oLinkDialog = oToolbarWrapper.getAggregation("_customInsertLinkDialog");
+				oLinkDialog.attachAfterClose(fnAfterClose);
+
+				// act
+				var oActiveEditor = oRichTextEditor.getNativeApi();
+				oActiveEditor.setContent('<a href="#">some</a>');
+				oActiveEditor.selection.setCursorLocation(oActiveEditor.dom.select('a')[0]);
+				oLinkButton.firePress();
+
+				setTimeout(function() {
+					oLinkDialog.getContent()[1].resetProperty('value');
+					oLinkDialog.getButtons()[0].firePress();
+				}, 0);
+			});
+		});
+
+		QUnit.module("Custom Toolbar Priority");
+
+		QUnit.test("Increase priority", function(assert) {
+			// arrange
+			var done = assert.async(3),
+				sBoldText = oResourceBundle.getText("BOLD_BUTTON_TOOLTIP"),
+				sItalicText =  oResourceBundle.getText("ITALIC_BUTTON_TOOLTIP"),
+				sUnderlineText = oResourceBundle.getText("UNDERLINE_BUTTON_TOOLTIP"),
+				sStrikeThroughText = oResourceBundle.getText("STRIKETHROUGH_BUTTON_TOOLTIP"),
+				oToolbar, aContent, oFontStyleGroup,
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oToolbar = oRichTextEditor.getAggregation("_toolbarWrapper").getAggregation("_toolbar");
+			aContent = oToolbar.getContent();
+
+			// assert that the initial position of the buttons from group "font-style" is correct
+			assert.strictEqual(aContent[0].getText(), sBoldText, "The Bold button is added an position 0.");
+			assert.strictEqual(aContent[1].getText(), sItalicText, "The Italic button is added an position 1.");
+			assert.strictEqual(aContent[2].getText(), sUnderlineText, "The Underline button is added an position 2.");
+			assert.strictEqual(aContent[3].getText(), sStrikeThroughText, "The Strikethrough button is added an position 3.");
+
+			oRichTextEditor.attachReady(function () {
+				oFontStyleGroup = oRichTextEditor.getButtonGroups()[0];
+
+				// act
+				oRichTextEditor.removeButtonGroup("font-style");
+				// increase customToolbarPriority
+				oFontStyleGroup.customToolbarPriority = 40;
+				// add the altered group back in the toolbar
+				oRichTextEditor.addButtonGroup(oFontStyleGroup);
+
+				sap.ui.getCore().applyChanges();
+
+				// assert that the changed positions of the buttons from group "font-style" is correct
+				// and the buttons are added in correct order
+				aContent = oToolbar.getContent();
+				assert.strictEqual(aContent[1].getText(), sBoldText, "The Bold button is added an position 1.");
+				assert.strictEqual(aContent[2].getText(), sItalicText, "The Italic button is added an position 2.");
+				assert.strictEqual(aContent[3].getText(), sUnderlineText, "The Underline button is added an position 3.");
+				assert.strictEqual(aContent[4].getText(), sStrikeThroughText, "The Strikethrough button is added an position 4.");
+
+				// clean
+				oRichTextEditor.destroy();
+				done();
+			});
+		});
+
+		QUnit.test("Decrease priority", function(assert) {
+			// arrange
+			var done = assert.async(3),
+				oStructureGroup, oToolbar, aContent,
+				sBulletedListText = oResourceBundle.getText("UNORDERED_LIST_BUTTON_TOOLTIP"),
+				sNumberedListText = oResourceBundle.getText("ORDERED_LIST_BUTTON_TOOLTIP"),
+				sIncreaseIndentText = oResourceBundle.getText("OUTDENT_BUTTON_TOOLTIP"),
+				sDecreaseIndentText = oResourceBundle.getText("INDENT_BUTTON_TOOLTIP"),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor({
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oToolbar = oRichTextEditor.getAggregation("_toolbarWrapper").getAggregation("_toolbar");
+			aContent = oToolbar.getContent();
+
+			// assert that the initial position of the buttons from group "font-style" is correct
+			assert.strictEqual(aContent[9].getText(), sBulletedListText, "The Bulleted list button is added an position 9.");
+			assert.strictEqual(aContent[10].getText(), sNumberedListText, "The Numbered list button is added an position 10.");
+			assert.strictEqual(aContent[11].getText(), sIncreaseIndentText, "The Increase indent button is added an position 11.");
+			assert.strictEqual(aContent[12].getText(), sDecreaseIndentText, "The Decrease indent button is added an position 12.");
+
+			oRichTextEditor.attachReady(function () {
+				oStructureGroup = oRichTextEditor.getButtonGroups()[3];
+
+				// act
+				oRichTextEditor.removeButtonGroup("structure");
+				sap.ui.getCore().applyChanges();
+
+				// decrease customToolbarPriority
+				oStructureGroup.customToolbarPriority = 10;
+
+				// add the altered buttons group in the toolbar
+				oRichTextEditor.addButtonGroup(oStructureGroup);
+				sap.ui.getCore().applyChanges();
+
+				aContent = oToolbar.getContent();
+
+				// assert that the changed positions of the buttons from group "structure" is correct
+				assert.strictEqual(aContent[0].getText(), sBulletedListText, "The Bulleted list button is added an position 0.");
+				assert.strictEqual(aContent[1].getText(), sNumberedListText, "The Numbered list button is added an position 1.");
+				assert.strictEqual(aContent[2].getText(), sIncreaseIndentText, "The Increase indent button is added an position 2.");
+				assert.strictEqual(aContent[3].getText(), sDecreaseIndentText, "The Decrease indent button is added an position 3.");
+
+				// clean
+				oRichTextEditor.destroy();
+				done();
+			});
+		});
+
+		QUnit.test("Custom Button position", function(assert) {
+			// arrange
+			var done = assert.async(3),
+				oFontStyleGroup, oToolbar, oStrikeThroughBtn,
+				sStrikeThroughText =  oResourceBundle.getText("STRIKETHROUGH_BUTTON_TOOLTIP"),
+				oCustomBtn = new sap.m.Button({
+					text: "Custom Button"
+				}),
+				oRichTextEditor = new sap.ui.richtexteditor.RichTextEditor("myRTE", {
+					editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
+					width: "100%",
+					height: "300px",
+					customToolbar: true,
+					customButtons: [oCustomBtn]
+				});
+
+			oRichTextEditor.placeAt("rteArea1");
+			sap.ui.getCore().applyChanges();
+
+			oToolbar = oRichTextEditor.getAggregation("_toolbarWrapper").getAggregation("_toolbar");
+			oStrikeThroughBtn = oToolbar.getContent()[3];
+
+			// check the initial position of the reference button
+			assert.strictEqual(oStrikeThroughBtn.getText(), sStrikeThroughText, "The last button of font-style group is placed correctly");
+
+			oFontStyleGroup = oRichTextEditor.getButtonGroups()[0];
+
+			oRichTextEditor.removeButtonGroup("font-style");
+			oFontStyleGroup.customToolbarPriority = 2000;
+			oRichTextEditor.addButtonGroup(oFontStyleGroup);
+
+			oRichTextEditor.attachReady(function () {
+				oStrikeThroughBtn = oToolbar.getContent()[20];
+
+				// assure that the reference button is repositioned
+				assert.strictEqual(oStrikeThroughBtn.getText(), sStrikeThroughText, "The last button of font-style group is repositioned after priority change");
+				assert.ok(oToolbar.indexOfContent(oStrikeThroughBtn) < oToolbar.indexOfContent(oCustomBtn), "then the group is positioned before the custom Button");
+
+				// clean
+				oRichTextEditor.destroy();
+				oCustomBtn = null;
+				done();
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<h1 id="qunit-header">qUnit Page for RichTextEditor with Custom Toolbar</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+	<div id="rteArea1"></div>
+</body>
+
+</html>

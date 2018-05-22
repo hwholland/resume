@@ -1,0 +1,178 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6024544770888058"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6024544770888058"/>
+<title>Scene Tree</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioab7021546c72409d84eb97c6b1434e72">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Scene Tree</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">The <samp class="ph codeph">sap.ui.vk.SceneTree</samp> control presents a hierarchical view of the nodes in a
+			given scene.</p>
+
+		<div class="section" id="loioab7021546c72409d84eb97c6b1434e72__section_lws_tw1_qz"><div class="section_title">API Reference / Sample</div><div type="API Reference / Sample">
+			
+			<ul class="ul" id="loioab7021546c72409d84eb97c6b1434e72__ul_tcz_xk5_25">
+				<li class="li"><a class="xref" href="../../docs/api/symbols/sap.ui.vk.SceneTree.html" alt="../../docs/api/symbols/sap.ui.vk.SceneTree.html" title="../../docs/api/symbols/sap.ui.vk.SceneTree.html">sap.ui.vk.SceneTree</a> in the
+						<span class="ph uicontrol">API Reference</span> in the Demo Kit</li>
+
+				<li class="li"><a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.vk/samples" alt="../../explored.html#/entity/sap.ui.vk/samples" title="../../explored.html#/entity/sap.ui.vk/samples">Step 4 - Viewport with Scene Tree</a> in
+					the Demo Kit</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p">The Scene Tree control (<samp class="ph codeph">sap.ui.vk.SceneTree</samp>) presents a hierarchical
+				view of all the nodes in a given scene.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Prerequisites</div><div type="Prerequisites">
+			
+			<div class="p">Before a scene's nodes can appear in the Scene Tree, the Scene Tree control needs to
+				be connected to:<ul class="ul" id="loioab7021546c72409d84eb97c6b1434e72__ul_upw_ywm_25">
+					<li class="li">a <samp class="ph codeph">ViewStateManager</samp> object, which handles the visibility and
+						selection states of a scene</li>
+
+					<li class="li">a <samp class="ph codeph">Scene</samp> object, so that the Scene Tree knows the nodes to
+						display in the hierarchy</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Details</div><div type="Details"><p class="p">The Scene Tree displays the collection of nodes in a scene. You
+				can add a Scene Tree to your application by using the
+					<samp class="ph codeph">sap.ui.vk.SceneTree</samp> control. The Scene Tree is also avaliable
+				in the composite <samp class="ph codeph">sap.ui.vk.Viewer</samp> control.</p>
+<p class="p">Before a scene's
+				nodes can appear in the Scene Tree, you will need to set up two-way data binding
+				between the Scene Tree and the Viewport in your application. Note that you can only
+				bind to one Viewport instance at a time.</p>
+<p class="p">The following sections outline the
+				Scene Tree's selection and visibility behavior in more detail.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Hiding or Viewing the Scene Tree</p>
+
+				<p class="p">When using the <samp class="ph codeph">sap.ui.vk.Viewer</samp> control, the Scene Tree is
+					enabled by default, which means that a <samp class="ph codeph">SceneTree</samp> instance is
+					created. You can toggle the visibility of the Scene Tree using the Scene Tree
+					button in the Toolbar.</p>
+
+				<p class="p">The following table outlines what the Scene Tree button looks like in these
+					different states:</p>
+
+				
+<div class="table-wrapper tablenoborder"><table summary="" id="loioab7021546c72409d84eb97c6b1434e72__table_i33_mxm_25" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Scene Tree button states</span></caption>
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+						
+						
+						<thead class="thead" align="left">
+							<tr class="row">
+								<th class="entry" valign="top" width="50%" id="d13577803e127">Scene Tree button state</th>
+
+								<th class="entry" valign="top" width="50%" id="d13577803e130">Description</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody class="tbody">
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d13577803e127 "><img class="image" id="loioab7021546c72409d84eb97c6b1434e72__image_qtn_mx4_25" src="loioe39d55636122464b8016bef0ec993d4d_LowRes.png"/></td>
+
+								<td class="entry" valign="top" width="50%" headers="d13577803e130 ">Scene Tree is shown (this is the default state).</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d13577803e127 "><img class="image" id="loioab7021546c72409d84eb97c6b1434e72__image_d54_rx4_25" src="loio4691ac69440a486d918daf5a5241d480_LowRes.png"/></td>
+
+								<td class="entry" valign="top" width="50%" headers="d13577803e130 ">Scene Tree is hidden.</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d13577803e127 "><img class="image" id="loioab7021546c72409d84eb97c6b1434e72__image_usm_xx4_25" src="loio166d9b544e5d4307aab8eec812146d5e_LowRes.png"/></td>
+
+								<td class="entry" valign="top" width="50%" headers="d13577803e130 ">Scene Tree is disabled, or, if a 2D file is loaded into the Viewer
+									application.</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+</div>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Selecting Nodes in the Scene Tree</p>
+
+				<p class="p">By default, the Scene Tree is collapsed so that only the top-level nodes in the
+					Scene are displayed.</p>
+
+				<p class="p">You can expand the Scene Tree by clicking on the <span class="ph uicontrol">&gt;</span> icon
+					next to a node to display that node's child nodes.</p>
+
+				<img class="image" id="loioab7021546c72409d84eb97c6b1434e72__image_g55_jy4_25" src="loioae9229096a114ecc9c8388ec190d97e0_LowRes.png"/>
+				<p class="p">Selecting a node in the Scene Tree will highlight that node in the Viewport, and
+					vice versa. If you select a node in the Viewport that is currently hidden in the
+					Scene Tree, the Scene Tree will expand automatically to display the selected
+					node in the Scene Tree's hierarchy.</p>
+
+				<img class="image" id="loioab7021546c72409d84eb97c6b1434e72__image_zzm_qy4_25" src="loio7415e3875081436184ee08cf6c516289_LowRes.png"/>
+				<p class="p">Selecting a node in the Scene Tree that has child nodes will result in the node
+					and its child nodes being selected in the Viewport.</p>
+
+				<img class="image" id="loioab7021546c72409d84eb97c6b1434e72__image_u2y_5y4_25" src="loioff1906400b7541f1a8ff004d17991dbc_LowRes.png"/>
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Toggling Node Visibility in the Scene Tree</p>
+
+				<p class="p">You can toggle between displaying or hiding a node from view in the Viewport by
+					clicking the 'eye' icon <img class="image" id="loioab7021546c72409d84eb97c6b1434e72__image_ppd_vk5_25" src="loio619a13f4dc714ae5b4a1f08ee30685e9_LowRes.png"/> next to a node in the Scene
+					Tree. The following example shows a comparison of two similar nodes, but with
+					one node being hidden from view.</p>
+
+				<img class="image" id="loioab7021546c72409d84eb97c6b1434e72__image_yhv_bz4_25" src="loio935f70bf0a1c46688922539e37717d30_LowRes.png"/>
+				<p class="p">If you toggle the visibility for a node that has child nodes, the visibility
+					change will apply to the child nodes as well. The following example shows the
+					root node being set to hidden, resulting in all of its child nodes being hidden
+					as well.</p>
+
+				<img class="image" id="loioab7021546c72409d84eb97c6b1434e72__image_tv1_3z4_25" src="loioe46ff89f98674ce9a9e76bd9c9071a8d_LowRes.png"/>
+			</div></div></div>
+
+		<div class="section"><div class="section_title">Related Information</div><div type="Related Information">
+			
+			<ul class="ul" id="loioab7021546c72409d84eb97c6b1434e72__ul_xc1_fl5_25">
+				<li class="li"><a class="xref" href="acd34672ef33429e99a0247486e37c78.html">Viewport</a></li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

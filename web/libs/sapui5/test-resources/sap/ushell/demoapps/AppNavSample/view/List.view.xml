@@ -1,0 +1,41 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" controllerName="sap.ushell.demo.AppNavSample.view.List" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="AppNavSample:Master View">
+		<content>
+			<VBox class="sapUiTinyMargin">
+                <HBox>
+                    <Label text="isInitialNavigation?" class="sapUiTinyMarginEnd"/>
+                    <core:Icon src="sap-icon://status-error" color="{listModel>/isInitialNavigationColor}" />
+                    <Text text="{listModel>/isInitialNavigation}" />
+                </HBox>
+				<Link href="{/DefaultApp_display_href}" text="cross app link"
+					tooltip="Back to Fiori Sandbox Default Application"></Link>
+				<HBox>
+					<Button id="btnDefaultDetailMaster" text="Default" press="handleDefaultDetailPress" />
+                </HBox>
+                <HBox>
+					<Button id="btnView1Master" text="Navigate" icon="sap-icon://activate" press="handleBtn1Press" class="testMasterView1Btn"/>
+					<Button id="btnView4Master" text="GetSemanticObjectLinks" icon="sap-icon://activities" press="handleBtn4Press" class="testMasterView4Btn"/>
+				</HBox>
+                <HBox>
+					<Button id="btnView2Master" text="Calendar Example" icon="sap-icon://appointment" press="handleBtn2Press" class="testMasterView2Btn" />
+					<Button id="btnView3Master" text="WDA etc." icon="sap-icon://dimension" press="handleBtn3Press" class="testMasterView3Btn"/>
+                </HBox>
+				<HBox>
+					<Button text="Open Dialog" press="handleOpenDialogPress" />
+					<Button id="openPopover" text="Open Popover" press="handleOpenPopoverPress" />
+				</HBox>
+                <Link href="http://www.walla.co.il" text="Open Walla"></Link>
+				<Button text="Open Message Toast" press="handleOpenMessageToastPress"/>
+                <Button id="testDirtyFlagOn" text="Set Dirty Flag On" press="handleSetDirtyFlagOn" class="testDirtyFlagOnBtn"/>
+                <Button id="testDirtyFlagOff" text="Set Dirty Flag Off" press="handleSetDirtyFlagOff" class="testDirtyFlagOffBtn"/>
+				<Button id="testFallBackToShellHomeOn" text="Set FallBack To Shell-Home On" press="handleSetFallBackToShellHomeOn" class="testFallBackToShellHomeOnBtn"/>
+				<Button id="testFallBackToShellHomeOff" text="Set FallBack To Shell-Home Off" press="handleSetFallBackToShellHomeOff" class="testFallBackToShellHomeOffBtn"/>
+			</VBox>
+            <HBox class="sapUiTinyMargin">
+                <Input id="dataInput"  type="Text" placeholder="Enter Business Data..."  showSuggestion="true" calss="testDataInput"/>
+                <Button id="trackDataEvent" text="Track Business Data" press="trackDataEvent" calss="testTrackDataEventButton" />
+            </HBox>
+		</content>
+	</Page>
+</core:View>

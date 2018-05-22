@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+		<title>QUnit: sap.gantt.config.ObjectType</title>
+		<script id="sap-ui-bootstrap"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.gantt">
+		</script>
+		<link rel="stylesheet" type="text/css" href="../../../../../resources/sap/ui/thirdparty/qunit.css"/>
+		<script src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+			sap.ui.require([
+				"sap/gantt/config/ObjectType",
+				"sap/ui/thirdparty/sinon",
+				"sap/ui/thirdparty/sinon-qunit"
+			], function (ObjectType) {
+				"use strict";
+
+				QUnit.module("Create config.ObjectType with default values.", {
+					setup: function () {
+						this.oConfig = new ObjectType();
+					},
+					teardown: function () {
+						this.oConfig.destroy();
+						this.oConfig = undefined;
+					}
+				});
+
+				QUnit.test("Test default configuration values." , function (assert) {
+					assert.strictEqual(this.oConfig.getKey(), "");
+					assert.strictEqual(this.oConfig.getDescription(), "");
+					assert.strictEqual(this.oConfig.getMainChartSchemeKey(), sap.gantt.config.DEFAULT_MAIN_CHART_SCHEME_KEY);
+					assert.deepEqual(this.oConfig.getExpandedChartSchemeKeys(), []);
+				});
+
+				QUnit.module("Create config.ObjectType with customized values.", {
+					setup: function () {
+						this.oConfig = new ObjectType({
+							key: "T1",
+							description: "Type 1",
+							mainChartSchemeKey: "MC",
+							expandedChartSchemeKeys: ["EC"]
+						});
+					},
+					teardown: function () {
+						this.oConfig.destroy();
+						this.oConfig = undefined;
+					}
+				});
+
+				QUnit.test("Test customized configuration values.", function (assert) {
+					assert.strictEqual(this.oConfig.getKey(), "T1");
+					assert.strictEqual(this.oConfig.getDescription(), "Type 1");
+					assert.strictEqual(this.oConfig.getMainChartSchemeKey(), "MC");
+					assert.deepEqual(this.oConfig.getExpandedChartSchemeKeys(), ["EC"]);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+	</body>
+</html>

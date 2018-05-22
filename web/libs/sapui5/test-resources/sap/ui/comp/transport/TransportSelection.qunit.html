@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <title>QUnit - sap.ui.fl.Transports</title>
+
+        <!-- ********************************************************************** -->
+        <!-- SAPUI5 Bootstrap:                                                     -->
+        <!-- Extend the "libs" property if you like to import additional libraries  -->
+        <!-- ********************************************************************** -->
+
+        <script id="sap-ui-bootstrap"
+                type="text/javascript"
+                src="../../../../../resources/sap-ui-core.js"
+                data-sap-ui-theme="sap_bluecrystal"
+                data-sap-ui-noconflict="true"
+                data-sap-ui-libs="sap.ui.fl">   
+        </script>
+
+
+        <link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+        <script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+        <script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+        <script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+        <script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+		<!-- script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script-->
+
+        <script type="text/javascript">
+            (function () {
+                jQuery.sap.require("sap.ui.comp.transport.TransportSelection");
+                jQuery.sap.require("sap.ui.comp.transport.TransportDialogRenderer");
+                jQuery.sap.require("sap.m.Label");
+                jQuery.sap.require("sap.m.ToolbarRenderer");
+                jQuery.sap.require("sap.ui.commons.ComboBoxRenderer");
+                jQuery.sap.require("sap.ui.commons.ListBox");
+                
+                module("sap.ui.comp.transport.TransportSelection", {
+                    setup: function() {
+
+                    },
+                    teardown: function() {
+
+                    }
+                });
+
+                asyncTest("sap.ui.comp.transport.TransportSelection.selectTransport with package", function () {    	
+	                var oServer = sinon.fakeServer.create();
+		                oServer.respondWith([200, { "Content-Type": "application/json", "Content-Length": 13, "X-CSRF-Token": "0987654321" }, "{ \"localonly\":false, \"transports\":[{\"transportId\":\"4711\",\"owner\":\"TESTUSER\",\"description\":\"test transport1\",\"locked\" : true}] }"]);
+		                oServer.autoRespond = true;
+                	var oLrepConnector = sap.ui.fl.LrepConnector.createConnector();
+                    var mSampleDefaultHeader = {
+                      	type: "GET",
+                      	contentType: "application/json",
+                      	data: {},
+                      	headers: {
+                          	"Content-Type": "text/html",
+                          	"X-CSRF-Token": "ABCDEFGHIJKLMN123456789"
+                    	}
+                    };
+	                var sendAjaxRequestStub = sinon.stub(oLrepConnector, "_sendAjaxRequest");
+	                var getDefaultOptionsStub = sinon.stub(oLrepConnector, "_getDefaultOptions").returns(mSampleDefaultHeader);
+                  	var oObject = { package:"testpackage", name:"testname", type:"variant" };
+                  	
+                  	var fOkay = function(oResult) {
+                  		equal(oResult.getParameters().selectedTransport, '4711');
+                		QUnit.start();
+                		getDefaultOptionsStub.restore();
+                		sendAjaxRequestStub.restore();
+                		oServer.restore();                  		
+                  	};
+                  	var fError = function(oResult) {
+                		oServer.restore();
+                		QUnit.start();                  		
+                  	};
+           
+					var oTransports = new sap.ui.comp.transport.TransportSelection();
+                	oTransports.selectTransport(oObject, fOkay, fError);
+                });               
+            }());
+            
+            asyncTest("sap.ui.comp.transport.TransportSelection.selectTransport without package", function () {    	
+                var oServer = sinon.fakeServer.create();
+	                oServer.respondWith([200, { "Content-Type": "application/json", "Content-Length": 13, "X-CSRF-Token": "0987654321" }, "{ \"localonly\":true, \"transports\":[{\"transportId\":\"4711\",\"owner\":\"TESTUSER\",\"description\":\"test transport1\",\"locked\" : true}] }"]);
+	                oServer.autoRespond = true;
+            	var oLrepConnector = sap.ui.fl.LrepConnector.createConnector();
+                var mSampleDefaultHeader = {
+                  	type: "GET",
+                  	contentType: "application/json",
+                  	data: {},
+                  	headers: {
+                      	"Content-Type": "text/html",
+                      	"X-CSRF-Token": "ABCDEFGHIJKLMN123456789"
+                	}
+                };
+                var sendAjaxRequestStub = sinon.stub(oLrepConnector, "_sendAjaxRequest");
+                var getDefaultOptionsStub = sinon.stub(oLrepConnector, "_getDefaultOptions").returns(mSampleDefaultHeader);
+              	var oObject = { name:"testname", type:"variant" };
+              	
+              	var fOkay = function(oResult) {
+              		equal(oResult.getParameters().selectedTransport, '');
+            		QUnit.start();
+            		getDefaultOptionsStub.restore();
+            		sendAjaxRequestStub.restore();
+            		oServer.restore();                  		
+              	};
+              	var fError = function(oResult) {
+            		oServer.restore();
+            		QUnit.start();                  		
+              	};
+       
+				var oTransports = new sap.ui.comp.transport.TransportSelection();
+            	oTransports.selectTransport(oObject, fOkay, fError);
+            }); 
+            
+			test("shall be instantiable", function() {
+				var oTransports = new sap.ui.comp.transport.TransportSelection();
+				ok(oTransports);
+				ok(oTransports.oTransports);
+				ok(oTransports.oUtils);
+			});
+			
+			test("_createEventObject", function() {				
+				var oTransports = new sap.ui.comp.transport.TransportSelection();
+				var oEvent = oTransports._createEventObject({ "package" : "$TMP"}, { transportId : "1234"});				
+				equal(oEvent.mParameters.selectedPackage, "$TMP");
+				equal(oEvent.mParameters.selectedTransport, "1234");
+				equal(oEvent.getParameter("selectedPackage"), "$TMP");
+			});
+			
+			test("_toLREPObject", function() {
+				var oTransports = new sap.ui.comp.transport.TransportSelection();
+				var oObj = 	oTransports._toLREPObject({ "type":"variant","name":"id_1414740501651_318","namespace":"ns","package":"" });	
+				equal(!oObj["package"], true);
+				equal(oObj.name, "id_1414740501651_318");
+			});
+			
+			test("_getTransport", function() {
+				var oTransports = new sap.ui.comp.transport.TransportSelection();
+				var oEvent = oTransports._getTransport({ transports : [ { locked : true, "transportId" : "1234"} ] });				
+				equal(oEvent.transportId, "1234");
+			});
+			
+			test("_checkDialog", function() {
+				var oTransports = new sap.ui.comp.transport.TransportSelection();
+				var oEvent = oTransports._checkDialog();				
+				equal(oEvent, true);
+			});
+			
+			test("_hasLock - with locked transport ", function() {
+				var oTransports = new sap.ui.comp.transport.TransportSelection();
+				var oEvent = oTransports._hasLock([ { locked : true, "transportId" : "1234"} ]);				
+				equal(oEvent.transportId, "1234");
+			});
+			
+			test("_hasLock - without locked transport ", function() {
+				var oTransports = new sap.ui.comp.transport.TransportSelection();
+				var oEvent = oTransports._hasLock([ ]);				
+				equal(!oEvent, true);
+			});
+			
+			test("_openDialog", function() {
+				var oTransports, oEvent, fSuccess, fError;
+				
+				fSuccess = function() {};
+				fError = function() {};
+				oTransports = new sap.ui.comp.transport.TransportSelection();
+				oEvent = oTransports._openDialog({}, fSuccess, fError);				
+				equal(!oEvent, false);
+				oEvent.close();
+			});
+			
+			test("_openDialog with compact mode", function() {
+				var oTransports, oEvent, fSuccess, fError;
+				
+				fSuccess = function() {};
+				fError = function() {};
+				oTransports = new sap.ui.comp.transport.TransportSelection();
+				oEvent = oTransports._openDialog({}, fSuccess, fError, true);				
+				equal(!oEvent, false);
+				oEvent.close();
+			});
+        </script>	
+    </head>
+    <body id="body" class="sapUiBody">
+        <h1 id="qunit-header">qUnit Page for sap.ui.comp.transport.TransportSelection</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+        <div id="content"></div>
+    </body>
+</html>

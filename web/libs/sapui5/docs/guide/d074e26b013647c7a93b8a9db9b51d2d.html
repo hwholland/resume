@@ -1,0 +1,418 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Displays transactional data in a tabular format. Use table-only mode to view individual records within the transactional data."/>
+<meta name="description" content="Displays transactional data in a tabular format. Use table-only mode to view individual records within the transactional data."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7033364191485996"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7033364191485996"/>
+<title>Table-only View</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiod074e26b013647c7a93b8a9db9b51d2d">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Table-only View</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">Displays transactional data in a tabular format. Use table-only mode to view individual
+      records within the transactional data.</p>
+
+		<div class="section"><div class="p">ALP provides the following table types:<ul class="ul" id="loiod074e26b013647c7a93b8a9db9b51d2d__ul_l2n_g4m_fz">
+          <li class="li">
+            <p class="p">Analytical (sap.ui.table)</p>
+
+          </li>
+
+          <li class="li">
+            <p class="p">Grid</p>
+
+          </li>
+
+          <li class="li">
+            <p class="p">Responsive (sap.m.table)</p>
+
+          </li>
+
+        </ul>
+ Configure <samp class="ph codeph">tableType</samp> setting in the descriptor file to select any of
+        the preceding table types.<div class="note note"><span class="notetitle">Note</span> Use analytical table type with entity sets having
+          sap:semantics as aggregate.</div>
+</div>
+<div class="sectiondiv imagemap-wrapper imagemap_sidebyside" id="loiod074e26b013647c7a93b8a9db9b51d2d__im_overall1">
+        
+        
+        <div class="fig imagemap" id="loiod074e26b013647c7a93b8a9db9b51d2d____im_imagemap1"><img usemap="#d16017986e51" border="0" class="image" id="loiod074e26b013647c7a93b8a9db9b51d2d____im_image1" src="loio694950627178455cbd758e97a1e80063_LowRes.png" width="517"/>
+<map name="d16017986e51" id="d16017986e51">
+<area href="d074e26b013647c7a93b8a9db9b51d2d.html#loiod074e26b013647c7a93b8a9db9b51d2d__subsection-im1" id="im1" alt="Descriptor settings for defining qualifier" title="Descriptor settings for defining qualifier" shape="rect" coords="133,1,358,41"/>
+<area href="d074e26b013647c7a93b8a9db9b51d2d.html#loiod074e26b013647c7a93b8a9db9b51d2d__subsection-im2" id="im2" alt="SelectionPresentationVariant annotation example" title="SelectionPresentationVariant annotation example" shape="rect" coords="4,82,230,119"/>
+<area href="d074e26b013647c7a93b8a9db9b51d2d.html#loiod074e26b013647c7a93b8a9db9b51d2d__subsection-im3" id="im3" alt="Presentation Variant annotation example" title="Presentation Variant annotation example" shape="rect" coords="286,82,512,121"/>
+<area href="d074e26b013647c7a93b8a9db9b51d2d.html#loiod074e26b013647c7a93b8a9db9b51d2d__subsection-im4" id="im4" alt="LineItem annotation example" title="LineItem annotation example" shape="rect" coords="285,150,513,185"/>
+</map></div>
+        <div class="sectiondiv subsection visibility-trigger" id="subsection-im0">
+          <h2 class="p subsectiontitle"/>
+          <p class="p">Hover over each action for a description. Click the action for more information.</p>
+
+        </div>
+        <div class="sectiondiv subsection visibility-trigger" id="subsection-im1">
+          <h2 class="p subsectiontitle">Discriptor Settings: Table-only view</h2>
+          <div class="p"><span class="ph emphasis emphasis">Configuration
+            Sample:</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"sap.ui.generic.app":{  
+   "pages":[  
+      {  
+         "entitySet":"SEPMRA_C_ALP_SlsOrdItemCube",
+         "component":{  
+            "name":"sap.suite.ui.generic.template.AnalyticalListPage",
+            "list":true,
+            "settings":{  
+                  "qualifier":"DefaultVariant",
+                  }
+            }
+      }
+},</pre></div>
+</div>
+
+        </div>
+        <div class="sectiondiv subsection visibility-trigger" id="subsection-im2">
+          <h2 class="p subsectiontitle">Annotation: SelectionPresentationVariant with
+            Qualifier="DefaultVariant"</h2>
+          <p class="p"><span class="ph emphasis emphasis">Configuration Sample:</span></p>
+
+          <div class="p">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotation Term="UI.SelectionPresentationVariant" Qualifier="DefaultVariant"&gt;
+  &lt;Record&gt;
+    &lt;PropertyValue Property="Text" String="Product Financial Analysis"/&gt;
+    &lt;PropertyValue Property="SelectionVariant" Path="@UI.SelectionVariant#DefaultSelectionVariant"/&gt;
+    &lt;PropertyValue Property="PresentationVariant" Path="@UI.PresentationVariant#DefaultPresentationVariant"/&gt;
+  &lt;/Record&gt;
+&lt;/Annotation&gt;</pre></div>
+
+          </div>
+
+        </div>
+        <div class="sectiondiv subsection visibility-trigger" id="subsection-im3">
+          <h2 class="p subsectiontitle">Annotation: Presentation Variant</h2>
+          <div class="p">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotation Term="UI.PresentationVariant" Qualifier="DefaultPresentationVariant"&gt;
+  &lt;Record&gt;
+    &lt;PropertyValue Property="Text" String="Default"/&gt;
+    &lt;PropertyValue Property="SortOrder"&gt;
+      &lt;Collection&gt;
+        &lt;Record Type="Common.SortOrderType"&gt;
+          &lt;PropertyValue Property="Property" PropertyPath="NetAmount"/&gt;
+          &lt;PropertyValue Property="Descending" Bool="true"/&gt;
+        &lt;/Record&gt;
+      &lt;/Collection&gt;
+    &lt;/PropertyValue&gt;
+    &lt;PropertyValue Property="Visualizations"&gt;
+      &lt;Collection&gt;
+         &lt;AnnotationPath&gt;@UI.LineItem#Default&lt;/AnnotationPath&gt;
+      &lt;/Collection&gt;
+   &lt;/PropertyValue&gt;
+  &lt;/Record&gt;
+&lt;/Annotation&gt;</pre></div>
+
+          </div>
+
+        </div>
+        <div class="sectiondiv subsection visibility-trigger" id="subsection-im4">
+          <h2 class="p subsectiontitle">Annotation: LineItem</h2>
+          <div class="p">
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotation Term="UI.LineItem" Qualifier="Default"&gt;
+  &lt;Collection&gt;
+    &lt;Record Type="UI.DataField"&gt;
+      &lt;PropertyValue Property="Value" Path="DeliveryCalendarYear"/&gt;
+        &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataField"&gt;
+      &lt;PropertyValue Property="Value" Path="DeliveryCalendarMonth"/&gt;
+        &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataField"&gt;
+      &lt;PropertyValue Property="Value" Path="SalesOrder"/&gt;
+        &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataFieldForIntentBasedNavigation"&gt;
+      &lt;PropertyValue Property="Label" String="Manage Sales Order"/&gt;
+      &lt;PropertyValue Property="SemanticObject" String="EPMSalesOrder"/&gt;
+      &lt;PropertyValue Property="Action" String="manage_st"/&gt;
+      &lt;PropertyValue Property="RequiresContext" Bool="false"/&gt;
+        &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataFieldWithIntentBasedNavigation"&gt;
+      &lt;PropertyValue Property="SemanticObject" String="EPMSalesOrder"/&gt;
+      &lt;PropertyValue Property="Action" String="manage_st"/&gt;
+      &lt;PropertyValue Property="Value" Path="SalesOrder"/&gt;
+      &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataField"&gt;
+      &lt;PropertyValue Property="Label" String="Item"/&gt;
+      &lt;PropertyValue Property="Value" Path="SalesOrderItem"/&gt;
+      &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataField"&gt;
+      &lt;PropertyValue Property="Value" Path="Product"/&gt;
+      &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataFieldWithIntentBasedNavigation"&gt;
+      &lt;PropertyValue Property="SemanticObject" String="EPMProduct"/&gt;
+      &lt;PropertyValue Property="Action" String="manage_st"/&gt;
+      &lt;PropertyValue Property="Value" Path="Product"/&gt;
+      &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataField"&gt;
+      &lt;PropertyValue Property="Value" Path="ProductName"/&gt;
+      &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataField"&gt;
+      &lt;PropertyValue Property="Value" Path="MainProductCategory"/&gt;
+      &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataField"&gt;
+      &lt;PropertyValue Property="Label" String="Customer"/&gt;
+      &lt;PropertyValue Property="Value" Path="SoldToPartyCompanyName"/&gt;
+      &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataField"&gt;
+      &lt;PropertyValue Property="Value" Path="Quantity"/&gt;
+      &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+    &lt;Record Type="UI.DataField"&gt;
+      &lt;PropertyValue Property="Value" Path="NetAmount"/&gt;
+      &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+    &lt;/Record&gt;
+&lt;/Collection&gt;
+&lt;/Annotation&gt;</pre></div>
+
+          </div>
+
+        </div>
+      </div><div class="p">The data set helps ALP decide which table to display when it is not
+        configured in app-descriptor. In case the data set is <ul class="ul" id="loiod074e26b013647c7a93b8a9db9b51d2d__ul_imy_wt1_wy">
+          <li class="li">Coming from an analytical OData service, then ALP renders data through an analytical
+            table. This table provides grouping and aggregation of data at different levels.</li>
+
+          <li class="li">Not coming from an analytical OData service and the grid table usage is enabled in
+            your app-descriptor setting (<samp class="ph codeph">tabletype=GridTable</samp>), then ALP brings up
+            the grid table (sap.ui.table) for the tabular display. </li>
+
+        </ul>
+ In all other cases, ALP uses the responsive table (sap.m.table) to render the
+        data.</div>
+<div class="note note"><span class="notetitle">Note</span> 
+        <p class="p">By default, ALP displays table in condensed mode. You can modify the app-descriptor
+          setting to use compact mode.</p>
+
+      </div>
+<div class="p">You can perform several table level operation through table toolbar. The settings
+        feature allows you to<ul class="ul" id="loiod074e26b013647c7a93b8a9db9b51d2d__ul_npl_q23_zx">
+          <li class="li">Add or remove dimensions and measures bound to a table</li>
+
+          <li class="li">Perform sort operations on a table</li>
+
+          <li class="li">Choose dimensions to group a table accordingly </li>
+
+        </ul>
+</div>
+<div class="p">Configure the descriptor file to provide table navigation. Click the
+          <span class="ph uicontrol">Details</span> button to navigate from a table row to another application. <div class="note note"><span class="notetitle">Note</span> 
+          <div class="p">The selected table record context is passed to the target application as navigation
+            context. In case of:<ul class="ul" id="loiod074e26b013647c7a93b8a9db9b51d2d__ul_zhv_bl4_p1b">
+              <li class="li">
+                <p class="p">Inner app navigation: The selected table record context is passed to the target
+                  application</p>
+
+              </li>
+
+              <li class="li">
+                <p class="p">External navigation: The selected table record and filter context is passed to
+                  the target application</p>
+
+              </li>
+
+            </ul>
+</div>
+
+        </div>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"sap.ui.generic.app": {
+	"_version": "1.3.0",
+	"pages": { 
+“page-1”: { 
+			“entitySet”: ….
+			“component": {
+				…
+				…
+			} // End of component
+"pages": [{ //ALP does an inner app navigation to the smart template specified below
+				"entitySet": "&lt;&lt;ZCOSTCENTERCOSTSQUERY0020&gt;&gt;", //Ensure that the Entity set specified here is the same entity set used in the main content area.
+				"component": {
+					"name": "&lt;&lt;sap.suite.ui.generic.template.ObjectPage&gt;&gt;"
+				}
+"navigation": { //Optional (If specified ALP navigates to the target Application specified below through external app navigation)
+                "display": {
+                               "path": "sap.apps.crossNavigation.outbounds",
+                               "target": "&lt;&lt;NavigateToCTRItem&gt;&gt;"
+                           }
+              }
+
+			}]			
+		} // End of page-1
+}
+}
+</pre></div>
+</div>
+</div>
+
+    <div class="section" id="loiod074e26b013647c7a93b8a9db9b51d2d__section_wdr_f1p_wbb"><div class="section_title">Actions by Annotation</div><div type="Actions by Annotation">
+      
+      <p class="p">Define custom action buttons on the table toolbar using LineItem
+          <samp class="ph codeph">DataFieldForAction</samp> or <samp class="ph codeph">DataFieldForIntentBasedNavigation</samp>
+        property.</p>
+
+      <p class="p"><span class="ph emphasis emphasis">Inline Button</span></p>
+
+      <div class="p">Include custom action button in a table by defining the inline property in the
+        DataFieldForAction or DataFieldForIntentBasedNavigation annotations. This button appears
+        withing the table column and the postion of column depends on its position within the
+        LineItem
+        annotation.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Record Type="UI.DataFieldForIntentBasedNavigation"&gt;
+&lt;PropertyValue Property="Label" String="Manage"/&gt;
+&lt;PropertyValue Property="SemanticObject" String="CompanyCode"/&gt;
+&lt;PropertyValue Property="Action" String="display"/&gt;
+<span class="ph emphasis emphasis">&lt;PropertyValue Property="Inline" Bool="true"/&gt;
+</span>
+&lt;/Record&gt;
+</pre></div>
+</div>
+
+      <p class="p"><span class="ph emphasis emphasis">Determining Button</span></p>
+
+      <div class="p">You can configure the table toolbar to contain action buttons defined with annotations
+          <samp class="ph codeph">com.sap.vocabularies.UI.v1.DataFieldForAction</samp> and<samp class="ph codeph">
+          com.sap.vocabularies.UI.v1.DataFieldForIntentBasedNavigation</samp>. On click the
+          <samp class="ph codeph">DataFieldForAction</samp> executes as a string and on click of
+          <samp class="ph codeph">DataFieldForIntentBasedNavigation</samp>, appropriate Fiori app launches. The
+        determining buttons for table comes in the footer bar, and always chart buttonsare ordered
+        before the chart
+        buttons.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+&lt;PropertyValue Property="Actions"&gt;
+   &lt;Collection&gt;
+      &lt;Record Type="UI.DataFieldForAction"&gt;
+         &lt;PropertyValue Property="Label" String="Copy"/&gt;
+         &lt;PropertyValue Property="Action" String="CZ_EASILINEITEMS_SADL_CDS.CZ_EASILINEITEMS_SADLType/Copy"/&gt;
+         &lt;PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/Isolated"/&gt;
+         <span class="ph emphasis emphasis">&lt;PropertyValue Property="Determining" Bool="true"/&gt; </span>
+
+      &lt;/Record&gt;
+      &lt;Record Type="UI.DataFieldForIntentBasedNavigation"&gt;
+         &lt;PropertyValue Property="Label" String="Manage Products (STTA)"/&gt;
+         &lt;PropertyValue Property="SemanticObject" String="EPMProduct"/&gt;
+         &lt;PropertyValue Property="Action" String="manage_st"/&gt;
+         <span class="ph emphasis emphasis">&lt;PropertyValue Property="Determining" Bool="true"/&gt;</span>
+      &lt;/Record&gt;
+   &lt;/Collection&gt;
+&lt;/PropertyValue&gt;</pre></div>
+</div>
+
+      <div class="p">On click of a button, the associated:<ul class="ul" id="loiod074e26b013647c7a93b8a9db9b51d2d__ul_tdy_n4n_fz">
+          <li class="li">
+            <p class="p"><samp class="ph codeph">DataFieldForAction</samp> annotation handles the action as defined. The
+              user application must ensure that this points to the fully qualified
+              action/function.</p>
+
+          </li>
+
+          <li class="li">
+            <p class="p"><samp class="ph codeph">DataFieldForIntentBasedNavigation</samp> annotation launches the SAP Fiori
+              applications as specified in the action and if the action is configured to accept
+              context, then the selected table and filter context is passed to the target
+              application through the navigation context.</p>
+
+          </li>
+
+        </ul>
+
+      </div>
+
+      <div class="p">
+        <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;PropertyValue Property="Actions"&gt;
+   &lt;Collection&gt;
+      &lt;Record Type="UI.DataFieldForAction"&gt;
+         &lt;PropertyValue Property="Label" String="Copy"/&gt;
+         &lt;PropertyValue Property="Action" String="CZ_EASILINEITEMS_SADL_CDS.CZ_EASILINEITEMS_SADLType/Copy"/&gt;
+      &lt;/Record&gt;
+      &lt;Record Type="UI.DataFieldForIntentBasedNavigation"&gt;
+         &lt;PropertyValue Property="Label" String="Manage Products (STTA)"/&gt;
+         &lt;PropertyValue Property="SemanticObject" String="EPMProduct"/&gt;
+         &lt;PropertyValue Property="Action" String="manage_st"/&gt;
+         &lt;PropertyValue Property="RequiresContext" /&gt;
+      &lt;/Record&gt;
+   &lt;/Collection&gt;
+&lt;/PropertyValue&gt;</pre></div>
+
+      </div>
+
+      <p class="p"><span class="ph emphasis emphasis">Quick View in Table</span></p>
+
+      <p class="p">You can configure the smart table column cells to display additional information in a quick
+        view card. For example, the following annotation configuration lets you view more
+        information for DisplayCurrency:</p>
+
+      <div class="p">Configure semantic object for the smart table column cells to display additional
+        information in quick view card. For example, the following annotation configuration lets you
+        configure semantic object for DisplayCurrency
+        property.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotations Target="ZCOSTCENTERCOSTSQUERY0020_CDS.ZCOSTCENTERCOSTSQUERY0020Type/DisplayCurrency"&gt;                                          
+&lt;Annotation Term="Common.SemanticObject" String="EPMProduct" /&gt;
+&lt;/Annotations&gt;
+</pre></div>
+</div>
+
+      <div class="p">To enhance the quick view card with more information, configure UI.QuickViewFacets
+        annotation for the entity types within the same service. For
+        example:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotation Term="UI.QuickViewFacets"&gt;
+  &lt;Collection&gt;                                                                      
+    &lt;Record Type="UI.ReferenceFacet"&gt;                                                                      
+      &lt;PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#CurrencyQuickView_FieldGroup_1"/&gt;
+    &lt;/Record&gt;                                                           
+  &lt;/Collection&gt;                                            
+&lt;/Annotation&gt;                                         
+
+&lt;Annotation Term="UI.FieldGroup" Qualifier="CurrencyQuickView_FieldGroup_1"&gt;                         
+  &lt;Record&gt;                                                            
+    &lt;PropertyValue Property="Data"&gt;                                                                        
+      &lt;Collection&gt;                                                                                                  
+        &lt;Record Type="UI.DataField"&gt;                                                                                                  
+          &lt;PropertyValue Property="Label" String="Decimals" /&gt;                                                                                   
+          &lt;PropertyValue Property="Value" Path="Decimals"/&gt;
+        &lt;/Record&gt;                                                                     
+        &lt;Record Type="UI.DataField"&gt;
+          &lt;PropertyValue Property="Label" String="Currency ISO Code" /&gt;
+           &lt;PropertyValue Property="Value" Path="CurrencyISOCode"/&gt;
+        &lt;/Record&gt;                                                                       
+        &lt;Record Type="UI.DataField"&gt;&lt;PropertyValue Property="Label" String="Alternative Currency Key" /&gt;
+           &lt;PropertyValue Property="Value" Path="AlternativeCurrencyKey"/&gt;                                                                
+        &lt;/Record&gt;                                                
+      &lt;/Collection&gt;                                                                                  
+    &lt;/PropertyValue&gt;                                                               
+  &lt;/Record&gt;                                              
+&lt;/Annotation&gt;
+</pre></div>
+</div>
+
+    </div></div>
+
+	</div>
+
+<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="fc7d73c3044649e8839925558afc2079.html" title="Visualize data from the main entity set and seamlessly navigate to an application. Define a valid chart or LineItem annotation to render content for the chart area and table area.">Configuring the Content Area</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

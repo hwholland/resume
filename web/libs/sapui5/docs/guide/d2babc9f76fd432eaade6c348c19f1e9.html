@@ -1,0 +1,230 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Any issues during the calculation of the index are written as messages to the application log."/>
+<meta name="description" content="Any issues during the calculation of the index are written as messages to the application log."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=41470988647992957"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=41470988647992957"/>
+<title>Calculation Issues</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiod2babc9f76fd432eaade6c348c19f1e9">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Calculation Issues</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Any issues during the calculation of the index are written as messages to the
+		application log.</p>
+
+		
+<div class="table-wrapper tablenoborder"><table summary="" id="loiod2babc9f76fd432eaade6c348c19f1e9__table_udd_kdb_nr" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="33.333333333333336%"/><col width="33.333333333333336%"/><col width="33.333333333333336%"/></colgroup>
+
+				
+				
+				
+				<thead class="thead" align="left">
+					<tr class="row">
+						<th class="entry" valign="top" width="33.33333333333333%" id="d16212859e30">
+							<p class="p">Message Type</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="33.33333333333333%" id="d16212859e36">
+							<p class="p">Classification</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="33.33333333333333%" id="d16212859e42">
+							<p class="p">What's the Issue?</p>
+
+						</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody class="tbody">
+					<tr class="row">
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d16212859e30 ">
+							<p class="p">Error</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d16212859e36 ">
+							<p class="p">Very high</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d16212859e42 ">
+							<p class="p">Exception because manifest.json file is not valid or cache buster
+								token could not be calculated</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d16212859e30 ">
+							<p class="p">Error</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d16212859e36 ">
+							<p class="p">High</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d16212859e42 ">
+							<p class="p">Component ID occurs or is used more than once</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d16212859e30 ">
+							<p class="p">Warning</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d16212859e36 ">
+							<p class="p">Medium</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d16212859e42 ">
+							<p class="p">Component ID is potentially not valid</p>
+
+						</td>
+
+					</tr>
+
+				</tbody>
+
+			</table>
+</div>
+
+		<p class="p">To access the application log, choose <span class="ph uicontrol">View … Logs</span> in the report
+				<samp class="ph codeph">/UI5/APP_INDEX_CALCULATE</samp>. The application log is also persisted in
+			client 000 by default and can be analyzed using transaction <samp class="ph codeph">SLG1</samp>.</p>
+
+		<p class="p">Technically, the application log is referenced by the object
+			<samp class="ph codeph">/UI5/APPIDX</samp>. This object has the following subobjects:</p>
+
+		
+<div class="table-wrapper tablenoborder"><table summary="" id="loiod2babc9f76fd432eaade6c348c19f1e9__table_n3m_nmn_kr" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+				
+				
+				<thead class="thead" align="left">
+					<tr class="row">
+						<th class="entry" valign="top" width="50%" id="d16212859e148">
+							<p class="p">Subobject</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="50%" id="d16212859e154">
+							<p class="p">What Does It Contain?</p>
+
+						</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody class="tbody">
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d16212859e148 ">
+							<p class="p">GENERAL</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d16212859e154 ">
+							<p class="p">General information like time and duration of the last calculation of
+								the index, number of single repositories, and number of updated
+								table entries</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d16212859e148 ">
+							<p class="p">UI5REP</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d16212859e154 ">
+							<p class="p">Error messages that occurred when a single repository was
+								processed</p>
+
+							<p class="p">The external ID is the name of the single repository.</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d16212859e148 ">
+							<p class="p">UI5COMP</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d16212859e154 ">
+							<p class="p">Component-related messages from a consistency check carried out at
+								the end of the calculation of the index</p>
+
+							<p class="p">The consistency check includes the following:</p>
+
+							<ul class="ul" id="loiod2babc9f76fd432eaade6c348c19f1e9__ul_nbd_5mn_kr">
+								<li class="li">
+									<p class="p">Whether the same component ID is contained in more than one
+										repository</p>
+
+								</li>
+
+								<li class="li">
+									<p class="p">Whether the component ID is valid</p>
+
+								</li>
+
+								<li class="li">
+									<p class="p">Whether a reuse component defined in the dependencies is not
+										contained in the application index</p>
+
+								</li>
+
+							</ul>
+
+							<p class="p">The external ID is the component ID.</p>
+
+						</td>
+
+					</tr>
+
+				</tbody>
+
+			</table>
+</div>
+
+		<p class="p">The application log contains only entries of the last run of the report
+				<samp class="ph codeph">/UI5/APP_INDEX_CALCULATE</samp> and any older entries are removed
+			automatically. For more information, search for <kbd class="ph userinput">Analyze Logs</kbd> in
+			the documentation for your <a class="xref" href="https://help.sap.com/viewer/p/SAP_NETWEAVER" alt="https://help.sap.com/viewer/p/SAP_NETWEAVER" title="https://help.sap.com/viewer/p/SAP_NETWEAVER">SAP
+				NetWeaver</a> version on the SAP Help
+			Portal.</p>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

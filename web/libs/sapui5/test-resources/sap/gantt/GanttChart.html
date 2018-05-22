@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+
+<title>GanttChart</title>
+
+<script id="sap-ui-bootstrap"
+	data-sap-ui-libs="sap.gantt, sap.m, sap.ui.unified"
+	data-sap-ui-theme="sap_bluecrystal"
+	src="../../../resources/sap-ui-core.js">
+</script>
+<script src="./test.js"></script>
+<script src="./qunit/data/DataProducer.js"></script>
+<script src="./qunit/data/DataMaker.js"></script>
+
+<script>
+	createPage("Test Page for sap.gantt.GanttChart", true);
+	addContentToPage();
+
+	function addContentToPage() {
+		// create shape configuration
+		var oShapeConfig = new sap.gantt.config.Shape({
+			key: "activity",
+			shapeClassName: "sap.gantt.shape.Rectangle",
+			shapeDataName: "activity",
+			level: 10,
+			shapeProperties: {
+				time: "{startTime}",
+				endTime: "{endTime}",
+				fill: "#A52A2A",
+				height: 21,
+				rx: 10,
+				ry: 10,
+				yBias: 0.5,
+				isDuration: true,
+				enableDnD: true
+			}
+		});
+		
+		var oDataProducer = new sap.gantt.DataProducer();
+		oDataProducer.produceData();
+		// create model and load data
+		var oModel = new sap.ui.model.json.JSONModel();
+		oModel.setData(oDataProducer.getData("sap_hierarchy"));
+		
+		sap.gantt.config.DEFAULT_TIME_AXIS.setPlanHorizon(new sap.gantt.config.TimeHorizon({
+			startTime: "20150918000000",
+			endTime: "20161027000000"
+		}));
+		
+		sap.gantt.config.DEFAULT_TIME_AXIS.setInitHorizon(new sap.gantt.config.TimeHorizon({
+			startTime: "20150918000000",
+			endTime: "20151027000000"
+		}));
+		
+		// create GanttChart
+		var oGanttChart = new sap.gantt.GanttChart({
+			shapeDataNames: ["activity"],
+			shapes: [oShapeConfig],
+			rows: {
+				path: "test>/root",
+					parameters: {
+						arrayNames: ["children"]
+					}
+			},
+			//baseRowHeight: 27,
+			chartMouseOver: pushEventToMsgStack,
+			chartDoubleClick: pushEventToMsgStack,
+			chartRightClick: pushEventToMsgStack
+		});
+		oGanttChart.setModel(oModel, "test");
+		
+		var oItems = new sap.m.FlexBox({
+			items:[sap.ui.jsfragment("sap.gantt.test.CSSModeButton", oGanttChart),
+				sap.ui.jsfragment("sap.gantt.test.JumpDatePicker", oGanttChart),
+				sap.ui.jsfragment("sap.gantt.test.ZoomSlider", oGanttChart)]
+		});
+		addFooterContentsToPage(oItems);
+		window.oPage.addContent(oGanttChart);
+	}
+</script>
+</head>
+<body id="body" class="sapUiBody sapUiSizeCompact">
+	<div id="content" style="width: 100%; height: 100vh;"></div>
+</body>
+</html>

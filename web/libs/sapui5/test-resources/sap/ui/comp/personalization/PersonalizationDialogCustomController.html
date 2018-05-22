@@ -1,0 +1,423 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="UTF-8">
+<title>PersonalizationDialog</title>
+<script id="sap-ui-bootstrap" type="text/javascript"
+	data-sap-ui-libs="sap.ui.comp,sap.m,sap.ui.commons,sap.ui.table"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-preload="sync"
+	data-sap-ui-compatVersion="edge"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-resourceroots='{
+				"test.sap.ui.comp.personalization": "./"
+			}'>
+	
+</script>
+<script>
+	jQuery.sap.require("test.sap.ui.comp.personalization.PersonalizationDialog");
+	jQuery.sap.require("test.sap.ui.comp.personalization.Util");
+	jQuery.sap.require("jquery.sap.xml");
+	jQuery.sap.require("sap.ui.comp.personalization.Controller");
+	jQuery.sap.require("sap.m.MessageToast");
+
+	// P13nPanel extention
+	sap.m.P13nPanel.extend("sap.m.CustomPanelColumns", {
+		constructor: function(sId, mSettings) {
+			sap.m.P13nPanel.apply(this, arguments);
+		},
+		metadata: {
+			library: "sap.m",
+			aggregations: {
+				content: {
+					type: "sap.m.MultiComboBox",
+					multiple: false,
+					singularName: "content"
+				}
+			}
+		},
+		renderer: function(oRm, oControl) {
+			if (!oControl.getVisible()) {
+				return;
+			}
+			oRm.renderControl(oControl.getContent());
+		}
+	});
+
+	// Controller extention
+	sap.ui.comp.personalization.BaseController.extend("sap.ui.comp.personalization.CustomController", {
+		constructor: function(sId, mSettings) {
+			sap.ui.comp.personalization.BaseController.apply(this, arguments);
+			this.setType("customColumns");
+		},
+		getTitleText: function() {
+			return "MyColumns";
+		},
+		_getTable2Json: function() {
+			var oJsonData = this.createPersistentStructure();
+			var oTable = this.getTable();
+			if (oTable) {
+				oTable.getColumns().forEach(function(oColumn, iIndex) {
+					if (oColumn.getVisible()) {
+						var sColumnKey = sap.ui.comp.personalization.Util.getColumnKey(oColumn);
+						oJsonData.customColumns.customColumnsItems.push(sColumnKey);
+					}
+				}, this);
+			}
+			return oJsonData;
+		},
+		_getTable2JsonRestore: function() {
+			return this._getTable2Json();
+		},
+		syncTable2TransientModel: function() {
+			var oTable = this.getTable();
+			var aItems = [];
+			if (oTable) {
+				oTable.getColumns().forEach(function(oColumn) {
+					aItems.push({
+						columnKey: sap.ui.comp.personalization.Util.getColumnKey(oColumn),
+						text: oColumn.getLabel ? oColumn.getLabel().getText() : oColumn.getHeader().getText()
+					});
+				});
+			}
+			var aItemsBefore = this.getModel("$sapuicomppersonalizationBaseController").getData().transientData.customColumns.items;
+			if (jQuery(aItems).not(aItemsBefore).length !== 0 || jQuery(aItemsBefore).not(aItems).length !== 0) {
+				this.getModel("$sapuicomppersonalizationBaseController").getData().transientData.customColumns.items = aItems;
+			}
+		},
+		getPanel: function() {
+			var that = this;
+			var oPanel = new sap.m.CustomPanelColumns({
+				type: "customColumns",
+				title: this.getTitleText(),
+				titleLarge: "Custom Definition of Columns Properties",
+				beforeNavigationTo: that.setModelFunction(that.getModel()),
+				content: new sap.m.MultiComboBox({
+					items: {
+						path: "$sapmP13nPanel>/transientData/customColumns/items",
+						template: new sap.ui.core.Item({
+							key: "{$sapmP13nPanel>columnKey}",
+							text: "{$sapmP13nPanel>text}"
+						})
+					},
+					selectedKeys: {
+						path: "$sapmP13nPanel>/persistentData/customColumns/customColumnsItems"
+					}
+				}),
+			});
+			return oPanel;
+		},
+		syncJsonModel2Table: function() {
+			var oTable = this.getTable();
+			var oData = this.getModel("$sapuicomppersonalizationBaseController").getData();
+			var aColumns = oTable.getColumns();
+
+			// Set visibility
+			aColumns.forEach(function(oColumn) {
+				var sColumnKey = sap.ui.comp.personalization.Util.getColumnKey(oColumn);
+				if (oData.persistentData.customColumns.customColumnsItems.indexOf(sColumnKey) > -1) {
+					oColumn.setVisible(true);
+				} else {
+					oColumn.setVisible(false);
+				}
+			});
+			// Set order
+			if (oTable instanceof sap.ui.table.Table) {
+				oData.persistentData.customColumns.customColumnsItems.forEach(function(sColumnKey, iIndex) {
+					var oColumn = test.sap.ui.comp.personalization.Util.getColumn(sColumnKey, aColumns);
+					oTable.removeColumn(oColumn);
+					oTable.insertColumn(oColumn, iIndex);
+				}, this);
+			} else if (oTable instanceof sap.m.Table) {
+				oData.persistentData.customColumns.customColumnsItems.forEach(function(sColumnKey, iIndex) {
+					var oColumn = test.sap.ui.comp.personalization.Util.getColumn(sColumnKey, aColumns);
+					oColumn.setOrder(iIndex);
+				}, this);
+			}
+
+			if (oTable instanceof sap.m.Table) {
+				oTable.rerender();
+			}
+		},
+		getChangeType: function(oPersistentDataBase, oPersistentDataCompare) {
+			if (!oPersistentDataCompare || !oPersistentDataCompare.customColumns || !oPersistentDataCompare.customColumns.customColumnsItems) {
+				return sap.ui.comp.personalization.ChangeType.Unchanged;
+			}
+			var bIsDirty = JSON.stringify(oPersistentDataBase.customColumns.customColumnsItems) !== JSON.stringify(oPersistentDataCompare.customColumns.customColumnsItems);
+
+			return bIsDirty ? sap.ui.comp.personalization.ChangeType.ModelChanged : sap.ui.comp.personalization.ChangeType.Unchanged;
+
+		},
+		getChangeData: function(oPersistentDataBase, oPersistentDataCompare) {
+			if (!oPersistentDataBase || !oPersistentDataBase.customColumns || !oPersistentDataBase.customColumns.customColumnsItems) {
+				return {
+					customColumns: {
+						customColumnsItems: []
+					}
+				};
+			}
+
+			if (!oPersistentDataCompare || !oPersistentDataCompare.customColumns || !oPersistentDataCompare.customColumns.customColumnsItems) {
+				return {
+					customColumns: sap.ui.comp.personalization.Util.copy(oPersistentDataBase.customColumns)
+				};
+			}
+
+			if (JSON.stringify(oPersistentDataBase.customColumns.customColumnsItems) !== JSON.stringify(oPersistentDataCompare.customColumns.customColumnsItems)) {
+				return {
+					customColumns: sap.ui.comp.personalization.Util.copy(oPersistentDataBase.customColumns)
+				};
+			}
+			return null;
+		},
+		getUnionData: function(oPersistentDataBase, oPersistentDataCompare) {
+			if (!oPersistentDataCompare || !oPersistentDataCompare.customColumns || !oPersistentDataCompare.customColumns.customColumnsItems) {
+				return {
+					customColumns: sap.ui.comp.personalization.Util.copy(oPersistentDataBase.customColumns)
+				};
+			}
+			return {
+				customColumns: sap.ui.comp.personalization.Util.copy(oPersistentDataCompare.customColumns)
+			};
+		},
+		exit: function() {
+			BaseController.prototype.exit.apply(this, arguments);
+		}
+	});
+
+	var fGetChangeText = function(oChangeType) {
+		return "" + (oChangeType.customColumns === sap.ui.comp.personalization.ChangeType.TableChanged ? "table's columns has been changed" : oChangeType.customColumns === sap.ui.comp.personalization.ChangeType.ModelChanged ? "model's columns has been changed" : "") + (oChangeType.sort === sap.ui.comp.personalization.ChangeType.TableChanged ? "table's sort has been changed" : oChangeType.sort === sap.ui.comp.personalization.ChangeType.ModelChanged ? "model's sort has been changed" : "") + (oChangeType.filter === sap.ui.comp.personalization.ChangeType.TableChanged ? "table's filter has been changed" : oChangeType.filter === sap.ui.comp.personalization.ChangeType.ModelChanged ? "model's filter has been changed" : "") + (oChangeType.misc === sap.ui.comp.personalization.ChangeType.TableChanged ? "width of table's column has been changed" : oChangeType.misc === sap.ui.comp.personalization.ChangeType.ModelChanged ? "width of model's column has been changed" : "")
+	};
+
+	var fGetSorterByPath = function(aSorters, sPath) {
+		var oFoundSorter;
+		aSorters.some(function(oSorter) {
+			if (oSorter.sPath === sPath) {
+				oFoundSorter = oSorter;
+				return true;
+			}
+		}, true);
+
+		return oFoundSorter;
+	};
+
+	var fHandleAfterP13nModelDataChange = function(oEvent) {
+		var oPersData = oEvent.getParameter("persistentData");
+		var oChangeData = oEvent.getParameter("changeData");
+		var oChangeTypeVariant = oEvent.getParameter("changeTypeVariant");
+		var oChangeType = oEvent.getParameter("changeType");
+		var oTable = oEvent.oSource.getTable();
+		var oLabel;
+
+		if (oTable instanceof sap.m.Table) {
+			oBinding = oTable.getBinding("items");
+			aColumns = oTable.getColumns();
+			oLabel = sap.ui.comp.personalization.PersonalizationDialog.getLabelOfDirtyFlag(oTable, null);
+		} else {
+			oBinding = oTable.getBinding("rows");
+			aColumns = oTable.getColumns();
+			oLabel = sap.ui.comp.personalization.PersonalizationDialog.getLabelOfDirtyFlag(oTable, null);
+		}
+
+		test.sap.ui.comp.personalization.Util.setDirtyFlag(oLabel, sap.ui.comp.personalization.Util.hasChangedType(oChangeTypeVariant));
+
+		var sMessageText = this.fGetChangeText(oChangeType);
+		if (sMessageText !== "") {
+			sap.m.MessageToast.show(sMessageText, {
+				duration: 10000
+			});
+		}
+
+		test.sap.ui.comp.personalization.Util.updateSortererFromP13nModelDataChange(oTable, oPersData, oJSONData.cols);
+		test.sap.ui.comp.personalization.Util.updateFiltererFromP13nModelDataChange(oTable, oPersData);
+	};
+
+	var aContent = [];
+	jQuery.ajax({
+		url: "../../../../../test-resources/sap/ui/comp/personalization/mockserver/ProductCollection.json",
+		dataType: 'text',
+		async: false,
+		success: function(response, textStatus, xhr) {
+			aContent = JSON.parse(response);
+		},
+		error: function(xhr, textStatus, error) {
+
+		}
+	});
+	var aPathOfVisibleCols = [
+		"Name", "Category", "Price", "Quantity"
+	];
+	var aPathOfSorter = [];
+	var aPathOfFilterer = [];
+	var aPathOfIgnoredColumns = [
+		"GUID"
+	];
+	var enumTypes = {
+		String: "String",
+		Number: "Number",
+		Date: "Date",
+		Time: "Time",
+		Boolean: "Boolean"
+	};
+	var oJSONData = {
+		oDataItems: aContent,
+		cols: [
+			{
+				text: "ProductId",
+				path: "ProductId",
+				type: enumTypes.String
+			}, {
+				text: "Category",
+				path: "Category",
+				type: enumTypes.String
+			}, {
+				text: "Name",
+				path: "Name",
+				type: enumTypes.String
+			}, {
+				text: "Description",
+				path: "Description",
+				type: enumTypes.String
+			}, {
+				text: "SupplierName",
+				path: "SupplierName",
+				type: enumTypes.String
+			}, {
+				text: "Quantity",
+				path: "Quantity",
+				type: enumTypes.Number
+			}, {
+				text: "WeightMeasure",
+				path: "WeightMeasure",
+				type: enumTypes.Number
+			}, {
+				text: "WeightUnit",
+				path: "WeightUnit",
+				type: enumTypes.String
+			}, {
+				text: "Price",
+				path: "Price",
+				path2: "CurrencyCode",
+				control: "ObjectNumber",
+				type: enumTypes.Number
+			}, {
+				text: "Status",
+				path: "Status",
+				type: enumTypes.String
+			}, {
+				text: "CurrencyCode",
+				path: "CurrencyCode",
+				tableType: "UITable",
+				type: enumTypes.String
+			}, {
+				text: "Width",
+				path: "Width",
+				type: enumTypes.Number
+			}, {
+				text: "Depth",
+				path: "Depth",
+				type: enumTypes.Number
+			}, {
+				text: "Height",
+				path: "Height",
+				type: enumTypes.Number
+			}, {
+				text: "DimUnit",
+				path: "DimUnit",
+				type: enumTypes.String
+			}, {
+				text: "Date",
+				path: "Date",
+				type: enumTypes.Date
+			}, {
+				text: "Time",
+				path: "Time",
+				type: enumTypes.Time
+			}, {
+				text: "GUID",
+				path: "GUID",
+				type: enumTypes.String
+			}, {
+				text: "Boolean",
+				path: "Bool",
+				type: enumTypes.Boolean
+			}
+		],
+		selectedItems: [],
+		pathOfVisibleCols: aPathOfVisibleCols,
+		pathOfSorter: aPathOfSorter,
+		pathOfFilterer: aPathOfFilterer
+	};
+
+	// --------------------------------------------------------------------------------------------------------------
+	// -------------------------- sap.m.Table with customer columns panel ------------------------------------
+	// --------------------------------------------------------------------------------------------------------------				
+	var oMTable = sap.ui.comp.personalization.PersonalizationDialog.createMTable("testMTableCustomController", oJSONData, false, false, function() {
+		oMController.openDialog();
+	});
+
+	var oMController = new sap.ui.comp.personalization.Controller({
+		table: oMTable,
+		setting: {
+			customColumns: {
+				visible: true,
+				controller: new sap.ui.comp.personalization.CustomController("CustomController")
+			},
+			group: {
+				visible: false
+			},
+			columns: {
+				visible: false
+			}
+		}
+	});
+	oMController.attachAfterP13nModelDataChange(this.fHandleAfterP13nModelDataChange, this);
+
+	var oApp = new sap.m.App("myApp", {
+		pages: [
+			new sap.m.Page({
+				title: "Table Personalization Dialog with custom Panel and custom Personalization Controller",
+				headerContent: [
+					new sap.m.Toolbar({
+						content: [
+							new sap.m.CheckBox({
+								text: "compact Mode",
+								selected: true,
+								select: function() {
+									$("#myApp").toggleClass("sapUiSizeCompact");
+								}
+							})
+						]
+					})
+				],
+				content: [
+					new sap.m.Carousel({
+						pages: [
+							new sap.m.Page({
+								content: [
+									new sap.m.Panel("IDMTablePanel", {
+										headerText: "sap.m.Table",
+										expandable: true,
+										expanded: true,
+										content: oMTable
+									})
+								]
+							})
+						]
+					})
+				]
+			})
+		]
+	});
+
+	var oShell = new sap.m.Shell();
+	oShell.setApp(oApp);
+	oShell.placeAt("body");
+
+	$(document).ready(function() {
+		$("#myApp").toggleClass("sapUiSizeCompact");
+	});
+</script>
+</head>
+<body id="body" class="sapUiBody"></body>
+</html>

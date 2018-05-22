@@ -1,0 +1,113 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=008179988300448637"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=008179988300448637"/>
+<title>Display of Action Buttons in Table</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiod27ae998a20a4dbead161e3e7c0ac2e8">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Display of Action Buttons in Table</h1>
+
+	<div class="body conbody">
+		<div class="section"><div class="section_title">Display or Hide the + (Create) Button</div><div type="Display or Hide the + (Create) Button"><p class="p">You can choose to display or hide
+				the <span class="ph uicontrol">+</span> (<span class="ph uicontrol">Create</span>) button for entities
+				related to the selected object (entity) based on certain conditions set up in your
+				back-end system. For example, you may wish to prevent users from adding a product
+				description after the product has been archived.</p>
+<p class="p">When set up to be visible,
+				the <span class="ph uicontrol">+</span> button is displayed in the table toolbar when the
+				object page is in <span class="ph uicontrol">Edit</span> mode, as shown below.</p>
+<div class="fig fignone" id="loiod27ae998a20a4dbead161e3e7c0ac2e8__fig_h3z_wml_lx"><div class="figcontainer">
+				
+				<img class="image" id="loiod27ae998a20a4dbead161e3e7c0ac2e8__image_zxm_zml_lx" src="loio1d6a9b10e9b0459892c60ce62b88dc71_LowRes.png"/>
+			<div class="figcap">+ Button in Table Toolbar</div></div></div>
+<p class="p">Within your annotations, you set the <samp class="ph codeph">creatable-path</samp> to a
+				particular property of the root object (entity) in the back-end system that has a
+				value of either <samp class="ph codeph">true</samp> or <samp class="ph codeph">false</samp>. If the value of
+				this property is <samp class="ph codeph">true</samp>, the <span class="ph uicontrol">+</span> button is
+				displayed; if it is <samp class="ph codeph">false</samp>, it is hidden. Note that the
+					<samp class="ph codeph">creatable-path</samp> must point to a property of the root entity.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Code Samples</p>
+
+				<span class="ph emphasis emphasis">creatable-path: v2 Annotation</span>
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;NavigationProperty Name="to_ProductText" sap:creatable-path="CanCreateProductText".../&gt;</pre></div>
+
+				<span class="ph emphasis emphasis">creatable-path: v4 Annotation</span>
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;Annotations Target="STTA_PROD_MAN.STTA_PROD_MAN_Entities/STTA_C_MP_Product"&gt;
+    &lt;Annotation Term="Capabilities.InsertRestrictions"&gt;
+        &lt;Record&gt;
+            &lt;PropertyValue Property="NonInsertableNavigationProperties"&gt;
+                &lt;Collection&gt;
+                    &lt;If&gt;                                                      
+                        &lt;Not&gt;
+                            &lt;Path&gt;CanCreateProductText&lt;/Path&gt;
+                        &lt;/Not&gt;
+                        &lt;NavigationPropertyPath&gt;to_ProductText&lt;/NavigationPropertyPath&gt;
+                    &lt;/If&gt;
+                &lt;/Collection&gt;
+            &lt;/PropertyValue&gt;
+        &lt;/Record&gt;
+    &lt;/Annotation&gt;
+&lt;/Annotations&gt;</pre></div>
+
+			</div></div></div>
+
+		<div class="section"><div class="section_title">Enable or Disable Delete Button</div><div type="Enable or Disable Delete Button"><p class="p">You can choose to enable or disable the
+					<span class="ph uicontrol">Delete</span> button in the toolbar
+				of
+				tables on the object page based on certain conditions in the
+				back-end system. For example, you may wish to disable the
+					<span class="ph uicontrol">Delete</span> button for a product's text if the text is in
+				English.</p>
+<p class="p">Within your annotation, you set the <samp class="ph codeph">deletable-path</samp>
+				for an entity set to point to a particular Boolean property of the entity that has a
+				value of either <samp class="ph codeph">true</samp> or <samp class="ph codeph">false</samp>. The
+					<span class="ph uicontrol">Delete</span> button is enabled if the selected item's property
+				is <samp class="ph codeph">true</samp>. If multiple selection is enabled for the table, the button
+				is enabled if at least one selected item is deletable.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Code Samples</p>
+
+				<div class="p"><span class="ph emphasis emphasis">v2 Annotation for
+					Metadata</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;EntitySet Name="STTA_C_MP_ProductText" EntityType="STTA_PROD_MAN.STTA_C_MP_ProductTextType" sap:deletable-path="Delete_mc" sap:content-version="1"/&gt;</pre></div>
+</div>
+
+				<div class="p"><span class="ph emphasis emphasis">v4
+					Annotation</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;Annotations Target="STTA_PROD_MAN.STTA_PROD_MAN_Entities/STTA_C_MP_ProductText"&gt;
+   &lt;Annotation Term="Org.OData.Capabilities.V1.DeleteRestrictions"&gt;
+        &lt;Record&gt;
+            &lt;PropertyValue Property="Deletable" Path="Delete_mc"/&gt;
+        &lt;/Record&gt;
+    &lt;/Annotation&gt;
+&lt;/Annotations&gt;
+</pre></div>
+</div>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">CDS Annotations for deletable-path</p>
+
+				<p class="p">If you annotate <samp class="ph codeph">@ObjectModel.deleteEnabled</samp> with
+						<samp class="ph codeph">EXTERNAL_CALCULATION</samp>, a new property
+						(<samp class="ph codeph">Delete_mc</samp>) will be generated for your entity. This is a
+					calculated property and does not exist in any database. </p>
+
+				<p class="p">For more information, see <samp class="ph codeph">ObjectModel.deleteEnabled</samp> in <a class="xref" href="http://help.sap.com/saphelp_nw75/helpdata/en/89/6496ecfe4f4f8b857c6d93d4489841/content.htm?frameset=/en/89/6496ecfe4f4f8b857c6d93d4489841/frameset.htm&amp;current_toc=/en/d9/bc687d35fa42ccbb0b9256ce786d51/plain.htm&amp;node_id=112" alt="http://help.sap.com/saphelp_nw75/helpdata/en/89/6496ecfe4f4f8b857c6d93d4489841/content.htm?frameset=/en/89/6496ecfe4f4f8b857c6d93d4489841/frameset.htm&amp;current_toc=/en/d9/bc687d35fa42ccbb0b9256ce786d51/plain.htm&amp;node_id=112" title="http://help.sap.com/saphelp_nw75/helpdata/en/89/6496ecfe4f4f8b857c6d93d4489841/content.htm?frameset=/en/89/6496ecfe4f4f8b857c6d93d4489841/frameset.htm&amp;current_toc=/en/d9/bc687d35fa42ccbb0b9256ce786d51/plain.htm&amp;node_id=112">ObjectModel Annotations</a>. </p>
+
+			</div></div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

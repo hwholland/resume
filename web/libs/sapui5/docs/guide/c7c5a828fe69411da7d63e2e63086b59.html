@@ -1,0 +1,319 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Developers configure the measures and dimensions displayed in charts by setting the role property to the desired value per chart type. Additional definitions apply to all chart types."/>
+<meta name="description" content="Developers configure the measures and dimensions displayed in charts by setting the role property to the desired value per chart type. Additional definitions apply to all chart types."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=817108180657982"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=817108180657982"/>
+<title>Configuring Charts</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc7c5a828fe69411da7d63e2e63086b59">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Configuring Charts</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">Developers configure the measures and dimensions displayed in charts by setting the
+		role property to the desired value per chart type. Additional definitions apply to all chart
+		types.</p>
+
+		<div class="section">
+			<p class="p">You can use the same annotation file with different qualifiers to present charts with
+				different chart views. You do this by specifying different qualifiers in the
+				annotation file for each card. The following sections of the annotation file apply
+				to all chart types:</p>
+
+			
+<div class="table-wrapper tablenoborder"><table summary="" id="loioc7c5a828fe69411da7d63e2e63086b59__table_vz1_2lb_nx" class="table" frame="border" border="1" rules="all">
+					<thead class="thead" align="left">
+						<tr class="row">
+							<th class="entry" valign="top" id="d15639999e29">Annotation</th>
+
+							<th class="entry" valign="top" id="d15639999e32">
+								<p class="p">What It Does</p>
+
+							</th>
+
+						</tr>
+
+					</thead>
+
+					<tbody class="tbody">
+						<tr class="row">
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 "><samp class="ph codeph">UI.Identification</samp></td>
+
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 ">Specify the navigation targets activated when the user clicks the
+								card and list the parameters to pass to the target application. This
+								definition is mandatory. For more information, see <a class="xref" href="530f9e6f66104d5888ade79b5cf417e0.html" title="All cards support navigation, both to a different SAP Fiori application using intent based navigation, and to external applications and websites via a direct URL which opens in a new browser tab. To trigger the navigation, users click or tap on a card header and in some cases, on an item within the card.">Configuring Card Navigation</a>.</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 "><samp class="ph codeph">UI.SelectionVariant.SelectOptions</samp></td>
+
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 ">You can specify the filter values that are applied to the card,
+								which are applied when retrieving the card data.</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 "><samp class="ph codeph">UI.PresentationVariant.SortOrder</samp></td>
+
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 ">You can specify the sort order to be used.</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 "><samp class="ph codeph">UI.PresentationVariant.MaxItems</samp></td>
+
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 ">Using this property, you can limit the maximum number of records
+								to be fetched from the backend. If this variant isn't used, then all
+								records from the backend will be displayed in the chart.<div class="p">
+									<div class="note tip"><span class="tiptitle">Tip</span> Don't use this for charts that rely on complete
+										data sets; for example, the donut chart card, otherwise the
+										results won't be meaningful.</div>
+
+								</div>
+</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 "><samp class="ph codeph">UI.Chart</samp></td>
+
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 ">Specify the dimensions and measures that make up the chart, the
+								chart type, and the way that the measures/dimensions are used for
+								the chart. This definition is mandatory.</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 "><samp class="ph codeph">UI.Chart.MeasureAttributes.Measure</samp></td>
+
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 ">Defines the measures used in the chart.</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 "><samp class="ph codeph">UI.Chart.MeasureAttributes.Role</samp></td>
+
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 "> The manner in which a measure is used within the chart. This is
+								configured differently for each chart type, as described
+								below.</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 "><samp class="ph codeph">UI.Chart.DimensionAttributes.Dimension</samp></td>
+
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 ">These are the dimensions used in the chart.</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 "><samp class="ph codeph">UI.Chart.DimensionAttributes.Role</samp></td>
+
+							<td class="entry" valign="top" headers="d15639999e29 d15639999e32 ">The manner in which a dimension is used within the chart. This is
+								configured differently for each chart type, as described
+								below.</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+</div>
+
+		</div>
+
+		<div class="section"><div class="section_title">Formatting Numeric Values in Charts</div><div type="Formatting Numeric Values in Charts"><p class="p">Within overview pages, analytical
+				chart cards have can format measure values based on the
+					<samp class="ph codeph">NumberOfFractionalDigits</samp> and <samp class="ph codeph">ScaleFactor</samp>
+				properties of the <samp class="ph codeph">DataPoint</samp> term in the annotation
+				file.</p>
+<p class="p">Previously, the measure axis had different scales depending on the
+				values available. Also, the fractional digits were set to two digits which made it
+				difficult to interpret the meaning of the data. With the latest changes made with
+				the release of SAPUI5 1.40, the scale on the axes values are now consistent and the
+				fractional digits can be set dynamically in the annotation file to display the chart
+				as per the desired scale and fractional digits. </p>
+<div class="p">Here, is an example
+				annotation that shows how it's used:<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotation Term="UI.DataPoint" Qualifier=" Eval_by_Currency-TotalSales "&gt;
+&lt;Record Type="UI.DataPointType"&gt;
+           &lt;PropertyValue Property="ValueFormat"&gt;
+                   &lt;Record&gt;
+                            &lt;PropertyValue Property="ScaleFactor" Int="1000" /&gt;
+                            &lt;PropertyValue Property="NumberOfFractionalDigits" Int="3" /&gt;
+                   &lt;/Record&gt;
+           &lt;/PropertyValue&gt;
+  &lt;/Record&gt;
+&lt;/Annotation&gt;
+&lt;Annotation Term="UI.Chart" Qualifier="Eval_by_Currency"&gt;
+  &lt;Record Type="UI.ChartDefinitionType"&gt;
+           &lt;PropertyValue Property="Title" String="View1" /&gt;
+           &lt;PropertyValue Property="ChartType" EnumMember="UI.ChartType/Bubble"/&gt;
+           &lt;PropertyValue Property="MeasureAttributes"&gt;
+                   &lt;Collection&gt;
+                            …
+                            &lt;Record Type="UI.ChartMeasureAttributeType"&gt;
+                                     &lt;PropertyValue Property="Measure" PropertyPath="TotalSales" /&gt;
+                                     &lt;PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis2" /&gt;
+                                     &lt;PropertyValue Property="DataPoint" AnnotationPath="@UI.DataPoint#Eval_by_Currency-TotalSales"/&gt;
+                            &lt;/Record&gt;
+                            …
+                   &lt;/Collection&gt;
+           &lt;/PropertyValue&gt;
+           …
+  &lt;/Record&gt;
+&lt;/Annotation&gt;</pre></div>
+
+				</div>
+</div>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Semantic Pattern</p>
+
+			</div><div class="p">With the semantic pattern feature, overview page analytical cards can
+				enable users to compare between actual and forecast values. The line, column, and
+				vertical bullet chart cards support this feature. The forecast value comes from the
+				datapoint annotation that is associated with the measure used in the selected
+				analytical card. To enable the semantic pattern feature, it requires: <ul class="ul" id="loioc7c5a828fe69411da7d63e2e63086b59__ul_sk4_bhz_5x">
+					<li class="li">Datapoint annotation should consist of property
+							<samp class="ph codeph">ForecastValue</samp> with value as a measure.</li>
+
+					<li class="li">Chart annotation should consist of:<ul class="ul" id="loioc7c5a828fe69411da7d63e2e63086b59__ul_udm_fhz_5x">
+							<li class="li">1 dimension and 1 measure for line and column chart cards</li>
+
+							<li class="li">1 dimension and 1-2 measures for vertical bullet chart chards</li>
+
+						</ul>
+</li>
+
+				</ul>
+If the above conditions are not met, the chart will not inherit the semantic
+				pattern feature. The actual measure will appear in a solid color and the forecast
+				measure will appear as a dashed pattern for column and vertical bullet chart cards
+				or as a dotted pattern for line charts. The following graphic is an example of what
+				it could look like:</div>
+<p class="p"><img class="image" id="loioc7c5a828fe69411da7d63e2e63086b59__image_znj_ckz_5x" src="loio62a0e9a044534bca9a5953fafeee37e6_LowRes.png"/></p>
+<div class="p">Here's an example
+				annotation that shows how it's used:<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotation Term="UI.DataPoint" Qualifier="Column_Forecast"&gt;
+&lt;Record Type="UI.DataPointType"&gt;
+			&lt;PropertyValue Property="Title" String="Sales Performance"/&gt;
+			&lt;PropertyValue Property="Value" Path="Sales"/&gt;
+			&lt;PropertyValue Property="NumberFormat"&gt;
+				&lt;Record&gt;
+					&lt;PropertyValue Property="ScaleFactor" Int="0"/&gt;
+					&lt;PropertyValue Property="NumberOfFractionalDigits" Int="3"/&gt;
+				&lt;/Record&gt;
+			&lt;/PropertyValue&gt;
+		&lt;PropertyValue Property="ForecastValue" PropertyPath="SalesShare"/&gt;
+&lt;/Record&gt;
+&lt;/Annotation&gt;
+ 
+&lt;Annotation Term="UI.Chart" Qualifier="Eval_by_Currency_Column"&gt;
+&lt;Record Type="UI.ChartDefinitionType"&gt;
+			&lt;PropertyValue Property="Title" String="Column chart for shape" /&gt;
+			&lt;PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column" /&gt;
+			&lt;PropertyValue Property="MeasureAttributes"&gt;
+					&lt;Collection&gt;
+						&lt;Record Type="UI.ChartMeasureAttributeType"&gt;
+							&lt;PropertyValue Property="Measure" PropertyPath="Sales" /&gt;
+							&lt;PropertyValue Property="DataPoint"&gt;
+&lt;AnnotationPath&gt;@UI.DataPoint#Column_Forecast&lt;/AnnotationPath&gt;
+				&lt;/PropertyValue&gt;
+			&lt;PropertyValue Property="Role"
+			EnumMember="UI.ChartMeasureRoleType/Axis1" /&gt;
+	&lt;/Record&gt;
+					&lt;/Collection&gt;
+				&lt;/PropertyValue&gt;
+		&lt;PropertyValue Property="DimensionAttributes"&gt;
+				&lt;Collection&gt;
+&lt;Record Type="UI.ChartDimensionAttributeType"&gt;
+						&lt;PropertyValue Property="Dimension" PropertyPath="SupplierCompany" /&gt;
+						&lt;PropertyValue Property="Role"
+							EnumMember="UI.ChartDimensionRoleType/Category" /&gt;
+					&lt;/Record&gt;
+				&lt;/Collection&gt;
+		&lt;/PropertyValue&gt;
+&lt;/Record&gt;
+&lt;/Annotation&gt;</pre></div>
+
+				</div>
+</div>
+</div></div>
+
+		<div class="section"><div class="section_title">Chart Types</div><div type="Chart Types"><p class="p">Overview pages can make use of the analytic chart cards
+				line, donut, bubble, column, stacked column, vertical bullet, combination, and
+				scatter.</p>
+<p class="p">The value assigned to the role property for dimensions and measures
+				in the annotation file determines the visualization of the chart. For dimensions,
+				you can set the role to <span class="ph emphasis emphasis">category</span> or
+				<span class="ph emphasis emphasis">series</span>. If no value is specified, it's defaulted to
+					<span class="ph emphasis emphasis">category</span>. </p>
+<p class="p">For measures, you can set the role to
+				values: <span class="ph emphasis emphasis">axis1</span>, <span class="ph emphasis emphasis">axis2 </span>,or
+					<span class="ph emphasis emphasis">axis3</span>. If no value is specified, it's defaulted to
+					<span class="ph emphasis emphasis">axis1</span>. The actual interpretation of the role value
+				specified in the annotation file varies according to the chart type used, as
+				detailed in the next chapter.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Time Series Charts</p>
+
+				<p class="p">Time series chart cards are cards with regular charts, but use time as the category axis
+					instead of the categorical axis. The advantage in using a time series axis is
+					that the representation of the time based dimension is much cleaner and more
+					responsive to the change in card size. The display level and format in the time
+					axis would be in the default format offered by the visual chart (for example
+					day/month/year displayed as 10/Jan/2016).</p>
+
+				<p class="p">Analytic cards will automatically use the time axis only if the following
+					conditions are met:</p>
+
+				<div class="p">
+					<ul class="ul" id="loioc7c5a828fe69411da7d63e2e63086b59__ul_ydn_bx1_yw">
+						<li class="li">Chart type is either line, bubble, column or combination</li>
+
+						<li class="li">Chart is configured with only one dimension</li>
+
+						<li class="li">The data type of the dimension is either <samp class="ph codeph">edm.datetime</samp>
+							or <samp class="ph codeph">edm.string</samp>. In case the data type is
+								<samp class="ph codeph">edm.string</samp>, then it must have the additional OData
+							metadata annotation <samp class="ph codeph">sap:semantics</samp> of
+								<samp class="ph codeph">yearmonthday</samp>. If it's a bubble chart, there must be
+								<em class="ph i">exactly</em> two measures</li>
+
+						<li class="li">If it's a combination chart card, then there must be <em class="ph i">at least</em> two
+							measures.</li>
+
+					</ul>
+
+					<div class="note note"><span class="notetitle">Note</span> 
+						<p class="p">Only line, bubble, column and combination chart cards support the time
+							axis.</p>
+
+					</div>
+
+				</div>
+
+			</div></div></div>
+
+		<div class="section"><div class="section_title">More Information</div><div type="More Information">
+			
+			<p class="p">For more information on the type of charts used in overview pages, see <a class="xref" href="68e62adedfd44cd48cb6ebc418c8d95a.html" title="This section describes the type of analytic chart cards that can be used in overview pages. They can be line, bubble, donut, column, stacked column, vertical bullet, combination, or scatter.">Chart Cards Used in Overview Pages</a>.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

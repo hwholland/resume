@@ -1,0 +1,120 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Languages with right-to-left (RTL) text directionality keep the default directionality of numeric values and texts in left-to-right (LTR) mode. To ensure correct handling, two API properties have been introduced - textDirection and textAlign."/>
+<meta name="description" content="Languages with right-to-left (RTL) text directionality keep the default directionality of numeric values and texts in left-to-right (LTR) mode. To ensure correct handling, two API properties have been introduced - textDirection and textAlign."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=03932740655447087"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=03932740655447087"/>
+<title>API Properties for Right-to-Left Support in Text-Displaying Controls</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio7e7cd0aed8bd469cbdd9b46035046dd8">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">API Properties for Right-to-Left Support in Text-Displaying Controls</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Languages with right-to-left (RTL) text directionality keep the default directionality
+		of numeric values and texts in left-to-right (LTR) mode. To ensure correct handling, two API
+		properties have been introduced - <samp class="ph codeph">textDirection</samp> and
+			<samp class="ph codeph">textAlign</samp>.</p>
+
+		<div class="section"><div class="section_title">Introduction</div><div type="Introduction">
+			
+			<p class="p">In Arabic, Hebrew and other languages that use the RTL text direction, when you see numerals
+				or text from left-to-right languages (like symbols) on the UI, they are flipped to
+				match the text direction. This common pitfall is visible when representing numerals
+				(phone numbers, dates, currency values, etc.), which actually need to be displayed
+				in LTR mode within the context of an RTL page.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Solution</div><div type="Solution">
+			
+			<p class="p">Two new properites have been introduced to determine the directionality of the target
+				content.</p>
+
+			<ul class="ul" id="loio7e7cd0aed8bd469cbdd9b46035046dd8__ul_usd_25n_rs">
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis"><samp class="ph codeph">textDirection</samp></span></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis"><samp class="ph codeph">textAlign</samp></span></p>
+
+				</li>
+
+			</ul>
+
+			<p class="p">
+				<samp class="ph codeph">textDirection</samp> adds an HTML <samp class="ph codeph">dir</samp> attribute to the
+				part of the control that displays the target content. </p>
+
+			<p class="p">
+				<samp class="ph codeph">textAlign</samp> and is used for reversing the text alignment. Adding the
+					<samp class="ph codeph">textAlign</samp> property is only needed if the control doesn’t force
+				the correct alignment. </p>
+
+			<p class="p">The naming of the properties varies based on the actual use case of the control. For example,
+				the <samp class="ph codeph">sap.m.DisplayListItem</samp> control has <samp class="ph codeph">label</samp> and
+					<samp class="ph codeph">value</samp> properties for text representation and the most common
+				use case is to display numeric data in the <samp class="ph codeph">value</samp> part of the
+				control. The naming of the new property is <samp class="ph codeph">valueTextDirection</samp> and
+				since the control forces text alignment, the <samp class="ph codeph">valueTextAlign</samp>
+				property is not needed.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Examples</div><div type="Examples"><p class="p">The examples below illustrate the default behavior of numeric
+				data in an RTL page context – the individual parts of the text are mixed:</p>
+<img class="image" id="loio7e7cd0aed8bd469cbdd9b46035046dd8__image_dcz_1ym_ms" src="loio41ff02ffc92746729276a3eb142062b8_HiRes.png"/><p class="p">After
+				setting the <samp class="ph codeph">textDirection</samp> and <samp class="ph codeph">textAlign</samp> properties
+				of the control (inherited from <samp class="ph codeph">sap.m.InputBase</samp>), the numeric data
+				is displayed in LTR mode, despite the RTL page context. When in LTR mode, the
+				default text alignment (<span class="ph emphasis emphasis">begin</span>) is kept, which differs from the
+				page text alignment. Because of this, we should use <samp class="ph codeph">textAlign: end</samp>
+				as the control doesn’t force the alignment of the text. Here is how this looks in an
+					<samp class="ph codeph">sap.m.Input</samp>
+				control:</p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+sap.m.Input ({
+     value: "(+359) 111 222 333 + (Some) text", 
+     textDirection: sap.ui.core.TextDirection.LTR,
+     textAlign: sap.ui.core.TextAlign.End
+});</pre></div>
+<p class="p">And
+				here is how it looks on the screen:</p>
+<img class="image" id="loio7e7cd0aed8bd469cbdd9b46035046dd8__image_yvf_zvn_rs" src="loio2d87e986b78240219be610f8e6487682_HiRes.png"/><p class="p">This second
+				example shows the behavior of a control that enforces correct text alignment -
+					<samp class="ph codeph">sap.m.DisplayListItem</samp>. In this case, you don't need to set the
+					<samp class="ph codeph">textAlign</samp>
+				property.</p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+new sap.m.DisplayListItem({
+     label: "Phone Correct", 
+     value: "(+359) 111 222 333", 
+     valueTextDirection: sap.ui.core.TextDirection.LTR
+});</pre></div>
+<p class="p">And
+				here is how it looks on the screen:</p>
+<img class="image" id="loio7e7cd0aed8bd469cbdd9b46035046dd8__image_b4j_pwn_rs" src="loio402f39d2eb92465b9dfc16124339c897_HiRes.png"/><div class="note tip"><span class="tiptitle">Tip</span> 
+				<p class="p">To ensure that your application displays the data correctly, always test your
+					application using RTL mode and real data.</p>
+
+			</div>
+<p class="p">Check the API Reference to see if your controls have these properties
+				implemented. </p>
+</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

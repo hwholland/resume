@@ -1,0 +1,42 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can add custom localized text files that contain additional texts or texts that overwrite the original texts to the sap.ui.model.resource.ResourceModel"/>
+<meta name="description" content="You can add custom localized text files that contain additional texts or texts that overwrite the original texts to the sap.ui.model.resource.ResourceModel"/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=525409500691971"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=525409500691971"/>
+<title>Localized Texts for Extended Apps</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio2edc3f99883e4a068f040d9e844f14fa">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Localized Texts for Extended Apps</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You can add custom localized text files that contain additional texts or texts that
+		overwrite the original texts to the <samp class="ph codeph">sap.ui.model.resource.ResourceModel</samp>
+	</p>
+
+		<p class="p">The enhanced resource model tries to resolve the localized texts from the custom resource
+			bundle first. If a text does not exist there, it tries to look up the text in the
+			resource bundle of the original app. Custom resource bundles cannot be added by standard
+			extension configuration, but must be added as part of a controller extension as shown in
+			the following example:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+var oModel = new sap.ui.model.resource.ResourceModel({bundleUrl:"./testdata/messages.properties"});
+oModel.enhance({bundleUrl:"./testdata/messages_custom.properties"});</pre></div>
+
+		
+	</div>
+
+</div></div>
+
+</body>
+</html>

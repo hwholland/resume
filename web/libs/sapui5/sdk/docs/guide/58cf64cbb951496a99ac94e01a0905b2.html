@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The &lt;template:with&gt; instruction can be used to change a variable's value or to add a variable with a new name."/>
+<meta name="description" content="The &lt;template:with&gt; instruction can be used to change a variable's value or to add a variable with a new name."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=1189954659863417"/>
+<title>with</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio58cf64cbb951496a99ac94e01a0905b2">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">with</h1>
+<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">&lt;template:with&gt;</samp> instruction can be used to change a variable's
+		value or to add a variable with a new name. </p>
+<div class="p">This changed variable is available only within the scope of the <samp class="ph codeph">with</samp>
+			instruction. In the example titled <span class="ph emphasis emphasis">"with" Template</span>,
+				<samp class="ph codeph">"meta&gt;com.sap.vocabularies.UI.v1.Badge"</samp> refers to
+				<samp class="ph codeph">"/dataServices/schema/0/entityType/0/com.sap.vocabularies.UI.v1.Badge"</samp>
+			within <samp class="ph codeph">oMetaModel</samp>. <samp class="ph codeph">"header"</samp> then becomes a valid model
+			name while processing the content of the <samp class="ph codeph">with</samp> instruction, in addition
+			to the existing ones:<ul class="ul" id="loio58cf64cbb951496a99ac94e01a0905b2__ul_g4h_xfp_3r"><li class="li">
+					<p class="p">meta = <samp class="ph codeph">oMetaModel, "/dataServices/schema/0/entityType/0"</samp></p>
+
+				</li>
+<li class="li">
+					<p class="p">header = <samp class="ph codeph">oMetaModel,
+							"/dataServices/schema/0/entityType/0/com.sap.vocabularies.UI.v1.Badge"</samp></p>
+
+				</li>
+</ul>
+</div>
+<p class="p">If you omit the "var" attribute, the same model name will be reused; for example, "meta" in our
+			example, and the <samp class="ph codeph">with</samp> instruction changes the binding context locally.
+			A new variable name improves readability.</p>
+<div class="example"><h2 class="exampletitle">Example</h2><div class="title authorexampletitle">"with" Template</div>
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;template:with path="meta&gt;com.sap.vocabularies.UI.v1.Badge" var="badge"&gt;
+    &lt;!-- ... --&gt;
+&lt;/template:with&gt;
+</pre></div>
+
+		</div>
+<div class="section">
+			<div class="p">A helper can be called from a <samp class="ph codeph">with</samp> instruction. It receives an
+					<samp class="ph codeph">sap.ui.model.Context</samp> object identifying the model and path from
+				the instruction's "path" property and may return one of the following: <ul class="ul" id="loio58cf64cbb951496a99ac94e01a0905b2__ul_chm_4hp_3r"><li class="li">
+						<p class="p">A <samp class="ph codeph">sap.ui.model.Context</samp> object that is assigned to the
+							variable</p>
+
+					</li>
+<li class="li">
+						<p class="p">A non-empty string that is used as a path within the same model and
+							assigned to the variable</p>
+
+					</li>
+<li class="li">
+						<p class="p">Undefined, in which case the helper is ignored and the original path is
+							assigned to the variable</p>
+
+					</li>
+</ul>
+</div>
+
+			<p class="p">The helper can analyze the object the path points to and derive a "resolved path"
+				from that, such as by normalization or following references. Typically, it only
+				points to a different path, but it can even change the model instance, such as
+				jumping from a data model to its meta model or jumping to a resource model, and so
+				on.</p>
+
+			<p class="p">The example titled <span class="ph emphasis emphasis">"with" Template Including Helper</span> assumes that
+				"field" is an OData meta model with a current binding context that points to a field
+				inside some annotation, such as
+					<samp class="ph codeph">"/dataServices/schema/0/entityType/0/com.sap.vocabularies.UI.v1.Badge/MainInfo"</samp>.
+				The helper function <samp class="ph codeph">sap.ui.model.odata.AnnotationHelper.resolvePath</samp>
+				is used to follow the field value's <samp class="ph codeph">path</samp> property. <span class="ph">For more
+					information, see <a class="xref" href="dbec058964f545e4bb3b7e9fbaa0602d.html" title="A collection of methods which help to consume OData Version 4.0 annotations in XML template views.">Annotation
+						Helper</a> and <a class="xref" href="../../docs/api/symbols/sap.ui.model.odata.AnnotationHelper.html" alt="../../docs/api/symbols/sap.ui.model.odata.AnnotationHelper.html" title="../../docs/api/symbols/sap.ui.model.odata.AnnotationHelper.html">https://sapui5.hana.ondemand.com/sdk/#docs/api/symbols/sap.ui.model.odata.AnnotationHelper.html</a>.</span></p>
+
+			
+			<p class="p">It returns a path inside the meta model which refers to the corresponding property's meta
+				data, such as
+					<samp class="ph codeph">"/dataServices/schema/&lt;i&gt;/entityType/&lt;j&gt;/property/&lt;k&gt;"</samp>.
+				This result is in turn assigned by the <samp class="ph codeph">with</samp> instruction to the
+				variable named "target".</p>
+
+		</div>
+<div class="example"><h2 class="exampletitle">Example</h2><div class="title authorexampletitle">"with" Template Including Annotation Helper</div>
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+&lt;template:with path="meta&gt;Value" helper="sap.ui.model.odata.AnnotationHelper.resolvePath" var="target"&gt;
+  &lt;template:if test="{= {target&gt;sap:semantics} === 'email'}" &gt;
+    &lt;core:Icon src="sap-icon://email" /&gt;
+  &lt;/template:if&gt;
+  &lt;template:if test="{= {target&gt;sap:semantics} === 'tel'}" &gt;
+    &lt;core:Icon src="sap-icon://phone" /&gt;
+  &lt;/template:if&gt;
+&lt;/template:with&gt;
+</pre></div>
+
+		</div>
+</div>
+<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="dbec058964f545e4bb3b7e9fbaa0602d.html" title="A collection of methods which help to consume OData Version 4.0 annotations in XML template views.">Annotation Helper</a></div>
+</div>
+</div></div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="with";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

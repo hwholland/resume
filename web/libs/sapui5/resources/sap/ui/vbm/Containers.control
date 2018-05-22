@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<control xmlns="http://www.sap.com/sap.ui.library.xsd" >
+
+	<name>Containers</name>
+	<documentation>Containers aggregation container</documentation>
+
+	<baseType>sap.ui.vbm/VoAggregation</baseType>
+	<events>
+		<event name="click">
+			<documentation>The event is raised when there is a click action on a Container.</documentation>
+		</event>
+		<event name="contextMenu">
+			<documentation>The event is raised when there is a  right click or a tap and hold action on a Container.</documentation>
+		</event>
+	</events>
+	<aggregations default="items">
+		<aggregation cardinality="0..n" name="items" type="sap.ui.vbm/Container">
+			<documentation>Container object aggregation</documentation>
+		</aggregation>
+	</aggregations>
+</control>

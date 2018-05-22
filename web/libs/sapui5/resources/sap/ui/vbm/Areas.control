@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<control xmlns="http://www.sap.com/sap.ui.library.xsd" >
+
+	<name>Areas</name>
+	<documentation>Areas aggregation container</documentation>
+
+	<baseType>sap.ui.vbm/VoAggregation</baseType>
+	<events>
+		<event name="click">
+			<documentation>The event is raised when there is a click action on an Area.</documentation>
+		</event>
+		<event name="contextMenu">
+			<documentation>The event is raised when there is a  right click or a tap and hold action on an Area.</documentation>
+		</event>
+		<event name="edgeClick">
+			<documentation>This event is raised when the edge of an Area is clicked.</documentation>
+		</event>
+		<event name="edgeContextMenu">
+			<documentation>This event is raised when the edge of an Area is right clicked.</documentation>
+		</event>
+		<event name="drop">
+			<documentation>The event is raised when something is dropped on an Area.</documentation>
+		</event>
+	</events>
+	<aggregations default="items">
+		<aggregation cardinality="0..n" name="items" type="sap.ui.vbm/Area">
+			<documentation>Area object aggregation</documentation>
+		</aggregation>
+	</aggregations>
+</control>

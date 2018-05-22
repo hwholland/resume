@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The implementation sap.ui.model.odata.ODataMetaModel offers a unified access to both OData Version 2.0 metadata and Version 4.0 annotations."/>
+<meta name="description" content="The implementation sap.ui.model.odata.ODataMetaModel offers a unified access to both OData Version 2.0 metadata and Version 4.0 annotations."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9283914294554743"/>
+<title>OData Meta Model</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio341823349ed04df1813197f2a0d71db2">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">OData Meta Model</h1>
+<div class="body conbody"><p class="shortdesc">The implementation <samp class="ph codeph">sap.ui.model.odata.ODataMetaModel</samp> offers a unified
+        access to both OData Version 2.0 metadata and Version 4.0 annotations.</p>
+<p class="p">It uses the existing <samp class="ph codeph">sap.ui.model.odata.ODataMetadata</samp> as a foundation and
+            merges the OData Version 4.0 annotations from the existing
+                <samp class="ph codeph">sap.ui.model.odata.ODataAnnotations</samp> directly into the corresponding
+            entity or property.</p>
+<p class="p">You can get an instance of <samp class="ph codeph">sap.ui.model.odata.ODataMetaModel</samp> from an
+            instance of <samp class="ph codeph">sap.ui.model.odata.v2.ODataModel</samp>, see <a class="xref" href="5ee619fc1370463ea674ee04b65ed83b.html" title="XML templating lets you use an XML view as a template.">XML Templating in SAPUI5</a>.</p>
+<div class="section"><div class="section_title">Basic Structure</div><div type="Basic Structure">
+            
+            <p class="p">The basic structure of <samp class="ph codeph">sap.ui.model.odata.ODataMetadata</samp> is shown in
+                the following code snippet. It shows you how the most important elements of the
+                entity model are nested. Each of these elements (except <em class="ph i">association set end</em>)
+                can have <samp class="ph codeph">extensions</samp>, that is, XML attribute values from some
+                namespace. The code snippets below show how these extensions are stored and
+                processed.</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">{
+  "dataServices": {
+    "schema": [{
+      "association": [{
+        "end": []
+      }],
+      "complexType": [{
+        "property": []
+      }],
+      "entityContainer": [{
+        "associationSet": [{
+          "end": []
+        }],
+        "entitySet": [],
+        "functionImport": [{
+          "parameter": []
+        }]
+      }],
+      "entityType": [{
+        "property": [],
+        "navigationProperty": []
+      }]
+    }]
+  }
+}</pre></div>
+
+            <p class="p">The following code snippet gives a closer look and has more properties:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">{
+  "version": "1.0",
+  "dataServices": {
+    "dataServiceVersion": "2.0",
+    "schema": [{
+      "namespace": "GWSAMPLE_BASIC",
+      "entityType": [{
+        "name": "BusinessPartner",
+        "key": {
+          "propertyRef": [{
+            "name": "BusinessPartnerID"
+          }]
+        },
+        "property": [{
+          "name": "BusinessPartnerID",
+          "type": "Edm.String",
+          "nullable": "false",
+          "maxLength": "10"
+        }],
+        "navigationProperty": [{
+          "name": "ToSalesOrders",
+          "relationship": "GWSAMPLE_BASIC.Assoc_BusinessPartner_SalesOrders",
+          "fromRole": "FromRole_Assoc_BusinessPartner_SalesOrders",
+          "toRole": "ToRole_Assoc_BusinessPartner_SalesOrders"
+        }]
+      }],
+      "complexType": [{
+        "name": "CT_Address",
+        "property": [{
+          "name": "City",
+          "type": "Edm.String",
+          "maxLength": "40"
+        }]
+      }],
+      "association": [{
+        "name": "Assoc_BusinessPartner_SalesOrders",
+        "end": [{
+          "type": "GWSAMPLE_BASIC.BusinessPartner",
+          "multiplicity": "1",
+          "role": "FromRole_Assoc_BusinessPartner_SalesOrders"
+        }, {
+          "type": "GWSAMPLE_BASIC.SalesOrder",
+          "multiplicity": "*",
+          "role": "ToRole_Assoc_BusinessPartner_SalesOrders"
+        }],
+        "referentialConstraint": {
+          "principal": {
+            "role": "FromRole_Assoc_BusinessPartner_SalesOrders",
+            "propertyRef": [{
+              "name": "BusinessPartnerID"
+            }]
+          },
+          "dependent": {
+            "role": "ToRole_Assoc_BusinessPartner_SalesOrders",
+            "propertyRef": [{
+              "name": "CustomerID"
+            }]
+          }
+        }
+      }],
+      "entityContainer": [{
+        "name": "GWSAMPLE_BASIC_Entities", 
+        "isDefaultEntityContainer": "true",
+        "entitySet": [{
+          "name": "BusinessPartnerSet",
+          "entityType": "GWSAMPLE_BASIC.BusinessPartner"
+        }],
+        "associationSet": [{
+          "name": "Assoc_BusinessPartner_SalesOrders_AssocS",
+          "association": "GWSAMPLE_BASIC.Assoc_BusinessPartner_SalesOrders",
+          "end": [{
+            "entitySet": "BusinessPartnerSet",
+            "role": "FromRole_Assoc_BusinessPartner_SalesOrders"
+          }, {
+            "entitySet": "SalesOrderSet",
+            "role": "ToRole_Assoc_BusinessPartner_SalesOrders"
+          }]
+        }],
+        "functionImport": [{
+          "name": "SalesOrder_Confirm",
+          "returnType": "GWSAMPLE_BASIC.SalesOrder",
+          "entitySet": "SalesOrderSet",
+          "httpMethod": "POST",
+          "parameter": [{
+            "name": "SalesOrderID",
+            "type": "Edm.String",
+            "mode": "In",
+            "maxLength": "10"
+          }]
+        }]
+      }]
+    }]
+  }}</pre></div>
+
+        </div></div>
+<div class="section"><div class="section_title">Extensions</div><div type="Extensions">
+            
+            <p class="p">Extensions are stored as an array of objects, each with a namespace, a name, and a
+                value. Annotations from the "http://www.sap.com/Protocols/SAPData" namespace are
+                lifted up from the <samp class="ph codeph">extensions</samp> array and transformed from objects
+                into simple properties with an <samp class="ph codeph">sap:</samp> prefix added to their name, see
+                line number 8 in the following code snippet.</p>
+
+            <div class="note note"><span class="notetitle">Note</span> 
+                <p class="p">As this happens in addition, the following example shows both representations. By
+                    this, the respective annotations can be addressed via a simple relative path
+                    instead of searching an array.</p>
+
+            </div>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">1  {
+2    "name": "BusinessPartnerID",
+3    "extensions": [{
+4      "name": "label",
+5      "value": "Bus. Part. ID",
+6      "namespace": "http://www.sap.com/Protocols/SAPData"
+7    }],
+8    "sap:label": "Bus. Part. ID"
+9  }</pre></div>
+
+        </div></div>
+<div class="section"><div class="section_title">OData v4 Annotations</div><div type="OData v4 Annotations">
+            
+            <p class="p">Each element of the entity model (except <em class="ph i">association set end</em>) can be
+                annotated. These annotations from the existing
+                    <samp class="ph codeph">sap.ui.model.odata.ODataAnnotations</samp> are merged directly into
+                the corresponding element. The following code snippet shows how the structure from
+                the existing <samp class="ph codeph">sap.ui.model.odata.ODataMetadata</samp>, as explained above
+                and including extensions and constraints such as <samp class="ph codeph">nullable</samp> or
+                    <samp class="ph codeph">maxLength</samp>, is fleshed out with lifted v2 annotations and
+                inlined v4 annotations, such as <samp class="ph codeph">Org.OData.Measures.V1.Unit</samp> or
+                    <samp class="ph codeph">com.sap.vocabularies.UI.v1.Identification</samp>. If you want to
+                navigate the structure, for example for XML templating, it is important to
+                understand this structure.</p>
+
+            <p class="p">ODataMetaModel JSON Format:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>
+"dataServices" : {
+    "schema" : [{
+        "namespace" : "GWSAMPLE_BASIC",
+        "entityType" : [{
+            "name" : "Product",
+            "property" : [{
+                "name" : "ProductID",
+                "type" : "Edm.String",
+                "nullable" : "false",
+                "maxLength" : "10"
+            }, {
+                "name" : "SupplierName",
+                "type" : "Edm.String",
+                "maxLength" : "80",
+                "extensions" : [{
+                  "name" : "label",
+                  "value" : "Company Name",
+                  "namespace" : "http://www.sap.com/Protocols/SAPData"
+                }, {
+                  "name" : "creatable",
+                  "value" : "false",
+                  "namespace" : "http://www.sap.com/Protocols/SAPData"
+                }, {
+                  "name" : "updatable",
+                  "value" : "false",
+                  "namespace" : "http://www.sap.com/Protocols/SAPData"
+                }],
+                "sap:label" : "Company Name",
+                "sap:creatable" : "false",
+                "sap:updatable" : "false"
+            }, {
+                "name" : "WeightMeasure",
+                "type" : "Edm.Decimal",
+                "precision" : "13",
+                "scale" : "3",
+                "Org.OData.Measures.V1.Unit" : {
+                    "Path" : "WeightUnit"
+                }
+            }, {
+                "name" : "WeightUnit",
+                "type" : "Edm.String",
+                "maxLength" : "3"
+            }],
+            "com.sap.vocabularies.UI.v1.DataPoint" : {
+                "Value" : {
+                    "Path" : "WeightMeasure",
+                    "EdmType" : "Edm.Decimal"
+                }
+            },
+            "com.sap.vocabularies.UI.v1.Identification" : [{
+                "Value" : {"Path" : "ProductID"}
+            }, {
+                "Value" : {"Path" : "SupplierName"}
+            }, {
+                "Value" : {"Path" : "WeightMeasure"}
+            }]
+        }]
+    }]
+}</pre></div>
+
+        </div></div>
+</div>
+<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="5ee619fc1370463ea674ee04b65ed83b.html" title="XML templating lets you use an XML view as a template.">XML Templating in SAPUI5</a></div>
+<div><a class="link" href="91f11c116f4d1014b6dd926db0e91070.html" title="The OData model enables the binding of controls to data from OData services.">Instantiating an OData Model</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.model.odata.ODataMetaModel.html" alt="../../docs/api/symbols/sap.ui.model.odata.ODataMetaModel.html" title="../../docs/api/symbols/sap.ui.model.odata.ODataMetaModel.html">Class <samp class="ph codeph">sap.ui.model.odata.ODataMetaModel</samp></a></div>
+</div>
+</div></div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="OData Meta Model";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

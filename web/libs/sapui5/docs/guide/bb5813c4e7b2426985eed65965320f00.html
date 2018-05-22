@@ -1,0 +1,143 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Displays a series of values as segmented lines along a threshold line."/>
+<meta name="description" content="Displays a series of values as segmented lines along a threshold line."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=14626556461504803"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=14626556461504803"/>
+<title>Line Micro Chart</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiobb5813c4e7b2426985eed65965320f00">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Line Micro Chart</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Displays a series of values as segmented lines along a threshold line.</p>
+
+		<div class="section" id="loiobb5813c4e7b2426985eed65965320f00__section_nkj_1nb_fbb"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p">The <samp class="ph codeph">Line Micro Chart</samp> control displays a series of values as segmented lines
+				along a threshold line.</p>
+
+		</div></div>
+
+		<div class="section" id="loiobb5813c4e7b2426985eed65965320f00__section_lpb_jpb_fbb"><div class="section_title">Details</div><div type="Details">
+			
+			<p class="p">You use this control
+				primarily
+				for embedded analytics applications. It is designed to display a
+				set of ordered points. These points are connected by
+				lines that
+				show
+				a data progression for a specific data range. If you want to add further details,
+				such as decisive values or dimensions to this chart, you can add up to four
+				labels.</p>
+
+		</div></div>
+
+		<div class="section" id="loiobb5813c4e7b2426985eed65965320f00__section_lk1_ljh_hbb"><div class="section_title">Usage</div><div type="Usage">
+			
+			<p class="p">With the line micro chart, you can visualize the diagram curve and show trends. If you want to
+				stress values that are above or below a certain threshold, you can use data
+				points.</p>
+
+			<p class="p">By default, the line of the chart is blue. However, you can use different colors, such as
+				semantic colors for the line, to mark positive and negative values.</p>
+
+			<div class="fig fignone" id="loiobb5813c4e7b2426985eed65965320f00__fig_ufd_jmx_3bb"><div class="figcontainer">
+				<img class="image" id="loiobb5813c4e7b2426985eed65965320f00__image_tfy_ppx_3bb" src="loiobfc80151585c4eb7b9a341b2590dbb89_LowRes.png"/>
+			</div></div>
+
+			<p class="p">You can also choose to use focus points instead of data points. Data points are useful if you
+				want to concentrate on one or two special values, for example, the first and the
+				last data point on the chart. For focus points, you can use any CSS color, but
+				we
+				recommend using semantic colors.</p>
+
+			<div class="fig fignone" id="loiobb5813c4e7b2426985eed65965320f00__fig_rrf_ctx_3bb"><div class="figcontainer">
+				<img class="image" id="loiobb5813c4e7b2426985eed65965320f00__image_qjn_ftx_3bb" src="loio678546db29d34368ab7d38e7144380d9_LowRes.png"/>
+			</div></div>
+
+		</div></div>
+
+		<div class="section" id="loiobb5813c4e7b2426985eed65965320f00__section_p51_cg3_fbb"><div class="section_title">Properties</div><div type="Properties"><span class="ph emphasis emphasis">Color</span><p class="p">With the
+				sap.m.ValueCSSColor type,
+				the
+				Line Micro Chart can use regular points or emphasized points, with or without
+				semantic colors. You can find more information in the <a class="xref" href="../..//api/sap.m.ValueCSSColor" alt="../..//api/sap.m.ValueCSSColor" title="../..//api/sap.m.ValueCSSColor">API Reference</a> in the Demo Kit.</p>
+<p class="p"/>
+<span class="ph emphasis emphasis">Data
+				Points</span><p class="p">The <span class="ph uicontrol">showPoints</span> property controls whether
+				the points are
+				displayed.
+				The default value is false, which means that the points are not displayed and only a
+				continuous line is visible. You can use this configuration to show trends and to
+				visualize the data progression. If emphasized points are used, the chart's color and
+					<span class="ph uicontrol">showPoints</span> properties do not have an effect. These
+				properties can be used for regular points only. Do not use these two data point
+				types together in one chart.</p>
+<p class="p">These types of data points are available:</p>
+<ul class="ul" id="loiobb5813c4e7b2426985eed65965320f00__ul_jdm_s43_fbb">
+				<li class="li">
+					<p class="p">LineMicroChartPoint for the <span class="ph uicontrol">x</span> and
+							<span class="ph uicontrol">y</span> coordinates.</p>
+
+				</li>
+
+			</ul>
+<ul class="ul" id="loiobb5813c4e7b2426985eed65965320f00__ul_rw4_v43_fbb">
+				<li class="li">
+					<p class="p">LineMicroChartEmphasizedPoint consists of the <span class="ph uicontrol">color</span>
+						and <span class="ph uicontrol">show</span> properties and <span class="ph uicontrol">x</span> and
+							<span class="ph uicontrol">y</span> properties.</p>
+
+				</li>
+
+			</ul>
+<span class="ph emphasis emphasis">Scaling</span><p class="p">The chart has a built-in automatic scale that is
+				applied based on existing values, so that all values are visible. You can also set a
+				manual scale, but only a part of the chart might be visible. You can set a manual
+				scale by providing values for the following properties:</p>
+<ul class="ul" id="loiobb5813c4e7b2426985eed65965320f00__ul_ss4_2p3_fbb">
+				<li class="li">
+					<p class="p">minXValue</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">maxXValue</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">minYValue</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">maxYValue</p>
+
+				</li>
+
+			</ul>
+<div class="fig fignone" id="loiobb5813c4e7b2426985eed65965320f00__fig_cw3_cry_3bb"><div class="figcontainer">
+				<img class="image" id="loiobb5813c4e7b2426985eed65965320f00__image_s2t_gry_3bb" src="loiodbfcddab39b441279b8f29dd609b3be3_LowRes.png"/>
+			</div></div>
+</div></div>
+
+		<div class="section" id="loiobb5813c4e7b2426985eed65965320f00__section_hy1_rys_gbb"><div class="section_title">API Reference/Sample</div><div type="API Reference/Sample"><span class="ph">For more information about the
+					<span class="keyword apiname">LineMicroChart</span> control, see the <a class="xref" href="../../docs/api/symbols/sap.suite.ui.microchart.LineMicroChart.html" alt="../../docs/api/symbols/sap.suite.ui.microchart.LineMicroChart.html" title="../../docs/api/symbols/sap.suite.ui.microchart.LineMicroChart.html">API Reference</a> in the Demo Kit and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.suite..ui.microchart.LineMicroChart/samples" alt="../../explored.html#/entity/sap.suite..ui.microchart.LineMicroChart/samples" title="../../explored.html#/entity/sap.suite..ui.microchart.LineMicroChart/samples">sample</a> in the Demo Kit.</span></div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

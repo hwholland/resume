@@ -1,0 +1,163 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The Native Viewport control (sap.ui.vk.NativeViewport) provides a rendering canvas for 2D images loaded into the Viewer application."/>
+<meta name="description" content="The Native Viewport control (sap.ui.vk.NativeViewport) provides a rendering canvas for 2D images loaded into the Viewer application."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=01503285955840239"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=01503285955840239"/>
+<title>Native Viewport</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioab5acd7a755b4daca01c26616173b4fd">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Native Viewport</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The Native Viewport control (<samp class="ph codeph">sap.ui.vk.NativeViewport</samp>) provides a
+		rendering canvas for 2D images loaded into the Viewer application. </p>
+
+		<div class="section" id="loioab5acd7a755b4daca01c26616173b4fd__section_rcx_jw1_qz"><div class="section_title">API Reference / Sample</div><div type="API Reference / Sample">
+			
+			<ul class="ul" id="loioab5acd7a755b4daca01c26616173b4fd__ul_mz4_ymg_q5">
+				<li class="li"><a class="xref" href="../../docs/api/symbols/sap.ui.vk.NativeViewport.html" alt="../../docs/api/symbols/sap.ui.vk.NativeViewport.html" title="../../docs/api/symbols/sap.ui.vk.NativeViewport.html">sap.ui.vk.NativeViewport</a> in the <span class="ph uicontrol">API
+						Reference</span> in the Demo Kit</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p">The Native Viewport control (<samp class="ph codeph">sap.ui.vk.NativeViewport</samp>) loads files
+				supported natively by the browser into a viewing area using standard HTML and CSS.
+				Viewing of the loaded images is enhanced with standard VIT pan and zoom gesture
+				support.</p>
+
+			<p class="p">The <samp class="ph codeph">sap.ui.vk.NativeViewport</samp> control can occupy all or part of the
+				user interface.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Details</div><div type="Details"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Loading Images into the Native Viewport</p>
+
+				<p class="p">The <samp class="ph codeph">NativeViewport</samp> control supports the loading of images that
+					are natively supported by the browser.</p>
+
+				<div class="p">Currently, the <samp class="ph codeph">NativeViewport</samp> control supports the loading of
+					the following file formats:<ul class="ul" id="loioab5acd7a755b4daca01c26616173b4fd__ul_lvc_gmg_q5">
+						<li class="li">JPG / JPEG</li>
+
+						<li class="li">PNG</li>
+
+						<li class="li">GIF</li>
+
+						<li class="li">TIFF</li>
+
+						<li class="li">BMP</li>
+
+						<li class="li">SVG</li>
+
+					</ul>
+</div>
+
+				<p class="p">You must specify the extension of the file you want to load. Otherwise, the file
+					will not load.</p>
+
+				<p class="p">If it can be detected, a console message will be displayed when a problem occurs
+					during file loading.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Gesture Handling in the Native Viewport </p>
+
+				<p class="p">Gestures such as pan and zoom are captured and processed by the sap.ui.vk.Loco
+					library. A new NativeViewport instance is initialized with an instance of the
+					sap.ui.vk.Loco library attached, so that gestures can be captured and processed.
+				</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Keyboard Shortcuts in the Native Viewport </p>
+
+				<p class="p">In addition to mouse and touch gestures, keyboard shortcuts are available for
+					navigating around the NativeViewport instance:</p>
+
+				
+<div class="table-wrapper tablenoborder"><table summary="" id="loioab5acd7a755b4daca01c26616173b4fd__table_h3z_qmg_q5" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Native Viewport keyboard shortcuts</span></caption>
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+						
+						
+						<thead class="thead" align="left">
+							<tr class="row">
+								<th class="entry" valign="top" width="50%" id="d13559043e133">Keyboard shortcut</th>
+
+								<th class="entry" valign="top" width="50%" id="d13559043e136">Function</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody class="tbody">
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d13559043e133 "><kbd class="key">DIRECTIONAL ARROW</kbd></td>
+
+								<td class="entry" valign="top" width="50%" headers="d13559043e136 ">Pan the image.</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d13559043e133 "><kbd class="key">+</kbd></td>
+
+								<td class="entry" valign="top" width="50%" headers="d13559043e136 ">Zoom into the image.</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d13559043e133 "><kbd class="key">-</kbd></td>
+
+								<td class="entry" valign="top" width="50%" headers="d13559043e136 ">Zoom out of the image.</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+</div>
+
+			</div></div></div>
+
+		<div class="section"><div class="section_title">Constraints</div><div type="Constraints">
+			
+			<ul class="ul" id="loioab5acd7a755b4daca01c26616173b4fd__ul_ngx_lng_q5">
+				<li class="li">The <samp class="ph codeph">NativeViewport</samp> control only loads 2D images. For loading 3D
+					models, use the<samp class="ph codeph"> sap.ui.vk.Viewport</samp> control.</li>
+
+				<li class="li">Currently, the <samp class="ph codeph">NativeViewport</samp> control does not support
+					interactive SVG files; that is, any links in an SVG file will not work in the
+					Native Viewport. </li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Related Information</div><div type="Related Information">
+			
+			<ul class="ul" id="loioab5acd7a755b4daca01c26616173b4fd__ul_x5k_sng_q5">
+				<li class="li"><a class="xref" href="acd34672ef33429e99a0247486e37c78.html">Viewport</a></li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

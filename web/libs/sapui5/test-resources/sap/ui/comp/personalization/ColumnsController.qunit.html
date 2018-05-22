@@ -1,0 +1,1276 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for
+	sap.ui.comp.personalization.ColumnsController</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.ui.comp, sap.ui.table, sap.ui.commons">
+	
+</script>
+
+<link rel="stylesheet"
+	href="../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+<!-- use the sinon faketimers for this test -->
+<script type="text/javascript">
+	sinon.config.useFakeTimers = true;
+</script>
+
+<script type="text/javascript">
+	(function() {
+		jQuery.sap.require("sap.ui.comp.personalization.Controller");
+		jQuery.sap.require("sap.ui.comp.personalization.ColumnsController");
+		jQuery.sap.require("sap.m.ColumnListItem");
+		jQuery.sap.require("sap.m.P13nColumnsItem");
+
+		var oColumnsController_TestInstance = null;
+		var oEmpty = {
+			columns: {
+				columnsItems: []
+			}
+		};
+		var oA = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 0
+					}
+				]
+			}
+		};
+		var oAx = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 10
+					}
+				]
+			}
+		};
+		var oAy = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 0
+					}, {
+						columnKey: "country",
+						index: 1
+					}
+				]
+			}
+		};
+		var oB = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "country",
+						index: 1
+					}
+				]
+			}
+		};
+		var oBx = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "country",
+						index: 0
+					}
+				]
+			}
+		};
+		var oBy = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "city",
+						index: 0
+					}, {
+						columnKey: "name",
+						index: 1,
+						visible: true
+					}, {
+						columnKey: "country",
+						index: 2,
+						visible: false
+					}
+				]
+			}
+		};
+		var oC = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 2,
+						visible: true
+					}
+				]
+			}
+		};
+		var oCx = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 2,
+						visible: false
+					}
+				]
+			}
+		};
+		var oCy = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 0,
+						visible: true
+					}, {
+						columnKey: "country",
+						index: 1,
+						visible: false
+					}
+				]
+			}
+		};
+		var oD = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 3,
+						visible: true
+					}
+				]
+			}
+		};
+		var oE = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 2
+					}, {
+						columnKey: "country",
+						index: 1
+					}
+				]
+			}
+		};
+		var oEx = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 0
+					}, {
+						columnKey: "country",
+						index: 1
+					}
+				]
+			}
+		};
+		var oAB = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 0
+					}, {
+						columnKey: "country",
+						index: 1
+					}
+				]
+			}
+		};
+		var oCD = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "city",
+						index: 2
+					}, {
+						columnKey: "number",
+						index: 3
+					}
+				]
+			}
+		};
+		var oBA = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "country",
+						index: 0
+					}, {
+						columnKey: "name",
+						index: 1
+
+					}
+				]
+			}
+		};
+		var oABC = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 0
+					}, {
+						columnKey: "country",
+						index: 1
+					}, {
+						columnKey: "city",
+						index: 2
+					}
+				]
+			}
+		};
+		var oABCD = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 0
+					}, {
+						columnKey: "country",
+						index: 1
+					}, {
+						columnKey: "city",
+						index: 2
+					}, {
+						columnKey: "number",
+						index: 3
+					}
+				]
+			}
+		};
+		var oBAC = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "country",
+						index: 0
+					}, {
+						columnKey: "name",
+						index: 1
+					}, {
+						columnKey: "city",
+						index: 2
+					}
+				]
+			}
+		};
+		var oAxB = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "country",
+						index: 1
+					}, {
+						columnKey: "name",
+						index: 10
+					}
+				]
+			}
+		};
+		var oBxAx = {
+			columns: {
+				columnsItems: [
+					{
+						columnKey: "name",
+						index: 10
+					}, {
+						columnKey: "country",
+						index: 11
+					}
+				]
+			}
+		};
+		module("Properties", {
+			setup: function() {
+				oColumnsController_TestInstance = new sap.ui.comp.personalization.ColumnsController();
+			},
+			teardown: function() {
+				oColumnsController_TestInstance = null;
+			}
+		});
+
+		test("Shall be instantiable to check that columnscontroller exist", function() {
+			ok(oColumnsController_TestInstance, "Could not instantiate ColumnsController");
+		});
+
+		test("getUnionData", function() {
+			// system under test
+
+			// arrangeoBA
+
+			// act			 
+
+			// assertions
+			deepEqual(oColumnsController_TestInstance.getUnionData(oA, oA), oA, "no change: A UNION A = A");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oA, null), oA, "no change: A UNION null = A");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oA, {}), oA, "no change: A UNION {} = A");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oA, {
+				sort: {}
+			}), oA, "no change: A UNION {sort} = A");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oA, oAx), oA, "change: A UNION A' = A");
+			// $ we ignore column keys which are not found in 'base' (oA) since we assume that in base we find all columns of the table
+			deepEqual(oColumnsController_TestInstance.getUnionData(oA, oB), oA, "change: A UNION B = A");
+			// see ($) above
+			deepEqual(oColumnsController_TestInstance.getUnionData(oA, oAB), oA, "change: A UNION (A, B) = A");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oAy, oBy), oCy, "change: Ay UNION By = Cy");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oAB, oAB), oAB, "change: (A, B) UNION (A, B) = (A, B)");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oAB, oBA), {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "country",
+							index: 0
+						}, {
+							columnKey: "name",
+							index: 1
+						}
+					]
+				}
+			}, "change: (A, B) UNION (B, A) = (B, A)");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oA, oEmpty), oA, "change: A UNION [] = A");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oEmpty, oA), oEmpty, "change: [] UNION A = []");
+			deepEqual(oColumnsController_TestInstance.getUnionData({}, oA), oA, "change: {} UNION A = A");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oA, oAxB), oA, "change: A UNION (A', B) = A");
+			deepEqual(oColumnsController_TestInstance.getUnionData({}, {}), null, "change: {} UNION {} = null");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oAB, oAx), oBA, "change: (A, B) UNION A' = (B', A')");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oAB, oBxAx), oAB, "change: (A, B) UNION (B', A') = (A, B)");
+			deepEqual(oColumnsController_TestInstance.getUnionData(oAB, oCD), oAB, "change: (A, B) UNION (C, D) = (A, B)");
+			deepEqual(oColumnsController_TestInstance.getUnionData({
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "name",
+							index: 0
+						}, {
+							columnKey: "city",
+							index: 1
+						}
+					]
+				}
+			}, {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "city",
+							index: 0
+						}
+					]
+				}
+			}), {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "city",
+							index: 0
+						}, {
+							columnKey: "name",
+							index: 1
+						}
+					]
+				}
+			});
+
+			deepEqual(oColumnsController_TestInstance.getUnionData({
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "X1",
+							index: 0
+						}, {
+							columnKey: "B",
+							index: 1
+						}, {
+							columnKey: "X2",
+							index: 2
+						}, {
+							columnKey: "X3",
+							index: 3
+						}, {
+							columnKey: "X4",
+							index: 4
+						}, {
+							columnKey: "C",
+							index: 5
+						}, {
+							columnKey: "X5",
+							index: 6
+						}, {
+							columnKey: "X6",
+							index: 7
+						}
+					]
+				}
+			}, {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "A",
+							index: 0
+						}, {
+							columnKey: "B",
+							index: 5
+						}, {
+							columnKey: "C",
+							index: 8
+						}
+					]
+				}
+			}), {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "X1",
+							index: 0
+						}, {
+							columnKey: "X2",
+							index: 1
+						}, {
+							columnKey: "X3",
+							index: 2
+						}, {
+							columnKey: "X4",
+							index: 3
+						}, {
+							columnKey: "X5",
+							index: 4
+						}, {
+							columnKey: "B",
+							index: 5
+						}, {
+							columnKey: "X6",
+							index: 6
+						}, {
+							columnKey: "C",
+							index: 7
+						}
+					]
+				}
+			});
+
+			deepEqual(oColumnsController_TestInstance.getUnionData({
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "country",
+							index: 0
+						}, {
+							columnKey: "city",
+							index: 1
+						}
+					]
+				}
+			}, {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "name",
+							index: 0
+						}, {
+							columnKey: "country",
+							index: 1
+						}, {
+							columnKey: "city",
+							index: 2
+						}
+					]
+				}
+			}), {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "country",
+							index: 0
+						}, {
+							columnKey: "city",
+							index: 1
+						}
+					]
+				}
+			}, "#Restore < #NewData");
+
+			deepEqual(oColumnsController_TestInstance.getUnionData({
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "name",
+							index: 0
+						}, {
+							columnKey: "country",
+							index: 1
+						}, {
+							columnKey: "city",
+							index: 2
+						}
+					]
+				}
+			}, {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "country",
+							index: 0
+						}, {
+							columnKey: "city",
+							index: 1
+						}
+					]
+				}
+			}), {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "country",
+							index: 0
+						}, {
+							columnKey: "city",
+							index: 1
+						}, {
+							columnKey: "name",
+							index: 2
+						}
+					]
+				}
+			}, "#Restore > #NewData");
+
+		});
+
+		test("getChangeType", function() {
+			deepEqual(oColumnsController_TestInstance.getChangeType(oA, oA), sap.ui.comp.personalization.ChangeType.Unchanged);
+			deepEqual(oColumnsController_TestInstance.getChangeType(oA, {}), sap.ui.comp.personalization.ChangeType.Unchanged);
+			deepEqual(oColumnsController_TestInstance.getChangeType(oA, oAx), sap.ui.comp.personalization.ChangeType.TableChanged);
+			deepEqual(oColumnsController_TestInstance.getChangeType(oC, oCx), sap.ui.comp.personalization.ChangeType.ModelChanged);
+			deepEqual(oColumnsController_TestInstance.getChangeType(oCx, oC), sap.ui.comp.personalization.ChangeType.ModelChanged);
+			deepEqual(oColumnsController_TestInstance.getChangeType(oA, oC), sap.ui.comp.personalization.ChangeType.TableChanged);
+			deepEqual(oColumnsController_TestInstance.getChangeType(oC, oD), sap.ui.comp.personalization.ChangeType.TableChanged);
+		});
+
+		test("getChangeData", function() {
+			// system under test
+
+			// arrange
+
+			// act			 
+
+			// assertions
+			// ------ no changes --------------------------------------------------------------
+			deepEqual(oColumnsController_TestInstance.getChangeData(oA, oA), null, "no change: A XOR A = null");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oE, oEx), {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "name",
+							index: 2
+						}
+					]
+				}
+			}, "no change: A XOR ~A -> eliminate identical array parts");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oA, null), null, "no change: A XOR null = null");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oA, {}), null, "no change: A XOR {} = null");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oA, {
+				columns: {}
+			}), null, "no change: A XOR {columns} = null");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oA, oAB), null, "no change: A XOR (A, B) = null");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oAB, {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "country",
+							index: 1
+						}, {
+							columnKey: "name",
+							index: 0
+						}
+					]
+				}
+			}), null, "no change: [A, B] XOR [B, A] = null");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oAB, oAB), null, "no change: (A, B) XOR (A, B) = null");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oEmpty, oA), null, "change: [] XOR A = null");
+			// ------ order changes --------------------------------------------------------------
+			deepEqual(oColumnsController_TestInstance.getChangeData(oA, oB), oA, "change: A XOR B = A");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oA, oBA), oA, "change: A XOR (B, A) = A");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oA, oBAC), oA, "change: A XOR (B, A, C) = A");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oA, oEmpty), oA, "change: A XOR [] = A");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oAB, oBx), oAB, "change: (A, B) XOR B' = (A, B)");
+			deepEqual(oColumnsController_TestInstance.getChangeData(oBAC, oABC), oBA, "change: (B, A, C) XOR (A, B, C) = (B, A)");
+			// ------ property changes --------------------------------------------------------------
+			deepEqual(oColumnsController_TestInstance.getChangeData({
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "name",
+							index: 0,
+							width: "100px",
+							visual: false
+						}
+					]
+				}
+			}, {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "name",
+							index: 0,
+							visual: true,
+							width: "100px"
+						}
+					]
+				}
+			}), {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "name",
+							visual: false
+						}
+					]
+				}
+			}, "change: A' XOR A = A''");
+			deepEqual(oColumnsController_TestInstance.getChangeData({
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "city",
+							index: 0
+						}
+					]
+				}
+			}, {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "name",
+							index: 0
+						}, {
+							columnKey: "city",
+							index: 1
+						}
+					]
+				}
+			}), {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "city",
+							index: 0
+						}
+					]
+				}
+			}, "change: B' XOR (A, B) = B'");
+			deepEqual(oColumnsController_TestInstance.getChangeData({
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "name",
+							visible: true
+						}
+					]
+				}
+			}, {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "name",
+							index: 0,
+							width: ""
+						}
+					]
+				}
+			}), {
+				columns: {
+					columnsItems: [
+						{
+							columnKey: "name",
+							visible: true
+						}
+					]
+				}
+			}, "change: A' XOR A = A'");
+		});
+
+		test("Shall check getUnionData", function() {
+			ok(oColumnsController_TestInstance.getUnionData, "Method does not exist");
+
+			//
+			// First change to AlreadyKnown -> AlreadyKnown = Restore
+			// country: visible = false; city: visible = false, index = 1 
+			//
+			var oAlreadyKnown = JSON.parse("{\"columns\": {\"columnsItems\": [{\"columnKey\": \"name\",\"index\": 0,\"visible\": true,\"width\": \"\"},{\"columnKey\": \"country\",\"index\": 1,\"visible\": true,\"width\": \"\"},{\"columnKey\": \"city\",\"index\": 2,\"visible\": true,\"width\": \"\"},{\"columnKey\": \"number\",\"index\": 3,\"visible\": true,\"width\": \"\"},{\"columnKey\": \"date\",\"index\": 4,\"visible\": true,\"width\": \"\"}]}}");
+			var oDelta = JSON.parse("{\"columns\":{\"columnsItems\":[{\"columnKey\":\"country\",\"visible\":false},{\"columnKey\":\"city\",\"visible\":false,\"index\":1}]}}");
+			var oUnionExpectedResult = JSON.parse("{\"columns\":{\"columnsItems\":[{\"columnKey\":\"name\",\"index\":0,\"visible\":true,\"width\":\"\"},{\"columnKey\":\"city\",\"index\":1,\"visible\":false,\"width\":\"\"},{\"columnKey\":\"country\",\"index\":2,\"visible\":false,\"width\":\"\"},{\"columnKey\":\"number\",\"index\":3,\"visible\":true,\"width\":\"\"},{\"columnKey\":\"date\",\"index\":4,\"visible\":true,\"width\":\"\"}]}}");
+
+			// CUT -> method shall be executed for change step1
+			var oUnionResult = oColumnsController_TestInstance.getUnionData(oAlreadyKnown, oDelta);
+			ok(oUnionResult, "A result shall be returned as both input parameter are filled with valid JSON objects");
+			deepEqual(oUnionResult, oUnionExpectedResult, "Result shall be equal -> UNION result is wrong");
+
+			//
+			// Second change to AlreadyKnown -> AlreadyKnown = AlreadyKnown + first Delta 
+			// country: visible = true; number: visible = false, index = 0; city index = 2 
+			//
+			oAlreadyKnown = oUnionExpectedResult;
+			oDelta = JSON.parse("{\"columns\":{\"columnsItems\":[{\"columnKey\":\"country\",\"visible\":true},{\"columnKey\":\"number\",\"visible\":false,\"index\":0},{\"columnKey\":\"city\",\"index\":2}]}}");
+			oUnionExpectedResult = JSON.parse("{\"columns\":{\"columnsItems\":[{\"columnKey\":\"number\",\"index\":0,\"visible\":false,\"width\":\"\"},{\"columnKey\":\"name\",\"index\":1,\"visible\":true,\"width\":\"\"},{\"columnKey\":\"city\",\"index\":2,\"visible\":false,\"width\":\"\"},{\"columnKey\":\"country\",\"index\":3,\"visible\":true,\"width\":\"\"},{\"columnKey\":\"date\",\"index\":4,\"visible\":true,\"width\":\"\"}]}}");
+
+			// CUT -> method shall be executed for change step2
+			var oUnionResult = oColumnsController_TestInstance.getUnionData(oAlreadyKnown, oDelta);
+			ok(oUnionResult, "A result shall be returned as both input parameter are filled with valid JSON objects");
+			deepEqual(oUnionResult, oUnionExpectedResult, "Result shall be equal -> UNION result is wrong");
+		});
+
+		test("Shall check _recalculateIndexes upwards", function() {
+			ok(oColumnsController_TestInstance._recalculateIndexes, "Method does not exist");
+
+			var aObjects = JSON.parse("[{\"columnsKey\" : \"A\",\"index\":0},{\"columnsKey\":\"B\",\"index\":1},{\"columnsKey\":\"C\",\"index\":2},{\"columnsKey\":\"D\",\"index\":3},{\"columnsKey\":\"E\",\"index\":4},{\"columnsKey\" : \"F\",\"index\":5}]");
+
+			var aExpected = JSON.parse("[{\"columnsKey\" : \"E\",\"index\":0},{\"columnsKey\":\"A\",\"index\":1},{\"columnsKey\":\"B\",\"index\":2},{\"columnsKey\":\"C\",\"index\":3},{\"columnsKey\":\"D\",\"index\":4},{\"columnsKey\" : \"F\",\"index\":5}]");
+
+			// CUT -> method shall be executed -> "E" shall move from index 4 to 0; Now adapted all index that are between 4 and 0  
+			oColumnsController_TestInstance._recalculateIndexes(aObjects, 4, 0);
+
+			// Now simulate the move of E down to index 0 
+			var aRemovedItems = aObjects.splice(4, 1);
+			ok(aRemovedItems, "Removed objects shall not be empty");
+			strictEqual(aRemovedItems.length, 1, "Exactly one item needs to be removed");
+			aRemovedItems[0].index = 0;
+			aObjects.splice(aRemovedItems[0].index, 0, aRemovedItems[0]);
+
+			//compare the changed array (objects)
+			deepEqual(aObjects, aExpected, "Result is not as expected");
+		});
+
+		test("Shall check _recalculateIndexes downwards", function() {
+			ok(oColumnsController_TestInstance._recalculateIndexes, "Method does not exist");
+
+			var aObjects = JSON.parse("[{\"columnsKey\":\"A\",\"index\":0},{\"columnsKey\":\"B\",\"index\":1},{\"columnsKey\":\"C\",\"index\":2},{\"columnsKey\":\"D\",\"index\":3},{\"columnsKey\":\"E\",\"index\":4},{\"columnsKey\" : \"F\",\"index\":5}]");
+
+			var aExpected = JSON.parse("[{\"columnsKey\":\"B\",\"index\":0},{\"columnsKey\":\"C\",\"index\":1},{\"columnsKey\":\"D\",\"index\":2},{\"columnsKey\":\"E\",\"index\":3},{\"columnsKey\" : \"A\",\"index\":4},{\"columnsKey\":\"F\",\"index\":5}]");
+
+			// CUT -> method shall be executed -> "A" shall move from index 0 to 4; Now adapted all index that are between 0 and 4  
+			oColumnsController_TestInstance._recalculateIndexes(aObjects, 0, 4);
+
+			// Now simulate the move of A down to index 4 
+			var aRemovedItems = aObjects.splice(0, 1);
+			ok(aRemovedItems, "Removed objects shall not be empty");
+			strictEqual(aRemovedItems.length, 1, "Exactly one item needs to be removed");
+			aRemovedItems[0].index = 4;
+			aObjects.splice(aRemovedItems[0].index, 0, aRemovedItems[0]);
+
+			//compare the changed array (objects)
+			deepEqual(aObjects, aExpected, "Result is not as expected");
+		});
+
+		test("Shall check _sortArrayByPropertyName", function() {
+			ok(oColumnsController_TestInstance._sortArrayByPropertyName, "Method does not exist");
+
+			// A,B,C,D,E,F
+			var aObjects = JSON.parse("[{\"columnsKey\":\"A\",\"index\":2},{\"columnsKey\":\"B\",\"index\":1},{\"columnsKey\":\"C\",\"index\":0},{\"columnsKey\":\"D\",\"index\":3},{\"columnsKey\":\"E\"},{\"columnsKey\" : \"F\",\"index\":5}]");
+
+			// C,B,A,F,E(index = undefined)
+			var aExpected = JSON.parse("[{\"columnsKey\":\"C\",\"index\":0},{\"columnsKey\":\"B\",\"index\":1},{\"columnsKey\":\"A\",\"index\":2},{\"columnsKey\":\"D\",\"index\":3},{\"columnsKey\" : \"F\",\"index\":5},{\"columnsKey\":\"E\"}]");
+
+			// CUT -> method shall be executed -> result shall be sorted by the index property (all objects that does not have the index property shall be arranged at the end)
+			// Changes shall be done on a copy of the given array; the original shall not be changed 
+			var aResult = oColumnsController_TestInstance._sortArrayByPropertyName(aObjects, "index", true);
+
+			//compare the result
+			notDeepEqual(aObjects, aResult, "The original array shall not be changed; Work on a copy");
+			deepEqual(aResult, aExpected, "Result array shall be sorted");
+
+			// CUT -> method shall be executed -> result shall be sorted by the index property (all objects that does not have the index property shall be arranged at the end)
+			// Changes shall be done direct on the original array!!					
+			aResult = oColumnsController_TestInstance._sortArrayByPropertyName(aObjects, "index", false);
+
+			//compare the result with 
+			deepEqual(aObjects, aResult, "The original array shall be changed; no copy");
+			deepEqual(aResult, aExpected, "Result array shall be sorted");
+		});
+
+		test("Shall check _onColumnMove -> columns F from index 5 to 2", function() {
+			ok(oColumnsController_TestInstance._onColumnMove, "Method does not exist");
+
+			var aColumns = JSON.parse("[{\"columnName\" : \"A\"}, {\"columnName\" : \"B\"	}, {\"columnName\" : \"C\"}, {\"columnName\" : \"D\"}, {\"columnName\" : \"E\"}, {\"columnName\" : \"F\"}, {\"columnName\" : \"G\"}]");
+			var oColumnF = aColumns[5];
+
+			var fGetParameter = function(sParamName) {
+				var oResult = null;
+				if (sParamName === "column") {
+					oResult = oColumnF;
+				} else if (sParamName === "newPos") {
+					oResult = 2;
+				}
+				return oResult;
+			};
+
+			var oEvent = {
+				"column": oColumnF,
+				"newPos": 2,
+				"getParameter": fGetParameter
+			};
+
+			var oTableStub = sinon.stub();
+
+			oTableStub.indexOfColumn = sinon.stub().returns(aColumns.indexOf(oColumnF));
+			oTableStub.getColumns = sinon.stub().returns(aColumns);
+
+			var oModelStub = sinon.stub();
+			var oModelJSON = JSON.parse("{\"transientData\": {\"columns\": {\"title\": \"Spalten\",\"items\": [{\"columnKey\": \"Gjahr\",\"text\": \"Geschäftsjahr\",\"tooltip\": \"Geschäftsjahr\",\"visible\": true,\"width\": \"4.75em\"},{\"columnKey\": \"Bukrs\",\"text\": \"my Bukrs\",\"tooltip\": \"my Bukrs\",\"visible\": true,\"width\": \"4.75em\"},{\"columnKey\": \"Kunnr\",\"text\": \"Debitor\",\"tooltip\": \"Debitorennummer\",\"visible\": false,\"width\": \"10.75em\"},{\"columnKey\": \"Name1\",\"text\": \"Name\",\"tooltip\": \"Name 1\",\"visible\": true,\"width\": \"35.75em\"},{\"columnKey\": \"Dmbtr\",\"text\": \"Dmbtr\",\"tooltip\": \"Dmbtr\",\"visible\": true,\"width\": \"25.75em\"},{\"columnKey\": \"Hwaer\",\"text\": \"Währung\",\"tooltip\": \"Währungsschlüssel\",\"visible\": true,\"width\": \"5.75em\"}]}},\"persistentData\": {\"columns\": {\"columnsItems\": [{\"columnKey\": \"Gjahr\",\"index\": 0},{\"columnKey\": \"Bukrs\",\"index\": 1},{\"columnKey\": \"Kunnr\",\"visible\": false}]}}}");
+			oModelStub.getData = sinon.stub().returns(oModelJSON);
+			oModelStub.setData = sinon.stub();
+			oColumnsController_TestInstance.getModel = sinon.stub().returns(oModelStub);
+			oColumnsController_TestInstance.getTable = sinon.stub().returns(oTableStub);
+			oColumnsController_TestInstance._setNewColumnItemIndex = sinon.stub();
+			oColumnsController_TestInstance.fireAfterColumnsModelDataChange = sinon.stub();
+			sap.ui.comp.personalization.Controller = sinon.stub();
+			sap.ui.comp.personalization.ChangeType = sinon.stub();
+
+			// CUT -> method shall be executed
+			oColumnsController_TestInstance._onColumnMove(oEvent);
+
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.callCount, 4, "Method: _setNewColumnItemIndex shall be called 4 times (to move column F from index 5 and 2)");
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.calledWith(oModelJSON, aColumns[2], 3), true, "Column C shall move to index 3");
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.calledWith(oModelJSON, aColumns[3], 4), true, "Column D shall move to index 4");
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.calledWith(oModelJSON, aColumns[4], 5), true, "Column E shall move to index 5");
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.calledWith(oModelJSON, aColumns[5], 2), true, "Column F shall move to index 2");
+
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.called, true, "Method: model.setData() shall be executed to set the changed data");
+			strictEqual(oColumnsController_TestInstance.fireAfterColumnsModelDataChange.called, true, "Method: fireAfterColumnsModelDataChange() shall be executed to signalize that model data have been changed");
+		});
+
+		test("Shall check _onColumnMove -> columns B from index 1 to 5", function() {
+			ok(oColumnsController_TestInstance._onColumnMove, "Method does not exist");
+
+			var aColumns = JSON.parse("[{\"columnName\" : \"A\"}, {\"columnName\" : \"B\"	}, {\"columnName\" : \"C\"}, {\"columnName\" : \"D\"}, {\"columnName\" : \"E\"}, {\"columnName\" : \"F\"}, {\"columnName\" : \"G\"}]");
+			var oColumnB = aColumns[1];
+
+			var fGetParameter = function(sParamName) {
+				var oResult = null;
+				if (sParamName === "column") {
+					oResult = oColumnB;
+				} else if (sParamName === "newPos") {
+					oResult = 5;
+				}
+				return oResult;
+			};
+
+			var oEvent = {
+				"column": oColumnB,
+				"newPos": 5,
+				"getParameter": fGetParameter
+			};
+
+			var oTableStub = sinon.stub();
+
+			oTableStub.indexOfColumn = sinon.stub().returns(aColumns.indexOf(oColumnB));
+			oTableStub.getColumns = sinon.stub().returns(aColumns);
+
+			var oModelStub = sinon.stub();
+			var oModelJSON = JSON.parse("{\"transientData\": {\"columns\": {\"title\": \"Spalten\",\"items\": [{\"columnKey\": \"Gjahr\",\"text\": \"Geschäftsjahr\",\"tooltip\": \"Geschäftsjahr\",\"visible\": true,\"width\": \"4.75em\"},{\"columnKey\": \"Bukrs\",\"text\": \"my Bukrs\",\"tooltip\": \"my Bukrs\",\"visible\": true,\"width\": \"4.75em\"},{\"columnKey\": \"Kunnr\",\"text\": \"Debitor\",\"tooltip\": \"Debitorennummer\",\"visible\": false,\"width\": \"10.75em\"},{\"columnKey\": \"Name1\",\"text\": \"Name\",\"tooltip\": \"Name 1\",\"visible\": true,\"width\": \"35.75em\"},{\"columnKey\": \"Dmbtr\",\"text\": \"Dmbtr\",\"tooltip\": \"Dmbtr\",\"visible\": true,\"width\": \"25.75em\"},{\"columnKey\": \"Hwaer\",\"text\": \"Währung\",\"tooltip\": \"Währungsschlüssel\",\"visible\": true,\"width\": \"5.75em\"}]}},\"persistentData\": {\"columns\": {\"columnsItems\": [{\"columnKey\": \"Gjahr\",\"index\": 0},{\"columnKey\": \"Bukrs\",\"index\": 1},{\"columnKey\": \"Kunnr\",\"visible\": false}]}}}");
+			oModelStub.getData = sinon.stub().returns(oModelJSON);
+			oModelStub.setData = sinon.stub();
+			oColumnsController_TestInstance.getModel = sinon.stub().returns(oModelStub);
+			oColumnsController_TestInstance.getTable = sinon.stub().returns(oTableStub);
+			oColumnsController_TestInstance._setNewColumnItemIndex = sinon.stub();
+			oColumnsController_TestInstance.fireAfterColumnsModelDataChange = sinon.stub();
+			sap.ui.comp.personalization.Controller = sinon.stub();
+			sap.ui.comp.personalization.ChangeType = sinon.stub();
+
+			// CUT -> method shall be executed
+			oColumnsController_TestInstance._onColumnMove(oEvent);
+
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.callCount, 5, "Method: _setNewColumnItemIndex shall be called 5 times (to move column B from index 1 and 5)");
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.calledWith(oModelJSON, aColumns[1], 5), true, "Column B shall move to index 5");
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.calledWith(oModelJSON, aColumns[2], 1), true, "Column C shall move to index 1");
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.calledWith(oModelJSON, aColumns[3], 2), true, "Column D shall move to index 2");
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.calledWith(oModelJSON, aColumns[4], 3), true, "Column E shall move to index 3");
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.calledWith(oModelJSON, aColumns[5], 4), true, "Column F shall move to index 4");
+
+			strictEqual(oColumnsController_TestInstance._setNewColumnItemIndex.called, true, "Method: model.setData() shall be executed to set the changed data");
+			strictEqual(oColumnsController_TestInstance.fireAfterColumnsModelDataChange.called, true, "Method: fireAfterColumnsModelDataChange() shall be executed to signalize that model data have been changed");
+		});
+
+		test("Shall check _onColumnVisibility  -> change column visibility from false to true", function() {
+			ok(oColumnsController_TestInstance._onColumnVisibility, "Method does not exist");
+
+			var oColumn = new sap.m.ColumnListItem();
+			oColumn.data("p13nData", {
+				"columnKey": "Kunnr"
+			})
+
+			var fGetParameter = function(sParamName) {
+				var oResult = null;
+				if (sParamName === "column") {
+					oResult = oColumn;
+				} else if (sParamName === "newVisible") {
+					oResult = true;
+				}
+				return oResult;
+			};
+
+			var oEvent = {
+				"column": oColumn,
+				"newVisible": true,
+				"getParameter": fGetParameter
+			};
+
+			var oModelStub = sinon.stub();
+			var oModelData = JSON.parse("{\"transientData\": {\"columns\": {\"title\": \"Spalten\",\"items\": [{\"columnKey\": \"Gjahr\",\"text\": \"Geschäftsjahr\",\"tooltip\": \"Geschäftsjahr\",\"visible\": true,\"width\": \"4.75em\"},{\"columnKey\": \"Bukrs\",\"text\": \"my Bukrs\",\"tooltip\": \"my Bukrs\",\"visible\": true,\"width\": \"4.75em\"},{\"columnKey\": \"Kunnr\",\"text\": \"Debitor\",\"tooltip\": \"Debitorennummer\",\"visible\": false,\"width\": \"10.75em\"},{\"columnKey\": \"Name1\",\"text\": \"Name\",\"tooltip\": \"Name 1\",\"visible\": true,\"width\": \"35.75em\"},{\"columnKey\": \"Dmbtr\",\"text\": \"Dmbtr\",\"tooltip\": \"Dmbtr\",\"visible\": true,\"width\": \"25.75em\"},{\"columnKey\": \"Hwaer\",\"text\": \"Währung\",\"tooltip\": \"Währungsschlüssel\",\"visible\": true,\"width\": \"5.75em\"}]}},\"persistentData\": {\"columns\": {\"columnsItems\": [{\"columnKey\": \"Gjahr\",\"index\": 0},{\"columnKey\": \"Bukrs\",\"index\": 1},{\"columnKey\": \"Kunnr\",\"visible\": false}]}}}");
+			oModelStub.getData = sinon.stub().returns(oModelData);
+			oModelStub.setData = sinon.stub();
+			oColumnsController_TestInstance.getModel = sinon.stub().returns(oModelStub);
+			oColumnsController_TestInstance.fireAfterColumnsModelDataChange = sinon.stub();
+			sap.ui.comp.personalization.Controller = sinon.stub();
+			sap.ui.comp.personalization.ChangeType = sinon.stub();
+
+			// CUT -> method shall be executed and shall change the visibility of an existing columnsItem
+			oColumnsController_TestInstance._onColumnVisibility(oEvent);
+			strictEqual(oModelData.persistentData.columns.columnsItems.length, 3, "It shall exist 3 columnsItems");
+			strictEqual(oModelData.persistentData.columns.columnsItems[2].visible, true, "The new set index shall be 2");
+
+			// CUT -> method shall be executed and create a new columnsItem entry with the new visibility
+			oColumn = new sap.m.ColumnListItem();
+			oColumn.data("p13nData", {
+				"columnKey": "Bukrs_New"
+			});
+
+			oColumnsController_TestInstance._onColumnVisibility(oEvent);
+			strictEqual(oModelData.persistentData.columns.columnsItems.length, 4, "Now it shall exist 4 columnsItems");
+			strictEqual(oModelData.persistentData.columns.columnsItems[3].visible, true, "The new columnsItem shall get the visibility as true");
+		});
+
+		test("Shall check _setNewColumnItemIndex", function() {
+			ok(oColumnsController_TestInstance._setNewColumnItemIndex, "Method does not exist");
+
+			var oModelData = JSON.parse("{\"transientData\": {\"columns\": {\"title\": \"Spalten\",\"items\": [{\"columnKey\": \"Gjahr\",\"text\": \"Geschäftsjahr\",\"tooltip\": \"Geschäftsjahr\",\"visible\": true,\"width\": \"4.75em\"},{\"columnKey\": \"Bukrs\",\"text\": \"my Bukrs\",\"tooltip\": \"my Bukrs\",\"visible\": true,\"width\": \"4.75em\"},{\"columnKey\": \"Kunnr\",\"text\": \"Debitor\",\"tooltip\": \"Debitorennummer\",\"visible\": false,\"width\": \"10.75em\"},{\"columnKey\": \"Name1\",\"text\": \"Name\",\"tooltip\": \"Name 1\",\"visible\": true,\"width\": \"35.75em\"},{\"columnKey\": \"Dmbtr\",\"text\": \"Dmbtr\",\"tooltip\": \"Dmbtr\",\"visible\": true,\"width\": \"25.75em\"},{\"columnKey\": \"Hwaer\",\"text\": \"Währung\",\"tooltip\": \"Währungsschlüssel\",\"visible\": true,\"width\": \"5.75em\"}]}},\"persistentData\": {\"columns\": {\"columnsItems\": [{\"columnKey\": \"Gjahr\",\"index\": 0},{\"columnKey\": \"Bukrs\",\"index\": 1},{\"columnKey\": \"Kunnr\",\"visible\": false}]}}}");
+
+			var oColumn = new sap.m.ColumnListItem();
+			oColumn.data("p13nData", {
+				"columnKey": "Bukrs"
+			});
+
+			// CUT -> method shall be executed -> oColumn shall be found in columnsItems and change the index from 1 to 2
+			oColumnsController_TestInstance._setNewColumnItemIndex(oModelData, oColumn, 2);
+			strictEqual(oModelData.persistentData.columns.columnsItems[1].index, 2, "The new set index shall be 2");
+
+			oColumn = new sap.m.ColumnListItem();
+			oColumn.data("p13nData", {
+				"columnKey": "Bukrs_New"
+			});
+
+			// CUT -> method shall be executed -> oColumn shall NOT be found in columnsItems; new columnsItem will be created with new data
+			oColumnsController_TestInstance._setNewColumnItemIndex(oModelData, oColumn, 3);
+			strictEqual(oModelData.persistentData.columns.columnsItems.length, 4, "A new columnsItem shall be added");
+			strictEqual(oModelData.persistentData.columns.columnsItems[3].index, 3, "The new columnsItem shall have index value 3");
+		});
+
+		test("Shall check getPanel", function() {
+			ok(oColumnsController_TestInstance.getPanel, "Method does not exist");
+
+			var oModel = new sap.ui.model.json.JSONModel();
+			var oModelData = JSON.parse("{\"transientData\": {\"columns\": {\"title\": \"Spalten\",\"items\": [{\"columnKey\": \"Gjahr\",\"text\": \"Geschäftsjahr\",\"tooltip\": \"Geschäftsjahr\",\"visible\": true,\"width\": \"4.75em\"},{\"columnKey\": \"Kunnr\",\"text\": \"Debitor\",\"tooltip\": \"Debitorennummer\",\"visible\": true,\"width\": \"4.75em\"}]}},\"persistentData\": {\"columns\": {\"columnsItems\": [{\"columnKey\": \"Gjahr\",\"index\": 0},{\"columnKey\": \"Kunnr\",\"visible\": false}]}}}");
+			oModel.getData = sinon.stub().returns(oModelData);
+			oModel.setData = sinon.stub();
+			oColumnsController_TestInstance.getModel = sinon.stub().returns(oModel);
+
+			// CUT -> method shall be executed and return a new created columnsPanel
+			var oColumnsPanel = oColumnsController_TestInstance.getPanel();
+			ok(oColumnsPanel, "Instance of P13nColumnPanel shall be created");
+
+			var oNewColumnsItem = new sap.m.P13nColumnsItem({
+				"columnKey": "NewColumn4711",
+				"visible": true,
+				"index": 2,
+				"width": "100px"
+			});
+
+			//check number of columnsData in model 
+			strictEqual(oModelData.persistentData.columns.columnsItems.length, 2, "ColumnsItems shall have 2 entries");
+
+			// CUT -> execute fireChangeColumnsItems -> which will change model data, as a new columnsItem will be added to persistentData 
+			oModel.getData.reset();
+			oModel.setData.reset();
+			oColumnsController_TestInstance.getModel.reset();
+
+			oColumnsPanel.fireChangeColumnsItems({
+				"newItems": [
+					oNewColumnsItem
+				],
+				"existingItems": null
+			});
+
+			// check changed model data and execution of getModel/getData/setData is not done!!
+			strictEqual(oModelData.persistentData.columns.columnsItems.length, 3, "After event was executed columnsItems shall have 3 entries");
+			strictEqual(oModelData.persistentData.columns.columnsItems[2].columnKey, "NewColumn4711", "3th columnsItem shall be NewColumn4711");
+			strictEqual(oColumnsController_TestInstance.getModel.called, true, "getModel shall be called");
+			strictEqual(oColumnsController_TestInstance.getModel.callCount, 1, "getModel of ColumnsController shall be called once while event execution");
+			strictEqual(oModel.getData.called, true, "getData shall be called");
+			strictEqual(oModel.setData.called, false, "setData shall NOT be called during this event execution -> will be done with event SetData");
+
+			// CUT -> execute fireSetData -> which will push all model changes to bound target objects 
+			oModel.getData.reset();
+			oModel.setData.reset();
+			oColumnsController_TestInstance.getModel.reset();
+
+			oColumnsPanel.fireSetData();
+
+			strictEqual(oColumnsController_TestInstance.getModel.called, true, "getModel shall be called");
+			strictEqual(oColumnsController_TestInstance.getModel.callCount, 2, "getModel of ColumnsController shall be called twice while event execution");
+			strictEqual(oModel.getData.called, true, "getData shall be called");
+			strictEqual(oModel.setData.called, true, "setData shall be called to push model changes to bound target objects");
+		});
+
+		test("Shall check _applyChangesToMTableType ", function() {
+			ok(oColumnsController_TestInstance._applyChangesToMTableType, "Method does not exist");
+
+			var oTable = sinon.stub();
+			var oColumn_4711 = new sap.m.ColumnListItem();
+			oColumn_4711.setVisible = sinon.stub();
+			oColumn_4711.getVisible = sinon.stub().returns(false);
+			oColumn_4711.setOrder = sinon.stub();
+			oColumn_4711.data("p13nData", {
+				"columnKey": "4711"
+			});
+			var oColumn_4712 = new sap.m.ColumnListItem();
+			oColumn_4712.setVisible = sinon.stub();
+			oColumn_4712.getVisible = sinon.stub().returns(false);
+			oColumn_4712.setOrder = sinon.stub();
+			oColumn_4712.data("p13nData", {
+				"columnKey": "4712"
+			});
+
+			oTable.getColumns = sinon.stub().returns([
+				oColumn_4711, oColumn_4712
+			]);
+			oTable.rerender = sinon.stub();
+
+			var aColumnsItems = [
+				{
+					"columnKey": "4712",
+					"getColumnKey": sinon.stub().returns("4712"),
+					"index": 2,
+					"visible": true,
+					"getVisible": sinon.stub().returns(true),
+					"setVisible": sinon.stub()
+				}, {
+					"columnKey": "4711",
+					"getColumnKey": sinon.stub().returns("4711"),
+					"index": 1,
+					"visible": true,
+					"getVisible": sinon.stub().returns(true),
+					"setVisible": sinon.stub()
+				}
+			];
+
+			var getColumnSpy = sinon.spy(sap.ui.comp.personalization.Util, "getColumn");
+
+			// CUT -> method shall be executed and columns of oTable accordingly changed
+			oColumnsController_TestInstance._applyChangesToMTableType(oTable, aColumnsItems);
+
+			strictEqual(oColumn_4711.setOrder.called, true, "SetOrder for first table column shall be called");
+			strictEqual(oColumn_4711.setOrder.callCount, 1, "SetOrder shall only be called once for first table column");
+			strictEqual(oColumn_4712.setOrder.called, true, "SetOrder for second table column shall be called");
+			strictEqual(oColumn_4712.setOrder.callCount, 1, "SetOrder shall only be called once for second table column");
+
+			strictEqual(oColumn_4711.setVisible.called, true, "setVisible for first table column shall be called");
+			strictEqual(oColumn_4711.setVisible.callCount, 1, "setVisible shall only be called once for first table column");
+			strictEqual(oColumn_4712.setVisible.called, true, "setVisible for second table column shall be called");
+			strictEqual(oColumn_4712.setVisible.callCount, 1, "setVisible shall only be called once for second table column");
+
+			// check that _applyChangesToMTableType sorts aColumnsItems by index property, before it will be processed
+			strictEqual(getColumnSpy.args[0][0], "4711", "First columnsItem that shall be processed in _applyChangesToMTableType shall be 4711");
+			strictEqual(getColumnSpy.args[1][0], "4712", "Second columnsItem that shall be processed in _applyChangesToMTableType shall be 4712");
+
+			strictEqual(oTable.rerender.called, true, "Table rerendering shall be started after all changes are taken over");
+			strictEqual(oTable.rerender.callCount, 1, "Table rerendering shall only be started once");
+		});
+
+		test("Shall check _correctColumnsItemsInPersistentData ", function() {
+			ok(oColumnsController_TestInstance._correctColumnsItemsInPersistentData, "Method does not exist");
+
+			var oModelStub = sinon.stub();
+			var oModelData = JSON.parse("{\"transientData\":{\"columns\":{\"title\":\"Spalten\",\"items\":[{\"columnKey\":\"A\"},{\"columnKey\":\"B\"},{\"columnKey\":\"C\",\"visible\":false},{\"columnKey\":\"D\"},{\"columnKey\":\"E\"},{\"columnKey\":\"F\"}]}},\"persistentData\":{\"columns\":{\"columnsItems\":[{\"columnKey\": \"A\",\"index\": 4},{\"columnKey\": \"B\",\"index\": 1},{\"columnKey\": \"C\",\"index\" : 6},{\"columnKey\": \"D\"}]}}}");
+			oModelStub.getData = sinon.stub().returns(oModelData);
+			oModelStub.setData = sinon.stub();
+			oColumnsController_TestInstance.getModel = sinon.stub().returns(oModelStub);
+
+			// CUT -> method shall be executed without a payload and columnsItems shall be corrected/manipulated
+			oColumnsController_TestInstance._correctColumnsItemsInPersistentData();
+
+			ok(oModelStub.getData().persistentData, "w/o Payload: PersistentData shall exist in the model");
+			ok(oModelStub.getData().persistentData.columns, "w/o Payload: Namespace columns shall exist in persistentData");
+			ok(oModelStub.getData().persistentData.columns.columnsItems, "w/o Payload: Array columnsItems shall exist in namespace columns of persistentData");
+			strictEqual(oModelStub.getData().persistentData.columns.columnsItems.length, 2, "w/o Payload: Two columnsItems entries shall still exist after method execution");
+
+			strictEqual(oModelStub.getData().persistentData.columns.columnsItems[0].index, 1, "w/o Payload: Sequence of columnsItems shall be sorted for column 1");
+			strictEqual(oModelStub.getData().persistentData.columns.columnsItems[1].index, 4, "w/o Payload: Sequence of columnsItems shall be sorted for column 2");
+
+			// CUT -> method shall be executed with a given payload --> columnsItems shall be manipulated & indexes shall be rearranged, starting by 0
+			oModelData = JSON.parse("{\"transientData\":{\"columns\":{\"title\":\"Spalten\",\"items\":[{\"columnKey\":\"A\"},{\"columnKey\":\"B\"},{\"columnKey\":\"C\",\"visible\":false},{\"columnKey\":\"D\"},{\"columnKey\":\"E\"},{\"columnKey\":\"F\"}]}},\"persistentData\":{\"columns\":{\"columnsItems\":[{\"columnKey\": \"A\",\"index\": 4},{\"columnKey\": \"B\",\"index\": 1},{\"columnKey\": \"C\",\"index\" : 6},{\"columnKey\": \"D\"}]}}}");
+			oModelStub.getData = sinon.stub().returns(oModelData);
+			var oPayload = {
+				"columns": {
+					"tableItemsChanged": true,
+					"selectedItems": [
+						{
+							"columnKey": "B"
+						}, {
+							"columnKey": "A"
+						}
+					]
+				}
+			};
+
+			oColumnsController_TestInstance._correctColumnsItemsInPersistentData(oPayload);
+
+			ok(oModelStub.getData().persistentData, "with Payload: PersistentData shall exist in the model");
+			ok(oModelStub.getData().persistentData.columns, "with Payload: Namespace columns shall exist in persistentData");
+			ok(oModelStub.getData().persistentData.columns.columnsItems, "with Payload: Array columnsItems shall exist in namespace columns of persistentData");
+			strictEqual(oModelStub.getData().persistentData.columns.columnsItems.length, 2, "with Payload: Two columnsItems entries shall still exist after method execution");
+
+			strictEqual(oModelStub.getData().persistentData.columns.columnsItems[0].index, 0, "with Payload: Sequence of columnsItems shall be sorted for column 1");
+			strictEqual(oModelStub.getData().persistentData.columns.columnsItems[1].index, 1, "with Payload: Sequence of columnsItems shall be sorted for column 2");
+		});
+
+		test("Check FIX for column ordering after user interaction is executed on a column that did not have a columnsItem", function() {
+			/* Short descriptio of the problem:
+			 	1.	Create Model
+			 		a. Item aggregation = A, B, D, C -> (A and B are marked as visible)
+			 		b. columnsItems aggregation = B gets moved to index 3
+				2. Create ColumnsController
+				3. Open ColumnsPanel
+					a. Table items are shown in following sort order: A(x), B(x), C(), D()
+				4. Now de-select visibility flag from A
+				---------------------------------------------------------------------------
+				As result the table has to keep the order of: A(), B(x), C(), D()
+				Problem before was that column B was rearrange to index 3, which shall not B, as B was 
+				not changed at all and not further columnsItems did reach the panel for column B!!!
+			 */
+
+			var oModel = new sap.ui.model.json.JSONModel();
+			var _oData = {
+				transientData: {
+					columns: {
+						title: "testModel",
+						items: [
+							{
+								columnKey: 'A',
+								visible: true,
+								text: "Columns A",
+								tooltip: "Columns A"
+							}, {
+								columnKey: 'B',
+								visible: true,
+								text: "Columns B",
+								tooltip: "Columns B"
+							}, {
+								columnKey: 'D',
+								visible: false,
+								text: "Columns D",
+								tooltip: "Columns D"
+							}, {
+								columnKey: 'C',
+								visible: false,
+								text: "Columns C",
+								tooltip: "Columns C"
+							}
+						]
+					}
+				},
+				persistentData: {
+					columns: {
+						columnsItems: [
+							{
+								columnKey: 'B',
+								index: 3
+							}
+						]
+					}
+				}
+			};
+
+			oModel.setData(_oData);
+			var oColumnsControllerFIX = new sap.ui.comp.personalization.ColumnsController();
+			oColumnsControllerFIX.setModel(oModel);
+
+			var oP13nColumnsPanel = oColumnsControllerFIX.getPanel();
+			oP13nColumnsPanel.setModel(oModel);
+
+			oP13nColumnsPanel.placeAt("content");
+			sap.ui.getCore().applyChanges();
+
+			//CUT -> now check important conerstones
+			strictEqual(oP13nColumnsPanel._oTable.getItems().length, 4, "Number of columns in the panel shall be 4");
+
+			var oColumn1 = oP13nColumnsPanel._oTable.getItems()[0];
+			ok(oColumn1, "First column (A) does not exist");
+
+			var sNameoColumn1 = oColumn1.data('P13nColumnKey');
+			strictEqual(sNameoColumn1, "A", "Name of first column shall be A");
+
+			var oDomRefColumn1 = oColumn1.getDomRef();
+			ok(oDomRefColumn1, "DomRef object shall be exist of column A");
+
+			var aDomRefChildObjects = oDomRefColumn1.getElementsByClassName("sapMCbActiveStateOff sapMCbBg sapMCbHoverable sapMCbMark sapMCbMarkChecked");
+			ok(aDomRefChildObjects, "Columns A shall contain child DomRef which are identifiable by class names");
+
+			var oDomRefCheckBoxColumnA = aDomRefChildObjects[0];
+			ok(oDomRefCheckBoxColumnA, "Columns A shall contain a CheckBox");
+
+			//Simulate user action -> deselection of visible flag
+			sap.ui.test.qunit.triggerTouchEvent("tap", oDomRefCheckBoxColumnA, {
+				srcControl: oP13nColumnsPanel
+			});
+			this.clock.tick(500);
+
+			strictEqual(oP13nColumnsPanel._oTable.getItems().length, 4, "Number of columns in the panel shall still be 4");
+			var oModelData = oP13nColumnsPanel.getModel().getData();
+			ok(oModelData, "ColumnsPanel shall return valid model data");
+			strictEqual(oModelData.persistentData.columns.columnsItems.length, 2, "The model data shall contain to columnsItems");
+			strictEqual(oModelData.persistentData.columns.columnsItems[1].columnKey, "A", "The second columnsItem shall be for column A");
+			strictEqual(oModelData.persistentData.columns.columnsItems[1].visible, false, "The visibility of column A shall be false");
+			strictEqual(oModelData.persistentData.columns.columnsItems[1].index, undefined, "The index property of column A shall be undefined as the column was not moved");
+
+			// now the most important test for the order of existing table items
+			strictEqual(oP13nColumnsPanel._oTable.getItems()[0].data('P13nColumnKey'), "A", "After user action column A shall be at the first position");
+			strictEqual(oP13nColumnsPanel._oTable.getItems()[1].data('P13nColumnKey'), "B", "After user action column B shall be at the second position");
+			strictEqual(oP13nColumnsPanel._oTable.getItems()[2].data('P13nColumnKey'), "C", "After user action column C shall be at the third position");
+			strictEqual(oP13nColumnsPanel._oTable.getItems()[3].data('P13nColumnKey'), "D", "After user action column D shall be at the fourth position");
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.ui.comp.personalization.ColumnsController</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="content"></div>
+</body>
+</html>

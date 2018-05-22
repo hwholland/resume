@@ -1,0 +1,114 @@
+{
+    "Type": "sap.ui.core.mvc.JSONView",
+    "controllerName": "solo.web.controller.Nav",
+    "content": [{
+        "Type": "sap.tnt.ToolPage",
+        "id": "ToolPage",
+        "header": {
+            "Type": "sap.tnt.ToolHeader",
+            "content": [{
+                "Type": "sap.m.Button",
+                "icon": "sap-icon://menu2",
+                "type": "Transparent",
+                "press": "onToggleSideMenu"
+            }, {
+                "Type": "sap.m.Button",
+                "enabled": true,
+                "type": "Transparent",
+                "text": "File"
+            }, {
+                "Type": "sap.m.Button",
+                "enabled": true,
+                "type": "Transparent",
+                "text": "Edit"
+            }, {
+                "Type": "sap.m.Button",
+                "enabled": true,
+                "type": "Transparent",
+                "text": "View"
+            }, {
+                "Type": "sap.m.Button",
+                "enabled": true,
+                "type": "Transparent",
+                "text": "Help"
+            }, {
+                "Type": "sap.m.ToolbarSpacer"
+            }, {
+                "Type": "sap.m.Button",
+                "id": "Username",
+                "type": "Transparent",
+                "text": "{session>/user/username}"
+            }, {
+                "Type": "sap.m.Button",
+                "type": "Transparent",
+                "id": "MessagePopoverButton",
+                "icon": "sap-icon://message-popup",
+                "text": "{messages>/length}",
+                "press": "onPressMessagePopover"
+            }, {
+                "Type": "sap.m.Button",
+                "enabled": true,
+                "icon": "sap-icon://log",
+                "type": "Transparent"
+            }]
+        },
+        "sideContent": {
+            "Type": "sap.tnt.SideNavigation",
+            "itemSelect": "onNavigate",
+            "item": {
+                "Type": "sap.tnt.NavigationList",
+                "items": {
+                    "template": {
+                        "Type": "sap.tnt.NavigationListItem",
+                        "text": "{navigation>title}",
+                        "icon": "{navigation>icon}",
+                        "expanded": "{navigation>expanded}",
+                        "key": "{navigation>key}",
+                        "items": {
+                            "template": {
+                                "Type": "sap.tnt.NavigationListItem",
+                                "text": "{navigation>title}",
+                                "key": "{navigation>key}",
+                                "enabled": "{navigation>enabled}"
+                            },
+                            "path": "navigation>items",
+                            "templateShareable": "true"
+                        }
+                    },
+                    "path": "navigation>/SideNavigation"
+                }
+            },
+            "fixedItem": {
+                "Type": "sap.tnt.NavigationList",
+                "items": {
+                    "template": {
+                        "Type": "sap.tnt.NavigationListItem",
+                        "text": "{navigation>title}",
+                        "key": "{navigation>key}",
+                        "icon": "{navigation>icon}"
+                    },
+                    "path": "navigation>/FixedNavigation"
+                }
+            },
+            "footer": {
+                "Type": "sap.tnt.NavigationList",
+                "itemSelect": "onNavigate",
+                "items": {
+                    "template": {
+                        "Type": "sap.tnt.NavigationListItem",
+                        "text": "{navigation>title}",
+                        "key": "{navigation>key}",
+                        "icon": "{navigation>icon}"
+                    },
+                    "path": "navigation>/Footer"
+                }
+            }
+        },
+        "mainContents": [{
+            "Type": "sap.m.NavContainer",
+            "id": "NavContainer",
+            "defaultTransitionName": "slide",
+            "pages": []
+        }]
+    }]
+}

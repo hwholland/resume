@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" >
+	<Dialog  state="None" type="Message">
+		<content>
+			<Table growing="false"	showSeparators="None" inset="false" fixedLayout="false" backgroundDesign="Transparent" items="{message>/}" >
+				<columns>
+					<Column hAlign="Left" vAlign="Top" />
+				</columns>
+				<ColumnListItem unread="false" vAlign="Top"	type="{message>itemType}">
+					<cells>
+						<layout:Grid vSpacing="0" hSpacing="1">
+							<layout:content>
+								<ObjectStatus icon="{= (${message>type} === 'Error') ? 'sap-icon://error' : ((${message>type} === 'Warning') ? 'sap-icon://notification' : 'sap-icon://sys-enter')}"
+											  state="{= (${message>type} === 'Error') ? 'Error' : ((${message>type} === 'Warning') ? 'Warning' : 'Success')}">
+									<layoutData>
+										<layout:GridData span="L2 M2 S2" />
+									</layoutData>
+								</ObjectStatus>
+								<Text maxLines="3" text="{message>message}">
+									<layoutData>
+										<layout:GridData span="L10 M10 S10" />
+									</layoutData>
+								</Text>
+							</layout:content>
+						</layout:Grid>
+					</cells>
+				</ColumnListItem>
+			</Table>
+		</content>
+		<buttons>
+			<Button text="{i18n>CLOSE}" press="onMessageDialogClose" />
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- SAP Smart Business (c) Copyright 2012-2015 SAP SE. All rights reserved -->
+<core:View xmlns:core="sap.ui.core" xmlns:drilldown="sap.suite.ui.smartbusiness.lib"
+	xmlns="sap.m" xmlns:suite="sap.suite.ui.commons" xmlns:viz="sap.viz.ui5.controls"
+	xmlns:l="sap.ui.layout"
+	controllerName="sap.suite.ui.smartbusiness.designtime.drilldown.view.configurator">
+	<Page class="drilldownConfiguratorPage" enableScrolling="false">
+		<content>
+			<l:FixFlex class="ofixFlexVert">
+				<l:fixContent>
+					<drilldown:Filter id='ddaFilter' mode='designTime'
+						class="_ie9viewOptionBox" />
+					<HBox id="headerRibbon" class="header" justifyContent="SpaceBetween">
+						<items>
+							<Label text="{SB_DDACONFIG>/EVALUATION_TITLE}" class="kpi_name" />
+							<HBox class="_ie9viewOptionBox0">
+								<items>
+									<CheckBox id="enableAggregate"
+										selected="{SB_DDACONFIG>/CONFIG/SAP_AGGREGATE_VALUE}" select="displayAggregate" />
+									<Label id="aggregate_number" class="aggregate_number"
+										visible="{SB_DDACONFIG>/CONFIG/SAP_AGGREGATE_VALUE}" />
+									<Label id="aggregate_number_unit" class="aggregate_number_unit"
+										visible="{SB_DDACONFIG>/CONFIG/SAP_AGGREGATE_VALUE}" />
+
+								</items>
+							</HBox>
+						</items>
+					</HBox>
+
+					<VBox justifyContent="SpaceBetween">
+						<items>
+							<HBox class="_ie9tileContainerBox" justifyContent="End">
+								<HBox class="_ie9viewOptionBox">
+									<items>
+										<Button icon="sap-icon://add" type="Transparent" width="auto"
+											press="openEvaluationsDialog" class="_ie9IssueButton1"></Button>
+									</items>
+								</HBox>
+								<HBox class="_ie9viewOptionBox">
+									<items>
+										<Button id="leftMoveArrow" icon="sap-icon://arrow-left"
+											type="Transparent" width="auto" press="leftArrowAction"
+											enabled="false"></Button>
+										<Button id="rightMoveArrow" icon="sap-icon://arrow-right"
+											type="Transparent" width="auto" press="rightArrowAction"
+											enabled="false"></Button>
+										<Button id='deleteTile' icon="sap-icon://delete" type="Transparent"
+											width="auto" press="deleteTile"></Button>
+									</items>
+								</HBox>
+							</HBox>
+							<suite:HeaderContainer id='tileContainer'
+								class="tilesHeaderContainer">
+							</suite:HeaderContainer>
+
+						</items>
+					</VBox>
+					<HBox id="viewOptions" justifyContent="SpaceBetween" class="_ie9viewOptionBox">
+						<items>
+							<HBox id="viewNames"></HBox>
+						</items>
+						<HBox justifyContent="End" class="_ie9viewOptionBox">
+							<items>
+								<Button id="xyz" icon="sap-icon://add" type="Transparent"
+									press="onAddView" class="_ie9IssueButton" />
+								<Button id="changeViewOrder" icon="sap-icon://sort" type="Transparent"
+									enabled="{path:'SB_DDACONFIG>/ALL_VIEWS',formatter:'.enableDisableButton'}"
+									press="changeViewOrder" class="_ie9IssueButton" />
+								<Button id="editViewButton" icon="sap-icon://edit" type="Transparent"
+									enabled="{path:'SB_DDACONFIG>/ALL_VIEWS',formatter:'.enableDisableButton'}"
+									press="onEditView" class="_ie9IssueButton" />
+								<Button id="deleteViewButton" icon="sap-icon://delete"
+									type="Transparent"
+									enabled="{path:'SB_DDACONFIG>/ALL_VIEWS',formatter:'.enableDisableButton'}"
+									press="onDeleteView" class="_ie9IssueButton" />
+							</items>
+						</HBox>
+					</HBox>
+					
+					<VBox id="choropleth_select_vbox" visible="false">
+						<items>
+							<Select id="choroplethViewSelect" items="{SB_DDACONFIG>/ALL_VIEWS}"
+								change="onVizViewChange">
+								<items>
+									<core:Item key="{SB_DDACONFIG>ID}" text="{SB_DDACONFIG>TITLE}" />
+								</items>
+							</Select>
+							<VBox id="choropleth_vbox" />
+						</items>
+					</VBox>
+				</l:fixContent>
+
+				<l:flexContent>
+					<l:FixFlex id="viz_vbox" class="viz_vbox" fixContentSize="0px"
+						visible="true">
+						<l:fixContent>
+						</l:fixContent>
+						<l:flexContent>
+							<suite:ChartContainer id="vizChartContainer"
+								class="vizChartContainer" showFullScreen="true"
+								showPersonalization="false" autoAdjustHeight="true" showLegend="false">
+								<suite:dimensionSelectors>
+									<Select id="vizViewSelector" items="{SB_DDACONFIG>/ALL_VIEWS}"
+										change="onVizViewChange">
+										<items>
+											<core:Item key="{SB_DDACONFIG>ID}" text="{SB_DDACONFIG>TITLE}" />
+										</items>
+									</Select>
+								</suite:dimensionSelectors>
+								<suite:content>
+								</suite:content>
+							</suite:ChartContainer>
+						</l:flexContent>
+					</l:FixFlex>
+				</l:flexContent>
+			</l:FixFlex>
+		</content>
+	</Page>
+</core:View>

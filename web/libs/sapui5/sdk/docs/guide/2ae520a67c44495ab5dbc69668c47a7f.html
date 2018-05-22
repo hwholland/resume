@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The sap.ui.comp.filterbar.FilterBar control is used to provide a user-friendly interface for queries."/>
+<meta name="description" content="The sap.ui.comp.filterbar.FilterBar control is used to provide a user-friendly interface for queries."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6062964069079292"/>
+<title>Filter Bar</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio2ae520a67c44495ab5dbc69668c47a7f">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Filter Bar</h1>
+<div class="body conbody"><p class="shortdesc">The
+			<samp class="ph codeph">sap.ui.comp.filterbar.FilterBar</samp>
+		control is used to provide a user-friendly interface for queries.</p>
+<p class="p">For more information
+			about this control, see <a class="xref" href="../../docs/api/symbols/sap.ui.comp.filterbar.FilterBar.html" alt="../../docs/api/symbols/sap.ui.comp.filterbar.FilterBar.html" title="../../docs/api/symbols/sap.ui.comp.filterbar.FilterBar.html">https://sapui5.hana.ondemand.com/sdk/#docs/api/symbols/sap.ui.comp.filterbar.FilterBar.html</a> and <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.comp.filterbar.FilterBar/samples" alt="../../explored.html#/entity/sap.ui.comp.filterbar.FilterBar/samples" title="../../explored.html#/entity/sap.ui.comp.filterbar.FilterBar/samples">https://sapui5.hana.ondemand.com/sdk/explored.html#/entity/sap.ui.comp.filterbar.FilterBar/samples</a>.</p>
+</div>
+<div class="topic concept nested1" id="concept_xhn_ftw_bq"><h2 class="title topictitle2">Overview</h2>
+<div class="body conbody"><p class="p">The <samp class="ph codeph">FilterBar</samp> control has been implemented as a toolbar with a
+				collapsible filter area. Whereas the toolbar is always visible, the user can hide
+				the filter area to reduce the space required.</p>
+<div class="note note"><span class="notetitle">Note</span> This applies to desktop use only. On tablets, the filter area is always hidden and
+				cannot be made visible by the user.</div>
+<p class="p">The toolbar includes the <samp class="ph codeph">VariantManagement</samp> control and contains the
+				following buttons:</p>
+<ul class="ul" id="concept_xhn_ftw_bq__ul_yzn_s3h_dq"><li class="li"><span class="ph uicontrol">Hide Filter Bar</span> /<span class="ph uicontrol">Show Filter Bar
+						</span><p class="p">Hides/displays the filter area.</p>
+<div class="note note"><span class="notetitle">Note</span> This function is
+						only available for desktop use.</div>
+</li>
+<li class="li"><span class="ph uicontrol">Filters</span><p class="p">Lists the filters available and, if selected,
+						displays the filter dialog.</p>
+</li>
+<li class="li"><span class="ph uicontrol">Go</span><p class="p">Executes the query. </p>
+<p class="p">A <samp class="ph codeph">Search</samp>
+						event is raised, and the embedding control must respond to it. The property
+							<samp class="ph codeph">showGoButton</samp> is set to <samp class="ph codeph">True</samp> by default
+						and determines whether the button is visible.</p>
+</li>
+</ul>
+<div class="note note"><span class="notetitle">Note</span> The <samp class="ph codeph">FilterBar</samp> control can be used on its own. However, it is
+				strongly recommended to use it in combination with the
+					<samp class="ph codeph">SmartFilterBar</samp> control.</div>
+</div>
+</div>
+<div class="topic concept nested1" id="concept_gh5_cc4_dq"><h2 class="title topictitle2">FilterItems and FilterGroupItems</h2>
+<div class="body conbody"><p class="p">Filters are similar to query parameters. A filter is represented either by a
+					<samp class="ph codeph">FilterItem</samp>
+				element or its specialization, the <samp class="ph codeph">FilterGroupItem</samp> element. They
+				are populated via the <samp class="ph codeph">FilterItems</samp> or
+					<samp class="ph codeph">FilterGroupItems</samp> aggregations. The main difference is that the
+					<samp class="ph codeph">FilterGroupItem</samp> has the <samp class="ph codeph">group</samp> attribute. The
+					<samp class="ph codeph">FilterItem</samp> is internally processed as a
+					<samp class="ph codeph">FilterGroupItem</samp> that belongs to the <samp class="ph codeph">Basic</samp>
+				group. </p>
+<p class="p">The embedding component of the <samp class="ph codeph">FilterBar</samp> control determines if a
+				filter is mandatory and visible, defines its label, and whether the filter is
+				visible in the filter area. </p>
+<div class="note note"><span class="notetitle">Note</span> The user interface control, upon which the filter is based, can have its own
+				width. It is recommended to set the filter either to <kbd class="ph userinput"/> or
+					<kbd class="ph userinput">100%</kbd>. In both cases, the control will then set the
+				control width to <kbd class="ph userinput">12rem</kbd> to present a easier to read user
+				interface.</div>
+</div>
+</div>
+<div class="topic concept nested1" id="concept_mpm_vm4_dq"><h2 class="title topictitle2">Filter Dialog</h2>
+<div class="body conbody"><p class="p">The <span class="ph uicontrol">Filters</span> dialog provides all the functions that are
+				available with the <samp class="ph codeph">FilterBar</samp> control. The user can define which
+				filter is visible in the filter bar and whether a filter is shown in the current
+				variant at all. The user can also clear and restore values by selecting
+					<span class="ph uicontrol">Clear</span> and <span class="ph uicontrol">Restore</span> and trigger the
+				query execution.</p>
+<div class="note note"><span class="notetitle">Note</span> Some of the buttons are hidden and must be enabled first.</div>
+<p class="p">The information in this dialog is row-based. The first element is the
+					<samp class="ph codeph">VariantManagement</samp> control, followed by the filters. The filters
+				are organized in groups, each starting with a group title. For each filter, the user
+				can select the <span class="ph uicontrol">Add to Filter Bar</span> checkbox to make the filter
+				visible in the filter bar.</p>
+<div class="note note"><span class="notetitle">Note</span> This function is only available for desktop use.</div>
+<p class="p">The filters of the <span class="ph uicontrol">Basic</span> group are always included in the
+				current variant. All other group filters are initially not assigned to the current
+				variant. The user can assign a filter that is different from the basic filter group
+				by selecting <span class="ph uicontrol">More Filters</span> (all filters that have not yet been
+				assigned and belong to this group) or <span class="ph uicontrol">Change Filters</span>, if all
+				filters of the current group have already been added to the current variant. This
+				takes the user to the <span class="ph uicontrol">Select Filters for Variant</span> dialog where
+				the user can define which filters are included in the current variant. This dialog
+				displays all filters of a group.</p>
+<div class="note note"><span class="notetitle">Note</span> The <span class="ph uicontrol">Select Filters for Variant</span> dialog is available on its
+				own and can be used in other scenarios, for example, in the value help
+				dialog.</div>
+<p class="p">Once filters have been included in the current variant, they can also be added to the
+				filter bar. A filter can only be removed from the current variant if it is not
+				visible in the filter bar.</p>
+<p class="p">Mandatory filters can only be removed from the filter bar if they have a value. As
+				long as a mandatory filter does not have a value, it will be treated as added to the
+				filter bar.</p>
+<p class="p">The buttons in the dialog offer the following functions:</p>
+<ul class="ul" id="concept_mpm_vm4_dq__ul_bqb_gwp_2q"><li class="li"><span class="ph uicontrol">Save</span><p class="p">Represents the <span class="ph uicontrol">Save</span> function for the
+							<samp class="ph codeph">VariantManagement</samp> control on the user
+						interface.</p>
+<p class="p">It either saves the current variant or provides the
+							<span class="ph uicontrol">Save</span> dialog for variant management if a
+							<span class="ph uicontrol">Save As</span> function is required.</p>
+</li>
+<li class="li"><span class="ph uicontrol">Clear</span><p class="p">Clears all filters by raising the
+							<samp class="ph codeph">Clear</samp> event.</p>
+<p class="p">The <samp class="ph codeph">showClearButton</samp>
+						property is set to <samp class="ph codeph">False</samp> by default and determines whether
+						the button is visible.</p>
+</li>
+<li class="li"><span class="ph uicontrol">Restore</span><p class="p">Reverts all changes of the current variant by
+						raising the <samp class="ph codeph">Reset</samp> event and applies the current variant
+						again.</p>
+<p class="p">The <samp class="ph codeph">showRestoreButton</samp> property is set to
+							<samp class="ph codeph">True</samp> by default and determines whether the button is
+						visible.</p>
+</li>
+<li class="li"><span class="ph uicontrol">Go</span><p class="p">Executes the query.</p>
+<p class="p">The function of the button
+						is the same as for the one in the filter bar. However, here the button is
+						always visible.</p>
+</li>
+<li class="li"><span class="ph uicontrol">Close</span><p class="p">Closes the dialog and transfers all settings and
+						values to the filter bar.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="topic concept nested1" id="concept_e5j_pjr_2q"><h2 class="title topictitle2">Filter Bar in the Value Help Dialog</h2>
+<div class="body conbody"><p class="p">The filter bar is also used in the <span class="ph uicontrol">Value Help</span> dialog
+				scenarios. The filter bar property <samp class="ph codeph">advancedMode</samp> must be set to
+					<samp class="ph codeph">true</samp> to enable this function.</p>
+<p class="p">The embedding component has to provide a search field using the
+					<samp class="ph codeph">FilterItems</samp> aggregation and an advanced search using the
+					<samp class="ph codeph">FilterGroupItems</samp> aggregation. For the search, the
+					<samp class="ph codeph">Search</samp> event is raised. </p>
+</div>
+</div>
+<div class="topic concept nested1" id="concept_nfb_2ms_fq"><h2 class="title topictitle2">Integration of Smart Variant Management</h2>
+<div class="body conbody"><p class="p">A variant represents a set of filters. Variants are handled and represented on the
+				user interface by the <samp class="ph codeph">VariantManagement</samp> control that is included in
+				the toolbar of the <samp class="ph codeph">FilterBar</samp> control.</p>
+<p class="p">Variants are stored in a backend system and also retrieved from there.</p>
+<p class="p">For more information about the <samp class="ph codeph">SmartVariantManagement</samp> control
+				itself, refer to the corresponding documentation.</p>
+<p class="p">For the variants, the following two services are available:</p>
+<ul class="ul" id="concept_nfb_2ms_fq__ul_jqk_zh5_fq"><li class="li">UI2 service for personalization</li>
+<li class="li">UI5 service for flexibility </li>
+</ul>
+<p class="p">They can be accessed using the <samp class="ph codeph">SmartVariantManagement</samp> control.</p>
+<p class="p">The consuming control that is using the <samp class="ph codeph">SmartVariantManagement</samp>
+				control has to provide the following dedicated methods:</p>
+<ul class="ul" id="concept_nfb_2ms_fq__ul_efg_cq5_fq"><li class="li"><samp class="ph codeph">applyVariant</samp> (<samp class="ph codeph">oVariantContent</samp>)</li>
+<li class="li"><samp class="ph codeph">var oVariantContent</samp> = <samp class="ph codeph">fetchVariant</samp> ()</li>
+</ul>
+<p class="p">The <samp class="ph codeph">fetchVariant</samp> has to return a JSON object. This is the
+				information that is stored along with some administrative information, such as the
+				name of the variant and the ID. Once the variant has been retrieved from the backend
+				system and transferred to the consuming control, the <samp class="ph codeph">applyVariant</samp>
+				is executed. During execution, the consuming control must know the format of
+					<samp class="ph codeph">oVariantContent</samp>, since the control must also provide the method
+				and react to it.</p>
+<p class="p">The <samp class="ph codeph">SmartFilterBar</samp> control uses the
+					<samp class="ph codeph">SmartVariantManagement</samp> control. The <samp class="ph codeph">FilterBar</samp>
+				control uses the <samp class="ph codeph">SmartVariantManagementUI2</samp> control.</p>
+<div class="section"><div class="section_title">UI2 Personalization Service</div><div type="UI2 Personalization Service">
+				
+				<p class="p">The UI2 personalization is handled internally by the <samp class="ph codeph">FilterBar</samp>
+					control. The basic variant handling is implemented by the
+						<samp class="ph codeph">SmartVariantManagementUI2</samp> control. It extends the
+						<samp class="ph codeph">VariantManagement</samp> control. The UI2 personalization only
+					supports end user personalization.</p>
+
+				<p class="p">The consuming control of the <samp class="ph codeph">FilterBar</samp> has to provide two
+					methods, one for fetching the data that must be stored as the content of the
+					variant, and one for applying this data, if the variant is set. Both methods
+					have to be registered using the corresponding methods of the
+						<samp class="ph codeph">FilterBar</samp>:</p>
+
+				<ul class="ul" id="concept_nfb_2ms_fq__ul_vxd_dmd_hq"><li class="li"><samp class="ph codeph">registerApplyData </samp> (<samp class="ph codeph">fApplyData</samp>) –
+						interface: <samp class="ph codeph">fApplyData </samp>(<samp class="ph codeph">oVariantContent</samp>) </li>
+<li class="li"><samp class="ph codeph">registerFetchData</samp> (<samp class="ph codeph">fFetchData</samp>) –
+						interface: <samp class="ph codeph">oVariantContent</samp> = <samp class="ph codeph">fFetchData</samp>
+						()</li>
+</ul>
+
+				<p class="p">A persistence key <samp class="ph codeph">setPersistencyKey</samp> (<samp class="ph codeph">sKey</samp>) must
+					be provided as well. This key identifies the storage area and saves/retrieves
+					the variants currently used.</p>
+
+				<p class="p">To trigger the retrieval of the variants, the consuming control must register to
+					the <samp class="ph codeph">Initialise</samp> event of the <samp class="ph codeph">FilterBar </samp>and call
+					the method <samp class="ph codeph">fireInitialise</samp>() in the <samp class="ph codeph">FilterBar</samp>. </p>
+
+				<div class="note note"><span class="notetitle">Note</span> The retrieval of the initial variants is done asynchronously. If the retrieval
+					has been completed, the <samp class="ph codeph">SmartVariantManagementUI2</samp> control will
+					be populated with the variant information, and the event handler for the
+						<samp class="ph codeph">Initialise</samp> event will be called.</div>
+
+			</div></div>
+<div class="section"><div class="section_title">UI5 Flexibility Service</div><div type="UI5 Flexibility Service">
+				
+				<p class="p">The UI5 flexibility is handled internally by the <samp class="ph codeph">SmartFilterBar</samp>
+					control. The basic variant handling is implemented by the
+						<samp class="ph codeph">SmartVariantManagement</samp> control. It extends the
+						<samp class="ph codeph">VariantManagement</samp> control. UI5 flexibility supports end
+					user personalization and also allows to create and store SAP- and
+					vendor-specific variants.</p>
+
+			</div></div>
+<div class="section"><div class="section_title">Use Case: How to Use UI5 Flexibility in FilterBar</div><div type="Use Case: How to Use UI5 Flexibility in FilterBar">
+				
+				<p class="p">Basically, the <samp class="ph codeph">FilterBar</samp> control supports the UI2 personalization service.
+					The following steps describe how to enable the <samp class="ph codeph">FilterBar</samp>
+					control to use the UI5 flexibility service provided the
+						<samp class="ph codeph">FilterBar</samp> is already used and the consuming control
+					supports the UI2 service via the <samp class="ph codeph">FilterBar</samp>. If this is not the
+					case, refer to section "UI2 Personalization Service“ first.</p>
+
+				<ol class="ol" id="concept_nfb_2ms_fq__ol_jxz_dbf_hq"><li class="li">Extend the <samp class="ph codeph">FilterBar</samp> to create a new
+							<samp class="ph codeph">FilterBar</samp> control.<p class="p">
+						pcode:</p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>
+sap.ui.comp.filterbar.FilterBar.extend(“my.ui5flex.FilterBar”) {..}</pre></div>
+</li>
+<li class="li">Overwrite the internal <samp class="ph codeph">_initializeVariantManagement</samp>
+						function of the <samp class="ph codeph">FilterBar</samp>.<p class="p">
+						pcode:</p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>
+my.ui5flex.FilterBar.prototype._initializeVariantManagement = function() {
+      	if (this._oSmartVM &amp;&amp; this.getPersistencyKey()) {
+            var oPersInfo = new sap.ui.comp.smartvariants.PersonalizableInfo({
+		     type: "filterBar",
+		     keyName: "persistencyKey"		
+             });
+	     oPersInfo.addControl(this);
+
+	     oSmartVM.addPersonalizableControl(oPersInfo);					        
+             sap.ui.comp.filterbar.FilterBar.prototype._initializeVariantManagement.apply(this, arguments);
+
+	 } else {
+		this.fireInitialise();
+ }
+    };
+</pre></div>
+</li>
+<li class="li">Overwrite the internal <samp class="ph codeph">_createVariantManagement</samp> function of
+						the <samp class="ph codeph">FilterBar</samp>.<p class="p">
+						pcode:</p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>
+my.ui5flex.FilterBar.prototype._createVariantManagement = function() {
+         this._oSmartVM = new sap.ui.comp.smartvariants.SmartVariantManagement({
+                	showExecuteOnSelection: true,
+                	showShare: true
+           	   });
+                return this._oSmartVM;
+};
+</pre></div>
+</li>
+</ol>
+
+			</div></div>
+<div class="section"><div class="section_title">Further Communication between (Smart)FilterBar and Consuming Control</div><div type="Further Communication between (Smart)FilterBar and Consuming Control">
+				
+				<p class="p">Before a variant is saved, the <samp class="ph codeph">(Smart)FilterBar</samp> triggers the
+						<samp class="ph codeph">beforeVariantSave</samp> event. This allows the consuming control
+					to prepare for the <samp class="ph codeph">fetchData</samp> call, if required. Right after
+					this event is raised, the <samp class="ph codeph">(Smart)FilterBar</samp> calls the method
+					provided by the <samp class="ph codeph">registerFetchData</samp> method. If a user selects a
+					variant from the <samp class="ph codeph">(Smart)VariantManagement</samp> control and after the
+						<samp class="ph codeph">(Smart)FilterBar</samp> calls the method provided by the
+						<samp class="ph codeph">registerApplyData</samp> method, the
+						<samp class="ph codeph">afterVariantLoad</samp> event will be raised. </p>
+
+				<div class="note note"><span class="notetitle">Note</span> The <samp class="ph codeph">afterVariantLoad</samp> event is also raised internally when the
+					user selects <span class="ph uicontrol">Cancel</span> or <span class="ph uicontrol">Reset</span> in
+					the <span class="ph uicontrol">Filters</span> dialog of the filter bar.</div>
+
+			</div></div>
+</div>
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Filter Bar";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

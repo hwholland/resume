@@ -1,0 +1,283 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, we use the mock server to add data to our app without dependency to any remote server or system."/>
+<meta name="description" content="In this step, we use the mock server to add data to our app without dependency to any remote server or system."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=11838352540133024"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=11838352540133024"/>
+<title>Step 2: Creating a Mock Server to Simulate Data</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio50897decc9504b2a875fb41d89fd254a">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 2: Creating a Mock Server to Simulate Data</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we use the mock server to add data to our app without dependency to any remote server or system.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio50897decc9504b2a875fb41d89fd254a__fig_qwx_h2q_st"><div class="figcontainer">
+				
+				<img class="image" id="loio50897decc9504b2a875fb41d89fd254a__image_dyv_r3q_st" src="loio55edd9fa2cc24f398a9373d6d497d3e4_HiRes.png"/>
+			<div class="figcap">The app now contains data</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the Demo Kit <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.tutorial.mockserver.02/preview" alt="../../explored.html#/sample/sap.ui.core.tutorial.mockserver.02/preview" title="../../explored.html#/sample/sap.ui.core.tutorial.mockserver.02/preview">Mock Server - Step 2</a></span>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/test/mockServer.html</div><div type="webapp/test/mockServer.html">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;title&gt;Mock Server Tutorial&lt;/title&gt;
+		&lt;script id="sap-ui-bootstrap"
+			src="../../resources/sap-ui-core.js"
+			data-sap-ui-libs="sap.m"
+			data-sap-ui-theme="sap_belize"
+			data-sap-ui-xx-bindingSyntax="complex"
+			data-sap-ui-resourceroots='{"sap.ui.demo.MockServer": "../"}'&gt;
+		&lt;/script&gt;
+		&lt;link rel="stylesheet" href="../css/style.css"&gt;
+		&lt;script&gt;
+			sap.ui.getCore().attachInit(function() {
+				sap.ui.require([
+					<span class="ph emphasis emphasis">"sap/ui/demo/MockServer/localService/mockserver",</span>
+					"sap/m/Shell",
+					"sap/ui/core/ComponentContainer"
+				], function (<span class="ph emphasis emphasis">mockserver</span>, Shell, ComponentContainer) {
+					<span class="ph emphasis emphasis">mockserver.init();</span>
+					new Shell({
+						app: new sap.ui.core.ComponentContainer({
+							height : "100%",
+							name : "sap.ui.demo.MockServer",
+							settings : {
+								id : "MockServer"
+							}
+						})
+					}).placeAt("content");
+				});
+			});
+		&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body class="sapUiBody" id="content"&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+
+			<p class="p">We use this file to run our app in test mode with mock data. We use the <samp class="ph codeph">sap.ui.require</samp> syntax, because we load more additional
+				files required for the start of our app. The first dependency is a file called <span class="ph filepath">mockserver.js</span> that is located in the
+					<span class="ph filepath">webapp/localService</span> folder. The <samp class="ph codeph">Shell</samp> and the <samp class="ph codeph">ComponentContainer</samp> controls are also
+				loaded as a dependency by the require statement.</p>
+
+			<div class="p">The new artifact that we just loaded and are about to implement is our local mock server that is immediately called with <samp class="ph codeph">init</samp>
+				method before we actually instantiate the component. By doing so, we can catch all requests that would go to the “real” service and process it
+				locally by our mock server when launching the app with the <span class="ph filepath">webapp/test/mockServer.html</span> file.<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">A productive application does not contain the mock server code and thus connects to the real service instead. The HTML page above is
+						defined only for local testing and to be called in automated tests. The application coding itself is unchanged and does not know the
+						difference between the real and the mocked back-end service.</p>
+
+					<p class="p">The mock server does not need to be called from anywhere else in our code so
+						we use <samp class="ph codeph">sap.ui.require</samp> to load dependencies asynchronously
+						without defining a global namespace.</p>
+
+				</div>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/localService/metadata.xml</div><div type="webapp/localService/metadata.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;?xml version="1.0" encoding="utf-8" standalone="yes"?&gt;
+&lt;edmx:Edmx Version="1.0"
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"&gt;
+    &lt;edmx:DataServices
+        xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="1.0"&gt;
+        &lt;Schema Namespace="NerdMeetup.Models"
+            xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
+            xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+            xmlns="http://schemas.microsoft.com/ado/2006/04/edm"&gt;
+            &lt;EntityType Name="Meetup"&gt;
+                &lt;Key&gt;
+                    &lt;PropertyRef Name="MeetupID" /&gt;
+                &lt;/Key&gt;
+                &lt;Property Name="MeetupID" Type="Edm.Int32" Nullable="false" /&gt;
+                &lt;Property Name="Title" Type="Edm.String" Nullable="true" /&gt;
+                &lt;Property Name="EventDate" Type="Edm.DateTime" Nullable="false" /&gt;
+                &lt;Property Name="Description" Type="Edm.String" Nullable="true" /&gt;
+                &lt;Property Name="HostedBy" Type="Edm.String" Nullable="true" /&gt;
+                &lt;Property Name="ContactPhone" Type="Edm.String" Nullable="true" /&gt;
+                &lt;Property Name="Address" Type="Edm.String" Nullable="true" /&gt;
+                &lt;Property Name="Country" Type="Edm.String" Nullable="true" /&gt;
+                &lt;Property Name="Latitude" Type="Edm.Double" Nullable="false" /&gt;
+                &lt;Property Name="Longitude" Type="Edm.Double" Nullable="false" /&gt;
+                &lt;Property Name="HostedById" Type="Edm.String" Nullable="true" /&gt;
+                &lt;Property Name="Location" Type="NerdMeetup.Models.LocationDetail" Nullable="false" /&gt;
+            &lt;/EntityType&gt;
+            &lt;ComplexType Name="LocationDetail" /&gt;
+            &lt;EntityContainer Name="NerdMeetups" m:IsDefaultEntityContainer="true"&gt;
+                &lt;EntitySet Name="Meetups" EntityType="NerdMeetup.Models.Meetup" /&gt;
+                &lt;FunctionImport Name="FindUpcomingMeetups" EntitySet="Meetups" ReturnType="Collection(NerdMeetup.Models.Meetup)" m:HttpMethod="GET" /&gt;
+            &lt;/EntityContainer&gt;
+        &lt;/Schema&gt;
+    &lt;/edmx:DataServices&gt;
+&lt;/edmx:Edmx&gt;</pre></div>
+
+			<p class="p">The <span class="ph filepath">metadata</span> file contains information about the service
+				interface and does not need to be written manually. It defines a
+					<samp class="ph codeph">Meetup</samp> entity, a <samp class="ph codeph">Meetups</samp> entity set and a
+				function import definition.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/localService/mockdata/Meetups.json (New)</div><div type="webapp/localService/mockdata/Meetups.json (New)">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">[{
+	"MeetupID": 1,
+	"Title": "Toronto Tech Meet-Up",
+	"EventDate": "/Date(1593810000000)/",
+	"Description": "The best way to expand your knowledge and network of the Toronto technology community"
+}, {
+	"MeetupID": 2,
+	"Title": "Los Angeles redditors",
+	"EventDate": "/Date(1572779994000)/",
+	"Description": "This is a meet-up group specifically for redditors of r/LosAngeles. If you don't know what that is, this isn't the meet-up you're looking for"
+}, {
+	"MeetupID": 3,
+	"Title": "Designers + Geeks New York",
+	"EventDate": "/Date(1575544794000)/",
+	"Description": "Bringing designers + geeks together to talk shop, startups, and do some knowledge sharing. All types of designers + geeks welcome"
+}, {
+	"MeetupID": 4,
+	"Title": "New York City Geek Adventure Group",
+	"EventDate": "/Date(1539339594000)/",
+	"Description": "Are you looking to have fun and go on random adventures?"
+}]</span></pre></div>
+
+			<p class="p">The <span class="ph filepath">Meetups.json</span> file is automatically read by the mock server
+				later in this step. It represents a flat array of <samp class="ph codeph">Meetup</samp> items.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/localService/mockserver.js (New)</div><div type="webapp/localService/mockserver.js (New)"><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.define([
+	"sap/ui/core/util/MockServer"
+], function(MockServer) {
+	"use strict";
+
+	return {
+		/**
+		 * Initializes the mock server.
+		 * You can configure the delay with the URL parameter "serverDelay".
+		 * The local mock data in this folder is returned instead of the real data for testing.
+		 * @public
+		 */
+		init: function() {
+			// create
+			var oMockServer = new MockServer({
+				rootUri: "/"
+			});
+
+			// simulate against the metadata and mock data
+			oMockServer.simulate("../localService/metadata.xml", {
+				sMockdataBaseUrl: "../localService/mockdata",
+				bGenerateMissingMockData: true
+			});
+
+			// start
+			oMockServer.start();
+
+			jQuery.sap.log.info("Running the app with mock data");
+		}
+
+	};
+
+});</span></pre></div>
+<p class="p">Now
+				we can write the code to initialize the mock server that will simulate the requests
+				instead of the real server. We load the <samp class="ph codeph">MockServer</samp> module as a
+				dependency and create a helper object that defines an <samp class="ph codeph">init</samp> method
+				to start the server. This method is called before the Component initialization in
+				the <span class="ph filepath">mockServer.html</span> file above. The <samp class="ph codeph">init</samp>
+				method creates a <samp class="ph codeph">MockServer</samp> instance with the same URL as the real
+				service. The URL in configuration parameter <samp class="ph codeph">rootURI</samp> is now served
+				by our test server instead of the real service. </p>
+<p class="p">Next, we set two global
+				configuration settings for all <samp class="ph codeph">MockServer</samp> instances that tell the
+				server to respond automatically and introduce a delay of one second to imitate a
+				typical server response time.</p>
+<div class="p">In order to simulate a manual back-end call we
+				can simply call the <samp class="ph codeph">simulate</samp> method on the
+					<samp class="ph codeph">MockServer</samp> instance with the path to our newly
+					created<span class="ph filepath"> metadata.xml</span> file. This will read the test data
+				from our local file system and set up the URL patterns that will mimic the real
+				service. The first parameter is the path to the service
+					<span class="ph filepath">metadata.xml</span> document. The second parameter is an object
+				with the following properties:<ul class="ul" id="loio50897decc9504b2a875fb41d89fd254a__ul_hxm_2hq_st">
+					<li class="li">
+						<p class="p"><samp class="ph codeph">sMockdataBaseUrl</samp>: path where to look for mock data files
+							in JSON format</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">bGenerateMissingMockData</samp>: Boolean property to tell the
+								<samp class="ph codeph">MockServer</samp> to use auto-generated mock data in case
+							no JSON files are found.</p>
+
+					</li>
+
+				</ul>
+We call the function <samp class="ph codeph">start</samp> on the mock server instance. From
+				this point on, each request matching the URL pattern <samp class="ph codeph">rootURI</samp> will
+				be processed by the <samp class="ph codeph">MockServer</samp>.</div>
+<p class="p">Finally, we add a message
+				toast to indicate for the user that the app runs with mock data.</p>
+<p class="p">This approach
+				is perfect for local and automated testing, even without any network connection.
+				Your development does not depend on the availability of a remote server, i.e. to run
+				your tests independently from the back-end service. You can control the mocked data
+				so the requests will return reliable and predictable results.</p>
+<p class="p">If the real
+				service connection cannot be established, for example, when there is no network
+				connection, you can always fall back to the local test page and run the app with
+				mock data.</p>
+Just run the app now again with the
+				<span class="ph filepath">mockServer.html</span> file.. The list should now be populated with
+			meet-ups from our mock data. You can also choose the button and see data.</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="3a9728ec31f94ca18a7d543ce419d85d.html" title="In this tutorial, we will explore some advanced features of the mock server.">Mock Server</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="7a78f1b707c248fd9ec53dcb5f10814c.html" title="We start with a simple app scenario with a list of items bound to an OData service. Since the OData service is not available yet on a real server, we will use the mock server to simulate both data and data calls.">Step 1: Initial App Without Data</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="46c1ca4eb2804af6bfa371ad51c9b887.html" title="In this step, we add the functionality to interpret URL parameters in our local mock server configuration.">Step 3: Handling Custom URL Parameters</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="69d3cbd4150c4ffb884e788f7f60fd93.html" title="Mock server is a mocking framework for HTTP and HTTPS that is used to simplify integration testing and to decouple development teams by allowing to develop against a service that is not complete or unstable.">Mock Server</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.core.util.MockServer.html" alt="../../docs/api/symbols/sap.ui.core.util.MockServer.html" title="../../docs/api/symbols/sap.ui.core.util.MockServer.html">API Reference: <samp class="ph codeph">sap.ui.core.util.MockServer</samp></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

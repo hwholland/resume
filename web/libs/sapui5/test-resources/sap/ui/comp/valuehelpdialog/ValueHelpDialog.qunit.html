@@ -1,0 +1,703 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>qUnit Page for sap.ui.comp.valuehelpdialog.ValueHelpDialog</title>
+
+		<script id="sap-ui-bootstrap" 
+			type="text/javascript"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.m,sap.ui.comp">
+		</script>
+
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+		<script type="text/javascript">
+			
+		if(!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+      		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		} 		
+				
+		(function() {
+
+			jQuery.sap.require("sap.ui.core.Control");		
+			jQuery.sap.require("sap.m.Tokenizer");
+			jQuery.sap.require("sap.ui.layout.Grid");			
+			jQuery.sap.require("sap.ui.comp.valuehelpdialog.ValueHelpDialog");
+			
+ 			_InitRows= function(oValueHelpDialog) {
+ 				
+ 				var oColModel = new sap.ui.model.json.JSONModel();
+ 				oColModel.setData({
+ 					cols: [
+ 					      	{label: "Company Code", template: "CompanyCode"},
+ 					        {label: "Company Name", template: "CompanyName"},
+ 					        {label: "City", template: "City"},
+ 					        {label: "Currency Code", template: "CurrencyCode"},
+ 					        {label: "Date", template: "Date", type:"date", oType:new sap.ui.model.type.Date()},
+ 					        {label: "Boolean", template: "BoolCode", type:"boolean"}
+ 					      ]
+ 				});
+ 				oValueHelpDialog.setModel(oColModel, "columns");
+
+ 				var aItems= [{CompanyCode: "0001", CompanyName: "SAP A.G.", City: "Walldorf", CurrencyCode:"EUR", BoolCode: true},
+ 		                 {CompanyCode: "0002", CompanyName: "SAP Laps India", City: "Bangalore", CurrencyCode:"INR", BoolCode: true},
+ 		                 {CompanyCode: "0003", CompanyName: "SAP China LAB", City: "Beijing", CurrencyCode:"CNY", BoolCode: false},
+ 		                 {CompanyCode: "0099", CompanyName: "SAP0", City: "Berlin", CurrencyCode:"EUR", BoolCode: true},
+ 		                 {CompanyCode: "0100", CompanyName: "SAP1", City: "Berlin", CurrencyCode:"EUR", Date: new Date()},
+ 		                 {CompanyCode: "0101", CompanyName: "SAP2", City: "Berlin", CurrencyCode:"EUR"},
+ 		                 {CompanyCode: "0102", CompanyName: "SAP3", City: "Berlin", CurrencyCode:"EUR"},
+ 		                 {CompanyCode: "0103", CompanyName: "SAP4", City: "Berlin", CurrencyCode:"EUR", Date: new Date()},
+ 		                 {CompanyCode: "0104", CompanyName: "SAP5", City: "Berlin", CurrencyCode:"EUR"},
+ 		                 {CompanyCode: "0105", CompanyName: "SAP6", City: "Berlin", CurrencyCode:"EUR"},
+ 		                 {CompanyCode: "0106", CompanyName: "SAP7", City: "Berlin", CurrencyCode:"EUR", Date: new Date()},
+ 		                 {CompanyCode: "0107", CompanyName: "SAP8", City: "Berlin", CurrencyCode:"EUR", Date: new Date()},
+ 		                 {CompanyCode: "0108", CompanyName: "SAP9", City: "Berlin", CurrencyCode:"EUR"},
+ 		                 {CompanyCode: "0109", CompanyName: "SAP10", City: "Berlin", CurrencyCode:"EUR"},
+ 		                 {CompanyCode: "0110", CompanyName: "SAP11", City: "Berlin", CurrencyCode:"EUR"},
+ 		                 {CompanyCode: "0111", CompanyName: "SAP12", City: "Berlin", CurrencyCode:"EUR"},
+ 		                 {CompanyCode: "0112", CompanyName: "SAP13", City: "Berlin", CurrencyCode:"EUR"},
+ 		                 {CompanyCode: "0113", CompanyName: "SAP14", City: "Berlin", CurrencyCode:"EUR"},
+ 		                 {CompanyCode: "0114", CompanyName: "SAP15", City: "Berlin", CurrencyCode:"EUR"},
+ 		                 {CompanyCode: "0115", CompanyName: "SAP16", City: "Berlin", CurrencyCode:"EUR"}
+ 		                 ];
+ 				
+ 				var oRowsModel = new sap.ui.model.json.JSONModel();
+ 				oRowsModel.setData(aItems);
+ 				oValueHelpDialog.setModel(oRowsModel);
+ 				
+ 				//oValueHelpDialog.getTable().bindRows("/");
+
+ 				if (oValueHelpDialog.getTable().bindRows) {
+					oValueHelpDialog.getTable().bindRows("/"); 
+				}
+				if (oValueHelpDialog.getTable().bindItems) { 
+					var oTable = oValueHelpDialog.getTable();
+					
+					oTable.bindAggregation("items", "/", function(sId, oContext) { 
+						var aCols = oTable.getModel("columns").getData().cols;
+					
+						return new sap.m.ColumnListItem({
+							cells: aCols.map(function (column) {
+								var colname = column.template;
+								return new sap.m.Label({ text: "{" + colname + "}" });
+							})
+						});
+					});
+				}
+ 				
+ 			};
+			
+ 			_InitToken= function(oValueHelpDialog) {
+ 				var token1= new sap.m.Token({key: "0001", text:"SAP A.G. (0001)"});
+ 	 			var token2= new sap.m.Token({key: "0002", text: "SAP Labs India (0002)"});
+ 	 			var rangeToken1= new sap.m.Token({key: "i1", text: "CompanyCode a..z"}).data("range", { "exclude": false, "operation": sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.BT, "keyField": "CompanyCode", "value1": "a", "value2": "z"});
+ 	 			var rangeToken2= new sap.m.Token({key: "i2", text: "CompanyCode ==foo"}).data("range", { "exclude": false, "operation": sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.EQ, "keyField": "CompanyCode", "value1": "foo", "value2": ""});
+ 	 			var rangeToken3= new sap.m.Token({key: "e1", text: "CompanyCode !(==foo)"}).data("range", { "exclude": true, "operation": sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.EQ, "keyField": "CompanyCode", "value1": "foo", "value2": ""});
+ 	 			var	aTokens= [token1, token2, rangeToken1, rangeToken2, rangeToken3];
+
+ 	 			oValueHelpDialog.setTokens(aTokens);
+ 			};
+ 			
+			
+			module("Testing Public API", {
+				setup: function() {
+					this.oValueHelpDialog = new sap.ui.comp.valuehelpdialog.ValueHelpDialog();
+					this.oValueHelpDialog.getTable();
+				},
+				teardown: function() {
+					this.oValueHelpDialog.destroy();
+					this.oValueHelpDialog= null;
+				}
+			});
+
+  			test("Test open with supportRangesOnly", function(qUnit) {
+ 				this.oValueHelpDialog.setSupportRangesOnly(true);
+ 				qUnit.equal(this.oValueHelpDialog.getSupportRangesOnly(), true, "SupportRangesOnly should be true");
+			});
+
+ 			test("Test open with filterMode", function(qUnit) {
+ 				this.oValueHelpDialog.setFilterMode(true);
+				qUnit.equal(this.oValueHelpDialog.getFilterMode(), true, "FilterMode should be true");
+			});
+
+ 			test("Check Title", function(qUnit) {
+ 				this.oValueHelpDialog.setTitle("foo");
+ 				qUnit.equal(this.oValueHelpDialog.getTitle(), "foo", "title should be foo");
+			});
+
+  			test("Check basicSearchText", function(qUnit) {
+ 				var oFilterbar= new sap.ui.comp.smartfilterbar.SmartFilterBar({advancedMode: true});
+ 				
+ 				// basic search text before the filterbar exist
+ 				this.oValueHelpDialog.setBasicSearchText("bar");
+ 				qUnit.equal(this.oValueHelpDialog.getBasicSearchText(), "bar", "basicSearchText should be bar");
+
+ 				oFilterbar.setBasicSearch( new sap.m.SearchField());  
+				this.oValueHelpDialog.setFilterBar(oFilterbar);
+				
+				// update the search text
+ 				this.oValueHelpDialog.setBasicSearchText("foo");
+ 				qUnit.equal(this.oValueHelpDialog.getBasicSearchText(), "foo", "basicSearchText should be foo");
+			});
+
+  			test("Check supportMultiselect", function(qUnit) {
+  				qUnit.equal(this.oValueHelpDialog.getSupportMultiselect(), true, "Default for supportMultiselect should be true");
+ 				this.oValueHelpDialog.setSupportMultiselect(false);
+ 				qUnit.equal(this.oValueHelpDialog.getSupportMultiselect(), false, "supportMultiselect should be false");
+			});
+
+ 			test("Check supportRanges", function(qUnit) {
+ 				qUnit.equal(this.oValueHelpDialog.getSupportRanges(), false, "Default for supportRanges should be false");
+ 				this.oValueHelpDialog.setSupportRanges(true);
+ 				qUnit.equal(this.oValueHelpDialog.getSupportRanges(), true, "supportRanges should be true");
+			});
+
+ 			test("Check supportRangesOnly", function(qUnit) {
+ 				qUnit.equal(this.oValueHelpDialog.getSupportRangesOnly(), false, "Default for supportRangesOnly should be false");
+ 				this.oValueHelpDialog.setSupportRangesOnly(true);
+ 				qUnit.equal(this.oValueHelpDialog.getSupportRangesOnly(), true, "supportRangesOnly should be true");
+			});
+
+			test("test set/get Key", function(qUnit) {
+				this.oValueHelpDialog.setKey("CompanyCode");
+				qUnit.equal(this.oValueHelpDialog.getKey(), "CompanyCode", "the key should be CompanyCode");		
+ 			});
+
+ 			test("test set/get descriptionKey", function(qUnit) {
+				this.oValueHelpDialog.setDescriptionKey("CompanyName");
+				qUnit.equal(this.oValueHelpDialog.getDescriptionKey(), "CompanyName", "the descriptionKey should be CompanyName");		
+ 			});
+
+  			test("test set/get Keys", function(qUnit) {
+				this.oValueHelpDialog.setKeys(["CompanyCode"]);
+				qUnit.equal(this.oValueHelpDialog.getKeys().length, 1, "the keys array should contain one entry" );		
+ 			});
+
+ 			test("test set/get RangeKeyFields", function(qUnit) {
+				this.oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}, {key:"CompanyName", label : "Name"}]);
+				qUnit.equal(this.oValueHelpDialog.getRangeKeyFields().length, 2, "the RangeKeyFields array should contain two entries" );		
+ 			});
+
+  			test("test set Filterbar", function(qUnit) {
+ 				var oFilterbar= new sap.ui.comp.smartfilterbar.SmartFilterBar();
+				this.oValueHelpDialog.setFilterBar(oFilterbar);
+				qUnit.equal(this.oValueHelpDialog.getFilterBar(), oFilterbar, "Should return the added Filterbar");
+
+				// replace it by another filterbar
+				oFilterbar= new sap.ui.comp.smartfilterbar.SmartFilterBar();
+				this.oValueHelpDialog.setFilterBar(oFilterbar);
+				qUnit.equal(this.oValueHelpDialog.getFilterBar(), oFilterbar, "Should return the added Filterbar");
+ 			});
+
+  			test("test set/get Tokens", function(qUnit) {
+ 				this.oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}, {key:"CompanyName", label : "Name"}]); 
+
+ 				_InitToken(this.oValueHelpDialog);
+ 				qUnit.equal(this.oValueHelpDialog._oSelectedItems.getItems().length, 2, "the Tokens array should contain 2 entries" );		
+				var keys = Object.keys(this.oValueHelpDialog._oSelectedRanges);
+				qUnit.equal(keys.length, 3, "the Tokens array should contain 3 entries" );
+				
+				// remove all tokens by setting an empty array
+				this.oValueHelpDialog.setTokens([]);
+ 				qUnit.equal(this.oValueHelpDialog._oSelectedItems.getItems().length, 0, "the Tokens array should contain 0 entries" );		
+				var keys = Object.keys(this.oValueHelpDialog._oSelectedRanges);
+				qUnit.equal(keys.length, 0, "the Tokens array should contain 0 entries" );
+ 			});
+ 			
+ 			test("test resetTableState", function(qUnit) {
+				this.oValueHelpDialog.resetTableState();
+				qUnit.equal(this.oValueHelpDialog.getTable().getNoData(), this.oValueHelpDialog._oRb.getText("VALUEHELPDLG_TABLE_PRESSSEARCH"), "checking the NoDataText of Table");
+ 			});
+ 			
+ 			test("test TableStateSearchData", function(qUnit) {
+				this.oValueHelpDialog.TableStateSearchData();
+				qUnit.equal(this.oValueHelpDialog.getTable().getNoData(), this.oValueHelpDialog._oRb.getText("VALUEHELPDLG_TABLE_PRESSSEARCH"), "checking the NoDataText of Table");
+ 			});
+ 			
+ 			test("test TableStateDataFilled", function(qUnit) {
+				this.oValueHelpDialog.TableStateDataFilled();
+				qUnit.equal(this.oValueHelpDialog.getTable().getNoData(), this.oValueHelpDialog._oRb.getText("VALUEHELPDLG_TABLE_NODATA"), "checking the NoDataText of Table");
+ 			});
+ 			
+			test("test FormatedRangeTokenText", function(qUnit) {
+				var result= this.oValueHelpDialog._getFormatedRangeTokenText(sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.BT, "v1", "v2", false, "keyField");
+				qUnit.equal(result, "v1...v2", "result must be correct");
+
+				result= this.oValueHelpDialog._getFormatedRangeTokenText(sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.EQ, "v1", "", false, "keyField");
+				qUnit.equal(result, "=v1", "result must be correct");
+				
+				this.oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}, {key:"CompanyName", label : "Name"}]);
+				result= this.oValueHelpDialog._getFormatedRangeTokenText(sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.EndsWith, "v1", "", false, "CompanyName");
+				qUnit.equal(result, "Name: *v1", "result must be correct");
+
+				result= this.oValueHelpDialog._getFormatedRangeTokenText(sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.LE, "v1", "", true, "CompanyCode");
+				qUnit.equal(result, "ID: !(<=v1)", "result must be correct");
+			});
+
+			test("test _updateTitles", function(qUnit) {
+ 				_InitToken(this.oValueHelpDialog);
+ 				this.oValueHelpDialog._oTokenizerPanel.setExpanded(true); 				
+				this.oValueHelpDialog._updateTitles();
+
+				if (!sap.ui.Device.system.phone && !sap.ui.Device.system.tablet) {
+					// only on Desktop the Table title exist and can be tested!
+					qUnit.equal(this.oValueHelpDialog.getTable().getTitle().getText(), this.oValueHelpDialog._sTableTitleNoCount, "Table title should be "+this.oValueHelpDialog._sTableTitleNoCount);
+				}
+				
+				var sTitle= "(4)";
+				qUnit.equal(this.oValueHelpDialog._oTokenizerPanel.getHeaderText().match("\\(4\\)$"), sTitle, "Selected Item title should ends with "+sTitle);
+				sTitle= "(1)";
+				qUnit.equal(this.oValueHelpDialog._oExcludedTokenTitle.getText().match("\\(1\\)$"), sTitle, "Excluded tokens title should ends with "+sTitle);
+			});
+			
+			test("test set/get maxIncludeRanges", function(qUnit) {
+				qUnit.equal(this.oValueHelpDialog.getMaxIncludeRanges(), "-1", "Table MaxIncludeRanges should be -1");
+				this.oValueHelpDialog.setMaxIncludeRanges("1");
+				qUnit.equal(this.oValueHelpDialog.getMaxIncludeRanges(), "1", "Table MaxIncludeRanges should be 1");
+			});
+			
+			test("test set/get maxExcludeRanges", function(qUnit) {
+				qUnit.equal(this.oValueHelpDialog.getMaxExcludeRanges(), "-1", "Table MaxExcludeRanges should be -1");
+				this.oValueHelpDialog.setMaxExcludeRanges("1");
+				qUnit.equal(this.oValueHelpDialog.getMaxExcludeRanges(), "1", "Table MaxExcludeRanges should be 1");
+			});
+ 
+ 			test("test _getFormatedRangeTokenText", function(qUnit) {
+  				this.oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}, {key:"CompanyName", label : "Name"}]); 
+
+  				qUnit.equal(this.oValueHelpDialog._getFormatedRangeTokenText(sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.Initial, "v1", "v2", false, "CompanyCode"), "ID: =''", "returned value is correct");
+  				qUnit.equal(this.oValueHelpDialog._getFormatedRangeTokenText(sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.GT, "v1", "v2", false, "CompanyCode"), "ID: >v1", "returned value is correct");
+  				qUnit.equal(this.oValueHelpDialog._getFormatedRangeTokenText(sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.GE, "v1", "v2", false, "CompanyCode"), "ID: >=v1", "returned value is correct");
+  				qUnit.equal(this.oValueHelpDialog._getFormatedRangeTokenText(sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.GE, "v1", "v2", true, "CompanyCode"), "ID: !(>=v1)", "returned value is correct");
+  				qUnit.equal(this.oValueHelpDialog._getFormatedRangeTokenText(sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.LT, "v1", "v2", false, "CompanyCode"), "ID: <v1", "returned value is correct");
+  				qUnit.equal(this.oValueHelpDialog._getFormatedRangeTokenText(sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.Contains, "v1", "v2", false, "CompanyCode"), "ID: *v1*", "returned value is correct");
+  				qUnit.equal(this.oValueHelpDialog._getFormatedRangeTokenText(sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.StartsWith, "v1", "v2", false, "CompanyCode"), "ID: v1*", "returned value is correct");
+ 			});
+ 
+ 
+			module("Async tests with Dialog Open", {
+				setup: function() {
+					this.oValueHelpDialog = new sap.ui.comp.valuehelpdialog.ValueHelpDialog();
+					this.oValueHelpDialog.addStyleClass("sapUiSizeCompact");
+				},
+				teardown: function() {
+					this.oValueHelpDialog.close();
+					this.oValueHelpDialog.destroy();
+					this.oValueHelpDialog= null;
+	 				sap.ui.getCore().applyChanges();
+				}
+			});
+			
+
+
+  			test("test removeAllToken", function(qUnit) {
+				var done = qUnit.async();
+				
+ 				this.oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}, {key:"CompanyName", label : "Name"}]); 
+ 				_InitToken(this.oValueHelpDialog);
+
+				var fnClosed = function() {
+					this.oValueHelpDialog.detachAfterClose(fnClosed);
+					done();
+				}.bind(this);
+ 				
+ 				var fnOpened = function() {
+					this.oValueHelpDialog.detachAfterOpen(fnOpened);
+
+	 				qUnit.ok(this.oValueHelpDialog._oRemoveAllSelectedItemsBtn);
+	 				qUnit.equal(this.oValueHelpDialog._oSelectedItems.getItems().length, 2, "SelectedItems should be 2");
+	 				
+	 				var oTarget = this.oValueHelpDialog._oRemoveAllSelectedItemsBtn.getFocusDomRef();
+	 				sap.ui.test.qunit.triggerTouchEvent("tap", oTarget, {
+						srcControl : null
+					});
+	 				sap.ui.getCore().applyChanges();
+
+	 				qUnit.equal(this.oValueHelpDialog._oSelectedItems.getItems().length, 0, "SelectedItems should be 0");
+
+	 				
+ 					this.oValueHelpDialog.attachAfterClose(fnClosed);
+ 					this.oValueHelpDialog.close();
+				}.bind(this);
+ 				
+ 				this.oValueHelpDialog.attachAfterOpen(fnOpened);
+ 				this.oValueHelpDialog.open();
+ 			});
+			
+
+
+			test("test rowSelectionChanged", function(qUnit) {
+				var done = qUnit.async();
+				
+				this.oValueHelpDialog.setKey("CompanyCode");
+ 				this.oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}, {key:"CompanyName", label : "Name"}]); 
+ 				_InitToken(this.oValueHelpDialog);
+ 				_InitRows(this.oValueHelpDialog);
+ 				
+				var fnClosed = function() {
+					this.oValueHelpDialog.detachAfterClose(fnClosed);
+					done();
+				}.bind(this);
+ 				
+ 				var fnOpened = function() {
+					this.oValueHelpDialog.detachAfterOpen(fnOpened);
+
+	 				this.oValueHelpDialog.update();
+	 				sap.ui.getCore().applyChanges();
+
+
+	 				var oTarget = jQuery("#__table0-rowsel2");
+	  				oTarget.focusin(); 
+					sap.ui.getCore().applyChanges();
+
+					sap.ui.test.qunit.triggerKeyboardEvent(oTarget, jQuery.sap.KeyCodes.SPACE);
+	 				sap.ui.getCore().applyChanges();
+
+
+	 				oTarget = jQuery("#__table0-rowsel0");
+	  				oTarget.focusin(); 
+					sap.ui.getCore().applyChanges();
+
+	 				sap.ui.test.qunit.triggerKeyboardEvent(oTarget, jQuery.sap.KeyCodes.SPACE);
+	 				sap.ui.getCore().applyChanges();
+
+
+	 				qUnit.equal(this.oValueHelpDialog._oSelectedItems.getItems().length, 2, "SelectedItems should be 2");
+					
+ 					this.oValueHelpDialog.attachAfterClose(fnClosed);
+ 					this.oValueHelpDialog.close();
+
+				}.bind(this);
+ 				
+ 				this.oValueHelpDialog.attachAfterOpen(fnOpened);
+ 				this.oValueHelpDialog.open();
+
+ 			});
+
+
+  			test("test bind table and update", function(qUnit) {
+				var done = qUnit.async();
+
+				this.oValueHelpDialog.setKey("CompanyCode");
+ 				_InitToken(this.oValueHelpDialog);
+ 				_InitRows(this.oValueHelpDialog);
+
+				var fnClosed = function() {
+					this.oValueHelpDialog.detachAfterClose(fnClosed);
+					done();
+				}.bind(this);
+ 				
+ 				var fnOpened = function() {
+					this.oValueHelpDialog.detachAfterOpen(fnOpened);
+
+	 				this.oValueHelpDialog.update();
+	 				qUnit.ok(this.oValueHelpDialog);
+					
+ 					this.oValueHelpDialog.attachAfterClose(fnClosed);
+ 					this.oValueHelpDialog.close();
+
+				}.bind(this);
+ 				
+ 				this.oValueHelpDialog.attachAfterOpen(fnOpened);
+ 				this.oValueHelpDialog.open();
+
+ 			});
+
+
+/* old	*/
+			test("test change view between SelectedItems and Conditions", function(qUnit) {
+				var done = qUnit.async();
+				
+ 				this.oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}, {key:"CompanyName", label : "Name"}]);
+ 				this.oValueHelpDialog.setSupportRanges(true);
+ 				_InitToken(this.oValueHelpDialog);
+ 				_InitRows(this.oValueHelpDialog);
+ 				
+				var fnClosed = function() {
+					this.oValueHelpDialog.detachAfterClose(fnClosed);
+					done();
+				}.bind(this);
+ 				
+ 				var fnOpened = function() {
+					this.oValueHelpDialog.detachAfterOpen(fnOpened);
+
+	 				this.oValueHelpDialog._updateView(sap.ui.comp.valuehelpdialog._ValueHelpViewMode.DESKTOP_LIST_VIEW);
+	 				sap.ui.getCore().applyChanges();
+
+	 				qUnit.equal(this.oValueHelpDialog._oRanges, null, "The ranges part should not exist");
+	 				
+					this.oValueHelpDialog._updateView(sap.ui.comp.valuehelpdialog._ValueHelpViewMode.DESKTOP_CONDITIONS_VIEW);
+	 				sap.ui.getCore().applyChanges();
+
+	 				qUnit.notEqual(this.oValueHelpDialog._oRanges, null, "The ranges part should exist");
+					
+ 					this.oValueHelpDialog.attachAfterClose(fnClosed);
+ 					this.oValueHelpDialog.close();
+
+				}.bind(this);
+ 				
+ 				this.oValueHelpDialog.attachAfterOpen(fnOpened);
+				this.oValueHelpDialog.open();
+
+ 			});
+ 
+ 			
+/* old 			
+ 	
+			test("test toggle between Ranges and mainTable", function(qUnit) {
+				var done = qUnit.async();
+
+ 				this.oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}, {key:"CompanyName", label : "Name"}]); 
+ 				_InitToken(this.oValueHelpDialog);
+ 				_InitRows(this.oValueHelpDialog);
+ 				
+				var fnClosed = function() {
+					this.oValueHelpDialog.detachAfterClose(fnClosed);
+					done();
+				}.bind(this);
+ 				
+ 				var fnOpened = function() {
+					this.oValueHelpDialog.detachAfterOpen(fnOpened);
+
+	 				this.oValueHelpDialog.setSupportRanges(true);
+	 				equal(this.oValueHelpDialog._oRanges, null, "The oRanges grid should not exist");
+	 				
+	 				//this.oValueHelpDialog._onRangesPressed()();
+	 				this.oValueHelpDialog._updateView(sap.ui.comp.valuehelpdialog._ValueHelpViewMode.DESKTOP_CONDITIONS_VIEW);
+	 				sap.ui.getCore().applyChanges();
+
+
+	 				notEqual(this.oValueHelpDialog._oRanges, null, "The oRanges grid should exist");
+
+	 				var fnValidateCallback= function() {};
+	 				var fnSpy= this.spy(fnValidateCallback);
+	 				
+	 				this.oValueHelpDialog._validateRanges(fnSpy); 
+	 				
+	 				this.oValueHelpDialog._onBackPressed()();
+	 				sap.ui.getCore().applyChanges();
+
+
+	 				equal(this.oValueHelpDialog.getContent()[0], this.oValueHelpDialog._oMainGrid, "The dialog content should be the MainGrid");
+	 				equal(fnSpy.callCount, 1, "validateCallback callback function was called");
+					
+ 					this.oValueHelpDialog.attachAfterClose(fnClosed);
+ 					this.oValueHelpDialog.close();
+
+				}.bind(this);
+ 				
+ 				this.oValueHelpDialog.attachAfterOpen(fnOpened);
+ 				this.oValueHelpDialog.open();
+
+ 			});
+
+ 	*/
+ 	
+
+   			test("test _onCloseAndTakeOverValues", function(qUnit) {
+				var done = qUnit.async();
+
+				this.oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}, {key:"CompanyName", label : "Name"}]); 
+ 				_InitToken(this.oValueHelpDialog);
+ 				
+ 				this.aTokens= [];
+ 				var that = this;
+ 				var fnc= function(oControlEvent) {
+ 					that.aTokens = oControlEvent.getParameter("tokens");
+				};
+ 				this.oValueHelpDialog.attachOk(fnc);
+ 				
+				var fnClosed = function() {
+					this.oValueHelpDialog.detachAfterClose(fnClosed);
+					done();
+				}.bind(this);
+ 				
+ 				var fnOpened = function() {
+					this.oValueHelpDialog.detachAfterOpen(fnOpened);
+
+	 				this.oValueHelpDialog._onCloseAndTakeOverValues();
+	 				
+					qUnit.equal(that.aTokens.length, 5, "Ok event should return 5 tokens");
+	 				this.oValueHelpDialog.detachOk(fnc);
+	 				delete this.aTokens;
+					
+ 					this.oValueHelpDialog.attachAfterClose(fnClosed);
+ 					this.oValueHelpDialog.close();
+
+				}.bind(this);
+ 				
+ 				this.oValueHelpDialog.attachAfterOpen(fnOpened); 				
+ 				this.oValueHelpDialog.open();
+
+ 			});
+ 			
+ 
+  			test("Test open with supportRangesOnly and create range token", function(qUnit) {
+				var done = qUnit.async();
+
+				this.oValueHelpDialog.setSupportRanges(true);
+ 				this.oValueHelpDialog.setSupportRangesOnly(true);
+ 				this.oValueHelpDialog.setRangeKeyFields([{key:"CompanyName", label : "Name", type: "string"}]); 
+
+ 				this.aTokens= [];
+ 				var that = this;
+ 				var fnc= function(oControlEvent) {
+ 					that.aTokens = oControlEvent.getParameter("tokens");
+				};
+ 				this.oValueHelpDialog.attachOk(fnc);
+
+				var fnClosed = function() {
+					this.oValueHelpDialog.detachAfterClose(fnClosed);
+					done();
+				}.bind(this);
+ 				
+ 				var fnOpened = function() {
+					this.oValueHelpDialog.detachAfterOpen(fnOpened);
+
+
+	 				if (sap.ui.Device.system.phone) {
+	 					this.oValueHelpDialog._updateView(sap.ui.comp.valuehelpdialog._ValueHelpViewMode.PHONE_CONDITIONS_VIEW);
+	 				}
+
+	 				// Change item
+	 				var oConditionPanel = this.oValueHelpDialog._oFilterPanel._oIncludeFilterPanel;
+	 				var oConditionGrid = oConditionPanel._oConditionsGrid.getContent()[0];
+	 				var sValue1 = "foo";
+	 				oConditionGrid.value1.setValue(sValue1);
+	 				oConditionPanel._changeField(oConditionGrid);
+	 				
+
+	 				this.oValueHelpDialog._onCloseAndTakeOverValues();
+	 				sap.ui.getCore().applyChanges();
+
+	 				
+					qUnit.equal(that.aTokens.length, 1, "Ok event should return 1 token");
+					qUnit.equal(that.aTokens[0].getText(), "*foo*", "token text should return '*" + sValue1 + "*'");
+	 				that.oValueHelpDialog.detachOk(fnc);
+	 				delete that.aTokens;
+					
+ 					this.oValueHelpDialog.attachAfterClose(fnClosed);
+ 					this.oValueHelpDialog.close();
+
+				}.bind(this);
+ 				
+ 				this.oValueHelpDialog.attachAfterOpen(fnOpened); 	 				
+ 				this.oValueHelpDialog.open();
+
+			});
+
+
+  			test("Test open with supportRangesOnly and create range token of type date", function(qUnit) {
+				var done = qUnit.async();
+  				
+ 				this.oValueHelpDialog.setSupportRanges(true);
+ 				this.oValueHelpDialog.setSupportRangesOnly(true);
+ 				this.oValueHelpDialog.setRangeKeyFields([{key:"CompanyName", label : "Name", type : "date"}]); 
+ 				
+ 				this.aTokens= [];
+ 				var that = this;
+ 				var fnc= function(oControlEvent) {
+ 					that.aTokens = oControlEvent.getParameter("tokens");
+				};
+ 				this.oValueHelpDialog.attachOk(fnc);
+ 				
+				var fnClosed = function() {
+					this.oValueHelpDialog.detachAfterClose(fnClosed);
+					done();
+				}.bind(this);
+ 				
+ 				var fnOpened = function() {
+					this.oValueHelpDialog.detachAfterOpen(fnOpened);
+
+	 				if (sap.ui.Device.system.phone) {
+	 					this.oValueHelpDialog._updateView(sap.ui.comp.valuehelpdialog._ValueHelpViewMode.PHONE_CONDITIONS_VIEW);
+	 				}
+	 				
+	 				// Change item
+	 				var oConditionPanel = this.oValueHelpDialog._oFilterPanel._oIncludeFilterPanel;
+	 				var oConditionGrid = oConditionPanel._oConditionsGrid.getContent()[0];
+	 				oConditionGrid.value1.setDateValue(new Date());
+	 				oConditionPanel._changeField(oConditionGrid);
+	 				
+	 				this.oValueHelpDialog._onCloseAndTakeOverValues();
+	 				sap.ui.getCore().applyChanges();
+
+	 				
+					qUnit.equal(that.aTokens.length, 1, "Ok event should return 1 token");
+					qUnit.ok(that.aTokens[0].data("range").value1 instanceof Date, "token value should return return Date");
+	 				that.oValueHelpDialog.detachOk(fnc);
+	 				delete that.aTokens;
+
+	 				
+ 					this.oValueHelpDialog.attachAfterClose(fnClosed);
+ 					this.oValueHelpDialog.close();
+
+				}.bind(this);
+ 				
+ 				this.oValueHelpDialog.attachAfterOpen(fnOpened); 	 				
+ 				this.oValueHelpDialog.open();
+
+			});
+
+  			
+ 			test("test _onCancel", function(qUnit) {
+				var done = qUnit.async();
+ 				
+ 				this.oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}, {key:"CompanyName", label : "Name"}]); 
+ 				_InitToken(this.oValueHelpDialog);
+
+ 				var that= this;
+ 				var fnCancelCallback= function() {};
+ 				var fnSpy= this.spy(fnCancelCallback);
+ 				this.oValueHelpDialog.attachCancel(fnSpy);
+				
+
+				var fnClosed = function() {
+					this.oValueHelpDialog.detachAfterClose(fnClosed);
+					done();
+				}.bind(this);
+ 				
+ 				var fnOpened = function() {
+					this.oValueHelpDialog.detachAfterOpen(fnOpened);
+
+	 				this.oValueHelpDialog._onCancel();
+	 				sap.ui.getCore().applyChanges();
+
+	 				
+	 				qUnit.equal(fnSpy.callCount, 1, "cancel callback function was called");
+	 				that.oValueHelpDialog.detachCancel(fnSpy);
+	 				
+ 					this.oValueHelpDialog.attachAfterClose(fnClosed);
+ 					this.oValueHelpDialog.close();
+
+				}.bind(this);
+ 				
+ 				this.oValueHelpDialog.attachAfterOpen(fnOpened); 	 				
+ 				this.oValueHelpDialog.open();
+
+ 				
+ 			});
+ 
+		 			 
+		}());
+
+			
+		</script>
+	</head>
+	<body id="body" class="sapUiBody sapUiSizeCompact">
+		<h1 id="qunit-header">qUnit Page for qUnit Page for sap.ui.comp.valuehelpdialog.ValueHelpDialog</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		
+		<div id="content"></div>
+	</body>
+</html>

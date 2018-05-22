@@ -1,0 +1,311 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The top labels are always formatted by the sap.ui.core.format.NumberFormat."/>
+<meta name="description" content="The top labels are always formatted by the sap.ui.core.format.NumberFormat."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7721164010556376"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7721164010556376"/>
+<title>Formatting</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio8cd1dc3ef4c94e2b9ba78a4c43eac9fd">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Formatting</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The top labels are always formatted by the
+			<samp class="ph codeph">sap.ui.core.format.NumberFormat</samp>.</p>
+
+		<p class="p">The bottom labels are formatted by the number or date formatter depending on the
+				<span class="keyword apiname">dimensions</span> property’s type and its annotations:</p>
+
+		
+<div class="table-wrapper tablenoborder"><table summary="" id="loio8cd1dc3ef4c94e2b9ba78a4c43eac9fd__table_vrl_cst_ny" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Formatted bottom labels in different annotation cases</span></caption>
+<colgroup><col width="20%"/><col width="20%"/><col width="20%"/><col width="20%"/><col width="20%"/></colgroup>
+
+				
+				
+				
+				
+				
+				<thead class="thead" align="left">
+					<tr class="row">
+						<th class="entry" valign="top" width="20%" id="d9787862e47">
+							<p class="p">Type of <span class="keyword apiname">dimension</span> property</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="20%" id="d9787862e56">
+							<p class="p">Annotations</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="20%" id="d9787862e62">
+							<p class="p">Raw value</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="20%" id="d9787862e68">
+							<p class="p">X-coordinate value</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="20%" id="d9787862e74">
+							<p class="p">Formatted value for bottom label</p>
+
+						</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody class="tbody">
+					<tr class="row">
+						<td class="entry" valign="top" width="20%" headers="d9787862e47 ">
+							<p class="p">Any type</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e56 ">
+							<p class="p"><samp class="ph codeph">sap:text</samp>=”DateLabel” (or has annotation <span class="keyword apiname">Common.Text</span>
+								whose Path=”DateLabel”)</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e62 ">
+							<p class="p">“any text” (raw value of  <span class="keyword apiname">DateLabel</span> property)</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e68 ">
+							<p class="p">Depends on property type (use index value if neither date nor number
+								type)</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e74 ">
+							<p class="p">‘any text’</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="20%" headers="d9787862e47 ">
+							<p class="p">Edm.String</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e56 ">
+							<p class="p"><samp class="ph codeph">sap:semantics</samp>=”year” (or has annotation
+								<span class="keyword apiname">IsCalendarYear</span>)</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e62 ">
+							<p class="p">2016</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e68 ">
+							<p class="p">Timestamp</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e74 ">
+							<p class="p">1/1/16</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="20%" headers="d9787862e47 ">
+							<p class="p">Edm.String</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e56 ">
+							<p class="p"><samp class="ph codeph">sap:semantics</samp>=”yearmonth” (or has annotation
+									<span class="keyword apiname">IsCalendarYearMonth</span>)</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e62 ">
+							<p class="p">201612</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e68 ">
+							<p class="p">Timestamp</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e74 ">
+							<p class="p">12/1/16</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="20%" headers="d9787862e47 ">
+							<p class="p">Edm.String</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e56 ">
+							<p class="p"><samp class="ph codeph">sap:semantics</samp>=”yearmonthday” (or has annotation
+									<span class="keyword apiname">IsCalendarDate</span>)</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e62 ">
+							<p class="p">20161225</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e68 ">
+							<p class="p">Timestamp</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e74 ">
+							<p class="p">12/25/16</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="20%" headers="d9787862e47 ">
+							<p class="p"/>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e56 ">
+							<p class="p">---</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e62 ">
+							<p class="p">'any text'</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e68 ">
+							<p class="p">Indices</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e74 ">
+							<p class="p"/>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="20%" headers="d9787862e47 ">
+							<p class="p">Edm.DateTime</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e56 ">
+							<p class="p"/>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e62 ">
+							<p class="p">/Date(1472629368000)/</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e68 ">
+							<p class="p">Timestamp</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e74 ">
+							<p class="p">8/31/16</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="20%" headers="d9787862e47 ">
+							<p class="p">Edm.Int32 or other number types</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e56 ">
+							<p class="p"/>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e62 ">
+							<p class="p">20000</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e68 ">
+							<p class="p">20000</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="20%" headers="d9787862e74 ">
+							<p class="p">20K</p>
+
+						</td>
+
+					</tr>
+
+				</tbody>
+
+			</table>
+</div>
+
+		<ul class="ul" id="loio8cd1dc3ef4c94e2b9ba78a4c43eac9fd__ul_pcp_m5t_ny">
+			<li class="li">
+				<p class="p">If the <span class="keyword apiname">dimensions</span> property has a V2 annotation <samp class="ph codeph">sap:text</samp>
+					(or V4 annotation <span class="keyword apiname">Common.Text</span>) pointing to another property,
+					that property’s value will be used to display the bottom label, no matter what
+					the primary property’s data type is. The x-coordinate’s value depends on the
+					primary property’s data type. If its type is <span class="keyword apiname">DateTime</span>, the
+					date is converted to a timestamp; if it has a numeric type, the value is used
+					directly. In other cases, each point’s index from within the data list is used,
+					causing an evenly distribution of points on the x-axis.</p>
+
+			</li>
+
+			<li class="li">If the type of the <span class="keyword apiname">dimensions</span> property is 'string' and it has a
+				V2 annotation <samp class="ph codeph">sap:semantics</samp> (or the V4 annotation
+					<span class="keyword apiname">IsCalendarYear</span>, or similar), the raw value is formatted to a
+				shortened date string based on the pattern provided by
+					<samp class="ph codeph">sap:semantics</samp> (or a corresponding pattern of
+					<span class="keyword apiname">IsCalendarYear</span>) and the value of the x-coordinate is set to
+				the formatted date’s timestamp. The bottom label displays the formatted short
+				date.</li>
+
+			<li class="li">If the type of the <span class="keyword apiname">dimensions</span> property is
+					<span class="keyword apiname">DateTime</span> or another numeric type without any of the
+				annotations mentioned above, the raw value is formatted by the number formatter or
+				date formatter depending on the data type. Each point’s x-coordinate value is set to
+				the date’s timestamp representation if its type is <span class="keyword apiname">DateTime</span>, and
+				to a numeric value if its type is numeric.</li>
+
+		</ul>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, we'll create a second button on the home page, with which we can navigate to a simple list of employees. This example illustrates how to navigate to a route that has a hard-coded pattern."/>
+<meta name="description" content="In this step, we'll create a second button on the home page, with which we can navigate to a simple list of employees. This example illustrates how to navigate to a route that has a hard-coded pattern."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9164870707908443"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9164870707908443"/>
+<title>Step 6: Navigate to Routes with Hard-Coded Patterns</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio782aac08f2de4003a2fcbdd39d27f374">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 6: Navigate to Routes with Hard-Coded Patterns</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we'll create a second button on the home page, with which we can navigate to a simple list of employees. This example illustrates how
+		to navigate to a route that has a hard-coded pattern.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio782aac08f2de4003a2fcbdd39d27f374__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loio782aac08f2de4003a2fcbdd39d27f374__image_p1m_v13_ns" src="loiof0f4fd7d2626458aa1632467eaf964a0_LowRes.png"/>
+			<div class="figcap"><span class="ph uicontrol">Show Employee List</span> button on the <span class="ph uicontrol">Home</span>
+					page</div></div></div>
+
+			<div class="fig fignone" id="loio782aac08f2de4003a2fcbdd39d27f374__fig_xm1_t13_ns"><div class="figcontainer">
+				
+				<img class="image" id="loio782aac08f2de4003a2fcbdd39d27f374__image_wvn_x13_ns" src="loiof45ee74f28bb4a5da522150e10e92185_LowRes.png"/>
+			<div class="figcap">Employee list with <span class="ph uicontrol">Back</span> button</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Samples</span> in the Demo Kit
+					<span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.tutorial.navigation.06/preview" alt="../../explored.html#/sample/sap.ui.core.tutorial.navigation.06/preview" title="../../explored.html#/sample/sap.ui.core.tutorial.navigation.06/preview">Routing and Navigation - Step
+					6</a></span>.</p>
+
+			<div class="fig fignone" id="loio782aac08f2de4003a2fcbdd39d27f374__fig_blv_z13_ns"><div class="figcontainer">
+				
+				<img class="image" id="loio782aac08f2de4003a2fcbdd39d27f374__image_zzb_bb3_ns" src="loiofffa091048a544689c11fb3492ae9ead_HiRes.png"/>
+			<div class="figcap">Folder structure for this step</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/view/Home.view.xml</div><div type="webapp/view/Home.view.xml"><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+	controllerName="sap.ui.demo.nav.controller.Home"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"&gt;
+	&lt;Page title="{i18n&gt;homePageTitle}" class="sapUiResponsiveContentPadding"&gt;
+		&lt;content&gt;
+			&lt;Button id="displayNotFoundBtn" text="{i18n&gt;DisplayNotFound}" press="onDisplayNotFound" class="sapUiTinyMarginEnd"/&gt;
+			<span class="ph emphasis emphasis">&lt;Button id="employeeListBtn" text="{i18n&gt;ShowEmployeeList}" press="onNavToEmployees" class="sapUiTinyMarginEnd"/&gt;</span>
+		&lt;/content&gt;
+	&lt;/Page&gt;
+&lt;/mvc:View&gt;</pre></div>
+First,
+			we change the <samp class="ph codeph">Home</samp> view by adding the <span class="ph uicontrol">Show Employee
+				List</span> button. We register an event handler
+				<samp class="ph codeph">onNavToEmployees</samp> for the press event.</div></div>
+
+		<div class="section"><div class="section_title">webapp/controller/Home.controller.js</div><div type="webapp/controller/Home.controller.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+	"sap/ui/demo/nav/controller/BaseController"
+], function (BaseController) {
+	"use strict";
+	return BaseController.extend("sap.ui.demo.nav.controller.Home", {
+		onDisplayNotFound : function (oEvent) {
+			// display the "notFound" target without changing the hash
+			this.getRouter().getTargets().display("notFound", {
+				fromTarget : "home"
+			});
+		}<span class="ph emphasis emphasis">,
+		onNavToEmployees : function (oEvent){
+			this.getRouter().navTo("employeeList");
+		}
+</span>
+	});
+});</pre></div>
+
+			<p class="p">The new event handler <samp class="ph codeph">onNavToEmployees</samp> calls
+					<samp class="ph codeph">navTo("employeeList")</samp> on the router instance. The parameter
+					<samp class="ph codeph">employeeList</samp> is the name of the route that we want to navigate
+				to.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/manifest.json</div><div type="webapp/manifest.json">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">{
+	"_version": "1.8.0",
+	"sap.app": {
+		...
+	},
+	"sap.ui": {
+		...
+	},
+	"sap.ui5": {
+		...
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "sap.ui.demo.nav.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"transition": "slide",
+				"bypassed": {
+					"target": "notFound"
+				}
+			},
+			"routes": [{
+				"pattern": "",
+				"name": "appHome",
+				"target": "home"
+			}<span class="ph emphasis emphasis">, {
+				"pattern": "employees",
+				"name": "employeeList",
+				"target": "employees"
+			}</span>],
+			"targets": {
+				"home": {
+					"viewId": "home",
+					"viewName": "Home",
+					"viewLevel" : 1
+				},
+				"notFound": {
+					"viewId": "notFound",
+					"viewName": "NotFound",
+					"transition": "show"
+				}<span class="ph emphasis emphasis">,
+				"employees": {
+					"viewId": "employeeList",
+					"viewPath": "sap.ui.demo.nav.view.employee",
+					"viewName": "EmployeeList",
+					"viewLevel" : 2
+				}
+</span>
+			}
+		}
+	}
+}</pre></div>
+
+			<p class="p">To make the navigation work, we have to extend the routing configuration of the app in the descriptor file. We add a new pattern called
+					<samp class="ph codeph">employeeList</samp>; this is the name we used in the controller to trigger the navigation.</p>
+
+			<p class="p">The pattern of the route is the hard-coded value <samp class="ph codeph">employees</samp>, meaning
+				the matching hash for this route is <samp class="ph codeph">/#/employees</samp> in the address bar
+				of the browser. The target <samp class="ph codeph">employees</samp> should be displayed when this
+				URL pattern is matched. </p>
+
+			<p class="p">The <samp class="ph codeph">employees</samp> entry in the <samp class="ph codeph">targets</samp> section references the <samp class="ph codeph">sap.ui.demo.nav.view.employee.EmployeeList</samp>
+				view. As you can see, we added a new namespace <samp class="ph codeph">employee</samp> for all views related to employees with the property
+					<samp class="ph codeph">viewPath</samp>. This overrides the default settings in the <samp class="ph codeph">config</samp> section for the current target.</p>
+
+			<p class="p">The view that we are about to create has to be placed in the <samp class="ph codeph">webapp/view/employee</samp> folder accordingly. This approach helps to structure
+				the views of the app according to business objects and to better understand the navigation patterns of the app in larger projects.</p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">We could also have left out the <samp class="ph codeph">viewPath</samp> property to use the default <samp class="ph codeph">viewPath</samp> defined in the <samp class="ph codeph">config</samp>
+					section. In that case, we would have to change the <samp class="ph codeph">viewName</samp> to <samp class="ph codeph">employee.EmployeeList</samp> to achieve the same
+					effect.</p>
+
+			</div>
+
+			<p class="p">Setting the <samp class="ph codeph">viewLevel</samp> to <samp class="ph codeph">2</samp> helps the router to determine how to animate the (in our case) <samp class="ph codeph">slide</samp>
+				transition. For us, this means that a navigation from the home page to the <samp class="ph codeph">employees</samp> target will be animated with a <span class="q">“Slide to
+					Left”</span> animation. In contrast to that, the back navigation from the <samp class="ph codeph">employees</samp> target to the home page will be animated
+				with a <span class="q">“Slide to Right”</span> animation. This behavior is due to the fact that the home page has a lower <samp class="ph codeph">viewLevel</samp> than the
+					<samp class="ph codeph">employees</samp> target.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/view/employee/EmployeeList.view.xml (New)</div><div type="webapp/view/employee/EmployeeList.view.xml (New)">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml"><span class="ph emphasis emphasis">&lt;mvc:View
+	controllerName="sap.ui.demo.nav.controller.employee.EmployeeList"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"&gt;
+	&lt;Page id="employeeListPage" title="{i18n&gt;EmployeeList}"
+		showNavButton="true"
+		navButtonPress="onNavBack"
+		class="sapUiResponsiveContentPadding"&gt;
+		&lt;content&gt;
+			&lt;List id="employeeList" headerText="{i18n&gt;ListOfAllEmployees}" items="{/Employees}"&gt;
+				&lt;items&gt;
+					&lt;StandardListItem
+						title="{FirstName} {LastName}"
+						iconDensityAware="false"
+						iconInset="false"/&gt;
+				&lt;/items&gt;
+			&lt;/List&gt;
+		&lt;/content&gt;
+	&lt;/Page&gt;
+&lt;/mvc:View&gt;</span></pre></div>
+
+			<p class="p">We now create a subfolder <samp class="ph codeph">employee</samp> below <samp class="ph codeph">webapp/view</samp> and a file <samp class="ph codeph">EmployeeList.view.xml</samp>. </p>
+
+			<p class="p">We name the folder after the business object, to make it obvious from looking at the hash (included in the browser's address bar) where a view file for a
+				certain business object is located. For example, we can determine from the URL <samp class="ph codeph">/#/employee</samp> that the corresponding view must be
+				somewhere in the folder <samp class="ph codeph">./employee</samp> (in our case: <samp class="ph codeph">webapp/view/employee</samp>) just by looking at the URL.</p>
+
+			<p class="p">In the view, we use a <samp class="ph codeph">sap.m.List</samp> control and bind its items to the
+				data from our simulated OData service. Note that we have also registered the
+					<samp class="ph codeph">onNavBack</samp> handler from the base controller again to be able to
+				navigate back to the overview.</p>
+
+			<p class="p">This view can be referenced by <samp class="ph codeph">sap.ui.demo.nav.view.employee.EmployeeList</samp>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/controller/employee/EmployeeList.controller.js (New)</div><div type="webapp/controller/employee/EmployeeList.controller.js (New)">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.define([
+	"sap/ui/demo/nav/controller/BaseController"
+], function (BaseController) {
+	"use strict";
+	return BaseController.extend("sap.ui.demo.nav.controller.employee.EmployeeList", {
+	});
+});</span></pre></div>
+
+			<p class="p">Finally, we will add a new controller. Create a subfolder <samp class="ph codeph">employee</samp> inside <samp class="ph codeph">webapp/controller</samp> folder and place the file
+					<samp class="ph codeph">EmployeeList.controller.js</samp> there. As you can see, the folder structure of the controllers is in sync with the folder
+				structure of the views.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/i18n/i18n.properties</div><div type="webapp/i18n/i18n.properties">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-prefs"><span class="ph emphasis emphasis">...
+ShowEmployeeList=Show Employee List
+EmployeeList=Employee List
+ListOfAllEmployees=List of all employees</span></pre></div>
+
+			<p class="p">Add the new texts to the <samp class="ph codeph">i18n.properties</samp> file.</p>
+
+			<p class="p">Now you can open the app and press the <span class="ph uicontrol">Show Employee List</span>
+				button to navigate to the employee list. From there, you can press either the
+				browser’s or the app’s <span class="ph uicontrol">Back</span> button to get back to the home page.</p>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="1b6dcd39a6a74f528b27ddb22f15af0d.html" title="OpenUI5 comes with a powerful routing API that helps you control the state of your application efficiently. This tutorial will illustrate all major features and APIs related to navigation and routing in OpenUI5 apps by creating a simple and easy to understand mobile app. It represents a set of best practices for applying the navigation and routing features of OpenUI5 to your applications.">Navigation and Routing</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="d9efab307ecc42b180b12cc8956e22d7.html" title="In this step, you will learn more about targets and how to display a target from the routing configuration manually.">Step 5: Display a Target Without Changing the Hash</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="f96d2522a5ca4382a274ae3c6d002ca0.html" title="In this step, we implement a feature that allows the user to click on an employee in the list to see additional details of the employee. A route pattern can have one or more mandatory parameters to identify objects in an app.">Step 7: Navigate to Routes with Mandatory Parameters</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="516e477e7e0b4e188b19a406e7528c1e.html" title="OpenUI5 provides a method and events for navigation.">Methods and Events for Navigation</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.core.routing.Route.html" alt="../../docs/api/symbols/sap.ui.core.routing.Route.html" title="../../docs/api/symbols/sap.ui.core.routing.Route.html">API Reference: <samp class="ph codeph">sap.ui.core.routing.Route</samp></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

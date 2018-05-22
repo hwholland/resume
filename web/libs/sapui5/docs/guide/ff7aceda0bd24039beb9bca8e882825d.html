@@ -1,0 +1,81 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The application cache buster (short AppCacheBuster) is similar to the cache buster but is used for application resources."/>
+<meta name="description" content="The application cache buster (short AppCacheBuster) is similar to the cache buster but is used for application resources."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=2828085903201236"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=2828085903201236"/>
+<title>Application Cache Buster</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioff7aceda0bd24039beb9bca8e882825d">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Application Cache Buster</h1>
+
+	
+	<div class="body"><p class="shortdesc">The application cache buster (short <samp class="ph codeph">AppCacheBuster</samp>) is similar to the cache buster but is used for application
+		resources.</p>
+<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p"><span class="ph"><span class="ph pname">SAPUI5</span></span> supports the
+				application cache buster on <span class="ph pname">SAP NetWeaver AS for
+                                ABAP</span> only.</p>
+
+			<p class="p">For Java apps on the <span class="ph pname">SAP Cloud Platform</span> you can
+				enable it by including server-side components which are not available
+				externally.</p>
+
+			<p class="p">For Java apps on <span class="ph pname">SAP NetWeaver AS for
+                                Java</span> and <span class="ph pname">SAP HANA</span> XS the
+				application cache buster concept is <span class="ph emphasis emphasis">not</span> supported.</p>
+
+		</div>
+
+		<p class="p">Applications provide an index file named <span class="ph filepath">sap-ui-cachebuster-info.json</span> (created on the fly) containing the last modified timestamps of
+			all included files (like scripts, properties, or any other file that we load via XHR programmatically). Technically this file is a mapping between
+			the request path (below the context path of the application) and the last modified time stamp. </p>
+
+		<p class="p">The server instructs the client to cache all the above resources (not using the 304/not modified mechanism). For the index file we are using the 304/not
+			modified mechanism to avoid to load when it has not been changed. </p>
+
+		<p class="p">On the client side, we initially load this file of the application when enabled via configuration option <samp class="ph codeph">sap-ui-appcachebuster</samp> and use
+			this for the XHR requests. If the request path is contained in the above mentioned index file we simply add the time stamp as leading path segment
+			to this request. If the time stamp doesn’t change the URL is unique and therefore it will be taken from cache. Once the file is modified the URL
+			parameter will be changed and therefore loaded again from the back end. </p>
+
+		<p class="p">The server has to delete the time stamp from this URL to look up the file properly. For <span class="ph pname">SAP NetWeaver AS for
+                                ABAP</span>, the logic is implemented in the ICF handler. Both back end implementations,
+				<span class="ph pname">SAP NetWeaver AS for
+                                Java</span> and <span class="ph pname">SAP NetWeaver AS for
+                                ABAP</span>, also generate the index file on-the-fly. </p>
+
+		<div class="p">
+			<div class="note note" id="loioff7aceda0bd24039beb9bca8e882825d__note_N1002B_N10028_N10011_N10001"><span class="notetitle">Note</span> The application cache buster does <strong class="ph b">not</strong> work across application borders. If you require resources from
+				another application they are not loaded via this mechanism.</div>
+
+		</div>
+
+	</div>
+
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="fef5340250134900843a23329c90097b.html" title="The index file includes all files that should use the cache buster.">Application Cache Buster: Index File</a></strong><br/>
+</div>
+<div><strong><a class="link" href="c1c3e2f70066465dbb794c866b933ed5.html" title="The configuration data-sap-ui-appCacheBuster=&#34;./&#34; must be added to the bootstrap script of the application page.">Application Cache Buster: Configuration</a></strong><br/>
+</div>
+<div><strong><a class="link" href="d415dd8911a645759373dc1a70b93f3d.html" title="When using the application cache buster, a request order must be observed.">Application Cache Buster: Request Flow</a></strong><br/>
+</div>
+<div><strong><a class="link" href="94e0c33e22474538a65f5f5b4920cdaf.html" title="The enhanced concept for application cache buster takes care about most of the URLs in a general way.">Application Cache Buster: Enhanced Concept</a></strong><br/>
+</div>
+</ul>
+
+</div>
+</div></div>
+
+</body>
+</html>

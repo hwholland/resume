@@ -1,0 +1,129 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Our formatter does its job, but it is not yet used. In this step we will use it."/>
+<meta name="description" content="Our formatter does its job, but it is not yet used. In this step we will use it."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=07005775777658463"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=07005775777658463"/>
+<title>Step 16: Adding the Date Formatter</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio2ca583d6b9c24e4d8f189eada7c4b668">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 16: Adding the Date Formatter</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Our formatter does its job, but it is not yet used. In this step we will use
+		it.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio2ca583d6b9c24e4d8f189eada7c4b668__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loio2ca583d6b9c24e4d8f189eada7c4b668__image_esx_4md_jt" src="loio9aa15b0691014bd287a5a5d874f6f064_LowRes.png"/>
+			<div class="figcap">Date formatter in action</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Samples</span> in the Demo Kit
+					
+				<span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.testing.16/preview" alt="../../explored.html#/sample/sap.m.tutorial.testing.16/preview" title="../../explored.html#/sample/sap.m.tutorial.testing.16/preview">Testing - Step 16</a></span>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/view/Post.view.xml</div><div type="webapp/view/Post.view.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">…
+&lt;IconTabBar id="iconTabBar"
+			expanded="{device&gt;/isNoPhone}"
+			class="sapUiResponsiveContentPadding"&gt;
+	&lt;items&gt;
+		&lt;IconTabFilter icon="sap-icon://hint" key="info"&gt;
+			&lt;form:SimpleForm&gt;
+				&lt;form:content&gt;
+					&lt;Label text="{i18n&gt;postDateLabel}"/&gt;
+					&lt;Text text="<span class="ph emphasis emphasis">{
+						path: 'Timestamp',
+						formatter: '.formatter.date'
+					}</span>"/&gt;
+					&lt;Label text="{i18n&gt;postDescriptionLabel}"/&gt;
+					&lt;Text text="{Description}"/&gt;
+				&lt;/form:content&gt;
+			&lt;/form:SimpleForm&gt;
+		&lt;/IconTabFilter&gt;
+		…
+	&lt;/items&gt;
+&lt;/IconTabBar&gt;
+…</pre></div>
+
+			<p class="p">On the <span class="ph uicontrol">Info</span> tab we bind the date field to a format method
+					<samp class="ph codeph">.formatter.date</samp> of the controller of the view. The leading
+					<samp class="ph codeph">.</samp> indicates that the function is defined on the controller
+				instance.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/model/formatter.js</div><div type="webapp/model/formatter.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([ <span class="ph emphasis emphasis">"sap/ui/demo/bulletinboard/model/DateFormatter"</span> ], function (<span class="ph emphasis emphasis">DateFormatter</span>) {
+	...
+	return {
+		...
+		numberUnit: function(sValue) {
+			...
+		}<span class="ph emphasis emphasis">,
+		date: function(date) {
+			return new DateFormatter({now: Date.now}).format(date);
+		}
+</span>
+	};
+});</pre></div>
+
+			<p class="p">In the <span class="ph filepath">formatter.js file</span>, create an instance of the previously
+				implemented <samp class="ph codeph">DateFormatter</samp> and provide the necessary
+				dependencies.</p>
+
+			<div class="p">Now run the app again to see that the formatter is applied on the post date of the
+				detail page.<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">The files that create objects with dependencies should be kept simple. They
+						do not have multiple code paths caused by if-else statements or loops. To
+						test these components, just a few simple integration tests, or  merely smoke
+						tests, are sufficient. We already know that the
+							<samp class="ph codeph">DateFormatter</samp> does the job right for all the different
+						cases.</p>
+
+				</div>
+</div>
+
+		</div></div>
+
+		<div class="section" id="loio2ca583d6b9c24e4d8f189eada7c4b668__section_ovt_b2t_qbb"><div class="section_title">Summary</div><div type="Summary">You should now be familiar with the
+			major development paradigms and concepts of <span class="ph"><span class="ph pname">OpenUI5</span></span> and have created a
+			very simple first app. You are now ready to build a proper app based on what you've
+			learned.</div></div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="291c9121e6044ab381e0b51716f97f52.html" title="In this tutorial we will test application functionality with the testing tools that are delivered with OpenUI5. At different steps of this tutorial you will write tests using QUnit, OPA5, and the mock server. Additionally, you will learn about testing strategies, Test Driven Development (TDD), and much more.">Testing</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="bc4114a88e4d4ac1a0f53b2a7a92b226.html" title="It's now time to improve the content of the Info tab. We want to see the Posted At date in a formatted way. Based on the age of the post, we either display the time, a textural representation of the day, or the date only.">Step 15: Writing a Short Date Formatter Using TDD</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

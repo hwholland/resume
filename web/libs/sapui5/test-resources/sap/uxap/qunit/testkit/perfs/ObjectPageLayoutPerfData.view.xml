@@ -1,0 +1,137 @@
+<mvc:View
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:core="sap.ui.core"
+        xmlns="sap.uxap"
+        xmlns:m="sap.m"
+        xmlns:blocks="sap.uxap.testkit.perfs"
+        controllerName="sap.uxap.testkit.perfs.ObjectPageLayoutPerfData"
+        height="100%"
+        >
+     <ObjectPageLayout id="ObjectPageLayoutPerf" enableLazyLoading="true">
+        <headerTitle>
+            <ObjectPageHeader
+                    objectTitle="Carla Grant"
+                    objectSubtitle="Senior UI Developer"
+                    objectImageURI="img/JeanetteHoffmann.png">
+           </ObjectPageHeader>
+        </headerTitle>
+        <headerContent>
+            <m:Label text="Test"/>
+         </headerContent>
+
+         <sections>
+
+            <ObjectPageSection title="General Information">
+                <subSections>
+                    <ObjectPageSubSection mode="Collapsed" showMore="true">
+                        <blocks>
+                            <blocks:IdentificationForm mode="Collapsed" showSubSectionMore="true"/>
+                            <blocks:FieldGroupForm1 mode="Collapsed" title="Communication" showTitle="true"/>
+                            <blocks:FieldGroupForm2 mode="Collapsed" title="Reference Data" showTitle="true"/>
+                            <blocks:FieldGroupForm3 mode="Collapsed" title="Tax Information" showTitle="true"/>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+            <ObjectPageSection title="Contacts">
+                <subSections>
+                    <ObjectPageSubSection mode="Collapsed">
+                        <blocks>
+                            <blocks:LineItemTableContactPerson showSubSectionMore="false">
+                                <ModelMapping internalModelName="model" externalModelName="objectPageData" externalPath="/Vendors('3511')"/>
+                            </blocks:LineItemTableContactPerson>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+             <ObjectPageSection title="Materials">
+                 <subSections>
+                     <ObjectPageSubSection mode="Collapsed">
+                         <blocks>
+                             <blocks:LineItemTableMaterial showSubSectionMore="false">
+                                 <ModelMapping internalModelName="model" externalModelName="objectPageData" externalPath="/Vendors('3511')"/>
+                             </blocks:LineItemTableMaterial>
+                         </blocks>
+                     </ObjectPageSubSection>
+                 </subSections>
+             </ObjectPageSection>
+
+             <ObjectPageSection title="Bank Accounts">
+                 <subSections>
+                     <ObjectPageSubSection mode="Collapsed">
+                         <blocks>
+                             <blocks:LineItemTableVendorBA showSubSectionMore="false">
+                                 <ModelMapping internalModelName="model" externalModelName="objectPageData" externalPath="/Vendors('3511')"/>
+                             </blocks:LineItemTableVendorBA>
+                         </blocks>
+                     </ObjectPageSubSection>
+                 </subSections>
+             </ObjectPageSection>
+
+             <ObjectPageSection title="Company Data">
+                 <subSections>
+                     <ObjectPageSubSection mode="Collapsed">
+                         <blocks>
+                             <blocks:LineItemTableVendorCC showSubSectionMore="false">
+                                 <ModelMapping internalModelName="model" externalModelName="objectPageData" externalPath="/Vendors('3511')"/>
+                             </blocks:LineItemTableVendorCC>
+                         </blocks>
+                     </ObjectPageSubSection>
+                 </subSections>
+             </ObjectPageSection>
+
+             <ObjectPageSection title="Purchasing Organizations">
+                 <subSections>
+                     <ObjectPageSubSection mode="Collapsed">
+                         <blocks>
+                             <blocks:LineItemTablePO showSubSectionMore="false">
+                                 <ModelMapping internalModelName="model" externalModelName="objectPageData" externalPath="/Vendors('3511')"/>
+                             </blocks:LineItemTablePO>
+                         </blocks>
+                     </ObjectPageSubSection>
+                 </subSections>
+             </ObjectPageSection>
+
+             <ObjectPageSection title="Purchase Contracts">
+                 <subSections>
+                     <ObjectPageSubSection mode="Collapsed">
+                         <blocks>
+                             <blocks:LineItemTableContract showSubSectionMore="false">
+                                 <ModelMapping internalModelName="model" externalModelName="objectPageData" externalPath="/Vendors('3511')"/>
+                             </blocks:LineItemTableContract>
+                         </blocks>
+                     </ObjectPageSubSection>
+                 </subSections>
+             </ObjectPageSection>
+
+             <ObjectPageSection title="Purchase Orders">
+                 <subSections>
+                     <ObjectPageSubSection mode="Collapsed">
+                         <blocks>
+                             <blocks:LineItemTablePO showSubSectionMore="false">
+                                 <ModelMapping internalModelName="model" externalModelName="objectPageData" externalPath="/Vendors('3511')"/>
+                             </blocks:LineItemTablePO>
+                         </blocks>
+                     </ObjectPageSubSection>
+                 </subSections>
+             </ObjectPageSection>
+
+             <ObjectPageSection title="Invoices">
+                 <subSections>
+                     <ObjectPageSubSection mode="Collapsed">
+                         <blocks>
+                             <blocks:LineItemTableInvoice showSubSectionMore="false">
+                                 <ModelMapping internalModelName="model" externalModelName="objectPageData" externalPath="/Vendors('3511')"/>
+                             </blocks:LineItemTableInvoice>
+                         </blocks>
+                     </ObjectPageSubSection>
+                 </subSections>
+             </ObjectPageSection>
+
+
+         </sections>
+    </ObjectPageLayout>
+
+</mvc:View>

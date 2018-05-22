@@ -1,0 +1,479 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Key Performance Indicator (KPI) tag is an abbreviated and clickable title with a KPI value."/>
+<meta name="description" content="Key Performance Indicator (KPI) tag is an abbreviated and clickable title with a KPI value."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5858207642888184"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5858207642888184"/>
+<title>Creating Key Performance Indicator Tags</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiod80a360638ad4cf193cc55eee92bff2e">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Creating Key Performance Indicator Tags</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">Key Performance Indicator (KPI) tag is an abbreviated and clickable title with a KPI
+		value. </p>
+
+		<div class="section"><p class="p">ALP supports a maximum of three KPIs. Each KPI can have its own OData source, entity
+				set, and annotation file. The KPI value changes only if an action is executed on the
+				transactional content. For example: Releasing sales orders affect a related KPI, or
+				posting an accounting document affects certain financial
+				KPI´s.</p>
+<p class="p"/>
+<div class="sectiondiv imagemap-wrapper imagemap_sidebyside" id="loiod80a360638ad4cf193cc55eee92bff2e__im_overall1">
+				
+				
+				<div class="fig imagemap" id="loiod80a360638ad4cf193cc55eee92bff2e____im_imagemap1"><img usemap="#d16505887e26" border="0" class="image" id="loiod80a360638ad4cf193cc55eee92bff2e____im_image1" src="loiofc0488bbb4654ec19396dd49ca70e441_LowRes.png" width="230"/>
+<map name="d16505887e26" id="d16505887e26">
+<area href="d80a360638ad4cf193cc55eee92bff2e.html#loiod80a360638ad4cf193cc55eee92bff2e__subsection-im1" id="im1" alt="App Descriptor settings for KPI Tag" title="App Descriptor settings for KPI Tag" shape="rect" coords="1,1,228,40"/>
+<area href="d80a360638ad4cf193cc55eee92bff2e.html#loiod80a360638ad4cf193cc55eee92bff2e__subsection-im2" id="im2" alt="SelectionPresentationVariant annotation with the qualifier mentioned in the descriptor settings" title="SelectionPresentationVariant annotation with the qualifier mentioned in the descriptor settings" shape="rect" coords="4,96,228,134"/>
+<area href="d80a360638ad4cf193cc55eee92bff2e.html#loiod80a360638ad4cf193cc55eee92bff2e__subsection-im3" id="im3" alt="PresentationVariant annotation associated with SelectionPresentationVariant" title="PresentationVariant annotation associated with SelectionPresentationVariant" shape="rect" coords="2,190,228,230"/>
+<area href="d80a360638ad4cf193cc55eee92bff2e.html#loiod80a360638ad4cf193cc55eee92bff2e__subsection-im1" id="im4" alt="DataPoint annotation for KPI Title and KPI Value" title="DataPoint annotation for KPI Title and KPI Value" shape="rect" coords="0,281,228,320"/>
+</map></div>
+				<div class="sectiondiv subsection visibility-trigger" id="subsection-im0">
+					<h2 class="p subsectiontitle"/>
+					<p class="p">Hover over each action for a description. Click the action for more
+						information.</p>
+
+				</div>
+				<div class="sectiondiv subsection visibility-trigger" id="subsection-im1">
+					<h2 class="p subsectiontitle">Discriptor Settings: KPI Tag</h2>
+					<p class="p">Property: <samp class="ph codeph">keyPerformanceIndicators</samp></p>
+
+					<p class="p">Description: Configuring this setting displays the KPI tag in the ALP title
+						area. The parameters defined in the app-descriptor file points to a
+							<samp class="ph codeph">SelectionPresentationVariant</samp> qualifier associated with
+						the KPI. ALP determines other related annotations from the
+							<samp class="ph codeph">SelectionPresentationVariant</samp> qualifier.</p>
+
+					<div class="p"><span class="ph emphasis emphasis">Configuration
+						Sample:</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"sap.ui.generic.app":{  
+   "pages":[  
+      {  
+         "entitySet":"SEPMRA_C_ALP_SlsOrdItemCube",
+         "component":{  
+            "name":"sap.suite.ui.generic.template.AnalyticalListPage",
+            "list":true,
+            "settings":{  
+               "keyPerformanceIndicators":{  
+                  "KPIRevenue":{  
+                     "model":"kpi",
+                     "entitySet":"SEPMRA_C_ALP_TotalSalesKPI",
+                     "qualifier":"KPIRevenue",
+                     "detailNavigation":"OverviewPage"
+                  }
+            }
+      }
+},</pre></div>
+</div>
+
+				</div>
+				<div class="sectiondiv subsection visibility-trigger" id="subsection-im2">
+					<h2 class="p subsectiontitle">Annotation: SelectionPresentationVariant with
+						Qualifier="KPIRevenue"</h2>
+					<p class="p"><span class="ph emphasis emphasis">Configuration Sample:</span></p>
+
+					<p class="p">The <samp class="ph codeph">SelectionPresentationVariant</samp> annotation qualifier relates to a
+							<samp class="ph codeph">SelectionVariant</samp> (optional) and
+							<samp class="ph codeph">PresentationVariant</samp> that provides a
+							<samp class="ph codeph">DataPoint</samp> annotation (for the KPI value).</p>
+
+					<div class="p">
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;/Annotation&gt;
+  &lt;Annotation Term="UI.SelectionPresentationVariant" Qualifier="KPIRevenue"&gt;
+    &lt;Record&gt;
+      &lt;PropertyValue Property="Text" String="KPI: Net Sales by Calendar Quarter" /&gt;
+      &lt;PropertyValue Property="SelectionVariant" Path="@UI.SelectionVariant#KPIRevenue" /&gt;
+      &lt;PropertyValue Property="PresentationVariant" Path="@UI.PresentationVariant#KPIRevenue" /&gt;
+    &lt;/Record&gt;
+&lt;/Annotation&gt;</pre></div>
+
+					</div>
+
+					<div class="p">Sample
+						SelectionVariant:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotation Term="UI.SelectionVariant" Qualifier="KPIRevenue"&gt;
+  &lt;Record&gt;
+    &lt;PropertyValue Property="Text" String="Default" /&gt;
+  &lt;/Record&gt;
+&lt;/Annotation&gt;</pre></div>
+</div>
+
+				</div>
+				<div class="sectiondiv subsection visibility-trigger" id="subsection-im3">
+					<h2 class="p subsectiontitle">Annotation: Presentation Variant</h2>
+					<div class="p">
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;/Annotation&gt;
+  &lt;Annotation Term="UI.PresentationVariant" Qualifier="KPIRevenue"&gt;
+    &lt;Record&gt;
+      &lt;PropertyValue Property="Text" String="KPI: Net Sales per Calendar Quarter" /&gt;
+      &lt;PropertyValue Property="SortOrder"&gt;
+        &lt;Collection&gt;
+          &lt;Record Type="Common.SortOrderType"&gt;
+            &lt;PropertyValue Property="Property" PropertyPath="CalendarYear" /&gt;
+            &lt;PropertyValue Property="Descending" Bool="false" /&gt;
+              &lt;/Record&gt;
+                &lt;Record Type="Common.SortOrderType"&gt;
+                  &lt;PropertyValue Property="Property" PropertyPath="CalendarQuarter" /&gt;
+                  &lt;PropertyValue Property="Descending" Bool="false" /&gt;
+              &lt;/Record&gt;
+            &lt;/Collection&gt;
+      &lt;/PropertyValue&gt;
+      &lt;PropertyValue Property="Visualizations"&gt;
+        &lt;Collection&gt;
+          &lt;AnnotationPath&gt;@UI.Chart#KPIRevenue&lt;/AnnotationPath&gt;
+          &lt;AnnotationPath&gt;@UI.DataPoint#KPIValue&lt;/AnnotationPath&gt;
+        &lt;/Collection&gt;
+      &lt;/PropertyValue&gt;
+    &lt;/Record&gt;
+&lt;/Annotation&gt;</pre></div>
+
+					</div>
+
+				</div>
+				<div class="sectiondiv subsection visibility-trigger" id="subsection-im4">
+					<h2 class="p subsectiontitle">Annotation: DataPoint</h2>
+					<p class="p">Description: Configure this annotation to display KPI name, KPI value, scale
+						factor, number of fractional digits, and criticality.</p>
+
+					<div class="p">
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotation Term="UI.DataPoint" Qualifier="KPIValue"&gt;
+  &lt;Record&gt;
+    &lt;PropertyValue Property="Value" Path="KPIValue" /&gt;
+    &lt;PropertyValue Property="Title" String="Sales Revenue" /&gt;
+    &lt;PropertyValue Property="Description" String="Sales revenue in the current quarter" /&gt;
+    &lt;PropertyValue Property="TargetValue" Path="KPITargetValue" /&gt;
+    &lt;PropertyValue Property="Visualization" EnumMember="UI.VisualizationType/Number" /&gt;
+    &lt;PropertyValue Property="ValueFormat"&gt;
+      &lt;Record&gt;
+        &lt;PropertyValue Property="ScaleFactor" Decimal="1000000" /&gt;
+        &lt;PropertyValue Property="NumberOfFractionalDigits" Int="2" /&gt;
+      &lt;/Record&gt;
+    &lt;/PropertyValue&gt;
+	&lt;PropertyValue Property="Criticality" EnumMember="com.sap.vocabularies.UI.v1.CriticalityType/Positive"/&gt;
+        &lt;PropertyValue Property="CriticalityCalculation"&gt;
+          &lt;Record&gt;
+            &lt;PropertyValue Property="ImprovementDirection" EnumMember="UI.ImprovementDirectionType/Maximize" /&gt;
+            &lt;PropertyValue Property="DeviationRangeLowValue" Path="KPIDeviationRangeLowValue" /&gt;
+            &lt;PropertyValue Property="ToleranceRangeLowValue" Path="KPIToleranceRangeLowValue" /&gt;
+          &lt;/Record&gt;
+        &lt;/PropertyValue&gt;
+        &lt;PropertyValue Property="TrendCalculation"&gt;
+          &lt;Record&gt;
+            &lt;PropertyValue Property="ReferenceValue" Path="KPITargetValue" /&gt;
+            &lt;PropertyValue Property="IsRelativeDifference" Bool="true" /&gt;
+            &lt;PropertyValue Property="UpDifference" Decimal="0.1" /&gt;
+            &lt;PropertyValue Property="StrongUpDifference" Decimal="1" /&gt;
+            &lt;PropertyValue Property="DownDifference" Decimal="0.1" /&gt;
+            &lt;PropertyValue Property="StrongDownDifference" Decimal="1" /&gt;
+           &lt;/Record&gt;
+        &lt;/PropertyValue&gt;
+  &lt;/Record&gt;
+&lt;/Annotation&gt;</pre></div>
+
+					</div>
+
+				</div>
+			</div></div>
+
+		<div class="section" id="loiod80a360638ad4cf193cc55eee92bff2e__KPITag"><div class="section_title">KPI Title</div><div type="KPI Title">
+			
+			<p class="p">The abbreviation of the KPI title is based on the following logic:</p>
+
+			
+<div class="table-wrapper tablenoborder"><table summary="" id="loiod80a360638ad4cf193cc55eee92bff2e__table_nr3_1qh_wx" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="33.333333333333336%"/><col width="33.333333333333336%"/><col width="33.333333333333336%"/></colgroup>
+
+					
+					
+					
+					<thead class="thead" align="left">
+						<tr class="row">
+							<th class="entry" valign="top" width="1" id="d16505887e186">
+								<p class="p">If a KPI name is</p>
+
+							</th>
+
+							<th class="entry" valign="top" width="1" id="d16505887e192">
+								<p class="p">Abbreviation is based on</p>
+
+							</th>
+
+							<th class="entry" valign="top" width="33.33333333333333%" id="d16505887e198">
+								<p class="p">Example</p>
+
+							</th>
+
+						</tr>
+
+					</thead>
+
+					<tbody class="tbody">
+						<tr class="row">
+							<td class="entry" valign="top" width="1" headers="d16505887e186 ">
+								<p class="p">One word</p>
+
+							</td>
+
+							<td class="entry" valign="top" width="1" headers="d16505887e192 ">
+								<p class="p">First three letters</p>
+
+							</td>
+
+							<td class="entry" valign="top" width="33.33333333333333%" headers="d16505887e198 ">
+								<p class="p">KPI Name: TargetMargin </p>
+
+								<p class="p">KPI Title: <span class="ph uicontrol">TAR</span></p>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="1" headers="d16505887e186 ">
+								<p class="p">Two words</p>
+
+							</td>
+
+							<td class="entry" valign="top" width="1" headers="d16505887e192 ">
+								<p class="p">First letter of each word</p>
+
+							</td>
+
+							<td class="entry" valign="top" width="33.33333333333333%" headers="d16505887e198 ">
+								<p class="p">KPI Name: Actual Cost</p>
+
+								<p class="p">KPI Title: <span class="ph uicontrol">AC</span></p>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="1" headers="d16505887e186 ">
+								<p class="p">Three words or more</p>
+
+							</td>
+
+							<td class="entry" valign="top" width="1" headers="d16505887e192 ">
+								<p class="p">First letter of first three words</p>
+
+							</td>
+
+							<td class="entry" valign="top" width="33.33333333333333%" headers="d16505887e198 ">
+								<p class="p">KPI Name: Actual Margin Relative</p>
+
+								<p class="p">KPI Title: <span class="ph uicontrol">AMR</span></p>
+
+							</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">KPI Value and Color</div><div type="KPI Value and Color"><p class="p">Use the
+					<samp class="ph codeph">SelectionPresentationVariant</samp> annotation to render KPI values
+				and to determine the KPI's color. This annotation is associated with the
+					<samp class="ph codeph">SelectionVariant</samp> and
+				<samp class="ph codeph">PresentationVariant</samp>.</p>
+<div class="p">The first <samp class="ph codeph">DataPoint</samp>
+				visualization element in the <samp class="ph codeph">PresentationVariant</samp> renders the KPI
+				value and determines the KPI color. If a KPI is percent-based, then the “%” symbol
+				appears along with the KPI value.<div class="note note"><span class="notetitle">Note</span> Click the KPI title or value to view more
+					details on a KPI card.</div>
+</div>
+<div class="p">The color of the KPI value depends on the
+				threshold values. To define threshold values, use the following properties in the
+				DataPoint annotation:<ul class="ul" id="loiod80a360638ad4cf193cc55eee92bff2e__ul_lwg_l33_wx">
+					<li class="li">CriticalityCalculation: Allows you to hard code values or to include the
+						value from a property path</li>
+
+					<li class="li">Criticality: Allows complex back-end logic to specify the criticality
+						values</li>
+
+				</ul>
+<div class="note note"><span class="notetitle">Note</span> If you use both properties in the annotation, then the criticality value
+					overrides <samp class="ph codeph">CriticalityCalculation</samp> value.</div>
+</div>
+<p class="p">The
+				coloring logic depends on the measure type. You can either choose a maximizing
+				measure, minimizing measure, or range-based measure types based on the
+				"ImprovementDirection" value of the measure.</p>
+<ul class="ul" id="loiod80a360638ad4cf193cc55eee92bff2e__ul_gj1_k3j_wx">
+				<li class="li">Target Measure: Hover over each item to view the conditions.</li>
+
+			</ul>
+<div class="sectiondiv imagemap-wrapper imagemap_tooltips" id="loiod80a360638ad4cf193cc55eee92bff2e__im_overall2">
+				
+				
+				
+				<div class="fig imagemap" id="loiod80a360638ad4cf193cc55eee92bff2e____im_imagemap2"><img usemap="#d16505887e344" border="0" class="image" id="loiod80a360638ad4cf193cc55eee92bff2e____im_image2" src="loiod0ede6ba24474265b96f655ab406aa62_LowRes.png"/>
+<map name="d16505887e344" id="d16505887e344">
+<area href="d80a360638ad4cf193cc55eee92bff2e.html" id="im5" alt="Measure Value &lt; ThresholdValues.DeviationRangeLowValue" title="Measure Value &lt; ThresholdValues.DeviationRangeLowValue" shape="rect" coords="1,1,187,41"/>
+<area href="d80a360638ad4cf193cc55eee92bff2e.html" id="im6" alt="Measure Value &gt;= ThresholdValues.DeviationRangeLowValue" title="Measure Value &gt;= ThresholdValues.DeviationRangeLowValue" shape="rect" coords="190,1,374,41"/>
+<area href="d80a360638ad4cf193cc55eee92bff2e.html" id="im7" alt="Measure Value &gt;= ThresholdValues.ToleranceRangeLowValue and MeasureValue &lt;= ThresholdValues.ToleranceRangeHighValue" title="Measure Value &gt;= ThresholdValues.ToleranceRangeLowValue and MeasureValue &lt;= ThresholdValues.ToleranceRangeHighValue" shape="rect" coords="377,1,563,40"/>
+<area href="d80a360638ad4cf193cc55eee92bff2e.html" id="im8" alt="Measure Value &gt; ThresholdValues.ToleranceRangeHighValue" title="Measure Value &gt; ThresholdValues.ToleranceRangeHighValue" shape="rect" coords="567,2,751,41"/>
+<area href="d80a360638ad4cf193cc55eee92bff2e.html" id="im9" alt="Measure Value &gt; ThresholdValues.DeviationRangeHighValue" title="Measure Value &gt; ThresholdValues.DeviationRangeHighValue" shape="rect" coords="755,1,940,41"/>
+</map></div>
+			</div>
+			<div class="p">
+				<ul class="ul" id="loiod80a360638ad4cf193cc55eee92bff2e__ul_mdb_533_wx">
+					<li class="li">Maximizing Measure: Hover over each item to view the conditions.</li>
+
+				</ul>
+
+			</div>
+<div class="sectiondiv imagemap-wrapper imagemap_tooltips" id="loiod80a360638ad4cf193cc55eee92bff2e__im_overall3">
+				
+				
+				
+				<div class="fig imagemap" id="loiod80a360638ad4cf193cc55eee92bff2e____im_imagemap3"><img usemap="#d16505887e447" border="0" class="image" id="loiod80a360638ad4cf193cc55eee92bff2e____im_image3" src="loio951f8bcce4c146e7a72c83ce739b0d6d_LowRes.png"/>
+<map name="d16505887e447" id="d16505887e447">
+<area href="d80a360638ad4cf193cc55eee92bff2e.html" id="im10" alt="Measure Value &lt; ThresholdValues.DeviationRangeLowValue" title="Measure Value &lt; ThresholdValues.DeviationRangeLowValue" shape="rect" coords="1,1,187,42"/>
+<area href="d80a360638ad4cf193cc55eee92bff2e.html" id="im11" alt="Measure Value &gt;= ThresholdValues.DeviationRangeLowValue" title="Measure Value &gt;= ThresholdValues.DeviationRangeLowValue" shape="rect" coords="190,1,374,41"/>
+<area href="d80a360638ad4cf193cc55eee92bff2e.html" id="im12" alt="Measure Value &gt;= ThresholdValues.ToleranceRangeLowValue" title="Measure Value &gt;= ThresholdValues.ToleranceRangeLowValue" shape="rect" coords="377,1,564,42"/>
+</map></div>
+			</div><ul class="ul" id="loiod80a360638ad4cf193cc55eee92bff2e__ul_pjb_5jn_wx">
+				<li class="li">Minimizing Measure: Hover over each item to view the conditions. </li>
+
+			</ul>
+
+			<div class="sectiondiv imagemap-wrapper imagemap_tooltips" id="loiod80a360638ad4cf193cc55eee92bff2e__im_overall4">
+				
+				
+				
+				<div class="fig imagemap" id="loiod80a360638ad4cf193cc55eee92bff2e____im_imagemap4"><img usemap="#d16505887e515" border="0" class="image" id="loiod80a360638ad4cf193cc55eee92bff2e____im_image4" src="loio9d9d0e3085554a2799877d5e274a99cc_LowRes.png"/>
+<map name="d16505887e515" id="d16505887e515">
+<area href="d80a360638ad4cf193cc55eee92bff2e.html" id="im13" alt="Measure Value &lt;= ThresholdValues.ToleranceRangeHighValue" title="Measure Value &lt;= ThresholdValues.ToleranceRangeHighValue" shape="rect" coords="1,2,187,41"/>
+<area href="d80a360638ad4cf193cc55eee92bff2e.html" id="im14" alt="Measure Value &gt; ThresholdValues.ToleranceRangeHighValue" title="Measure Value &gt; ThresholdValues.ToleranceRangeHighValue" shape="rect" coords="189,0,375,41"/>
+<area href="d80a360638ad4cf193cc55eee92bff2e.html" id="im15" alt="Measure Value &gt; ThresholdValues.DeviationRangeHighValue" title="Measure Value &gt; ThresholdValues.DeviationRangeHighValue" shape="rect" coords="377,2,563,41"/>
+</map></div>
+			</div>
+			<div class="p">If the threshold values are insufficient or incorrect, ALP chooses the closest color
+				match for a KPI value. For example, if a target KPI has the
+					<samp class="ph codeph">DataPoint.Value</samp> aggregate &lt;
+					<samp class="ph codeph">ThresholdValues.ToleranceRangeLowValue</samp> and does not have a
+				value for <samp class="ph codeph">ThresholdValues.DeviationRangeLowValue</samp>, then the KPI
+				value has the color for critical.<div class="note note"><span class="notetitle">Note</span> The criticality indicator line in a KPI tag
+					also takes the same color as the KPI value.</div>
+</div>
+</div></div>
+
+		<div class="section"><div class="section_title">Scale and Decimal Precision</div><div type="Scale and Decimal Precision">
+			
+			<div class="p">The SAPUI5 formatter returns the scale factor and decimal factor for a KPI value. You can
+				specify the scale factor for KPI value by using the <samp class="ph codeph">ScaleFactor</samp>
+				property of the <samp class="ph codeph">DataPoint</samp> annotation associated with the KPI. By
+				default, ALP uses the scale factor returned by the SAPUI5 formatter when a KPI value
+				is passed to
+				it.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">sap.ui.core.format.NumberFormat.getFloatInstance( {
+style: "short", 
+minFractionDigits: 0, 
+maxFractionDigits: 1,
+shortRefNumber: &lt;scale&gt;
+} )</pre></div>
+</div>
+
+			<div class="p">Percent-based KPI values are displayed with one decimal value, whereas a KPI value that is not
+				percent-based measure is displayed with zero decimal points. However, in both cases
+				the decimal values are rounded off respectively.<div class="note note"><span class="notetitle">Note</span> The <samp class="ph codeph">sap:unit</samp>
+					meta data annotation determines whether the KPI is percent-based.</div>
+</div>
+
+			<div class="p">You can
+				override
+				a unit of measure coming from backend. For example, the following
+				annotation configuration overrides unit of measure coming from backend to percentage
+				based.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotations Target="CZ_PROJECTKPIS_CDS.CZ_PROJECTKPISType/ActualCosts"&gt;
+	&lt;Annotation Term="Org.OData.Measures.V1.Unit" String="%"/&gt;
+&lt;/Annotations&gt;
+</pre></div>
+</div>
+
+		</div></div>
+
+		<div class="section" id="loiod80a360638ad4cf193cc55eee92bff2e__value"/>
+
+		<div class="section" id="loiod80a360638ad4cf193cc55eee92bff2e__section_aww_k1w_bz"><div class="section_title">SelectionVariant Annotation</div><div type="SelectionVariant Annotation"><p class="p"><span class="ph emphasis emphasis">Annotation</span>:
+					<samp class="ph codeph">com.sap.vocabularies.UI.SelectionVariant</samp></p>
+<p class="p" id="loiod80a360638ad4cf193cc55eee92bff2e__parameterized">You can also define a <samp class="ph codeph">SelectionVariant</samp>
+				annotation that contains filters and parameters to provide default values for the
+				corresponding filter fields. This overrides the default values from the
+					<samp class="ph codeph">Common.FilterDefaultValue</samp> annotation. The filters are obtained
+				from the <samp class="ph codeph">SelectionVariant.SelectOptions</samp> and the parameters are
+				obtained from the
+					<samp class="ph codeph">SelectionVariant.Parameters</samp>.</p>
+<div class="p"><span class="ph emphasis emphasis">Properties</span>:<ul class="ul" id="loiod80a360638ad4cf193cc55eee92bff2e__ul_bfs_ggw_bz">
+					<li class="li">
+						<p class="p">SelectOptions</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Parameters</p>
+
+					</li>
+
+				</ul>
+</div>
+<div class="p">
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+&lt;Annotation Term="UI.SelectionVariant" Qualifier="ActualCosts"&gt;
+                    &lt;Record&gt;
+                        &lt;PropertyValue Property="SelectOptions"&gt;
+                            &lt;Collection&gt;
+                                &lt;Record Type="UI.SelectOptionType"&gt;
+                                    &lt;PropertyValue Property="PropertyName"&gt;
+                                        &lt;PropertyPath&gt;DisplayCurrency&lt;/PropertyPath&gt;
+                                    &lt;/PropertyValue&gt;
+                                    &lt;PropertyValue Property="DisplayCurrency"&gt;
+                                        &lt;Collection&gt;
+                                            &lt;Record Type="UI.SelectionRangeType"&gt;
+                                                &lt;PropertyValue EnumMember="UI.SelectionRangeSignType/I" Property="Sign"/&gt;
+                                                &lt;PropertyValue EnumMember="UI.SelectionRangeOptionType/EQ" Property="Option"/&gt;
+                                                &lt;PropertyValue Property="Low" String="EUR"/&gt;
+                                            &lt;/Record&gt;
+                                        &lt;/Collection&gt;
+                                    &lt;/PropertyValue&gt;
+                                &lt;/Record&gt;                                
+                            &lt;/Collection&gt;
+                        &lt;/PropertyValue&gt;
+                        &lt;PropertyValue Property="Parameters"&gt;
+                            &lt;Collection&gt;
+                                &lt;Record Type="UI.Parameter"&gt;
+                                    &lt;PropertyValue Property="PropertyName" PropertyPath="P_DisplayCurrency" /&gt;
+                                    &lt;PropertyValue Property="PropertyValue" String="EUR" /&gt;
+                                &lt;/Record&gt;
+                            &lt;/Collection&gt;
+                        &lt;/PropertyValue&gt;
+                    &lt;/Record&gt;
+                &lt;/Annotation&gt;
+</pre></div>
+
+			</div>
+</div></div>
+
+	</div>
+
+<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="ebdb5da37eba4925b2ce692b85d42abb.html" title="The dynamic area on analytical list page is the title area.">Configuring the Title Area</a></div>
+<div><a class="link" href="8ce658e05498466d9a74823b94e840ac.html" title="Allows you to manage variants with different structures in the filter and content areas.">Managing Variants</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

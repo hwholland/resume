@@ -1,0 +1,498 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+	<title>QUnit - sap.ui.fl.changeHandler.MoveFields</title>
+
+	<script id="sap-ui-bootstrap" type="text/javascript"
+			src="../../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noconflict="true"
+			data-sap-ui-libs="sap.ui.comp">
+	</script>
+
+
+	<link rel="stylesheet" href="../../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen"/>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+<script type="text/javascript">
+jQuery.sap.require("sap.ui.fl.changeHandler.MoveFields");
+jQuery.sap.require("sap.ui.fl.Change");
+jQuery.sap.require("sap.ui.comp.smartform.Group");
+jQuery.sap.require("sap.ui.comp.smartform.GroupElement");
+
+(function (MoveFieldsChangeHandler, Change, Group, Field) {
+
+	module("sap.ui.fl.changeHandler.MoveFields", {
+		setup: function () {
+			this.stubs = [];
+			this.oChangeHandler = new MoveFieldsChangeHandler();
+		},
+		teardown: function () {
+			this.stubs.forEach(function (stub) {
+				stub.restore();
+			});
+		}
+	});
+
+	test('Wrong or no control supplied to applyChange', function () {
+
+		var sError;
+
+		var oChangeJson = {
+			"selector": {
+				"id": "testkey"
+			},
+			"content": {
+				"moveFields": [
+					{"id": "Id1", "index": 1}
+				]
+			},
+			"texts": {
+			}
+		};
+
+		var oChange = new Change(oChangeJson);
+
+		// no control supplied
+		var oGroup;
+
+		try {
+			this.oChangeHandler.applyChange(oChange, oGroup);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "No smart form group instance supplied");
+
+		// wrong control supplied
+		var oField = new Field();
+
+		sError = "";
+		try {
+			this.oChangeHandler.applyChange(oChange, oField);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		ok(sError, "Shall raise an exception");
+
+	});
+
+	test('Invalid change supplied to applyChange', function () {
+
+		var oGroup = new Group();
+		var sError;
+
+		// test 1 - content does not contain moveFields attribute
+		var oChangeJson = {
+			"selector": {
+				"id": "testkey"
+			},
+			"content": {
+			},
+			"texts": {
+			}
+		};
+
+		var oChange = new Change(oChangeJson, function(){});
+
+		try {
+			this.oChangeHandler.applyChange(oChange, oGroup);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "Change format invalid");
+
+		// test 2 - moveFields array is empty
+		oChangeJson = {
+			"selector": {
+				"id": "testkey"
+			},
+			"content": {
+				"moveFields": []
+			},
+			"texts": {
+			}
+		};
+
+		oChange = new Change(oChangeJson, function(){});
+
+		sError = "";
+		try {
+			this.oChangeHandler.applyChange(oChange, oGroup);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "Change format invalid");
+
+		// test 3 - selector contains more than one key
+		oChangeJson = {
+			"selector": {
+				"id": "testkey",
+				"id2": "testkey2"
+			},
+			"content": {
+				"moveFields": [
+					{"id": "Id1", "index": 1}
+				]
+			},
+			"texts": {
+			}
+		};
+
+		oChange = new Change(oChangeJson, function(){});
+
+		sError = "";
+		try {
+			this.oChangeHandler.applyChange(oChange, oGroup);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "Change format invalid");
+
+		// test 4 - moveFields element has no id attribute 
+		oChangeJson = {
+			"selector": {
+				"id": "testkey",
+			},
+			"content": {
+				"moveFields": [
+					{"key": "Id1", "index": 1}
+				]
+			},
+			"texts": {
+			}
+		};
+
+		oChange = new Change(oChangeJson, function(){});
+
+		sError = "";
+		try {
+			this.oChangeHandler.applyChange(oChange, oGroup);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "Change format invalid - moveFields element has no id attribute");
+
+		// test 5 - moveFields element has no index attribute  
+		oChangeJson = {
+			"selector": {
+				"id": "testkey",
+			},
+			"content": {
+				"moveFields": [
+					{"id": "Id1", "position": 1}
+				]
+			},
+			"texts": {
+			}
+		};
+
+		oChange = new Change(oChangeJson, function(){});
+
+		sError = "";
+		try {
+			this.oChangeHandler.applyChange(oChange, oGroup);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "Change format invalid - moveFields element index attribute is no number");
+
+		// test 6 - moveGroups element has an index attribute which is no number  
+		oChangeJson = {
+			"selector": {
+				"id": "testkey",
+			},
+			"content": {
+				"moveFields": [
+					{"id": "Id1", "index": "1"}
+				]
+			},
+			"texts": {
+			}
+		};
+
+		oChange = new Change(oChangeJson, function(){});
+
+		sError = "";
+		try {
+			this.oChangeHandler.applyChange(oChange, oGroup);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "Change format invalid - moveFields element index attribute is no number");
+
+
+	});
+
+	test('applyChange - move fields within group', function () {
+
+		var oChangeJson = {
+			"selector": {
+				"id": "testkey"
+			},
+			"content": {
+				"moveFields": [
+					{"id": "Id1", "index": 0},
+					{"id": "Id2", "index": 1},
+					{"id": "Id3", "index": 2},
+					{"id": "NoId", "index": 3}
+				]
+			},
+			"texts": {
+			}
+		};
+
+		var oChange = new Change(oChangeJson);
+
+		var oGroup = new Group();
+
+		var oField1 = new Field("Id1");
+		var oField2 = new Field("Id2");
+		var oField3 = new Field("Id3");
+		var oField4 = new Field("Id4");
+
+		oGroup.addGroupElement(oField2);
+		oGroup.addGroupElement(oField4);
+		oGroup.addGroupElement(oField3);
+		oGroup.addGroupElement(oField1);
+
+		this.oChangeHandler.applyChange(oChange, oGroup);
+
+		var aField = oGroup.getGroupElements();
+
+		equal(aField.length, 4);
+		equal(aField[0].getId(), "Id1");
+		equal(aField[1].getId(), "Id2");
+		equal(aField[2].getId(), "Id3");
+		equal(aField[3].getId(), "Id4");
+		
+		oGroup.destroyGroupElements();
+
+	});
+
+	test('applyChange for smart form group without field', function () {
+
+		var oChangeJson = {
+			"selector": {
+				"id": "testkey"
+			},
+			"content": {
+				"moveFields": [
+					{"id": "Id1", "index": 0},
+					{"id": "Id2", "index": 1},
+					{"id": "Id3", "index": 2}
+				]
+			},
+			"texts": {
+			}
+		};
+
+		var oChange = new Change(oChangeJson, function () {
+		});
+
+		var oGroup = new Group();
+
+		this.oChangeHandler.applyChange(oChange, oGroup);
+
+		var aField = oGroup.getGroupElements();
+
+		equal(aField.length, 0);
+
+	});
+
+	test('applyChange - move fields between groups', function () {
+
+		var oChangeJson = {
+			"selector": {
+				"id": "testkey"
+			},
+			"content": {
+				"moveFields": [
+					{"id": "Id11", "index": 0},
+					{"id": "Id33", "index": 2},
+					{"id": "NoId", "index": 3}
+				],
+				"targetId": "TargetId"
+			},
+			"texts": {
+			}
+		};
+
+		var oChange = new Change(oChangeJson);
+
+		// source group
+		var oGroup = new Group();
+
+		var oField1 = new Field("Id11");
+		var oField2 = new Field("Id22");
+		var oField3 = new Field("Id33");
+		var oField4 = new Field("Id44");
+
+		oGroup.addGroupElement(oField1);
+		oGroup.addGroupElement(oField2);
+		oGroup.addGroupElement(oField3);
+		oGroup.addGroupElement(oField4);
+
+		// target group
+		var oTargetGroup = new Group("TargetId");
+
+		var oField5 = new Field("Id55");
+		var oField6 = new Field("Id66");
+
+		oTargetGroup.addGroupElement(oField5);
+		oTargetGroup.addGroupElement(oField6);
+
+		this.oChangeHandler.applyChange(oChange, oGroup);
+
+		var aFields = oGroup.getGroupElements();
+
+		equal(aFields.length, 2);
+		equal(aFields[0].getId(), "Id22");
+		equal(aFields[1].getId(), "Id44");
+
+		var aFieldsTarget = oTargetGroup.getGroupElements();
+
+		equal(aFieldsTarget.length, 4);
+		equal(aFieldsTarget[0].getId(), "Id11");
+		equal(aFieldsTarget[1].getId(), "Id55");
+		equal(aFieldsTarget[2].getId(), "Id33");
+		equal(aFieldsTarget[3].getId(), "Id66");
+		
+		oGroup.destroyGroupElements();
+		oTargetGroup.destroyGroupElements();
+
+	});
+
+	test('completeChangeContent - negative tests', function () {
+
+		var oChangeJson = {
+			"selector": {
+				"id": "testkey"
+			}
+		};
+
+		var oChange = new Change(oChangeJson);
+
+		var oSpecificChangeInfo = {}, oError = {};
+
+		// test 1 - no moveFields attribute
+		var sError = "";
+		try {
+			this.oChangeHandler.completeChangeContent(oChange, oSpecificChangeInfo);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "oSpecificChangeInfo.moveFields attribute required");
+
+		// test 2 - moveFields attribute is an empty array
+		oSpecificChangeInfo.moveFields = [];
+		sError = "";
+		try {
+			this.oChangeHandler.completeChangeContent(oChange, oSpecificChangeInfo);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "MoveFields array is empty");
+
+		// test 3 - moveFields attribute contains element without id attribute
+		oSpecificChangeInfo.moveFields = [
+			{"key": "Id1", "index": 0}
+		];
+		sError = "";
+		try {
+			this.oChangeHandler.completeChangeContent(oChange, oSpecificChangeInfo);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "MoveFields element has no id attribute");
+
+		// test 4 - moveFields attribute contains element without index attribute
+		oSpecificChangeInfo.moveFields = [
+			{"id": "Id1", "position": 0}
+		];
+		sError = "";
+		try {
+			this.oChangeHandler.completeChangeContent(oChange, oSpecificChangeInfo);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "Index attribute at MoveFields element is no number");
+
+		// test 5 - moveFields element index attribute is no number
+		oSpecificChangeInfo.moveFields = [
+			{"id": "Id1", "index": "0"}
+		];
+		sError = "";
+		try {
+			this.oChangeHandler.completeChangeContent(oChange, oSpecificChangeInfo);
+		} catch (Error) {
+			sError = Error.message;
+		}
+
+		equal(sError, "Index attribute at MoveFields element is no number");
+
+	});
+
+	test('completeChangeContent - positive test', function () {
+
+		var oChangeJson = {
+			"selector": {
+				"id": "testkey"
+			}
+		};
+
+		var oChange = new Change(oChangeJson);
+
+		var oSpecificChangeInfo = { moveFields: [
+			{"id": "Id1", "index": 0},
+			{"id": "Id2", "index": 1},
+			{"id": "Id3", "index": 2}
+		],
+			targetId: "TargetId" };
+
+		this.oChangeHandler.completeChangeContent(oChange, oSpecificChangeInfo);
+
+		oChangeJson = oChange.getDefinition();
+
+		equal(oChangeJson.content.moveFields.length, 3);
+		equal(oChangeJson.content.moveFields[0].id, "Id1");
+		equal(oChangeJson.content.moveFields[0].index, 0);
+		equal(oChangeJson.content.moveFields[1].id, "Id2");
+		equal(oChangeJson.content.moveFields[1].index, 1);
+		equal(oChangeJson.content.moveFields[2].id, "Id3");
+		equal(oChangeJson.content.moveFields[2].index, 2);
+
+		equal(oChangeJson.content.targetId, "TargetId");
+
+	});
+
+}(sap.ui.fl.changeHandler.MoveFields, sap.ui.fl.Change, sap.ui.comp.smartform.Group, sap.ui.comp.smartform.GroupElement));
+	</script>
+</head>
+<body id="body" class="sapUiBody">
+<h1 id="qunit-header">qUnit Page for sap.ui.fl.changeHandler.MoveFields</h1>
+
+<h2 id="qunit-banner"></h2>
+
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+<div id="content"></div>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, we want to change the mock data of the initial app. The service metadata only contains a description of the service entities. The mock server that is part of the app will auto-generate random mock data based on the data types defined in the metadata file. To have a more realistic development environment we will now add additional sample data."/>
+<meta name="description" content="In this step, we want to change the mock data of the initial app. The service metadata only contains a description of the service entities. The mock server that is part of the app will auto-generate random mock data based on the data types defined in the metadata file. To have a more realistic development environment we will now add additional sample data."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9286354143370786"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9286354143370786"/>
+<title>Step 2: Custom Mock Data</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio311890311f7148adbfbf248a6980df1c">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 2: Custom Mock Data</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we want to change the mock data of the initial app. The service metadata only contains a description of the service
+    entities. The mock server that is part of the app will auto-generate random mock data based on the data types defined in the metadata file. To
+    have a more realistic development environment we will now add additional sample data.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio311890311f7148adbfbf248a6980df1c__fig_dpl_41l_c5"><div class="figcontainer">
+				
+				<img class="image" id="loio311890311f7148adbfbf248a6980df1c__image_zgm_q1l_c5" src="loioc9bded41616c4b5e91d98c3f4e6eb3d6_HiRes.png"/>
+			<div class="figcap">The product list of the initial app with custom mock data</div></div></div>
+
+			<div class="fig fignone" id="loio311890311f7148adbfbf248a6980df1c__fig_xdw_s1l_c5"><div class="figcontainer">
+				
+				<img class="image" id="loio311890311f7148adbfbf248a6980df1c__image_sqh_1bl_c5" src="loio1f40c3e9abc1495b9bf77687fd70745a_HiRes.png"/>
+			<div class="figcap"> Folder structure for this step including custom mock data</div></div></div>
+
+		The <span class="ph filepath">webapp/localService/metadata.xml</span> file used by the mock server
+			describes our OData service. The service only has two OData entities, and the data for
+			these two entities is located in the folder
+				<span class="ph filepath">webapp/localService/mockdata</span>:<ul class="ul" id="loio311890311f7148adbfbf248a6980df1c__ul_ulk_sfl_c5">
+				<li class="li">
+					<p class="p">Products</p>
+
+					<p class="p">A product has typical properties like <samp class="ph codeph">ProductName</samp> and
+							<samp class="ph codeph">UnitsInStock</samp> as well as a navigation property to a
+						supplier entity referenced by a <samp class="ph codeph">SupplierID</samp>. Of course, the
+						entity has an ID property <samp class="ph codeph">ProductID</samp>. The corresponding
+							<samp class="ph codeph">EntitySet</samp> is <samp class="ph codeph">Products</samp>. The actual test
+						data containing several products is located in the
+							<span class="ph filepath">webapp/localService/mockdata/Products.json</span>
+						file.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Suppliers</p>
+
+					<p class="p">Later in this tutorial, we will display some information about the supplier
+						of a product. The properties are <samp class="ph codeph">CompanyName</samp>,
+							<samp class="ph codeph">Address</samp>, <samp class="ph codeph">City</samp>,
+							<samp class="ph codeph">PostalCode</samp>, <samp class="ph codeph">Country</samp>, and so on; all of
+						them contain textual information of type <samp class="ph codeph">Edm.String</samp>. The
+						entity has an ID property <samp class="ph codeph">SupplierID</samp> and the corresponding
+							<samp class="ph codeph">EntitySet</samp> is <samp class="ph codeph">Suppliers</samp>. The supplier
+						data for products is located in the file
+							<span class="ph filepath">webapp/localService/mockdata/Suppliers.json</span>. </p>
+
+				</li>
+
+			</ul>
+</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Samples</span> in the Demo Kit
+				<span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.worklist.02/preview" alt="../../explored.html#/sample/sap.m.tutorial.worklist.02/preview" title="../../explored.html#/sample/sap.m.tutorial.worklist.02/preview">Worklist App - Step 2</a></span>.</p>
+
+		
+		<div class="sectiondiv subsection">
+			<p class="p subsectiontitle">webapp/localService/mockdata/Products.json (New)</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">[
+  {
+    "ProductID": 1,
+    "ProductName": "Chai",
+    "UnitsInStock": 39,
+    "UnitsOnOrder": 10,
+    "UnitPrice": 8,
+    "SupplierID": 1,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(1)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 2,
+    "ProductName": "Chang",
+    "UnitsInStock": 0,
+    "UnitsOnOrder": 7,
+    "UnitPrice": 6,
+    "SupplierID": 1,
+    "Discontinued": true,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(2)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 3,
+    "ProductName": "Aniseed Syrup",
+    "UnitsInStock": 100,
+    "UnitsOnOrder": 6,
+    "UnitPrice": 3,
+    "SupplierID": 3,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(3)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 4,
+    "ProductName": "Schwarzwälder Kirschtorte",
+    "UnitsInStock": 2,
+    "UnitsOnOrder": 3,
+    "UnitPrice": 19,
+    "SupplierID": 3,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(4)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 5,
+    "ProductName": "Chef Anton's Cajun Seasoning",
+    "UnitsInStock": 0,
+    "UnitsOnOrder": 9,
+    "UnitPrice": 108,
+    "SupplierID": 3,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(5)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 6,
+    "ProductName": "Chef Anton's Gumbo Mix",
+    "UnitsInStock": 21,
+    "UnitsOnOrder": 0,
+    "UnitPrice": 18,
+    "SupplierID": 4,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(6)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 7,
+    "ProductName": "Grandma's Boysenberry Spread",
+    "UnitsInStock": 25,
+    "UnitsOnOrder": 25,
+    "UnitPrice": 18,
+    "SupplierID": 5,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(7)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 8,
+    "ProductName": "Uncle Bob's Organic Dried Pears",
+    "UnitsInStock": 29,
+    "UnitsOnOrder": 7,
+    "UnitPrice": 35,
+    "SupplierID": 6,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(8)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 9,
+    "ProductName": "Northwoods Cranberry Sauce",
+    "UnitsInStock": 4,
+    "UnitsOnOrder": 32,
+    "UnitPrice": 35,
+    "SupplierID": 6,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(9)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 10,
+    "ProductName": "Mishi Kobe Niku",
+    "UnitsInStock": 40,
+    "UnitsOnOrder": 0,
+    "UnitPrice": 130,
+    "SupplierID": 5,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(10)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 11,
+    "ProductName": "Ikura",
+    "UnitsInStock": 4,
+    "UnitsOnOrder": 10,
+    "UnitPrice": 13,
+    "SupplierID": 4,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(11)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 13,
+    "ProductName": "Carnarvon Tigers",
+    "UnitsInStock": 36,
+    "UnitsOnOrder": 40,
+    "UnitPrice": 56,
+    "SupplierID": 3,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(13)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 14,
+    "ProductName": "Teatime Chocolate Biscuits",
+    "UnitsInStock": 0,
+    "UnitsOnOrder": 40,
+    "UnitPrice": 7,
+    "SupplierID": 2,
+    "Discontinued": false,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(14)/Supplier"
+      }
+    }
+  },
+  {
+    "ProductID": 15,
+    "ProductName": "Alice Mutton",
+    "UnitsInStock": 90,
+    "UnitsOnOrder": 20,
+    "UnitPrice": 75,
+    "SupplierID": 2,
+    "Discontinued": true,
+    "Supplier": {
+      "__deferred": {
+        "uri": "/destinations/northwind/V2/Northwind/Northwind.svc/Products(15)/Supplier"
+      }
+    }
+  }
+]</span></pre></div>
+
+			<p class="p">First create a new <span class="ph filepath">mockdata</span> folder inside
+					<span class="ph filepath">webapp/localService</span>. Create a
+					<span class="ph filepath">Products.json</span> file, and copy and paste the code.</p>
+
+		</div>
+		<div class="sectiondiv subsection">
+			<p class="p subsectiontitle">webapp/localService/mockdata/Suppliers.json (New)</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">[
+  {
+    "SupplierID": 1,
+    "CompanyName": "New Orleans Cajun Delights",
+    "ContactName": "Shelley Burke",
+    "ContactTitle": "Order Administrator",
+    "Address": "P.O. Box 78934",
+    "City": "New Orleans",
+    "Region": "LA",
+    "PostalCode": "70117",
+    "Country": "USA"
+  },
+  {
+    "SupplierID": 2,
+    "CompanyName": "Exotic Liquids",
+    "ContactName": "Charlotte Cooper",
+    "ContactTitle": "Purchasing Manager",
+    "Address": "49 Gilbert St.",
+    "City": "London",
+    "Region": "UK",
+    "PostalCode": "EC1 4SD",
+    "Country": "UK"
+  },
+  {
+    "SupplierID": 3,
+    "CompanyName": "Grandma Kelly's Homestead",
+    "ContactName": "Regina Murphy",
+    "ContactTitle": "Sales Representative",
+    "Address": "707 Oxford Rd.",
+    "City": "Ann Arbor",
+    "Region": "MI",
+    "PostalCode": "48104",
+    "Country": "USA"
+  },
+  {
+    "SupplierID": 4,
+    "CompanyName": "Forêts d'érables",
+    "ContactName": "Chantal Goulet",
+    "ContactTitle": "Accounting Manager",
+    "Address": "148 rue Chasseur",
+    "City": "Ste-Hyacinthe",
+    "Region": "Québec",
+    "PostalCode": "J2S 7S8",
+    "Country": "Canada"
+  },
+  {
+    "SupplierID": 5,
+    "CompanyName": "Plutzer Lebensmittelgroßmärkte AG",
+    "ContactName": "Martin Bein",
+    "ContactTitle": "International Marketing Mgr.",
+    "Address": "Bogenallee 51",
+    "City": "Frankfurt",
+    "Region": "DE",
+    "PostalCode": "60439",
+    "Country": "Germany"
+  },
+  {
+    "SupplierID": 6,
+    "CompanyName": "Lyngbysild",
+    "ContactName": "Niels Petersen",
+    "ContactTitle": "Sales Manager",
+    "Address": "Lyngbysild Fiskebakken 10",
+    "City": "Lyngby",
+    "Region": "NL",
+    "PostalCode": "2800",
+    "Country": "Denmark"
+  },
+  {
+    "SupplierID": 7,
+    "CompanyName": "Formaggi Fortini s.r.l.",
+    "ContactName": "Elio Rossi",
+    "ContactTitle": "Sales Representative",
+    "Address": "Viale Dante, 75",
+    "City": "Ravenna",
+    "Region": "IL",
+    "PostalCode": "48100",
+    "Country": "Italy"
+  }
+]
+</span></pre></div>
+
+			<p class="p">Create a <span class="ph filepath">Suppliers.json</span> file, and copy and paste the code.</p>
+
+			<p class="p">You can now run the app again and see the mock data in your app.</p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">In order to get realistic mock data you can call a real OData service directly in
+					your browser to receive the real data of a given <samp class="ph codeph">Entity</samp> or
+						<samp class="ph codeph">EntitySet</samp>. Make sure to call the service with the system
+					option <samp class="ph codeph">$format=json</samp>, i.e. <samp class="ph codeph">http://services.odata.org/V2/Northwind/Northwind.svc/Products?$format=json</samp>.
+					This will return the data in JSON format, which is the format required for our
+					mock data. This data is put into a local file in your application’s
+						<span class="ph filepath">webapp/localService/mockdata</span> folder. The file name is
+					expected to be the name of the corresponding <samp class="ph codeph">EntitySet</samp> ends
+					with <samp class="ph codeph">.json</samp>, for example <span class="ph filepath">Products.json</span>. The
+					obtained data from the OData service can serve as a first set of mock data,
+					which you can change to your needs if necessary. <span class="ph pname">SAP Web IDE</span> offers also a
+					dedicated editor for mock data that makes the maintenance of the data even
+					easier. </p>
+
+			</div>
+
+		</div>
+		</div></div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="6a6a621c978145ad9eef2b221d2cf21d.html" title="In this tutorial we will build an app using SAPUI5 that, for example, a shop owner can use to manage his product stock levels.">Worklist App</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="fc2c35880ccf4282a6baf8ab861bc10e.html" title="With the generated code (SAP Web IDE) or the downloaded code from the Demo Kit, you have an initial app structure with the following content inside the webapp folder.">Step 1 (Result): The Initial App</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="84100bcfd5b34f62858bdd6f67976b4a.html" title="In this step, we will edit the worklist table to include additional columns for our manage product stocks scenario. We display the supplier, the product price, and the number of units on order for each product and format the values accordingly.">Step 3: Extending the Worklist Table</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

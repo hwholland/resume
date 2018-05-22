@@ -1,0 +1,135 @@
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+
+		<title>QUnit TestSuite for sap.gantt</title>
+
+		<script src="../../../../resources/sap/ui/qunit/qunit-redirect.js"></script>
+	</head>
+	<body>
+		<script>
+
+			/**
+			 * Add test pages to this test suite function.
+			 * Please order alphabetically
+			 */
+			function suite() {
+				var suite = new parent.jsUnitTestSuite(),
+					contextPath = "/" + window.location.pathname.split("/")[1];
+				
+				/**
+				 * unit test for classes in sap.gantt.misc
+				 */
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/misc/AxisOrdinal.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/misc/Format.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/misc/AxisTime.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/misc/Utility.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/DateFormatConstant.qunit.html");
+				
+				/**
+				 * unit test for sap.gantt.drawer
+				 */
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/drawer/ShapeCrossRow.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/drawer/CursorLine.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/drawer/Nowline.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/drawer/VerticalLine.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/drawer/CalendarPattern.qunit.html");
+				
+				/**
+				 * unit test for classes in sap.gantt.config
+				 */
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/ChartScheme.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/ColumnAttribute.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/ExpandChart.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/ExpandChartGroup.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/ContainerLayout.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/Hierarchy.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/HierarchyColumn.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/LayoutGroup.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/Locale.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/Mode.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/ModeGroup.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/ObjectType.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/SettingGroup.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/SettingItem.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/Shape.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/TimeHorizon.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/TimeAxis.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/ToolbarGroup.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/ToolbarSheme.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/config/GanttChartLayout.qunit.html");
+
+				/**
+				 * unit test for classes in sap.gantt.control
+				 */
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/control/AssociateContainer_Legend.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/control/Cell.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/control/Toolbar.qunit.html");
+				
+				/**
+				 * unit test for classes in sap.gantt.shape
+				 */
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/cal/Calendar.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/Shape.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/Rectangle.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/Path.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/Polygon.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/Polyline.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ClipPath.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/Circle.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/SelectedShape.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/Line.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/Text.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/Pentangle.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/Chevron.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/Diamond.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/Triangle.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/Cursor.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/Iconfont.qunit.html");
+				
+				//Ulc shapes
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ulc/UlcBorderPath.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ulc/UlcClipingPath.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ulc/UlcMiddleLine.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ulc/UlcOverCapacityZoneRectangle.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ulc/UlcOverClipRectangle.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ulc/UlcTooltipRectangle.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ulc/UlcUnderClipRectangle.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ulc/UlcRectangle.qunit.html"); 
+				/**
+				 * unit test for ubc shapes
+				 */
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ubc/UbcBorderPath.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ubc/UbcOverCapacityZonePolygon.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ubc/UbcShortageCapacityPolygon.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ubc/UbcTooltipRectangle.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ubc/UbcUnderCapacityZonePolygon.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/shape/ext/ubc/UbcUsedPolygon.qunit.html");
+
+				/**
+				 * other unit tests
+				 */
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/Relationship.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/RelationshipRTL.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/misc/RTL.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/ChartEvent.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/GanttChart.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/GanttChartContainer.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/GanttChartWithTable.qunit.html");
+				
+				/**
+				 * Svg Defs
+				 */
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/def/cal/Calendar.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/def/pattern/Slash.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/def/gradient/LinearGradient.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/def/gradient/RadialGradient.qunit.html");
+				suite.addTestPage(contextPath + "/test-resources/sap/gantt/qunit/def/filter/MorphologyFilter.qunit.html");
+				
+				return suite;
+			}
+
+		</script>
+	</body>
+</html>

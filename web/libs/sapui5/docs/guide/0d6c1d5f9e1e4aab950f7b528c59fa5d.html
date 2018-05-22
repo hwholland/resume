@@ -1,0 +1,104 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can display the unit of measure next to numeric values by providing the sap:unit attribute in the OData metadata file or by annotating the unit in the annotation document."/>
+<meta name="description" content="You can display the unit of measure next to numeric values by providing the sap:unit attribute in the OData metadata file or by annotating the unit in the annotation document."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3583290095594126"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3583290095594126"/>
+<title>Setting Units of Measure</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio0d6c1d5f9e1e4aab950f7b528c59fa5d">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Setting Units of Measure</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">You can display the unit of measure next to numeric values by providing the
+			<samp class="ph codeph">sap:unit</samp> attribute in the OData metadata file or by annotating the unit
+		in the annotation document.</p>
+
+		<div class="section">
+			<p class="p">In the following example of the "Product" entity type definition in the <span class="ph emphasis emphasis">OData
+					metadata file</span>, the <samp class="ph codeph">Price</samp> property has the
+					<samp class="ph codeph">CurrencyCode</samp> property as its unit of measure;
+					<samp class="ph codeph">Width</samp>, <samp class="ph codeph">Depth</samp>, and <samp class="ph codeph">Height</samp> have
+				the <samp class="ph codeph">DimUnit</samp> property as their unit of measure; and the
+					<samp class="ph codeph">WeightMeasure</samp> property has the <samp class="ph codeph">WeightUnit</samp>
+				property as its unit of measure.</p>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;EntityType Name="Product" sap:content-version="1"&gt;
+    &lt;Key&gt;
+        &lt;PropertyRef Name="ProductID"/&gt;
+    &lt;/Key&gt;
+    &lt;Property Name="ProductID" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Product ID" sap:updatable="false"/&gt;
+    &lt;Property Name="TypeCode" Type="Edm.String" MaxLength="2" sap:label="Prod. Type Code"/&gt;
+    &lt;Property Name="Category" Type="Edm.String" MaxLength="40" sap:label="Prod. Cat."/&gt;
+    &lt;Property Name="Name" Type="Edm.String" MaxLength="255" sap:label="Product Name" sap:sortable="false" sap:filterable="false"/&gt;
+    &lt;Property Name="NameLanguage" Type="Edm.String" MaxLength="1" sap:label="Language" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/&gt;
+    &lt;Property Name="Description" Type="Edm.String" MaxLength="255" sap:label="Prod.Descrip." sap:sortable="false" sap:filterable="false"/&gt;
+    &lt;Property Name="DescriptionLanguage" Type="Edm.String" MaxLength="1" sap:label="Language" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/&gt;
+    &lt;Property Name="SupplierID" Type="Edm.String" MaxLength="10" sap:label="Bus. Part. ID"/&gt;
+    &lt;Property Name="SupplierName" Type="Edm.String" MaxLength="80" sap:label="Company Name" sap:creatable="false" sap:updatable="false"/&gt;
+    &lt;Property Name="TaxTarifCode" Type="Edm.Byte" sap:label="Prod. Tax Code"/&gt;
+    &lt;Property Name="MeasureUnit" Type="Edm.String" MaxLength="3" sap:label="Qty. Unit" sap:semantics="unit-of-measure"/&gt;
+    &lt;Property Name="WeightMeasure" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="WeightUnit" sap:label="Wt. Measure"/&gt;
+    &lt;Property Name="WeightUnit" Type="Edm.String" MaxLength="3" sap:label="Qty. Unit" sap:semantics="unit-of-measure"/&gt;
+    &lt;Property Name="CurrencyCode" Type="Edm.String" MaxLength="5" sap:label="Currency" sap:semantics="currency-code"/&gt;
+    &lt;Property Name="Price" Type="Edm.Decimal" Precision="16" Scale="3" sap:unit="CurrencyCode" sap:label="Unit Price"/&gt;
+    &lt;Property Name="Width" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="DimUnit" sap:label="Dimensions"/&gt;
+    &lt;Property Name="Depth" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="DimUnit" sap:label="Dimensions"/&gt;
+    &lt;Property Name="Height" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="DimUnit" sap:label="Dimensions"/&gt;
+    &lt;Property Name="DimUnit" Type="Edm.String" MaxLength="3" sap:label="Dim. Unit" sap:semantics="unit-of-measure"/&gt;
+    &lt;Property Name="CreatedAt" Type="Edm.DateTime" Precision="7" sap:label="Time Stamp" sap:creatable="false" sap:updatable="false"/&gt;
+    &lt;Property Name="ChangedAt" Type="Edm.DateTime" Precision="7" ConcurrencyMode="Fixed" sap:label="Time Stamp" sap:creatable="false" sap:updatable="false"/&gt;
+    &lt;NavigationProperty Name="ToSalesOrderLineItems" Relationship="GWSAMPLE_BASIC.Assoc_Product_SalesOrderLineItems" FromRole="FromRole_Assoc_Product_SalesOrderLineItems" ToRole="ToRole_Assoc_Product_SalesOrderLineItems"/&gt;
+    &lt;NavigationProperty Name="ToSupplier" Relationship="GWSAMPLE_BASIC.Assoc_BusinessPartner_Products" FromRole="ToRole_Assoc_BusinessPartner_Products" ToRole="FromRole_Assoc_BusinessPartner_Products"/&gt;
+&lt;/EntityType&gt;</pre></div>
+
+			</div>
+
+			<p class="p">In the following example, the <samp class="ph codeph">Price</samp> property is annotated in the
+					<span class="ph emphasis emphasis">annotation document</span> with
+					<samp class="ph codeph">Org.OData.Measures.V1.ISOCurrency</samp> to indicate that the currency
+				is displayed using the <samp class="ph codeph">CurrencyCode</samp> property; the
+					<samp class="ph codeph">Width</samp>, <samp class="ph codeph">Depth</samp>, and <samp class="ph codeph">Height</samp>
+				properties are annotated with <samp class="ph codeph">Org.OData.Measures.V1.Unit</samp> to
+				indicate that the unit is displayed using the <samp class="ph codeph">DimUnit</samp> property; and
+					<samp class="ph codeph">WeightMeasure</samp> is annotated with
+					<samp class="ph codeph">Org.OData.Measures.V1.Unit</samp> to indicate that the unit is
+				displayed using the <samp class="ph codeph">WeightUnit</samp> property.</p>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotations Target="GWSAMPLE_BASIC.Product/WeightMeasure"&gt;
+    &lt;Annotation Term="Org.OData.Measures.V1.Unit" Path="WeightUnit"/&gt;
+&lt;/Annotations&gt;
+&lt;Annotations Target="GWSAMPLE_BASIC.Product/Width"&gt;
+    &lt;Annotation Term="Org.OData.Measures.V1.Unit" Path="DimUnit"/&gt;
+&lt;/Annotations&gt;
+&lt;Annotations Target="GWSAMPLE_BASIC.Product/Depth"&gt;
+    &lt;Annotation Term="Org.OData.Measures.V1.Unit" Path="DimUnit"/&gt;
+&lt;/Annotations&gt;
+&lt;Annotations Target="GWSAMPLE_BASIC.Product/Height"&gt;
+    &lt;Annotation Term="Org.OData.Measures.V1.Unit" Path="DimUnit"/&gt;
+&lt;/Annotations&gt;
+&lt;Annotations Target="GWSAMPLE_BASIC.Product/Price"&gt;
+    &lt;Annotation Term="Org.OData.Measures.V1.ISOCurrency" Path="CurrencyCode"/&gt;
+&lt;/Annotations&gt;</pre></div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

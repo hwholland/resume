@@ -1,0 +1,1389 @@
+<!DOCTYPE html><html xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		<title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.m.DateRangeSelection</title>
+		<link rel=stylesheet href="../default.css" type="text/css">
+		
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+				
+				
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+				
+				
+			
+				
+				
+				<link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+				
+			
+		
+	</head>
+
+	<body>
+
+
+		<div id="main">
+			<div id="content">
+
+					<h1 class="classTitle static">
+					
+					Class sap.m.DateRangeSelection
+					</h1>
+					
+						<div class="classRelation extends"><span class="caption">extends </span><a title="sap.m.DatePicker" href="../symbols/sap.m.DatePicker.html">DatePicker</a></div>
+					
+					
+					
+					
+					<hr/>
+
+					
+					
+					<div class="full-description">
+						<p>This is a date range input control with a calendar as date picker.
+</p><p>
+A date range can be entered using a calendar that opens in a popup. Alternatively a value can be entered directly in the input field by typing it in.
+(This is only possible on desktop devices, on mobile devices keyboard input is not possible.)
+If a date range is entered by typing it into the input field, it must fit to the used date format and locale. (See <code>sap.ui.core.format.DateFormat</code>)
+</p><p>
+There are two options to provide a date for the <code>DateRangeSelection</code>.
+You can put a date range as a string to the property <code>value</code> or you can put JavaScript Date objects to the properties <code>dateValue</code> and <code>secondDateValue</code>.
+Only one of the properties should be used at one time, but they are synchronized internally.
+What property to use depends on the use case of the application.
+<ul>
+<li>Use the <code>value</code> property if the date range is already provided as a formatted string.</li>
+<li>Use the <code>dateValue</code> and <code>secondDateValue</code> properties if the date range is already provided as JavaScript Date objects or you want to work with JavaScript Date objects.</li>
+</ul>
+</p><p>
+All formatting and parsing of dates from and to strings is done using the <a href="../symbols/sap.ui.core.format.DateFormat.html">sap.ui.core.format.DateFormat</a>, so read the corresponding documentation if you need some information about this.
+</p><p>
+Supported format options are pattern-based on Unicode LDML Date Format notation. http://unicode.org/reports/tr35/#Date_Field_Symbol_Table
+</p><p>
+For example, if the <code>displayFormat</code> is "MMM d, y", <code>delimiter</code> is "-" and the used locale is English,
+a valid <code>value</code> string is "Jul 29, 2015 - Jul 31, 2015" and it will be displayed in the same way in the input field.
+</p><p>
+If no <code>placeholder</code> is set to the <code>DatePicker</code> the used <code>displayFormat</code> is shown as placeholder.
+If another placeholder is needed, it must be set.
+</p><p>
+Internally the <code>sap.ui.unified.Calendar</code> is used, but it is only needed if the <code>DateRangeSelection</code> is opened. This means that it is not needed for the initial rendering.
+If the <code>sap.ui.unified</code> library is not loaded before the <code>DateRangeSelection</code> is opened, it will be loaded upon opening.
+This could lead to a waiting time before a <code>DateRangeSelection</code> is opened the first time. To prevent this, applications using the <code>DateRangeSelection</code> should also load
+the <code>sap.ui.unified</code> library.</p>
+						
+						
+						
+						
+						
+						
+							<br />
+							<i>Since: </i>1.22.0.
+						
+					</div>
+					
+		
+					
+					
+					
+						<div class="summary section">
+							<div class="sectionTitle">Constructor Summary</div>
+							<div class="sectionItems">
+								<div class="sectionItem classConstructor static">
+									<div class="itemName">
+										<b class="icon" title="Constructor for a new DateRangeSelection.">new <a href="../symbols/sap.m.DateRangeSelection.html#constructor">sap.m.DateRangeSelection</a></b>
+										<span class='signature'>(<span title="(string) Id for the new control, generated automatically if no id is given">sId</span><i class="help" title="Optional parameter">?</i>, <span title="(object) Initial settings for the new control">mSettings</span><i class="help" title="Optional parameter">?</i>)</span>
+										<span class='description'>Constructor for a new DateRangeSelection.</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					
+					
+					
+						<div class="summary section">
+							<div class="sectionTitle">Fields borrowed from class <a href="../symbols/sap.m.InputBase.html">sap.m.InputBase</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.m.InputBase.html#bRenderingPhase">bRenderingPhase</a>, <a href="../symbols/sap.m.InputBase.html#bShowLabelAsPlaceholder">bShowLabelAsPlaceholder</a>
+							</div>
+						</div>
+					
+		
+					
+						<div class="summary section" cellspacing="0" summary="A summary of the events documented in the class sap.m.DateRangeSelection.">
+							<div class="sectionTitle">Event Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="On change of date range event."><a href="../symbols/sap.m.DateRangeSelection.html#event:change">change</a></b><span class='signature'>(<span title="(sap.ui.base.Event) sap.ui.base.Event">oControlEvent</span>)</span>
+									<span class='description'>On change of date range event.</span>
+								</div>
+							
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Events borrowed from class <a href="../symbols/sap.ui.base.ManagedObject.html">sap.ui.base.ManagedObject</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.base.ManagedObject.html#event:formatError">formatError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#event:parseError">parseError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#event:validationError">validationError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#event:validationSuccess">validationSuccess</a>
+							</div>
+						</div>
+					
+
+					
+						<div class="summary section">
+							<div class="sectionTitle">Method Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod static">
+									<b class="icon" title="Creates a new subclass of class sap.m.DateRangeSelection with name sClassName and enriches it with the information contained in oClassInfo."><a href="../symbols/sap.m.DateRangeSelection.html#.extend">sap.m.DateRangeSelection.extend</a></b><span class='signature'>(<span title="(string) name of the class to be created">sClassName</span>, <span title="(object) object literal with informations about the class">oClassInfo</span><i class="help" title="Optional parameter">?</i>, <span title="(function) constructor function for the metadata object.">FNMetaImpl</span><i class="help" title="Optional parameter">?</i>)</span>
+									<span class='description'>Creates a new subclass of class sap.m.DateRangeSelection with name <code>sClassName</code> and enriches it with the information contained in <code>oClassInfo</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod static">
+									<b class="icon" title="Returns a metadata object for class sap.m.DateRangeSelection."><a href="../symbols/sap.m.DateRangeSelection.html#.getMetadata">sap.m.DateRangeSelection.getMetadata</a></b><span class='signature'>()</span>
+									<span class='description'>Returns a metadata object for class sap.m.DateRangeSelection.</span>
+								</div>
+							
+								<div class="sectionItem classMethod protected">
+									<b class="icon protected" title="Fire event change to attached listeners."><a href="../symbols/sap.m.DateRangeSelection.html#fireChange">fireChange</a></b><span class='signature'>(<span title="(Map) The arguments to pass along with the event.">mArguments</span><i class="help" title="Optional parameter">?</i>)</span>
+									<span class='description'>Fire event change to attached listeners.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Getter for property dateValue."><a href="../symbols/sap.m.DateRangeSelection.html#getDateValue">getDateValue</a></b><span class='signature'>()</span>
+									<span class='description'>Getter for property <code>dateValue</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Getter for property delimiter."><a href="../symbols/sap.m.DateRangeSelection.html#getDelimiter">getDelimiter</a></b><span class='signature'>()</span>
+									<span class='description'>Getter for property <code>delimiter</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Getter for property secondDateValue."><a href="../symbols/sap.m.DateRangeSelection.html#getSecondDateValue">getSecondDateValue</a></b><span class='signature'>()</span>
+									<span class='description'>Getter for property <code>secondDateValue</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Getter for property value."><a href="../symbols/sap.m.DateRangeSelection.html#getValue">getValue</a></b><span class='signature'>()</span>
+									<span class='description'>Getter for property <code>value</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Getter for property valueFormat."><a href="../symbols/sap.m.DateRangeSelection.html#getValueFormat">getValueFormat</a></b><span class='signature'>()</span>
+									<span class='description'>Getter for property <code>valueFormat</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Setter for property dateValue."><a href="../symbols/sap.m.DateRangeSelection.html#setDateValue">setDateValue</a></b><span class='signature'>(<span title="(object) New value for property dateValue">oDateValue</span>)</span>
+									<span class='description'>Setter for property <code>dateValue</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Setter for property delimiter."><a href="../symbols/sap.m.DateRangeSelection.html#setDelimiter">setDelimiter</a></b><span class='signature'>(<span title="(string) new value for property delimiter">sDelimiter</span>)</span>
+									<span class='description'>Setter for property <code>delimiter</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Setter for property secondDateValue."><a href="../symbols/sap.m.DateRangeSelection.html#setSecondDateValue">setSecondDateValue</a></b><span class='signature'>(<span title="(object) new value for property secondDateValue">oSecondDateValue</span>)</span>
+									<span class='description'>Setter for property <code>secondDateValue</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Setter for property value."><a href="../symbols/sap.m.DateRangeSelection.html#setValue">setValue</a></b><span class='signature'>(<span title="(string) The new value of the input.">sValue</span>)</span>
+									<span class='description'>Setter for property <code>value</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Setter for property valueFormat."><a href="../symbols/sap.m.DateRangeSelection.html#setValueFormat">setValueFormat</a></b><span class='signature'>(<span title="(string) New value for property valueFormat">sValueFormat</span>)</span>
+									<span class='description'>Setter for property <code>valueFormat</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod deprecated">
+									<b class="icon" title="Getter for property from."><a href="../symbols/sap.m.DateRangeSelection.html#getFrom">getFrom</a></b><span class='signature'>()</span>
+									<span class='description'>Getter for property <code>from</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod deprecated">
+									<b class="icon" title="Getter for property to."><a href="../symbols/sap.m.DateRangeSelection.html#getTo">getTo</a></b><span class='signature'>()</span>
+									<span class='description'>Getter for property <code>to</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod deprecated">
+									<b class="icon" title="Setter for property from."><a href="../symbols/sap.m.DateRangeSelection.html#setFrom">setFrom</a></b><span class='signature'>(<span title="(object) new value for property from">oFrom</span>)</span>
+									<span class='description'>Setter for property <code>from</code>.</span>
+								</div>
+							
+								<div class="sectionItem classMethod deprecated">
+									<b class="icon" title="Setter for property to."><a href="../symbols/sap.m.DateRangeSelection.html#setTo">setTo</a></b><span class='signature'>(<span title="(object) new value for property to">oTo</span>)</span>
+									<span class='description'>Setter for property <code>to</code>.</span>
+								</div>
+							
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.m.DatePicker.html">sap.m.DatePicker</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.m.DatePicker.html#getDisplayFormat">getDisplayFormat</a>, <a href="../symbols/sap.m.DatePicker.html#getDisplayFormatType">getDisplayFormatType</a>, <a href="../symbols/sap.m.DatePicker.html#setDisplayFormat">setDisplayFormat</a>, <a href="../symbols/sap.m.DatePicker.html#setDisplayFormatType">setDisplayFormatType</a>, <a href="../symbols/sap.m.DatePicker.html#setWidth">setWidth</a>
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.m.InputBase.html">sap.m.InputBase</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.m.InputBase.html#addAriaLabelledBy">addAriaLabelledBy</a>, <a href="../symbols/sap.m.InputBase.html#applyFocusInfo">applyFocusInfo</a>, <a href="../symbols/sap.m.InputBase.html#attachChange">attachChange</a>, <a href="../symbols/sap.m.InputBase.html#bindToInputEvent">bindToInputEvent</a>, <a href="../symbols/sap.m.InputBase.html#bindValue">bindValue</a>, <a href="../symbols/sap.m.InputBase.html#closeValueStateMessage">closeValueStateMessage</a>, <a href="../symbols/sap.m.InputBase.html#detachChange">detachChange</a>, <a href="../symbols/sap.m.InputBase.html#fireChangeEvent">fireChangeEvent</a>, <a href="../symbols/sap.m.InputBase.html#getAriaLabelledBy">getAriaLabelledBy</a>, <a href="../symbols/sap.m.InputBase.html#getDomRefForValueStateMessage">getDomRefForValueStateMessage</a>, <a href="../symbols/sap.m.InputBase.html#getEditable">getEditable</a>, <a href="../symbols/sap.m.InputBase.html#getEnabled">getEnabled</a>, <a href="../symbols/sap.m.InputBase.html#getFocusInfo">getFocusInfo</a>, <a href="../symbols/sap.m.InputBase.html#getName">getName</a>, <a href="../symbols/sap.m.InputBase.html#getPlaceholder">getPlaceholder</a>, <a href="../symbols/sap.m.InputBase.html#getShowValueStateMessage">getShowValueStateMessage</a>, <a href="../symbols/sap.m.InputBase.html#getTextAlign">getTextAlign</a>, <a href="../symbols/sap.m.InputBase.html#getTextDirection">getTextDirection</a>, <a href="../symbols/sap.m.InputBase.html#getValueState">getValueState</a>, <a href="../symbols/sap.m.InputBase.html#getValueStateText">getValueStateText</a>, <a href="../symbols/sap.m.InputBase.html#getWidth">getWidth</a>, <a href="../symbols/sap.m.InputBase.html#onChange">onChange</a>, <a href="../symbols/sap.m.InputBase.html#onValueRevertedByEscape">onValueRevertedByEscape</a>, <a href="../symbols/sap.m.InputBase.html#openValueStateMessage">openValueStateMessage</a>, <a href="../symbols/sap.m.InputBase.html#removeAllAriaLabelledBy">removeAllAriaLabelledBy</a>, <a href="../symbols/sap.m.InputBase.html#removeAriaLabelledBy">removeAriaLabelledBy</a>, <a href="../symbols/sap.m.InputBase.html#selectText">selectText</a>, <a href="../symbols/sap.m.InputBase.html#setEditable">setEditable</a>, <a href="../symbols/sap.m.InputBase.html#setEnabled">setEnabled</a>, <a href="../symbols/sap.m.InputBase.html#setName">setName</a>, <a href="../symbols/sap.m.InputBase.html#setPlaceholder">setPlaceholder</a>, <a href="../symbols/sap.m.InputBase.html#setShowValueStateMessage">setShowValueStateMessage</a>, <a href="../symbols/sap.m.InputBase.html#setTextAlign">setTextAlign</a>, <a href="../symbols/sap.m.InputBase.html#setTextDirection">setTextDirection</a>, <a href="../symbols/sap.m.InputBase.html#setValueState">setValueState</a>, <a href="../symbols/sap.m.InputBase.html#setValueStateText">setValueStateText</a>, <a href="../symbols/sap.m.InputBase.html#unbindValue">unbindValue</a>, <a href="../symbols/sap.m.InputBase.html#updateDomValue">updateDomValue</a>
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.ui.core.Control.html">sap.ui.core.Control</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.core.Control.html#addStyleClass">addStyleClass</a>, <a href="../symbols/sap.ui.core.Control.html#allowTextSelection">allowTextSelection</a>, <a href="../symbols/sap.ui.core.Control.html#attachBrowserEvent">attachBrowserEvent</a>, <a href="../symbols/sap.ui.core.Control.html#clone">clone</a>, <a href="../symbols/sap.ui.core.Control.html#detachBrowserEvent">detachBrowserEvent</a>, <a href="../symbols/sap.ui.core.Control.html#getBusy">getBusy</a>, <a href="../symbols/sap.ui.core.Control.html#getBusyIndicatorDelay">getBusyIndicatorDelay</a>, <a href="../symbols/sap.ui.core.Control.html#getIdForLabel">getIdForLabel</a>, <a href="../symbols/sap.ui.core.Control.html#getRenderer">getRenderer</a>, <a href="../symbols/sap.ui.core.Control.html#getVisible">getVisible</a>, <a href="../symbols/sap.ui.core.Control.html#hasStyleClass">hasStyleClass</a>, <a href="../symbols/sap.ui.core.Control.html#invalidate">invalidate</a>, <a href="../symbols/sap.ui.core.Control.html#isBusy">isBusy</a>, <a href="../symbols/sap.ui.core.Control.html#placeAt">placeAt</a>, <a href="../symbols/sap.ui.core.Control.html#removeStyleClass">removeStyleClass</a>, <a href="../symbols/sap.ui.core.Control.html#rerender">rerender</a>, <a href="../symbols/sap.ui.core.Control.html#setBusy">setBusy</a>, <a href="../symbols/sap.ui.core.Control.html#setBusyIndicatorDelay">setBusyIndicatorDelay</a>, <a href="../symbols/sap.ui.core.Control.html#setVisible">setVisible</a>, <a href="../symbols/sap.ui.core.Control.html#toggleStyleClass">toggleStyleClass</a>
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.ui.core.Element.html">sap.ui.core.Element</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.core.Element.html#$">$</a>, <a href="../symbols/sap.ui.core.Element.html#addCustomData">addCustomData</a>, <a href="../symbols/sap.ui.core.Element.html#addDependent">addDependent</a>, <a href="../symbols/sap.ui.core.Element.html#addEventDelegate">addEventDelegate</a>, <a href="../symbols/sap.ui.core.Element.html#bindElement">bindElement</a>, <a href="../symbols/sap.ui.core.Element.html#data">data</a>, <a href="../symbols/sap.ui.core.Element.html#destroy">destroy</a>, <a href="../symbols/sap.ui.core.Element.html#destroyCustomData">destroyCustomData</a>, <a href="../symbols/sap.ui.core.Element.html#destroyDependents">destroyDependents</a>, <a href="../symbols/sap.ui.core.Element.html#destroyLayoutData">destroyLayoutData</a>, <a href="../symbols/sap.ui.core.Element.html#destroyTooltip">destroyTooltip</a>, <a href="../symbols/sap.ui.core.Element.html#enhanceAccessibilityState">enhanceAccessibilityState</a>, <a href="../symbols/sap.ui.core.Element.html#findElements">findElements</a>, <a href="../symbols/sap.ui.core.Element.html#fireEvent">fireEvent</a>, <a href="../symbols/sap.ui.core.Element.html#focus">focus</a>, <a href="../symbols/sap.ui.core.Element.html#getCustomData">getCustomData</a>, <a href="../symbols/sap.ui.core.Element.html#getDependents">getDependents</a>, <a href="../symbols/sap.ui.core.Element.html#getDomRef">getDomRef</a>, <a href="../symbols/sap.ui.core.Element.html#getElementBinding">getElementBinding</a>, <a href="../symbols/sap.ui.core.Element.html#getFocusDomRef">getFocusDomRef</a>, <a href="../symbols/sap.ui.core.Element.html#getInterface">getInterface</a>, <a href="../symbols/sap.ui.core.Element.html#getLayoutData">getLayoutData</a>, <a href="../symbols/sap.ui.core.Element.html#getMetadata">getMetadata</a>, <a href="../symbols/sap.ui.core.Element.html#getTooltip">getTooltip</a>, <a href="../symbols/sap.ui.core.Element.html#getTooltip_AsString">getTooltip_AsString</a>, <a href="../symbols/sap.ui.core.Element.html#getTooltip_Text">getTooltip_Text</a>, <a href="../symbols/sap.ui.core.Element.html#indexOfCustomData">indexOfCustomData</a>, <a href="../symbols/sap.ui.core.Element.html#indexOfDependent">indexOfDependent</a>, <a href="../symbols/sap.ui.core.Element.html#insertCustomData">insertCustomData</a>, <a href="../symbols/sap.ui.core.Element.html#insertDependent">insertDependent</a>, <a href="../symbols/sap.ui.core.Element.html#prop">prop</a>, <a href="../symbols/sap.ui.core.Element.html#removeAllCustomData">removeAllCustomData</a>, <a href="../symbols/sap.ui.core.Element.html#removeAllDependents">removeAllDependents</a>, <a href="../symbols/sap.ui.core.Element.html#removeCustomData">removeCustomData</a>, <a href="../symbols/sap.ui.core.Element.html#removeDependent">removeDependent</a>, <a href="../symbols/sap.ui.core.Element.html#removeEventDelegate">removeEventDelegate</a>, <a href="../symbols/sap.ui.core.Element.html#setLayoutData">setLayoutData</a>, <a href="../symbols/sap.ui.core.Element.html#setTooltip">setTooltip</a>, <a href="../symbols/sap.ui.core.Element.html#toString">toString</a>, <a href="../symbols/sap.ui.core.Element.html#unbindElement">unbindElement</a>
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.ui.base.ManagedObject.html">sap.ui.base.ManagedObject</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.base.ManagedObject.html#addAggregation">addAggregation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#addAssociation">addAssociation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#applySettings">applySettings</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#attachFormatError">attachFormatError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#attachParseError">attachParseError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#attachValidationError">attachValidationError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#attachValidationSuccess">attachValidationSuccess</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#bindAggregation">bindAggregation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#bindContext">bindContext</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#bindObject">bindObject</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#bindProperty">bindProperty</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#destroyAggregation">destroyAggregation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#detachFormatError">detachFormatError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#detachParseError">detachParseError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#detachValidationError">detachValidationError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#detachValidationSuccess">detachValidationSuccess</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#findAggregatedObjects">findAggregatedObjects</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#fireFormatError">fireFormatError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#fireParseError">fireParseError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#fireValidationError">fireValidationError</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#fireValidationSuccess">fireValidationSuccess</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getAggregation">getAggregation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getAssociation">getAssociation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getBinding">getBinding</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getBindingContext">getBindingContext</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getBindingInfo">getBindingInfo</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getBindingPath">getBindingPath</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getEventingParent">getEventingParent</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getId">getId</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getModel">getModel</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getObjectBinding">getObjectBinding</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getOriginInfo">getOriginInfo</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getParent">getParent</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#getProperty">getProperty</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#hasModel">hasModel</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#indexOfAggregation">indexOfAggregation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#insertAggregation">insertAggregation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#isBound">isBound</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#isInvalidateSuppressed">isInvalidateSuppressed</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#isTreeBinding">isTreeBinding</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#removeAggregation">removeAggregation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#removeAllAggregation">removeAllAggregation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#removeAllAssociation">removeAllAssociation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#removeAssociation">removeAssociation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#setAggregation">setAggregation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#setAssociation">setAssociation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#setBindingContext">setBindingContext</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#setModel">setModel</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#unbindAggregation">unbindAggregation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#unbindContext">unbindContext</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#unbindObject">unbindObject</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#unbindProperty">unbindProperty</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#validateAggregation">validateAggregation</a>, <a href="../symbols/sap.ui.base.ManagedObject.html#validateProperty">validateProperty</a>
+							</div>
+						</div>
+					
+						<div class="summary section">
+							<div class="sectionTitle">Methods borrowed from class <a href="../symbols/sap.ui.base.EventProvider.html">sap.ui.base.EventProvider</a></div>
+							<div class="sectionItems">
+							<a href="../symbols/sap.ui.base.EventProvider.html#attachEvent">attachEvent</a>, <a href="../symbols/sap.ui.base.EventProvider.html#attachEventOnce">attachEventOnce</a>, <a href="../symbols/sap.ui.base.EventProvider.html#detachEvent">detachEvent</a>
+							</div>
+						</div>
+					
+		
+					
+						<div class="section details">
+							<div class="sectionTitle">
+								Constructor Detail
+							</div>
+							<div class="sectionItems">
+								<div class="sectionItem classItem itemName static">
+									<div class="details"><a name="constructor"> </a>
+										
+										<div class="icon">
+											new <b>sap.m.DateRangeSelection</b>(<span title="(string) Id for the new control, generated automatically if no id is given">sId</span><i class="help" title="Optional parameter">?</i>, <span title="(object) Initial settings for the new control">mSettings</span><i class="help" title="Optional parameter">?</i>)
+										</div>
+										
+										<div class="full-description">
+											Constructor for a new DateRangeSelection.
+</p><p>
+</p><p>
+Accepts an object literal <code>mSettings</code> that defines initial
+property values, aggregated and associated objects as well as event handlers.
+See <a href="../symbols/sap.ui.base.ManagedObject.html#constructor">sap.ui.base.ManagedObject</a> for a general description of the syntax of the settings object.
+</p><p>
+The supported settings are:
+<ul>
+<li>Properties
+<ul>
+<li><a href="#getDelimiter">delimiter</a> : string (default: -)</li>
+<li><a href="#getSecondDateValue">secondDateValue</a> : object</li>
+<li><a href="#getFrom">from</a> : object</li>
+<li><a href="#getTo">to</a> : object</li>
+</ul>
+</li>
+</ul>
+</p><p>
+In addition, all settings applicable to the base type <a href="../symbols/sap.m.DatePicker.html#constructor">sap.m.DatePicker</a>
+can be used as well.
+										</div>
+										
+										
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sId</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    Id for the new control, generated automatically if no id is given
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>mSettings</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    Initial settings for the new control
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										<!--
+										
+										-->
+										
+						
+									</div>
+								</div>
+							</div>
+						</div>
+					
+		
+					
+		
+					
+						<div class="section details">
+							<div class="sectionTitle">
+								Event Detail
+							</div>
+							<div class="sectionItems">
+								
+								<div class='sectionItem classProperty'>
+									<a name="event:change"> </a>
+									<div class="itemTitle icon">
+										change<span class="signature">(<span title="(sap.ui.base.Event) sap.ui.base.Event">oControlEvent</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										On change of date range event.
+										
+										
+										
+									</div>
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{<a href="../symbols/sap.ui.base.Event.html">sap.ui.base.Event</a>}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>oControlEvent</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{<a href="../symbols/sap.ui.base.EventProvider.html">sap.ui.base.EventProvider</a>}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>oControlEvent.getSource</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>oControlEvent.getParameters</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{string}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>oControlEvent.getParameters.value</b>
+												</td>
+												<td class="methodItemDesc">
+											    The new value of the <code>sap.m.DateRangeSelection</code>.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{boolean}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>oControlEvent.getParameters.valid</b>
+												</td>
+												<td class="methodItemDesc">
+											    Indicator for a valid date.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>oControlEvent.getParameters.from</b>
+												</td>
+												<td class="methodItemDesc">
+											    Current start date after change.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>oControlEvent.getParameters.to</b>
+												</td>
+												<td class="methodItemDesc">
+											    Current end date after change.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+								</div>
+								
+							</div>
+						</div>
+					
+					
+					
+						<div class="details section">
+							<div class="sectionTitle">
+								Method Detail
+							</div>
+							<div class="sectionItems">
+								
+									<div class='sectionItem classMethod static'>
+										<a name=".extend"> </a>
+										<div class="itemTitle icon">
+											sap.m.DateRangeSelection.extend<span class="signature">(<span title="(string) name of the class to be created">sClassName</span>, <span title="(object) object literal with informations about the class">oClassInfo</span><i class="help" title="Optional parameter">?</i>, <span title="(function) constructor function for the metadata object.">FNMetaImpl</span><i class="help" title="Optional parameter">?</i>)</span>
+											<span class="light" title="returns function">: function</span>
+										</div>
+										<div class="full-description">
+											Creates a new subclass of class sap.m.DateRangeSelection with name <code>sClassName</code>
+and enriches it with the information contained in <code>oClassInfo</code>.
+</p><p>
+<code>oClassInfo</code> might contain the same kind of information as described in <a href="../symbols/sap.m.DatePicker.html#.extend">sap.m.DatePicker.extend</a>.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sClassName</b>
+													</td>
+													<td class="methodItemDesc">
+												    name of the class to be created
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oClassInfo</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    object literal with informations about the class
+													</td>
+												</tr>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{function}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>FNMetaImpl</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    constructor function for the metadata object. If not given, it defaults to sap.ui.core.ElementMetadata.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{function}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the created class / constructor function
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod static'>
+										<a name=".getMetadata"> </a>
+										<div class="itemTitle icon">
+											sap.m.DateRangeSelection.getMetadata<span class="signature">()</span>
+											<span class="light" title="returns sap.ui.base.Metadata">: <a href="../symbols/sap.ui.base.Metadata.html">sap.ui.base.Metadata</a></span>
+										</div>
+										<div class="full-description">
+											Returns a metadata object for class sap.m.DateRangeSelection.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.ui.base.Metadata.html">sap.ui.base.Metadata</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														metadata object describing thi class
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod protected'>
+										<a name="fireChange"> </a>
+										<div class="itemTitle icon protected">
+											fireChange<span class="signature">(<span title="(Map) The arguments to pass along with the event.">mArguments</span><i class="help" title="Optional parameter">?</i>)</span>
+											<span class="light" title="returns sap.m.DateRangeSelection">: <a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a></span>
+										</div>
+										<div class="full-description">
+											Fire event change to attached listeners.
+</p><p>
+Expects following event parameters:
+<ul>
+<li>'value' of type <code>string</code> The new value of the <code>sap.m.DateRangeSelection</code>.</li>
+<li>'valid' of type <code>boolean</code> Indicator for a valid date.</li>
+<li>'from' of type <code>object</code> Current start date after change.</li>
+<li>'to' of type <code>object</code> Current end date after change.</li>
+</ul>
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{Map}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>mArguments</b><i class="help" title="Optional parameter">?</i>
+													</td>
+													<td class="methodItemDesc">
+												    The arguments to pass along with the event.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														<code>this</code> to allow method chaining
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getDateValue"> </a>
+										<div class="itemTitle icon">
+											getDateValue<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											Getter for property <code>dateValue</code>.
+</p><p>
+The start date of the range as JavaScript Date object. This is independent from any formatter.
+</p><p>
+<b>Note:</b> If this property is used, the <code>value</code> property should not be changed from the caller.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the value of property <code>dateValue</code>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getDelimiter"> </a>
+										<div class="itemTitle icon">
+											getDelimiter<span class="signature">()</span>
+											<span class="light" title="returns string">: string</span>
+										</div>
+										<div class="full-description">
+											Getter for property <code>delimiter</code>.
+Delimiter between start and end date. Default value is "-".
+If no delimiter is given, the one defined for the used locale is used.
+</p><p>
+Default value is <code>-</code>
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{string}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the value of property <code>delimiter</code>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getSecondDateValue"> </a>
+										<div class="itemTitle icon">
+											getSecondDateValue<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											Getter for property <code>secondDateValue</code>.
+The end date of the range as JavaScript Date object. This is independent from any formatter.
+</p><p>
+<b>Note:</b> If this property is used, the <code>value</code> property should not be changed from the caller.
+</p><p>
+Default value is <code>undefined</code>
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the value of property <code>secondDateValue</code>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getValue"> </a>
+										<div class="itemTitle icon">
+											getValue<span class="signature">()</span>
+											<span class="light" title="returns string">: string</span>
+										</div>
+										<div class="full-description">
+											Getter for property <code>value</code>.
+</p><p>
+Returns a date as a string in the format defined in property <code>valueFormat</code>.
+</p><p>
+<b>Note:</b> The value is always expected and updated in Gregorian calendar format. (If data binding is used the format of the binding is used.)
+</p><p>
+If this property is used, the <code>dateValue</code> property should not be changed from the caller.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{string}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the value of property <code>value</code>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="getValueFormat"> </a>
+										<div class="itemTitle icon">
+											getValueFormat<span class="signature">()</span>
+											<span class="light" title="returns string">: string</span>
+										</div>
+										<div class="full-description">
+											Getter for property <code>valueFormat</code>.
+</p><p>
+<b>Note:</b> Property <code>valueFormat</code> is not supported in the <code>sap.m.DateRangeSelection</code> control.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{string}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the value of property valueFormat
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="setDateValue"> </a>
+										<div class="itemTitle icon">
+											setDateValue<span class="signature">(<span title="(object) New value for property dateValue">oDateValue</span>)</span>
+											<span class="light" title="returns sap.m.DatePicker">: <a href="../symbols/sap.m.DatePicker.html">sap.m.DatePicker</a></span>
+										</div>
+										<div class="full-description">
+											Setter for property <code>dateValue</code>.
+</p><p>
+The start date of the range as JavaScript Date object. This is independent from any formatter.
+</p><p>
+<b>Note:</b> If this property is used, the <code>value</code> property should not be changed from the caller.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oDateValue</b>
+													</td>
+													<td class="methodItemDesc">
+												    New value for property <code>dateValue</code>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.m.DatePicker.html">sap.m.DatePicker</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														<code>this</code> to allow method chaining.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="setDelimiter"> </a>
+										<div class="itemTitle icon">
+											setDelimiter<span class="signature">(<span title="(string) new value for property delimiter">sDelimiter</span>)</span>
+											<span class="light" title="returns sap.m.DateRangeSelection">: <a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a></span>
+										</div>
+										<div class="full-description">
+											Setter for property <code>delimiter</code>.
+</p><p>
+Default value is <code>-</code>.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sDelimiter</b>
+													</td>
+													<td class="methodItemDesc">
+												    new value for property <code>delimiter</code>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														<code>this</code> to allow method chaining
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="setSecondDateValue"> </a>
+										<div class="itemTitle icon">
+											setSecondDateValue<span class="signature">(<span title="(object) new value for property secondDateValue">oSecondDateValue</span>)</span>
+											<span class="light" title="returns sap.m.DateRangeSelection">: <a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a></span>
+										</div>
+										<div class="full-description">
+											Setter for property <code>secondDateValue</code>.
+</p><p>
+Default value is <code>undefined</code>.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oSecondDateValue</b>
+													</td>
+													<td class="methodItemDesc">
+												    new value for property <code>secondDateValue</code>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														<code>this</code> to allow method chaining
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="setValue"> </a>
+										<div class="itemTitle icon">
+											setValue<span class="signature">(<span title="(string) The new value of the input.">sValue</span>)</span>
+											<span class="light" title="returns sap.m.DatePicker">: <a href="../symbols/sap.m.DatePicker.html">sap.m.DatePicker</a></span>
+										</div>
+										<div class="full-description">
+											Setter for property <code>value</code>.
+</p><p>
+Expects a date as a string in the format defined in property <code>valueFormat</code>.
+</p><p>
+<b>Note:</b> The value is always expected and updated in Gregorian calendar format. (If data binding is used the format of the binding is used.)
+</p><p>
+If this property is used, the <code>dateValue</code> property should not be changed from the caller.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sValue</b>
+													</td>
+													<td class="methodItemDesc">
+												    The new value of the input.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.m.DatePicker.html">sap.m.DatePicker</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														<code>this</code> to allow method chaining
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="setValueFormat"> </a>
+										<div class="itemTitle icon">
+											setValueFormat<span class="signature">(<span title="(string) New value for property valueFormat">sValueFormat</span>)</span>
+											<span class="light" title="returns sap.m.DateRangeSelection">: <a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a></span>
+										</div>
+										<div class="full-description">
+											Setter for property <code>valueFormat</code>.
+</p><p>
+<b>Note:</b> Property <code>valueFormat</code> is not supported in the <code>sap.m.DateRangeSelection</code> control.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sValueFormat</b>
+													</td>
+													<td class="methodItemDesc">
+												    New value for property valueFormat
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														<code>this</code> to allow method chaining
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod deprecated'>
+										<a name="getFrom"> </a>
+										<div class="itemTitle icon">
+											getFrom<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											Getter for property <code>from</code>.
+Start date of the range.
+</p><p>
+Default value is <code>undefined</code>
+											
+											
+											
+											
+										</div>
+										
+										
+										
+											<dl class="detailList deprecation">
+												<dt class="heading deprecation">Deprecated:</dt>
+												<dt>
+													Since version 1.22.0
+Use <code>dateValue</code> instead.
+												</dt>
+											</dl>
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the value of property <code>from</code>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod deprecated'>
+										<a name="getTo"> </a>
+										<div class="itemTitle icon">
+											getTo<span class="signature">()</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											Getter for property <code>to</code>.
+End date of the range.
+</p><p>
+Default value is <code>undefined</code>
+											
+											
+											
+											
+										</div>
+										
+										
+										
+											<dl class="detailList deprecation">
+												<dt class="heading deprecation">Deprecated:</dt>
+												<dt>
+													Since version 1.22.0
+Use <code>secondDateValue</code> instead.
+												</dt>
+											</dl>
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the value of property <code>to</code>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod deprecated'>
+										<a name="setFrom"> </a>
+										<div class="itemTitle icon">
+											setFrom<span class="signature">(<span title="(object) new value for property from">oFrom</span>)</span>
+											<span class="light" title="returns sap.m.DateRangeSelection">: <a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a></span>
+										</div>
+										<div class="full-description">
+											Setter for property <code>from</code>.
+</p><p>
+Default value is <code>undefined</code>.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oFrom</b>
+													</td>
+													<td class="methodItemDesc">
+												    new value for property <code>from</code>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+											<dl class="detailList deprecation">
+												<dt class="heading deprecation">Deprecated:</dt>
+												<dt>
+													Since version 1.22.0
+Use <code>dateValue</code> instead.
+												</dt>
+											</dl>
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														<code>this</code> to allow method chaining
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod deprecated'>
+										<a name="setTo"> </a>
+										<div class="itemTitle icon">
+											setTo<span class="signature">(<span title="(object) new value for property to">oTo</span>)</span>
+											<span class="light" title="returns sap.m.DateRangeSelection">: <a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a></span>
+										</div>
+										<div class="full-description">
+											Setter for property <code>to</code>.
+</p><p>
+Default value is <code>undefined</code>.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{object}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>oTo</b>
+													</td>
+													<td class="methodItemDesc">
+												    new value for property <code>to</code>
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+											<dl class="detailList deprecation">
+												<dt class="heading deprecation">Deprecated:</dt>
+												<dt>
+													Since version 1.22.0
+Use <code>secondDateValue</code> instead.
+												</dt>
+											</dl>
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.m.DateRangeSelection.html">sap.m.DateRangeSelection</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														<code>this</code> to allow method chaining
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+							</div>
+						</div>
+					
+
+
+
+		</div>
+	</div>
+
+				
+	</body>
+</html>

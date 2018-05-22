@@ -1,0 +1,53 @@
+<mvc:View
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:uxap="sap.uxap"
+        xmlns:core="sap.ui.core"
+        controllerName="sap.uxap.testkit.perfs.FormController">
+
+    <f:Form editable="false"
+            class="isReadonly">
+        <f:layout>
+            <f:ResponsiveGridLayout
+                    labelSpanL="{ControlModel>/labelSpanL}"
+                    labelSpanM="{ControlModel>/labelSpanM}"
+                    emptySpanL="{ControlModel>/emptySpanL}"
+                    emptySpanM="{ControlModel>/emptySpanM}"
+                    columnsL="{ControlModel>/columnsL}"
+                    columnsM="{ControlModel>/columnsM}" />
+        </f:layout>
+        <f:formContainers>
+            <f:FormContainer>
+                        <f:formElements>
+                            <f:FormElement label="Street">
+                                <f:fields>
+                                    <Text text="{BlockPageData>StreetAddressName}" />
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Postal Code/City">
+                                <f:fields>
+                                    <Text text="{BlockPageData>PostalCode} {BlockPageData>CityName}" />
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Country">
+                                <f:fields>
+                                    <Text text="{BlockPageData>CountryName}" />
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Region" visible="{path:'visibleModel>/visible'}">
+                                <f:fields>
+                                    <Text text="{BlockPageData>RegionName}" />
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Time Zone" visible="{path:'visibleModel>/visible'}">
+                                <f:fields>
+                                    <Text text="{BlockPageData>TimeZone}" />
+                                </f:fields>
+                            </f:FormElement>
+                        </f:formElements>
+                    </f:FormContainer>
+
+        </f:formContainers>
+    </f:Form>
+</mvc:View>

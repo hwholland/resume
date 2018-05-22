@@ -1,0 +1,6 @@
+/*!
+* SAP APF Analysis Path Framework
+* 
+ * (c) Copyright 2012-2014 SAP SE. All rights reserved
+*/
+(function(){'use strict';sap.ui.controller("sap.apf.ui.reuse.controller.smartFilterBar",{onInit:function(){var c=this;var s=c.getView().getViewData().oSmartFilterBarConfiguration.service;var a=c.getView().getViewData().oCoreApi.getAnnotationsForService(s);var p={loadMetadataAsync:false,annotationURI:a,json:true};var m=new sap.ui.model.odata.ODataModel(s,p);m.setCountSupported(false);c.getView().setModel(m);if(m.getServiceMetadata()===undefined){c.getView().getViewData().oCoreApi.putMessage(c.getView().getViewData().oCoreApi.createMessageObject({code:"5052",aParameters:[s]}));}if(c.byId("idAPFSmartFilterBar").getAllFilterItems().length===0){c.getView().getViewData().oCoreApi.putMessage(c.getView().getViewData().oCoreApi.createMessageObject({code:"5053",aParameters:[c.getView().getViewData().oSmartFilterBarConfiguration.entityType,s]}));}},registerSFBInstanceWithCore:function(){var c=this;c.getView().getViewData().oCoreApi.registerSmartFilterBarInstance(c.byId("idAPFSmartFilterBar"));},handlePressOfGoButton:function(){var c=this;c.getView().getViewData().oUiApi.selectionChanged(true);}});}());

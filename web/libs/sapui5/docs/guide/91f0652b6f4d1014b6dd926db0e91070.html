@@ -1,0 +1,392 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="With property binding, you can initialize properties of a control automatically and update them based on the data of the model."/>
+<meta name="description" content="With property binding, you can initialize properties of a control automatically and update them based on the data of the model."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7158252131839481"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7158252131839481"/>
+<title>Property Binding</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio91f0652b6f4d1014b6dd926db0e91070">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Property Binding</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">With property binding, you can initialize properties of a control automatically and update them based on the data of the model.</p>
+
+		<p class="p">To define property binding on a control, you have the following options:</p>
+
+		<ul class="ul" id="loio91f0652b6f4d1014b6dd926db0e91070__ul_gd2_jzq_st">
+			<li class="li">
+				<p class="p">As part of the control’s declaration in an XML view</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Using JavaScript, in the <samp class="ph codeph">settings</samp> object in the constructor of a control, or in special cases, using the
+						<samp class="ph codeph">bindProperty</samp> method of a control</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p">Once you have defined the property binding, the property is updated automatically every time the property value of the bound model is changed, and
+			vice versa.</p>
+
+		<div class="p">Let’s say, we have the following JSON
+			data:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">{
+		"company" : {
+		"name"  : "Acme Inc."
+		"street": "23 Franklin St." 
+		"city"  : "Claremont"
+		"state" : "New Hampshire"
+		"zip"   : "03301"
+		"revenue": "1833990"
+	}
+}</pre></div>
+</div>
+
+		<div class="p">To define property binding in the control declaration in the <span class="ph emphasis emphasis">XML view</span>,
+			just include the binding path within curly brackets (see also <a class="xref" href="2888af49635949eca14fa326d04833b9.html" title="Binding paths address the different properties and lists in a model and define how a node in the hierarchical data tree can be found.">Binding Path</a>):<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+	controllerName="sap.ui.sample.App"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"&gt;
+	&lt;Input
+		value="{/company/name}"
+	/&gt;
+&lt;/mvc:View&gt;</pre></div>
+</div>
+
+		<div class="p">In <span class="ph emphasis emphasis">JavaScript</span>, you can include the binding path within curly brackets as a
+			string literal in the <samp class="ph codeph">settings</samp>
+			object:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var oInput = new sap.m.Input({
+	value: "{/company/name}"
+});</pre></div>
+</div>
+
+		<p class="p">You can also use a complex syntax for property bindings. This complex syntax allows you to
+			define additional binding information to be contained in the <samp class="ph codeph">settings</samp>
+			object, such as a formatter function. </p>
+
+		<div class="p">If you are working with <span class="ph emphasis emphasis">XML views</span>, make sure that you've turned on complex
+			binding syntax in your bootstrap script, as shown
+			here:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">&lt;script id="sap-ui-bootstrap"
+	src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_belize"
+	<span class="ph emphasis emphasis">data-sap-ui-bindingSyntax="complex"</span>
+	data-sap-ui-libs="sap.m"
+	data-sap-ui-preload="async"
+	data-sap-ui-resourceroots='{
+		"sap.ui.sample": "./"
+	}' &gt;
+&lt;/script&gt;</pre></div>
+You
+			can also use <samp class="ph codeph">data-sap-ui-compatVersion="edge"</samp> to enable complex
+			bindings.</div>
+
+		<p class="p">You can then set the <samp class="ph codeph">bindingMode</samp> or other additional properties like this:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+	controllerName="sap.ui.sample.App"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"&gt;
+	&lt;Input
+		value="{ 
+			path:'/company/name', 
+			mode: 'sap.ui.model.BindingMode.OneWay' 
+		}"
+	/&gt;   
+&lt;/mvc:View&gt;</pre></div>
+
+		<p class="p">In <span class="ph emphasis emphasis">JavaScript</span> views or controllers, you use a JS object instead of a string literal. This must contain a <samp class="ph codeph">path</samp>
+			property containing the binding path, and can contain additional properties:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var oInput = new sap.m.Input ({
+    value: {
+		path: "/company/name", 
+		mode: sap.ui.model.BindingMode.OneWay
+	}
+});</pre></div>
+
+		<p class="p">Depending on the use case, it may be useful to define the binding at a later time, using the <samp class="ph codeph">bindProperty</samp> method:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oInput.bindProperty("value", "/company/name");</pre></div>
+
+		<p class="p">This option also allows you to use the same object literal that you used in the constructor to define the binding:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oInput.bindProperty("value", {
+	path: "value",
+	type: new sap.ui.model.type.Integer()
+});</pre></div>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<div class="p">Some controls offer convenience methods for their main properties that are most likely to be
+				bound by an
+				application:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oTextField.bindValue("/company/name");</pre></div>
+</div>
+
+		</div>
+
+		<p class="p">To <span class="ph emphasis emphasis">remove</span> a property binding, you can use the <samp class="ph codeph">unbindProperty</samp> method. The property binding is removed
+			automatically whenever a control is destroyed:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oTextField.unbindProperty("value");</pre></div>
+
+		<div class="section" id="loio91f0652b6f4d1014b6dd926db0e91070__section_N10078_N10013_N10001"><div class="section_title">Formatting Property Values</div><div type="Formatting Property Values"><div class="p">Values in
+				data are often represented in an internal format and need to be converted to an
+				external format for visual representation, especially numbers, dates, and times with
+				locale-dependent external formats. <span class="ph"><span class="ph pname">SAPUI5</span></span> provides two
+				different options for converting data. You can use both options for each binding,
+				you don't have to use one option consistently throughout your app: <ul class="ul" id="loio91f0652b6f4d1014b6dd926db0e91070__ul_nyd_gy1_pw">
+					<li class="li">
+						<p class="p">Formatter functions for one-way conversion</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Data types in two-way binding</p>
+
+						<p class="p">Data types can be used to parse user input in addition to formatting
+							values.</p>
+
+					</li>
+
+				</ul>
+</div>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Using a Formatter Function</p>
+
+			</div><div class="p">If you define the property binding in the <span class="ph emphasis emphasis">XML view</span>,
+				you need to define a formatter function (<samp class="ph codeph">roundToMillion</samp>) in the
+				view
+				controller:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+	"sap/ui/core/mvc/Controller",
+	"sap/ui/model/json/JSONModel"
+], function (Controller, JSONModel) {
+	"use strict";
+	return Controller.extend("sap.ui.sample.App", {
+		……………
+		roundToMillion: function(fValue) {
+			if (fValue) {
+				return "&gt; " + Math.floor(fValue/1000000) + "M";
+			}
+			return "0";
+		}
+	});
+}); </pre></div>
+</div>
+<p class="p">The
+					<samp class="ph codeph">this</samp> context of a formatter function is generally set to the
+				control (or managed object) that owns the binding. However, in XML views, the
+				reference to the formatter is done in the view controller by putting a dot
+					(<samp class="ph codeph">.</samp>) in front of the name of the formatter function (<samp class="ph codeph">{
+					formatter: '.myformatter' }</samp>). In this case, the formatter's
+					<samp class="ph codeph">this</samp> context is bound to the
+				controller.</p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+	controllerName="sap.ui.sample.App"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"&gt;
+	&lt;Input
+		value="{ path:'/company/revenue', 
+		formatter: '<span class="ph emphasis emphasis">.</span>roundToMillion'}"
+	/&gt;
+&lt;/mvc:View&gt;</pre></div>
+<p class="p">If
+				you use <span class="ph emphasis emphasis">JavaScript</span>, you can pass the formatter function as a
+				third parameter to the <samp class="ph codeph">bindProperty</samp> method, or you can add the
+				binding info with the <samp class="ph codeph">formatter</samp> key. The <samp class="ph codeph">formatter</samp>
+				has a single parameter <samp class="ph codeph">value</samp>, which is the value that is to be
+				formatted, and is executed as a member of the control, meaning it can access
+				additional control properties or model data.
+				</p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oTextField.bindProperty("value", "/company/title", function(sValue) {
+	return sValue &amp;&amp; sValue.toUpperCase();
+});
+
+oControl = new sap.m.Input({
+	value: {
+		path:"/company/revenue",
+		formatter: function(fValue) {
+			if (fValue) {
+				return "&gt; " + Math.floor(fValue/1000000) + "M";
+			}
+			return "0";
+		}
+	}
+})</pre></div>
+<div class="p">Because
+				it can contain any JavaScript, the formatter function can be used for formatting a
+				value and also for performing type conversions or calculating results, for example,
+				to show a special traffic light image depending on a Boolean
+				value:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oImage.bindProperty("src", "/company/trusted", function(bValue) {
+	return bValue ? "green.png" : "red.png";
+}); </pre></div>
+</div>
+<div class="note caution"><span class="cautiontitle">Caution</span> 
+				<p class="p">The framework only updates a binding when one of the properties included in the
+					binding changes. If the formatter uses another property value that is not part
+					of the binding definition, the framework won't know that the result depends on
+					that additional property and could miss necessary updates. Therefore, make sure
+					that you declare a composite binding referencing all necessary properties (maybe
+					even from different models).</p>
+
+			</div>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Using Data Types</p>
+
+				<p class="p">The data type system enables you to format and parse data, as well as to validate whether the
+					entered data lies within any defined constraints. <span class="ph"><span class="ph pname">SAPUI5</span></span> comes with
+					several predefined and ready-to-use types, referred to as simple types. For more
+					information, see <a class="xref" href="07e4b920f5734fd78fdaa236f26236d8.html" title="Data that is presented on the UI often has to be converted so that is human readable and fits to the locale of the user. On the other hand, data entered by the user has to be parsed and validated to be understood by the data source. For this purpose, you use formatters and data types.">Formatting, Parsing, and Validating Data</a>.</p>
+
+				<div class="p">Here’s how you can use these types in an XML
+					view:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+	controllerName="sap.ui.sample.App"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"&gt;
+	&lt;Input
+		value="{ path:'/company/revenue', 
+		type: 'sap.ui.model.type.Integer'}"/&gt;
+&lt;/mvc:View&gt;
+</pre></div>
+</div>
+
+				<div class="p">You can also provide parameter values for some of the simple types in your XML
+					view. These are declared as <samp class="ph codeph">formatOptions</samp>, as you can see in
+					the Float type sample below. Permitted <samp class="ph codeph">formatOptions</samp> are
+					properties of the corresponding data type. For more information, see the
+						<span class="ph uicontrol">API Reference</span> in the Demo
+					Kit.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+   controllerName="sap.ui.sample.App"
+   xmlns="sap.m"
+   xmlns:mvc="sap.ui.core.mvc"&gt;
+   &lt;Input
+      value="{ path:'/company/revenue', 
+           type: 'sap.ui.model.type.Float',
+           formatOptions: {
+                   minFractionDigits: 2,
+                   maxFractionDigits: 2
+           }
+      }"/&gt;
+&lt;/mvc:View&gt;</pre></div>
+</div>
+
+				<div class="p">Using JavaScript, you can define a type to be used for a property binding by
+					passing it as a third parameter in <samp class="ph codeph">bindProperty</samp> or by adding it
+					to the binding information by using the key <samp class="ph codeph">type</samp>, as shown
+					here:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">oTextField.bindProperty("value", "/company/name", new sap.ui.model.type.String());
+
+oControl = new sap.m.Input({
+    value: {
+        path:"/company/revenue",
+        type: new sap.ui.model.type.Float({
+            minFractionDigits: 2,
+            maxFractionDigits: 2
+        })
+    }
+})</pre></div>
+</div>
+
+				<div class="p">Predefined data types also offer visual feedback for erroneous user input. To
+					turn this feature on, add the following line to your controller's
+						<samp class="ph codeph">init</samp> function:
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.getCore().getMessageManager().registerObject(this.getView(), true);</pre></div>
+</div>
+
+				<div class="p">You can define <span class="ph emphasis emphasis">custom types</span> by inheriting from
+						<samp class="ph codeph">sap.ui.model.SimpleType</samp> and implementing the three methods
+						<samp class="ph codeph">formatValue</samp>, <samp class="ph codeph">parseValue</samp>, and
+						<samp class="ph codeph">validateValue</samp>. <samp class="ph codeph">formatValue</samp> is called
+					whenever the value in the model is changed to convert it to the type of the
+					control property it is bound to, and may throw a
+						<samp class="ph codeph">FormatException</samp>. <samp class="ph codeph">parseValue</samp> is called
+					whenever the user has modified a value in the UI and the change is transported
+					back into the model. It may throw a <samp class="ph codeph">ParseException</samp> if the value
+					cannot be converted. If parsing is successful, <samp class="ph codeph">validateValue</samp> is
+					called to check additional constraints, such as minimum or maximum value, and
+					throws a <samp class="ph codeph">ValidateException</samp> if any constraints are
+					violated.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.model.SimpleType.extend("sap.ui.sample.Zipcode", {
+    formatValue: function(oValue) {
+        return oValue;
+    },
+    parseValue: function(oValue) {
+        return oValue;
+    },
+    validateValue: function(oValue) {
+       if (!/^(\d{5})?$/.test(oValue)) {
+            throw new sap.ui.model.ValidateException("Zip code must have 5 digits!");
+       }
+    }
+});</pre></div>
+</div>
+
+				<div class="p">You can use your custom types in XML views or JavaScript in the same way as you
+					would apply predefined
+					types:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+   controllerName="sap.ui.sample.App"
+   xmlns="sap.m"
+   xmlns:mvc="sap.ui.core.mvc"&gt;
+   
+   &lt;Input
+      value="{ path:'/company/zip', 
+      type: 'sap.ui.sample.Zipcode'
+     }"/&gt;
+
+&lt;/mvc:View&gt;</pre></div>
+</div>
+
+			</div></div></div>
+
+		<div class="section" id="loio91f0652b6f4d1014b6dd926db0e91070__section_N100DE_N10013_N10001"><div class="section_title">Changing the Binding Mode</div><div type="Changing the Binding Mode">
+			
+			<p class="p">By default, all bindings of a model instance have the default binding mode of the model, but you can change this behavior if needed. When
+				creating a <samp class="ph codeph">PropertyBinding</samp>, you can specify a different binding mode, which is then used exclusively for this specific binding.
+				Of course, a binding can only have a binding mode that is supported by the model in question.</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">	var oModel = new sap.ui.model.json.JSONModel();
+	// default binding mode is two way
+	oModel.setData(myData);
+	sap.ui.getCore().setModel(oModel);
+	var oInputFirstName = new sap.m.Input ();
+	
+	// bind value property one way only 
+	// propertyname, formatter function, binding mode
+	oInputFirstName.bindValue("/firstName", null, sap.ui.model.BindingMode.OneWay);
+	oInputFirstName.placeAt("target1");
+
+	oInputLastName = new sap.m.Input();
+	// bind value property two way (default)
+	oInputLastName.bindValue("/lastName");
+	oInputLastName.placeAt("target2");
+}</pre></div>
+
+			<p class="p">In the example above, two <samp class="ph codeph">Input</samp> fields are created and their <samp class="ph codeph">value</samp> property is bound to the same property in
+				the model. The first <samp class="ph codeph">Input</samp> binding has a one-way binding mode, whereas the second <samp class="ph codeph">Input</samp> has the default
+				binding mode of the model instance, which is two-way. For this reason, when text is entered in the first <samp class="ph codeph">Input</samp>, the value will
+					<span class="ph emphasis emphasis">not</span> be changed in the model. This only happens if text is entered in the second <samp class="ph codeph">Input</samp>. Then, of
+				course, the value of the first <samp class="ph codeph">Input</samp> will be updated as it has a one-way binding, that is, from model to view.</p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="d70e9894c09b4c27a98d4850d4e90f2c.html" title="Although there is no visible difference, the text on the screen is now derived from model data.">Data Binding Tutorial Step 3: Create Property Binding</a></div>
+<div><a class="link" href="https://ui5.sap.com/sdk/#/api/sap.ui.base.ManagedObject/methods/bindProperty" alt="https://ui5.sap.com/sdk/#/api/sap.ui.base.ManagedObject/methods/bindProperty" title="https://ui5.sap.com/sdk/#/api/sap.ui.base.ManagedObject/methods/bindProperty">API Reference: <samp class="ph codeph">sap.ui.base.ManagedObject.bindProperty</samp></a></div>
+<div><a class="link" href="e2e6f4127fe4450ab3cf1339c42ee832.html" title="You bind UI elements to data of a data source by defining a binding path to the model that represents the data source in the app.">Binding Syntax</a></div>
+<div><a class="link" href="07e4b920f5734fd78fdaa236f26236d8.html" title="Data that is presented on the UI often has to be converted so that is human readable and fits to the locale of the user. On the other hand, data entered by the user has to be parsed and validated to be understood by the data source. For this purpose, you use formatters and data types.">Formatting, Parsing, and Validating Data</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

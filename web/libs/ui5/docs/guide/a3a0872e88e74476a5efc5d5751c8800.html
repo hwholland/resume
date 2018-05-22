@@ -1,0 +1,102 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The following measures help you improve performance when loading data or modules."/>
+<meta name="description" content="The following measures help you improve performance when loading data or modules."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=13000490697417155"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=13000490697417155"/>
+<title>Performance</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioa3a0872e88e74476a5efc5d5751c8800">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Performance</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The following measures help you improve performance when loading data or
+		modules.</p>
+
+		<div class="section"><div class="section_title">Module Loading</div><div type="Module Loading">
+			
+			<p class="p">The app uses an asynchronous bootstrap and all files use the
+				<samp class="ph codeph">sap.ui.define</samp> and <samp class="ph codeph">sap.ui.require</samp> syntax. This
+				allows for asynchronous loading of modules and dependencies and greatly increases
+				the application performance. <span class="ph">For more
+					details, see <samp class="ph codeph">sap.ui.define</samp> and <samp class="ph codeph">sap.ui.require</samp>
+					in the <a class="xref" href="../../docs/api/symbols/sap.ui.html" alt="../../docs/api/symbols/sap.ui.html" title="../../docs/api/symbols/sap.ui.html">API Reference</a> section of the Demo
+					Kit.</span></p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Loading Data with Growing List</div><div type="Loading Data with Growing List">
+			
+			<p class="p">The list is set to growing mode so that only the first few items are displayed for performance
+				reasons. Using the <samp class="ph codeph">scrollToLoad</samp> feature, the user can display more
+				items by scrolling down or pressing the trigger at the end of the list.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Loading Data Depending on Navigation</div><div type="Loading Data Depending on Navigation"><p class="p">The way in which app data is loaded
+				varies depending on whether or not the URL used in the navigation references an
+				object, as outlined below.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">URL References an Object</p>
+
+				<p class="p">In this scenario, two requests are sent out simultaneously for a) the master list
+					for a set of items and b) the detail page for the item that is referenced in the
+					URL. This behavior is intended and optimizes the performance for most cases.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">URL Does Not Reference an Object</p>
+
+				<p class="p">In this scenario, a first request is sent out to load the master list items. A second request
+					will be sent out automatically if additional properties and related entities are
+					bound (examples: line items when creating a template using the wizard, or any
+					additional property for resolving the detail page binding, either by 1)
+					expanding to a related entity or 2) properties in the same collection used in
+					the master-list that have been excluded by using a select on the master-list
+					items binding but are used on the detail screen). Here, the URL will be
+					referencing the selected items and a reload will run into the “URL references an
+					object” scenario.</p>
+
+			</div><div class="note note"><span class="notetitle">Note</span> 
+				<div class="p">
+					<ul class="ul" id="loioa3a0872e88e74476a5efc5d5751c8800__ul_nyw_svm_rv">
+						<li class="li">
+							<p class="p">The implementation that sends two requests simultaneously is chosen
+								intentionally: it is very unlikely that the requested entity based
+								on the hash lies within the first 20 items requested by the list in
+								the <span class="keyword apiname">Master</span> view (growing threshold is the list
+								default). This means that the overall startup time is faster in most
+								cases, even though two requests are sent.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">When a URL does not reference an object, the application updates the
+								URL to reference the first object in the list, which makes the
+								implementation where the URL references an object the standard
+								case.</p>
+
+						</li>
+
+					</ul>
+
+				</div>
+
+			</div>
+</div></div>
+
+		
+	</div>
+
+</div></div>
+
+</body>
+</html>

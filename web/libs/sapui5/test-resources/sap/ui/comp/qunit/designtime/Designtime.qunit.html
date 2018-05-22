@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for Designtime annotationss of SmartControls</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.ui.comp">
+	
+</script>
+
+<link rel="stylesheet"
+	href="../../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript">
+	if (!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.verion <= 8)) {
+		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+	}
+
+	(function() {
+
+		jQuery.sap.require("sap.ui.comp.smarttable.SmartTable");
+		jQuery.sap.require("sap.ui.comp.smartfilterbar.SmartFilterBar");
+		jQuery.sap.require("sap.ui.comp.smartfield.SmartField");
+		jQuery.sap.require("sap.ui.comp.smartchart.SmartChart");
+		jQuery.sap.require("sap.ui.comp.navpopover.SmartLink");
+
+		module("sap.ui.comp.smarttable.SmartTable", {
+			setup: function() {
+				this.oSmartTable = new sap.ui.comp.smarttable.SmartTable({
+					id: "__xmlview3--LineItemsSmartTable"
+				});
+			},
+			teardown: function() {
+				this.oSmartTable.destroy();
+			}
+		});
+
+		test("Read desingtime annotations for SmartTable", function() {
+			var oControlMetadata = sap.ui.getCore().byId("__xmlview3--LineItemsSmartTable").getMetadata();
+			ok(oControlMetadata.loadDesignTime().then(function() {
+				return oControlMetadata.getDesignTime().annotations;
+			}));
+		});
+
+		module("sap.ui.comp.smartfilterbar.SmartFilterBar", {
+			setup: function() {
+				this.oSmartFilterBar = new sap.ui.comp.smartfilterbar.SmartFilterBar({
+					id: "__xmlview3--LineItemsSmartFilterBar"
+				});
+			},
+			teardown: function() {
+				this.oSmartFilterBar.destroy();
+			}
+		});
+
+		test("Read designtime annotations for SmartFilterBar", function() {
+			var oControlMetadata = sap.ui.getCore().byId("__xmlview3--LineItemsSmartFilterBar").getMetadata();
+			ok(oControlMetadata.loadDesignTime().then(function() {
+				return oControlMetadata.getDesignTime().annotations;
+			}));
+		});
+
+		module("sap.ui.comp.smartfield.SmartField", {
+			setup: function() {
+				this.oSmartField = new sap.ui.comp.smartfield.SmartField({
+					id: "__xmlview3--LineItemsSmartField"
+				});
+			},
+			teardown: function() {
+				this.oSmartField.destroy();
+			}
+		});
+
+		test("Read designtime annotations for SmartField", function() {
+			var oControlMetadata = sap.ui.getCore().byId("__xmlview3--LineItemsSmartField").getMetadata();
+			ok(oControlMetadata.loadDesignTime().then(function() {
+				return oControlMetadata.getDesignTime().annotations;
+			}));
+		});
+
+		module("sap.ui.comp.smartchart.SmartChart", {
+			setup: function() {
+				this.oSmartChart = new sap.ui.comp.smartchart.SmartChart({
+					id: "__xmlview3--LineItemsSmartChart"
+				});
+			},
+			teardown: function() {
+				this.oSmartChart.destroy();
+			}
+		});
+
+		test("Read designtime annotations for SmartChart", function() {
+			var oControlMetadata = sap.ui.getCore().byId("__xmlview3--LineItemsSmartChart").getMetadata();
+			ok(oControlMetadata.loadDesignTime().then(function() {
+				return oControlMetadata.getDesignTime().annotations;
+			}));
+		});
+
+		module("sap.ui.comp.navpopover.SmartLink", {
+			setup: function() {
+				this.oSmartLink = new sap.ui.comp.navpopover.SmartLink({
+					id: "__xmlview3--LineItemsSmartLink"
+				});
+			},
+			teardown: function() {
+				this.oSmartLink.destroy();
+			}
+		});
+
+		test("Read designtime annotations for SmartLink", function() {
+			var oControlMetadata = sap.ui.getCore().byId("__xmlview3--LineItemsSmartLink").getMetadata();
+			ok(oControlMetadata.loadDesignTime().then(function() {
+				return oControlMetadata.getDesignTime().annotations;
+			}));
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for Designtime annotations of
+		SmartControls</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="content"></div>
+</body>
+</html>

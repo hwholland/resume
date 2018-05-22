@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>OPA Test for SAPUI5 Demo application</title>
+<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+<meta charset="UTF-8">
+
+<script id='sap-ui-bootstrap'
+	src='../../../../../../../resources/sap-ui-core.js'>
+	
+</script>
+
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet"
+	href="../../../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script src="../../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script src="../../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+
+<script>
+	jQuery.sap.require("sap.ui.test.Opa5");
+	jQuery.sap.require("sap.ui.test.opaQunit");
+	var Opa5 = sap.ui.test.Opa5;
+
+	jQuery.sap.require("sap.m.library");
+
+	sap.ui.test.Opa5.extendConfig({
+		arrangements: new Opa5(),
+		actions: new Opa5({
+			iClickResetButton: function() {
+				return this.waitFor({
+					controlType: "sap.m.Button",
+					success: function(aButtons) {
+						aButtons[0].$().trigger("tap");
+					}
+				});
+			}
+		}),
+		assertions: new Opa5({
+			iShouldSeeText: function(sValue) {
+				return this.waitFor({
+					controlType: "sap.m.Text",
+					success: function(aTexts) {
+						Opa5.assert.equal(aTexts[0].getText(), sValue);
+					}
+				});
+			}
+		})
+	});
+
+	opaTest("When I click the model reset button, the initial value should be displayed in the Text control", function(Given, When, Then) {
+		// Arrangements
+		Given.iStartMyAppInAFrame('./start.html');
+
+		//Actions
+		When.iClickResetButton();
+
+		// Assertions
+		Then.iShouldSeeText("1000.01");
+		//Then.iTeardownMyAppFrame();
+	});
+</script>
+
+</head>
+<body style="height: 100%">
+	<div id="content"></div>
+	<h1 id="qunit-header"></h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+</body>
+</html>

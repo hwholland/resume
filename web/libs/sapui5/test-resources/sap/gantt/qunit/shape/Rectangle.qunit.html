@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+
+		<title>QUnit: sap.gantt.shape.Rectangle</title>
+
+		<script id="sap-ui-bootstrap"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.gantt">
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="../../../../../resources/sap/ui/thirdparty/qunit.css"/>
+		<script src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+		
+		
+			sap.ui.require([
+				"sap/gantt/shape/Rectangle",
+				"sap/gantt/config/Shape",
+				"sap/gantt/config/TimeHorizon",
+				"sap/gantt/GanttChart",
+				"sap/ui/thirdparty/sinon",
+				"sap/ui/thirdparty/sinon-qunit"
+			], function (Rectangle, ShapeConfig, TimeHorizon, GanttChart) {
+				"use strict";
+				
+				QUnit.module("Create Shape by GanttChart without properties configred.", {
+					setup: function () {
+						// shape configuratio object
+						this.oShapeConfig = new ShapeConfig({
+							key: "ut",
+							shapeClassName: "sap.gantt.shape.Rectangle",
+								shapeProperties: {
+									time: "{startTime}",
+									endTime: "{endTime}"
+								}							
+						});
+						// GanttChart object which creates shape instance
+						sap.gantt.config.DEFAULT_TIME_AXIS.setPlanHorizon(new TimeHorizon({
+							startTime: "20140901000000",
+							endTime: "20141031000000"
+						}));
+						this.oGanttChart = new GanttChart({
+							shapes: [this.oShapeConfig]
+						});
+						// rectangle instance created by GanttChart
+						this.oRectangle = this.oGanttChart._oShapeInstance.ut;
+						// call back parameter
+						this.oData = {
+							startTime: "20140919000000",
+							endTime: "20141012000000"
+						};
+						// call back parameter
+						this.oRowInfo = {
+							rowHeight: 32,
+							y: 0,
+							uid: "PATH:0000|SCHEME:ac_main[0]",
+							data: {
+								ut: [this.oData]
+							}
+						};						
+					},
+					teardown: function () {
+						this.oRectangle = undefined;
+						this.oShapeConfig = undefined;
+						this.oData = undefined;
+						this.oRowInfo = undefined;
+						this.oGanttChart.destroy();
+					}
+				});
+				
+				
+				QUnit.test("Test default value of get<Property>() methods." , function (assert) {
+					assert.strictEqual(this.oRectangle.getX(this.oData, this.oRowInfo), 405);
+					assert.strictEqual(this.oRectangle.getY(this.oData, this.oRowInfo), 8.5);
+					assert.strictEqual(this.oRectangle.getWidth(this.oData, this.oRowInfo), 518);
+					assert.strictEqual(this.oRectangle.getHeight(this.oData, this.oRowInfo), 15);
+					assert.strictEqual(this.oRectangle.getRx(this.oData, this.oRowInfo), "0");
+					assert.strictEqual(this.oRectangle.getRy(this.oData, this.oRowInfo), "0");
+					assert.strictEqual(this.oRectangle.getEnableDnD(this.oData, this.oRowInfo), false);
+					assert.ok(this.oRectangle.getAriaLabel(this.oData, this.oRowInfo).length > 1, "getAriaLabel value not empty ok");
+				});
+				
+				// this test make sure every newly defined properties other than parent is added with config first logic. 
+				QUnit.module("Create Shape by GanttChart with properties configred.", {
+					setup: function () {
+						// shape configuratio object
+						this.oShapeConfig = new ShapeConfig({
+							key: "ut",
+							shapeClassName: "sap.gantt.shape.Rectangle",
+							shapeProperties: {
+								tag: "rect",
+								category: "crossRowShape",
+								isBulk: true,
+								isDuration: true,
+								time: "{startTime}",
+								endTime: "{endTime}",
+								htmlClass: "sapUiTest",
+								title: "hello world",
+								xBias: 40,
+								yBias: 50,
+								fill: "#123456",
+								fillOpacity: 0.5,
+								strokeOpacity: 0.5,
+								stroke: "#654321",
+								strokeWidth: 1,
+								strokeDasharray: "3,1",
+								clipPath: "url(#clippath)",
+								filter: "url(#filter)",
+								rotationAngle: 30,
+								enableSelection: false,
+								arrayAttribute: "a",
+								timeFilterAttribute: "b",
+								endTimeFilterAttribute: "c",
+								x: 1,
+								width: 3,
+								y: 2,
+								height: 20,
+								rx: "2",
+								ry: "2",
+								enableDnD: true
+							}
+						});
+						// GanttChart object which creates shape instance
+						sap.gantt.config.DEFAULT_TIME_AXIS.setPlanHorizon(new TimeHorizon({
+							startTime: "20140901000000",
+							endTime: "20141031000000"
+						}));
+						this.oGanttChart = new GanttChart({
+							shapes: [this.oShapeConfig]
+						});
+						// rectangle instance created by GanttChart
+						this.oRectangle = this.oGanttChart._oShapeInstance.ut;
+						// call back parameter
+						this.oData = {
+							startTime: "20140919000000",
+							endTime: "20141012000000"
+						};
+						// call back parameter
+						this.oRowInfo = {
+							rowHeight: 32,
+							y: 0,
+							uid: "PATH:0000|SCHEME:ac_main[0]",
+							data: {
+								ut: [this.oData]
+							}
+						};							
+					},
+					teardown: function () {
+						this.oRectangle = undefined;
+						this.oShapeConfig = undefined;
+						this.oData = undefined;
+						this.oRowInfo = undefined;
+						this.oGanttChart.destroy();
+					}
+				})
+				
+				QUnit.test("Test configured value of get<Property>() methods." , function (assert) {
+					assert.strictEqual(this.oRectangle.getX(this.oData, this.oRowInfo), 1);
+					assert.strictEqual(this.oRectangle.getY(this.oData, this.oRowInfo), 2);
+					assert.strictEqual(this.oRectangle.getWidth(this.oData, this.oRowInfo), 3);
+					assert.strictEqual(this.oRectangle.getHeight(this.oData, this.oRowInfo), 20);
+					assert.strictEqual(this.oRectangle.getRx(this.oData, this.oRowInfo), "2");
+					assert.strictEqual(this.oRectangle.getRy(this.oData, this.oRowInfo), "2");
+					assert.strictEqual(this.oRectangle.getEnableDnD(this.oData, this.oRowInfo), true);
+				});
+			});
+		</script>
+
+
+	</head>
+	<body>
+		<div id="qunit"></div>
+	</body>
+</html>

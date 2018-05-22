@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" Content="IE=edge" />
+		<title>qUnit Page for sap.suite.ui.commons.DynamicContainer</title>
+
+		<script id="sap-ui-bootstrap" 
+			type="text/javascript"
+			src="../../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-libs="sap.m,sap.ui.commons,sap.suite.ui.commons"
+			data-sap-ui-language="en">
+		</script>
+
+ 		<link rel="stylesheet" href="../../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" /> 
+		<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+
+		<script>
+			QUnit.module("Rendering", {
+				beforeEach : function() {
+					this.oDynamicContainerData = {
+						tiles: [
+							{
+								header: "Tile 1",
+								frameType : "TwoByOne",
+								size: "M",
+								tileContent: [
+									{
+										footer: "Footer 1",
+										value: 10
+									},
+									{
+										footer: "Footer 2",
+										value: 20
+									}
+								]
+							}, {
+								header: "Tile 2",
+								frameType: "OneByOne",
+								size: "M",
+								tileContent: [
+									{
+										footer: "Footer 3",
+										value: 30
+									}, {
+										footer: "Footer 4",
+										value: 40
+									}
+								]
+							}
+						]
+					};
+
+					this.oTileContent = new sap.suite.ui.commons.TileContent({
+						footer: "{footer}",
+						content: new sap.suite.ui.commons.NumericContent({
+							value: "{value}"
+						})
+					});
+
+					this.oGenericTile = new sap.suite.ui.commons.GenericTile({
+						frameType: "{frameType}",
+						header: "{header}",
+						size: "{size}",
+						tileContent: {
+							template: this.oTileContent,
+							path: "tileContent",
+							templateShareable: true
+						}
+					});
+
+					this.oDynamicContainer = new sap.suite.ui.commons.DynamicContainer("dynamic-container", {
+						displayTime: 500,
+						transitionTime: 0,
+						tiles: {
+							template: this.oGenericTile,
+							path: "/tiles",
+							templateShareable: true
+						}
+					});
+
+					this.oDynamicContainerModel = new sap.ui.model.json.JSONModel();
+					this.oDynamicContainerModel.setData(this.oDynamicContainerData);
+					this.oDynamicContainer.setModel(this.oDynamicContainerModel);
+					this.oDynamicContainer.placeAt("qunit-fixture");
+					sap.ui.getCore().applyChanges();
+				},
+				afterEach : function() {
+					this.oDynamicContainer.destroy();
+					this.oTileContent.destroy();
+					this.oGenericTile.destroy();
+					this.oDynamicContainerModel.destroy();
+				}
+			});
+			
+			QUnit.test("DynamicContainer wrapper is working", function(assert) {
+				assert.ok(jQuery.sap.domById("dynamic-container"), "DynamicContainer was rendered successfully");
+			});
+		</script>
+	</head>
+	<body id="body" class="sapUiBody">
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+	</body>
+</html>

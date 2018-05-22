@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<script id="sap-ui-bootstrap" 
+		type="text/javascript"
+		src="../../../../../resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_bluecrystal"
+		data-sap-ui-language="en-US"
+		data-sap-ui-noConflict="true"
+		data-sap-ui-libs="sap.ui.commons,sap.uiext.inbox">
+	</script>
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+			// redirect any resource loading for "sap.uiext.inbox.qunit.mockServer" to the local folder "mockServer/" 
+			jQuery.sap.registerModulePath("sap.uiext.inbox.qunit.mockServer", "mockServer/");
+			
+			// now load and activate the mock server
+			jQuery.sap.require("sap.uiext.inbox.qunit.mockServer.InboxMockServerQUnit");
+
+			module("Load");
+
+			test("InboxCreationOk",function() {
+				sap.ui.getCore().applyChanges(); 
+				var oInbox = sap.ui.getCore().byId("inbox");
+				equals(false, (oInbox === undefined), "Checking if the Inbox Control is created and is not undefined.");
+				equals(false, (oInbox === null), "Checking if the Inbox Control is created and is not null.");
+			
+			 
+			});
+			
+			
+			module("Checking if Buttons were created for custom actions using Add Action API");
+			
+			asyncTest("Test Custom Action Button is created on using addAction API", function() {
+				var oInbox = sap.ui.getCore().byId("inbox");
+				oInbox.addAction("customAction", "Custom Action Button", "Tooltip for Custom Action Button", true);
+				sap.ui.getCore().applyChanges(); 
+					var delayedCall = function() {
+						var oActionToolbar = sap.ui.getCore().getControl("inbox--actionButtonsToolbarContainer");
+						var oActionToolbarItems = oActionToolbar.getItems();
+						var oCustomActionBtnWithTooltip = oActionToolbarItems[5];
+						equals(oCustomActionBtnWithTooltip.getId(), "inbox--customAction", "Checking if the Buttton is created")
+						equals(oCustomActionBtnWithTooltip.getText(), "Custom Action Button", "Checking label of CustomAction Button "); 
+						equals(oCustomActionBtnWithTooltip.getTooltip(), "Tooltip for Custom Action Button", "Checking tooltip of CustomAction Button ");
+					start();
+				};
+				setTimeout(delayedCall, 0); 
+				
+			}); 
+			
+			
+			
+	module("Checking if Custom Button is not created if all the parameters are not provided to addAction Method");
+			
+			asyncTest("Test Custom Action Button without tooltip is not created ", function() {
+				var oInbox = sap.ui.getCore().byId("inbox");
+				if ( !(sap.ui.Device.browser.msie && sap.ui.Device.browser.version < 10)) {
+					oInbox.addAction("CustomAction2", "Custom Action without ToolTip", true);
+				}
+
+				sap.ui.getCore().applyChanges(); 
+					var delayedCall = function() {
+						var oActionToolbar = sap.ui.getCore().getControl("inbox--actionButtonsToolbarContainer");
+						var oActionToolbarItems = oActionToolbar.getItems();
+						var oCustomActionBtnWithoutTooltip = oActionToolbarItems[6];
+						equals(true, (oCustomActionBtnWithoutTooltip === undefined), "Checking if the Buttton is not created if all parameters are not provided");
+						
+					start();
+				};
+				setTimeout(delayedCall, 0); 
+				
+			}); 
+		
+			
+			</script>
+	</head>
+	<body>
+		<h1 id="qunit-header"><title>Qunit for testing Add Action API for Inbox Control</title></h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup, will be hidden</div>
+		<div id="canvas" style="height:300px; width:300px"></div>
+		<br>
+		<div id="uiArea1" style="width: 80%;"></div>
+	</body>
+</html>

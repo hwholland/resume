@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for sap.ui.comp.personalization.SortController</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.ui.comp, sap.ui.table, sap.ui.commons">
+	
+</script>
+
+<link rel="stylesheet"
+	href="../../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+<script type="text/javascript">
+	if (!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+	}	
+
+	(function() {
+
+		jQuery.sap.require("sap.ui.comp.personalization.SortController");
+		jQuery.sap.require("sap.ui.comp.personalization.Controller");
+		var oEmpty = {
+			sort : {
+				sortItems : []
+			}
+		};
+		var oA = {
+			sort : {
+				sortItems : [{
+					columnKey : "name",
+					operation : "Ascending"
+				}]
+			}
+		};
+		var oAx = {
+			sort : {
+				sortItems : [{
+					columnKey : "name",
+					operation : "Descending"
+				}]
+			}
+		};
+		var oB = {
+			sort : {
+				sortItems : [{
+					columnKey : "country",
+					operation : "Ascending"
+				}]
+			}
+		};
+		var oBx = {
+			sort : {
+				sortItems : [{
+					columnKey : "country",
+					operation : "Descending"
+				}]
+			}
+		};
+		var oAB = {
+			sort : {
+				sortItems : [{
+					columnKey : "name",
+					operation : "Ascending"
+				}, {
+					columnKey : "country",
+					operation : "Ascending"
+				}]
+			}
+		};
+		var oAxB = {
+			sort : {
+				sortItems : [{
+					columnKey : "name",
+					operation : "Descending"
+				}, {
+					columnKey : "country",
+					operation : "Ascending"
+				}]
+			}
+		};
+		var oBA = {
+			sort : {
+				sortItems : [{
+					columnKey : "country",
+					operation : "Ascending"
+				}, {
+					columnKey : "name",
+					operation : "Ascending"
+				}]
+			}
+		};
+		module("API", {
+			setup : function() {
+				createInstance = function(oTable) {
+					var oSortController = new sap.ui.comp.personalization.SortController({
+						table : oTable
+					});
+					var oModel = new sap.ui.model.json.JSONModel({
+						transientData : {},
+						persistentData : {}
+					});
+					oSortController.initializeModel(oModel);
+					return oSortController;
+				};
+				createTable = function(oData) {
+					oData = oData || {
+						items : [{
+							"date" : "2/5/1982",
+							"number" : 103,
+							"city" : "McDermotttown",
+							"country" : "Svalbard and Jan Mayen",
+							"name" : "Mary"
+						}],
+						columns : [{
+							id : "name",
+							text : "Name",
+							path : "name"
+						}, {
+							id : "country",
+							text : "Country",
+							path : "country"
+						}, {
+							id : "city",
+							text : "City",
+							path : "city"
+						}]
+					};
+					var oTable = new sap.ui.table.Table('testUITable', {
+						columns : jQuery.map(oData.columns, function(oModelColumn) {
+							var oColumn = new sap.ui.table.Column(oModelColumn.id, {
+								label : new sap.ui.commons.Label({
+									text : oModelColumn.text
+								}),
+								template : new sap.ui.commons.Label({
+									text : {
+										path : oModelColumn.path
+									}
+								}),
+								sortProperty : oModelColumn.path,
+								filterProperty : oModelColumn.path,
+							});
+							return oColumn;
+						})
+					});
+					oTable.setModel(new sap.ui.model.json.JSONModel());
+					oTable.bindRows("/items");
+					return oTable;
+				};
+			},
+			teardown : function() {
+				createTable = null;
+				createModel = null;
+			}
+		});
+
+		test("destroy", function() {
+			try {
+				// system under test
+				var oTable = createTable();
+				var oSortController = createInstance(oTable);
+
+				// arrange				
+
+				// act
+				oSortController.destroy();
+
+				// assertions			
+				deepEqual(sap.ui.base.EventProvider.getEventList(oTable), {});
+
+			} finally {
+				// cleanup
+				oTable.destroy();
+			}
+		});
+
+		test("SortController: getChangeData", function() {
+			try {
+				// system under test
+				var oTable = createTable();
+				var oSortController = createInstance(oTable);
+
+				// arrange				
+
+				// act			 
+
+				// assertions
+
+				deepEqual(oSortController.getChangeData(oEmpty, oA), oEmpty, "delete: [] XOR A = []");
+				deepEqual(oSortController.getChangeData({}, oA), oEmpty, "{} XOR A = []");
+				deepEqual(oSortController.getChangeData(oA, oEmpty), oA, "A XOR [] = A");
+				deepEqual(oSortController.getChangeData(oA, oA), null, "no change: A XOR A = null");
+				deepEqual(oSortController.getChangeData(oA, {
+					sort : {}
+				}), oA, "change: A XOR {sort} = A");
+				deepEqual(oSortController.getChangeData(oA, {}), oA, "change: A XOR {} = A");
+				deepEqual(oSortController.getChangeData(oA, null), oA, "change: A XOR null = A");
+				deepEqual(oSortController.getChangeData(oA, oB), oA, "change: A XOR B = A");
+				deepEqual(oSortController.getChangeData(oA, oAx), oA, "change: A XOR A' = A");
+				deepEqual(oSortController.getChangeData(oA, oAB), oA, "change: A XOR (A, B) = A");
+				deepEqual(oSortController.getChangeData(oA, {
+					sort : {
+						sortItems : []
+					}
+				}), oA, "change: A XOR [] = A");
+				deepEqual(oSortController.getChangeData(oAx, oA), oAx, "change: A' XOR A = A'");
+				deepEqual(oSortController.getChangeData(oAB, oAB), null, "no change: (A, B) XOR (A, B) = null");
+				deepEqual(oSortController.getChangeData(oAB, oBA), oAB, "change: (A, B) XOR (B, A) = (A, B)");
+
+			} finally {
+				// cleanup
+				oTable.destroy();
+				oSortController.destroy();
+			}
+		});
+
+		test("SortController: getUnionData", function() {
+			try {
+				// system under test
+				var oTable = createTable();
+				var oSortController = createInstance(oTable);
+
+				// arrange
+
+				// act			 
+
+				// assertions
+				deepEqual(oSortController.getUnionData(oA, oA), oA, "no change: A UNION A = A");
+				deepEqual(oSortController.getUnionData(oA, null), oA, "no change: A UNION null = A");
+				deepEqual(oSortController.getUnionData(oA, {}), oA, "no change: A UNION {} = A");
+				deepEqual(oSortController.getUnionData(oEmpty, null), oEmpty, ":no change [] UNION null = []");
+				deepEqual(oSortController.getUnionData(oA, {
+					sort : {}
+				}), oA, "no change: A UNION {sort} = A");
+
+				deepEqual(oSortController.getUnionData(oA, oAx), oAx, "change: A UNION A' = A'");
+				deepEqual(oSortController.getUnionData(oA, oB), oB, "change: A UNION B = B");
+				deepEqual(oSortController.getUnionData(oA, oAB), oAB, "change: A UNION (A, B) = (A, B)");
+				deepEqual(oSortController.getUnionData(oAB, oAB), oAB, "change: (A, B) UNION (A, B) = (A, B)");
+				deepEqual(oSortController.getUnionData(oAB, oBA), oBA, "change: (A, B) UNION (B, A) = (B, A)");
+				deepEqual(oSortController.getUnionData(oA, oEmpty), oEmpty, "change: A UNION [] = []");
+				deepEqual(oSortController.getUnionData(oEmpty, oA), oA, "change: [] UNION A = A");
+				deepEqual(oSortController.getUnionData({}, oA), oA, "change: {} UNION A = A");
+				deepEqual(oSortController.getUnionData(oA, oAxB), oAxB, "change: A UNION (A', B) = (A', B)");
+
+			} finally {
+				// cleanup
+				oTable.destroy();
+				oSortController.destroy();
+			}
+		});
+
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.ui.comp.personalization.SortController</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="content"></div>
+</body>
+</html>

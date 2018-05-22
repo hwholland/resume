@@ -1,0 +1,316 @@
+<!DOCTYPE html><html xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		<title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.ushell.services.NavTargetResolution</title>
+		<link rel=stylesheet href="../default.css" type="text/css">
+		
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+				
+				
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+				
+				
+			
+				
+				
+				<link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+				
+			
+		
+	</head>
+
+	<body>
+
+
+		<div id="main">
+			<div id="content">
+
+					<h1 class="classTitle static">
+					
+					Class sap.ushell.services.NavTargetResolution
+					</h1>
+					
+					
+					
+					
+					<hr/>
+
+					
+					
+					<div class="full-description">
+						<p>The Unified Shell's internal navigation target resolution service
+</p><p>
+Methods in this class deal with *internal* representations of the shell hash.
+</p><p>
+configurations:
+<code>config : { allowTestUrlComponentConfig  : true }</code>
+allow to redefine the Test-url, Test-local1, Test-local2 applications via url parameters
+(sap-ushell-test-local1-url=  / sap-ushell-test-local1-additionalInformation=  ... )</p>
+						
+						
+						
+						
+						
+						
+							<br />
+							<i>Since: </i>1.15.0.
+						
+					</div>
+					
+		
+					
+					
+					
+						<div class="summary section">
+							<div class="sectionTitle">Constructor Summary</div>
+							<div class="sectionItems">
+								<div class="sectionItem classConstructor static">
+									<div class="itemName">
+										<b class="icon" title="This method MUST be called by the Unified Shell's container only, others MUST call sap.ushell.Container.getService(&quot;NavTargetResolution&quot;).">new <a href="../symbols/sap.ushell.services.NavTargetResolution.html#constructor">sap.ushell.services.NavTargetResolution</a></b>
+										<span class='signature'>(<span title="(oServiceConfiguration) Service configuration">a</span>)</span>
+										<span class='description'>This method MUST be called by the Unified Shell's container only, others MUST call <code>sap.ushell.Container.getService("NavTargetResolution")</code>.</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					
+					
+					
+		
+					
+
+					
+						<div class="summary section">
+							<div class="sectionTitle">Method Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="expands a URL hash fragment  This function gets the hash part of the URL and expands a sap-intent-param if present and retrievable  This is an asynchronous operation."><a href="../symbols/sap.ushell.services.NavTargetResolution.html#expandCompactHash">expandCompactHash</a></b><span class='signature'>(<span title="(string) The formatted URL hash fragment in internal format(as obtained by the SAPUI5 hasher service, not as given in location.hash)">sHashFragment</span>)</span>
+									<span class='description'>expands a URL hash fragment </p><p> This function gets the hash part of the URL and expands a sap-intent-param if present and retrievable </p><p> This is an asynchronous operation.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+									<b class="icon" title="Resolves the URL hash fragment."><a href="../symbols/sap.ushell.services.NavTargetResolution.html#resolveHashFragment">resolveHashFragment</a></b><span class='signature'>(<span title="(string) The formatted URL hash fragment in internal format (as obtained by the SAPUI5 hasher service) not as given in location.hash)!">sHashFragment</span>)</span>
+									<span class='description'>Resolves the URL hash fragment.</span>
+								</div>
+							
+							</div>
+						</div>
+					
+		
+					
+						<div class="section details">
+							<div class="sectionTitle">
+								Constructor Detail
+							</div>
+							<div class="sectionItems">
+								<div class="sectionItem classItem itemName static">
+									<div class="details"><a name="constructor"> </a>
+										
+										<div class="icon">
+											new <b>sap.ushell.services.NavTargetResolution</b>(<span title="(oServiceConfiguration) Service configuration">a</span>)
+										</div>
+										
+										<div class="full-description">
+											This method MUST be called by the Unified Shell's container only, others MUST call
+<code>sap.ushell.Container.getService("NavTargetResolution")</code>.
+Constructs a new instance of the navigation target resolution service.
+										</div>
+										
+										
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{oServiceConfiguration}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>a</b>
+													</td>
+													<td class="methodItemDesc">
+												    Service configuration
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										<!--
+										
+										-->
+										
+											<dl class="detailList">
+											<dt class="heading">See:</dt>
+											
+												<dd><a href="../symbols/sap.ushell.services.Container.html#getService">sap.ushell.services.Container#getService</a></dd>
+											
+											</dl>
+										
+						
+									</div>
+								</div>
+							</div>
+						</div>
+					
+		
+					
+		
+					
+					
+					
+						<div class="details section">
+							<div class="sectionTitle">
+								Method Detail
+							</div>
+							<div class="sectionItems">
+								
+									<div class='sectionItem classMethod'>
+										<a name="expandCompactHash"> </a>
+										<div class="itemTitle icon">
+											expandCompactHash<span class="signature">(<span title="(string) The formatted URL hash fragment in internal format(as obtained by the SAPUI5 hasher service, not as given in location.hash)">sHashFragment</span>)</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											expands a URL hash fragment
+</p><p>
+This function gets the hash part of the URL and expands a sap-intent-param if present
+and retrievable
+</p><p>
+This is an asynchronous operation.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sHashFragment</b>
+													</td>
+													<td class="methodItemDesc">
+												    The formatted URL hash fragment in internal format(as obtained by the SAPUI5 hasher service,
+    not as given in <code>location.hash</code>)
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														A jQuery.Promise. Its <code>done()</code> function gets an expanded shell hash
+    (in internal format)
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod'>
+										<a name="resolveHashFragment"> </a>
+										<div class="itemTitle icon">
+											resolveHashFragment<span class="signature">(<span title="(string) The formatted URL hash fragment in internal format (as obtained by the SAPUI5 hasher service) not as given in location.hash)!">sHashFragment</span>)</span>
+											<span class="light" title="returns object">: object</span>
+										</div>
+										<div class="full-description">
+											Resolves the URL hash fragment.
+</p><p>
+This function should be used by a custom renderer in order to implement custom navigation.
+Do not use this function for developing Fiori applications.
+</p><p>
+This function gets the hash part of the URL and returns data of the target application.
+Example of the returned data:
+   {"additionalInformation": "SAPUI5.Component=sap.ushell.renderers.fiori2.search.container",
+   "applicationType": "URL",
+   "url": "/sap/bc/ui5_ui5/ui2/ushell/resources/sap/ushell/renderers/fiori2/search/container"}
+</p><p>
+This is an asynchronous operation.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sHashFragment</b>
+													</td>
+													<td class="methodItemDesc">
+												    The formatted URL hash fragment in internal format (as obtained by the SAPUI5 hasher service)
+    not as given in <code>location.hash</code>)!
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{object}</span> 
+													</td>
+													<td class="methodItemDesc">
+														A jQuery.Promise. Its <code>done()</code> function gets an object that you can use
+    to create a sap.ushell.components.container.ApplicationContainer
+    or <code>undefined</code> in case the hash fragment was empty.
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+							</div>
+						</div>
+					
+
+
+
+		</div>
+	</div>
+
+				
+	</body>
+</html>

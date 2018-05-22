@@ -1,0 +1,298 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You use the Criticality Calculation feature to control the color of the labels at the top."/>
+<meta name="description" content="You use the Criticality Calculation feature to control the color of the labels at the top."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=42585132837539197"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=42585132837539197"/>
+<title>Label Colors of the Chart</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioaa4bf0f6d2a943d9b9931db81421d523">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Label Colors of the Chart</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You use the Criticality Calculation feature to control the color of the labels at the
+		top.</p>
+
+		<p class="p">You cannot set the label color directly. The color of the labels at the bottom is unchangeable
+			and will always be displayed with <samp class="ph codeph">ValueColor.Neutral</samp>. The color of the
+			labels at the top is calculated using the thresholds that are common for every
+			Criticality Calculation across the Smart Micro Charts. For example:</p>
+
+		
+<div class="table-wrapper tablenoborder"><table summary="" id="loioaa4bf0f6d2a943d9b9931db81421d523__table_r2h_2wt_ny" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Thresholds</span></caption>
+<colgroup><col width="33.333333333333336%"/><col width="33.333333333333336%"/><col width="33.333333333333336%"/></colgroup>
+
+				
+				
+				
+				<thead class="thead" align="left">
+					<tr class="row">
+						<th class="entry" valign="top" width="33.33333333333333%" id="d13454174e39">
+							<p class="p">Property</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="33.33333333333333%" id="d13454174e45">
+							<p class="p">Type</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="33.33333333333333%" id="d13454174e51">
+							<p class="p">Value</p>
+
+						</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody class="tbody">
+					<tr class="row">
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e39 ">
+							<p class="p">DeviationLowValue</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e45 ">
+							<p class="p">Negative</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e51 ">
+							<p class="p">10</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e39 ">
+							<p class="p">ToleranceLowValue</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e45 ">
+							<p class="p">Critical</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e51 ">
+							<p class="p">45</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e39 ">
+							<p class="p">ToleranceHighValue</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e45 ">
+							<p class="p">Critical</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e51 ">
+							<p class="p">55</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e39 ">
+							<p class="p">DeviationHighValue</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e45 ">
+							<p class="p">Negative</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="33.33333333333333%" headers="d13454174e51 ">
+							<p class="p">80</p>
+
+						</td>
+
+					</tr>
+
+					
+				</tbody>
+
+			</table>
+</div>
+
+		
+<div class="table-wrapper tablenoborder"><table summary="" id="loioaa4bf0f6d2a943d9b9931db81421d523__table_dvf_qwt_ny" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Resulting colors of different sample values in different Improvement
+				Directions</span></caption>
+<colgroup><col width="25%"/><col width="25%"/><col width="25%"/><col width="25%"/></colgroup>
+
+				
+				
+				
+				
+				<thead class="thead" align="left">
+					<tr class="row">
+						<th class="entry" valign="top" width="25%" id="d13454174e167">
+							<p class="p">Value</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="25%" id="d13454174e173">
+							<p class="p">Maximize direction</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="25%" id="d13454174e179">
+							<p class="p">Minimize direction</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="25%" id="d13454174e185">
+							<p class="p">Target direction</p>
+
+						</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody class="tbody">
+					<tr class="row">
+						<td class="entry" valign="top" width="25%" headers="d13454174e167 ">
+							<p class="p">5</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e173 ">
+							<p class="p">Error</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e179 ">
+							<p class="p">Good</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e185 ">
+							<p class="p">Error</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="25%" headers="d13454174e167 ">
+							<p class="p">15</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e173 ">
+							<p class="p">Critical</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e179 ">
+							<p class="p">Good</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e185 ">
+							<p class="p">Critical</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="25%" headers="d13454174e167 ">
+							<p class="p">50</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e173 ">
+							<p class="p">Good</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e179 ">
+							<p class="p">Good</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e185 ">
+							<p class="p">Good</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="25%" headers="d13454174e167 ">
+							<p class="p">70</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e173 ">
+							<p class="p">Good</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e179 ">
+							<p class="p">Critical</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e185 ">
+							<p class="p">Critical</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="25%" headers="d13454174e167 ">
+							<p class="p">90</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e173 ">
+							<p class="p">Good</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e179 ">
+							<p class="p">Error</p>
+
+						</td>
+
+						<td class="entry" valign="top" width="25%" headers="d13454174e185 ">
+							<p class="p">Error</p>
+
+						</td>
+
+					</tr>
+
+				</tbody>
+
+			</table>
+</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

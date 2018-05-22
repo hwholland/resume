@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+           
+		<script id="sap-ui-bootstrap" type="text/javascript"
+		    src="../../../../../../resources/sap-ui-core.js"
+		    data-sap-ui-theme="sap_bluecrystal"
+		    data-sap-ui-libs="sap.ui.commons,sap.ui.demokit,sap.suite.ui.commons, sap.m">
+		    
+		</script>
+        <!-- only load the mobile lib "sap.m" and the "sap_mvi" theme -->
+
+		<link rel="stylesheet" type="css/txt" href="/uilib-sample/test-resources/sap/suite/ui/commons/demokit/explored/css/style.css">
+        <script>
+		      function getSearchParameters() {
+		            var prmstr = window.location.search.substr(1);
+		            return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+		      }
+		
+		      function transformToAssocArray( prmstr ) {
+		          var params = {};
+		          var prmarr = prmstr.split("&");
+		          for ( var i = 0; i < prmarr.length; i++) {
+		              var tmparr = prmarr[i].split("=");
+		              params[tmparr[0]] = tmparr[1];
+		          }
+		          return params;
+		      }
+		    
+		    if (getSearchParameters().component) {
+		        sap.ui.getCore().attachInitEvent(function() {
+					jQuery.sap.registerModulePath("sap.suite.ui.commons.sample", "/uilib-sample/test-resources/sap/suite/ui/commons/demokit/sample");
+					var oComponentContainer = new sap.ui.core.ComponentContainer({
+					      name : getSearchParameters().component
+					  });
+					oComponentContainer.placeAt("content");
+		        });
+		    } else {
+		    	new sap.m.Text({text: "Provide 'component' parameter. It should be sample ID."}).placeAt("content");
+		    }
+          
+
+        </script>
+
+    </head>
+    <body class="sapUiBody" role="application">
+        <div id="content"></div>
+    </body>
+</html>

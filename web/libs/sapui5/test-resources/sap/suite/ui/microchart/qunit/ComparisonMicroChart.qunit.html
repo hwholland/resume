@@ -1,0 +1,833 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+<title>QUnit: sap.suite.ui.microchart.ComparisonMicroChart</title>
+
+<base href="../../../../../../">
+<!--[if lte IE 9]><script>
+(function() {
+	var baseTag = document.getElementsByTagName('base')[0];
+	baseTag.href = baseTag.href;
+})();
+</script><![endif]-->
+
+<script id="sap-ui-bootstrap"
+	src="resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_belize"
+	data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.suite.ui.microchart">
+</script>
+
+<link rel="stylesheet" type="text/css" href="resources/sap/ui/thirdparty/qunit.css" />
+<script src="resources/sap/ui/thirdparty/qunit.js"></script>
+<script src="resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+<!--[if IE]>
+	<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-ie.js"></script>
+<![endif]-->
+<script>
+		jQuery.sap.initMobile();
+		jQuery.sap.require("sap.suite.ui.microchart.ComparisonMicroChart");
+		var fnCallback, fnBarCallback;
+
+		if (!(sap.ui.Device.browser.msie && sap.ui.Device.browser.version <= 8)) {
+			jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		}
+
+		QUnit.module("Control initialization core and theme checks", {
+			beforeEach: function() {
+				this.fnStubIsInitialized = sinon.stub(sap.ui.getCore(), "isInitialized");
+				this.fnSpyAttachInit = sinon.spy(sap.ui.getCore(), "attachInit");
+				this.fnSpyHandleCoreInitialized = sinon.spy(sap.suite.ui.microchart.ComparisonMicroChart.prototype, "_handleCoreInitialized");
+				this.fnStubThemeApplied = sinon.stub(sap.ui.getCore(), "isThemeApplied");
+				this.fnStubAttachThemeApplied = sinon.stub(sap.ui.getCore(), "attachThemeChanged", function(fn, context) {
+					fn.call(context); //simulate immediate theme change
+				});
+				this.fnSpyHandleThemeApplied = sinon.spy(sap.suite.ui.microchart.ComparisonMicroChart.prototype, "_handleThemeApplied");
+			},
+			afterEach: function() {
+				this.fnStubIsInitialized.restore();
+				this.fnSpyAttachInit.restore();
+				this.fnSpyHandleCoreInitialized.restore();
+				this.fnStubThemeApplied.restore();
+				this.fnStubAttachThemeApplied.restore();
+				this.fnSpyHandleThemeApplied.restore();
+			}
+		});
+
+		QUnit.test("Core not loaded and theme not loaded", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(false);
+			this.fnStubThemeApplied.returns(false);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.ComparisonMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+			assert.ok(this.fnSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+		});
+
+		QUnit.test("Core not loaded and theme loaded", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(false);
+			this.fnStubThemeApplied.returns(true);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.ComparisonMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+			assert.ok(this.fnSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+		});
+
+		QUnit.test("Core loaded and theme not loaded", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(true);
+			this.fnStubThemeApplied.returns(false);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.ComparisonMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+			assert.ok(this.fnSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+		});
+
+		QUnit.test("Core loaded and theme loaded", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(true);
+			this.fnStubThemeApplied.returns(true);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.ComparisonMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+			assert.ok(this.fnSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+		});
+
+		QUnit.module("Rendering tests - sap.suite.ui.microchart.ComparisonMicroChart", {
+			beforeEach: function() {
+				this.oCC = new sap.suite.ui.microchart.ComparisonMicroChart("comparison-chart", {
+					size: "M",
+					scale: "M",
+					view: sap.suite.ui.microchart.ComparisonMicroChartViewType.Normal,
+					data: [
+						new sap.suite.ui.microchart.ComparisonMicroChartData({
+							title: "Americas",
+							value: 10,
+							color: "Good",
+							displayValue: "10M"
+							}),
+						new sap.suite.ui.microchart.ComparisonMicroChartData({
+							title: "EMEA",
+							value: 20,
+							color: "Critical",
+							displayValue: "18M"
+					})],
+					shrinkable: false,
+					height: "400px"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this.oCC.destroy();
+			}
+		});
+
+		QUnit.test("Comparison chart rendered.", function(assert) {
+			assert.ok(jQuery.sap.domById("comparison-chart"), "Comparison chart was rendered successfully");
+			assert.equal(jQuery.sap.byId("comparison-chart-chart-item-0-title").text(), "Americas", "Title was rendered successfully");
+			assert.equal(jQuery.sap.byId("comparison-chart-chart-item-0-value").text(), "10MM", "Value was rendered successfully");
+		});
+
+		QUnit.test("Chart item height calculation for non-Firefox browser", function(assert) {
+			// Arrange
+			var iHeight = parseFloat(this.oCC.$().find(".sapSuiteCpMCVerticalAlignmentContainer").css("height"));
+			var iBarCount = this.oCC.getData().length;
+			var aBarContainers = this.oCC.$().find(".sapSuiteCpMCChartItem");
+			var iExpectedBarContainerHeight = Math.round(iHeight / iBarCount) + "px";
+			// Act
+			// Assert
+			var iActualBarContainerHeight = aBarContainers.css("height");
+			assert.equal(iActualBarContainerHeight, iExpectedBarContainerHeight, "Bar container item height is calculated as alignment container height / bar count");
+		});
+
+		QUnit.test("_adjustBars calls _calculateBarContainerHeight method when the bar count is not 0", function(assert) {
+			// Arrange
+			var iHeight = parseFloat(this.oCC.$().find(".sapSuiteCpMCVerticalAlignmentContainer").css("height"));
+			var iBarCount = this.oCC.getData().length;
+
+			var spyCalculateBarContainerHeight = sinon.spy(this.oCC, "_calculateBarContainerHeight");
+			// Act
+			this.oCC._adjustBars();
+			// Assert
+			assert.ok(spyCalculateBarContainerHeight.called, "_calculateBarContainerHeight is called");
+			assert.ok(spyCalculateBarContainerHeight.calledWith(sinon.match(sap.ui.Device.browser.firefox), iHeight, iBarCount), "_calculateBarContainerHeight is called with flag for Firefox, height, bar count");
+		});
+
+		QUnit.test("_adjustBars doesn't call _calculateBarContainerHeight method when the bar count is 0", function(assert) {
+			// Arrange
+			var aData = [];
+			var iBarCount = aData.length;
+
+			var spyCalculateBarContainerHeight = sinon.stub(this.oCC, "getData").returns(aData);
+			var spyCalculateBarContainerHeight = sinon.spy(this.oCC, "_calculateBarContainerHeight");
+			// Act
+			this.oCC._adjustBars();
+			// Assert
+			assert.ok(spyCalculateBarContainerHeight.notCalled, "_calculateBarContainerHeight is not called");
+		});
+
+		QUnit.test("_calculateBarContainerHeight calculates the height as individual item height sum for firefox, non-responsive, normal mode", function(assert) {
+			// Arrange
+			var bFirefox = true;
+			var bResponsive = false;
+			var sView = "Normal";
+			var iHeight = 13;
+			var iBarCount = 2;
+			var iHeaderHeight = this.oCC.$().find(".sapSuiteCpMCChartItemHeader").outerHeight(true);
+			var iBarHeight = this.oCC.$().find(".sapSuiteCpMCChartBar").outerHeight(true);
+			var iExpectedHeight = iHeaderHeight + iBarHeight;
+
+			var spyGetIsResponsive = sinon.stub(this.oCC, "getIsResponsive").returns(bResponsive);
+			var spyGetView = sinon.stub(this.oCC, "getView").returns(sView);
+			// Act
+			var iActualHeight = this.oCC._calculateBarContainerHeight(bFirefox, iHeight, iBarCount);
+			// Assert
+			assert.equal(iActualHeight, iExpectedHeight, "Height is calculated correctly");
+		});
+
+		QUnit.test("_calculateBarContainerHeight calculates the height as a height barcount division for non-firefox, responsive, wide mode", function(assert) {
+			// Arrange
+			var bFirefox = false;
+			var iHeight = 13;
+			var iBarCount = 2;
+			var iExpectedHeight = iHeight / iBarCount;
+			// Act
+			var iActualHeight = this.oCC._calculateBarContainerHeight(bFirefox, iHeight, iBarCount);
+			// Assert
+			assert.equal(iActualHeight, iExpectedHeight, "Height is calculated correctly");
+		});
+
+		QUnit.module("Test chart data calculation", {
+			beforeEach: function(assert) {
+				this.oChart = new sap.suite.ui.microchart.ComparisonMicroChart("test-chart");
+			},
+			afterEach: function(assert) {
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("One bar test", function(assert) {
+			var oChartData = new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 10
+			});
+			this.oChart.addData(oChartData);
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.length, 1, "One bar calculated");
+			assert.equal(aResult[0].value, 100, "One bar takes 100%");
+			assert.equal(aResult[0].negativeNoValue, 0, "One bar takes 100%");
+			assert.equal(aResult[0].positiveNoValue, 0, "One bar takes 100%");
+		});
+
+		QUnit.test("Two positive bars test", function(assert) {
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 10
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 20
+			}));
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.length, 2, "Two bars calculated");
+
+			assert.equal(aResult[0].value, 50, "First bar takes 50%");
+			assert.equal(aResult[0].negativeNoValue, 0, "First bar takes 50%");
+			assert.equal(aResult[0].positiveNoValue, 50, "First bar takes 50%");
+
+			assert.equal(aResult[1].value, 100, "Second bar takes 100%");
+			assert.equal(aResult[1].negativeNoValue, 0, "Second bar takes 100%");
+			assert.equal(aResult[1].positiveNoValue, 0, "Second bar takes 100%");
+		});
+
+		QUnit.test("Two positive and one negative bars test", function(assert) {
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 20
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 40
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: -20
+			}));
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.length, 3, "Three bars calculated");
+
+			assert.equal(aResult[0].value, 33, "First bar takes 33%");
+			assert.equal(aResult[0].negativeNoValue, 33, "First bar takes 33%");
+			assert.equal(aResult[0].positiveNoValue, 34, "First bar takes 33%");
+
+			assert.equal(aResult[1].value, 67, "Second bar takes 67%");
+			assert.equal(aResult[1].negativeNoValue, 33, "Second bar takes 67%");
+			assert.equal(aResult[1].positiveNoValue, 0, "Second bar takes 67%");
+
+			assert.equal(aResult[2].value, 33, "Third bar takes -33%");
+			assert.equal(aResult[2].negativeNoValue, 0, "Third bar takes -33%");
+			assert.equal(aResult[2].positiveNoValue, 67, "Third bar takes -33%");
+		});
+
+		QUnit.test("More than three bars", function(assert) {
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 20
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 40
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: -20
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 50
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: -80
+			}));
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.length, 5, "Five bars calculated");
+
+			assert.equal(aResult[0].value, 15, "First bar takes 15%");
+			assert.equal(aResult[0].negativeNoValue, 62, "First bar takes 62%");
+			assert.equal(aResult[0].positiveNoValue, 23, "First bar takes 23%");
+
+			assert.equal(aResult[1].value, 31, "Second bar takes 31%");
+			assert.equal(aResult[1].negativeNoValue, 62, "Second bar takes 62%");
+			assert.equal(aResult[1].positiveNoValue, 7, "Second bar takes 7%");
+
+			assert.equal(aResult[2].value, 15, "Third bar takes 15%");
+			assert.equal(aResult[2].negativeNoValue, 47, "Third bar takes 47%");
+			assert.equal(aResult[2].positiveNoValue, 38, "Third bar takes 38%");
+		});
+
+		QUnit.test("Zero value handled", function(assert) {
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 20
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 0
+			}));
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.length, 2, "Two bars calculated");
+
+			assert.equal(aResult[0].value, 100, "First bar takes 100%");
+			assert.equal(aResult[0].negativeNoValue, 0, "First bar takes 100%");
+			assert.equal(aResult[0].positiveNoValue, 0, "First bar takes 100%");
+
+			assert.equal(aResult[1].value, 0, "Second bar takes 0");
+			assert.equal(aResult[1].negativeNoValue, 0, "Second bar takes 0");
+			assert.equal(aResult[1].positiveNoValue, 100, "Second bar takes 0");
+		});
+
+		QUnit.test("Large positive value handled 1", function(assert) {
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 200000
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 10
+			}));
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.length, 2, "Two bars calculated");
+
+			assert.equal(aResult[0].value, 100, "First bar takes 100%");
+			assert.equal(aResult[0].negativeNoValue, 0, "First bar takes 100%");
+			assert.equal(aResult[0].positiveNoValue, 0, "First bar takes 100%");
+
+			assert.equal(aResult[1].value, 1, "Second bar takes 1%");
+			assert.equal(aResult[1].negativeNoValue, 0, "Second bar takes 1%");
+			assert.equal(aResult[1].positiveNoValue, 99, "Second bar takes 1%");
+		});
+
+		QUnit.test("Large positive value handled 2", function(assert) {
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 200000
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 10
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: -20
+			}));
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.length, 3, "Three bars calculated");
+
+			assert.equal(aResult[0].value, 99, "First bar takes 99%");
+			assert.equal(aResult[0].negativeNoValue, 1, "First bar takes 99%");
+			assert.equal(aResult[0].positiveNoValue, 0, "First bar takes 99%");
+
+			assert.equal(aResult[1].value, 1, "Second bar takes 1%");
+			assert.equal(aResult[1].negativeNoValue, 1, "Second bar takes 1%");
+			assert.equal(aResult[1].positiveNoValue, 98, "Second bar takes 1%");
+
+			assert.equal(aResult[2].value, 1, "Third bar takes -1%");
+			assert.equal(aResult[2].negativeNoValue, 0, "Third bar takes -1%");
+			assert.equal(aResult[2].positiveNoValue, 99, "Third bar takes -1%");
+		});
+
+		QUnit.test("Large negative value handled 1", function(assert) {
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: -200000
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: -20
+			}));
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.length, 2, "Two bars calculated");
+
+			assert.equal(aResult[0].value, 100, "First bar takes -100%");
+			assert.equal(aResult[0].negativeNoValue, 0, "First bar takes -100%");
+			assert.equal(aResult[0].positiveNoValue, 0, "First bar takes -100%");
+
+			assert.equal(aResult[1].value, 1, "Second bar takes -1%");
+			assert.equal(aResult[1].negativeNoValue, 99, "Second bar takes -1%");
+			assert.equal(aResult[1].positiveNoValue, 0, "Second bar takes -1%");
+		});
+
+		QUnit.test("Large negative value handled 2", function(assert) {
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: -200000
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: 10
+			}));
+			this.oChart.addData(new sap.suite.ui.microchart.ComparisonMicroChartData({
+				value: -20
+			}));
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.length, 3, "Three bars calculated");
+
+			assert.equal(aResult[0].value, 99, "First bar takes -99%");
+			assert.equal(aResult[0].negativeNoValue, 0, "First bar takes -99%");
+			assert.equal(aResult[0].positiveNoValue, 1, "First bar takes -99%");
+
+			assert.equal(aResult[1].value, 1, "Second bar takes 1%");
+			assert.equal(aResult[1].negativeNoValue, 99, "Second bar takes 1%");
+			assert.equal(aResult[1].positiveNoValue, 0, "Second bar takes 1%");
+
+			assert.equal(aResult[2].value, 1, "Third bar takes -1%");
+			assert.equal(aResult[2].negativeNoValue, 98, "Third bar takes -1%");
+			assert.equal(aResult[2].positiveNoValue, 1, "Third bar takes -1%");
+		});
+
+		QUnit.module("Press event tests - sap.suite.ui.microchart.ComparisonMicroChart",  {
+			beforeEach: function() {
+				fnCallback = sinon.spy();
+				fnBarCallback = sinon.spy();
+
+				this.oCC = new sap.suite.ui.microchart.ComparisonMicroChart("comparison-chart", {
+					size: "M",
+					scale: "M",
+					view: sap.suite.ui.microchart.ComparisonMicroChartViewType.Normal,
+					data: [new sap.suite.ui.microchart.ComparisonMicroChartData({
+						title: "Americas",
+						value: 10,
+						color: "Good",
+						displayValue: "10M",
+						press: fnBarCallback
+					}), new sap.suite.ui.microchart.ComparisonMicroChartData({
+						title: "EMEA",
+						value: 20,
+						color: "Critical",
+						displayValue: "18M",
+						press: fnBarCallback
+					})],
+					shrinkable: false,
+					height: "400px",
+					press: fnCallback
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this.oCC.destroy();
+			}
+		});
+
+		QUnit.test("Test press behavior", function(assert) {
+			jQuery(".sapSuiteCpMCChartContent").focus().click();
+			sap.ui.getCore().applyChanges();
+			assert.equal(fnCallback.callCount, 1, "Chart press handler called.");
+
+			jQuery(".sapSuiteCpMCChartBar:eq(1)").focus().click();
+			sap.ui.getCore().applyChanges();
+			assert.equal(fnBarCallback.callCount, 1, "Bar press handler called.");
+
+			this.oCC.detachPress(fnCallback);
+
+			jQuery(".sapSuiteCpMCChartContent").focus().click();
+			sap.ui.getCore().applyChanges();
+			assert.equal(fnCallback.callCount, 1, "Chart press handler still has call count of 1 because the handler was detached.");
+
+			this.oCC.attachPress(fnCallback);
+
+			jQuery(".sapSuiteCpMCChartContent").focus().click();
+			sap.ui.getCore().applyChanges();
+			assert.ok(fnCallback.calledTwice, "Chart press handler now has call count of 2.");
+		});
+
+		QUnit.module("Clone the bar - sap.suite.ui.microchart.ComparisonMicroChart", {
+			beforeEach: function() {
+				this.oCC = new sap.suite.ui.microchart.ComparisonMicroChart("comparison-chart", {
+					size: "M",
+					scale: "M",
+					view: sap.suite.ui.microchart.ComparisonMicroChartViewType.Normal,
+					data: [new sap.suite.ui.microchart.ComparisonMicroChartData({
+						title: "Americas",
+						value: 10,
+						color: "Good",
+						displayValue: "10M"
+					}), new sap.suite.ui.microchart.ComparisonMicroChartData({
+						title: "EMEA",
+						value: 20,
+						color: "Critical",
+						displayValue: "18M"
+					})],
+					shrinkable: false,
+					height: "400px"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this.oCC.destroy();
+			}
+		});
+
+		QUnit.test("Test clone the bar", function(assert) {
+			assert.ok(this.oCC.getData().length == 2, "Two bars in Comparison Chart");
+			this.oCC.addData(this.oCC.getData()[0].clone());
+			sap.ui.getCore().applyChanges();
+			assert.ok(this.oCC.getData().length == 3, "Three bars in Comparison Chart");
+		});
+
+		QUnit.module("Responsiveness tests - sap.suite.ui.microchart.ComparisonMicroChart", {
+			beforeEach: function() {
+				this._oCC = new sap.suite.ui.microchart.ComparisonMicroChart("comparison-chart", {
+					isResponsive: true,
+					scale: "M",
+					view: sap.suite.ui.microchart.ComparisonMicroChartViewType.Normal,
+					data: [new sap.suite.ui.microchart.ComparisonMicroChartData({
+						title: "Americas",
+						value: 10,
+						color: "Good",
+						displayValue: "10M"
+					}), new sap.suite.ui.microchart.ComparisonMicroChartData({
+						title: "EMEA",
+						value: 20,
+						color: "Critical",
+						displayValue: "18M"
+					}), new sap.suite.ui.microchart.ComparisonMicroChartData({
+						title: "APAC",
+						value: -20,
+						color: "Error",
+						displayValue: "-20"
+					})],
+					shrinkable: false,
+					height: "400px"
+				});
+				this._oFB = new sap.m.FlexBox("cc-fb", {
+					items: [this._oCC]
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this._oFB.destroy();
+				this._oCC.destroy();
+			}
+		});
+
+		QUnit.test("Vertical responsiveness: decreasing fonts", function(assert) {
+			//Arrange
+			this._oFB.setWidth("16rem");
+			this._oFB.setHeight("8rem");
+			this._oFB.rerender();
+			var iMediumFont = parseInt(this._oCC.$().find(".sapSuiteCpMCChartItemValue").css("font-size"), 10);
+			this._oFB.setWidth("16rem");
+			this._oFB.setHeight("3.5rem");
+			this._oFB.rerender();
+			var iSmallFont = parseInt(this._oCC.$().find(".sapSuiteCpMCChartItemValue").css("font-size"), 10);
+
+			//Assert
+			assert.equal(this._oCC.$().hasClass("sapSuiteCpMCSmallFont"), true, "Added CSS class that commands to use small fonts");
+			assert.equal(iSmallFont < iMediumFont, true, "Font size decrease had actually occured: " + iSmallFont + " < " + iMediumFont);
+		});
+
+		QUnit.test("Vertical responsiveness: bars disappears", function(assert) {
+			//Arrange
+			this._oFB.setWidth("8rem");
+			this._oFB.setHeight("3rem");
+			this._oFB.rerender();
+
+			//Assert
+			assert.notEqual(this._oCC.$().css("display"),"none", "Chart has not disappeared yet");
+			assert.equal(this._oCC.$().find(".sapSuiteCpMCChartBar>div").css("display"),"none", "Bars has disappeared");
+		});
+
+		QUnit.test("Vertical responsiveness: chart disappears", function(assert) {
+			//Arrange
+			this._oFB.setWidth("8rem");
+			this._oFB.setHeight("0.4rem");
+			this._oFB.rerender();
+
+			//Assert
+			assert.equal(this._oCC.$().css("display"),"none", "Chart has disappeared");
+		});
+		QUnit.test("Horizontal responsiveness: decreasing fonts", function(assert) {
+			//Arrange
+			this._oFB.setWidth("16rem");
+			this._oFB.setHeight("8rem");
+			this._oFB.rerender();
+			var iMediumFont = parseInt(this._oCC.$().find(".sapSuiteCpMCChartItemValue").css("font-size"), 10);
+			this._oFB.setWidth("3rem");
+			this._oFB.setHeight("8rem");
+			this._oFB.rerender();
+			var iSmallFont = parseInt(this._oCC.$().find(".sapSuiteCpMCChartItemValue").css("font-size"), 10);
+
+			//Assert
+			assert.equal(this._oCC.$().hasClass("sapSuiteCpMCSmallFont"), true, "Added CSS class that commands to use small fonts");
+			assert.equal(iSmallFont < iMediumFont, true, "Font size decrease had actually occured: " + iSmallFont + " < " + iMediumFont);
+		});
+
+		QUnit.test("Horizontal responsiveness: chart disappears", function(assert) {
+			//Arrange
+			this._oFB.setWidth("1rem");
+			this._oFB.setHeight("8rem");
+			this._oFB.rerender();
+
+			//Assert
+			assert.equal(this._oCC.$().css("display"),"none", "Chart has disappeared");
+		});
+
+		QUnit.module("Responsiveness adjustments for the use within GenericTile", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.ComparisonMicroChart().addStyleClass("sapUiSmallMargin");
+				this.oGenericTile = new sap.m.GenericTile("generic-tile", {
+					tileContent : new sap.m.TileContent({
+						content : this.oChart
+					})
+				});
+			},
+			afterEach: function() {
+				this.oGenericTile.destroy();
+			}
+		});
+
+		QUnit.test("The MicroChart becomes responsive if it is used in a Generic Tile", function(assert) {
+			//Act
+			this.oChart.onBeforeRendering();
+			//Assert
+			assert.ok(this.oChart.getIsResponsive(), "The chart became responsive");
+		});
+
+		QUnit.test("The standard margins are handled if chart is used in a Generic Tile", function(assert) {
+			//Arrange
+			var oRemoveMarginCallback = sinon.spy(sap.suite.ui.microchart, "_removeStandardMargins");
+			//Act
+			this.oChart.onBeforeRendering();
+			//Assert
+			assert.ok(oRemoveMarginCallback.called, "Library function that removes standard margins has been called.");
+		});
+
+		QUnit.module("Test if title attribute is added and removed when mouse enters and left", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.ComparisonMicroChart("comparison-chart", {
+					size: "M",
+					scale: "M",
+					view: sap.suite.ui.microchart.ComparisonMicroChartViewType.Normal,
+					data: [new sap.suite.ui.microchart.ComparisonMicroChartData({
+						title: "Americas",
+						value: 10,
+						color: "Good",
+						displayValue: "10M"
+					}), new sap.suite.ui.microchart.ComparisonMicroChartData({
+						title: "EMEA",
+						value: 20,
+						color: "Critical",
+						displayValue: "18M"
+					})],
+					shrinkable: false,
+					height: "400px"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("The title attribute is added when mouse enters", function(assert) {
+			//Arrange
+			var $ComparisonChart = this.oChart.$();
+			//Act
+			$ComparisonChart.trigger("mouseenter");
+			sap.ui.getCore().applyChanges();
+			//Assert
+			assert.notEqual($ComparisonChart.attr("title"), null, "The title attribute is added");
+		});
+
+		QUnit.test("The title attribute is removed when mouse left", function(assert) {
+			//Arrange
+			var $ComparisonChart = this.oChart.$();
+			//Act
+			$ComparisonChart.trigger("mouseleave");
+			sap.ui.getCore().applyChanges();
+			//Assert
+			assert.equal($ComparisonChart.attr("title"), null, "The title attribute is removed");
+		});
+
+		QUnit.test("Aria-label only includes the standard chart information", function(assert) {
+			// Arrange
+			var sAriaLabel = this.oChart.getAltText();
+			this.oChart.setTooltip("This is a tooltip");
+			// Act
+			sap.ui.getCore().applyChanges();
+			// Assert
+			assert.equal(this.oChart.$().attr("aria-label"), sAriaLabel, "The aria-label includes only chart information");
+			assert.equal(this.oChart.$().attr("title"), null, "The title attribute is not rendered");
+		});
+
+		QUnit.module("Tooltip behavior", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.ComparisonMicroChart();
+				this.oModel = new sap.ui.model.json.JSONModel({
+					size : "M",
+					Tooltip : "Custom Tooltip"
+				});
+			},
+			afterEach: function() {
+				this.oChart.destroy();
+				this.oModel.destroy();
+			}
+		});
+
+		QUnit.test("Default value for tooltip", function(assert) {
+			//Arrange
+			//Act
+			//Assert
+			assert.deepEqual(this.oChart.getTooltip(), "{AltText}", "Default value set correctly");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, tooltip is not bound", function(assert) {
+			//Arrange
+			//Act
+			this.oChart.setModel(this.oModel);
+			sap.ui.getCore().applyChanges();
+			//Assert
+			assert.deepEqual(this.oChart.getTooltip(), "{AltText}", "Default value set correctly");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, control is bound, tooltip aggregataion is not bound", function(assert) {
+			//Arrange
+			this.oChart.setAggregation("tooltip", new sap.ui.core.TooltipBase({
+				text : "{/Tooltip}"
+			}));
+			//Act
+			this.oChart.setModel(this.oModel);
+			sap.ui.getCore().applyChanges();
+			//Assert
+			assert.ok(this.oChart.getTooltip(), "Tooltip exists");
+			assert.deepEqual(this.oChart.getTooltip().getText(), "Custom Tooltip", "Tooltip exists");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, control is bound", function(assert) {
+			//Arrange
+			var oModel = new sap.ui.model.json.JSONModel({
+				data : [{
+					size : "M",
+					Tooltip : "Custom Tooltip"
+				}]
+			});
+			var oTable = new sap.m.Table({
+				items : {
+					path : "/data",
+					template : new sap.m.ColumnListItem({
+						cells : [new sap.suite.ui.microchart.ComparisonMicroChart({
+							data : [new sap.suite.ui.microchart.ComparisonMicroChartData({
+								title : "Otto",
+								value : "4711"
+							})]
+						})]
+					})
+				}
+			}).setModel(oModel);
+			//Act
+			sap.ui.getCore().applyChanges();
+			var oChart = oTable.getItems()[0].getCells()[0];
+			//Assert
+			assert.deepEqual(oChart.getTooltip(), null, "Binding is empty, so tooltip aggregation is also empty.");
+			assert.ok(oChart.getTooltip_AsString(), "Tooltip is empty, default tooltip as string appears");
+			assert.ok(oChart.isBound("tooltip"), "Tooltip is bound");
+			//Cleanup
+			oTable.destroy();
+			oModel.destroy();
+		});
+
+		QUnit.module("Execution of functions onAfterRendering", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.ComparisonMicroChart().placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+				sinon.spy(sap.suite.ui.microchart, "_checkControlIsVisible");
+			},
+			afterEach: function() {
+				sap.suite.ui.microchart._checkControlIsVisible.restore();
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("Visibility check", function(assert) {
+			//Act
+			this.oChart.onAfterRendering();
+			//Assert
+			assert.ok(sap.suite.ui.microchart._checkControlIsVisible.calledOnce, "Method _checkControlIsVisible has been called once.");
+		});
+</script>
+</head>
+
+<body id="body" class="sapUiBody">
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+</body>
+</html>

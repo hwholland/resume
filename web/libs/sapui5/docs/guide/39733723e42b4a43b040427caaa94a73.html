@@ -1,0 +1,144 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, we will create the DeltaMicroChart on the Production Process page."/>
+<meta name="description" content="In this step, we will create the DeltaMicroChart on the Production Process page."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=16043717837695937"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=16043717837695937"/>
+<title>Step 9: Delta Micro Chart</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio39733723e42b4a43b040427caaa94a73">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 9: Delta Micro Chart</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we will create the <samp class="ph codeph">DeltaMicroChart</samp> on the
+            <span class="ph emphasis emphasis">Production Process</span> page.</p>
+
+		<div class="section" id="loio39733723e42b4a43b040427caaa94a73__section_cqy_3rl_l1b"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio39733723e42b4a43b040427caaa94a73__fig_j1g_rrl_l1b"><div class="figcontainer">
+				<img class="image" id="loio39733723e42b4a43b040427caaa94a73__image_eqw_trl_l1b" src="loio996b69fe910049ac9916fd3ec8c912a0_LowRes.png"/>
+			</div></div>
+
+		</div></div>
+
+		<div class="section" id="loio39733723e42b4a43b040427caaa94a73__section_es4_5rl_l1b"><div class="section_title">DeltaMicroChart</div><div type="DeltaMicroChart"><p class="p">We are going to add a chart to
+                visualize the difference between the time required for production compared with the
+                estimated time. You use the <samp class="ph codeph">DeltaMicroChart</samp> to compare two separate
+                values.</p>
+<div class="sectiondiv subsection">
+                <p class="p subsectiontitle">ProcessFlow.view.xml</p>
+
+            </div><p class="p">You can view and download this step in the Demo Kit <span class="ph">at <a class="xref" href="http://sapui5.hana.ondemand.com/explored.html#/sample/sap.suite.ui.commons.tutorial.icecream.09/preview" alt="http://sapui5.hana.ondemand.com/explored.html#/sample/sap.suite.ui.commons.tutorial.icecream.09/preview" title="http://sapui5.hana.ondemand.com/explored.html#/sample/sap.suite.ui.commons.tutorial.icecream.09/preview">Ice Cream Machine - Step 9 - Delta Micro
+                        Chart</a></span>.</p>
+<div class="p">
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">mvc:View
+    ...
+        &lt;m:headerContainer&gt;
+            &lt;m:HeaderContainer
+                scrollStep="200"
+                scrollTime="500"
+                showDividers="true"
+                class="sapUiSmallMargin"&gt;
+                ...
+                <span class="ph emphasis emphasis">&lt;m:FlexBox
+                    width="12rem"
+                    height="9rem"
+                    alignItems="Center"
+                    justifyContent="Center"
+                    direction="Column"&gt;
+                    &lt;m:Title
+                        text="{
+                            parts: [
+                                'i18n&gt;processFlowChartsProductionTime',
+                                'business&gt;/timeMeasure'
+                            ],
+                            formatter: 'jQuery.sap.formatMessage'
+                        }"
+                        class="sapUiSmallMargin" /&gt;
+                    &lt;m:FlexBox width="12rem" height="5rem"&gt;
+                        &lt;mc:DeltaMicroChart
+                            isResponsive="true"
+                            color="{business&gt;/productionTimeComparisonCriticality}"
+                            value1="{business&gt;/expectedProductionTime}"
+                            value2="{business&gt;/currentProductionTime}"
+                            title1="{i18n&gt;processFlowChartsExpected}"
+                            title2="{i18n&gt;processFlowChartsCurrent}"
+                            displayValue1="{business&gt;/expectedProductionTime}"
+                            displayValue2="{business&gt;/currentProductionTime}"
+                            deltaDisplayValue="{
+                                parts: [
+                                    'business&gt;/expectedProductionTime',
+                                    'business&gt;/currentProductionTime'
+                                ],
+                                formatter: '.getValuesDelta'
+                        }" /&gt;
+                    &lt;/m:FlexBox&gt;
+                &lt;/m:FlexBox&gt;</span>
+            &lt;/m:HeaderContainer&gt;
+        &lt;/m:headerContainer&gt;
+    ...
+&lt;/mvc:View&gt;</pre></div>
+
+            </div>
+<p class="p">The <samp class="ph codeph">DeltaMicroChart</samp> is used in the responsive mode embedded in
+                the <span class="ph uicontrol">Flexbox</span> that sets the dimensions. We are simply using the
+                respective values from the data model for binding the
+                    <span class="ph uicontrol">displayValue1</span> and <span class="ph uicontrol">displayValue2</span>
+                properties. For the <span class="ph uicontrol">deltaDisplayValue</span>, we need to perform an
+                advanced calculation based on the values before we can set them as a property. This
+                is why we will be using the <span class="ph uicontrol">.getValuesDelta</span> formatter
+                function.</p>
+</div></div>
+
+		<div class="section"><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">ProcessFlow.controller.js</p>
+
+            </div><div class="p">
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"> 
+sap.ui.define([
+    "sap/ui/core/mvc/Controller"
+], function(Controller) {
+    "use strict";
+
+    return Controller.extend("sap.suite.ui.commons.demokit.tutorial.icecream.09.controller.ProcessFlow", {
+        ...
+        <span class="ph emphasis emphasis">getValuesDelta: function(fFirstValue, fSecondValue) {
+            return fSecondValue - fFirstValue;
+        }</span>
+    });
+});</pre></div>
+
+            </div>
+<p class="p">This formatter takes the respective values and returns a string that will then be
+                set as a property of the <samp class="ph codeph">DeltaMicroChart</samp>.</p>
+</div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="e5b7f8a93e4b432198869b3ae75981b0.html" title="In this tutorial, we will show you how to use SAPUI5 controls like Generic Tiles, Micro Charts, and Process Flow.">Ice Cream Machine</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="3f586aa9a89443888e60831d0732e891.html" title="In this step, we will create the ComparisonMicroChart on the Production Process page.">Step 8: Comparison Micro Chart</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="819beea79ed34d4bb66d8a421820cbc3.html" title="In this step, we will create the LineMicroChart on the Production Process page.">Step 10: Line Micro Chart</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

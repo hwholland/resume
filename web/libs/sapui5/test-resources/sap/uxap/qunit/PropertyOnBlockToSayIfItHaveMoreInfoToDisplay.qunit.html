@@ -1,0 +1,142 @@
+<html>
+<head lang="en">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+
+    <script id="sap-ui-bootstrap"
+            src="../../../../resources/sap-ui-core.js"
+            data-sap-ui-theme="sap_bluecrystal"
+            data-sap-ui-xx-bindingSyntax="complex"
+            data-sap-ui-libs="sap.m, sap.uxap">
+    </script>
+
+    <link rel="stylesheet" href="../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen"/>
+    <script type="text/javascript" src="../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+    <script type="text/javascript" src="../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+    <script type="text/javascript" src="../../../../resources/sap/ui/qunit/qunit-coverage.js"></script>
+    <script type="text/javascript" src="./js/js-coverage-filter.js"></script>
+
+
+    <script type="text/javascript">
+        jQuery.sap.registerModulePath("view", "view");
+        jQuery.sap.registerModulePath("sap.uxap.sample", "../demokit/sample");
+        jQuery.sap.registerModulePath("sap.uxap.testblocks", "./blocks");
+        module("aat_UxAP-330");
+
+        jQuery.sap.registerModulePath("view", "view");
+        sap.ui.controller("viewController", {
+            nameFormatter: function (sTitle, sName) {
+                return sTitle + " - " + sName;
+            }
+        });
+        jQuery.sap.require("sap.uxap.ObjectPageLayout");
+        jQuery.sap.require("sap.uxap.ObjectPageSection");
+        jQuery.sap.require("sap.uxap.ObjectPageHeader");
+        var viewController = new sap.ui.controller("viewController");
+        //aat_UxAP-330_PropertyOnBlockToSayIfItHaveMoreInfoToDisplay
+        var objectPageSampleView = sap.ui.xmlview("UxAP-330_PropertyOnBlockToSayIfItHaveMoreInfoToDisplay", {viewName: "view.UxAP-330_PropertyOnBlockToSayIfItHaveMoreInfoToDisplay", controller: viewController });
+        objectPageSampleView.placeAt('content');
+        start();
+        var referencedObjectPage = objectPageSampleView.byId("objectPage330");
+
+        test("ObjectPageId created", function () {
+            notStrictEqual(referencedObjectPage, undefined, "ObjectPageLayout created successfuly");
+        });
+        test("ObjectPageSectionId created", function () {
+            var objectPageSection = objectPageSampleView.byId("ObjectPageSection330");
+            notStrictEqual(objectPageSection, undefined, "Object Page Section created successfuly");
+        });
+        test("ObjectPageSubSectionId_0 created", function () {
+            var objectPageSubSection0 = objectPageSampleView.byId("ObjectPageSubSection330_0");
+            notStrictEqual(objectPageSubSection0, undefined, "Object Page Sub Section 0 created successfuly");
+        });
+        test("ObjectPageSubSectionId_1 created", function () {
+            var objectPageSubSection1 = objectPageSampleView.byId("ObjectPageSubSection330_1");
+            notStrictEqual(objectPageSubSection1, undefined, "Object Page Sub Section 1 created successfuly");
+        });
+        test("ObjectPageSubSectionId_2 created", function () {
+            var objectPageSubSection1 = objectPageSampleView.byId("ObjectPageSubSection330_2");
+            notStrictEqual(objectPageSubSection1, undefined, "Object Page Sub Section 2 created successfuly");
+        });
+        test("ObjectPageSubSectionId_3 created", function () {
+            var objectPageSubSection3 = objectPageSampleView.byId("ObjectPageSubSection330_3");
+            notStrictEqual(objectPageSubSection3, undefined, "Object Page Sub Section 3 created successfuly");
+        });
+        test("ObjectPageSubSectionId_4 created", function () {
+            var objectPageSubSection4 = objectPageSampleView.byId("ObjectPageSubSection330_4");
+            notStrictEqual(objectPageSubSection4, undefined, "Object Page Sub Section 4 created successfuly");
+        });
+        test("ObjectPageBlockBase_0 created", function () {
+            var objectPageBlockBase0 = objectPageSampleView.byId("ObjectPageBlockBase330_0");
+            notStrictEqual(objectPageBlockBase0, undefined, "Object Page Block Base 0 created successfuly");
+        });
+        test("ObjectPageBlockBase_1 created", function () {
+            var objectPageBlockBase1 = objectPageSampleView.byId("ObjectPageBlockBase330_1");
+            notStrictEqual(objectPageBlockBase1, undefined, "Object Page Block Base 1 created successfuly");
+        });
+        test("ObjectPageBlockBase_2 created", function () {
+            var objectPageBlockBase2 = objectPageSampleView.byId("ObjectPageBlockBase330_2");
+            notStrictEqual(objectPageBlockBase2, undefined, "Object Page Block Base 2 created successfuly");
+        });
+        test("ObjectPageBlockBase_3 created", function () {
+            var objectPageBlockBase3 = objectPageSampleView.byId("ObjectPageBlockBase330_3");
+            notStrictEqual(objectPageBlockBase3, undefined, "Object Page Block Base 3 created successfuly");
+        });
+        test("ObjectPageBlockBase_4 created", function () {
+            var objectPageBlockBase4 = objectPageSampleView.byId("ObjectPageBlockBase330_4");
+            notStrictEqual(objectPageBlockBase4, undefined, "Object Page Block Base 4 created successfuly");
+        });
+        test("ObjectPageBlockBase_0 Check default value", function () {
+            var objectPageBlockBase0 = objectPageSampleView.byId("ObjectPageBlockBase330_0");
+            strictEqual(objectPageBlockBase0.getShowSubSectionMore(),  false, "Object Page Block Base 0: showSubSectionMore set with default value successfuly");
+        });
+        test("ObjectPageBlockBase_1 showSubSectionMore true", function () {
+            var objectPageBlockBase1 = objectPageSampleView.byId("ObjectPageBlockBase330_1");
+            strictEqual(objectPageBlockBase1.getShowSubSectionMore(),  true, "Object Page Block Base 1: showSubSectionMore set with true successfuly");
+        });
+        test("ObjectPageBlockBase_2 showSubSectionMore false", function () {
+            var objectPageBlockBase2 = objectPageSampleView.byId("ObjectPageBlockBase330_2");
+            strictEqual(objectPageBlockBase2.getShowSubSectionMore(),  false, "Object Page Block Base 2: showSubSectionMore set with false successfuly");
+        });
+        test("ObjectPageBlockBase_3 showSubSectionMore false", function () {
+            var objectPageBlockBase3 = objectPageSampleView.byId("ObjectPageBlockBase330_3");
+            strictEqual(objectPageBlockBase3.getShowSubSectionMore(),  true, "Object Page Block Base 3: showSubSectionMore set with true successfuly");
+        });
+        test("ObjectPageBlockBase_4 showSubSectionMore false", function () {
+            var objectPageBlockBase4 = objectPageSampleView.byId("ObjectPageBlockBase330_4");
+            strictEqual(objectPageBlockBase4.getShowSubSectionMore(),  false, "Object Page Block Base 4: showSubSectionMore set with false successfuly");
+        });
+        test("ObjectPageBlockBase_5 getSupportedModes", function () {
+            var objectPageBlockBase4 = objectPageSampleView.byId("ObjectPageBlockBase330_4");
+            strictEqual(jQuery.isEmptyObject(objectPageBlockBase4.getSupportedModes()),  false, "Object Page Block Base 5: can get the supportedModes");
+        });
+        test("ObjectPageSubSection330_0: showSubSectionMore set with default value", function () {
+            var objectPageSubSectionSeeMore0 =  $("#UxAP-330_PropertyOnBlockToSayIfItHaveMoreInfoToDisplay--ObjectPageSubSection330_0--seeMore").is(":visible");
+            strictEqual(objectPageSubSectionSeeMore0, false, "Object Page SubSection 0: 1 block with showSubSectionMore default value, seeMore not visible");
+        });
+        test("ObjectPageSubSection330_1: 1 block with showSubSectionMore true", function () {
+            var objectPageSubSectionSeeMore1 =  $("#UxAP-330_PropertyOnBlockToSayIfItHaveMoreInfoToDisplay--ObjectPageSubSection330_1--seeMore").is(":visible");
+            strictEqual(objectPageSubSectionSeeMore1, true, "Object Page SubSection 1: 1 block with showSubSectionMore true, seeMore visible");
+        });
+        test("ObjectPageSubSection330_2: 1 block with showSubSectionMore false", function () {
+            var objectPageSubSectionSeeMore2 =  $("#UxAP-330_PropertyOnBlockToSayIfItHaveMoreInfoToDisplay--ObjectPageSubSection330_2--seeMore").is(":visible");
+            strictEqual(objectPageSubSectionSeeMore2, false, "Object Page SubSection 2; 1 block with showSubSectionMore false, seeMore not visible");
+        });
+        test("ObjectPageSubSection330_3: 1 block set to true the other set to false", function () {
+            var objectPageSubSectionSeeMore3 =  $("#UxAP-330_PropertyOnBlockToSayIfItHaveMoreInfoToDisplay--ObjectPageSubSection330_3--seeMore").is(":visible");
+            strictEqual(objectPageSubSectionSeeMore3, true, "Object Page SubSection 3: 1 block set to true the other set to false, seeMore visible");
+        });
+        test("ObjectPageSubSection330_4: all block set showSubSectionMore value to false", function () {
+            var objectPageSubSectionSeeMore4 =  $("#UxAP-330_PropertyOnBlockToSayIfItHaveMoreInfoToDisplay--ObjectPageSubSection330_4--seeMore").is(":visible");
+            strictEqual(objectPageSubSectionSeeMore4, false, "Object Page SubSection 4: all block set showSubSectionMore value to false, seeMore not visible");
+        });
+    </script>
+</head>
+
+<body id="body" class="sapUiBody">
+<h1 id="qunit-header">qUnit Page for UxAP AAT 330 - Property on block to say if it have more info to display</h1>
+
+<div id="qunit"></div>
+<div id="content"></div>
+</body>
+</html>

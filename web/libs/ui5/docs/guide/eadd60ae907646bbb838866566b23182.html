@@ -1,0 +1,410 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, you will learn how to use your browser's developers tools to troubleshoot your OpenUI5 app."/>
+<meta name="description" content="In this step, you will learn how to use your browser's developers tools to troubleshoot your OpenUI5 app."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8887668382984816"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8887668382984816"/>
+<title>Step 1: Browser Developer Tools</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioeadd60ae907646bbb838866566b23182">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 1: Browser Developer Tools</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, you will learn how to use your browser's developers tools to troubleshoot
+		your <span class="ph"><span class="ph pname">OpenUI5</span></span> app. </p>
+
+		<p class="p">Most modern web browsers contain some form of Developer Tools. They allow you to examine the
+			details of the current web page. You can also use them to debug JavaScript code, analyze
+			network performance, live-edit DOM elements, and much more. As an example, we will show
+			you how to use the <span class="ph uicontrol">Developer Tools</span> in Google Chrome. Other
+			browsers have similar capabilities, and you can easily adapt the examples shown here to
+			these browsers.</p>
+
+		<div class="section" id="loioeadd60ae907646bbb838866566b23182__section_hkm_s4f_vz"><div class="section_title">Opening the Example App and the Developer Tools</div><div type="Opening the Example App and the Developer Tools">
+			
+			<ol class="ol" id="loioeadd60ae907646bbb838866566b23182__ol_zwk_5pf_vz">
+				<li class="li">
+					<p class="p">Download the example app with errors from the Demo Kit<span class="ph"> at
+								<a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.tutorial.troubleshooting.01/preview" alt="../../explored.html#/sample/sap.ui.core.tutorial.troubleshooting.01/preview" title="../../explored.html#/sample/sap.ui.core.tutorial.troubleshooting.01/preview">Troubleshooting</a></span> and run
+						the app.</p>
+
+					<div class="note note"><span class="notetitle">Note</span> 
+						<p class="p">If you run the app within the Demo Kit frame, this step will not work as
+							described. Open the app in a new tab first with <img class="image" id="loioeadd60ae907646bbb838866566b23182__image_k4x_2py_n1b" src="loioebdf48e5efdb48a5a1f24dea972b4c41_LowRes.png" alt="Open in New Tab" title="Open in New Tab"/>.</p>
+
+					</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Open the <span class="ph uicontrol">Developer Tools</span> by pressing <kbd class="key">F12</kbd>.</p>
+
+				</li>
+
+			</ol>
+
+		</div></div>
+
+		<div class="section" id="loioeadd60ae907646bbb838866566b23182__section_xmw_w4f_vz"><div class="section_title">Inspecting DOM Elements and CSS Styles in the Elements Tab</div><div type="Inspecting DOM Elements and CSS Styles in the Elements Tab">
+			
+			<ol class="ol" id="loioeadd60ae907646bbb838866566b23182__ol_rfm_xpf_vz">
+				<li class="li">
+					<p class="p">Activate the <span class="ph uicontrol">Inspect Element</span> mode by pressing <span class="keys">
+							<kbd class="key">Ctrl</kbd>
+							 + <kbd class="key">Shift</kbd>
+							 + <kbd class="key">C</kbd>
+						</span>.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Click the <span class="ph uicontrol">Do Something</span> button in the app.</p>
+
+					<p class="p">The DOM tree in the <span class="ph uicontrol">Elements</span> tab highlights the button's DOM element.
+						Depending on which part of the button (icon or text) you clicked, different
+						HTML tags are highlighted.</p>
+
+				</li>
+
+				<li class="li">
+					<div class="p">Search for the following
+						line:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;button id="HeapOfShards---app--myButton" data-sap-ui="HeapOfShards---app--myButton" aria-describedby="__text1"
+	class="sapMBtn sapMBtnBase sapMBtnInverted"&gt;
+&lt;/button&gt;</pre></div>
+</div>
+
+					<p class="p">The <span class="ph uicontrol">Styles</span> section in the panel on the right shows the active and
+						overruled (striked-through) CSS styles for the DOM element that is currently
+						selected.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">In the <span class="ph uicontrol">Styles</span> section, switch to the
+							<span class="ph uicontrol">Computed</span> tab.</p>
+
+					<p class="p">You can see that the <samp class="ph codeph">margin</samp> of the button is set to
+						<samp class="ph codeph">0px</samp>.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">In the context menu of the element, choose <span class="ph uicontrol">Edit as
+							HTML</span> and add <samp class="ph codeph">sapUiLargeMargin</samp> to the
+							<samp class="ph codeph">class</samp> section of the <samp class="ph codeph">button</samp> tag.</p>
+
+					<p class="p">You can immediately see the effect on the web page.</p>
+
+					<div class="p">The edited element should now look like this:
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;button id="HeapOfShards---app--myButton" data-sap-ui="HeapOfShards---app--myButton" aria-describedby="__text1"
+	class="sapMBtn sapMBtnBase sapMBtnInverted sapUiLargeMargin"&gt;
+&lt;/button&gt;</pre></div>
+</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">In the <span class="ph uicontrol">Styles</span> section, switch again to the
+							<span class="ph uicontrol">Computed</span> tab.</p>
+
+					<p class="p">You can see that the <samp class="ph codeph">margin</samp> of the button is now set to
+							<samp class="ph codeph">48px</samp>.</p>
+
+				</li>
+
+			</ol>
+
+		</div></div>
+
+		<div class="section" id="loioeadd60ae907646bbb838866566b23182__section_bjt_qqf_vz"><div class="section_title">Analyzing Messages in the Console Tab</div><div type="Analyzing Messages in the Console Tab"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Interacting with the document</p>
+
+				<ol class="ol" id="loioeadd60ae907646bbb838866566b23182__ol_tmy_vwt_vz">
+					<li class="li">
+						<p class="p">Switch to the <span class="ph uicontrol">Console</span> tab and enter
+								<samp class="ph codeph">$("#HeapOfShards---app--myButton")</samp></p>
+
+						<div class="p">The console displays the DOM element structure of the
+							button:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">Q.fn.init [button#HeapOfShards---app--myButton.sapMBtn.sapMBtnBase.sapMBtnInverted, 
+context: document, selector: "#HeapOfShards---app--myButton"]</pre></div>
+</div>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Examine the <samp class="ph codeph">button</samp> element by expanding the
+							structure.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">In the <span class="ph uicontrol">Console</span> tab, enter
+								<samp class="ph codeph">myView=sap.ui.getCore().byId("HeapOfShards---app")</samp>.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">In the <span class="ph uicontrol">Console</span> tab, enter
+							<samp class="ph codeph">myView.byId("myButton")</samp>.</p>
+
+						<div class="p">The console displays the <span class="ph"><span class="ph pname">OpenUI5</span></span> structure of the button
+							control:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">f {bAllowTextSelection: true, mEventRegistry: {…}, 
+sId: "HeapOfShards---app--myButton", mProperties: PropertyBag, mAggregations: {…}, …}</pre></div>
+</div>
+
+						<p class="p">Examine the <span class="ph"><span class="ph pname">OpenUI5</span></span>
+							structure by expanding it.</p>
+
+					</li>
+
+				</ol>
+
+				<div class="note note"><span class="notetitle">Note</span> 
+					<div class="p">The method of retrieval is different for <span class="ph"><span class="ph pname">OpenUI5</span></span> controls
+						and DOM elements:<div class="table-wrapper"><table summary="" id="loioeadd60ae907646bbb838866566b23182__simpletable_xtw_wxt_vz" border="1" class="simpletable"><tr class="sthead">
+								<th valign="bottom" align="left" id="d12056370e293" class="stentry" width="50%">
+									<p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> Control</p>
+
+								</th>
+
+								<th valign="bottom" align="left" id="d12056370e302" class="stentry" width="50%">
+									<p class="p">DOM Element</p>
+
+								</th>
+
+							</tr>
+<tr class="strow">
+								<td valign="top" headers="d12056370e293" class="stentry">
+									<p class="p"><samp class="ph codeph">sap.ui.getCore().byId("HeapOfShards---app--myButton")</samp></p>
+
+								</td>
+
+								<td valign="top" headers="d12056370e302" class="stentry">
+									<p class="p"><samp class="ph codeph">$("#HeapOfShards---app--myButton") </samp></p>
+
+								</td>
+
+							</tr>
+</table></div>
+</div>
+
+				</div>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Watching messages</p>
+
+				<ol class="ol" id="loioeadd60ae907646bbb838866566b23182__ol_ezh_1yt_vz">
+					<li class="li">
+						<p class="p">Switch to the <span class="ph uicontrol">Console</span> tab.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Click the <span class="ph uicontrol">Do Something</span> button in the app.</p>
+
+						<p class="p">A <samp class="ph codeph">MessageToast</samp> appears with the text <span class="ph uicontrol">Sorry, an error
+								occurred!</span>.</p>
+
+					</li>
+
+					<li class="li">
+						<div class="p">In the console, you see the following error
+							message:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">TypeError: oEvent.getSourceXYZ is not a function
+at <span class="ph emphasis emphasis">f.onPress</span> (http://.../<span class="ph emphasis emphasis">App.controller.js</span>?eval:<span class="ph emphasis emphasis">20</span>:69)
+...</pre></div>
+</div>
+
+						<p class="p">This means that an error occurred in the <samp class="ph codeph">onPress</samp> function in the
+								<samp class="ph codeph">App.controller.js</samp> file at line
+							<samp class="ph codeph">20</samp>.</p>
+
+					</li>
+
+					<li class="li">
+						<div class="p">Click the first link in the stack trace after <samp class="ph codeph">f.onPress</samp> to look at the
+							source code where you can see that it wasn't the generic
+								<samp class="ph codeph">getSource</samp> function that was called, but an
+							undefined
+							<samp class="ph codeph">getSourceXYZ</samp>.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sMessage = this.getResourceBundle().getText("buttonOk", [oEvent.getSourceXYZ().getId()])</pre></div>
+</div>
+
+					</li>
+
+				</ol>
+
+			</div></div></div>
+
+		<div class="section" id="loioeadd60ae907646bbb838866566b23182__section_rdm_rqf_vz"><div class="section_title">Debugging in the Sources Tab</div><div type="Debugging in the Sources Tab">
+			
+			<ol class="ol" id="loioeadd60ae907646bbb838866566b23182__ol_ygb_3b5_vz">
+				<li class="li">
+					<p class="p">Switch to the <span class="ph uicontrol">Source</span> tab.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">To view the source of the <span class="ph filepath">App.controller</span> file, press <span class="keys">
+							<kbd class="key">Ctrl</kbd>
+							 + <kbd class="key">P</kbd>
+						</span>, enter <span class="ph filepath">App.controller</span>, and select
+							<span class="ph filepath">App.controller.js?eval</span>.</p>
+
+				</li>
+
+				<li class="li">
+					<div class="p">Set a breakpoint in line 20 by clicking on the line number of the following line:
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sMessage = this.getResourceBundle().getText("buttonOk", [oEvent.getSourceXYZ().getId()]);</pre></div>
+</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Click the <span class="ph uicontrol">Do Something</span> button in the app.</p>
+
+					<p class="p">The debugger stops at line 20.</p>
+
+				</li>
+
+				<li class="li">
+					<div class="p">In line 20, replace <samp class="ph codeph">getSourceXYZ()</samp> with <samp class="ph codeph">getSource()</samp> and
+						press <span class="keys">
+							<kbd class="key">Ctrl</kbd>
+							 + <kbd class="key">S</kbd>
+						</span>:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sMessage = this.getResourceBundle().getText("buttonOk", [oEvent.getSource<span class="ph emphasis emphasis">XYZ</span>().getId()]);</pre></div>
+</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Resume the execution of the code by pressing <kbd class="key">F8</kbd>.</p>
+
+					<p class="p">The message toast is now displayed on the web page with the following message:
+							<span class="ph uicontrol">"HeapOfShards---app--myButton" pressed</span>
+					</p>
+
+				</li>
+
+			</ol>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">You can also use the <span class="ph uicontrol">Pause on exception</span> button and select
+						<span class="ph uicontrol">Pause on caught exceptions</span> on the top right of the
+						<span class="ph uicontrol">Sources</span> tab to pause the execution before an
+					exception occurs without setting breakpoints.</p>
+
+			</div>
+
+		</div></div>
+
+		<div class="section" id="loioeadd60ae907646bbb838866566b23182__section_ej5_sqf_vz"><div class="section_title">Checking the Network Tab</div><div type="Checking the Network Tab">
+			
+			<p class="p">The <span class="ph uicontrol">Network</span> tab shows the sequence and duration of files being
+				loaded. It can be used to optimize loading performance and debug request issues.</p>
+
+			<ol class="ol" id="loioeadd60ae907646bbb838866566b23182__ol_anc_h15_vz">
+				<li class="li">
+					<p class="p">Switch to the <span class="ph uicontrol">Network</span> tab.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Press <kbd class="key">F5</kbd> to reload the page.</p>
+
+					<p class="p">You see a list of the files that are currently loaded.</p>
+
+					<p class="p">You can see that the <span class="ph filepath">NavigationBar.js</span> file is loaded, but the view does
+						not contain any <samp class="ph codeph">NavigationBar</samp> elements so it is not
+						used.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">You can't edit the code directly in this tab. You have to fix the source files in your
+						development environment and  then reload the app.</p>
+
+					<div class="p">Remove the unnecessary reference to the <samp class="ph codeph">NavigationBar</samp> in the
+							<span class="ph filepath">App.controller</span>
+						file:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap.ui.define([
+	"sap/ui/core/mvc/Controller",
+	'sap/m/MessageToast',
+	<span class="ph emphasis emphasis">'sap/ui/ux3/NavigationBar'</span>,
+	'jquery.sap.global'
+], function(Controller, MessageToast, <span class="ph emphasis emphasis">NavigationBar,</span> jQuery) {
+...</pre></div>
+</div>
+
+				</li>
+
+			</ol>
+
+		</div></div>
+
+		<div class="section" id="loioeadd60ae907646bbb838866566b23182__section_tk3_5qf_vz"><div class="section_title">Testing Responsiveness with Device Mode</div><div type="Testing Responsiveness with Device Mode">
+			
+			<p class="p">Switch to <span class="ph uicontrol">Device</span> mode by clicking the respective button or by pressing <span class="keys">
+					<kbd class="key">Ctrl</kbd>
+					 + <kbd class="key">Shift</kbd>
+					 + <kbd class="key">M</kbd>
+				</span>.</p>
+
+			<p class="p">Emulate different mobile devices by selecting different devices, or switch orientation from
+				landscape to portrait.</p>
+
+		</div></div>
+
+		<div class="section" id="loioeadd60ae907646bbb838866566b23182__section_f1h_vqf_vz"><div class="section_title">Analyzing Performance Problems and Memory Leaks</div><div type="Analyzing Performance Problems and Memory Leaks">
+			
+			<div class="p">There are additional tabs that can help you to analyze performance problems or memory leaks.
+				For more information, refer to the documentation of the developer tools of your
+					browser.<ul class="ul" id="loioeadd60ae907646bbb838866566b23182__ul_j3y_nzt_vz">
+					<li class="li">
+						<p class="p"><span class="ph uicontrol">Memory</span> or <span class="ph uicontrol">Profiles</span></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><span class="ph uicontrol">Performance</span> or <span class="ph uicontrol">Timeline</span></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><span class="ph uicontrol">Application</span> or
+							<span class="ph uicontrol">Resources</span></p>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="5661952e72df471b932eddc10350c081.html" title="In this tutorial, we will show you some tools that will help you if you run into problems with your OpenUI5 app.">Troubleshooting</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="63c97ef306f24d6992406eb7d87bc906.html" title="In this tutorial step, we will have a closer look at the &#34;Technical Information Dialog&#34;. This tool comes in handy whenever you want to know the technical details of the running application, and also has some other useful features.">Step 2: Technical Information Dialog</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fdevelopers.google.com%2Fweb%2Ftools%2Fchrome-devtools%2F" alt="https://developers.google.com/web/tools/chrome-devtools/" title="https://developers.google.com/web/tools/chrome-devtools/">Documentation of the Chrome DevTools on
+					<samp class="ph codeph">https://developers.google.com</samp><img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

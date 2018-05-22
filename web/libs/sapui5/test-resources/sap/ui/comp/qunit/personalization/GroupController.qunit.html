@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for
+	sap.ui.comp.personalization.GroupController</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.ui.comp, sap.ui.table, sap.ui.commons">
+	
+</script>
+
+<link rel="stylesheet"
+	href="../../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript"
+	src="../../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+<script type="text/javascript">
+	if (!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+	}	
+
+	(function() {
+
+		jQuery.sap.require("sap.ui.comp.personalization.GroupController");
+		jQuery.sap.require("sap.ui.comp.personalization.Controller");
+		var oEmpty = {
+			group : {
+				groupItems : []
+			}
+		};
+		var oA = {
+			group : {
+				groupItems : [{
+					columnKey : "name",
+					showIfGrouped : true
+				}]
+			}
+		};
+		var oAx = {
+			group : {
+				groupItems : [{
+					columnKey : "name",
+					showIfGrouped : false
+				}]
+			}
+		};
+		var oB = {
+			group : {
+				groupItems : [{
+					columnKey : "country",
+					showIfGrouped : true
+				}]
+			}
+		};
+		var oBx = {
+			group : {
+				groupItems : [{
+					columnKey : "country",
+					showIfGrouped : false
+				}]
+			}
+		};
+		var oAB = {
+			group : {
+				groupItems : [{
+					columnKey : "name",
+					showIfGrouped : true
+				}, {
+					columnKey : "country",
+					showIfGrouped : true
+				}]
+			}
+		};
+		var oBA = {
+			group : {
+				groupItems : [{
+					columnKey : "country",
+					showIfGrouped : true
+				}, {
+					columnKey : "name",
+					showIfGrouped : true
+				}]
+			}
+		};
+
+		module("API", {
+			setup : function() {
+			},
+			teardown : function() {
+			}
+		});
+
+		test("getChangeData", function() {
+			try {
+				// system under test
+				var oGroupController = new sap.ui.comp.personalization.GroupController();
+
+				// arrange				
+
+				// act			 
+
+				// assertions
+
+				deepEqual(oGroupController.getChangeData(oEmpty, oA), oEmpty, "delete: [] XOR A = []");
+				deepEqual(oGroupController.getChangeData({}, oA), oEmpty, "");
+				deepEqual(oGroupController.getChangeData(oA, oA), null, "no change: A XOR A = null");
+				deepEqual(oGroupController.getChangeData(oA, {
+					group : {}
+				}), oA, "change: A XOR {group} = A");
+				deepEqual(oGroupController.getChangeData(oA, {}), oA, "change: A XOR {} = A");
+				deepEqual(oGroupController.getChangeData(oA, null), oA, "change: A XOR null = A");
+				deepEqual(oGroupController.getChangeData(oA, oB), oA, "change: A XOR B = A");
+				deepEqual(oGroupController.getChangeData(oA, oAx), oA, "change: A XOR A' = A");
+				deepEqual(oGroupController.getChangeData(oA, oAB), oA, "change: A XOR (A, B) = A");
+				deepEqual(oGroupController.getChangeData(oA, {
+					group : {
+						groupItems : []
+					}
+				}), oA, "change: A XOR [] = A");
+				deepEqual(oGroupController.getChangeData(oAx, oA), oAx, "change: A' XOR A = A'");
+				deepEqual(oGroupController.getChangeData(oAB, oAB), null, "no change: (A, B) XOR (A, B) = null");
+				deepEqual(oGroupController.getChangeData(oAB, oBA), oAB, "change: (A, B) XOR (B, A) = (A, B)");
+			} finally {
+				// cleanup				
+				oGroupController.destroy();
+			}
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.ui.comp.personalization.FilterController</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="content"></div>
+</body>
+</html>

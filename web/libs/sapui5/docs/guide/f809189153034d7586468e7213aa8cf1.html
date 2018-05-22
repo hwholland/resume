@@ -1,0 +1,103 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can use the following best practices when implementing search, sorting, filtering and grouping functions for a master list in your Master-Detail apps."/>
+<meta name="description" content="You can use the following best practices when implementing search, sorting, filtering and grouping functions for a master list in your Master-Detail apps."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=009071547042145078"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=009071547042145078"/>
+<title>Master List Filtering</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiof809189153034d7586468e7213aa8cf1">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Master List Filtering</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You can use the following best practices when implementing search, sorting, filtering
+		and grouping functions for a master list in your Master-Detail apps.</p>
+
+		<p class="p">A search field is displayed in the master list to filter the list items for a custom keyword.
+			In the footer of the master list, options for sorting, filtering, and grouping are
+			displayed. When searching or using one of the options in the footer, the list content is
+			updated automatically and the search result is displayed.</p>
+
+		<p class="p">All four options adjust the master list content (search, sort, filter, group) and are managed
+			and applied in the logic of the master controller. This section describes the
+			implementation details for these four options.</p>
+
+		<div class="section"><div class="section_title">Search</div><div type="Search">
+			
+			<p class="p">The search is implemented in a manual mode and the list operation mode is "server".
+				This means that the search has to be triggered explicitly by pressing enter or the
+				search button, and the results are always fetched from the server.</p>
+
+			<p class="p">The search function is implemented using the standard <span class="ph"><span class="ph pname">SAPUI5</span></span>
+				<samp class="ph codeph">sap.ui.model.Filter</samp> objects. The options are added to an internal
+				state object of the controller and applied together with the filters that can be
+				selected in the filter options. The type of these filters is "Application", and
+				these filters are added on top of the predefined filters from the framework of type
+				"Control".</p>
+
+			<p class="p">The <span class="ph uicontrol">Search</span> field also displays a <span class="ph uicontrol">Refresh</span> button.
+				Pressing this button triggers a simple refresh for the list binding. On
+				touch-enabled devices, a refresh can be triggered by pulling the master list down
+				using a <samp class="ph codeph">sap.m.PullToRefresh</samp> control.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Sorting, Filtering and Grouping</div><div type="Sorting, Filtering and Grouping">
+			
+			<p class="p">Sorting, filtering, and grouping can be implemented in two ways:</p>
+
+			<ul class="ul" id="loiof809189153034d7586468e7213aa8cf1__ol_bs1_pb3_bt">
+				<li class="li"> By using a semantic select control
+						(<samp class="ph codeph">sap.m.semantic.SortSelect</samp>/<samp class="ph codeph">GroupSelect</samp>/<samp class="ph codeph">FilterSelect</samp>
+					) in the footer area of the master page (recommended for simple operations)</li>
+
+				<li class="li"> By using a semantic button that opens a <samp class="ph codeph">sap.m.ViewSettingsDialog</samp>
+					containing options for sorting, grouping, and filtering (recommended for more
+					complex logic, such as custom filters)</li>
+
+			</ul>
+
+			<p class="p">In a Master-Detail app, these two modes can also be mixed as specified in the SAP Fiori Design
+				Guidelines (see <cite class="cite">Related Information</cite> at the bottom of this chapter for
+				more details). In the Master-Detail template app, the sorting and grouping options
+				are implemented with a semantic <samp class="ph codeph">Select</samp> control and the filtering
+				options in a <samp class="ph codeph">ViewSettingsDialog</samp> control to show both use cases.</p>
+
+			<p class="p">The event handlers that are called when selecting a sorting and grouping option are similar,
+				and create a <samp class="ph codeph">sap.ui.model.Sorter</samp> object on the "key" field of the
+				selected item. For the grouping functionality, a custom grouper is loaded and
+				applied to the selected entry. Both sorting and grouping options are applied
+				together on the binding of the master list.</p>
+
+			<p class="p">The filtering options are implemented as an XML fragment with a
+					<samp class="ph codeph">sap.m.ViewSettingsDialog</samp> in a fragment. Therefore we process
+				the selected filter options in the handler of the dialog's <samp class="ph codeph">confirm</samp>
+				event. A <samp class="ph codeph">sap.ui.model.Filter</samp> object is created for each filter
+				option that has been selected in the dialog and applied together with the search
+				option on the master list.</p>
+
+			<p class="p">The filter bar is automatically updated with the chosen filter texts. It is displayed on top
+				of the master list and can be clicked to reopen the filter settings.</p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="https://experience.sap.com/fiori-design/floorplans/master-list/" alt="https://experience.sap.com/fiori-design/floorplans/master-list/" title="https://experience.sap.com/fiori-design/floorplans/master-list/">SAP Fiori Design Guidelines: Master List</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

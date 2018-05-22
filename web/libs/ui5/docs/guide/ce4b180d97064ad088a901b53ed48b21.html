@@ -1,0 +1,190 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Advanced topics and best practices for OPA tests."/>
+<meta name="description" content="Advanced topics and best practices for OPA tests."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8294018617174854"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8294018617174854"/>
+<title>Cookbook for OPA5</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioce4b180d97064ad088a901b53ed48b21">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Cookbook for OPA5</h1>
+
+	
+    <div class="body conbody"><p class="shortdesc">Advanced topics and best practices for OPA tests.</p>
+
+        <div class="section"><div class="section_title">Executing a Single Statement After Other waitFors are Done</div><div type="Executing a Single Statement After Other waitFors are Done">
+            
+            <p class="p">If you skip all parameters except for the <samp class="ph codeph">success</samp> parameter, you can
+                execute your code after the other <samp class="ph codeph">waitFors</samp> are done. Since there is
+                no <samp class="ph codeph">check</samp> function, OPA runs directly to
+                <samp class="ph codeph">success</samp>.</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+iChangeTheHashToTheThirdProduct : function () {
+        return this.waitFor({
+            success : function () {
+                sap.ui.test.Opa5.getWindow().location.hash = "#/Products(2)";
+            }
+        });
+    },</pre></div>
+
+        </div></div>
+
+        <div class="section"><div class="section_title">Passing a Parameter from One waitFor to Another</div><div type="Passing a Parameter from One waitFor to Another">
+            
+            <p class="p">To check special conditions, for example, how one control relates to another control,
+                you might need to pass a control found in one <samp class="ph codeph">waitFor</samp> statement as
+                input for another <samp class="ph codeph">waitFor</samp> statement. The following two options
+                exist:</p>
+
+            <ul class="ul" id="loioce4b180d97064ad088a901b53ed48b21__ul_jcn_vwr_1q">
+                <li class="li">
+                    <p class="p">Storing the control in a variable in the outer scope: Use this option if you
+                        have a common outer scope, like the same functions or the same page object
+                        file.</p>
+
+                </li>
+
+                <li class="li">
+                    <p class="p">Storing the control in the OPA context: Use this option if you need to pass
+                        the parameter, for example, across some page objects.</p>
+
+                </li>
+
+            </ul>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+iDoSomething: function () {
+        var oControl;
+        this.waitFor({
+            id : "myControlId",
+            success : function (oCtrl) {
+                //store control in outer scope
+                oControl = oCtrl;
+                
+                //as alternative you could store the control in the Opa context
+                sap.ui.test.Opa.getContext().control = oCtrl;
+            }
+        });
+        return this.waitFor({
+            controlType : "some.other.control"
+            check: function (aControlsFromThisWaitFor) {
+                //now you can compare oControl with aControlsFromThisWaitFor
+
+                //or you can compare sap.ui.test.Opa.getContext().control with aControlsFromThisWaitFor
+            }
+        });
+    },
+</pre></div>
+
+        </div></div>
+
+        <div class="section" id="loioce4b180d97064ad088a901b53ed48b21__section_abh_nmk_b1b"><div class="section_title">Application Parameters</div><div type="Application Parameters">
+            
+            <p class="p">You can easily specify URL parameters that are relevant for the application being
+                tested. Simply place them in the <samp class="ph codeph">appParams</samp> object under
+                    <samp class="ph codeph">Opa5.extendConfig()</samp>. Only primitive types are supported. The
+                provided object is serialized to URL search string and all parameters are available
+                to the application being tested.</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">Opa5.extendConfig({
+    appParams: {
+        "key": "value"
+    }
+});</pre></div>
+
+            <p class="p">When the application is started with <samp class="ph codeph">Opa5.iStartMyAppInAFrame()</samp>, its
+                parameters are appended to the application URL as provided in the first parameter.
+                Application parameters overwrite any duplicated string in the URL that is given as
+                first parameter of <samp class="ph codeph">iStartMyAppInAFrame()</samp>. Alternatively, when
+                    <samp class="ph codeph">Opa5.iStartMyUIComponent()</samp> is used, the URL parameters are
+                appended to the current URL as the component is started in the same browser window.
+                On <samp class="ph codeph">Opa5.iTeardownMyUIComponent()</samp>, the application parameters are
+                cleared from the current URL.</p>
+
+            <p class="p">For more details, see <span class="ph">the
+                        <span class="ph uicontrol">API Reference</span> for <a class="xref" href="../../docs/api/symbols/sap.ui.test.Opa5.html" alt="../../docs/api/symbols/sap.ui.test.Opa5.html" title="../../docs/api/symbols/sap.ui.test.Opa5.html"><samp class="ph codeph">Opa5</samp></a></span>
+                </p>
+
+        </div></div>
+
+        <div class="section" id="loioce4b180d97064ad088a901b53ed48b21__section_fr2_qqk_b1b"><div class="section_title">URL Parameters</div><div type="URL Parameters">
+            
+            <p class="p">OPA supports overwriting global configuration parameters for a single execution from
+                URL. On startup, OPA parses <samp class="ph codeph">window.location.href</samp> and extracts all
+                search parameters starting with 'opa'. The prefix is removed and the resulting
+                string has its first character changed to lower case. For example, the
+                    <samp class="ph codeph">?opaExecutionDelay=600</samp> string in an URL will set the value of
+                    <samp class="ph codeph">executionDelay</samp> to 600 ms. All OPA config parameters of
+                primitive string and number types that are documented in
+                    <samp class="ph codeph">Opa.resetConfig()</samp> could be overwritten.</p>
+
+            <p class="p">All URL parameters that do not start with 'opa' are considered relevant for the
+                application being tested and are passed to it. Application parameters from an URL
+                always overwrite the application parameters provided in
+                    <samp class="ph codeph">Opa5.extendConfig()</samp>. </p>
+
+            <p class="p">For more details, see <span class="ph">the
+                        <span class="ph uicontrol">API Reference</span>: <a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.ui.test.Opa/methods/sap.ui.test.Opa.resetConfig" alt="https://ui5.sap.com/sdk/#/api/sap.ui.test.Opa/methods/sap.ui.test.Opa.resetConfig" title="https://ui5.sap.com/sdk/#/api/sap.ui.test.Opa/methods/sap.ui.test.Opa.resetConfig"><samp class="ph codeph">Opa5.extendConfig()</samp></a>
+                    and <a class="xref" href="https://ui5.sap.com/sdk/#/api/sap.ui.test.Opa/methods/sap.ui.test.Opa.resetContext" alt="https://ui5.sap.com/sdk/#/api/sap.ui.test.Opa/methods/sap.ui.test.Opa.resetContext" title="https://ui5.sap.com/sdk/#/api/sap.ui.test.Opa/methods/sap.ui.test.Opa.resetContext"><samp class="ph codeph">Opa.resetConfig()</samp></a></span>
+                </p>
+
+        </div></div>
+
+        <div class="section" id="loioce4b180d97064ad088a901b53ed48b21__section_ahv_ywt_sbb"><div class="section_title">Working with Message Toasts</div><div type="Working with Message Toasts">
+            
+            <p class="p">A message toast is a small, non-disruptive popup for displaying information or
+                success messages. Message toasts automatically disappear after a timeout unless the
+                user moves the mouse over the message or taps on it.</p>
+
+            <p class="p">To ensure stable execution of OPA5 tests which manipulate
+                    <samp class="ph codeph">messageToast</samp> elements, it is recommended to explicitly set
+                    <samp class="ph codeph">autoWait</samp> parameter to <samp class="ph codeph">false</samp> only for the
+                affected <samp class="ph codeph">waitFor</samp> methods, as shown by the following example:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">this.waitFor({
+        ...
+        autoWait: false,
+        ...
+        }
+    });</pre></div>
+
+            <p class="p">In order to retrieve a message toast control and manipulate it accordingly, you
+                should use standard jQuery selectors with the help of the <samp class="ph codeph">check</samp>
+                parameter of OPA5 <samp class="ph codeph">waitFor</samp> method, as <samp class="ph codeph">messageToast</samp>
+                elements cannot be retrieved by interaction with the <span class="ph"><span class="ph pname">OpenUI5</span></span> API.</p>
+
+            <p class="p">Example:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">iShouldSeeMessageToastAppearance: function () {
+                     return this.waitFor({
+                        // Turn off autoWait
+                        autoWait: false,
+                        check: function () {
+                            // Locate the message toast using its class name in a jQuery function
+                            return $(".sapMMessageToast");
+                        },
+                        success: function () {
+                            Opa5.assert.ok(true, "The message toast was shown");
+                        },
+                        errorMessage: "The message toast did not show up"
+                    });
+                }</pre></div>
+
+        </div></div>
+
+    </div>
+
+</div></div>
+
+</body>
+</html>

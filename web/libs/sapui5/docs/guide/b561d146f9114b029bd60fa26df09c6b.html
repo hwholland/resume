@@ -1,0 +1,217 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, we will extend the detail page of our app to show more information of a given product with various UI controls. We will enrich the header area and display further attributes in an info panel for information about the supplier."/>
+<meta name="description" content="In this step, we will extend the detail page of our app to show more information of a given product with various UI controls. We will enrich the header area and display further attributes in an info panel for information about the supplier."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6826162516504644"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6826162516504644"/>
+<title>Step 6: Extending the Detail Page</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob561d146f9114b029bd60fa26df09c6b">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 6: Extending the Detail Page</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we will extend the detail page of our app to show more information of a
+		given product with various UI controls. We will enrich the header area and display further
+		attributes in an info panel for information about the supplier.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loiob561d146f9114b029bd60fa26df09c6b__fig_z3h_cty_c5"><div class="figcontainer">
+				
+				<img class="image" id="loiob561d146f9114b029bd60fa26df09c6b__image_iny_fty_c5" src="loio8aa47735f3d2493f8e38bb5adcaf7631_HiRes.png"/>
+			<div class="figcap">Detail page with more product information</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Samples</span> in the
+				Demo Kit <span class="ph">at
+						<a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.worklist.06/preview" alt="../../explored.html#/sample/sap.m.tutorial.worklist.06/preview" title="../../explored.html#/sample/sap.m.tutorial.worklist.06/preview">Worklist App - Step 6</a></span>
+				.</p>
+
+		
+		<div class="sectiondiv subsection">
+			<p class="p subsectiontitle">webapp/view/Object.view.xml</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+	controllerName="myCompany.myApp.controller.Object"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic"
+	<span class="ph emphasis emphasis">xmlns:form="sap.ui.layout.form"
+</span>
+	xmlns="sap.m"&gt;
+	&lt;semantic:FullscreenPage
+		id="page"
+		busy="{objectView&gt;/busy}"
+		busyIndicatorDelay="{objectView&gt;/delay}"
+		navButtonPress="onNavBack"
+		showNavButton="true"
+		title="{i18n&gt;objectTitle}"&gt;
+		&lt;semantic:content&gt;
+			&lt;ObjectHeader
+				id="objectHeader"
+				<span class="ph emphasis emphasis">responsive="true"</span>
+				title="{ProductName}"
+				<span class="ph emphasis emphasis">numberUnit="PC"
+				numberState="{
+					path: 'UnitsInStock',
+					formatter: '.formatter.quantityState'
+				}"
+</span>
+				number="{UnitsInStock}"<span class="ph emphasis emphasis">&gt;
+				&lt;attributes&gt;
+					&lt;ObjectAttribute
+					title="{i18n&gt;ObjectProductIdText}"
+					text="{ProductID}"/&gt;
+					&lt;ObjectAttribute
+						title="{i18n&gt;ObjectPriceTitle}"
+						text="{
+							path: 'UnitPrice',
+							formatter: '.formatter.numberUnit'
+						} EUR"/&gt;
+				&lt;/attributes&gt;
+				&lt;statuses&gt;
+					&lt;ObjectStatus
+						text="{i18n&gt;ObjectDiscontinuedStatusText}"
+						state="Error"
+						visible="{path:'Discontinued'}"/&gt;
+					&lt;ProgressIndicator
+							percentValue="{UnitsInStock}"
+							displayValue="{UnitsInStock}"
+							showValue="true"
+							state="{
+							  path: 'UnitsInStock',
+							  formatter: '.formatter.quantityState'}" /&gt;
+				&lt;/statuses&gt;
+			&lt;/ObjectHeader&gt;
+			&lt;Panel
+				class="sapUiNoContentPadding"
+				headerText="{i18n&gt;ObjectSupplierTabTitle}"&gt;
+    			&lt;content&gt;
+    				&lt;form:SimpleForm
+						minWidth="1024"
+						maxContainerCols="2"
+						editable="false"
+						layout="ResponsiveGridLayout"
+						labelSpanL="3"
+						labelSpanM="3"
+						emptySpanL="4"
+						emptySpanM="4"
+						columnsL="1"
+						columnsM="1"&gt;
+						&lt;form:content&gt;
+							&lt;Label text="{i18n&gt;ObjectSupplierName}"/&gt;
+							&lt;Text text="{Supplier/CompanyName}"/&gt;
+							&lt;Label text="{i18n&gt;ObjectSupplierAddress}"/&gt;
+							&lt;Text text="{Supplier/Address}"/&gt;
+							&lt;Label text="{i18n&gt;ObjectSupplierZipcode} / {i18n&gt;ObjectSupplierCity}"/&gt;
+							&lt;Text text="{Supplier/PostalCode} / {Supplier/City}"/&gt;
+							&lt;Label text="{i18n&gt;ObjectSupplierCountry}"/&gt;
+							&lt;Text text="{Supplier/Country}"/&gt;
+						&lt;/form:content&gt;
+					&lt;/form:SimpleForm&gt;
+    			&lt;/content&gt;
+			&lt;/Panel&gt;</span>
+		&lt;/semantic:content&gt;
+		&lt;semantic:sendEmailAction&gt;
+			&lt;semantic:SendEmailAction
+				id="shareEmail"
+				press="onShareEmailPress"/&gt;
+		&lt;/semantic:sendEmailAction&gt;
+	&lt;/semantic:FullscreenPage&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">Initially, the detail page content only consists of an <samp class="ph codeph">sap.m.ObjectHeader</samp> control that displays the product name and its stock. We will
+               make it more flexible for small screen devices by setting the responsive property. As you have seen in the table example before, some <span class="ph"><span class="ph pname">SAPUI5</span></span> controls contain features to tweak and configure the responsiveness.
+               Additionally, we add the same information that is shown in the worklist table to the detail page.</p>
+
+			<p class="p">Next, we define some additional attributes for the product with two <samp class="ph codeph">sap.m.ObjectAttribute</samp> controls, one for the <samp class="ph codeph">Price</samp>
+               and one for the <samp class="ph codeph">ProductID</samp>. These are important product attributes for us, so we want to include them in our header area.</p>
+
+            <p class="p">To get a better visual representation of the current stock of the shown product, we use the control statuses. It can be used for
+                  <samp class="ph codeph">ObjectStatus</samp> and for <samp class="ph codeph">ProgressIndicator</samp>. We want to use both. The <samp class="ph codeph">ObjectStatus</samp> shows up as
+                  <span class="ph uicontrol">Discontinued</span>, if our product will not be produced anymore. The <samp class="ph codeph">ProgressIndicator</samp> uses the same
+               formatter function as our <samp class="ph codeph">UnitsInStock</samp> in the <samp class="ph codeph">numberState</samp> of the <samp class="ph codeph">ObjectHeader</samp>.</p>
+
+			<p class="p">Below the object header we can use <samp class="ph codeph">sap.m.Panel</samp> to display some
+				additional information in a nice layout on the page. Inside the panel we use
+					<samp class="ph codeph">sap.ui.layout.form.SimpleForm</samp> to have the labels and texts we
+				want to display aligned to each other.</p>
+
+		</div>
+		<div class="sectiondiv subsection">
+			<p class="p subsectiontitle">webapp/i18n/i18n.properties</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-prefs">...
+<span class="ph emphasis emphasis">#Price per unit text
+ObjectPriceTitle=Price
+
+#Discontinued text
+ObjectDiscontinuedStatusText=Discontinued
+
+#Supplier tab title
+ObjectSupplierTabTitle=Supplier Info
+
+#Supplier company name
+ObjectSupplierName=Name
+
+#Supplier contact person name
+ObjectSupplierContact=Contact
+
+#Supplier contact address
+ObjectSupplierAddress=Address
+
+#Supplier zip code
+ObjectSupplierZipcode=ZIP Code
+
+#Supplier city name
+ObjectSupplierCity=City
+
+#Supplier country
+ObjectSupplierCountry=Country
+
+#Object Product ID text
+ObjectProductIdText=Product ID
+</span>
+
+#~~~ Footer Options ~~~~~~~~~~~~~~~~~~~~~~~
+...</pre></div>
+
+			<p class="p">As before, we add new i18n texts to the resource bundle.</p>
+
+			<p class="p">Save all the changes and run the application. Click on any product and see the
+				product details displayed on the detail page.</p>
+
+		</div>
+		</div></div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="6a6a621c978145ad9eef2b221d2cf21d.html" title="In this tutorial we will build an app using SAPUI5 that, for example, a shop owner can use to manage his product stock levels.">Worklist App</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="2da220ff496c4b0f9ce29208cbd089f3.html" title="Now we can easily spot shortages on our stock, but we also would like to take action and resolve it. Either we can decide to remove the product until the shortage is resolved or order new items of the product. In this step, we will add these actions to the footer of the worklist table.">Step 5: Adding Actions to the Worklist</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="c73dfe312f104664954749c5c36faf27.html" title="In this step, we extend the product detail view by adding a feature allowing to add comments to the product.">Step 7: Adding a Comments Section</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

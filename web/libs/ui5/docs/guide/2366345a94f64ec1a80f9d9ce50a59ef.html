@@ -1,0 +1,245 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="We can now navigate between the overview and the detail page, but the actual item that we selected in the overview is not displayed on the detail page yet. A typical use case for our app is to show additional information for the selected item on the detail page."/>
+<meta name="description" content="We can now navigate between the overview and the detail page, but the actual item that we selected in the overview is not displayed on the detail page yet. A typical use case for our app is to show additional information for the selected item on the detail page."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=543140799605729"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=543140799605729"/>
+<title>Step 32: Routing with Parameters</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio2366345a94f64ec1a80f9d9ce50a59ef">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 32: Routing with Parameters</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">We can now navigate between the overview and the detail page, but the actual item that
+		we selected in the overview is not displayed on the detail page yet. A typical use case for
+		our app is to show additional information for the selected item on the detail page. </p>
+
+		<p class="p">To make this work, we have to pass over the information which item has been selected to
+			the detail page and show the details for the item there.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio2366345a94f64ec1a80f9d9ce50a59ef__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loio2366345a94f64ec1a80f9d9ce50a59ef__image_i3z_jmm_yr" src="loio3a961735fdea4598a24c0ca1a3b7a5b2_HiRes.png"/>
+			<div class="figcap">The selected invoice details are now shown in the details page</div></div></div>
+
+		</div></div>
+
+		<div class="section">
+			<div class="section_title">Coding</div>
+			<p class="p">You can view and download all files <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.walkthrough.32/preview" alt="../../explored.html#/sample/sap.m.tutorial.walkthrough.32/preview" title="../../explored.html#/sample/sap.m.tutorial.walkthrough.32/preview">Walkthrough - Step 32</a></span>.</p>
+
+			<div class="section_title">webapp/manifest.json</div>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">{
+  "_version": "1.8.0",
+  …
+  "sap.ui5": {
+	…
+	"routing": {
+	  "config": {
+		"routerClass": "sap.m.routing.Router",
+		"viewType": "XML",
+		"viewPath": "sap.ui.demo.walkthrough.view",
+		"controlId": "app",
+		"controlAggregation": "pages",
+		"async": true
+	  },
+	  "routes": [
+		{
+		  "pattern": "",
+		  "name": "overview",
+		  "target": "overview"
+		},
+		{
+		  "pattern": "detail<span class="ph emphasis emphasis">/{invoicePath}</span>",
+		  "name": "detail",
+		  "target": "detail"
+		}
+	  ],
+		  "targets": {
+		"overview": {
+		  "viewID": "overview"
+		  "viewName": "Overview"
+		},
+		"detail": {
+		  "viewId": "detail"
+		  "viewName": "Detail"
+		}
+	  }
+	}
+  }
+}</pre></div>
+
+			<p class="p">We now add a navigation parameter <samp class="ph codeph">invoicePath</samp> to the detail route so
+				that we can hand over the information for the selected item to the detail page.
+				Mandatory navigation parameters are defined with curly brackets. </p>
+
+		</div>
+
+		<div class="section"><div class="section_title">webapp/view/Detail.view.xml</div><div type="webapp/view/Detail.view.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+	<span class="ph emphasis emphasis">controllerName="sap.ui.demo.walkthrough.controller.Detail"</span>
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"&gt;
+	&lt;Page
+		title="{i18n&gt;detailPageTitle}"&gt;
+		&lt;ObjectHeader
+			<span class="ph emphasis emphasis">intro="{invoice&gt;ShipperName}"
+			title="{invoice&gt;ProductName}"/&gt;</span>
+	&lt;/Page&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">We add a controller that will take care of setting the item's context on the view and bind some properties of the <samp class="ph codeph">ObjectHeader</samp> to the
+				fields of our <samp class="ph codeph">invoice</samp> model. We could add more detailed information from the <samp class="ph codeph">invoice</samp> object here, but for
+				simplicity reasons we just display two fields for now.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/controller/InvoiceList.controller.js</div><div type="webapp/controller/InvoiceList.controller.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+	"sap/ui/core/mvc/Controller",
+	"sap/ui/model/json/JSONModel",
+	"sap/ui/demo/walkthrough/model/formatter",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+], function (Controller, JSONModel, formatter, Filter, FilterOperator) {
+	"use strict";
+	return Controller.extend("sap.ui.demo.walkthrough.controller.InvoiceList", {
+		…
+
+		onPress: function (oEvent) {
+			<span class="ph emphasis emphasis">var oItem = oEvent.getSource();</span>
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.navTo("detail"<span class="ph emphasis emphasis">, {
+				invoicePath: oItem.getBindingContext("invoice").getPath().substr(1)
+			}</span>);
+		}
+	});
+});</pre></div>
+
+			<p class="p">The control instance that has been interacted with can be accessed by the
+					<samp class="ph codeph">getSource</samp> method that is available for all <span class="ph"><span class="ph pname">OpenUI5</span></span> events. It
+				will return the <samp class="ph codeph">ObjectListItem</samp> that has been clicked in our case.
+				We will use it to pass the information of the clicked item to the detail page so
+				that the same item can be displayed there.</p>
+
+			<p class="p">In the <samp class="ph codeph">navTo</samp> method we now add a configuration object to fill the
+				navigation parameter <samp class="ph codeph">invoicePath</samp> with the current information of
+				the item. This will update the URL and navigate to the detail view at the same time.
+				On the detail page, we can access this <samp class="ph codeph">context</samp> information again
+				and display the corresponding item.</p>
+
+			<p class="p">To identify the object that we selected, we would typically use the key of the item in the
+				back-end system because it is short and precise. For our invoice items however, we
+				do not have a simple key and directly use the binding path to keep the example short
+				and simple. The path to the item is part of the binding context which is a helper
+				object of <span class="ph"><span class="ph pname">OpenUI5</span></span> to manage the binding information for controls. The binding context
+				can be accessed by calling the <samp class="ph codeph">getBindingContext</samp> method with the
+				model name on any bound <span class="ph"><span class="ph pname">OpenUI5</span></span> control. We need to remove the first
+					<samp class="ph codeph">/</samp> from the binding path by calling <samp class="ph codeph">.substr(1)</samp>
+				on the string because this is a special character in URLs and is not allowed, we
+				will add it again on the detail page.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/controller/Detail.controller.js (New)</div><div type="webapp/controller/Detail.controller.js (New)">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.define([
+	"sap/ui/core/mvc/Controller"
+], function (Controller) {
+	"use strict";
+	return Controller.extend("sap.ui.demo.walkthrough.controller.Detail", {
+		onInit: function () {
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.getRoute("detail").attachPatternMatched(this._onObjectMatched, this);
+		},
+		_onObjectMatched: function (oEvent) {
+			this.getView().bindElement({
+				path: "/" + oEvent.getParameter("arguments").invoicePath,
+				model: "invoice"
+			});
+		}
+	});
+});</span></pre></div>
+
+			<p class="p"> Our last piece to fit the puzzle together is the detail controller. It needs to set the
+				context that we passed in with the URL parameter <samp class="ph codeph">invoicePath</samp> on the
+				view, so that the item that has been selected in the list of invoices is actually
+				displayed, otherwise, the view would simply stay empty.</p>
+
+			<p class="p"> In the <samp class="ph codeph">init</samp> method of the controller we fetch the instance of our app router
+				and attach to the detail route by calling the method
+					<samp class="ph codeph">attachPatternMatched</samp> on the route that we accessed by its name.
+				We register an internal callback function <samp class="ph codeph">_onObjectMatched</samp> that
+				will be executed when the route is hit, either by clicking on the item or by calling
+				the app with a URL for the detail page.</p>
+
+			<p class="p">In the <samp class="ph codeph">_onObjectMatched</samp> method that is triggered by the router we receive an
+				event that we can use to access the URL and navigation parameters. The
+					<samp class="ph codeph">arguments</samp> parameter will return an object that corresponds to
+				our navigation parameters from the route pattern. We access the
+					<samp class="ph codeph">invoicePath</samp> that we set in the invoice list controller and call
+				the <samp class="ph codeph">bindElement</samp> function on the view to set the context. We have to
+				add the root <samp class="ph codeph">/</samp> in front of the path again that was removed for
+				passing on the path as a URL parameter.</p>
+
+			<p class="p">The <samp class="ph codeph">bindElement</samp> function is creating a binding context for a <span class="ph"><span class="ph pname">OpenUI5</span></span>
+				control and receives the model name as well as the path to an item in a
+				configuration object. This will trigger an update of the UI controls that we
+				connected with fields of the invoice model. You should now see the invoice details
+				on a separate page when you click on an item in the list of invoices.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Conventions</div><div type="Conventions">
+			
+			<ul class="ul" id="loio2366345a94f64ec1a80f9d9ce50a59ef__ul_nh5_ybb_nr">
+				<li class="li">
+					<p class="p">Define the routing configuration in the <samp class="ph codeph">AppDescriptor</samp></p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="3da5f4be63264db99f2e5b04c5e853db.html" title="In this tutorial we will introduce you to all major development paradigms of OpenUI5.">Walkthrough</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="e5200ee755f344c8aef8efcbab3308fb.html" title="So far, we have put all app content on one single page. As we add more and more features, we want to split the content and put it on separate pages.">Step 31: Routing and Navigation</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="8ef57cfd37b44f089f7e3b52d56597eb.html" title="Now we can navigate to our detail page and display an invoice, but we cannot go back to the overview page yet. We'll add a back button to the detail page and implement a function that shows our overview page again.">Step 33: Routing Back and History</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="3d18f20bd2294228acb6910d8e8a5fb5.html" title="OpenUI5 offers hash-based navigation, which allows you to build single-page apps where the navigation is done by changing the hash. In this way the browser does not have to reload the page; instead there is a callback to which the app and especially the affected view can react. A hash string is parsed and matched against patterns which will then inform the handlers.">Routing and Navigation</a></div>
+<div><a class="link" href="1b6dcd39a6a74f528b27ddb22f15af0d.html" title="OpenUI5 comes with a powerful routing API that helps you control the state of your application efficiently. This tutorial will illustrate all major features and APIs related to navigation and routing in OpenUI5 apps by creating a simple and easy to understand mobile app. It represents a set of best practices for applying the navigation and routing features of OpenUI5 to your applications.">Tutorial: Navigation and Routing</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.m.routing.Router.html" alt="../../docs/api/symbols/sap.m.routing.Router.html" title="../../docs/api/symbols/sap.m.routing.Router.html">API Reference: <samp class="ph codeph">sap.m.routing.Router</samp></a></div>
+<div><a class="link" target="_blank" href="../../explored.html#/entity/sap.m.routing.Router/samples" alt="../../explored.html#/entity/sap.m.routing.Router/samples" title="../../explored.html#/entity/sap.m.routing.Router/samples">Samples: <samp class="ph codeph">sap.m.routing.Router</samp>
+			</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

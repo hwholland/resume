@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The application descriptor is inspired by the Web Application Manifest concept introduced by the W3C. The application descriptor provides a central, machine-readable and easy-to-access location for storing metadata associated with an application or application component."/>
+<meta name="description" content="The application descriptor is inspired by the Web Application Manifest concept introduced by the W3C. The application descriptor provides a central, machine-readable and easy-to-access location for storing metadata associated with an application or application component."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=05479785862411224"/>
+<title>Application Descriptor</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loiobe0cf40f61184b358b5faedaec98b2da">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Application Descriptor</h1>
+<div class="body conbody"><p class="shortdesc">The application descriptor is inspired by the Web Application Manifest concept
+		introduced by the W3C. The application descriptor provides a central, machine-readable and
+		easy-to-access location for storing metadata associated with an application or application
+		component.</p>
+<p class="p">The data is stored in json format in the <samp class="ph codeph">manifest.json</samp> file with attributes in
+			different namespaces. It contains, for example, the app ID, the version, the data
+			sources used, along with the required <span class="ph"><span class="ph pname">SAPUI5</span></span> components and <span class="ph"><span class="ph pname">SAPUI5</span></span> libraries. The
+			existence of the <samp class="ph codeph">manifest.json</samp> file must be declared in the component
+			metadata. The developer creates the <samp class="ph codeph">manifest.json</samp> file and it is then
+			delivered as part of the application archive. After delivery, the file is read-only.</p>
+<div class="section"><div class="section_title">Structure</div><div type="Structure">
+			
+			<p class="p">The application descriptor consists of three parts: the <samp class="ph codeph">sap.app</samp>,
+					<samp class="ph codeph">sap.ui</samp> and <samp class="ph codeph">sap.ui5</samp> namespaces. The
+					<samp class="ph codeph">sap.app</samp> namespace contributes the following
+				application-specific attributes:</p>
+
+			<ul class="ul" id="loiobe0cf40f61184b358b5faedaec98b2da__ul_d3n_vcd_jr"><li class="li">
+					<p class="p"><samp class="ph codeph">id</samp> (mandatory): Unique identifier of the app; must
+						correspond to the component ID/namespace</p>
+
+				</li>
+<li class="li">
+					<p class="p"><samp class="ph codeph">type</samp>: Possible values are <samp class="ph codeph">application</samp> or
+							<samp class="ph codeph">component</samp></p>
+
+				</li>
+<li class="li">
+					<p class="p"><samp class="ph codeph">version</samp>: Application version</p>
+
+				</li>
+<li class="li">
+					<p class="p"><samp class="ph codeph">ach</samp>: Application component hierarchy</p>
+
+				</li>
+<li class="li">
+					<p class="p"><samp class="ph codeph">dataSources</samp>: For example OData services with a unique key or alias, and
+						specifying the URI, type and settings, such as the
+							<samp class="ph codeph">odataVersion</samp></p>
+
+				</li>
+</ul>
+
+			<p class="p">The <samp class="ph codeph">sap.ui</samp> namespace contributes the following UI-specific attribute:</p>
+
+			<ul class="ul" id="loiobe0cf40f61184b358b5faedaec98b2da__ul_g3w_kdd_jr"><li class="li">
+					<p class="p"><samp class="ph codeph">technology</samp>: Specifies the UI technology; value is <samp class="ph codeph">UI5</samp></p>
+
+				</li>
+</ul>
+
+			<p class="p">The <samp class="ph codeph">sap.ui5</samp> namespace is basically aligned with the previous component
+				metadata and contributes the following <span class="ph"><span class="ph pname">SAPUI5</span></span>-specific
+				attributes for the application descriptor:</p>
+
+			<ul class="ul" id="loiobe0cf40f61184b358b5faedaec98b2da__ul_ojk_mdd_jr"><li class="li">
+					<p class="p"><samp class="ph codeph">dependencies</samp>: Specifies the external dependencies, such as libraries or
+						components. The <span class="ph"><span class="ph pname">SAPUI5</span></span> core
+						loads these dependencies before the component is initialized. You can use
+						everything that is referenced here in your component code right from the
+						start. Specify the external dependencies that are loaded by the <span class="ph"><span class="ph pname">SAPUI5</span></span> core
+						during the initialization phase of the component and used afterwards, such
+						as libraries or components:</p>
+
+					<ul class="ul" id="loiobe0cf40f61184b358b5faedaec98b2da__ul_os1_zdd_jr"><li class="li">
+							<p class="p">
+								<samp class="ph codeph">minUI5Version</samp>: Minimum version of <span class="ph"><span class="ph pname">SAPUI5</span></span>
+								that your component requires; this information helps you make sure
+								that the features of the <span class="ph"><span class="ph pname">SAPUI5</span></span>
+								runtime version of the component are available. As <span class="ph"><span class="ph pname">SAPUI5</span></span>
+								does not currently enforce use of the correct version, the
+									<samp class="ph codeph">minUI5Version</samp> is used for information purposes
+								only.</p>
+
+						</li>
+<li class="li">
+							<p class="p"><samp class="ph codeph">libs</samp>: ID (namespace) of the libraries that the <span class="ph"><span class="ph pname">SAPUI5</span></span>
+								core should load for use in the component</p>
+
+						</li>
+<li class="li">
+							<p class="p"><samp class="ph codeph">components</samp>: ID (namespace) of the components that the <span class="ph"><span class="ph pname">SAPUI5</span></span>
+								core should load for use in your component</p>
+
+						</li>
+</ul>
+
+				</li>
+</ul>
+
+		</div></div>
+<div class="section"><div class="section_title">Example</div><div type="Example">
+			
+			
+		</div></div>
+<div class="section"><div class="section_title">Declaration in Component Metadata</div><div type="Declaration in Component Metadata">
+			
+			<p class="p">The component declares the existence of the application descriptor by specifying
+					<samp class="ph codeph">manifest: "json"</samp> in the component metadata. Setting this flag
+				makes the component load the <samp class="ph codeph">manifest.json</samp> file and read the
+				relevant entries for <span class="ph"><span class="ph pname">SAPUI5</span></span>. This metadata
+				is used to define the dependencies that need to be loaded in order to start the
+				component. The following code snippet shows how to add the manifest link: </p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">sap.ui.core.UIComponent.extend("sap.samples.Component", {
+    metadata  : { 
+        manifest: "json"
+    }
+}</pre></div>
+
+		</div></div>
+<div class="section"><div class="section_title">API</div><div type="API">
+			
+			<p class="p">At runtime, the manifest content can be accessed from the component via the component
+				metadata: </p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">// get the component
+jQuery.sap.require("sap.samples.Component");
+var oComponent  = sap.samples.Component;
+
+// getting complete manifest from component metadata
+oComponent.getMetadata().getManifest();
+//or getting a namespace
+oComponent.getMetadata().getManifestEntry("sap.app");</pre></div>
+
+		</div></div>
+</div>
+<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+</div>
+
+<div class="linklist linklist">
+<div><div><a class="link" href="../../docs/api/symbols/sap.ui.core.UIComponent.html" alt="../../docs/api/symbols/sap.ui.core.UIComponent.html" title="../../docs/api/symbols/sap.ui.core.UIComponent.html">sap.ui.core.UIComponent</a></div>
+</div>
+<div><a class="link" href="0187ea5e2eff4166b0453b9dcc8fc64f.html" title="The component class provides specific metadata for components by extending the ManagedObject class. The UIComponent class provides additional metadata for the configuration of user interfaces or the navigation between views.">Component Metadata</a></div></div>
+</div></div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Application Descriptor";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

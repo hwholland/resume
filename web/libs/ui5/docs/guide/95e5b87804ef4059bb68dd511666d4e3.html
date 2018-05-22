@@ -1,0 +1,266 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="We only want to display the upcoming meetings and hide the meetings happened in the past in our app. By using a function import that calculates these items on the back end we do not need to do the calculation on the client. The mock server will be instructed to do the calculation locally for testing purposes."/>
+<meta name="description" content="We only want to display the upcoming meetings and hide the meetings happened in the past in our app. By using a function import that calculates these items on the back end we do not need to do the calculation on the client. The mock server will be instructed to do the calculation locally for testing purposes."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6966801924017493"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6966801924017493"/>
+<title>Step 4: Calling a Function Import</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio95e5b87804ef4059bb68dd511666d4e3">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 4: Calling a Function Import</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">We only want to display the upcoming meetings and hide the meetings happened in the past
+		in our app. By using a function import that calculates these items on the back end we do not
+		need to do the calculation on the client. The mock server will be instructed to do the
+		calculation locally for testing purposes.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio95e5b87804ef4059bb68dd511666d4e3__fig_zrh_5mq_st"><div class="figcontainer">
+				
+				<img class="image" id="loio95e5b87804ef4059bb68dd511666d4e3__image_evz_xmq_st" src="loio8f2176b473a54bbd87e8287732e4eb8e_HiRes.png"/>
+			<div class="figcap">Only the upcoming meet-ups are shown</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the Demo Kit <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.tutorial.mockserver.04/preview" alt="../../explored.html#/sample/sap.ui.core.tutorial.mockserver.04/preview" title="../../explored.html#/sample/sap.ui.core.tutorial.mockserver.04/preview">Mock Server - Step 4</a></span>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/localService/metadata.xml</div><div type="webapp/localService/metadata.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">... 
+      &lt;EntityContainer Name="NerdMeetups" m:IsDefaultEntityContainer="true"&gt;
+        &lt;EntitySet Name="Meetups" EntityType="NerdMeetup.Models.Meetup" /&gt;
+        &lt;FunctionImport Name="FindUpcomingMeetups" EntitySet="Meetups" ReturnType="Collection(NerdMeetup.Models.Meetup)" m:HttpMethod="GET" /&gt;
+      &lt;/EntityContainer&gt;
+    &lt;/Schema&gt;
+  &lt;/edmx:DataServices&gt;
+&lt;/edmx:Edmx&gt;</pre></div>
+
+			<p class="p">The function import we are going to use is declared in the <span class="ph filepath">metadata.xml</span> file.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/view/App.view.xml</div><div type="webapp/view/App.view.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">...
+  <span class="ph emphasis emphasis">//Delete items="{/Meetups}"</span>
+	&lt;List headerText="Upcoming Meetups" id="list1" items="{/FindUpcomingMeetups}" 
+...</pre></div>
+
+			<p class="p">We change the binding of the list to a function import call that returns only
+				upcoming meet-ups, instead of the call to the entire meet-ups collection.</p>
+
+			<p class="p">After saving and running the app again, we should get the following result:</p>
+
+			<div class="fig fignone" id="loio95e5b87804ef4059bb68dd511666d4e3__fig_mm2_tnq_st"><div class="figcontainer">
+				
+				<img class="image" id="loio95e5b87804ef4059bb68dd511666d4e3__image_zh2_5nq_st" src="loio4992f37e491c432995eaae0712ba1a59_HiRes.png"/>
+			<div class="figcap">No data visible</div></div></div>
+
+			<div class="p">Since the function import call is not simulated automatically by the mock server, we
+				do not see any data in list, and a failed network call is issued in the developer
+				tools of the browser.<div class="note tip"><span class="tiptitle">Tip</span> 
+					<p class="p">In Google Chrome, mocked requests will appear in a debug level log of the
+						console (both request and response) and not on the
+							<span class="ph uicontrol">Network</span> tab. If you do see them in the
+							<span class="ph uicontrol">Network</span> tab, they are not mocked and you need to
+						check your code.</p>
+
+				</div>
+</div>
+
+			<p class="p">In order to simulate the function import call, we write our own (mocked)
+				implementation, and add to the internal list of requests.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/localService/mockserver.js</div><div type="webapp/localService/mockserver.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+	<span class="ph emphasis emphasis">"jquery.sap.global",
+</span>
+	"sap/ui/core/util/MockServer"
+], function(<span class="ph emphasis emphasis">jQuery, </span>MockServer) {
+	"use strict";
+
+	return {
+		/**
+		 * Initializes the mock server.
+		 * You can configure the delay with the URL parameter "serverDelay".
+		 * The local mock data in this folder is returned instead of the real data for testing.
+		 * @public
+		 */
+		init: function() {
+			// create
+			var oMockServer = new MockServer({
+				rootUri: "/"
+			});
+
+			oMockServer.simulate("../localService/metadata.xml", {
+				sMockdataBaseUrl: "../localService/mockdata",
+				bGenerateMissingMockData: true
+			});
+
+			<span class="ph emphasis emphasis">// handling mocking a function import call step
+			var aRequests = oMockServer.getRequests();
+			aRequests.push({
+				method: "GET",
+				path: new RegExp("FindUpcomingMeetups(.*)"),
+				response: function(oXhr, sUrlParams) {
+					jQuery.sap.log.debug("Incoming request for FindUpcomingMeetups");
+					var today = new Date();
+					today.setHours(0); // or today.toUTCString(0) due to timezone differences
+					today.setMinutes(0);
+					today.setSeconds(0);
+					jQuery.ajax({
+						url: "/Meetups?$filter=EventDate ge " + "/Date(" + (today.getTime())+ ")/",
+						dataType : 'json',
+						async: false,
+						success : function(oData) {
+							oXhr.respondJSON(200, {}, JSON.stringify(oData));
+						}
+					});
+					return true;
+				}
+			});
+			oMockServer.setRequests(aRequests);
+</span>
+
+			// handling custom URL parameter step
+			var fnCustom = function(oEvent) {
+...
+</pre></div>
+
+			<div class="p">We push a new request handler to mock the function import call as follows:<ol class="ol" id="loio95e5b87804ef4059bb68dd511666d4e3__ol_nrr_rqq_st">
+					<li class="li">
+						<p class="p">Fetch the array of requests from the <samp class="ph codeph">MockServer</samp>. The
+							mock server holds an internal list of requests that you have to get and
+							set if you want to modify. </p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Push a new request handler to handle the function import </p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Set the updated request array </p>
+
+					</li>
+
+				</ol>
+</div>
+
+			<div class="p">The request handler has the following structure:<ul class="ul" id="loio95e5b87804ef4059bb68dd511666d4e3__ul_bzw_5qq_st">
+					<li class="li">
+						<p class="p"><samp class="ph codeph">method</samp>: The HTTP method of the mock request</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">path</samp>: The relative path (appended to the
+								<samp class="ph codeph">rootUri</samp>) of the request.</p>
+
+						<p class="p">We can define the path as a regular expression, for example, to handle
+							URL parameters.</p>
+
+					</li>
+
+					<li class="li"><samp class="ph codeph">response</samp>: A response function that simulates the answer
+						from the server </li>
+
+				</ul>
+The <samp class="ph codeph">response</samp> function executes a request to the
+					<samp class="ph codeph">Meetups</samp> entity set with an OData <samp class="ph codeph">$filter</samp> query
+				that actually returns all meet-ups with <samp class="ph codeph">EventDate</samp> that is greater
+				than or equals today. We compose a date for the filter and send it to the
+					<samp class="ph codeph">server</samp> manually as a synchronous request.</div>
+
+			<p class="p">It is o.k. to use <samp class="ph codeph">jQuery.sap.sjax</samp> here, because the call will not
+				actually leave the client. It triggers a new request that again is intercepted and
+				processed by the mock server.</p>
+
+			<p class="p">We finally respond on the XHR object by calling the <samp class="ph codeph">respondJSON</samp> API.
+				It will add the proper content type header for the JSON format and send the result.
+				We provide the HTTP status code <samp class="ph codeph">200</samp> (success) and the 'stringified'
+				response data as the arguments. Returning <samp class="ph codeph">true</samp> at the end of the
+				function indicates that we have completed the processing of the request in this
+				handler (no additional request handlers should be checked for that request).</p>
+
+			<p class="p">When you now start the app again you will see a list of upcoming meet-ups.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Creating and Editing Mock Data in SAP Web IDE (Optional)</div><div type="Creating and Editing Mock Data in SAP Web IDE (Optional)"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">webapp/localService/mockserver.js </p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">...
+oMockServer.simulate("localService/metadata.xml", {
+	sMockdataBaseUrl : "<span class="ph emphasis emphasis">localService/mockdata</span>",
+	bGenerateMissingMockData : true
+});
+...</pre></div>
+
+				<div class="p">The path we gave in the simulate function for mock data is where we want to store the .json file(s). <ul class="ul" id="loio95e5b87804ef4059bb68dd511666d4e3__ul_cbs_cqq_st">
+						<li class="li">
+							<p class="p">Save it (in JSON format) from a real service</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Create it manually</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Generate it in <span class="ph pname">SAP Web IDE</span> by choosing <span class="ph uicontrol">Edit Mock Data</span> in the context menu of the
+								<span class="ph filepath">medatdata.xml</span> file. <span class="ph">For more information about <span class="ph pname">SAP Web IDE</span>,
+                                    see the documentation for <span class="ph pname">SAP Web IDE</span> on
+                                    the SAP Help Portal at <a class="xref" href="https://help.sap.com/viewer/p/SAP_Web_IDE" alt="https://help.sap.com/viewer/p/SAP_Web_IDE" title="https://help.sap.com/viewer/p/SAP_Web_IDE">https://help.sap.com/viewer/p/SAP_Web_IDE</a>.</span></p>
+
+							
+							<div class="fig fignone" id="loio95e5b87804ef4059bb68dd511666d4e3__fig_l2f_bqd_tt"><div class="figcontainer">
+								
+								<img class="image" id="loio95e5b87804ef4059bb68dd511666d4e3__image_osp_hqd_tt" src="loio1117f6cfc5ca4f82904904479db79077_HiRes.png"/>
+							<div class="figcap">Editing mock data in <span class="ph pname">SAP Web IDE</span></div></div></div>
+
+						</li>
+
+					</ul>
+</div>
+
+			</div></div></div>
+
+	</div>
+
+	
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="3a9728ec31f94ca18a7d543ce419d85d.html" title="In this tutorial, we will explore some advanced features of the mock server.">Mock Server</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="46c1ca4eb2804af6bfa371ad51c9b887.html" title="In this step, we add the functionality to interpret URL parameters in our local mock server configuration.">Step 3: Handling Custom URL Parameters</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

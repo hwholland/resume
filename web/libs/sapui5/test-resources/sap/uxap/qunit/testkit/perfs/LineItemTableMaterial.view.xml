@@ -1,0 +1,33 @@
+<mvc:View
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m"
+        controllerName="sap.uxap.testkit.perfs.LineItemTableController">
+
+    <Table growing="true"
+           items="{model>/Vendors('3511')/CMATERIAL}">
+        <columns>
+            <Column>
+                <Text text="Material"/>
+            </Column>
+            <Column>
+                <Text text="Material Type"/>
+            </Column>
+            <Column>
+                <Text text="Material Group"/>
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{model>MaterialName} {model>Material}"/>
+                    <Text text="{model>MaterialTypeName}"/>
+                    <Text text="{model>MaterialGroupName}"/>
+                    <Text text="{model>PhoneNumber1}"/>
+                    <Text text="{model>EmailAddress}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+
+    </Table>
+
+</mvc:View>

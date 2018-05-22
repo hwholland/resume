@@ -1,0 +1,1698 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="sap.ushell" xmlns:n3="sap.ushell" xmlns:n1="sap.ui.layout" xmlns:n0="sap.ui.core" xmlns:n2="sap.m">
+<xsd:import namespace="sap.ui.layout"/>
+<xsd:import namespace="sap.ui.core"/>
+<xsd:import namespace="sap.m"/>
+<xsd:element name="PictureTile" type="n3:_PictureTileType" substitutionGroup="n2:CustomTile">
+<xsd:annotation>
+<xsd:documentation>Tile control embedding an image and allowing custom sizing</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="PictureViewer" type="n3:_PictureViewerType" substitutionGroup="n2:TileContainer">
+<xsd:annotation>
+<xsd:documentation>Picture viewer control relying on the TileContainer control</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="PictureViewerItem" type="n3:_PictureViewerItemType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Picture viewer control relying on the TileContainer control</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="AppBox" type="n3:_AppBoxType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/appfinder/AppBox</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="AboutButton" type="n3:_AboutButtonType" substitutionGroup="n3:ActionItem">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/footerbar/AboutButton</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="AddBookmarkButton" type="n3:_AddBookmarkButtonType" substitutionGroup="n2:Button">
+<xsd:annotation>
+<xsd:documentation>A button to be displayed in the application footer. Clicking the button opens a dialog box allowing the user to save the app state, so that the app can be launched in this state directly from the launchpad.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="ContactSupportButton" type="n3:_ContactSupportButtonType" substitutionGroup="n3:ActionItem">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/footerbar/CreateTicketButton</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="EndUserFeedback" type="n3:_EndUserFeedbackType" substitutionGroup="n3:ActionItem">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/footerbar/EndUserFeedback</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="HideGroupsButton" type="n3:_HideGroupsButtonType" substitutionGroup="n3:ActionItem">
+<xsd:annotation>
+<xsd:documentation>A button to hide groups from the dashboard, for the UShell footerbar.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="JamDiscussButton" type="n3:_JamDiscussButtonType" substitutionGroup="n2:Button">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/footerbar/JamDiscussButton</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="JamShareButton" type="n3:_JamShareButtonType" substitutionGroup="n2:Button">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/footerbar/JamShareButton</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="LogoutButton" type="n3:_LogoutButtonType" substitutionGroup="n3:ActionItem">
+<xsd:annotation>
+<xsd:documentation>A logout button for the UShell footerbar.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="SettingsButton" type="n3:_SettingsButtonType" substitutionGroup="n2:Button">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/footerbar/SettingsButton</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="UserPreferencesButton" type="n3:_UserPreferencesButtonType" substitutionGroup="n3:ActionItem">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/footerbar/UserPreferencesButton</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="ActionItem" type="n3:_ActionItemType" substitutionGroup="n2:Button">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="AnchorItem" type="n3:_AnchorItemType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/launchpad/AnchorItem</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="AnchorNavigationBar" type="n3:_AnchorNavigationBarType" substitutionGroup="n2:Bar">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/launchpad/AnchorNavigationBar</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="DashboardGroupsContainer" type="n3:_DashboardGroupsContainerType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/launchpad/DashboardGroupsContainer</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="EmbeddedSupportErrorMessage" type="n3:_EmbeddedSupportErrorMessageType" substitutionGroup="n2:Dialog">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/launchpad/EmbeddedSupportErrorMessage</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="Fiori2LoadingDialog" type="n3:_Fiori2LoadingDialogType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Displays a fiori2 app navigation loading dialog with an indicator that an app is loading</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="GroupHeaderActions" type="n3:_GroupHeaderActionsType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/launchpad/GroupHeaderActions</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="GroupListItem" type="n3:_GroupListItemType" substitutionGroup="n2:ListItemBase">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/launchpad/GroupListItem</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="HeaderTile" type="n3:_HeaderTileType" substitutionGroup="n3:Tile">
+<xsd:annotation>
+<xsd:documentation>A HeaderTile acts as a separator inside a TileContainer.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="LinkTileWrapper" type="n3:_LinkTileWrapperType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>A link tile to be displayed in the tile container. This control acts as container for specialized tile implementations.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="LoadingDialog" type="n3:_LoadingDialogType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Displays a loading dialog with an indicator that an app is loading</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="Panel" type="n3:_PanelType" substitutionGroup="n2:Panel">
+<xsd:annotation>
+<xsd:documentation>The Panel control is a container for controls with header text, header controls, or a header bar.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="PlusTile" type="n3:_PlusTileType" substitutionGroup="n3:Tile">
+<xsd:annotation>
+<xsd:documentation>A specialized tile showing a plus icon.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="Tile" type="n3:_TileType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>A tile to be displayed in the tile container. This tile acts as container for specialized tile implementations.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="TileContainer" type="n3:_TileContainerType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>A container that arranges Tile controls.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="TileState" type="n3:_TileStateType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>The tile state control that displays loading indicator, while tile view is loading and failed status in case tile view is not available.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="ViewPortContainer" type="n3:_ViewPortContainerType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>ViewPort container</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="DynamicTile" type="n3:_DynamicTileType" substitutionGroup="n3:TileBase">
+<xsd:annotation>
+<xsd:documentation>An applauncher for apps that need to display dynamically updated information</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="ImageTile" type="n3:_ImageTileType" substitutionGroup="n3:TileBase">
+<xsd:annotation>
+<xsd:documentation>Add your documentation for the newui/tile/ImageTile</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="StaticTile" type="n3:_StaticTileType" substitutionGroup="n3:TileBase">
+<xsd:annotation>
+<xsd:documentation>An applauncher tile for simple, static apps, displaying title, subtitle, an icon and additional information</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="TileBase" type="n3:_TileBaseType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Base class for tiles that already provides several visual elements like title, subtitle, icon and additional information</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<!--type definition for UIElement 'sap.ushell.components.factsheet.controls.PictureTile'-->
+<xsd:complexType name="_PictureTileType">
+<xsd:complexContent>
+<xsd:extension base="n2:_CustomTileType">
+<xsd:attribute name="height" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>height (in pixels) of the picture viewer control.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="width" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>width (in pixels) of the picture viewer control.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="tileContent" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Reference to one PictureViewerItem coming from the PictureViewer.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="pictureDelete" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Fired when the user deletes a picture</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.components.factsheet.controls.PictureViewer'-->
+<xsd:complexType name="_PictureViewerType">
+<xsd:complexContent>
+<xsd:extension base="n2:_TileContainerType">
+<xsd:sequence>
+<!--default aggregation 'items'-->
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n3:PictureViewerItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="items" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>Aggregation of PictureViewerItem that contains either a picture URI or the actual Image control.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n3:PictureViewerItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="tileScaling" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>Percentage of the space occupied by the image in the picture viewer control. Please note that if the factor is too close to 1, the navigation arrows usually displayed in desktop mode will not be available</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="removable" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Defines whether or not you can remove a picture
+</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="pictureDeleted" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Thrown when user delete an image</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.components.factsheet.controls.PictureViewerItem'-->
+<xsd:complexType name="_PictureViewerItemType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<xsd:element name="image" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>Pass in an existing Image control to be used inside the PictureViewer</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:Image"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="src" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Image source url.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.appfinder.AppBox'-->
+<xsd:complexType name="_AppBoxType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<xsd:element name="pinButton" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:Button"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="title" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="subtitle" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="icon" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="url" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterRendering" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.footerbar.AboutButton'-->
+<xsd:complexType name="_AboutButtonType">
+<xsd:complexContent>
+<xsd:extension base="n3:_ActionItemType"/>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.footerbar.AddBookmarkButton'-->
+<xsd:complexType name="_AddBookmarkButtonType">
+<xsd:complexContent>
+<xsd:extension base="n2:_ButtonType">
+<xsd:attribute name="beforePressHandler" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>A callback function to be called prior to the press handler upon clicking the button.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterPressHandler" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>A callback function to be called after the press handler called upon clicking the button.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="title" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Title to be displayed on the tile.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="subtitle" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Subtitle to be displayed below the tile title.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="info" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Text to be displayed at the bottom of the tile.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="tileIcon" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Icon to be desplied in the Tile.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="numberUnit" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>For dynamic tile, the unit to be displayed below the number, for example, USD.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="keywords" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The keywords based on which the future tile should be indexed and filtered.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="customUrl" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>A customized target URL for the tile.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="serviceUrl" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>URL of an OData service from which data should be read.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="serviceRefreshInterval" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Number of seconds after which dynamic content is read from the data source and the display is refreshed.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showGroupSelection" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Defines whether to display the group selection control within the Save as Tile dialog box.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="appData" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Deprecated – an object containing application information properties.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.footerbar.ContactSupportButton'-->
+<xsd:complexType name="_ContactSupportButtonType">
+<xsd:complexContent>
+<xsd:extension base="n3:_ActionItemType"/>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.footerbar.EndUserFeedback'-->
+<xsd:complexType name="_EndUserFeedbackType">
+<xsd:complexContent>
+<xsd:extension base="n3:_ActionItemType">
+<xsd:sequence>
+<xsd:element name="customUIContent" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="showAnonymous" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="anonymousByDefault" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showLegalAgreement" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showCustomUIContent" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="feedbackDialogTitle" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="textAreaPlaceholder" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.footerbar.HideGroupsButton'-->
+<xsd:complexType name="_HideGroupsButtonType">
+<xsd:complexContent>
+<xsd:extension base="n3:_ActionItemType">
+<xsd:attribute name="save" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.footerbar.JamDiscussButton'-->
+<xsd:complexType name="_JamDiscussButtonType">
+<xsd:complexContent>
+<xsd:extension base="n2:_ButtonType">
+<xsd:attribute name="beforePressHandler" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterPressHandler" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="jamData" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.footerbar.JamShareButton'-->
+<xsd:complexType name="_JamShareButtonType">
+<xsd:complexContent>
+<xsd:extension base="n2:_ButtonType">
+<xsd:attribute name="beforePressHandler" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterPressHandler" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="jamData" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.footerbar.LogoutButton'-->
+<xsd:complexType name="_LogoutButtonType">
+<xsd:complexContent>
+<xsd:extension base="n3:_ActionItemType"/>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.footerbar.SettingsButton'-->
+<xsd:complexType name="_SettingsButtonType">
+<xsd:complexContent>
+<xsd:extension base="n2:_ButtonType"/>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.footerbar.UserPreferencesButton'-->
+<xsd:complexType name="_UserPreferencesButtonType">
+<xsd:complexContent>
+<xsd:extension base="n3:_ActionItemType"/>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.ActionItem'-->
+<xsd:complexType name="_ActionItemType">
+<xsd:complexContent>
+<xsd:extension base="n2:_ButtonType">
+<xsd:attribute name="actionType" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>type of button to create</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterRendering" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.AnchorItem'-->
+<xsd:complexType name="_AnchorItemType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:attribute name="title" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="selected" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="groupId" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="defaultGroup" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="index" type="xsd:int">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isGroupVisible" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isGroupRendered" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterRendering" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.AnchorNavigationBar'-->
+<xsd:complexType name="_AnchorNavigationBarType">
+<xsd:complexContent>
+<xsd:extension base="n2:_BarType">
+<xsd:sequence>
+<xsd:element name="groups" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n3:AnchorItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="accessibilityLabel" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>A value for an optional accessibility label</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="selectedItemIndex" type="xsd:int">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterRendering" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="itemPress" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.DashboardGroupsContainer'-->
+<xsd:complexType name="_DashboardGroupsContainerType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<xsd:element name="groups" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="accessibilityLabel" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>An value for an optional accessibility label</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="displayMode" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterRendering" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.EmbeddedSupportErrorMessage'-->
+<xsd:complexType name="_EmbeddedSupportErrorMessageType">
+<xsd:complexContent>
+<xsd:extension base="n2:_DialogType">
+<xsd:attribute name="afterClose" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.Fiori2LoadingDialog'-->
+<xsd:complexType name="_Fiori2LoadingDialogType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:attribute name="text" type="n0:_URIType">
+<xsd:annotation>
+<xsd:documentation>the text to be displayed</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.GroupHeaderActions'-->
+<xsd:complexType name="_GroupHeaderActionsType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<xsd:element name="content" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="overflowCtrl" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="isOverflow" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="tileActionModeActive" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterRendering" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.GroupListItem'-->
+<xsd:complexType name="_GroupListItemType">
+<xsd:complexContent>
+<xsd:extension base="n2:_ListItemBaseType">
+<xsd:attribute name="title" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="defaultGroup" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="show" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="groupId" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="index" type="xsd:int">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="numberOfTiles" type="xsd:int">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isGroupVisible" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterRendering" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.HeaderTile'-->
+<xsd:complexType name="_HeaderTileType">
+<xsd:complexContent>
+<xsd:extension base="n3:_TileType">
+<xsd:attribute name="headerLevel" type="n2:_HeaderLevelType">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="headerText" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.LinkTileWrapper'-->
+<xsd:complexType name="_LinkTileWrapperType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<xsd:element name="tileViews" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="footItems" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="uuid" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="tileCatalogId" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="target" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Hyperlink target</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="debugInfo" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Technical information about the tile which is logged when the tile is clicked</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="animationRendered" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isLocked" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="tileActionModeActive" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="ieHtml5DnD" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="coverDivPress" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterRendering" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showActions" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.LoadingDialog'-->
+<xsd:complexType name="_LoadingDialogType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:attribute name="iconUri" type="n0:_URIType">
+<xsd:annotation>
+<xsd:documentation>the sap-icon://-style URI of an icon</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="text" type="n0:_URIType">
+<xsd:annotation>
+<xsd:documentation>the text to be displayed</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="loadAnimationWithInterval" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>defines whether the presentation of the Fiori flower animation should be displayed with an interval</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.Panel'-->
+<xsd:complexType name="_PanelType">
+<xsd:complexContent>
+<xsd:extension base="n2:_PanelType">
+<xsd:sequence>
+<xsd:element name="headerContent" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="headerBar" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:Bar"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="translucent" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.PlusTile'-->
+<xsd:complexType name="_PlusTileType">
+<xsd:complexContent>
+<xsd:extension base="n3:_TileType">
+<xsd:attribute name="groupId" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Fired when user clicks on the tile</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.Tile'-->
+<xsd:complexType name="_TileType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<xsd:element name="tileViews" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="pinButton" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="long" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether tile spans more than one column</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="uuid" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="tileCatalogId" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="target" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Hyperlink target</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="debugInfo" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Technical information about the tile which is logged when the tile is clicked</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="rgba" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>the RGBA value of the tile</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="animationRendered" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isLocked" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showActionsIcon" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="tileActionModeActive" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="ieHtml5DnD" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="coverDivPress" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterRendering" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showActions" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="deletePress" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.TileContainer'-->
+<xsd:complexType name="_TileContainerType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<xsd:element name="tiles" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n3:Tile"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="links" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="beforeContent" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="afterContent" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="footerContent" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="headerActions" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="scrollType" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="animationSpeed" type="xsd:int">
+<xsd:annotation>
+<xsd:documentation>Animation Speed in milliseconds (ms)</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="groupId" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showHeader" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showPlaceholder" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="defaultGroup" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isLastGroup" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="headerText" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="headerLevel" type="n2:_HeaderLevelType">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="groupHeaderLevel" type="n2:_HeaderLevelType">
+<xsd:annotation>
+<xsd:documentation>Header level (H1-H6) used for headers of tile groups.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showGroupHeader" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="sortable" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showNoData" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="noDataText" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isGroupLocked" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="editMode" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showBackground" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="icon" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showIcon" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="deluminate" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showMobileActions" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="enableHelp" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="tileActionModeActive" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="ieHtml5DnD" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showDragIndicator" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterRendering" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="add" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Event fired when placeholder is clicked</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="titleChange" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Event fired when title is renamed</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.TileState'-->
+<xsd:complexType name="_TileStateType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:attribute name="state" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The load status.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.launchpad.ViewPortContainer'-->
+<xsd:complexType name="_ViewPortContainerType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<xsd:element name="leftViewPort" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="centerViewPort" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="rightViewPort" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="height" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="width" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="defaultState" type="n3:_ViewPortStateType">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="initialCenterViewPort" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="initialRightViewPort" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="initialLeftViewPort" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="navigate" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterSwitchState" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterSwitchStateAnimationFinished" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="afterNavigate" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.tile.DynamicTile'-->
+<xsd:complexType name="_DynamicTileType">
+<xsd:complexContent>
+<xsd:extension base="n3:_TileBaseType">
+<xsd:attribute name="numberValue" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>a number to be formatted with numberDigits decimal digits. Can be sap.ui.core.string as well.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="numberState" type="n3:_StateType">
+<xsd:annotation>
+<xsd:documentation>The state of the number, indicating positive or negative conditions</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="numberUnit" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The unit in which numberValue is measured</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="numberDigits" type="xsd:int">
+<xsd:annotation>
+<xsd:documentation>the number of fractional decimal digits</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="stateArrow" type="n3:_StateArrowType">
+<xsd:annotation>
+<xsd:documentation>the state of the trend indicator</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="numberFactor" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>defines a scaling factor (like "%", "M" or "k") right to a scaled number</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.tile.ImageTile'-->
+<xsd:complexType name="_ImageTileType">
+<xsd:complexContent>
+<xsd:extension base="n3:_TileBaseType">
+<xsd:attribute name="imageSource" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>the URL of the image to display</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.tile.StaticTile'-->
+<xsd:complexType name="_StaticTileType">
+<xsd:complexContent>
+<xsd:extension base="n3:_TileBaseType"/>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.ushell.ui.tile.TileBase'-->
+<xsd:complexType name="_TileBaseType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<xsd:element name="content" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation/>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n0:Control"/>
+<xsd:element ref="n0:Fragment"/>
+<xsd:any processContents="lax" namespace="http://www.w3.org/1999/xhtml"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="title" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The title of this tile</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="subtitle" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>A subtitle of this tile (optional)</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="icon" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>An icon for the tile</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="info" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Additional information displayed at the bottom of the tile</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="infoState" type="n3:_StateType">
+<xsd:annotation>
+<xsd:documentation>The state of the info field</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="targetURL" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>If given, the Control is wrapped into a link pointing to this URL. If empty or not set, the link is not rendered</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="highlightTerms" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>contains an array of terms that should be highlighted; per default, the array is empty</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>called when the tile is clicked / pressed</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:simpleType name="_ViewPortStateType">
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="Left">
+<xsd:annotation>
+<xsd:documentation>indicates state when only left content is in the viewport</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Center">
+<xsd:annotation>
+<xsd:documentation>Indicates a state that is neutral, e.g. for standard display (Grey color)</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Right">
+<xsd:annotation>
+<xsd:documentation>Alias for "Error"</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="LeftCenter">
+<xsd:annotation>
+<xsd:documentation>Indicates a state that is negative, e.g. marking an element that has to get attention urgently or indicates negative values (Red color)</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="CenterLeft">
+<xsd:annotation>
+<xsd:documentation>Alias for "Success"</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="RightCenter">
+<xsd:annotation>
+<xsd:documentation>Indicates a state that is positive, e.g. marking a task successfully executed or a state where all is good (Green color)</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="CenterRight">
+<xsd:annotation>
+<xsd:documentation>Alias for "Warning"</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="_StateType">
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="Neutral">
+<xsd:annotation>
+<xsd:documentation>Alias for "None"</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="None">
+<xsd:annotation>
+<xsd:documentation>Indicates a state that is neutral, e.g. for standard display (Grey color)</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Negative">
+<xsd:annotation>
+<xsd:documentation>Alias for "Error"</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Error">
+<xsd:annotation>
+<xsd:documentation>Indicates a state that is negative, e.g. marking an element that has to get attention urgently or indicates negative values (Red color)</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Positive">
+<xsd:annotation>
+<xsd:documentation>Alias for "Success"</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Success">
+<xsd:annotation>
+<xsd:documentation>Indicates a state that is positive, e.g. marking a task successfully executed or a state where all is good (Green color)</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Critical">
+<xsd:annotation>
+<xsd:documentation>Alias for "Warning"</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Warning">
+<xsd:annotation>
+<xsd:documentation>Indicates a state that is critical, e.g. marking an element that needs attention (Orange color)</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="_StateArrowType">
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="None">
+<xsd:annotation>
+<xsd:documentation>The trend direction indicator is invisible</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Up">
+<xsd:annotation>
+<xsd:documentation>The trend direction indicator points up</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Down">
+<xsd:annotation>
+<xsd:documentation>The trend direction indicator points down</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:schema>

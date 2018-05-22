@@ -1,0 +1,30 @@
+
+{
+	"applicationConfiguration" : { 
+		"type" : "applicationConfiguration", 
+		"appName" : "sap-working-capital-analysis", 
+		"appTitle" : "sap-working-capital-analysis", 
+		"analyticalConfigurationLocation" : "config/AnalyticalConfiguration.json",
+		"defaultReportingCurrency" : "USD",
+		"defaultExchangeRateType" : "M",
+		"applicationMessageDefinitionLocation" : "config/AppMessageDefinition.json",
+		"textResourceLocations" : {
+			"applicationUiTextBundle" : "resources/i18n/app.properties",
+			"applicationMessageTextBundle" : "resources/i18n/appMessages.properties" 
+ 	    },
+
+		"persistence" : {
+             "path" : { 
+             		"service" : "/sap/hba/r/apf/core/odata/apf.xsodata"
+             },
+             "logicalSystem" : { 
+                         "service" : "/sap/hba/apps/wca/dso/s/odata/wca.xsodata" 
+             }
+        },
+         "smartBusiness": {
+        	"runtime" : {
+        		"service": "/sap/hba/r/sb/core/odata/runtime/SMART_BUSINESS.xsodata"
+        	}
+        }
+	}	  
+}

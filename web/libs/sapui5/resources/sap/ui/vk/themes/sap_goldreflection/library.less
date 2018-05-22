@@ -1,0 +1,656 @@
+/* NOTE: This file was generated as an optimized version of "library.source.less" for the Theme Designer. */
+
+/*!
+ * ${copyright}
+ */
+
+@import "../../../../../../Base/baseLib/baseTheme/base.less"; /* ORIGINAL IMPORT PATH: "../../../../../sap/ui/core/themes/base/base.less" */
+
+@import "../../../../../sap/ui/core/themes/base/global.less";
+
+/* START "Viewer.less" */
+.sapVizKitViewer {
+	touch-action: none;
+	-ms-touch-action: none;
+	background-color: @sapUiExtraLightBG;
+}
+
+//We are hiding the three dots that are animating
+//when the viewer is set as busy since we already have our own
+//progress indicator.
+.sapVizKitViewer .sapUiLocalBusyIndicatorAnimation {
+	visibility: hidden !important;
+}
+
+.sapVizKitViewerFullScreen {
+	width: 100% !important;
+	height: 100% !important;
+	top: 0;
+	left: 0;
+	position: fixed !important;
+	z-index: 10;
+}
+
+
+
+.sapVizKitViewer .sapUiLocalBusyIndicator {
+	background-color: rgba(242, 242, 242, 0.9);
+}
+
+.sapVizKitViewer .sapUiVizkitProgressIndicator {
+	position: relative;
+	overflow: hidden;
+	z-index: 10;
+	width: 100%;
+	bottom: 1.6rem;
+}
+/* END "Viewer.less" */
+
+/* START "Viewport.less" */
+@canvasTopColor: black;
+@canvasBottomColor: white;
+
+.sapVizKitViewport {
+	width: 100%;
+	height: 100%;
+	padding:0px;
+	margin:0px;
+	background-image: linear-gradient(to bottom, @canvasTopColor, @canvasBottomColor);
+	outline-offset: -1px;
+
+	canvas {
+		display: block;
+		width: 100%;
+		height: 100%;
+		padding:0px;
+		margin:0px;
+	}
+}
+
+/* END "Viewport.less" */
+
+/* START "Overlay.less" */
+/*...........................................................................*/
+/* LESS for control sap.ui.vk/Overlay.control...................................*/
+/*...........................................................................*/
+
+
+/* main overlay container style..................................................*/
+.sapUiVkOverlay {
+  	border: none;
+  	width: 100%;
+  	height: 100%;
+  	-webkit-user-select: none;
+  	-moz-user-select: none;
+  	-ms-user-select: none;
+  	user-select: none;
+}
+/* END "Overlay.less" */
+
+/* START "NativeViewport.less" */
+@canvas-top-color: black;
+@canvas-bottom-color: white;
+
+.sapVizKitNativeViewport {
+    display: inline-flex;
+    width: 100%;
+    height: 100%;
+    background-color:white;
+    overflow: hidden;
+    outline-offset: -1px;
+	position: relative;
+}
+
+.sapVizKitNativeViewport > div {
+	overflow: hidden;
+	flex: 1;
+	margin: 1px;
+}
+
+.SVGImage {
+   pointer-events: none;
+}
+
+.svgErrorContainer {
+	display: inline-block;
+}
+/* END "NativeViewport.less" */
+
+/* START "SceneTree.less" */
+.sapRULTSceneTree {
+	width: 100%;
+	height: 100%;
+	-webkit-transform: translate3d(0,0,0);
+}
+
+.sapUiVkTitle {
+	width: 100%;
+	height: 100%;
+	padding: 0.5em 0 0 0.5em;
+}
+
+*:focus {
+	outline: 1px dotted @sapUiHighlight;
+}
+
+//We use this for Text controls inside the scene tree,
+//because we want the long labels to turn into ellipsis.
+//display: inline is required for this to happen.
+.sapRULTSceneTree .sapMText {
+	display: inline;
+	position: relative;
+}
+
+//We are setting the border-right property to 0 so there are no vertical borders displayed.
+.sapRULTSceneTree .sapUiTableRowHdr {
+	border-right: 0;
+}
+
+.sapRULTSceneTree .sapUiTableTr > td {
+	border-right: 0;
+}
+
+.sapRULTSceneTree .sapUiTableColHdrScr .sapUiTableCol {
+	border-right: 0;
+}
+
+.sapRULTSceneTree .sapUiTableColHdrCnt .sapUiTableColRowHdr {
+	border-right: 0;
+}
+
+//This class is the one that looks after the scroll bar in the scene tree.
+//We are setting to auto so it can show a scroll bar when the scene tree height
+//is greater than the container.
+.sapRULTSceneTree .sapUiTableVSb {
+	overflow-y: auto;
+}
+
+//iPad rendering is not consistent with Windows so we have to add this
+//float: none style to prevent a bug where the text labels overlapping
+//with the expand arrows.
+.sapRULTSceneTree .sapUiTableTreeIcon {
+	float: none;
+}
+/* END "SceneTree.less" */
+
+/* START "StepNavigation.less" */
+.sapVizKitStepNavigation {
+
+}
+
+.sapVizKitStepNavigationStepItem {
+	border: none;
+	padding: 0.1875em;
+}
+
+.sapVizKitStepNavigationStepItem.selected {
+	border: 0.1875em solid;
+	padding: 0;
+	border-color: @sapUiHighlight;
+}
+
+.sapVizKitStepNavigationStepItem:focus:not(.selected) {
+	outline: 1px dotted @sapUiHighlight;
+	outline-offset: -2px;
+}
+
+.sapVizKitStepNavigationStepItem:hover:not(.selected) {
+	border: 0.1875em solid;
+	padding: 0;
+	border-color: @sapUiDarkBorder;
+}
+
+.sapVizKitStepNavigationPopoverStepInfo {
+	width: "20%";
+	height: "15%";
+}
+
+.sapVizKitStepNavigationPopoverContent {
+	padding: 1rem;
+}
+
+.sapVizKitStepNavigationPlayOptionsSelect {
+	width: 15em;
+}
+
+.sapVizKitStepNavigationProcedureList {
+    width: 30%;
+}
+
+.sapVizKitStepNavigation .sapVizKitStepNavigationProcedureList  {
+	min-width: 10rem;
+}
+
+.sapVizKitStepNavigationPopoverTitle {
+	padding-left: 1rem;
+	padding-right: 2rem;
+	white-space: nowrap !important;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* END "StepNavigation.less" */
+
+/* START "FlexibleControl.less" */
+.sapUiFlexControl {
+	float: left;
+	position: relative;
+	display: block;
+	overflow: hidden;
+}
+
+.sapUiFlexCellStacked {
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	overflow: hidden;
+}
+
+.sapUiFlexCellVertical {
+	display: block;
+	width: 100%;
+	position: static;
+	overflow: hidden;
+}
+/* END "FlexibleControl.less" */
+
+/* START "CheckEye.less" */
+.sapUiCheckEye input[type="checkbox"] {
+	display: none;
+}
+
+.sapUiCheckEye input[type="checkbox"] + label:before {
+	content: "\e1ea";
+	font-family: "SAP-icons";
+	font-size: 1rem;
+	color: @sapUiMediumBG;
+}
+
+.sapUiCheckEye input[type="checkbox"]:checked + label:before {
+	content: "\e1e9";
+	color: @sapUiDarkBG;
+}
+
+//Making the Chekeye clicking area fill the whole table cell
+.sapUiCheckEye {
+	height: 100%;
+	width: 100%;
+	display: block;
+	padding-left: 1em;
+	padding-right: 1em;
+	margin-left: -1.2em;
+	padding-top: 0.15em;
+	padding-bottom: 0.15em;
+}
+/* END "CheckEye.less" */
+
+/* START "ContainerBase.less" */
+/*...........................................................................*/
+/* LESS for control sap.ui.vk/ContainerBase.control...................................*/
+/*...........................................................................*/
+
+
+/* main container style..................................................*/
+.sapUiVkContainerBase {
+  	border: none;
+  	position: relative;
+  	width: 100%;
+  	height: 100%;
+}
+
+.sapUiVkContainerBaseOverlay { /* class for fullscreen overlay */
+	left: 0;
+  	top: 0 !important;
+  	width: 100%;
+  	height: 100%;
+}
+
+.sapUiVkContainerBaseWrapper {
+  	width: 100%;
+  	height: 100%;
+  	background-color: rgb(255,255,255);
+}
+
+.sapUiVkContainerBaseToolbarArea {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+.sapUiVkContainerBaseToolbarArea .sapMTB {
+	border: none;
+}
+
+.sapUiVkContainerBaseContentArea {
+	padding-top: 3em;
+	width: 100%;
+  	height: 100%;	
+}
+
+.sapUiSizeCompact .sapUiVkContainerBaseContentArea {
+	padding-top: 2em;
+}
+/* END "ContainerBase.less" */
+
+/* START "MapContainer.less" */
+/*...........................................................................*/
+/* LESS for control sap.ui.vk/MapContainer.control...................................*/
+/*...........................................................................*/
+
+
+/* main map container style..................................................*/ 
+
+.sapUiVkMapContainer {
+}
+
+.sapUiVkMapContainerOverlay {
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	right: 0.25rem;
+	bottom: 1rem;
+	pointer-events: none; /* necessary to let events through to the content below */
+}
+
+html.sap-phone {
+	.sapUiVkMapContainerOverlay {
+		top: 0.25rem;
+		left: 0.25rem;
+		right: 0.25rem;
+	}
+	.sapUiVkContainerBaseWrapper {
+  		position: absolute;
+  		top: 0px;
+  		left: 0px;	
+   	transition: transform 0.4s;
+	}
+}
+
+.sapUiVkMapContainer {
+	.sapUiVkContainerBaseContentArea {
+		padding-top: 0px;
+	}
+	.sapUiVkContainerBaseToolbarArea {
+		position: static;
+		/* since parent sapUiVkMapContainerOverlay declares pointer-events: none, which gets inherited,
+		 this is needed to make toolbar buttons functional */	
+	   pointer-events: auto; 
+	}
+	.sapUiVkContainerBaseToolbarArea .sapMTB {
+		border: none;
+		height: 1px !important; /* This trick allows to let events pass transparent parts of the toolbar */
+		overflow: visible;
+		margin-top: 1.5rem;	
+	}
+	.sapUiVkMapContainerListPanelArea {
+		/* since parent sapUiVkMapContainerOverlay declares pointer-events: none, which gets inherited,
+		 this is needed to make ListPanelStack functional */	
+	   pointer-events: auto; 	
+	}
+}
+
+.sapUiSizeCompact .sapUiVkMapContainer .sapUiVkContainerBaseToolbarArea .sapMTB {
+	margin-top: 1rem;	
+}
+
+.sapUiVkMapContainerNavbarArea {
+	position: absolute;
+	right: 0rem;
+	bottom: 0rem;
+	/* since parent sapUiVkMapContainerOverlay declares pointer-events: none, which gets inherited,
+		 this is needed to make navbar buttons functional */	
+	pointer-events: auto; 
+}
+
+.sapUiVkMapContainerNavbarArea { 
+	.sapMTB {
+   	border: none;
+		flex-direction: column;
+		height: auto !important;
+		width: 1px;
+		overflow: visible;
+	}
+	.sapMIBar>.sapMBarChild:last-child {
+		margin-top: -0.5rem;
+	}
+}
+
+.sapUiVkMapContainerLPW {
+	top: 0px;
+	left: 0px;
+	background: white;
+	width: 100%;
+	height: 100%;
+	padding-left: 0.25rem; /* from back button */
+	transform: translateX(-100%);
+	transition: transform 0.4s;
+	box-sizing: border-box;	
+}
+
+html.sap-phone .sapUiVkMapContainerListPanelArea {
+	margin-left: -0.25rem; /* neutralize padding from sapUiVkMapContainerLPW */
+}
+
+html:not(.sap-phone) .sapUiVkMapContainerListPanelArea {
+	float: left;
+}
+
+.sapUiVkMapContainerLPWIn {
+	transform: translateX(0%);
+}
+
+.sapUiVkMapContainerMapOut {
+	transform: translateX(100%);
+}
+
+html[dir=rtl] {
+	.sapUiVkMapContainerLPW {
+		transform: translateX(100%);	
+	}
+	.sapUiVkMapContainerLPWIn {
+		transform: translateX(0%);
+	}
+	.sapUiVkMapContainerMapOut {
+		transform: translateX(-100%);
+	}
+}
+
+@sapUiVkMCOverlayShadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.5);
+.sapUiVkMapContainer {
+	.sapUiVkContainerBaseToolbarArea .sapMBtnTransparent:not(.sapMToggleBtnPressed),
+	.sapUiVkMapContainerNavbarArea .sapMBtnTransparent:not(.sapMToggleBtnPressed) {
+		/* make transparent button in toolbar look like segmented button */
+		background-color: @sapUiSegmentedButtonBackground;
+		border-radius: 0px;
+		border-color: @sapUiSegmentedButtonBorderColor;
+	}
+	html.sap-desktop & .sapMSegBBtnFocusable:not(.sapMSegBBtnSel):hover,
+	/* needed for segmented button on hover */
+	.sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable:not(.sapMToggleBtnPressed) {
+		/* needed for tranparent toolbar button on hover */
+		background-color: @sapUiButtonHoverBackground;
+	}
+	:not(.sapMBtnDisabled)>.sapMBtnInner.sapMBtnActive .sapMBtnIcon {
+		/* button active state */
+		color: @sapUiSegmentedButtonIconColor;
+	}
+	.sapMSegB,
+	.sapUiSizeCompact & .sapMSegB {
+		padding: 0;
+	}
+}
+html:not(.sap-phone) .sapUiVkMapContainer {
+	.sapUiVkListPanelStack {
+		border: 1px solid @sapList_BorderColor;
+	}
+	.sapUiVkMapContainerListPanelArea {
+		padding: 0.0625rem 0.125rem;
+		/* needed for shadow bleeding from inner div */
+	}
+}
+
+@font-face {
+       font-family: 'map-container';
+       src:url('fonts/map-container.eot?#iefix') format('embedded-opentype'),
+               url('fonts/map-container.woff') format('woff'),
+               url('fonts/map-container.ttf') format('truetype');
+       font-weight: normal;
+       font-style: normal;
+}
+/* END "MapContainer.less" */
+
+/* START "ListPanelStack.less" */
+/*...........................................................................*/
+/* LESS for control sap.ui.vk/ListPanelStack.control...................................*/
+/*...........................................................................*/
+
+
+/* main ListPanelStack style..................................................*/
+.sapUiVkListPanelStack {
+	background-color: @sapList_Background;
+}
+
+
+.sapUiVkLPSTrans {
+	transition: width 0.4s;
+}
+
+.sapUiVkLPSCollapse .sapUiVkListPanel .sapMPanelExpandableIcon {
+	display: none;
+}
+
+.sapUiVkLPSCollapse .sapMPanel .sapMPanelWrappingDivTb .sapUiVkLPTb.sapMIBar.sapMTB {
+	margin-right: 0px;
+}
+
+.sapUiVkListPanelStack .sapUiVkListPanel .sapMPanelContent { /* remove scrolling from panel content since whole stack should scroll */		
+	overflow: hidden;
+}
+
+
+
+
+/* END "ListPanelStack.less" */
+
+/* START "ListPanel.less" */
+/*...........................................................................*/
+/* LESS for control sap.ui.vk/ListPanel.control..............................*/
+/*...........................................................................*/
+
+
+/* main List Panel style..................................................*/
+.sapUiVkListPanel {
+	
+}
+
+/* change margin and padding of panel header toolbar for right aligned expand icon */
+.sapMPanel .sapMPanelWrappingDivTb .sapUiVkLPTb.sapMIBar.sapMTB {
+	margin-left: 0.25rem;
+	padding-right: 0px;
+	margin-right: 3rem;
+}
+
+.sapUiVkListPanel {
+	.sapMPanelContent { /* remove padding from panel content */
+		padding: 0px;
+	}	
+	.sapMPanelExpandableIcon { /* move panel expand icon right */
+		right: 0px;
+	}	
+	.sapMLIB:last-child { /* remove border from last list item to prevent double border together with panel content */ 
+		border-bottom: 0px;
+	}
+	/* indent list items by panel header icon width*/
+	.sapMLIB{
+		padding-left: 3rem;
+	}
+	.sapUiSizeCompact & .sapMLIB{
+		padding-left: 2.75rem;
+	}
+}
+
+/* END "ListPanel.less" */
+
+/* START "LegendItem.less" */
+/*...........................................................................*/
+/* LESS for control sap.ui.vk/LegendItem.control.............................*/
+/*...........................................................................*/
+
+
+/* Legend Item style.........................................................*/
+
+
+.sapUiVkLegendItemSquare
+{
+	
+	height: 1.125rem;
+	width: 1.125rem;
+	border-style: solid;
+	border-width: 0.125rem;
+	border-color: white;
+	margin-right: 1rem;
+}
+
+.sapUiSizeCompact .sapUiVkLegendItemSquare
+{
+	height: 0.75rem;
+	width: 0.75rem;
+
+}
+
+.sapUiVkLegendItemSpotType
+{
+
+}
+.sapUiVkLegendItemSpotType .sapMSLIImg , .sapUiVkLegendItemSpotType .sapMSLIImgFirst 
+{
+	
+	height: 2rem;
+	width: 1.49rem;
+	
+}
+
+.sapUiSizeCompact .sapUiVkLegendItemSpotType .sapMSLIImg, .sapUiSizeCompact .sapUiVkLegendItemSpotType .sapMSLIImgFirst
+{
+	
+	height: 1.5rem;
+	width: 1.15rem;
+	
+}
+ 
+/* END "LegendItem.less" */
+
+/* START "ProgressIndicator.less" */
+.sapUiVizkitProgressIndicator .sapMPIBar  {
+	background-color: rgb(0, 157, 224) !important;
+	background-image: none;
+}
+
+.sapUiVizkitProgressIndicator .sapMPI {
+	background-color: rgb(166,232,255) !important;
+	border: none !important;
+}
+
+.sapUiVizkitProgressIndicatorText {
+	padding-left: 1rem;
+}
+/* END "ProgressIndicator.less" */
+
+/* START "Notifications.less" */
+/*...........................................................................*/
+/* LESS for control sap.ui.vk/Notifications.control.........................*/
+/*...........................................................................*/
+
+
+/* Button style..................................................*/
+
+.sapVizKitNotificationPopover {
+	line-height: 100%;
+}
+
+.sapVizKitNotifications .messagePopoverButton {
+	margin-left: 20px !important;
+}
+/* END "Notifications.less" */
+

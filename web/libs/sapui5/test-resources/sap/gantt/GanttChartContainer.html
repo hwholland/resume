@@ -1,0 +1,713 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+
+<title>GanttChartContainer</title>
+
+
+<script id="sap-ui-bootstrap"
+	data-sap-ui-libs="sap.gantt, sap.m, sap.ui.unified"
+	data-sap-ui-theme="sap_bluecrystal" src="../../../resources/sap-ui-core.js">
+</script>
+
+<script src="./test.js"></script>
+<script src="./qunit/data/DataProducer.js"></script>
+<script src="./qunit/data/DataMaker.js"></script>
+
+<script>
+	loadRequires();
+	defineShapes();
+	createPage("Test Page for sap.gantt.GanttChartContainer", true);
+	addContentToPage();
+
+	function loadRequires() {
+		jQuery.sap.require("sap.gantt.def.SvgDefs");
+		jQuery.sap.require("sap.gantt.def.filter.MorphologyFilter");
+		jQuery.sap.require("sap.gantt.def.cal.CalendarDefs");
+		jQuery.sap.require("sap.gantt.def.cal.Calendar");
+		jQuery.sap.require("sap.gantt.def.cal.TimeInterval");
+		jQuery.sap.require("sap.ui.core.format.DateFormat");
+	};
+
+	function defineShapes() {
+		// define My Rectangle.
+		sap.ui.define(["sap/gantt/shape/Rectangle", "sap/ui/core/Core"], function (Rectangle, Core) {
+			var MyRectangle = Rectangle.extend("sap.test.MyRectangle");
+
+			MyRectangle.prototype.getFill = function (oData) {
+				var sViewId = this.mChartInstance.getParent().getId();
+				switch(Core.getConfiguration().getTheme()){
+				case "sap_bluecrystal":
+					return sViewId == "firstView" ? "@sapUiChart6" : "@sapUiWhite";
+				case "sap_hcb":
+					return sViewId == "firstView" ? "@sapUiChartPaletteSequentialNeutralLight3" : "@sapUiChartPaletteQualitativeHue9";
+				default:
+					return sViewId == "firstView" ? "@sapUiChart6" : "@sapUiWhite";
+				}
+			}
+
+			MyRectangle.prototype.getStroke = function (oData) {
+				var sViewId = this.mChartInstance.getParent().getId();
+				switch(Core.getConfiguration().getTheme()){
+				case "sap_bluecrystal":
+					return sViewId == "firstView" ? "" : "@sapUiChart1";
+				case "sap_hcb":
+					return sViewId == "firstView" ? "" : "@sapUiWhite";
+				default:
+					return sViewId == "firstView" ? "" : "@sapUiChart1";
+				}
+			};
+
+			return MyRectangle;
+		}, true);
+
+		// define My Cursor.
+		sap.ui.define(["sap/gantt/shape/ext/Cursor", "sap/ui/core/Core"], function (Cursor, Core) {
+			var MyCursor = Cursor.extend("sap.test.MyCursor");
+
+			MyCursor.prototype.getFill = function (oData) {
+				var sViewId = this.mChartInstance.getParent().getId();
+				switch(Core.getConfiguration().getTheme()){
+				case "sap_bluecrystal":
+					return sViewId == "firstView" ? "@sapUiChart2" : "@sapUiWhite";
+				case "sap_hcb":
+					return sViewId == "firstView" ? "@sapUiChartPaletteSequentialNeutralLight3" : "@sapUiChartPaletteQualitativeHue9";
+				default:
+					return sViewId == "firstView" ? "@sapUiChart2" : "@sapUiWhite";
+				}
+			};
+
+			MyCursor.prototype.getStroke = function (oData) {
+				var sViewId = this.mChartInstance.getParent().getId();
+				switch(Core.getConfiguration().getTheme()){
+				case "sap_bluecrystal":
+					return sViewId == "firstView" ? "@sapUiWhite" : "@sapUiChartPaletteSemanticCriticalDark2";
+				case "sap_hcb":
+					return sViewId == "firstView" ? "@sapUiChartPaletteQualitativeHue9" : "sapUiChartPaletteSequentialNeutralLight3";
+				default:
+					return sViewId == "firstView" ? "@sapUiWhite" : "@sapUiChartPaletteSemanticCriticalDark2";
+				}
+			};
+
+			MyCursor.prototype.getYBias = function () {
+				return this.mChartInstance.getParent().getId() ==  "firstView" ? 0 : 3;
+			};
+
+			MyCursor.prototype.getRotationAngle = function () {
+				return this.mChartInstance.getParent().getId() ==  "firstView" ? undefined : 180;
+			};
+
+			return MyCursor;
+		}, true);
+
+		// define My Triangle.
+		sap.ui.define(["sap/gantt/shape/ext/Triangle", "sap/ui/core/Core"], function (Triangle, Core) {
+			var MyTriangle = Triangle.extend("sap.test.MyTriangle");
+
+			MyTriangle.prototype.getFill = function (oData) {
+				var sViewId = this.mChartInstance.getParent().getId();
+				switch(Core.getConfiguration().getTheme()){
+				case "sap_bluecrystal":
+					return sViewId == "firstView" ? "@sapUiBlack" : "@sapUiWhite";
+				case "sap_hcb":
+					return sViewId == "firstView" ? "@sapUiChartPaletteSequentialNeutralLight3" : "@sapUiChartPaletteQualitativeHue1";
+				default:
+					return sViewId == "firstView" ? "@sapUiBlack" : "@sapUiWhite";
+				}
+			};
+
+			MyTriangle.prototype.getStroke = function (oData) {
+				var sViewId = this.mChartInstance.getParent().getId();
+				switch(Core.getConfiguration().getTheme()){
+				case "sap_bluecrystal":
+					return sViewId == "firstView" ? "@sapUiWhite" : "@sapUiChartBad";
+				case "sap_hcb":
+					return sViewId == "firstView" ? "@sapUiBlack" : "@sapUiWhite";
+				default:
+					return sViewId == "firstView" ? "@sapUiWhite" : "@sapUiChartBad";
+				}
+			};
+
+			MyTriangle.prototype.getYBias = function () {
+				return this.mChartInstance.getParent().getId() ==  "firstView" ? 0 : -5;
+			};
+
+			MyTriangle.prototype.getRotationAngle = function () {
+				return this._rtlRotation(this.mChartInstance.getParent().getId() ==  "firstView" ? -90 : 180);
+			};
+
+			return MyTriangle;
+		}, true);
+
+		// define My Diamond
+		sap.ui.define(["sap/gantt/shape/ext/Diamond", "sap/ui/core/Core"], function (Diamond, Core) {
+			var MyDiamond = Diamond.extend("sap.test.MyDiamond");
+
+			MyDiamond.prototype.getFill = function (oData) {
+				var sViewId = this.mChartInstance.getParent().getId();
+				switch(Core.getConfiguration().getTheme()){
+				case "sap_bluecrystal":
+					return sViewId == "firstView" ? "@sapUiChartBad" : "@sapUiWhite";
+				case "sap_hcb":
+					return sViewId == "firstView" ? "@sapUiChartPaletteSequentialNeutralLight3" : "@sapUiChartPaletteQualitativeHue3";
+				default:
+					return sViewId == "firstView" ? "@sapUiChartBad" : "@sapUiWhite";
+				}
+			};
+
+			MyDiamond.prototype.getStroke = function (oData) {
+				var sViewId = this.mChartInstance.getParent().getId();
+				switch(Core.getConfiguration().getTheme()){
+				case "sap_bluecrystal":
+					return sViewId == "firstView" ? "@sapUiChartPaletteSemanticCriticalLight2" : "@sapUiBlack";
+				case "sap_hcb":
+					return sViewId == "firstView" ? "@sapUiBlack" : "@sapUiWhite";
+				default:
+					return sViewId == "firstView" ? "@sapUiChartPaletteSemanticCriticalLight2" : "@sapUiBlack";
+				}
+			};
+
+			MyDiamond.prototype.getRotationAngle = function () {
+				return this.mChartInstance.getParent().getId() ==  "firstView" ? undefined : 45;
+			};
+
+			return MyDiamond;
+		}, true);
+
+		// define My Pentangle
+		sap.ui.define(["sap/gantt/shape/ext/Pentangle", "sap/ui/core/Core"], function (Pentangle, Core) {
+			var MyPentangle = Pentangle.extend("sap.test.MyPentangle");
+
+			MyPentangle.prototype.getFill = function (oData) {
+				var sViewId = this.mChartInstance.getParent().getId();
+				switch(Core.getConfiguration().getTheme()){
+				case "sap_bluecrystal":
+					return sViewId == "firstView" ? "@sapUiChartPaletteSemanticGoodDark2" : "@sapUiWhite";
+				case "sap_hcb":
+					return sViewId == "firstView" ? "@sapUiChartPaletteSequentialNeutralLight3" : "@sapUiChartPaletteQualitativeHue6";
+				default:
+					return sViewId == "firstView" ? "@sapUiChartPaletteSemanticGoodDark2" : "@sapUiWhite";
+				}
+			};
+
+			MyPentangle.prototype.getStroke = function (oData) {
+				var sViewId = this.mChartInstance.getParent().getId();
+				switch(Core.getConfiguration().getTheme()){
+				case "sap_bluecrystal":
+					return sViewId == "firstView" ? "@sapUiChartSequence1" : "@sapUiChartPaletteSemanticGoodDark2";
+				case "sap_hcb":
+					return "@sapUiWhite";
+				default:
+					return sViewId == "firstView" ? "@sapUiChartSequence1" : "@sapUiChartPaletteSemanticGoodDark2";
+				}
+			};
+
+			MyPentangle.prototype.getRotationAngle = function () {
+				return this._rtlRotation(this.mChartInstance.getParent().getId() ==  "firstView" ? undefined : 45);
+			};
+
+			MyPentangle.prototype.getRadius2 = function (oData, oRowInfo) {
+				var sViewId = this.mChartInstance.getParent().getId();
+				if (sViewId == "firstView") {
+					return this.calRadius2ByGoldenRatio(this.getRadius(oData, oRowInfo));
+				} else {
+					return 1;
+				}
+			};
+			
+			return MyPentangle;
+		}, true);
+	};
+	function addContentToPage() {
+		// paint server for morphology filter on text and image
+		var oSvgDefs = new sap.gantt.def.SvgDefs({
+			defs: [new sap.gantt.def.filter.MorphologyFilter("PSmorphologyFilter", {})]
+		});
+		
+		var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+			pattern: "dd.MM.yyyy"
+		});
+		var oDateFormatData = sap.ui.core.format.DateFormat.getDateInstance({
+			pattern: "yyyyMMddHHmmss"
+		});
+		
+		var aFirstViewColumns = [new sap.ui.table.Column({
+			label: "Unique ID",
+			sortProperty: "uuid",
+			filterProperty: "uuid",
+			template: new sap.m.FlexBox({
+				direction: sap.m.FlexDirection.Row,
+				alignItems: sap.m.FlexAlignItems.Start,
+				justifyContent: sap.m.FlexJustifyContent.Start,
+				items: [(new sap.m.Image({
+					densityAware: false,
+					src: {
+						parts: [{
+							path: "test>type",
+							type: new sap.ui.model.type.String()
+						}, {
+							path: "test>subType",
+							type: new sap.ui.model.type.String()
+						}],
+						formatter: function(sType, sSubType){
+							switch(sType){
+							case "01":
+								return sSubType == "01" ? "./image/truck.png" : "./image/tractor.png";
+							case "02":
+								return "./image/trailer.png";
+							case "03":
+								return "./image/warehouse.png";
+							case "04":
+								return "./image/supplier.png";
+							default:
+								return "./image/hand.png";
+							}
+						}
+					}
+				})).addStyleClass("sapUiSmallMarginEnd"), new sap.m.Label({
+					text: {
+						path: "uuid",
+						model: "test"
+					}
+				})]
+			})
+		}), new sap.ui.table.Column({
+			label: "Start Date",
+			sortProperty: "startDate",
+			filterProperty: "startDate",
+			filterType: function(sValue) {
+				if (sValue) {
+					return oDateFormatData.format(oDateFormat.parse(sValue));
+				}
+			},
+			template: new sap.m.Label({
+				text: {
+					path: "startDate",
+					model: "test",
+					formatter: function(sValue) {
+						if (sValue) {
+							return oDateFormat.format(oDateFormatData.parse(sValue));
+						}
+					}
+				},
+			})
+		})];
+
+		var aSecondViewColumns = [new sap.ui.table.Column({
+			label: "Unique ID",
+			sortProperty: "uuid",
+			filterProperty: "uuid",
+			width: "330px",
+			template: new sap.m.Label({
+				text: {
+					path: "uuid",
+					model: "test"
+				}
+			})
+		}), new sap.ui.table.Column({
+			label: "Selected",
+			sortProperty: "selected",
+			filterProperty: "selected",
+			width: "130px",
+			filterType: new sap.ui.model.type.Boolean(),
+			template: new sap.m.CheckBox({
+				enabled: false,
+				selected: {
+					path: "selected",
+					model: "test"
+				}
+			})
+		}), new sap.ui.table.Column({
+			label: "Status",
+			sortProperty: "status",
+			filterProperty: "status",
+			width: "130px",  
+			template: new sap.ui.core.Icon({
+				src: {
+					parts: [{path: "test>locked", type: new sap.ui.model.type.Boolean()}],
+					formatter: function(bLocked){
+						if (bLocked){
+							return "sap-icon://locked";
+						} else {
+							return "sap-icon://unlocked";
+						}
+					}
+				},
+				color: {
+					parts: [{path: "test>locked", type: new sap.ui.model.type.Boolean()}],
+					formatter: function(bLocked){
+						if (bLocked){
+							return "red";
+						} else {
+							return "green";
+						}
+					}
+				}
+			})
+		})];
+
+		var oActivityShapeConfig = new sap.gantt.config.Shape({
+			key: "activity",
+			shapeClassName: "sap.test.MyRectangle",
+			shapeDataName: "activity",
+			level: 10,
+			shapeProperties: {
+				time: "{startTime}",
+				endTime: "{endTime}",
+				height: 18,
+				ry: 5,
+				rx: 5,
+				strokeWidth: 2,
+				title: "{tooltip}"
+			}
+		});
+
+		var oOrderShapeConfig = new sap.gantt.config.Shape({
+			key: "order",
+			shapeClassName: "sap.test.MyRectangle",
+			shapeDataName: "order",
+			level: 10,
+			shapeProperties: {
+				time: "{startTime}",
+				endTime: "{endTime}",
+				height: 18,
+				ry: 3,
+				rx: 3,
+				title: "{tooltip}"
+			}
+		});
+
+		var oCursorConfig = new sap.gantt.config.Shape({
+			key: "cursor",
+			shapeClassName: "sap.test.MyCursor",
+			shapeDataName: "pointer",
+			level: 5,
+			shapeProperties: {
+				time: "{time}",
+				strokeWidth: 2,
+				title: "{tooltip}"
+			}
+		});
+
+		var oTriangleConfig = new sap.gantt.config.Shape({
+			key: "triangle",
+			shapeClassName: "sap.test.MyTriangle",
+			shapeDataName: "constraint",
+			level: 5,
+			shapeProperties: {
+				time: "{time}",
+				strokeWidth: 2,
+				title: "{tooltip}"
+			}
+		});
+
+		var oDiamondConfig = new sap.gantt.config.Shape({
+			key: "diamond",
+			shapeClassName: "sap.test.MyDiamond",
+			shapeDataName: "milestone",
+			level: 5,
+			shapeProperties: {
+				time: "{time}",
+				strokeWidth: 2,
+				title: "{tooltip}"
+			}
+		});
+		if (sap.ui.Device.browser.name === "ie" && sap.ui.getCore().getConfiguration().getRTL() === true) {
+			var sTextAnchor = "end";
+		} else {
+			sTextAnchor = "start";
+		}
+		var oTextConfig = new sap.gantt.config.Shape({
+			key: "text",
+			shapeClassName: "sap.gantt.shape.Text",
+			shapeDataName: "milestone",
+			level: 4,
+			shapeProperties: {
+				time: "{time}",
+				text: "{text}",
+				textAnchor: sTextAnchor,
+				filter: sap.ui.getCore().byId("PSmorphologyFilter").getRefString(),
+				fontSize: 15,
+				xBias: 10,
+				title: "{text}",
+				truncateWidth: 70
+			}
+		});
+
+		var oIconfontConfig = new sap.gantt.config.Shape({
+			key: "icon",
+			shapeClassName: "sap.gantt.shape.ext.Iconfont",
+			shapeDataName: "iconfont",
+			level: 5,
+			shapeProperties: {
+				time: "{time}",
+				name: "{iconfontName}",
+				collectionName: "{iconfontCollectionName}",
+				fill: "red",
+				fontSize: 16,
+				title: "{tooltip}"
+			}
+		});
+
+		var oImageConfig = new sap.gantt.config.Shape({
+			key: "image",
+			shapeClassName: "sap.gantt.shape.Image",
+			shapeDataName: "warning",
+			level: 5,
+			shapeProperties: {
+				time: "{time}",
+				image: "./image/{iconName}.png",
+				height: 17,
+				filter: sap.ui.getCore().byId("PSmorphologyFilter").getRefString(),
+				title: "{tooltip}"
+			}
+		});
+
+		var oPentangleConfig = new sap.gantt.config.Shape({
+			key: "pentangle",
+			shapeClassName: "sap.test.MyPentangle", //"sap.gantt.shape.ext.Pentangle",
+			shapeDataName: "center",
+			level: 5,
+			shapeProperties: {
+				time: "{time}",
+				strokeWidth: 1,
+				title: "{tooltip}"
+			}
+		});
+
+		// create shape configuration for Calendar
+		var oShapeConfigCalendar = new sap.gantt.config.Shape({
+			key: "calendar",
+			shapeClassName: "sap.gantt.shape.cal.Calendar",
+			shapeDataName: "nwt",
+			level: 30,
+			shapeProperties: {
+				height: 33,
+				isDuration: false,
+				calendarName: "{id}"
+			}
+		});
+
+		// create shape configuration for polygon
+		var oShapeConfigPolygon = new sap.gantt.config.Shape({
+			key: "polygon",
+			shapeClassName: "sap.gantt.shape.Polygon",
+			shapeDataName: "hex",
+			level:1,
+			shapeProperties: {
+				time: "{time}",
+				stroke: "#148f41",
+				fill: "#ffffc8",
+				strokeWidth: 2
+			}
+		});
+
+		// create shape configuration for line
+		var oShapeConfigLine = new sap.gantt.config.Shape({
+			key: "line",
+			shapeClassName: "sap.gantt.shape.Line",
+			shapeDataName: "line",
+			level:1,
+			shapeProperties: {
+				time: "{time}",
+				endTime: "{time2}",
+				stroke: "#148f41",
+				strokeWidth: 2
+			}
+		});
+
+		// create shape configuration for polyline
+		var oShapeConfigPolyline = new sap.gantt.config.Shape({
+			key: "pline",
+			shapeClassName: "sap.gantt.shape.Polyline",
+			shapeDataName: "pline",
+			level: 2,
+			shapeProperties: {
+				time: "{time}",
+				title: "{tooltip}",
+				stroke: "#3BB9FF",
+				strokeWidth: 2
+			}
+		});
+
+		// create shape configuration for path
+		var oShapeConfigPath = new sap.gantt.config.Shape({
+			key: "curvePath",
+			shapeClassName: "sap.gantt.shape.Path",
+			shapeDataName: "curve",
+			level: 2,
+			shapeProperties: {
+				time: "{time}",
+				endTime: "{endTime}",
+				stroke: "#C47451",
+				strokeWidth: 2,
+				isDuration: true
+			}
+		});
+
+		// create shape configuration for circle
+		var oShapeConfigCircle = new sap.gantt.config.Shape({
+			key: "handle",
+			shapeClassName: "sap.gantt.shape.Circle",
+			shapeDataName: "circle",
+			level: 1,
+			shapeProperties: {
+				time: "{time}",
+				fill: "#888888",
+				stroke: "#c2c2c2",
+				strokeWidth: 2,
+				r: 3
+			}
+		});
+
+		var oDataProducer = new sap.gantt.DataProducer();
+		var oData = {};
+		var oHierarchy = oDataProducer.produceData();
+		oData = oDataProducer.getData("sap_hierarchy");
+
+		// create model
+		var oModel = new sap.ui.model.json.JSONModel();
+		oModel.setData(oData);
+		
+		sap.gantt.config.DEFAULT_CONTAINER_TOOLBAR_SCHEME.setToolbarDesign(sap.m.ToolbarDesign.Transparent);
+		sap.gantt.config.DEFAULT_TIME_AXIS.setInitHorizon(new sap.gantt.config.TimeHorizon({
+			startTime: "20150918000000",
+			endTime: "20151027000000"
+		}));
+		sap.gantt.config.DEFAULT_TIME_AXIS.setPlanHorizon(new sap.gantt.config.TimeHorizon({
+			startTime: "20150918000000",
+			endTime: "20171027000000"
+		}));
+
+		var oBusyBtn = new sap.m.Button({
+			text: "Busy",
+			tooltip: "Busy",
+			press: function() {
+				oGantt.setBusy(true);
+				
+				setTimeout(function() {
+					oGantt.setBusy(false);
+				}, 6000);
+			}
+		});
+
+		var oBusyBtn1 = new sap.m.Button({
+			text: "Busy",
+			tooltip: "Busy",
+			press: function() {
+				oFirstView.setBusy(true);
+				
+				setTimeout(function() {
+					oFirstView.setBusy(false);
+				}, 6000);
+			}
+		});
+
+		var oBusyBtn2 = new sap.m.Button({
+			text: "Busy",
+			tooltip: "Busy",
+			press: function() {
+				oSecondView.setBusy(true);
+				
+				setTimeout(function() {
+					oSecondView.setBusy(false);
+				}, 6000);
+			}
+		});
+
+		var oFirstView = new sap.gantt.GanttChartWithTable("firstView", {
+			shapeDataNames: ["order", "pointer", "milestone", "constraint", "warning", "center", "nwt", "hex", "iconfont",
+				"line", "curve", "circle", "pline"],
+			shapes: [oOrderShapeConfig, oCursorConfig, oTriangleConfig, oDiamondConfig, oTextConfig, oIconfontConfig, oImageConfig,
+					oPentangleConfig, oShapeConfigCalendar, oShapeConfigPolygon, oShapeConfigLine, oShapeConfigPath,
+					oShapeConfigCircle, oShapeConfigPolyline],
+			columns: aFirstViewColumns,
+			customToolbarItems: [new sap.m.Label({text: "Default Shape Implementation"}), oBusyBtn1],
+			baseRowHeight: 27,
+			rows: {
+				path: "test>/root",
+				parameters: {
+					arrayNames: ["children"]
+				}
+			},
+			calendarDef: new sap.gantt.def.cal.CalendarDefs({
+				defs: {
+					path: "test>/calendar",
+					template: new sap.gantt.def.cal.Calendar({
+						key: "{test>id}",
+						timeIntervals: {
+							path: "test>data",
+							templateShareable: true,
+							template: new sap.gantt.def.cal.TimeInterval({
+								startTime: "{test>startTime}",
+								endTime: "{test>endTime}"
+							})
+						}
+					})
+				}
+			})
+		});
+
+		var oSecondView = new sap.gantt.GanttChartWithTable("secondView", {
+			fixedColumnCount: 1,
+			shapeDataNames: ["activity", "pointer", "milestone", "constraint", "warning", "center", "nwt"],
+			shapes: [oActivityShapeConfig, oCursorConfig, oTriangleConfig, oDiamondConfig,
+			 		oTextConfig, oImageConfig, oPentangleConfig, oShapeConfigCalendar],
+			columns: aSecondViewColumns,
+			customToolbarItems: [new sap.m.Label({text: "Custom Shape Implementation"}), oBusyBtn2],
+			rows: {
+				path: "test>/root",
+				parameters: {
+					arrayNames: ["children"]
+				}
+			},
+			calendarDef: new sap.gantt.def.cal.CalendarDefs({
+				defs: {
+					path: "test>/calendar",
+					template: new sap.gantt.def.cal.Calendar({
+						key: "{test>id}",
+						backgroundColor: "@sapNeutralColor",
+						timeIntervals: {
+							path: "test>data",
+							templateShareable: true,
+							template: new sap.gantt.def.cal.TimeInterval({
+								startTime: "{test>startTime}",
+								endTime: "{test>endTime}"
+							})
+						}
+					})
+				}
+			}),
+			chartMouseOver: pushEventToMsgStack,
+			chartDoubleClick: pushEventToMsgStack,
+			chartRightClick: pushEventToMsgStack
+		});
+
+		var oGantt = new sap.gantt.GanttChartContainer({
+			svgDefs: oSvgDefs,
+			customToolbarItems: [oBusyBtn],
+			ganttCharts: [oFirstView, oSecondView]
+		});
+		oGantt.addCustomToolbarItem(new sap.m.Button({
+			icon: "sap-icon://share",
+			text: "Share"
+		}));
+		oGantt.addCustomToolbarItem(new sap.m.Button({
+			icon: "sap-icon://print",
+			text: "Print"
+		}));
+		var oModeSegmentedButton = sap.ui.jsfragment("sap.gantt.test.CSSModeButton", oGantt);
+
+		oGantt.addCustomToolbarItem(oModeSegmentedButton);
+		oGantt.setModel(oModel, "test");
+		oGantt.getGanttCharts()[0].setModel(oModel, "test");
+		window.oPage.addContent(oGantt);
+	}
+</script>
+</head>
+<body id="body" class="sapUiBody sapUiSizeCompact">
+	<div id="content" style="width: 100%; height: 100vh;"></div>
+</body>
+</html>

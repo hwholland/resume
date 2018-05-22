@@ -1,0 +1,151 @@
+<mvc:View
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.uxap"
+        xmlns:layout="sap.ui.layout"
+        xmlns:m="sap.m"
+        xmlns:sample="sap.uxap.testblocks.multiview"
+        xmlns:bl="sap.uxap.sample.Headers.block"
+        height="100%"
+        controllerName="sap.uxap.testkit.Localisation">
+
+    <m:App id="idAppControl2">
+        <ObjectPageLayout id="ObjectPageLayout" showAnchorBar="true">
+            <headerTitle>
+                <ObjectPageHeader id="headerForTest">
+
+                </ObjectPageHeader>
+            </headerTitle>
+            <headerContent>
+                <!-- item 1 -->
+                <m:Image id="headerImage" src="./test-resources/demokit/sample/Headers/Control/TimMcafeed.png">
+                    <m:layoutData>
+                        <layout:GridData span="L4 M4 S4" />
+                    </m:layoutData>
+                </m:Image>
+
+                <!-- item 2 -->
+                <layout:VerticalLayout id="headerInfo">
+                    <layout:content>
+                        <m:Text id="name" text="Tim McAfeed" />
+                        <layout:HorizontalLayout>
+                            <m:Text text="carla grant" />
+                        </layout:HorizontalLayout>
+                        <m:Text id="HeaderJobTitle" text="Senior UI Developer"/>
+                        <m:Link text="+33 6 4512 5158" />
+                        <m:Link text="tim.mcafeed@sap.com" />
+                        <layout:HorizontalLayout>
+                            <m:Link text="twitter" target="_blank" />
+                            <m:Link text="LinkedIn" target="_blank"/>
+                        </layout:HorizontalLayout>
+                    </layout:content>
+                    <layout:layoutData>
+                        <layout:GridData span="L4 M4 S4"/>
+                    </layout:layoutData>
+                </layout:VerticalLayout>
+
+                <!-- item 3 -->
+                <m:Label id="headerDescription" text="Personal description">
+                    <m:layoutData>
+                        <layout:GridData span="L4 M4 S4" />
+                    </m:layoutData>
+                </m:Label>
+
+                <!-- item 4 -->
+                <m:Label id="headerRole" text="Role Specific info">
+                    <m:layoutData>
+                        <layout:GridData span="L4 M4 S4" />
+                    </m:layoutData>
+                </m:Label>
+            </headerContent>
+            <sections>
+                <ObjectPageSection title="my section1">
+                    <customAnchorBarButton>
+                        <!--long text in anchorbar to display the more button-->
+                        <m:Button text="my long textttttttttttttttttttttttttttttttttttttttt section 1" />
+                    </customAnchorBarButton>
+                    <subSections>
+                        <ObjectPageSubSection title="general info" >
+                            <blocks>
+                                <bl:GeneralInfo id="generalInfoId">
+                                    <ModelMapping internalModelName="Employee" externalModelName="ObjectPageModel" externalPath="/MyEmployee"/>
+                                </bl:GeneralInfo>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+
+                    <subSections>
+                        <ObjectPageSubSection title="my detail info" >
+                            <actions>
+                                <m:Button icon="sap-icon://action" type="Transparent" press="onActionPress"/>
+                                <m:Button icon="sap-icon://edit" type="Transparent" press="onActionPress"/>
+                            </actions>
+                            <blocks>
+                                <sample:MultiViewBlock />
+                                <sample:MultiViewBlock />
+                            </blocks>
+                            <moreBlocks>
+                                <sample:MultiViewBlock />
+                            </moreBlocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+                <ObjectPageSection title="copy of my section">
+                    <customAnchorBarButton>
+                        <!--long text in anchorbar to display the more button-->
+                        <m:Button text="my long textttttttttttttttttttttttttttttttttttttttt section 2" />
+                    </customAnchorBarButton>
+                    <subSections>
+                        <ObjectPageSubSection title="general info" >
+                            <blocks>
+                                <bl:GeneralInfo id="generalInfoId2">
+                                    <ModelMapping internalModelName="Employee" externalModelName="ObjectPageModel" externalPath="/MyEmployee"/>
+                                </bl:GeneralInfo>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+
+                    <subSections>
+                        <ObjectPageSubSection title="my detail info" >
+                            <actions>
+                                <m:Button icon="sap-icon://action" type="Transparent" press="onActionPress"/>
+                                <m:Button icon="sap-icon://edit" type="Transparent" press="onActionPress"/>
+                            </actions>
+                            <blocks>
+                                <sample:MultiViewBlock />
+                                <sample:MultiViewBlock />
+                            </blocks>
+                            <moreBlocks>
+                                <sample:MultiViewBlock />
+                            </moreBlocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+                <ObjectPageSection title="copy of my section2">
+                <customAnchorBarButton>
+                    <!--long text in anchorbar to display the more button-->
+                    <m:Button text="my long textttttttttttttttttttttttttttttttttttttttt section 3" />
+                </customAnchorBarButton>
+                </ObjectPageSection>
+                <ObjectPageSection title="copy of my section3">
+                    <customAnchorBarButton>
+                        <!--long text in anchorbar to display the more button-->
+                        <m:Button text="my long textttttttttttttttttttttttttttttttttttttttt section 4" />
+                    </customAnchorBarButton>
+                </ObjectPageSection>
+                <ObjectPageSection title="copy of my section4">
+                    <customAnchorBarButton>
+                        <!--long text in anchorbar to display the more button-->
+                        <m:Button text="my long textttttttttttttttttttttttttttttttttttttttt section 5" />
+                    </customAnchorBarButton>
+                </ObjectPageSection>
+                <ObjectPageSection title="copy of my section5">
+                    <customAnchorBarButton>
+                        <!--long text in anchorbar to display the more button-->
+                        <m:Button text="my long textttttttttttttttttttttttttttttttttttttttt section 6" />
+                    </customAnchorBarButton>
+                </ObjectPageSection>
+            </sections>
+
+        </ObjectPageLayout>
+    </m:App>
+</mvc:View>

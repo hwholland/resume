@@ -1,0 +1,612 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>qUnit Page for sap.ui.comp.smartfield.JSONControlFactory</title>
+
+		<script id="sap-ui-bootstrap" 
+			type="text/javascript"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.ui.comp">
+		</script>
+
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css"	type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+		<script type="text/javascript">
+		if (!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+			jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		}	
+		
+		(function() {
+			jQuery.sap.require("sap.ui.comp.smartfield.JSONControlFactory");
+			jQuery.sap.require("sap.ui.model.json.JSONModel");
+			jQuery.sap.require("sap.m.Input");
+			
+
+			QUnit.module("sap.ui.comp.smartfield.JSONControlFactory", {
+				beforeEach: function() {
+					this.oModel = sinon.createStubInstance(sap.ui.model.json.JSONModel);				
+				},
+				afterEach: function() {
+
+				}
+			});
+							
+			QUnit.test("Shall be instantiable", function() {
+				var oFactory, oParent;
+				oParent = {
+					getBindingContext : function() {
+						return {
+							sPath : "/Project(id1='71' id2='abcd')"
+						};
+					},
+					getModel : function() {
+						return this.oModel;
+					},
+					getBindingInfo : function() {
+						return {
+							"parts" : [{
+								model : undefined,
+								path : "ID"
+							}]
+						};
+					},
+					bindProperty : function() {
+								
+					},
+					getEditable : function() {
+						return false;
+					},
+					getWidth : function() {
+						return "100%";
+					},
+					getTextAlign : function() {
+						return null;
+					},
+					getPlaceholder : function() {
+						return null;
+					},
+					getName : function() {
+						return null;
+					}
+				};
+				
+				oFactory = new sap.ui.comp.smartfield.JSONControlFactory(this.oModel, oParent);
+				assert.ok(oFactory);
+				
+				oFactory.destroy();
+			});
+			
+			QUnit.test("_getCreator", function() {
+				var oFactory, sMethod, oParent, sType;
+				
+				oParent = {
+					getEditable : function() {
+						return true;
+					},
+					getEnabled : function() {
+						return true;
+					},
+					getJsontype : function() {
+						return sType;
+					}
+				};				
+				oFactory = new sap.ui.comp.smartfield.JSONControlFactory(this.oModel, oParent, {});
+				
+				sType = "String"
+				sMethod = oFactory._getCreator();
+				assert.equal(sMethod, "_createString");
+				
+				sType = "Integer";
+				sMethod = oFactory._getCreator();
+				assert.equal(sMethod, "_createString");
+				
+				sType = "Float";
+				sMethod = oFactory._getCreator();
+				assert.equal(sMethod, "_createString");
+				
+				sType = "Date";
+				sMethod = oFactory._getCreator();
+				assert.equal(sMethod, "_createDate");
+				
+				sType = "DateTime";
+				sMethod = oFactory._getCreator();
+				assert.equal(sMethod, "_createString");
+				
+				sType = "Boolean";
+				sMethod = oFactory._getCreator();
+				assert.equal(sMethod, "_createBoolean");
+				
+				oFactory._oParent.getEditable = function() {
+					return false;	
+				};
+
+				sType = "DateTime";
+				sMethod = oFactory._getCreator();
+				assert.equal(sMethod, "_createDisplay");
+				
+				sType = "Boolean";
+				sMethod = oFactory._getCreator();
+				assert.equal(sMethod, "_createBoolean");
+				
+				oFactory.destroy();
+			});
+			
+			QUnit.test("_createString : String", function() {
+				var oFactory, oControl, oParent;
+				
+				oParent = {
+					getBindingContext : function() {
+						return {
+							sPath : "/Project(id1='71' id2='abcd')"
+						};
+					},
+					getModel : function() {
+						return this.oModel;
+					},
+					getBindingInfo : function() {
+						return null;
+					},
+					data : function() {
+						return null;
+					},
+					getWidth : function() {
+						return "100%";
+					},
+					getTextAlign : function() {
+						return null;
+					},
+					getPlaceholder : function() {
+						return null;
+					},
+					getName : function() {
+						return null;
+					},
+					getJsontype : function() {
+						return "String";
+					},
+					getMaxLength: function() {
+						return 0;
+					},
+					getShowValueHelp: function() {
+						return false;
+					},
+					getShowSuggestion: function() {
+						return true;
+					},
+					getObjectBinding: function() {
+						return null;
+					}
+				};
+				oFactory = new sap.ui.comp.smartfield.JSONControlFactory(this.oModel, oParent, { path : "path", model : null });
+				
+				oControl = oFactory._createString();				
+				assert.equal(oControl.control instanceof sap.m.Input, true);
+				assert.equal(oControl.onCreate, "_onCreate");
+				
+				oFactory.destroy();
+			});
+			
+			QUnit.test("_createString: Integer", function() {
+				var oFactory, oControl, oParent;
+				
+				oParent = {
+					getBindingContext : function() {
+						return {
+							sPath : "/Project(id1='71' id2='abcd')"
+						};
+					},
+					getModel : function() {
+						return this.oModel;
+					},
+					getBindingInfo : function() {
+						return null;
+					},
+					data : function() {
+						return null;
+					},
+					getWidth : function() {
+						return "100%";
+					},
+					getTextAlign : function() {
+						return null;
+					},
+					getPlaceholder : function() {
+						return null;
+					},
+					getName : function() {
+						return null;
+					},
+					getJsontype : function() {
+						return "Integer";
+					},
+					getMaxLength: function() {
+						return 0;
+					},
+					getShowValueHelp: function() {
+						return false;
+					},
+					getShowSuggestion: function() {
+						return true;
+					},
+					getObjectBinding: function() {
+						return null;
+					}
+				};
+				oFactory = new sap.ui.comp.smartfield.JSONControlFactory(this.oModel, oParent, { path : "path", model : null });
+				
+				oControl = oFactory._createString();				
+				assert.equal(oControl.control instanceof sap.m.Input, true);
+				assert.equal(oControl.onCreate, "_onCreate");
+				
+				oFactory.destroy();
+			});
+			
+			QUnit.test("_createString: Float", function() {
+				var oFactory, oControl, oParent;
+				
+				oParent = {
+					getBindingContext : function() {
+						return {
+							sPath : "/Project(id1='71' id2='abcd')"
+						};
+					},
+					getModel : function() {
+						return this.oModel;
+					},
+					getBindingInfo : function() {
+						return null;
+					},
+					data : function() {
+						return null;
+					},
+					getWidth : function() {
+						return "100%";
+					},
+					getTextAlign : function() {
+						return null;
+					},
+					getPlaceholder : function() {
+						return null;
+					},
+					getName : function() {
+						return null;
+					},
+					getJsontype : function() {
+						return "Float";
+					},
+					getMaxLength: function() {
+						return 0;
+					},
+					getShowValueHelp: function() {
+						return false;
+					},
+					getShowSuggestion: function() {
+						return true;
+					},
+					getObjectBinding: function() {
+						return null;
+					}
+				};
+				
+				oFactory = new sap.ui.comp.smartfield.JSONControlFactory(this.oModel, oParent, { path : "path", model : null });
+				
+				oControl = oFactory._createString();				
+				assert.equal(oControl.control instanceof sap.m.Input, true);
+				assert.equal(oControl.onCreate, "_onCreate");
+				
+				oFactory.destroy();
+			});
+			
+			QUnit.test("_createString returning a combo box", function() {
+				var oFactory, oControl, oParent;
+				
+				oParent = {
+					getBindingContext : function() {
+						return {
+							sPath : "/Project(id1='71' id2='abcd')"
+						};
+					},
+					getModel : function() {
+						return this.oModel;
+					},
+					getBindingInfo : function() {
+						return null;
+					},
+					data : function(sName) {
+						if (sName === "hasValueHelpDialog") {
+							return "false";
+						}
+						
+						if (sName === "controlType") {
+							return "dropDownList";
+						}
+						
+						return null;
+					},
+					getWidth : function() {
+						return "100%";
+					},
+					getTextAlign : function() {
+						return null;
+					},
+					getPlaceholder : function() {
+						return null;
+					},
+					getName : function() {
+						return null;
+					},
+					getJsontype : function() {
+						return "String";
+					},
+					getShowValueHelp: function() {
+						return false;
+					},
+					getShowSuggestion: function() {
+						return true;
+					},
+					getObjectBinding: function() {
+						return null;
+					}
+				};
+				oFactory = new sap.ui.comp.smartfield.JSONControlFactory(this.oModel, oParent, { path : "path", model : null });			
+				oControl = oFactory._createString();
+				
+				assert.equal(oControl.control instanceof sap.m.ComboBox, true);
+				
+				oFactory.destroy();
+			});
+			
+			QUnit.test("_createDate", function() {
+				var oFactory, oControl, oParent;
+				
+				oParent = {
+					getBindingContext : function() {
+						return {
+							sPath : "/Project(id1='71' id2='abcd')"
+						};
+					},
+					getModel : function() {
+						return this.oModel;
+					},
+					getBindingInfo : function() {
+						return null;
+					},
+					data : function() {
+						return null;
+					},
+					getWidth : function() {
+						return "100%";
+					},
+					getTextAlign : function() {
+						return null;
+					},
+					getPlaceholder : function() {
+						return null;
+					},
+					getName : function() {
+						return null;
+					},
+					getJsontype : function() {
+						return "Date";
+					},
+					getObjectBinding: function() {
+						return null;
+					}
+				};
+				oFactory = new sap.ui.comp.smartfield.JSONControlFactory(this.oModel, oParent, { path : "path", model : null });
+				
+				oControl = oFactory._createDate();				
+				assert.equal(oControl.control instanceof sap.m.DatePicker, true);
+				assert.equal(oControl.onCreate, "_onCreate");
+				
+				oFactory.destroy();
+			});
+			
+			QUnit.test("_createBoolean", function() {
+				var oFactory, oControl, oParent;
+				
+				oParent = {
+					getBindingContext : function() {
+						return {
+							sPath : "/Project(id1='71' id2='abcd')"
+						};
+					},
+					getModel : function() {
+						return this.oModel;
+					},
+					getBindingInfo : function() {
+						return null;
+					},
+					data : function() {
+						return null;
+					},
+					getWidth : function() {
+						return "100%";
+					},
+					getTextAlign : function() {
+						return null;
+					},
+					getPlaceholder : function() {
+						return null;
+					},
+					getName : function() {
+						return null;
+					},
+					getEditable : function() {
+						return false;
+					},
+					getEnabled : function() {
+						return false;
+					},
+					getJsontype : function() {
+						return "Boolean";
+					},
+					getObjectBinding: function() {
+						return null;
+					}
+				};
+				oFactory = new sap.ui.comp.smartfield.JSONControlFactory(this.oModel, oParent, { path : "path", model : null });
+				
+				oControl = oFactory._createBoolean();				
+				assert.equal(oControl.control instanceof sap.m.CheckBox, true);
+				assert.equal(oControl.onCreate, "_onCreate");
+				
+				oFactory.destroy();
+			});
+			
+			QUnit.test("_createDisplay", function() {
+				var oFactory, oControl, oParent;
+				
+				oParent = {
+					getBindingContext : function() {
+						return {
+							sPath : "/Project(id1='71' id2='abcd')"
+						};
+					},
+					getModel : function() {
+						return this.oModel;
+					},
+					getBindingInfo : function() {
+						return null;
+					},
+					data : function() {
+						return null;
+					},
+					getWidth : function() {
+						return "100%";
+					},
+					getTextAlign : function() {
+						return null;
+					},
+					getPlaceholder : function() {
+						return null;
+					},
+					getName : function() {
+						return null;
+					},
+					getJsontype : function() {
+						return "String";
+					},
+					getObjectBinding: function() {
+						return null;
+					}
+				};
+				oFactory = new sap.ui.comp.smartfield.JSONControlFactory(this.oModel, oParent, { path : "path", model : null });
+				
+				oControl = oFactory._createDisplay();				
+				assert.equal(oControl.control instanceof sap.m.Text, true);
+				assert.equal(!oControl.onCreate, true);
+				
+				oFactory.destroy();
+			});
+			
+			QUnit.test("_onCreate", function() {
+				var oFactory, mParams, fResult, oControl = {
+					bindProperty : function(sName) {
+						
+					},
+					setFilterSuggests : function() {
+						
+					},
+					setShowValueHelp : function() {
+						
+					},
+					setShowSuggestion : function() {
+						
+					},
+					attachFormatError : function() {
+
+					},
+					attachParseError : function() {
+
+					},
+					attachValidationError : function() {
+
+					},
+					attachValidationSuccess : function() {
+
+					},
+					getValue : function() {
+						return "testValue";
+					}
+				};
+	
+				mParams = {
+					getValue : "getValue"
+				};
+				oFactory = new sap.ui.comp.smartfield.JSONControlFactory(this.oModel, oControl, { path : "path", model : null });
+				oFactory._onCreate(oControl, mParams);
+				assert.equal(mParams.getValue(), "testValue");
+				assert.equal(oFactory._aProviders.length, 0);
+				
+				oFactory.destroy();
+			});
+			
+			QUnit.test("Shall be destructible", function() {
+				var oFactory, oParent, oProvider, bDestroy = false;
+				
+				oParent = {
+					getBindingContext: function() {
+							return {
+									sPath: "/Project(id1='71' id2='abcd')"
+								};
+							},
+							getModel: function() {
+								return this.oModel;
+							},
+							getBindingInfo: function(sProperty) {
+								if (sProperty === "value") {
+									return {
+										parts: [
+											{
+												model: undefined,
+												path: "StartDateTime"
+											}
+										]
+									};
+								}
+							},
+							getWidth: function() {
+								return "100%";
+							},
+							getTextAlign: function() {
+								return null;
+							},
+							getPlaceholder: function() {
+								return null;
+							},
+							getName: function() {
+								return null;
+							}
+						};
+				oFactory = new sap.ui.comp.smartfield.JSONControlFactory(this.oModel, oParent);
+				oProvider = {
+					destroy : function() {
+						bDestroy = true;
+					}                 
+				};				
+				oFactory._aProviders.push(oProvider);
+				oFactory.destroy();
+				assert.ok(oFactory);
+				assert.equal(oFactory._oParent, null);
+				assert.equal(bDestroy, true);
+			});
+
+		}());
+		</script>
+	</head>
+	<body id="body" class="sapUiBody">
+		<h1 id="qunit-header">qUnit Page for qUnit Page for sap.ui.comp.smartfield.JSONControlFactory</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</body>
+</html>

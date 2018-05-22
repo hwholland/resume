@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<control xmlns="http://www.sap.com/sap.ui.library.xsd" >
+
+	<name>Region</name>
+	<documentation>Region properties.</documentation>
+
+	<baseType>sap.ui.core/Element</baseType>
+	<properties>
+		<property group="Appearance" name="color" type="sap.ui.core/CSSColor">
+			<documentation>The color, this must be provided in the rgba(r,g,b,a) format.</documentation>
+		</property>
+		<property group="Misc" name="code" type="sap.ui.core/string">
+			<documentation>The region code.</documentation>
+		</property>
+	</properties>
+	<events>
+		<event name="click">
+			<documentation>The event is raised when there is a click action on a region.</documentation>
+			<parameters>
+				<parameter type="sap.ui.core/string" name="code">
+					<documentation>The region code.</documentation>
+				</parameter>
+			</parameters>
+		</event>
+		<event name="contextMenu">
+			<documentation>The event is raised when there is a  right click or a tap and hold action on a region.</documentation>
+			<parameters>
+				<parameter type="sap.ui.core/string" name="code">
+					<documentation>The region code.</documentation>
+				</parameter>
+			</parameters>
+		</event>
+	</events>
+</control>

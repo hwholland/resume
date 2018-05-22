@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<title>RuntimeAuthoring - sap.ui.rta</title>
+
+<script id="sap-ui-bootstrap"
+	data-sap-ui-theme="sap_bluecrystal"
+	type="text/javascript"
+	data-sap-ui-noConflict="true"
+	data-sap-ui-resourceroots='{"sap.ui.rta.test": "testdata/rta/"}'
+	data-sap-ui-libs="sap.ui.commons, sap.m,sap.ui.layout, sap.ui.dt, sap.ui.rta"
+	src="../../../../resources/sap-ui-core.js">
+</script>
+
+<script type="text/javascript">	
+
+	var oCompCont = new sap.ui.core.ComponentContainer("CompCont1", {
+		name: "sap.ui.rta.test",
+		id: "Comp1",
+		settings: {
+			componentData: {
+				"showAdaptButton" : true
+			}
+		}
+	}).placeAt("content")
+	
+</script>
+</head>
+<body class="sapUiBody" role="application">
+	<div id="content"></div>
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, we will create two GenericTiles in line mode."/>
+<meta name="description" content="In this step, we will create two GenericTiles in line mode."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=47157994182832386"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=47157994182832386"/>
+<title>Step 4: Generic Tiles in Line Mode</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio10fa7fd7f0d54f6384b3b31c65ac78f5">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 4: Generic Tiles in Line Mode</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we will create two <samp class="ph codeph">GenericTiles</samp> in line mode.</p>
+
+		<div class="section" id="loio10fa7fd7f0d54f6384b3b31c65ac78f5__section_t2l_ydn_j1b"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio10fa7fd7f0d54f6384b3b31c65ac78f5__fig_q2n_c2n_j1b"><div class="figcontainer">
+				<img class="image" id="loio10fa7fd7f0d54f6384b3b31c65ac78f5__image_bhs_f2n_j1b" src="loio0add8dedb6ee41c681b6a785001bf2f3_LowRes.png"/>
+			</div></div>
+
+		</div></div>
+
+		<div class="section" id="loio10fa7fd7f0d54f6384b3b31c65ac78f5__section_ypz_g2n_j1b"><div class="section_title">Two GenericTiles in LineMode</div><div type="Two GenericTiles in LineMode"><p class="p">There are tiles
+                that you don't use as often as other tiles. To save space, you can reduce the tiles
+                and only show the header and subheader. Use <samp class="ph codeph">LineMode</samp> as the
+                    <span class="ph uicontrol">mode</span> property of the
+                <samp class="ph codeph">GenericTile</samp>.</p>
+<p class="p">You can view and download this step in the Demo
+                Kit <span class="ph">at <a class="xref" href="http://sapui5.hana.ondemand.com/explored.html#/sample/sap.suite.ui.commons.tutorial.icecream.04/preview" alt="http://sapui5.hana.ondemand.com/explored.html#/sample/sap.suite.ui.commons.tutorial.icecream.04/preview" title="http://sapui5.hana.ondemand.com/explored.html#/sample/sap.suite.ui.commons.tutorial.icecream.04/preview">Ice Cream Machine - Step 4 - Generic Tiles in Line
+                        Mode</a></span>.</p>
+<div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Startpage.view.xml</p>
+
+            </div><div class="p">
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;mvc:View
+    controllerName="sap.suite.ui.commons.demokit.tutorial.icecream.04.controller.Startpage"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:layout="sap.ui.layout"
+    xmlns:microchart="sap.suite.ui.microchart"&gt;
+    &lt;Page title="{i18n&gt;title}"&gt;
+        &lt;layout:VerticalLayout class="sapUiResponsiveMargin"&gt;
+            ...
+            <span class="ph emphasis emphasis">&lt;Title
+                titleStyle="H2"
+                text="{i18n&gt;startpageLinksGroupTitle}"
+                class="sapUiTinyMarginBegin sapUiMediumMarginTop" /&gt;
+            &lt;layout:HorizontalLayout allowWrapping="true"&gt;
+                &lt;GenericTile
+                    header="{i18n&gt;startpageLineTile1Title}"
+                    subheader="{i18n&gt;startpageLineTile1SubTitle}"
+                    mode="LineMode"
+                    class="sapUiTinyMarginBegin" /&gt;
+                &lt;GenericTile
+                    header="{i18n&gt;startpageLineTile2Title}"
+                    mode="LineMode"
+                    class="sapUiTinyMarginBegin" /&gt;
+            &lt;/layout:HorizontalLayout&gt;</span>
+        &lt;/layout:VerticalLayout&gt;
+    &lt;/Page&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+            </div>
+<p class="p">We need to create a new layout container for the tiles that we want to show. You
+                do this to separate the two tile types and their alignment. These two tiles can be
+                created in a similar way as the<samp class="ph codeph">GenericTiles</samp>, except that the
+                    <span class="ph uicontrol">mode</span> property must be set to
+                <samp class="ph codeph">LineMode</samp>.</p>
+</div></div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="e5b7f8a93e4b432198869b3ae75981b0.html" title="In this tutorial, we will show you how to use SAPUI5 controls like Generic Tiles, Micro Charts, and Process Flow.">Ice Cream Machine</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="e1fc950b63e94fd8bfadc557c6b62b7c.html" title="In this step, we will create a new Launch Tile (GenericTile with ImageContent) and a SlideTile.">Step 3: Launch Tile and Slide Tile</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="258d1745a0804f9abaffab5cea5beb98.html" title="In this step, we will show how to set up navigation using the standard routing pattern.">Step 5: Navigating from the Start Page to Other Pages</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The sap.ui.comp.smartmicrochart.SmartAreaMicroChart control creates an sap.suite.ui.microchart.AreaMicroChart control based on OData metadata."/>
+<meta name="description" content="The sap.ui.comp.smartmicrochart.SmartAreaMicroChart control creates an sap.suite.ui.microchart.AreaMicroChart control based on OData metadata."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=33440843839275247"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=33440843839275247"/>
+<title>Smart Area Micro Chart</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio283cdca9709e4c4ebfa8f2324da371f9">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Smart Area Micro Chart</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">sap.ui.comp.smartmicrochart.SmartAreaMicroChart</samp> control creates an
+			<samp class="ph codeph">sap.suite.ui.microchart.AreaMicroChart</samp> control based on OData
+		metadata.</p>
+
+		<div class="note caution"><span class="cautiontitle">Caution</span> 
+                <p class="p">Controls in the <samp class="ph codeph">sap.ui.comp</samp> library (smart controls) focus
+                    strongly on SAP Fiori elements.</p>
+
+                <p class="p">We will continue to maintain the library and all of its controls in the future.
+                    However, there will be no development of new features unless specifically
+                    requested by SAP Fiori elements.</p>
+
+            </div>
+
+		<p class="p">For more information about this control,
+			see the <a class="xref" href="../../docs/api/symbols/sap.ui.comp.smartmicrochart.SmartAreaMicroChart.html" alt="../../docs/api/symbols/sap.ui.comp.smartmicrochart.SmartAreaMicroChart.html" title="../../docs/api/symbols/sap.ui.comp.smartmicrochart.SmartAreaMicroChart.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.comp.sample.smartmicrochart.SmartAreaMicroChart/preview" alt="../../explored.html#/sample/sap.ui.comp.sample.smartmicrochart.SmartAreaMicroChart/preview" title="../../explored.html#/sample/sap.ui.comp.sample.smartmicrochart.SmartAreaMicroChart/preview">sample</a> in the Demo Kit.</p>
+
+		<p class="p">By using the <samp class="ph codeph">chartType</samp> property <span class="ph uicontrol">Area</span> of the
+				<span class="ph uicontrol">UI.Chart</span> annotation the corresponding
+				<samp class="ph codeph">SmartAreaMicroChart</samp> control is rendered. The
+				<span class="keyword apiname">entitySet</span> attribute must be specified to use the control. This
+			control property is used to fetch the corresponding annotations. Based on this, the
+				<samp class="ph codeph">AreaMicroChart</samp> will be rendered; it can also be used to fetch the
+			actual chart data. </p>
+
+		<div class="note note"><span class="notetitle">Note</span> The control can also be used directly (without creating a <samp class="ph codeph">SmartMicroChart</samp>
+			control).</div>
+
+		<div class="section"><div class="section_title">Details</div><div type="Details">
+			
+			<p class="p"><span class="ph emphasis emphasis">Binding</span></p>
+
+			<p class="p">The <samp class="ph codeph">SmartAreaMicroChart</samp> control supports only
+					<samp class="ph codeph">enableAutoBinding</samp> = <kbd class="ph userinput">true</kbd>. This means it
+				should be bound to only <span class="ph emphasis emphasis">one</span> entitySet, and should get a
+				navigation property as a chartBindingPath to an entitySet (for the relative binding)
+				or else the <samp class="ph codeph">entitySet</samp> property will be used for the absolute
+				binding.</p>
+
+			<p class="p"><span class="ph emphasis emphasis">Colors of the Chart (Criticality)</span></p>
+
+			<p class="p">The color of the chart is defined due to the thresholds by using the
+					<samp class="ph codeph">CriticalityCalculation</samp> property of the
+					<span class="ph uicontrol">UI.DataPoint</span> annotation and the
+					<samp class="ph codeph">ImprovementDirection</samp> property. </p>
+
+			<div class="note note"><span class="notetitle">Note</span> Setting the color directly via the <samp class="ph codeph">Criticality</samp> property of the
+					<span class="ph uicontrol">UI.DataPoint</span> annotation is not supported by
+				SmartAreaMicroChart.</div>
+
+			<p class="p">The following directions are supported:</p>
+
+			<p class="p"><span class="ph emphasis emphasis">Target-oriented</span>:</p>
+
+			<p class="p"><img class="image" id="loio283cdca9709e4c4ebfa8f2324da371f9__image_mrr_5qv_fw" src="loioa6645d5220584a34ac3be7d1e2ab1b00_LowRes.png"/></p>
+
+			<p class="p"><span class="ph emphasis emphasis">Minimize-oriented</span>: </p>
+
+			<p class="p"><img class="image" id="loio283cdca9709e4c4ebfa8f2324da371f9__image_wdn_3rv_fw" src="loiod2a13a29807b40dd85ce94c3ac924d51_LowRes.png"/></p>
+
+			<p class="p"><span class="ph emphasis emphasis">Maximize-oriented</span>:</p>
+
+			<p class="p"><img class="image" id="loio283cdca9709e4c4ebfa8f2324da371f9__image_qkq_qrv_fw" src="loio8a22824500b746d2accf947ecc163a50_LowRes.png"/></p>
+
+			<p class="p">For more information about the colors in
+				the chart, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.comp.sample.smartmicrochart.SmartAreaMicroChart/preview" alt="../../explored.html#/sample/sap.ui.comp.sample.smartmicrochart.SmartAreaMicroChart/preview" title="../../explored.html#/sample/sap.ui.comp.sample.smartmicrochart.SmartAreaMicroChart/preview">sample</a> in the Demo Kit.</p>
+
+			
+			<p class="p"><span class="ph emphasis emphasis">Labels, formatting and label colors of the chart</span></p>
+
+			<p class="p">The control provides labels that are displayed at the top and bottom of the chart.
+				You can control the labels themselves, as well as the color of the labels, by using
+				annotations:</p>
+
+			<ul class="ul" id="loio283cdca9709e4c4ebfa8f2324da371f9__ul_f52_ylt_ny">
+				<li class="li"><a class="xref" href="8664d4b534114cc1bf7c7a607840f98e.html" title="You can display a maximum of four labels.">Labels of the Chart</a></li>
+
+				<li class="li"><a class="xref" href="8cd1dc3ef4c94e2b9ba78a4c43eac9fd.html" title="The top labels are always formatted by the sap.ui.core.format.NumberFormat.">Formatting</a></li>
+
+				<li class="li"><a class="xref" href="aa4bf0f6d2a943d9b9931db81421d523.html" title="You use the Criticality Calculation feature to control the color of the labels at the top.">Label Colors of the Chart</a> (criticality)</li>
+
+			</ul>
+
+			<p class="p"><span class="ph emphasis emphasis">Title, Description and UnitOfMeasure</span></p>
+
+			<p class="p">The control provides the <span class="ph uicontrol">Title</span>,
+					<span class="ph uicontrol">Description</span> or <span class="ph uicontrol">UnitOfMeasure</span>
+				values retrieved from the annotations. If needed, the application can create a
+				corresponding <samp class="ph codeph">chartTitle</samp>, <samp class="ph codeph">chartDescription</samp> or
+					<samp class="ph codeph">unitOfMeasure</samp> (of type <samp class="ph codeph">sap.m.Label</samp>)
+				association. Then, the information will be read from the annotation document and it
+				will be set as the <samp class="ph codeph">text</samp> property of the
+					<samp class="ph codeph">sap.m.Label</samp>.</p>
+
+			<ul class="ul" id="loio283cdca9709e4c4ebfa8f2324da371f9__ul_j52_chv_fw">
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis">Title and Description</span></p>
+
+					<p class="p">For the <span class="ph uicontrol">Title</span> and <span class="ph uicontrol">Description</span>
+						properties of the <span class="ph uicontrol">Chart</span> annotation both
+							<samp class="ph codeph">String</samp> and <samp class="ph codeph">Path</samp> are supported:</p>
+
+					<ul class="ul" id="loio283cdca9709e4c4ebfa8f2324da371f9__ul_z2g_qhv_fw">
+						<li class="li"><samp class="ph codeph">&lt;PropertyValue Property="Title" Path="ChartTitle" /&gt;</samp></li>
+
+						<li class="li"><samp class="ph codeph">&lt;PropertyValue Property="Title" String="ChartTitle" /&gt;
+							</samp>
+						</li>
+
+					</ul>
+
+					<div class="note note"><span class="notetitle">Note</span> Only the <span class="ph uicontrol">Title</span> and
+							<span class="ph uicontrol">Description</span> properties of the
+							<span class="ph uicontrol">Chart</span> annotation are taken into account (not
+						these of the <span class="ph uicontrol">DataPoint</span> annotation).</div>
+
+					<p class="p">For the <samp class="ph codeph">SmartAreaMicroChart</samp> control, the
+							<span class="ph uicontrol">Title</span>, <span class="ph uicontrol">Description</span> and
+							<span class="ph uicontrol">UnitOfMeasure</span> have the same binding context as
+						the chart itself (either <samp class="ph codeph">chartBindingPath</samp> or
+							<samp class="ph codeph">entitySet</samp>).</p>
+
+				</li>
+
+				<li class="li"><span class="ph emphasis emphasis">UnitOfMeasure</span><p class="p">For more information about the supported
+						annotation terms <span class="ph uicontrol">ISOCurrency</span> and
+							<span class="ph uicontrol">Unit</span>, see <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fdocs.oasis-open.org%2Fodata%2Fodata%2Fv4.0%2Fos%2Fvocabularies%2FOrg.OData.Measures.V1.xml" alt="http://docs.oasis-open.org/odata/odata/v4.0/os/vocabularies/Org.OData.Measures.V1.xml" title="http://docs.oasis-open.org/odata/odata/v4.0/os/vocabularies/Org.OData.Measures.V1.xml">http://docs.oasis-open.org/odata/odata/v4.0/os/vocabularies/Org.OData.Measures.V1.xml<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a>. </p>
+<p class="p">The control takes into account only the
+							<span class="ph uicontrol">measure</span> annotation for the
+							<samp class="ph codeph">entityType</samp> property that is addressed by the
+							<samp class="ph codeph">Value</samp> property of the <span class="ph uicontrol">DataPoint</span>
+						annotation. In the following example, the <samp class="ph codeph">Value</samp> property of
+						the <span class="ph uicontrol">DataPoint</span> points to the <samp class="ph codeph">Price</samp>
+						property in the <samp class="ph codeph">EntityType</samp>
+							(<samp class="ph codeph">Path</samp>="<kbd class="ph userinput">Price</kbd>"). This means that
+						the control (<samp class="ph codeph">Path</samp>="<kbd class="ph userinput">Currency</kbd>") uses
+						the <span class="ph uicontrol">measure</span> annotation with
+							<samp class="ph codeph">Target="AmcNamespace.StockPrice/Price"</samp>:</p>
+<div class="p">
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;EntityType Name="StockPrice"&gt;
+....
+&lt;Property Name="Currency" Type="Edm.String" /&gt;
+&lt;/EntityType&gt;
+&lt;Annotation Term="UI.DataPoint" Qualifier="AreaChartDataPoint"&gt;
+&lt;PropertyValue Property="Value" Path="Price" /&gt;
+&lt;/Annotation&gt;
+</pre></div>
+
+					</div>
+<div class="p">
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="AmcNamespace.StockPrice/Price" &gt;
+	&lt;Annotation Term="MEASURES.ISOCurrency" Path="Currency"&gt;
+	&lt;/Annotation&gt;
+&lt;/Annotations&gt;
+					 </pre></div>
+
+					</div>
+</li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="8664d4b534114cc1bf7c7a607840f98e.html" title="You can display a maximum of four labels.">Labels of the Chart</a></strong><br/>
+</div>
+<div><strong><a class="link" href="8cd1dc3ef4c94e2b9ba78a4c43eac9fd.html" title="The top labels are always formatted by the sap.ui.core.format.NumberFormat.">Formatting</a></strong><br/>
+</div>
+<div><strong><a class="link" href="aa4bf0f6d2a943d9b9931db81421d523.html" title="You use the Criticality Calculation feature to control the color of the labels at the top.">Label Colors of the Chart</a></strong><br/>
+</div>
+</ul>
+
+</div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+
+<title>GanttChartContainer Compete</title>
+
+
+<script id="sap-ui-bootstrap"
+	data-sap-ui-libs="sap.gantt, sap.m, sap.ui.unified"
+	data-sap-ui-theme="sap_bluecrystal" src="../../../resources/sap-ui-core.js">
+</script>
+<script src="./test.js"></script>
+
+<script>
+	loadRequires();
+	defineShapes();
+	createPage("Test Page for sap.gantt.GanttChartContainer Compete");
+	addContentToPage();
+
+	function loadRequires() {
+		jQuery.sap.require("sap.gantt.def.SvgDefs");
+		jQuery.sap.require("sap.gantt.def.filter.MorphologyFilter");
+		jQuery.sap.require("sap.gantt.def.cal.CalendarDefs");
+		jQuery.sap.require("sap.gantt.def.cal.Calendar");
+		jQuery.sap.require("sap.gantt.def.cal.TimeInterval");
+	};
+	
+	function defineShapes() {
+		// define order Chevron.
+		sap.ui.define(["sap/gantt/shape/ext/Chevron", "sap/ui/core/Core"], function (Chevron, Core) {
+			var OrderChevron = Chevron.extend("sap.test.OrderChevron");
+			
+			OrderChevron.prototype.getFill = function (oData) {
+				if (oData.type === "travel") {
+					return "#00bfbf";
+				} else {
+					return "#ffffff";
+				}
+			}
+			
+			return OrderChevron;
+		}, true);
+		
+		// define flag image.
+		sap.ui.define(["sap/gantt/shape/Image"], function (Image) {
+			var FlagImage = Image.extend("sap.test.FlagImage");
+			
+			FlagImage.prototype.getImage = function (oData, oRowInfo) {
+				var sLocation = this.mShapeConfig.getKey() === "start_flag" ? oData.startLoc : oData.endLoc;
+				switch (sLocation){
+				case "SHANGHAI":
+					return "./image/travel/flag/CHINA.png";
+				case "MARRAKECH":
+					return "./image/travel/flag/MOROCCO.png";
+				case "SIEM_REAP":
+					return "./image/travel/flag/CAMBODIA.png";
+				case "ISTANBUL":
+					return "./image/travel/flag/TURKEY.png";
+				}
+			};
+			
+			return FlagImage;
+		}, true);
+	};
+	
+	function addContentToPage() {
+		// paint server for morphology filter on text and image
+		var oSvgDefs = new sap.gantt.def.SvgDefs({
+			defs: [new sap.gantt.def.filter.MorphologyFilter("PSmorphologyFilter", {})]
+		});
+	
+		var aFirstViewColumns = [new sap.ui.table.Column({
+			label: "Where",
+			sortProperty: "loc",
+			filterProperty: "loc",
+			template: new sap.m.FlexBox({
+				direction: sap.m.FlexDirection.Row,
+				alignItems: sap.m.FlexAlignItems.Start,
+				justifyContent: sap.m.FlexJustifyContent.Start,
+				items: [(new sap.m.Image({
+					src: {
+						parts: [{
+							path: "test>co",
+							type: new sap.ui.model.type.String()
+						}],
+						formatter: function(sCO){
+							return "./image/travel/flag/" + sCO + ".png";
+						}
+					},
+					width: "30px",
+					height: "20px"
+				})).addStyleClass("sapUiSmallMarginEnd"), new sap.m.Label({
+					text: {
+						path: "loc",
+						model: "test"
+					}
+				})]
+			})
+		}), new sap.ui.table.Column({
+			label: "Country",
+			sortProperty: "co",
+			filterProperty: "co",
+			template: new sap.m.Label({
+				text: {
+					path: "co",
+					model: "test"
+				},
+			})
+		})];
+		
+		var aSecondViewColumns = [new sap.ui.table.Column({
+			label: "Who",
+			sortProperty: "name",
+			filterProperty: "name",
+			width: "200px",
+			template: new sap.m.Label({
+				text: {
+					path: "name",
+					model: "test"
+				}
+			})
+		}), new sap.ui.table.Column({
+			label: "Votes",
+			sortProperty: "vote",
+			filterProperty: "vote",
+			width: "130px",  
+			template: new sap.m.FlexBox({
+				direction: sap.m.FlexDirection.Row,
+				alignItems: sap.m.FlexAlignItems.Start,
+				justifyContent: sap.m.FlexJustifyContent.Start,
+				items: [
+					new sap.ui.core.Icon({
+						src: {
+							parts: [{
+								path: "test>vote",
+								type: new sap.ui.model.type.Integer()
+							}],
+							formatter: function(nVotes){
+								if (nVotes >= 1) {
+									return "sap-icon://favorite";
+								} else {
+									return "";
+								}
+							}
+						},
+						color: "orange"
+					}),
+					new sap.m.Label({
+						text: {
+							parts: [{
+								path: "test>vote",
+								type: new sap.ui.model.type.Integer()
+							}],
+							formatter: function(nVotes){
+								if (nVotes > 1) {
+									return "x" + nVotes;
+								} else {
+									return "";
+								}
+							}
+						}
+					})
+				]
+			})
+		})];
+		
+		// for v1
+		var oWeatherImageConfig = new sap.gantt.config.Shape({
+			key: "weather",
+			shapeClassName: "sap.gantt.shape.Image",
+			shapeDataName: "temp",
+			level: 5,
+			shapeProperties: {
+				time: "{time}",
+				image: "./image/travel/weather/{weather}.png",
+				filter: sap.ui.getCore().byId("PSmorphologyFilter").getRefString(),
+				width: 40,
+				height: 40,
+				yBias: -6
+			}
+		});
+		// for v1
+		var oTextConfig = new sap.gantt.config.Shape({
+			key: "text",
+			shapeClassName: "sap.gantt.shape.Text",
+			shapeDataName: "temp",
+			level: 4,
+			shapeProperties: {
+				time: "{time}",
+				text: "{temp} ℃",
+				filter: sap.ui.getCore().byId("PSmorphologyFilter").getRefString(),
+				stroke: "#58ACFA",
+				strokeWidth: 0.5,
+				yBias: 56,
+				fontSize: 13,
+				xBias: 10
+			}
+		});
+		
+		// for v1
+		var oShapeConfigCalendar = new sap.gantt.config.Shape({
+			key: "calendar",
+			shapeClassName: "sap.gantt.shape.cal.Calendar",
+			shapeDataName: "nwt",
+			level: 30,
+			shapeProperties: {
+				height: 33,
+				isDuration: false
+			}
+		});
+		// for v2
+		var oStartFlagImageConfig = new sap.gantt.config.Shape({
+			key: "start_flag",
+			shapeClassName: "sap.test.FlagImage",
+			shapeDataName: "order",
+			level: 3,
+			shapeProperties: {
+				time: "{startTime}",
+				filter: sap.ui.getCore().byId("PSmorphologyFilter").getRefString(),
+				yBias: -10
+			}
+		});
+		// for v2
+		var oEndFlagImageConfig = new sap.gantt.config.Shape({
+			key: "end_flag",
+			shapeClassName: "sap.test.FlagImage",
+			shapeDataName: "order",
+			level: 3,
+			shapeProperties: {
+				time: "{endTime}",
+				filter: sap.ui.getCore().byId("PSmorphologyFilter").getRefString(),
+				yBias: -10
+			}
+		});
+		// for v2
+		var oOrderShapeConfig = new sap.gantt.config.Shape({
+			key: "order",
+			shapeClassName: "sap.test.OrderChevron",
+			shapeDataName: "order",
+			level: 10,
+			shapeProperties: {
+				time: "{startTime}",
+				endTime: "{endTime}",
+				height: 18,
+				ry: 3,
+				rx: 3,
+				isDuration: true,
+				yBias: 8,
+				stroke: "#00bfbf"
+			}
+		});
+		// for v2
+		var oActivityImageConfig = new sap.gantt.config.Shape({
+			key: "activity",
+			shapeClassName: "sap.gantt.shape.Image",
+			shapeDataName: "activity",
+			level: 10,
+			shapeProperties: {
+				time: "{time}",
+				image: "./image/travel/{type}.png"
+			}
+		});
+		
+		// create model
+		var oModel = new sap.ui.model.json.JSONModel();
+		oModel.loadData("./qunit/data/gantt_compete.json");
+		
+		sap.gantt.config.DEFAULT_CONTAINER_TOOLBAR_SCHEME.setToolbarDesign(sap.m.ToolbarDesign.Transparent);
+		sap.gantt.config.DEFAULT_TIME_AXIS.setInitHorizon(new sap.gantt.config.TimeHorizon({
+			startTime: "20151001000000",
+			endTime: "20151007000000"
+		}));
+		sap.gantt.config.DEFAULT_TIME_AXIS.setPlanHorizon(new sap.gantt.config.TimeHorizon({
+			startTime: "20150929000000",
+			endTime: "20151018000000"
+		}));
+		sap.gantt.config.DEFAULT_TIME_AXIS.setGranularity("12hour");
+		var oGantt = new sap.gantt.GanttChartContainer({
+			svgDefs: oSvgDefs,
+			ganttCharts: [new sap.gantt.GanttChartWithTable("firstView", {
+				shapeDataNames: ["temp", "nwt"],
+				shapes: [oTextConfig, oWeatherImageConfig, oShapeConfigCalendar],
+				columns: aFirstViewColumns,
+				rows: {
+					path: "test>/v1/root",
+					parameters: {
+						arrayNames: ["children"]
+					}
+				},
+				calendarDef: new sap.gantt.def.cal.CalendarDefs({
+					defs: {
+						path: "test>/v1/calendar",
+						template: new sap.gantt.def.cal.Calendar({
+							key: "{test>id}",
+							timeIntervals: {
+								path: "test>data",
+								templateShareable: true,
+								template: new sap.gantt.def.cal.TimeInterval({
+									startTime: "{test>startTime}",
+									endTime: "{test>endTime}"
+								})
+							}
+						})
+					}
+				})
+			}), new sap.gantt.GanttChartWithTable("secondView", {
+				fixedColumnCount: 1,
+				shapeDataNames: ["order", "activity"],
+				shapes: [oOrderShapeConfig, oStartFlagImageConfig, oEndFlagImageConfig, oActivityImageConfig],
+				columns: aSecondViewColumns,
+				rows: {
+					path: "test>/v2/root",
+					parameters: {
+						arrayNames: ["children"]
+					}
+				}
+			})]
+		});
+		oGantt.addCustomToolbarItem(new sap.m.Button({
+			icon: "sap-icon://share",
+			text: "Share"
+		}));
+		oGantt.addCustomToolbarItem(new sap.m.Button({
+			icon: "sap-icon://print",
+			text: "Print"
+		}));
+		oGantt.setModel(oModel, "test");
+		oGantt.getGanttCharts()[0].setModel(oModel, "test");
+		window.oPage.addContent(oGantt);
+	}
+
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<div id="content" class="sapUiSizeCompact" style="width: 100%; height: 100vh;"></div>
+</body>
+</html>

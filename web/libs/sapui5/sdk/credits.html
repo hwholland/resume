@@ -1,0 +1,123 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+		<title>SAPUI5 SDK - Demo Kit</title>
+		<link rel="stylesheet" type="text/css" href="theme/default.css"></link>
+		<style>	
+			.myDS.sapUiUx3DS,
+			.myDS.sapUiUx3DS .sapUiUx3DSSVItem:hover {
+				background-color: transparent;
+			}
+			.myDS.sapUiUx3DS .sapUiLnk,
+			.myDS.sapUiUx3DS .sapUiTv {
+				width: auto !important;
+			}
+		</style>
+		<script id="sap-ui-bootstrap"
+				src="resources/sap-ui-core.js"
+				data-sap-ui-theme="sap_bluecrystal"
+				data-sap-ui-preload="async"
+				data-sap-ui-libs="sap.ui.ux3, sap.ui.layout, sap.ui.demokit"
+				data-sap-ui-bindingSyntax="complex" >
+		</script>
+		<script>
+			sap.ui.getCore().attachInit(function() {
+				jQuery.sap.require("sap.ui.model.json.JSONModel");
+				var oModel = new sap.ui.model.json.JSONModel();
+				
+				sap.ui.demokit._loadAllLibInfo("", "_getThirdPartyInfo", function(aLibs, oLibInfos){
+					if(!aLibs){
+						return;
+					}
+					var data = {};
+					data.thirdparty = [];
+					for(var j=0; j<aLibs.length; j++){
+						var oData = oLibInfos[aLibs[j]];
+						for(var i=0; i<oData.libs.length; i++){
+							var oOpenSourceLib = oData.libs[i];
+							oOpenSourceLib._lib = aLibs[j];
+							data.thirdparty.push(oOpenSourceLib);
+						}
+					}
+					
+					data.thirdparty.sort(function(a,b){
+						var aName = (a.displayName || "").toUpperCase();
+						var bName = (b.displayName || "").toUpperCase();
+						
+						if(aName > bName){
+							return 1;
+						}else if(aName < bName){
+							return -1;
+						}else{
+							return 0;
+						}
+					});
+					
+					oModel.setData(data);
+				});
+				
+				
+				var oDataSet = new sap.ui.ux3.DataSet({
+					items : {
+						path : "/thirdparty",
+						template : new sap.ui.ux3.DataSetItem({
+							title : "{displayName}"
+						})
+					},
+					views : [ new sap.ui.ux3.DataSetSimpleView({
+						floating : false,
+						template : new sap.ui.commons.form.Form({
+							title : new sap.ui.core.Title({text : "{displayName}"}),
+							width : "100%",
+							layout : new sap.ui.commons.form.GridLayout(),
+							formContainers : [ new sap.ui.commons.form.FormContainer({
+								formElements : [
+									new sap.ui.commons.form.FormElement({
+										label : new sap.ui.commons.Label({text : "Web Site:", layoutData : new sap.ui.commons.form.GridElementData({hCells : "3"})}),
+										fields : [ new sap.ui.commons.Link({text : "{homepage}", target : "_blank", href : "{homepage}"})]
+									}),
+									new sap.ui.commons.form.FormElement({
+										label : new sap.ui.commons.Label({text : "For license conditions see:", layoutData : new sap.ui.commons.form.GridElementData({hCells : "3"})}),
+										fields : [ new sap.ui.commons.Link({text : "{license/url}", target : "_blank", href : "{license/url}"})]
+									}),
+									new sap.ui.commons.form.FormElement({
+										label : new sap.ui.commons.Label({text : "License:", layoutData : new sap.ui.commons.form.GridElementData({hCells : "3"})}),
+										fields : [ new sap.ui.commons.Link({text : "'{displayName}' has been licensed by SAP under '{license/type}'", target : "_blank", href : "{license/file}"})]
+									})
+								]
+							})]
+						})
+					})],
+					showToolbar: false,
+					selectionChanged: function(){
+						oDataSet.setLeadSelection(-1);
+					}
+				});
+				
+				jQuery.sap.require("jquery.sap.script");
+				var sDebug = jQuery.sap.getUriParameters().get("sap-ui-debug");
+				if(sDebug === "x" || sDebug === "X" || sDebug === "true"){
+					oDataSet.getViews()[0].getTemplate().getFormContainers()[0].addFormElement(new sap.ui.commons.form.FormElement({
+						label : new sap.ui.commons.Label({text : "Requested by UI Library:", layoutData : new sap.ui.commons.form.GridElementData({hCells : "3"})}),
+						fields : [ new sap.ui.commons.TextView({text : "{_lib}"})]
+					}));
+				}
+	
+				oDataSet.setModel(oModel);
+				oDataSet.addStyleClass("myDS");
+				oDataSet.placeAt("thirdparty");
+			
+			});
+		</script>
+	</head>
+
+	<body class="sapUiDemokitBody sapUiBody" role="application">
+		<h1>Credits</h1>
+		
+		This Software includes 3rd party open source software from different sources:
+		
+		<div id="thirdparty"></div>
+	</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>SimpleForm - sap.ui.layout.form</title>
+<link rel="shortcut icon" type="image/x-icon" href="../images/controls/sap.ui.layout.form.Form.gif">
+<style type="text/css">
+body {
+	overflow: auto;
+}
+</style>
+
+<script src="../../../../../resources/sap-ui-core.js" type="text/javascript"
+	id="sap-ui-bootstrap" data-sap-ui-libs="sap.ui.commons"
+	data-sap-ui-theme="sap_bluecrystal">
+
+</script>
+<script type="text/javascript">
+	jQuery.sap.require("sap.ui.core.IconPool");
+	jQuery.sap.require("sap.ui.core.Icon");
+	var oSimpleForm = new sap.ui.layout.form.SimpleForm(
+			"sf",
+			{
+				minWidth : 1024,
+				maxContainerCols: 2,
+				title: "Form title",
+				editable: true,
+				content:[
+					new sap.ui.core.Title({text:"Title 1"}),
+					new sap.ui.commons.Label({text:"Label 1"}),
+					new sap.ui.commons.TextField("tf1",{value:"Value 1", required: true}),
+					new sap.ui.commons.Label({text:"Label 2"}),
+					new sap.ui.commons.TextField("tf2",{value:"Value 2/1"}),
+					new sap.ui.commons.TextField("tf3",{value:"Value 2/2", layoutData: new sap.ui.core.VariantLayoutData({multipleLayoutData: [new sap.ui.layout.form.GridElementData({hCells: "1"}),new sap.ui.layout.GridData({span: "L2 M2 S2"})]})}),
+					new sap.ui.commons.Label({text:"Label 3"}),
+					new sap.ui.commons.TextField({value:"Value 3/1"}),
+					new sap.ui.commons.TextField({value:"Value 3/2"}),
+					new sap.ui.commons.TextField({value:"Value 3/3"}),
+					new sap.ui.commons.Label({text:"Label 4"}),
+					new sap.ui.commons.CheckBox({checked:false}),
+					new sap.ui.commons.Label({text:"Label 4"}),
+					new sap.ui.commons.TextArea({value:"Long Text,Long Text,Long Text,Long Text,Long TextLong Text,Long TextLong Text,Long TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong Text"}),
+					new sap.ui.core.Title({text:"Title 2"}),
+					new sap.ui.commons.Label({text:"Label 1"}),
+					new sap.ui.commons.TextField({value:"Value 1"}),
+					new sap.ui.commons.Label({text:"Label 2"}),
+					new sap.ui.commons.TextField({value:"Value 2/1"}),
+					new sap.ui.commons.TextField({value:"Value 2/2"}),
+					new sap.ui.commons.Label({text:"Label 3"}),
+					new sap.ui.commons.TextField({value:"Value 3/1"}),
+					new sap.ui.commons.TextField({value:"Value 3/2"}),
+					new sap.ui.commons.TextField({value:"Value 3/3"}),
+					new sap.ui.commons.Label({text:"Label 4"}),
+					new sap.ui.commons.CheckBox({checked:false}),
+					new sap.ui.commons.TextArea({layoutData:new sap.ui.layout.ResponsiveFlowLayoutData({linebreak:true,weight:8}),value:"Long Text,Long Text,Long Text,Long Text,Long TextLong Text,Long TextLong Text,Long TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong Text"}),
+					new sap.ui.core.Title({text:"Title 3"}),
+					new sap.ui.commons.Label({text:"Label 1"}),
+					new sap.ui.commons.TextView({text:"Text 1"}),
+					new sap.ui.commons.Label({text:"Label 2"}),
+					new sap.ui.commons.TextField({value:"Value 2/1"}),
+					new sap.ui.commons.TextView({text:"Text 2/2"}),
+					new sap.ui.commons.Label({text:"Label 3"}),
+					new sap.ui.commons.TextField({value:"Value 3/1 weight",layoutData:new sap.ui.layout.ResponsiveFlowLayoutData({weight:2})}),
+					new sap.ui.commons.TextView({text:"Text 3/2 weight",layoutData:new sap.ui.layout.ResponsiveFlowLayoutData({weight:2})}),
+					new sap.ui.core.Icon({src:"sap-icon://travel-expense",layoutData:new sap.ui.layout.ResponsiveFlowLayoutData({weight:1})}),
+					new sap.ui.commons.Label({text:"Label 4"}),
+					new sap.ui.commons.CheckBox({checked:false}),
+					new sap.ui.commons.TextArea({layoutData:new sap.ui.layout.ResponsiveFlowLayoutData({linebreak:true,weight:8}),value:"Long Text,Long Text,Long Text,Long Text,Long TextLong Text,Long TextLong Text,Long TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong TextLong Text"}),
+					new sap.ui.commons.Label({text:"This was invisible"}),
+					new sap.ui.commons.CheckBox("myCB",{checked:false,visible:false}),
+					new sap.ui.commons.Label({text:"a nice image"}),
+					new sap.ui.commons.Image({src: "../../commons/images/SAPLogo.gif"}),
+					new sap.ui.commons.Label({text:"Change the visibility"}),
+					new sap.ui.commons.Button("myButton1",{text:"Hide Fields",press:function() {
+						sap.ui.getCore().byId("tf1").setVisible(false);
+						sap.ui.getCore().byId("tf2").setVisible(false);
+						sap.ui.getCore().byId("tf3").setVisible(false);
+					}}),
+					new sap.ui.commons.Button("myButton2",{text:"Show Fields",press:function() {
+						sap.ui.getCore().byId("tf1").setVisible(true);
+						sap.ui.getCore().byId("tf2").setVisible(true);
+						sap.ui.getCore().byId("tf3").setVisible(true);
+					}}),
+					new sap.ui.commons.Button("myButton3",{text:"Destroy",press:function() {
+						oSimpleForm.destroy();
+					}}),
+					new sap.ui.commons.Label({text:"Change Layout"}),
+					new sap.ui.commons.RadioButtonGroup({
+						columns: 3,
+						items: [new sap.ui.core.Item({text: "ResponsiveLayout"}),
+										new sap.ui.core.Item({text: "GridLayout"}),
+										new sap.ui.core.Item({text: "ResponsiveGridLayout"})],
+						select: function(oEvent){
+							var oForm = sap.ui.getCore().byId("sf");
+							var oForm2 = sap.ui.getCore().byId("SF2");
+							var iIndex = oEvent.getParameter("selectedIndex");
+							if(iIndex == 0){
+								oForm.setLayout(sap.ui.layout.form.SimpleFormLayout.ResponsiveLayout);
+								oForm2.setLayout(sap.ui.layout.form.SimpleFormLayout.ResponsiveLayout);
+							}else if(iIndex == 1){
+								oForm.setLayout(sap.ui.layout.form.SimpleFormLayout.GridLayout);
+								oForm2.setLayout(sap.ui.layout.form.SimpleFormLayout.GridLayout);
+							}else{
+								oForm.setLayout(sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout);
+								oForm2.setLayout(sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout);
+							}
+						}
+					}),
+					new sap.ui.commons.Label({text:"BackgroundDesign"}),
+					new sap.ui.commons.SegmentedButton("BackCol", {
+						buttons: [ new sap.ui.commons.Button("Back1", {text: sap.ui.layout.BackgroundDesign.Transparent}),
+						         new sap.ui.commons.Button("Back2", {text: sap.ui.layout.BackgroundDesign.Solid}),
+						         new sap.ui.commons.Button("Back3", {text: sap.ui.layout.BackgroundDesign.Translucent})
+						        ],
+						selectedButton: "Back3",
+						select: function(oEvent) {
+							var sButtonId = oEvent.getParameter("selectedButtonId");
+							var oButton = sap.ui.getCore().byId(sButtonId);
+							var sBackground = oButton.getText();
+							var oForm = sap.ui.getCore().byId("sf");
+							oForm.setBackgroundDesign(sBackground);
+						}
+					})
+				]
+			});
+
+	oSimpleForm.placeAt('sample1');
+
+	var oSimpleForm = new sap.ui.layout.form.SimpleForm(
+			"SF2",
+			{
+				minWidth : 1024,
+				maxContainerCols: 2,
+				toolbar: new sap.ui.commons.Toolbar("TB1", {
+					items: [new sap.ui.commons.TextView("SF2-Title", {text: "Form Title", design: sap.ui.commons.TextViewDesign.H3, tooltip: "Title tooltip"})],
+					rightItems: [ new sap.ui.commons.Button({icon: "sap-icon://sap-ui5", lite: true})]
+				}),
+				ariaLabelledBy: "SF2-Title",
+				editable: true,
+				content:[
+					new sap.ui.commons.Toolbar("TB2", {
+						items: [new sap.ui.commons.TextView("SF2C1-Title", {text: "Title 1", design: sap.ui.commons.TextViewDesign.H4, tooltip: "Title tooltip"})],
+						rightItems: [ new sap.ui.commons.Button({icon: "sap-icon://sap-ui5", lite: true})]
+					}),
+					new sap.ui.commons.Label({text:"Label 1"}),
+					new sap.ui.commons.TextField({value:"Value 1", required: true}),
+					new sap.ui.commons.Toolbar("TB3", {
+						items: [new sap.ui.commons.TextView("SF2C2-Title", {text: "Title 2", design: sap.ui.commons.TextViewDesign.H4, tooltip: "Title tooltip"})],
+						rightItems: [ new sap.ui.commons.Button({icon: "sap-icon://sap-ui5", lite: true})]
+					}),
+					new sap.ui.commons.Label({text:"Label 2"}),
+					new sap.ui.commons.TextField({value:"Value 2"}),
+				]
+			}).placeAt('sample2');
+</script>
+
+</head>
+<body id="body" class="sapUiBody">
+	<div id="sample1"></div>
+	<br>
+	<div id="sample2"></div>
+</body>
+</html>

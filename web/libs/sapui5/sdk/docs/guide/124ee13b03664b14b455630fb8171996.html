@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="Upload Collection is a list control for attachment management that provides the ability to upload, edit or delete attachments."/>
+<meta name="description" content="Upload Collection is a list control for attachment management that provides the ability to upload, edit or delete attachments."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=04511266539011094"/>
+<title>Upload Collection</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio124ee13b03664b14b455630fb8171996">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Upload Collection</h1>
+<div class="body conbody"><p class="shortdesc"><samp class="ph codeph">Upload Collection</samp> is a list control for attachment management that
+		provides the ability to upload, edit or delete attachments.</p>
+<p class="p">The <samp class="ph codeph">UploadCollection</samp> control allows users to upload single or multiple files
+			from their devices (desktop PC, tablet or phone) to an app. Due to its responsiveness,
+			the upload collection can be used in containers of different sizes .</p>
+<div class="section"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p">You can use the <samp class="ph codeph">UploadCollection</samp> control to show a list of files, for
+				example, attachments or uploads, that can be modified, or you can allow users to add
+				or remove files to or from this list. The following features are available:</p>
+
+			<ul class="ul" id="loio124ee13b03664b14b455630fb8171996__ul_ufq_2lm_qr"><li class="li">
+					<p class="p">Upload files</p>
+
+					<p class="p">The upload is triggered by the <span class="ph uicontrol">Add</span> pushbutton (plus icon). Afterwards
+						the OS-native file picker dialog appears and you can select one or multiple
+						files. However, the consuming application need to enable the upload of
+						multiple files by using the <samp class="ph codeph">multiple</samp> property during the
+						instantiation. During the upload process, a progress indicator provides
+						information about the status.</p>
+
+				</li>
+<li class="li">
+					<p class="p">Open files</p>
+
+					<p class="p">To open a listed file, you can choose the icon or thumbnail of the attachment as well as the
+						filename itself. Depending on the file extension, browser capabilities, and
+						device type (PC or mobile), the file is handled differently, for example, it
+						is opened in a new tab or downloaded, if no display capability is available
+						in the browser.</p>
+
+				</li>
+<li class="li">
+					<p class="p">Rename files</p>
+
+					<p class="p">Choosing on the <span class="ph uicontrol">Rename</span> pushbutton (pen icon) turns the file name into
+						an input field and allows modification. You can confirm the renaming by
+						choosing the <span class="ph uicontrol">OK</span> or cancel by choosing
+							<span class="ph uicontrol">Cancel</span>. If the
+							<samp class="ph codeph">sameFilenameAllowed</samp> property is set to
+							<samp class="ph codeph">true</samp>, the new file name is validated and, if the file
+						name already exists in the current list, an error occurs, which indicates
+						that you need to change the file name.</p>
+
+				</li>
+<li class="li">
+					<p class="p">Delete files</p>
+
+					<p class="p">You can delete files by using the <span class="ph uicontrol">Delete</span> pushbutton (x icon with a
+						circle). After choosing the <span class="ph uicontrol">Delete</span> pushbutton, a
+						dialog appears, asking the user to confirm the deletion of the respective
+						file that removes the file from the list.</p>
+
+				</li>
+</ul>
+
+		</div></div>
+<div class="section"><div class="section_title">Layout</div><div type="Layout">
+			
+			<p class="p"><span class="ph">For an overview of how the uploaded files are listed, see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.UploadCollection/samples" alt="../../explored.html#/entity/sap.m.UploadCollection/samples" title="../../explored.html#/entity/sap.m.UploadCollection/samples">Explored</a> example in the Demo Kit.</span></p>
+
+			<p class="p">The two pushbuttons <span class="ph uicontrol">Rename</span> and <span class="ph uicontrol">Delete</span> that are
+				displayed for each item are active and visible by default. However, both icons can
+				be set to invisible or inactive. <span class="ph">For more
+					information, see the <a class="xref" href="../../docs/api/symbols/sap.m.UploadCollection.html" alt="../../docs/api/symbols/sap.m.UploadCollection.html" title="../../docs/api/symbols/sap.m.UploadCollection.html">API Reference
+						documentation</a>.</span>
+			</p>
+
+			<p class="p">While most file types have generic icons (such as Word documents, Excel sheets, PDFs, and so
+				on), graphic files can be displayed with a small thumbnail preview of its graphic if
+				the respective URL is provided.</p>
+
+		</div></div>
+<div class="section"><div class="section_title">Constraints and Dependencies</div><div type="Constraints and Dependencies">
+			
+			<p class="p">By using the <samp class="ph codeph">UploadCollection</samp> control, you need to be aware of the following
+				constraints: </p>
+
+			<ul class="ul" id="loio124ee13b03664b14b455630fb8171996__ul_uq1_q4m_qr"><li class="li">
+					<p class="p">The <samp class="ph codeph">UploadCollection</samp> control does not work with IE9 because of a missing
+						header parameter handling needed for the upload. </p>
+
+				</li>
+<li class="li">
+					<p class="p">The file name of an upload item can contain any text and special characters but not a URL. </p>
+
+				</li>
+</ul>
+
+			<p class="p">The <samp class="ph codeph">sap.m.UploadCollection</samp> control uses the
+					<samp class="ph codeph">sap.ui.unified.FileUploader</samp> control and contains dependencies
+				to this control. If you want to use the <samp class="ph codeph">UploadCollection</samp> control,
+				you need to be aware of these dependencies. <span class="ph">For more information about the
+					<samp class="ph codeph">FileUploader</samp> control, please see the <a class="xref" href="../../docs/api/symbols/sap.ui.unified.FileUploader.html" alt="../../docs/api/symbols/sap.ui.unified.FileUploader.html" title="../../docs/api/symbols/sap.ui.unified.FileUploader.html">API Reference Documentation</a>.</span></p>
+
+		</div></div>
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Upload Collection";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

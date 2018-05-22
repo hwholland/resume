@@ -1,0 +1,91 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="OpenUI5 developers have to consider the text directionality when implementing new controls. The following guidelines explain how this can be done and highlight what you need to focus on."/>
+<meta name="description" content="OpenUI5 developers have to consider the text directionality when implementing new controls. The following guidelines explain how this can be done and highlight what you need to focus on."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7751727845097376"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7751727845097376"/>
+<title>Right-to-Left Support Guidelines for Control Development</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc69c61d7c9bc4514b9479b3998f61ef6">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Right-to-Left Support Guidelines for Control Development</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"><span class="ph"><span class="ph pname">OpenUI5</span></span> developers have to
+		consider the text directionality when implementing new controls. The following guidelines
+		explain how this can be done and highlight what you need to focus on. </p>
+
+		<div class="section"><div class="section_title">General Guidelines</div><div type="General Guidelines">
+			
+			<p class="p">You should develop the control as usual, with only left-to-right (LTR) direction in mind.</p>
+
+			<ul class="ul" id="loioc69c61d7c9bc4514b9479b3998f61ef6__ul_yfk_hp3_ns">
+				<li class="li">
+					<p class="p">You don't need any RTL-specific CSS classes and you shouldn't write RTL-specific styles into
+						a CSS file. </p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">You shouldn't  use CSS properties related to RTL. </p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">You need to consider the semantics of the control properties. Controls that have directional
+						properties like <samp class="ph codeph">left</samp> or <samp class="ph codeph">right</samp> need to be
+						changed to <samp class="ph codeph">begin</samp> or <samp class="ph codeph">end</samp> respectively.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Think about the RTL behavior according to the items below when writing
+						JavaScript code that relates to positions.</p>
+
+				</li>
+
+			</ul>
+
+			<p class="p">You can find more detailed guidelines and specifics in the <span class="keyword">Related
+					Information</span> section. </p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Turning on RTL Mode with the URL Parameter</div><div type="Turning on RTL Mode with the URL Parameter">
+			
+			<p class="p">You can test your control by setting the URL parameter <samp class="ph codeph">sap-ui-rtl</samp> to
+					<samp class="ph codeph">true</samp>. This will display your control in RTL mode. The
+				automatically converted stylesheets and mirrored images are used, and
+					<samp class="ph codeph">dir=rtl</samp> is set on the <samp class="ph codeph">&lt;html&gt;</samp> tag. </p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">RTL Mode in Text-Displaying Controls</div><div type="RTL Mode in Text-Displaying Controls">
+			
+			<p class="p">Languages that have RTL text directionality keep the default directionality of numeric values
+				and texts in LTR mode. In order to handle these cases, <span class="ph"><span class="ph pname">OpenUI5</span></span> uses two
+				additional API properties - <samp class="ph codeph">textDirection</samp> and
+					<samp class="ph codeph">textAlign</samp>. You can find detailed information on how to use
+				these properties in the section <span class="keyword">Related Information</span>. </p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="7e7cd0aed8bd469cbdd9b46035046dd8.html" title="Languages with right-to-left (RTL) text directionality keep the default directionality of numeric values and texts in left-to-right (LTR) mode. To ensure correct handling, two API properties have been introduced - textDirection and textAlign.">API Properties for Right-to-Left Support in Text-Displaying Controls</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

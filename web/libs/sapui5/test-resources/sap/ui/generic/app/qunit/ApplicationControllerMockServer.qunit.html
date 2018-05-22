@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>qUnit Page for sap.ui.generic.app.ApplicationController</title>
+
+	<script id="sap-ui-bootstrap" type="text/javascript"
+		src="../../../../../../resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_bluecrystal"
+		data-sap-ui-language="en-US"
+		data-sap-ui-libs="sap.ui.commons,sap.ui.table,sap.m">
+	</script>
+
+	<script type="text/javascript">
+		// Load MockServer early so that sinon is available for sinon-qunit.js
+		jQuery.sap.require("sap.ui.core.util.MockServer");
+	</script>
+
+
+	<link rel="stylesheet"	href="../../../../../../resources/sap/ui/thirdparty/qunit.css"	type="text/css" media="screen" />
+	<script type="text/javascript"	src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+	<script type="text/javascript"	src="../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	<script type="text/javascript"	src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+	<script type="text/javascript"	src="../../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+	<script type="text/javascript">
+
+		sinon.config.useFakeTimers = true;
+
+		jQuery.sap.require("sap.ui.model.odata.ODataMetaModel");
+		jQuery.sap.require("sap.ui.model.odata.ODataModel"); //Use v1 Model as stubs are built against v1 API
+		jQuery.sap.require("sap.ui.generic.app.ApplicationController");
+
+		var sServiceUri = "/SalesOrderSrv/";
+		var sDataRootPath =  "/testdata/SalesOrder/";
+		var oModel, spy;
+
+		var oMockServer = new sap.ui.core.util.MockServer({
+			rootUri: sServiceUri
+		});
+
+		function initServer() {
+			oMockServer.simulate("/testdata/SalesOrder/metadata.xml", sDataRootPath);
+			oMockServer.start();
+		}
+
+		function stopServer() {
+			oMockServer.stop();
+		}
+
+		function initModel(mParameters) {
+			//jQuery.sap.require("sap.ui.model.odata.v2.ODataModel");
+			return new sap.ui.model.odata.v2.ODataModel(sServiceUri, mParameters);
+		}
+
+		/**
+		 * Removes all shared Metadata
+		 */
+		function cleanServiceDataCache() {
+			sap.ui.model.odata.v2.ODataModel.mServiceData = {};
+		}
+
+		function removeSharedMetadata() {
+			var sURI = sServiceUri.replace(/\/$/, "");
+			if (sap.ui.model.odata.v2.ODataModel.mServiceData
+					&& sap.ui.model.odata.v2.ODataModel.mServiceData[sURI]) {
+				delete sap.ui.model.odata.v2.ODataModel.mServiceData[sURI].oMetadata;
+			}
+		}
+
+		/*  TESTS */
+
+		QUnit.module("sap.ui.generic.app.ApplicationController", {
+			beforeEach: function() {
+				initServer();
+				oModel = initModel();
+				this.oApplicationController = new sap.ui.generic.app.ApplicationController(oModel);
+			},
+			afterEach: function() {
+				oModel.destroy();
+				oModel = undefined;
+				removeSharedMetadata();
+				stopServer();
+			}
+		});
+
+		QUnit.test("Shall be instantiable", function() {
+			assert.ok(this.oApplicationController);
+		});
+
+	</script>
+
+	</head>
+	<body id="body" class="sapUiBody">
+		<h1 id="qunit-header">qUnit Page for sap.ui.generic.app.transaction.TransactionController</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</body>
+</html>

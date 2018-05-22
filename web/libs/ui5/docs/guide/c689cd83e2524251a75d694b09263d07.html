@@ -1,0 +1,66 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Gherkin is compatible with the concept of OPA5 page objects."/>
+<meta name="description" content="Gherkin is compatible with the concept of OPA5 page objects."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9033507635325023"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9033507635325023"/>
+<title>Gherkin and OPA Page Objects</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc689cd83e2524251a75d694b09263d07">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Gherkin and OPA Page Objects</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Gherkin is compatible with the concept of OPA5 page objects.</p>
+
+		<p class="p">OPA5 page objects are a method for architecting integration testing to make test components
+			more intuitive and reusable. For more information about OPA page objects, see <a class="xref" href="f2f843d375384d56bbf955a80ee66ab6.html" title="The page object design pattern supports UI-based tests with improved readability, fostering the don't repeat yourself (DRY) principle of software development that is aimed at reducing repetition of any kind of information.">Structuring OPA Tests With Page Objects</a>.</p>
+
+		<div class="note note"><span class="notetitle">Note</span> You can find a sample implementation in the <span class="ph uicontrol">Samples</span> in the Demo Kit <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.sample.gherkin.GherkinWithPageObjects/preview" alt="../../explored.html#/sample/sap.ui.core.sample.gherkin.GherkinWithPageObjects/preview" title="../../explored.html#/sample/sap.ui.core.sample.gherkin.GherkinWithPageObjects/preview">Using Gherkin with OPA5 Page Objects</a></span>.</div>
+
+		<div class="p">To make Gherkin work with page objects, you should load your OPA5 page objects in the HTML
+			bootstrap file, as shown in the sample. The only adaptation you need to make when
+			starting the Gherkin testing is to add the parameter
+				<samp class="ph codeph">generateMissingSteps</samp> when calling
+				<span class="ph filepath">opa5TestHarness.test</span>:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">opa5TestHarness.test({
+  featurePath: "GherkinWithPageObjects/Requirements1",
+  generateMissingSteps: true
+});
+</pre></div>
+</div>
+
+		<div class="p">This signals to Gherkin that if it cannot find a matching step definition in the steps file
+			then it should try to use an OPA5 page object call instead. In the example above, no
+			steps file is specified, which means that Gherkin will expect to make a page object call
+			for each test step. You could also take a hybrid approach where each test step in the
+			feature file either matches a Gherkin step definition or executes an OPA5 page object
+			call. In addition, you can combine OPA5 page object calls with a Gherkin data table or
+			scenario outline to achieve powerful results (you can see both options in the sample).
+			Here is a sample feature file scenario that takes advantage of page
+			objects:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint nocode">Scenario: Page 1 journey
+  When on the overview: I press on "Go to Page 1"
+  Then on page 1: I should see the page 1 text
+</pre></div>
+</div>
+
+		<div class="p">Use the Gherkin console logs to help you debug your OPA5 page object calls.<div class="note caution"><span class="cautiontitle">Caution</span> 
+				<p class="p">Chaining OPA5 page objects, for example, <samp class="ph codeph">When.onTheOverview.iPressOnGoToPage1().and.onPage1.iShouldSeeThePage1Text()</samp> is
+					currently <span class="ph emphasis emphasis">not</span> supported in Gherkin feature files.</p>
+
+			</div>
+</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

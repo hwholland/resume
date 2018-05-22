@@ -1,0 +1,82 @@
+<core:View
+        xmlns:core="sap.ui.core"
+        xmlns="sap.uxap"
+        xmlns:layout="sap.ui.layout"
+        xmlns:m="sap.m"
+        xmlns:comp="sap.ui.comp.variants"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:bl="sap.uxap.sample.Headers.block"
+        xmlns:blockcolor="sap.uxap.sample.blockscolor"
+        controllerName="sap.uxap.sample.Headers.AlternativeProfileObjectPageHeader.AlternativeProfileObjectPageHeader"
+        height="100%">
+
+
+    <ObjectPageLayout id="ObjectPageLayout">
+        <headerTitle>
+            <ObjectPageHeader id="headerForTest"
+                              headerDesign="Dark"
+                                objectTitle="Tim MacAfeed"
+                                objectSubtitle="Senior Developer"
+                                objectImageURI="./test-resources/sap/uxap/demokit/sample/img/ProfileHeader.png"
+                                objectImageShape="Circle"
+                                isObjectIconAlwaysVisible="false"
+                                isObjectTitleAlwaysVisible="false"
+                                isObjectSubtitleAlwaysVisible="false"
+                                isActionAreaAlwaysVisible="false"
+                                >
+
+                <actions>
+                    <ObjectPageHeaderActionButton  text="Public Profile" iconFirst="true" icon="sap-icon://show" />
+                    <ObjectPageHeaderActionButton text="Take Action" iconFirst="true" icon="sap-icon://action" />
+                </actions>
+            </ObjectPageHeader>
+        </headerTitle>
+        <headerContent>
+            <m:Image src="test-resources/sap/uxap/demokit/sample/img/HugeHeadrPicture.png" width="200px" height="200px"/>
+            <layout:VerticalLayout>
+                <m:ObjectHeader title="Tim MacAfeed" showTitleSelector="true"/>
+                <m:Link text="mac-ah-feed"/>
+                <m:Label text="Senior developer"/>
+                <m:Label text="(321) 123-4567"/>
+                <m:Link text="tim.mcafeed@sap.com"/>
+                <layout:HorizontalLayout>
+                    <m:Image height="24px" width="24px"  src="./test-resources/sap/uxap/demokit/sample/img/twitterIcon.png"/>
+                    <m:Image height="24px" width="24px" src="./test-resources/sap/uxap/demokit/sample/img/linkedInIcon.png"/>
+                </layout:HorizontalLayout>
+            </layout:VerticalLayout>
+            <m:Text width="200px" text="Hi, I'm Tim. I am passionate about what I do and I'll go the extra mile to make the customer win."/>
+            <layout:VerticalLayout>
+                <m:Label text="Profile completion"/>
+                <m:ProgressIndicator
+                        percentValue="30"
+                        displayValue="30%"
+                        showValue="true"
+                        state="None" />
+            </layout:VerticalLayout>
+        </headerContent>
+        <sections>
+            <ObjectPageSection title="my section 1">
+                <subSections>
+                    <ObjectPageSubSection title="Green">
+                        <blocks>
+                            <blockcolor:BlockGreen id="bg1" />
+                        </blocks>
+                    </ObjectPageSubSection>
+
+                </subSections>
+            </ObjectPageSection>
+            <ObjectPageSection title="my section 2">
+                <customAnchorBarButton>
+                    <m:Button text="Orange" />
+                </customAnchorBarButton>
+                <subSections>
+                    <ObjectPageSubSection title="Orange">
+                        <blocks>
+                            <blockcolor:BlockOrange id="bo1" />
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+</core:View>

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<script id="sap-ui-bootstrap" 
+		type="text/javascript"
+		src="../../../../../resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_bluecrystal"
+		data-sap-ui-language="en-US"
+		data-sap-ui-noConflict="true"
+		data-sap-ui-libs="sap.ui.commons,sap.uiext.inbox">
+	</script>
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+			
+			jQuery.sap.registerModulePath("sap.uiext.inbox.qunit.mockServer", "mockServer/");
+			jQuery.sap.require("sap.uiext.inbox.qunit.mockServer.InboxMockServerQUnit");
+			jQuery.sap.require("sap.ui.core.IconPool");
+
+			module("Load");
+
+			test("InboxCreationOk",function() {
+				sap.ui.getCore().applyChanges(); 
+				var oInbox = jQuery.sap.byId("inbox");
+				equals(false, (oInbox === undefined), "Checking if the Inbox Control is created and is not undefined.");
+				equals(false, (oInbox === null), "Checking if the Inbox Control is created and is not null.");
+				qutils.triggerMouseEvent("inbox" + "--tableViewSelectionButton", "click");
+			});
+		    
+			module("Check Object Link Request")
+			asyncTest("Test Object Link Query",function() {
+				sap.ui.getCore().applyChanges(); 
+				
+				var oInbox = sap.ui.getCore().byId("inbox");
+				var oModel = oInbox.getCoreModel();
+				var delayedCall = function() {
+				var oResponse = oModel.read("/TaskCollection(InstanceID='bpm%3A%2F%2Fbpm.sap.com%2Ftask-instance%2F9851fd12da6311e280840000006379d2',SAP__Origin='LOCALHOST_C73_00')/ObjectLinkExecution",null,null,true,function(oData, response){
+					equals(oData.results.length, 2, "Check the number of responses ");
+					equals(oData.results[1].InstanceID, "000001144658", "Check Instance ID ");
+					equals(oData.results[1].ObjectId, "464F4C31382020202020202020202034204558543339303030303030303030383434", "Check the Object Id");
+						},function(oError){
+							 console.error("Error while fetching Object Link Responses");
+						});
+				start();
+				
+				};
+				setTimeout(delayedCall, 0); 
+			});  
+			
+			
+			asyncTest("Test $filter query for Object Links",function() {
+				sap.ui.getCore().applyChanges(); 
+				
+				var oInbox = sap.ui.getCore().byId("inbox");
+				var oModel = oInbox.getCoreModel();
+				var delayedCall = function() {
+				var oResponse = oModel.read("/TaskCollection(InstanceID='bpm%3A%2F%2Fbpm.sap.com%2Ftask-instance%2F9851fd12da6311e280840000006379d2',SAP__Origin='LOCALHOST_C73_00')/ObjectLinkExecution?$filter=ObjectType eq 'Object'",null,null,true,function(oData, response){
+						equals(oData.results.length, 3, "Check the response of $filter query");
+						equals(oData.results[0].ObjectId, "464F4C31382020202020202020202034204558543339303030303030303030383434", "Check ObjectId Property");
+						equals(oData.results[0].ObjectType, "Object", "Check Object Type Property");
+						equals(oData.results[0].Label, "Link for Object XYZ", "Check Label Property");
+						},function(oError){
+						  	 console.error(" Could not perform  $filter query for Object Links");
+						});
+				start();
+				};
+				setTimeout(delayedCall, 0); 
+			});      
+			      
+			QUnit.done(function() {
+				qutils.triggerMouseEvent(
+						"inbox" + "--tableViewSelectionButton", "click");
+			});
+		</script>
+	</head>
+	<body>
+		<h1 id="qunit-header"><title>qUnit Page for Inbox Object Link</title></h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup, will be hidden</div>
+		<div id="canvas" style="height:300px; width:300px"></div>
+		<br>
+		<div id="uiArea1" style="width: 80%;"></div>
+	</body>
+</html>

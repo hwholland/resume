@@ -1,0 +1,202 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="On top of pure CSS, OpenUI5 offers advanced theming concepts and functions which can be used optionally. These concepts are outlined in detail below."/>
+<meta name="description" content="On top of pure CSS, OpenUI5 offers advanced theming concepts and functions which can be used optionally. These concepts are outlined in detail below."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3492469371161633"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3492469371161633"/>
+<title>Enhanced Theming Concepts</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio45df6dff504647c686ab9ba72af827f6">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Enhanced Theming Concepts</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">On top of pure CSS, <span class="ph"><span class="ph pname">OpenUI5</span></span>
+		offers advanced theming concepts and functions which can be used optionally. These concepts
+		are outlined in detail below.</p>
+
+		<div class="section"><div class="section_title">CSS Variables, Functions and More</div><div type="CSS Variables, Functions and More">
+			
+			<p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> uses the popular
+				CSS preprocessor <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Flesscss.org%2F" alt="http://lesscss.org/" title="http://lesscss.org/">
+					LESS<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a>. This tool introduces several features, including CSS variables, a
+				concept which has also been heavily demanded by the CSS community: In any
+				UI5-controlled CSS file, variables can be defined and can then be referenced
+				anywhere in the CSS code of the same library. These variables are mainly used for
+				colors. All CSS variables are global. The CSS variable concept contributes to a
+				consistent way of implementing and changing the styles.</p>
+
+			<p class="p">LESS adds more features like color calculations, mixins, and CSS selector nesting.
+				The color calculations are used in <span class="ph"><span class="ph pname">OpenUI5</span></span> to derive many
+				different color shades from just a few variables.</p>
+
+			<p class="p">Here is the syntax:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">@sapUiText: #000000; /* define the text color as 'black' */
+
+button {
+   color: @sapUiText; /* buttons will automatically have the current text color, which is '#000000' right now */
+    [...]
+}
+</pre></div>
+
+			<p class="p">LESS then takes care of substituting all references to a CSS variable by the current
+				value of this variable. This happens during the build of the control library.</p>
+
+			<div class="note note"><span class="notetitle">Note</span> In development scenarios this LESS processing might even happen at runtime in the
+				browser to shorten the build time for <span class="ph"><span class="ph pname">OpenUI5</span></span> libraries. This
+				is indicated by a <span class="ph uicontrol">less mode</span> rectangle when a page is
+				launched.</div>
+
+			<p class="p">Additionally, a specific theme can modify the CSS parameter values given by the base
+				theme. So a control can just define its text color to use <samp class="ph codeph">sapUiText</samp>
+				by default which will automatically take care of applying the correct color for
+				every theme or user modification: The theme generation will create one CSS file per
+				theme, and the substitution of the CSS parameter references will always take the
+				theme-dependent value into account. So a visually very different theme can easily be
+				created by simply changing a number of colors.</p>
+
+			<p class="p">While every library and control can introduce their own CSS variables, those defined
+				in <span class="ph filepath">global.css</span> are most important. Ideally, there should only be
+				a few of them, and they should be simple enough to be understood by most end users
+				(similar to what the Windows operating system offers end users), but still cover as
+				many aspects of the visual appearance as necessary to make them sufficient for most
+				customer-required theme modifications. </p>
+
+			<p class="p">Additional benefits of CSS variables are, for example:</p>
+
+			<ul class="ul" id="loio45df6dff504647c686ab9ba72af827f6__ul_tlf_bqp_24">
+				<li class="li">They can be used to generically build simple styling tools that allow for a
+					limited degree of freedom (=changing the CSS parameter values). The UI theme
+					designer is an example of such a tool.</li>
+
+				<li class="li">They can also be linked to metadata, for example, to which group of colors they
+					belong, to which colors they need to have some visual contrast.</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Compilation of One CSS File</div><div type="Compilation of One CSS File">
+			
+			<p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> CSS generation does not
+				only substitute the CSS variable values but also merges all CSS files of a control
+				library into <span class="ph emphasis emphasis">one</span> file that is loaded at runtime, thus
+				increasing the performance.</p>
+
+			<p class="p">Here are some of the reasons why you would not want to have all styles defined within
+				one file during development:</p>
+
+			<ul class="ul" id="loio45df6dff504647c686ab9ba72af827f6__ul_kmf_bqp_24">
+				<li class="li">Less collisions and merging when different developers edit the styles of their controls</li>
+
+				<li class="li">Clear separation between the styles for different controls, which helps to estimate and test
+					the impact of a CSS modification</li>
+
+				<li class="li">Keeping the door open for future optimization regarding runtime performance and data
+					transfer by tailoring CSS files on server side that only contain the CSS
+					required on the current application page</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Optimization and Compression of CSS Size</div><div type="Optimization and Compression of CSS Size">
+			
+			<p class="p">For performance reasons, the <span class="ph"><span class="ph pname">OpenUI5</span></span> CSS generation can optionally remove all comments and unnecessary whitespace and
+				can compress verbose declarations into a more compact format.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Base Theme for Generic Style</div><div type="Base Theme for Generic Style">
+			
+			<p class="p">While some of the style and layout applied using CSS clearly depends on the current theme, and
+				customers are likely to modify such style rules, there are other style rules that
+				are required for a control to work properly and unlikely to differ for different
+				themes. Examples are the overflow behavior, the positioning of popup elements, the
+				mouse cursor type, the display mode, and others.</p>
+
+			<p class="p"><span class="ph"><span class="ph pname">OpenUI5</span></span> promotes and supports keeping those style definitions in the so-called base theme,
+				which serves as a common base for all themes.</p>
+
+			<p class="p">Themes are built upon this base style that defines their specific visual design by applying
+				colors and images, sizes and fonts. <span class="ph"><span class="ph pname">OpenUI5</span></span> theme generation
+				takes care of combining the base theme with the specific theme for each generated
+				theme CSS file. Because the specific CSS is appended to the base theme, a specific
+				theme can always override styles defined in the base theme. If this step is required
+				often, the respective style declaration should probably not be located in the base
+				theme.</p>
+
+			<p class="p">Any style declarations which are referencing CSS variables (at least those common ones defined
+				in the base theme) can also be done in the base theme, and it is sufficient to do it
+				only there: The CSS generation will apply the correct value for each respective
+				theme. So this split between base theme and specific themes avoids duplicate
+				creation and maintenance of CSS parts which are common for all themes and keeps the
+				CSS files that need to be written for any new theme smaller.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Generic Right-to-Left Support</div><div type="Generic Right-to-Left Support">
+			
+			<p class="p">For some countries, right-to-left (RTL) text mode needs to be supported. In order to
+				avoid the need to create a completely new set of CSS files for those countries, <span class="ph"><span class="ph pname">OpenUI5</span></span> supports generic
+				RTL generation. Basically, this involves switching the right and left margins and
+				mirroring everything else (including CSS3 rotations, and so on).</p>
+
+			<p class="p">Everything else that is not covered by this automatic transformation can be fixed by
+				using style rules that are only applied in the RTL case.</p>
+
+			<p class="p">If you override RTL-specific attributes like text alignment, positioning and so on,
+				you have to write the RTL equivalent into your application CSS. The attributes below
+				are critical for RTL support:</p>
+
+			<ul class="ul" id="loio45df6dff504647c686ab9ba72af827f6__ul_jrr_j5t_1r">
+				<li class="li"><samp class="ph codeph">float</samp></li>
+
+				<li class="li"><samp class="ph codeph">clear</samp></li>
+
+				<li class="li"><samp class="ph codeph">text-align</samp></li>
+
+			</ul>
+
+			<p class="p">The following attributes require special attention:</p>
+
+			<ul class="ul" id="loio45df6dff504647c686ab9ba72af827f6__ul_pqj_n5t_1r">
+				<li class="li"><samp class="ph codeph">margin</samp></li>
+
+				<li class="li"><samp class="ph codeph">padding</samp></li>
+
+				<li class="li"><samp class="ph codeph">border</samp></li>
+
+				<li class="li"><samp class="ph codeph">background-position</samp></li>
+
+				<li class="li"><samp class="ph codeph">position</samp> (right/left)</li>
+
+				<li class="li"><samp class="ph codeph">text-indent</samp></li>
+
+			</ul>
+
+			<p class="p">Depending on the values, these latter attributes might also need to be mirrored. As
+				applications running in RTL mode add a <samp class="ph codeph">dir</samp> attribute to the HTML
+				tag in the DOM, custom styles that have to be written can use the following selector
+				to handle RTL-specific styling:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">html[dir="rtl"]  .myselector {
+}</pre></div>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html><html xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		<title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.ui.core.util.XMLPreprocessor.IContext</title>
+		<link rel=stylesheet href="../default.css" type="text/css">
+		
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+				
+				
+			
+				
+				<script type="text/javascript" src="../../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+				
+				
+			
+				
+				
+				<link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+				
+			
+		
+	</head>
+
+	<body>
+
+
+		<div id="main">
+			<div id="content">
+
+					<h1 class="classTitle static">
+					
+					Interface sap.ui.core.util.XMLPreprocessor.IContext
+					</h1>
+					
+					
+					
+					
+					<hr/>
+
+					
+					
+					<div class="full-description">
+						<p>Context interface provided by XML template processing as an additional first
+argument to any formatter function which opts in to this mechanism. Candidates for
+such formatter functions are all those used in binding expressions which are
+evaluated during XML template processing, including those used inside template
+instructions like <code>&lt;template:if></code>. The formatter function needs to be
+marked with a property <code>requiresIContext = true</code> to express that it
+requires this extended signature (compared to ordinary formatter functions). The
+usual arguments will be provided after the first one (currently: the raw value from
+the model).
+</p><p>
+This interface provides callback functions to access the model and path  which are
+needed to process OData v4 annotations. It initially offers a subset of methods
+from <a href="../symbols/sap.ui.model.Context.html">sap.ui.model.Context</a> so that formatters might also be called with a
+context object for convenience, e.g. outside of XML template processing.
+</p><p>
+Example: Suppose you have a formatter function called "foo" like this
+<pre>
+window.foo = function (oInterface, vRawValue) {
+    //TODO ...
+};
+window.foo.requiresIContext = true;
+</pre>
+and it is used within an XML template like this
+<pre>
+&lt;template:if test="{path: '...', formatter: 'foo'}">
+</pre>
+Then <code>foo</code> will be called with arguments
+<code>oInterface, vRawValue</code> such that
+<code>oInterface.getModel().getObject(oInterface.getPath()) === vRawValue</code>
+holds.</p>
+						
+						
+						
+						
+						
+						
+							<br />
+							<i>Since: </i>1.27.1.
+						
+					</div>
+					
+		
+					
+					
+					
+					
+					
+		
+					
+
+					
+						<div class="summary section">
+							<div class="sectionTitle">Method Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod static">
+									<b class="icon" title="Returns the model related to the current formatter call."><a href="../symbols/sap.ui.core.util.XMLPreprocessor.IContext.html#.getModel">sap.ui.core.util.XMLPreprocessor.IContext.getModel</a></b><span class='signature'>()</span>
+									<span class='description'>Returns the model related to the current formatter call.</span>
+								</div>
+							
+								<div class="sectionItem classMethod static">
+									<b class="icon" title="Returns the absolute path related to the current formatter call."><a href="../symbols/sap.ui.core.util.XMLPreprocessor.IContext.html#.getPath">sap.ui.core.util.XMLPreprocessor.IContext.getPath</a></b><span class='signature'>()</span>
+									<span class='description'>Returns the absolute path related to the current formatter call.</span>
+								</div>
+							
+								<div class="sectionItem classMethod static">
+									<b class="icon" title="Returns the value of the setting with the given name which was provided to the XML template processing."><a href="../symbols/sap.ui.core.util.XMLPreprocessor.IContext.html#.getSetting">sap.ui.core.util.XMLPreprocessor.IContext.getSetting</a></b><span class='signature'>(<span title="(string) the name of the setting">sName</span>)</span>
+									<span class='description'>Returns the value of the setting with the given name which was provided to the XML template processing.</span>
+								</div>
+							
+							</div>
+						</div>
+					
+		
+					
+		
+					
+		
+					
+					
+					
+						<div class="details section">
+							<div class="sectionTitle">
+								Method Detail
+							</div>
+							<div class="sectionItems">
+								
+									<div class='sectionItem classMethod static'>
+										<a name=".getModel"> </a>
+										<div class="itemTitle icon">
+											sap.ui.core.util.XMLPreprocessor.IContext.getModel<span class="signature">()</span>
+											<span class="light" title="returns sap.ui.model.Model">: <a href="../symbols/sap.ui.model.Model.html">sap.ui.model.Model</a></span>
+										</div>
+										<div class="full-description">
+											Returns the model related to the current formatter call.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{<a href="../symbols/sap.ui.model.Model.html">sap.ui.model.Model</a>}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the model related to the current formatter call
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod static'>
+										<a name=".getPath"> </a>
+										<div class="itemTitle icon">
+											sap.ui.core.util.XMLPreprocessor.IContext.getPath<span class="signature">()</span>
+											<span class="light" title="returns string">: string</span>
+										</div>
+										<div class="full-description">
+											Returns the absolute path related to the current formatter call.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{string}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the absolute path related to the current formatter call
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+									<div class='sectionItem classMethod static'>
+										<a name=".getSetting"> </a>
+										<div class="itemTitle icon">
+											sap.ui.core.util.XMLPreprocessor.IContext.getSetting<span class="signature">(<span title="(string) the name of the setting">sName</span>)</span>
+											<span class="light" title="returns any">: any</span>
+										</div>
+										<div class="full-description">
+											Returns the value of the setting with the given name which was provided to the
+XML template processing.
+											
+											
+											
+											
+										</div>
+										
+										
+											<div class="heading">Parameters:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+													  <span class="light">{string}</span> 
+													</td>
+													<td class="methodItemName">
+													  <b>sName</b>
+													</td>
+													<td class="methodItemDesc">
+												    the name of the setting
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+										
+										
+										
+											<div class="heading">Exceptions:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{Error}</span>  <b></b>
+													</td>
+													<td class="methodItemDesc">
+														if the name is one of the reserved names: "bindingContexts", "models"
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+											<div class="heading">Returns:</div>
+											<table class="methodItem"><tbody>
+											
+												<tr>
+													<td class="methodItemType">
+														<span class="light">{any}</span> 
+													</td>
+													<td class="methodItemDesc">
+														the value of the setting
+													</td>
+												</tr>
+											
+											</tbody></table>
+										
+										
+									</div>
+								
+							</div>
+						</div>
+					
+
+
+
+		</div>
+	</div>
+
+				
+	</body>
+</html>

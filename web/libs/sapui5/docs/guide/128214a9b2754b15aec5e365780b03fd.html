@@ -1,0 +1,86 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The sap.m library provides a control called App which is meant to be the root control of an app. It initializes the content of the body tag, sets some meta tags on the HTML document for mobile devices, and can manage multiple pages and the animations when navigating."/>
+<meta name="description" content="The sap.m library provides a control called App which is meant to be the root control of an app. It initializes the content of the body tag, sets some meta tags on the HTML document for mobile devices, and can manage multiple pages and the animations when navigating."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6126666758954427"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6126666758954427"/>
+<title>Step 2: Initialize the App</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio128214a9b2754b15aec5e365780b03fd">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 2: Initialize the App</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">sap.m library</samp> provides a control called <samp class="ph codeph">App</samp> which
+		is meant to be the root control of an app. It initializes the content of the
+			<samp class="ph codeph">body</samp> tag, sets some <samp class="ph codeph">meta</samp> tags on the HTML document for
+		mobile devices, and can manage multiple pages and the animations when
+		navigating.</p>
+
+		<div class="section"><div class="section_title">index.html</div><div type="index.html">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+	&lt;meta charset="utf-8"&gt;
+	&lt;title&gt;Hello World App&lt;/title&gt;
+	&lt;script src="http://&lt;<em class="ph i">server</em>&gt;:&lt;<em class="ph i">port</em>&gt;/resources/sap-ui-core.js"
+		id="sap-ui-bootstrap"
+		data-sap-ui-theme="sap_belize"
+		data-sap-ui-libs="sap.m"&gt;
+	&lt;/script&gt;
+<span class="ph emphasis emphasis">	&lt;script type="text/javascript"&gt;
+		sap.ui.getCore().attachInit(function () {
+			// create a mobile app and display page1 initially
+			var app = new sap.m.App("myApp", {
+				initialPage: "page1"
+			});
+		});
+	&lt;/script&gt;</span>
+&lt;/head&gt;
+&lt;body class="sapUiBody" id="content"&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+
+			<p class="p">In a second <samp class="ph codeph">script</samp> block, we attach a function to the global
+					<samp class="ph codeph">attachInit</samp> event. This function will be called as soon as <span class="ph"><span class="ph pname">SAPUI5</span></span> is loaded and
+				initialized. Create the <samp class="ph codeph">app</samp> control here, and define the page that
+				you want be displayed initially. At this point in time, this page does not have any
+				content.</p>
+
+			<p class="p">Instead of using the <samp class="ph codeph">sap.m.App</samp> control, you could also manually call the
+					method<samp class="ph codeph">jQuery.sap.initMobile()</samp> to set up the HTML and use other
+				full screen controls, such as <samp class="ph codeph">sap.m.Page</samp> or
+					<samp class="ph codeph">sap.m.Carousel</samp> as root element of your app.</p>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="592f36fd077b45349a67dcb3efb46ab1.html" title="With this tutorial, you learn how to create a simple first app in a few steps on a single HTML page.">Hello World!</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="851bde42e4e1410c96abbe402fa9128c.html" title="We start with creating an HTML page for the app. There we define the meta tags, a script tag to load the SAPUI5 libraries, and a placeholder for the content of the app.">Step 1: Create an HTML Page</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="073d1073fc604beda94589d5c93b32e2.html" title="Apps consist of a set of pages, views, and screens between which the user can navigate. Now we add two pages to the app.">Step 3: Add Content Pages</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

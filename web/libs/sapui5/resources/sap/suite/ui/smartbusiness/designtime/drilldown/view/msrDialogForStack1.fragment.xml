@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- SAP Smart Business (c) Copyright 2012-2015 SAP SE. All rights reserved -->
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" id='msrDialogForStack1'  
+			horizontalScrolling='false' verticalScrolling='false' resourceBundleName="myBundle" resourceBundleAlias="i18n">
+	
+	<SelectDialog id="stack1SelectDialog" title="{i18n>SELECT_MEASUES_FOR_STACK_1}" class="stack1SelectDialog" multiSelect="true" rememberSelections="true"
+				search="onSearchInStack1SelectDialog" confirm="onStack1SelectDialogOK" close="onStack1SelectDialogCancel"
+		    items="{
+		      		path: '/DATA'
+		   		 }" >
+		    <StandardListItem title="{name}" selected="{path:'axis',formatter:'.formatAxisToBool'}"/>
+    </SelectDialog>
+</core:FragmentDefinition>

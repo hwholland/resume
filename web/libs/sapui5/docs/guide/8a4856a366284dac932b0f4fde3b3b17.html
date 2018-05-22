@@ -1,0 +1,87 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The index is calculated by the report Calculation of SAPUI5 Application Index for SAPUI5 Repositories (/UI5/APP_INDEX_CALCULATE). The index is empty initially and needs to be calculated from scratch."/>
+<meta name="description" content="The index is calculated by the report Calculation of SAPUI5 Application Index for SAPUI5 Repositories (/UI5/APP_INDEX_CALCULATE). The index is empty initially and needs to be calculated from scratch."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=32329017608273747"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=32329017608273747"/>
+<title>How is the Index Calculated?</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio8a4856a366284dac932b0f4fde3b3b17">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">
+How is the Index Calculated?</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The index is calculated by the report <span class="ph uicontrol">Calculation of SAPUI5 Application Index
+			for SAPUI5 Repositories</span> (<samp class="ph codeph">/UI5/APP_INDEX_CALCULATE</samp>). The
+		index is empty initially and needs to be calculated from scratch.</p>
+
+		<p class="p">The report <samp class="ph codeph">/UI5/APP_INDEX_CALCULATE</samp> has to be executed in every system
+			whenever the content of the <span class="ph pname">SAPUI5</span> ABAP repository has
+			changed. For more information whether the report is executed automatically or you have
+			to run it manually, see <a class="xref" href="fbce0ba7a31f4073959efd705924af45.html" title="Changes to the content of the SAPUI5 ABAP repository require the index to be updated using the calculation report /UI5/APP_INDEX_CALCULATE. Depending on how the content of the repository is changed, the report is executed automatically or you have to run it manually.">Calculation Report - Automatic Run vs. Manual Scheduling</a>.</p>
+
+		<p class="p">The report allows you to specify the basis for the calculation of the index. Here’s what
+			you can choose from:</p>
+
+		<div class="p">
+			<ul class="ul" id="loio8a4856a366284dac932b0f4fde3b3b17__ul_pkr_xch_f5">
+				<li class="li">
+					<p class="p">Full update of all <span class="ph pname">SAPUI5</span> repositories
+						and the distribution layer regardless of any expiration dates</p>
+
+					<p class="p">This mode is active when you use the provided variant
+							<samp class="ph codeph">SAP&amp;ALL</samp>.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Calculation for those repositories and the distribution layer for which
+						either the expiration period you specified (in hours and minutes) has
+						expired or where a transport changed the content of the repositories and the
+						distribution layer since the last update</p>
+
+					<p class="p">This is the default mode with an expiration period of 24 hours.</p>
+
+					
+				</li>
+
+				<li class="li">
+					<p class="p">A single repository</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">The <span class="ph pname">SAPUI5</span>
+						distribution layer only</p>
+
+				</li>
+
+			</ul>
+
+		</div>
+
+		<div class="p">
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">The report <samp class="ph codeph">/UI5/APP_INDEX_CALCULATE</samp> replaces the report
+						<samp class="ph codeph">/UI5/UPDATE_CACHEBUSTER</samp> used in the user interface add-on
+					1.0 for SAP NetWeaver. </p>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

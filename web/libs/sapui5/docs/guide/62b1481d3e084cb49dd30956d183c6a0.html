@@ -1,0 +1,163 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="SAPUI5 provides a central management of UI and server messages."/>
+<meta name="description" content="SAPUI5 provides a central management of UI and server messages."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7891395707312061"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7891395707312061"/>
+<title>Managing UI and Server Messages</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio62b1481d3e084cb49dd30956d183c6a0">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Managing UI and Server Messages</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"> <span class="ph"><span class="ph pname">SAPUI5</span></span> provides a central management of UI and server messages.</p>
+
+		<p class="p">Messages notify the user about specific states of the application. The following two message
+			types exist:</p>
+
+		<ul class="ul" id="loio62b1481d3e084cb49dd30956d183c6a0__ul_lq3_rdp_3r">
+			<li class="li">
+				<p class="p"><span class="ph emphasis emphasis">UI messages</span> (client side) refer to a control; they are created from the
+					input validation and by the application itself.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p"><span class="ph emphasis emphasis">Server messages</span> refer to a binding path; they are managed by the server
+					and are changed every time the back end responds to a request.</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p">A message contains at least the following information:</p>
+
+		<ul class="ul" id="loio62b1481d3e084cb49dd30956d183c6a0__ul_axl_c2p_3r">
+			<li class="li">
+				<p class="p">ID: The ID is usually set automatically on message creation.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Type: Possible types are error, warning, and info; see
+						<samp class="ph codeph">sap.ui.core.MessageType</samp> in the API reference</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Target: Describes to what part of the application the message applies this could be,  for
+					example, a control property; if the target is empty, the message applies to the
+					entire application</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Message processor: Object that handles the message in the application</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Message text: Text that is displayed to the user</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p">In addition to this information, a message can contain the following optional
+			information:</p>
+
+		<ul class="ul" id="loio62b1481d3e084cb49dd30956d183c6a0__ul_e21_z2p_3r">
+			<li class="li">
+				<p class="p">Description: Message long text</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Code: Machine-readable version of the message; this is usually provided by the back end to
+					allow to look-up details</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p"><samp class="ph codeph">technical</samp> property: This property is set if a technical error occurs; it is
+					usually set if an error code is sent from the back end, like a 404</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p"><samp class="ph codeph">persistent</samp> property: If this property is set to <samp class="ph codeph">true</samp>, the
+					messages are <span class="ph emphasis emphasis">not</span> deleted automatically; the application
+					handles the life cycle of these messages</p>
+
+			</li>
+
+		</ul>
+
+		<div class="section"><div class="section_title">Message Life Cycle</div><div type="Message Life Cycle">
+			
+			<div class="p">The <samp class="ph codeph">MessageManager</samp> handles the message life cycle, which is different for UI
+				and server messages: <ul class="ul" id="loio62b1481d3e084cb49dd30956d183c6a0__ul_nml_1zm_f5">
+					<li class="li">
+						<p class="p">UI messages are added with a target referencing a control and its
+							specific property. The messages are kept until a validation message for
+							the property is created and assigned. If new data for the same property
+							is received from the server, the UI messages are erased unless their
+								<samp class="ph codeph">persistent</samp> property is set to
+							<samp class="ph codeph">true</samp>.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Server messages are kept until a message from the server for the same
+							path arrives. The server always sends all messages for a specific
+							target, which means that all current messages are replaced with the ones
+							sent by the server.</p>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Message Manager</div><div type="Message Manager">
+			
+			<p class="p">The message manager manages all messages for the application. <samp class="ph codeph">MessageManager</samp>
+				is available globally as a Singleton by calling
+					<samp class="ph codeph">sap.ui.getCore().getMessageManager()</samp>.</p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="a90d93df5a024e8bb18826b699c9aaa7.html" title="UI messages reference a control. They are handled and processed by the control message processor and are propagated to the message manager.">UI Messages</a></strong><br/>
+</div>
+<div><strong><a class="link" href="81c735e69d354de98b0bd139e4bd4e10.html" title="Server messages are created by the message parser, then processed by the message processor and then propagated to the message manager. The message target, if set, must correspond to a binding path.">Server Messages</a></strong><br/>
+</div>
+<div><strong><a class="link" href="8956f0a223284d729900ebad4ca88356.html" title="The message model contains all messages and is used to bind to the messages to display them.">Message Model</a></strong><br/>
+</div>
+<div><strong><a class="link" href="2e532e6288854e5897a819a2ab6cc910.html" title="The message parser is a simple interface that is implemented to allow the propagation of messages from back end services. For messages from OData services, the sap.ui.model.ODataMessageParser is used.">Message Parser</a></strong><br/>
+</div>
+</ul>
+
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.core.message.Message.html" alt="../../docs/api/symbols/sap.ui.core.message.Message.html" title="../../docs/api/symbols/sap.ui.core.message.Message.html">API Reference: <samp class="ph codeph">sap.ui.core.message.Message</samp></a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.core.MessageType.html" alt="../../docs/api/symbols/sap.ui.core.MessageType.html" title="../../docs/api/symbols/sap.ui.core.MessageType.html">API Reference: <samp class="ph codeph">sap.ui.core.MessageType</samp></a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.core.message.MessageManager.html" alt="../../docs/api/symbols/sap.ui.core.message.MessageManager.html" title="../../docs/api/symbols/sap.ui.core.message.MessageManager.html">API Reference: <samp class="ph codeph">sap.ui.core.message.MessageManager</samp></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

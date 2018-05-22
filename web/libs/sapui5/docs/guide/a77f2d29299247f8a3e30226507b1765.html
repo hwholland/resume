@@ -1,0 +1,166 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The SAP Fiori Worklist Application template implements a typical worklist floorplan, one of the patterns that is specified by the SAP Fiori design guidelines."/>
+<meta name="description" content="The SAP Fiori Worklist Application template implements a typical worklist floorplan, one of the patterns that is specified by the SAP Fiori design guidelines."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=026536781121791586"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=026536781121791586"/>
+<title>Worklist Template</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioa77f2d29299247f8a3e30226507b1765">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Worklist Template</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <span class="ph emphasis emphasis"><span class="ph pname">SAP Fiori</span>
+			Worklist Application</span> template implements a typical worklist floorplan, one of
+		the patterns that is specified by the <span class="ph pname">SAP Fiori design guidelines</span>.</p>
+
+		<p class="p">A worklist displays a collection of items to be processed by the user and usually
+			involves reviewing details of a list item and taking action. If the data needs to be
+			organized into columns or the overview of the items is more important than showing the
+			item details directly, this template can be used as a starting point. For more
+			information about worklist floorplans, see the <span class="ph">
+                                    <a class="xref" href="https://experience.sap.com/fiori-design-web/" alt="https://experience.sap.com/fiori-design-web/" title="https://experience.sap.com/fiori-design-web/"><span class="ph pname" id="loioa77f2d29299247f8a3e30226507b1765__d1776e93">SAP Fiori
+                                            Design Guidelines</span></a></span>.</p>
+
+		<div class="note note" id="loioa77f2d29299247f8a3e30226507b1765__FLP_or_standalone"><span class="notetitle">Note</span> 
+			<div class="p">You have two options: You can use this template to build an <span class="ph emphasis emphasis">app for the
+						<span class="ph pname">SAP Fiori launchpad</span> (<span class="ph pname">FLP</span>)</span> or to
+				build <span class="ph emphasis emphasis">standalone apps</span>.<ul class="ul" id="loioa77f2d29299247f8a3e30226507b1765__ul_kxc_tgn_1v">
+					<li class="li">
+						<p class="p">If the app runs in <span class="ph pname">FLP</span> it also
+							contains additional features like <span class="ph uicontrol">Save as Tile</span> or
+								<span class="ph uicontrol">Share in SAP Jam</span> that depend on <span class="ph pname">FLP</span> at
+							runtime. This app cannot be run standalone, meaning no
+								<span class="ph filepath">index.html</span> file is created but only files for
+							testing the app in the <span class="ph pname">FLP</span>
+							sandbox.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Only standalone apps contain an <span class="ph filepath">index.html</span> file that
+							is used to start the app.</p>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div>
+
+		<div class="fig fignone" id="loioa77f2d29299247f8a3e30226507b1765__fig_rgl_qbz_1t"><div class="figcontainer">
+			
+			<img class="image" id="loioa77f2d29299247f8a3e30226507b1765__image_w4d_rbz_1t" src="loio2c7e3b552825426d8840c83a6b0b029e_HiRes.png"/>
+		<div class="figcap">Screenshot of the Worklist App</div></div></div>
+
+		<p class="p">The <span class="ph uicontrol">Worklist</span> view is the main view that is initially displayed in
+			this app. When a user clicks or taps an item in the table, the
+				<span class="ph uicontrol">Object</span> view is displayed, showing more details for the
+			selected item. We use the semantic <samp class="ph codeph">FullscreenPage</samp> control as the page
+			for both. A <samp class="ph codeph">SemanticPage</samp> is an enhanced <samp class="ph codeph">sap.m.Page</samp>
+			that contains controls with a semantic meaning and displays them according to the
+				<span class="ph pname">SAP Fiori Design Guidelines</span>, for example. <span class="ph">For more details
+				about semantic controls, see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.semantic.SemanticPage/samples" alt="../../explored.html#/entity/sap.m.semantic.SemanticPage/samples" title="../../explored.html#/entity/sap.m.semantic.SemanticPage/samples">sample</a> in the Demo Kit.</span></p>
+
+		<p class="p">The table in the <span class="ph uicontrol">Worklist</span> view displays a header area that shows
+			the current amount of items in the worklist and a search field. The number of items are
+			updated automatically and the search filters for a preconfigured column of the
+			table.</p>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">As the use cases for apps using a worklist pattern differ greatly, the template only
+				displays a minimum number of fields for the worklist and a header on the object
+				page. You can easily modify the app to add more functionality if needed.</p>
+
+		</div>
+
+		<div class="section" id="loioa77f2d29299247f8a3e30226507b1765__section_els_xvw_k1b"><div class="section_title">Where Can I Find the Worklist Template?</div><div type="Where Can I Find the Worklist Template?">
+			
+			<div class="p">You can find the template in the following places:<ul class="ul" id="loioa77f2d29299247f8a3e30226507b1765__ul_bfb_dww_k1b">
+					<li class="li">
+						<p class="p"><span class="ph emphasis emphasis"><span class="ph pname">SAP Fiori</span> Worklist
+								Application</span> (for OData V2 models) and <span class="ph emphasis emphasis"><span class="ph pname">SAP Fiori</span>
+								Worklist Application - OData V4</span> (for OData V4 models)
+							templates in <span class="ph pname">SAP Web IDE</span></p>
+
+						<p class="p"><span class="ph">For more information about <span class="ph pname">SAP Web IDE</span>,
+                                    see the documentation for <span class="ph pname">SAP Web IDE</span> on
+                                    the SAP Help Portal at <a class="xref" href="https://help.sap.com/viewer/p/SAP_Web_IDE" alt="https://help.sap.com/viewer/p/SAP_Web_IDE" title="https://help.sap.com/viewer/p/SAP_Web_IDE">https://help.sap.com/viewer/p/SAP_Web_IDE</a>.</span></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><span class="ph emphasis emphasis">Worklist Template</span>
+							<span class="ph">and <span class="ph emphasis emphasis">Worklist (<span class="ph pname">FLP</span>)
+									Template</span></span>
+							<span class="ph">
+								under <a class="xref" href="../../demoapps.html" alt="../../demoapps.html" title="../../demoapps.html">Demo Apps</a></span>.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">openui5-worklist-app</samp> in the <a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fgithub.com%2FSAP" alt="https://github.com/SAP" title="https://github.com/SAP">SAP Repository on
+								GitHub<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></p>
+
+						<p class="p">For more information on how to clone or download the template from
+							GitHub, refer to the template documentation on <a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fgithub.com%2FSAP%2Fopenui5-worklist-app%2Fblob%2Fmaster%2FREADME.md" alt="https://github.com/SAP/openui5-worklist-app/blob/master/README.md" title="https://github.com/SAP/openui5-worklist-app/blob/master/README.md">GitHub<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a> .</p>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Tutorial</div><div type="Tutorial">
+			
+			<p class="p">See the <a class="xref" href="6a6a621c978145ad9eef2b221d2cf21d.html" title="In this tutorial we will build an app using SAPUI5 that, for example, a shop owner can use to manage his product stock levels.">Worklist App</a> tutorial for an example
+				of how this application can be extended. <span class="ph">The result of this tutorial can be seen
+					as the <span class="ph uicontrol">Manage Products</span> app in the <span class="ph uicontrol">Demo
+						Apps</span> section of the Demo Kit.</span></p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="106d2e9399704550ba290ded91b79710.html" title="The navigation flow of the Worklist app is very simple as it only contains two main views and the not found pages that are displayed as a message to the user in case of navigation errors.">Navigation</a></strong><br/>
+</div>
+<div><strong><a class="link" href="5cb1169c748b4da58a9c981fb0b491c7.html" title="The Worklist app implements a busy indication concept as specified by the SAP Fiori Design Guidelines.">Busy Indication</a></strong><br/>
+</div>
+<div><strong><a class="link" href="c2f4684363c64d5fbaf65662c11dc6ea.html" title="The app configures several data models that are used throughout the app to update the views or to store additional configuration options.">Model Instantiation</a></strong><br/>
+</div>
+<div><strong><a class="link" href="af1db3c03fee416e91b4b08cf359a929.html" title="The Send Email feature is a sharing option that can be found in the share menu of each view.">Send Email</a></strong><br/>
+</div>
+<div><strong><a class="link" href="7bd4e6ebb9744c50b62ed048c93a2d9d.html" title="The templates include basic testing features, unit tests as well as integration tests for a basic test coverage of the initial app. The tests are written independently of the actual data displayed in the app.">Testing</a></strong><br/>
+</div>
+<div><strong><a class="link" href="8dfcf8d6b33e4f898782c86506716d3c.html" title="The following measures help you improve performance when loading data or modules.">Performance</a></strong><br/>
+</div>
+<div><strong><a class="link" href="1890f375e5634fa1a46bc9d0e6fbaff3.html" title="The following best practices will help you to make your apps more secure.">Security</a></strong><br/>
+</div>
+<div><strong><a class="link" href="979f571fe9d948fb9ad666a8abcbe949.html" title="The following section outlines the best practices for ensuring your worklist apps adapt to different kinds of devices in the best way possible.">Device Adaptation</a></strong><br/>
+</div>
+<div><strong><a class="link" href="03b20076e8c64e5fb72c79445017d92b.html" title="Setting stable IDs is crucial if your app is used in combination with certain functions.">Stable IDs</a></strong><br/>
+</div>
+</ul>
+
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="a3ab54ecf7ac493b91904beb2095d208.html" title="With the Demo Kit, we deliver some demo apps that show you how you can use the various features and controls of SAPUI5.">Demo Apps</a></div>
+<div><a class="link" href="7bb04e05f9484e1b95b38a2e48ecef4f.html" title="This part of the documentation gives you guidance on the most common and recommended use cases of the installation, configuration and setup of the UI development toolkit for HTML5 (SAPUI5) development environment.">Development Environment</a></div>
+<div><a class="link" href="6a6a621c978145ad9eef2b221d2cf21d.html" title="In this tutorial we will build an app using SAPUI5 that, for example, a shop owner can use to manage his product stock levels.">Worklist App</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

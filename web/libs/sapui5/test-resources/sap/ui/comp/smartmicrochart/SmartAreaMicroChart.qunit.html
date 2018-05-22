@@ -1,0 +1,463 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>QUnit Page for sap.ui.comp.smartmicrochart.SmartAreaMicroChart</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal"
+	data-sap-ui-libs="sap.ui.comp">
+</script>
+
+<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css"/>
+<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+
+<script type="text/javascript">
+	(function() {
+		jQuery.sap.initMobile();
+		if (!(sap.ui.Device.browser.msie && sap.ui.Device.browser.version <= 8)) {
+			jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		}
+
+		QUnit.module("sap.ui.comp.smartmicrochart.SmartAreaMicroChart", {
+			beforeEach : function() {
+				this.oSmartAreaMicroChart = new sap.ui.comp.smartmicrochart.SmartAreaMicroChart({
+					id : "smart-area-microchart"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function() {
+				this.oSmartAreaMicroChart.destroy();
+			}
+		});
+
+		QUnit.test("Should have an entitySet property from constructor", function(assert) {
+			var oSmartAreaMicroChart = new sap.ui.comp.smartmicrochart.SmartAreaMicroChart({
+				entitySet : "Otto"
+			});
+			assert.strictEqual(oSmartAreaMicroChart.getEntitySet(), "Otto");
+			oSmartAreaMicroChart.destroy();
+		});
+
+		QUnit.test("Check default aggregation", function(assert) {
+			assert.strictEqual(sap.ui.comp.smartmicrochart.SmartAreaMicroChart.getMetadata()._sDefaultAggregation, "_chart", "The default aggregation is correctly set to _chart");
+		});
+
+		QUnit.test("Check setter for 'entitySet' Property", function(assert) {
+			var oSpy = sinon.spy(this.oSmartAreaMicroChart, "_initializeMetadata");
+			this.oSmartAreaMicroChart.setEntitySet("MySet");
+			assert.strictEqual(oSpy.callCount, 1, "Method _initializeMetadata is called when entitySet has changed.");
+			assert.strictEqual(this.oSmartAreaMicroChart.getEntitySet(), "MySet", "EntitySet has been correctly set.");
+
+			this.oSmartAreaMicroChart.setEntitySet("MySet");
+			assert.strictEqual(oSpy.callCount, 1, "Method _initializeMetadata is not called when entitySet has not changed.");
+		});
+
+		QUnit.test("Test for showLabel property with default value", function(assert) {
+			assert.ok(this.oSmartAreaMicroChart.getShowLabel(), "The property showLabel by default is true.");
+			assert.ok(this.oSmartAreaMicroChart.getAggregation("_chart").getShowLabel(), "showLabel is showed.");
+		});
+
+		QUnit.test("Test for showLabel property with true", function(assert) {
+			var oReturn = this.oSmartAreaMicroChart.setShowLabel(true);
+			assert.ok(this.oSmartAreaMicroChart.getShowLabel(), "The property showLabel by default is true.");
+			assert.ok(oReturn.getAggregation("_chart").getProperty("showLabel"), "showLabel is showed.");
+			assert.ok(oReturn instanceof sap.ui.comp.smartmicrochart.SmartAreaMicroChart, "Check if return value is correct to allow method chaninging.");
+		});
+
+		QUnit.test("Test for showLabel property with false", function(assert) {
+			var oReturn = this.oSmartAreaMicroChart.setShowLabel(false);
+			assert.ok(!oReturn.getAggregation("_chart").getProperty("showLabel"), "showLabel is not showed.");
+			assert.ok(oReturn instanceof sap.ui.comp.smartmicrochart.SmartAreaMicroChart, "Check if return value is correct to allow method chaninging.");
+		});
+
+		QUnit.test("Attaching a model ends in metadata initialization", function(assert) {
+			var oSpy = sinon.spy(this.oSmartAreaMicroChart, "propagateProperties");
+			var oMock = sinon.mock(this.oSmartAreaMicroChart).expects("_initializeMetadata");
+			this.oSmartAreaMicroChart.setModel(new sap.ui.model.Model());
+			assert.ok(oMock.verify(), "Attching a model ends in property propagation which ends in init metadata.");
+			assert.deepEqual(oSpy.callCount, 1);
+		});
+
+		QUnit.test("Test for enableAutoBinding with false", function(assert) {
+			var oSmartAreaMicroChart = new sap.ui.comp.smartmicrochart.SmartAreaMicroChart({
+				enableAutoBinding : false
+			});
+			assert.equal(oSmartAreaMicroChart.getProperty("enableAutoBinding"), true, "enableAutoBinding should be always 'true'");
+		});
+
+		QUnit.test("ChartProvider is created with correct parameters", function(assert) {
+			var sEntitySet = "MySet";
+			var oModel = new sap.ui.model.Model();
+			this.oSmartAreaMicroChart.setEntitySet(sEntitySet);
+
+			sinon.stub(this.oSmartAreaMicroChart, "getModel").returns(oModel);
+			this.oSmartAreaMicroChart._createChartProvider();
+
+			assert.ok(this.oSmartAreaMicroChart._oChartProvider, "Internal ChartProvider created.");
+			assert.strictEqual(this.oSmartAreaMicroChart._oChartProvider.sEntitySet, sEntitySet);
+			assert.strictEqual(this.oSmartAreaMicroChart._oChartProvider._oParentODataModel, oModel);
+		});
+
+		QUnit.test("Check if MetaModel loading mechanism is working", function(assert) {
+			var sEntitySet = "MySet", oModel = new sap.ui.model.odata.v2.ODataModel("/MyServicePath/MyService"),
+			bPromiseAttched = false, fnListener;
+			sinon.stub(oModel, "getMetaModel").returns({
+				loaded : function () {
+					return {
+						then : function (listener) {
+							bPromiseAttched = true;
+							fnListener = listener;
+						}
+					}
+				}
+			});
+			sinon.stub(this.oSmartAreaMicroChart, "getModel").returns(oModel);
+			this.oSmartAreaMicroChart.setEntitySet(sEntitySet);
+			this.oSmartAreaMicroChart.setModel(oModel);
+
+			assert.ok(bPromiseAttched, "Promise has been attached");
+			assert.ok(this.oSmartAreaMicroChart._bMetaModelLoadAttached, "MetaModelLoad attached");
+			assert.ok(fnListener, "Callback suits to metadamodel promise");
+		});
+
+		QUnit.test("Check if MetaModel loading mechanism is working for abtract Model implementations", function(assert) {
+			var sEntitySet = "MySet", oModel = new sap.ui.model.Model();
+			var oSpy = sinon.spy(this.oSmartAreaMicroChart, "_initializeMetadata");
+			var oMock = sinon.mock(this.oSmartAreaMicroChart);
+			oMock.expects("_onMetadataInitialized");
+
+			this.oSmartAreaMicroChart.setModel(oModel);
+
+			assert.deepEqual(oSpy.callCount, 1, "_initializeMetadata has been called exactly one time");
+			assert.ok(oMock.verify(), "_onMetadataInitialized has been called");
+		});
+
+		QUnit.test("_onMetadataInitialized ", function(assert) {
+			var oChartViewMetadataStub = sinon.stub(sap.ui.comp.providers.ChartProvider.prototype, "getChartViewMetadata").returns({});
+			var oDataPointStub = sinon.stub(sap.ui.comp.providers.ChartProvider.prototype, "getChartDataPointMetadata").returns({
+				additionalAnnotations : []
+			});
+			var oDataPointQualifierStub = sinon.stub(this.oSmartAreaMicroChart, "_getDataPointQualifier").returns("");
+			var oMock = sinon.mock(this.oSmartAreaMicroChart).expects("_createAndBindInnerChart");
+			sinon.stub(this.oSmartAreaMicroChart, "getModel").returns(new sap.ui.model.Model());
+			this.oSmartAreaMicroChart.setProperty("entitySet", "Otto", true);
+			this.oSmartAreaMicroChart.setProperty("enableAutoBinding", true, true);
+			this.oSmartAreaMicroChart.attachInitialize(function () {
+				assert.ok(true, "Initialize event was triggered");
+			});
+
+			this.oSmartAreaMicroChart._onMetadataInitialized();
+
+			assert.ok(oMock.verify(), "_createAndBindInnerChart has been called");
+		});
+
+		QUnit.test("Check _getDatapointQualifier method if it extracts qualifier of DataPoint properly", function(assert) {
+			this.oSmartAreaMicroChart._oChartViewMetadata = {
+				annotation: {
+					ChartType: {EnumMember: "com.sap.vocabularies.UI.v1.ChartType/Area"},
+					Measures: [{PropertyPath: "Price"}],
+					MeasureAttributes: [{
+						DataPoint: {AnnotationPath: "@com.sap.vocabularies.UI.v1.DataPoint#AreaChartDataPoint"},
+						Measure: {PropertyPath: "Price"},
+						RecordType: "ChartMeasureAttributeType",
+						Role: {EnumMember: "com.sap.vocabularies.UI.v1.ChartMeasureRoleType/Axis1"}
+					}]
+				}
+			};
+
+			var sQualifier = this.oSmartAreaMicroChart._getDataPointQualifier();
+			assert.equal(sQualifier, "AreaChartDataPoint", "The qualifier of datapoint in annotations was extracted successfully");
+		});
+
+		QUnit.module("sap.ui.comp.smartmicrochart.SmartAreaMicroChart criticality calculation", {
+			beforeEach: function() {
+				this.oSmartAreaMicroChart = new sap.ui.comp.smartmicrochart.SmartAreaMicroChart({
+					id : "smart-area-microchart",
+					enableAutoBinding: true
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+				this.oSmartAreaMicroChart._oChartViewMetadata = {
+					annotation: {
+						ChartType: {EnumMember: "com.sap.vocabularies.UI.v1.ChartType/Area"},
+						Measures: [{PropertyPath: "Revenue"}],
+						MeasureAttributes: [{
+							DataPoint: {AnnotationPath: "@com.sap.vocabularies.UI.v1.DataPoint#AreaChartDataPoint"},
+							Measure: {PropertyPath: "Revenue"},
+							RecordType: "com.sap.vocabularies.UI.v1.ChartMeasureAttributeType",
+							Role: {EnumMember: "com.sap.vocabularies.UI.v1.ChartMeasureRoleType/Axis1"}
+						}]
+					},
+					measureFields: [{}],
+					dimensionFields: ["Day"],
+					fields: [
+						{
+							name: "Day"
+						}
+					]
+				};
+				this.oSmartAreaMicroChart._sBindingPath = "/Series";
+				this.oSmartAreaMicroChart._oDataPointAnnotations = {
+					CriticalityCalculation: {
+						ImprovementDirection: {
+							EnumMember: "com.sap.vocabularies.UI.v1.ImprovementDirectionType/Target"
+						},
+						DeviationRangeHighValue: {
+							Path: "PriceDeviationUpperBound"
+						},
+						DeviationRangeLowValue: {
+							Path: "PriceDeviationLowerBound"
+						},
+						ToleranceRangeHighValue: {
+							Path: "PriceToleranceUpperBound"
+						},
+						ToleranceRangeLowValue: {
+							Path: "PriceToleranceLowerBound"
+						}
+					},
+					TargetValue: {
+						Path: "TargetPrice"
+					},
+					Value: {
+						Path: "Price"
+					}
+				};
+			},
+			afterEach: function() {
+				this.oSmartAreaMicroChart.destroy();
+			}
+		});
+
+		QUnit.test("Check _createAndBindInnerChart method for errors", function(assert){
+			this.oSmartAreaMicroChart._oChartViewMetadata.fields = null;
+			assert.notOk(this.oSmartAreaMicroChart._checkChartMetadata(), "error log for _checkChartMetadata occured");
+			this.oSmartAreaMicroChart._createAndBindInnerChart();
+
+			sinon.stub(this.oSmartAreaMicroChart, "_checkChartMetadata").returns(true);
+			this.oSmartAreaMicroChart._oDataPointAnnotations.CriticalityCalculation = null;
+			assert.notOk(this.oSmartAreaMicroChart._checkThresholdMetadata(), "error log for _checkThresholdMetadata occured");
+			this.oSmartAreaMicroChart._createAndBindInnerChart();
+		});
+
+		QUnit.test("Check chart and target binding", function(assert) {
+			sinon.stub(this.oSmartAreaMicroChart, "_getDataPointQualifier").returns("AreaChartDataPoint");
+			this.oSmartAreaMicroChart._createAndBindInnerChart();
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getAggregation("chart").getBindingInfo("points").template.getBindingPath("y"), "Price", "The chart aggregation was bound successfully");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getAggregation("target").getBindingInfo("points").template.getBindingPath("y"), "TargetPrice", "The target aggregation was bound successfully");
+		});
+
+		QUnit.test("Check _createAndBindInnerChart method and properties in annotations should be bound with aggregations in control for target criticality", function(assert) {
+			sinon.stub(this.oSmartAreaMicroChart, "_getDataPointQualifier").returns("AreaChartDataPoint");
+
+			this.oSmartAreaMicroChart._createAndBindInnerChart();
+			// test for target direction
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getAggregation("minThreshold").getBindingInfo("points").template.getBindingPath("y"), "PriceDeviationLowerBound", "The minThreshold aggregation was bound successfully");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getAggregation("innerMinThreshold").getBindingInfo("points").template.getBindingPath("y"), "PriceToleranceLowerBound", "The innerMinThreshold aggregation was bound successfully");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getAggregation("innerMaxThreshold").getBindingInfo("points").template.getBindingPath("y"), "PriceToleranceUpperBound", "The innerMaxThreshold aggregation was bound successfully");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getAggregation("maxThreshold").getBindingInfo("points").template.getBindingPath("y"), "PriceDeviationUpperBound", "The maxThreshold aggregation was bound successfully");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getInnerMaxThreshold().getProperty("color"), "Good", "InnerMaxThreshold color was correct");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getInnerMinThreshold().getProperty("color"), "Good", "InnerMinThreshold color was correct");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getMaxThreshold().getProperty("color"), "Error", "MaxThreshold color was correct");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getMinThreshold().getProperty("color"), "Error", "MinThreshold color was correct");
+		});
+
+		QUnit.test("Check _createAndBindInnerChart method and properties in annotations should be bound with aggregations in control for minimize criticality", function(assert) {
+			sinon.stub(this.oSmartAreaMicroChart, "_getDataPointQualifier").returns("AreaChartDataPoint");
+
+			this.oSmartAreaMicroChart._oDataPointAnnotations.CriticalityCalculation.ImprovementDirection.EnumMember = "com.sap.vocabularies.UI.v1.ImprovementDirectionType/Minimize";
+			this.oSmartAreaMicroChart._createAndBindInnerChart();
+			// test for minimize direction
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getAggregation("minThreshold").getBindingInfo("points").template.getBindingPath("y"), "PriceToleranceUpperBound", "The minThreshold aggregation was bound successfully");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getAggregation("maxThreshold").getBindingInfo("points").template.getBindingPath("y"), "PriceDeviationUpperBound", "The maxThreshold aggregation was bound successfully");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getMaxThreshold().getProperty("color"), "Error", "MaxThreshold color was correct");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getMinThreshold().getProperty("color"), "Good", "MinThreshold color was correct");
+		});
+
+		QUnit.test("Check _createAndBindInnerChart method and properties in annotations should be bound with aggregations in control for maximize criticality", function(assert) {
+			sinon.stub(this.oSmartAreaMicroChart, "_getDataPointQualifier").returns("AreaChartDataPoint");
+
+			this.oSmartAreaMicroChart._oDataPointAnnotations.CriticalityCalculation.ImprovementDirection.EnumMember = "com.sap.vocabularies.UI.v1.ImprovementDirectionType/Maximize";
+			this.oSmartAreaMicroChart._createAndBindInnerChart();
+			// test for minimize direction
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getAggregation("minThreshold").getBindingInfo("points").template.getBindingPath("y"), "PriceDeviationLowerBound", "The minThreshold aggregation was bound successfully");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getAggregation("maxThreshold").getBindingInfo("points").template.getBindingPath("y"), "PriceToleranceLowerBound", "The maxThreshold aggregation was bound successfully");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getMaxThreshold().getProperty("color"), "Good", "MaxThreshold color was correct");
+			assert.strictEqual(this.oSmartAreaMicroChart.getAggregation("_chart").getMinThreshold().getProperty("color"), "Error", "MinThreshold color was correct");
+		});
+
+		QUnit.module("sap.ui.comp.smartmicrochart.SmartAreaMicroChart: ChartTitle association", {
+			beforeEach: function() {
+				this.sDataPointTitle = "DataPoint";
+				this.sChartTitle = "Chart";
+				this.oSmartAreaMicroChart = new sap.ui.comp.smartmicrochart.SmartAreaMicroChart({
+					id: "smart-bullet-microchart"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+				this.oSmartAreaMicroChart._oChartViewMetadata = {
+					annotation: {
+						Title: {Path: this.sChartTitle}
+					}
+				};
+				sinon.stub(this.oSmartAreaMicroChart, "_checkChartMetadata").returns(true);
+				this.oSmartAreaMicroChart._sBindingPath = "/Series";
+
+			},
+			afterEach: function() {
+				this.oSmartAreaMicroChart.destroy();
+				this.oSmartAreaMicroChart._oChartViewMetadata = {};
+			}
+		});
+
+		QUnit.test("Test for wrong type of associated control", function(assert) {
+			var oControl;
+			oControl = new sap.ui.core.Control();
+			this.oSmartAreaMicroChart.setChartTitle(oControl);
+			sap.ui.getCore().applyChanges();
+			sinon.spy(jQuery.sap.log, "error");
+			this.oSmartAreaMicroChart._bindChartTexts();
+			ok(jQuery.sap.log.error.called, "Associated control is not of type sap.m.Label, error should have been logged");
+			jQuery.sap.log.error.restore();
+		});
+
+		QUnit.test("Chart annotation path is set", function(assert) {
+			var oLabel = new sap.m.Label();
+			this.oSmartAreaMicroChart.setChartTitle(oLabel);
+			this.oSmartAreaMicroChart._bindChartTexts();
+			assert.equal(this.oSmartAreaMicroChart.getAggregation("_chartTexts").getBindingInfo("items").template.getBindingInfo("title").parts[0].path, this.sChartTitle, "Title path is set correctly in the hidden aggregation _chartTexts");
+		});
+
+		QUnit.test("Chart annotation as a string is set", function(assert) {
+			this.oSmartAreaMicroChart._oChartViewMetadata.annotation.Title = {String : this.sChartTitle};
+
+			this.oSmartAreaMicroChart._bindChartTexts();
+			assert.equal(this.oSmartAreaMicroChart.getAggregation("_chartTexts").getBindingInfo("items").template.getProperty("title"), this.sChartTitle, "Title as a string is set correctly in the hidden aggregation _chartTexts");
+		});
+
+		QUnit.module("sap.ui.comp.smartmicrochart.SmartAreaMicroChart: ChartDescription association", {
+			beforeEach: function() {
+				this.sChartDescription = "Chart description";
+				this.oSmartAreaMicroChart = new sap.ui.comp.smartmicrochart.SmartAreaMicroChart({
+					id: "smart-bullet-microchart"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+				this.oSmartAreaMicroChart._oChartViewMetadata = {
+					annotation: {
+						Description: {Path: this.sChartDescription}
+					}
+				};
+				sinon.stub(this.oSmartAreaMicroChart, "_checkChartMetadata").returns(true);
+				this.oSmartAreaMicroChart._sBindingPath = "/Series";
+
+			},
+			afterEach: function() {
+				this.oSmartAreaMicroChart.destroy();
+				this.oSmartAreaMicroChart._oChartViewMetadata = {};
+			}
+		});
+
+		QUnit.test("Test for wrong type of associated control", function(assert) {
+			var oControl = new sap.ui.core.Control();
+			this.oSmartAreaMicroChart.setChartDescription(oControl);
+			sap.ui.getCore().applyChanges();
+			sinon.spy(jQuery.sap.log, "error");
+			this.oSmartAreaMicroChart._bindChartTexts();
+			ok(jQuery.sap.log.error.called, "Associated control is not of type sap.m.Label, error should have been logged");
+			jQuery.sap.log.error.restore();
+		});
+
+		QUnit.test("Chart annotation path is set", function(assert) {
+			var oLabel = new sap.m.Label();
+			this.oSmartAreaMicroChart.setChartDescription(oLabel);
+			this.oSmartAreaMicroChart._bindChartTexts();
+			assert.equal(this.oSmartAreaMicroChart.getAggregation("_chartTexts").getBindingInfo("items").template.getBindingInfo("description").parts[0].path, this.sChartDescription, "Description path is set correctly in the hidden aggregation _chartTexts");
+		});
+
+		QUnit.test("Chart annotation as a string is set", function(assert) {
+			this.oSmartAreaMicroChart._oChartViewMetadata.annotation.Description = {String : this.sChartDescription};
+			this.oSmartAreaMicroChart._bindChartTexts();
+			assert.equal(this.oSmartAreaMicroChart.getAggregation("_chartTexts").getBindingInfo("items").template.getProperty("description"), this.sChartDescription, "Description as a string is set correctly in the hidden aggregation _chartTexts");
+		});
+
+		QUnit.module("sap.ui.comp.smartmicrochart.SmartAreaMicroChart: UnitOfMeasure association", {
+			beforeEach: function() {
+				this.sUnitOfMeasure = "Unit of Measure";
+				this.oSmartAreaMicroChart = new sap.ui.comp.smartmicrochart.SmartAreaMicroChart({
+					id: "smart-bullet-microchart"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+				this.oSmartAreaMicroChart._oDataPointAnnotations = {
+						Value: {
+							Path : "Price"
+						}
+				};
+				this.oSmartAreaMicroChart._oChartViewMetadata = {
+						annotation: {
+							Description: {Path: this.sChartDescription}
+						}
+					};
+				sinon.stub(this.oSmartAreaMicroChart, "_checkChartMetadata").returns(true);
+				this.oSmartAreaMicroChart._sBindingPath = "/Series";
+
+			},
+			afterEach: function() {
+				this.oSmartAreaMicroChart.destroy();
+				this.oSmartAreaMicroChart._oChartViewMetadata = {};
+			}
+		});
+
+		QUnit.test("Test for wrong type of associated control", function(assert) {
+			sinon.stub(this.oSmartAreaMicroChart, "_getUnitOfMeasureAnnotation").returns({Path: this.sUnitOfMeasure});
+			var oControl = new sap.ui.core.Control();
+			this.oSmartAreaMicroChart.setUnitOfMeasure(oControl);
+			sap.ui.getCore().applyChanges();
+			sinon.spy(jQuery.sap.log, "error");
+			this.oSmartAreaMicroChart._bindChartTexts();
+			ok(jQuery.sap.log.error.called, "Associated control is not of type sap.m.Label, error should have been logged");
+			jQuery.sap.log.error.restore();
+		});
+
+		QUnit.test("Chart annotation path is set", function(assert) {
+			sinon.stub(this.oSmartAreaMicroChart, "_getUnitOfMeasureAnnotation").returns({Path: this.sUnitOfMeasure});
+			var oLabel = new sap.m.Label();
+			this.oSmartAreaMicroChart.setUnitOfMeasure(oLabel);
+			this.oSmartAreaMicroChart._bindChartTexts();
+			assert.equal(this.oSmartAreaMicroChart.getAggregation("_chartTexts").getBindingInfo("items").template.getBindingInfo("info").parts[0].path, this.sUnitOfMeasure, "Unit Of Measure path is set correctly in the hidden aggregation _chartTexts");
+		});
+
+		QUnit.test("Chart annotation as a string is set", function(assert) {
+			sinon.stub(this.oSmartAreaMicroChart, "_getUnitOfMeasureAnnotation").returns({String: this.sUnitOfMeasure});
+			this.oSmartAreaMicroChart._bindChartTexts();
+			assert.equal(this.oSmartAreaMicroChart.getAggregation("_chartTexts").getBindingInfo("items").template.getProperty("info"), this.sUnitOfMeasure, "Unit Of Measure as a string is set correctly in the hidden aggregation _chartTexts");
+		});
+
+		QUnit.module("Passing parent context to the child in case of using responsiveness for annotated charts", {
+			beforeEach : function() {
+				this.oSmartAreaMicroChart = new sap.ui.comp.smartmicrochart.SmartAreaMicroChart({
+					isResponsive: true
+				});
+			},
+			afterEach : function() {
+				this.oSmartAreaMicroChart.destroy();
+			}
+		});
+
+		QUnit.test("Passing parent context from SmartAreaMicroChart", function(assert) {
+			//Arrange
+			sinon.spy(sap.suite.ui.microchart, "_passParentContextToChild");
+			//Act
+			this.oSmartAreaMicroChart.onBeforeRendering();
+			//Assert
+			assert.ok(sap.suite.ui.microchart._passParentContextToChild.calledOnce, "The function that passes parent rendering context to the child has been called.");
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+</body>
+</html>

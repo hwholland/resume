@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+<control xmlns="http://www.sap.com/sap.ui.library.xsd" >
+	<name>Spot</name>
+	<documentation>Aggregation element for the Spot container</documentation>
+
+	<baseType>sap.ui.vbm/VoBase</baseType>
+	<properties>
+		<property group="Misc" name="position" type="sap.ui.core/string" defaultValue="0;0;0">
+			<documentation>The position of the spot.</documentation>
+		</property>
+		<property group="Misc" name="text" type="sap.ui.core/string">
+			<documentation>The text that is displayed in the spot. The text should not exceed  a few characters.</documentation>
+		</property>
+		<property group="Misc" name="image" type="sap.ui.core/string">
+			<documentation>The image for the spot. This must be a reference to a resource.</documentation>
+		</property>
+		<property group="Misc" name="alignment" type="sap.ui.core/string" defaultValue="5">
+			<documentation>Alignment of the element to its Position:
+0: center
+1: top center
+2: top right
+3: center right
+4: bottom right
+5: bottom center
+6: bottom left
+7: center left
+8: top left</documentation>
+		</property>
+		<property group="Misc" name="scale" type="sap.ui.core/string" defaultValue="1;1;1">
+			<documentation>The scale of the spot.</documentation>
+		</property>
+	</properties>
+	<events>
+		<event name="click">
+			<documentation>The event is raised when there is a click action on a Spot.</documentation>
+		</event>
+		<event name="contextMenu">
+			<documentation>The event is raised when there is a  right click or a tap and hold action on a Spot.</documentation>
+		</event>
+		<event name="drop">
+			<documentation>The event is raised when something is dropped on a Spot.</documentation>
+		</event>
+	</events>
+	<aggregations>
+		<aggregation cardinality="0..n" name="dragSource" type="sap.ui.vbm/DragSource">
+			<documentation>DragSource aggregation</documentation>
+		</aggregation>
+		<aggregation cardinality="0..n" type="sap.ui.vbm/DropTarget" name="dropTarget">
+			<documentation>DropTarget aggregation</documentation>
+		</aggregation>
+	</aggregations>
+	<methods>
+		<method name="openDetailWindow" type="sap.ui.core/void">
+			<documentation>open a Detail Window for the spot at spot position</documentation>
+			<parameters>
+				<parameter type="sap.ui.core/string" name="caption">
+					<documentation>caption of detail window</documentation>
+				</parameter>
+				<parameter name="offsetX" type="sap.ui.core/string">
+					<documentation>position offset in x-direction from the anchor point</documentation>
+				</parameter>
+				<parameter name="offsetY" type="sap.ui.core/string">
+					<documentation>position offset in y-direction from the anchor point</documentation>
+				</parameter>
+			</parameters>
+		</method>
+		<method name="openContextMenu" type="sap.ui.core/void">
+			<documentation>open the context menu</documentation>
+			<parameters>
+				<parameter name="menu" type="sap.ui.core/object">
+					<documentation>the context menu to be opened</documentation>
+				</parameter>
+			</parameters>
+		</method>
+	</methods>
+</control>

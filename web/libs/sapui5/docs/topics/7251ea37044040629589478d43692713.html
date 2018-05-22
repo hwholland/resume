@@ -1,0 +1,316 @@
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html lang="en-us" dir="ltr">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Creating Custom Filter (Compact Filter)</title>
+      <link rel="icon" href="themes/sap-default/img/favicon.ico" type="image/x-icon">
+      <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="abstract" content="Define custom filters for compact filters by defining a custom filter view fragment and a controller to handle events in the custom filter view fragment.">
+      
+      <meta name="description" content="Define custom filters for compact filters by defining a custom filter view fragment and a controller to handle events in the custom filter view fragment.">
+      <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"c3de5c0b3c5043a4b683151dab526b01.html","previousTopicHref":"ad65420dcb7744c39844b6fe2c325773.html"}</script>
+      <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
+      <script type="text/javascript">
+      
+        d4p.cssGridPath = d4p.dev ? 'html5-themes/modules/960-Responsive-Grid/css/' : 'themes/dita-d4p-classic/css/';
+        var ADAPT_CONFIG = {
+          // Where is your CSS?
+          path: d4p.relativePath + d4p.cssGridPath,
+
+          // false = Only run once, when page first loads.
+          // true = Change on window resize and page tilt.
+          dynamic: true,
+
+          // Optional callback... myCallback(i, width)
+          callback: doc_resize,
+
+          // First range entry is the minimum.
+          // Last range entry is the maximum.
+          // Separate ranges by "to" keyword.
+          range: [
+             // small (size-0)
+            '0px    to 760px  =',
+             // medium (size-1, size-2)
+            '760px  to 980px  = ',
+            '980px  to 1270px = ',
+             // large (size-3, size-5)
+            '1270px to 1600px = ',
+            '1600px to 1940px = ',
+             // extra large (size-6)
+            '1940px to 2540px = ',
+            '2540px           = '
+          ]
+        };
+
+        function doc_resize(i, width)
+        {
+          d4p.setBodyClassfunction(i, width);
+        }
+
+
+        
+      </script>
+      <script type="text/javascript" src="toc-info.js"></script>
+      <script type="text/javascript" src="themes/sap-default/js/script.js"></script>
+      
+      		<!--[if lt IE 9]>
+      			<script>
+      			  var e = ("abbr,article,aside,audio,canvas,datalist,details," +
+      			    "figure,footer,header,hgroup,mark,menu,meter,nav,output," +
+      			    "progress,section,time,video").split(',');
+      			  for (var i = 0; i < e.length; i++) {
+      			    document.createElement(e[i]);
+      			  }
+      			</script>
+      		<![endif]-->
+      
+      <script>
+      function addLoadEvent(func) {
+      var oldonload = window.onload;
+      if (typeof window.onload != 'function') {
+      window.onload = func;
+      } else {
+      window.onload = function() {
+      if (oldonload) {
+      oldonload();
+      }
+      func();
+      }
+      }
+      }
+      
+      addLoadEvent(function() { prettyPrint();
+      if ($('#local-navigation').length) {
+      $('#local-navigation').navigation();
+      }
+      
+      
+      });
+      
+      </script>
+      <script type="text/javascript" src="js/prettify.js"> </script>
+      <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
+      <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
+   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+      <div id="d4h5-main-container" class="container_12" role="application">
+         <ul id="page-links" class="hidden">
+            <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
+            <li><a id="skip-to-localnav" href="#local-navigation">Skip to navigation</a></li>
+            <li><a id="skip-to-footer" href="#footer-container">Skip to footer</a></li>
+         </ul>
+         
+         
+         <div id="d4h5-section-container" class="grid_12" style="padding-top: 0;">
+            
+            
+            
+            <div id="d4h5-main-content" class="grid_8 alpha omega" style="margin: 0 0.5em;">
+               <section>
+                  <div id="content-toolbar" class="toolbar hide-for-small"></div>
+                  <div class="page reference  - topic-topic       reference-reference " id="loio7251ea37044040629589478d43692713">
+                     
+                     <h1 class="title topictitle1" hidden>Creating Custom Filter (Compact Filter)</h1>
+                     
+                     <div class="body refbody">
+                        <p class="shortdesc" hidden>Define custom filters for compact filters by defining a custom filter view fragment and
+                           a controller to handle events in the custom filter view fragment.
+                        </p>
+                        
+                        		
+                        <div class="section">
+                           			
+                           <div class="p">To define custom filter view fragments, use view extensions and define extended fragments and
+                              controllers in the application namespace as shown in the following sample
+                              code.<pre class="pre codeblock prettyprint">&quot;sap.ui5&quot;: {
+    &quot;_version&quot;: &quot;1.1.0&quot;,
+    &quot;extends&quot;: {
+        &quot;extensions&quot;: {
+	     &quot;sap.ui.controllerExtensions&quot;: { // Controller extension
+	         &quot;sap.suite.ui.generic.template.AnalyticalListPage.controller.AnalyticalListPage&quot;: { // ALP app view to be extended with controller
+	           &quot;controllerName&quot;: &quot;analytics2.alr.ext.controller.CustomFiltersController&quot;, // extended Controller declared using namespace
+   		    ... // Other custom controllers
+		    ...
+		  } // End of ALP controller extensions
+	     }, // End of controller extensions
+	     &quot;sap.ui.viewExtensions&quot;: { // View Extension
+                 &quot;sap.suite.ui.generic.template.AnalyticalListPage.view.AnalyticalListPage&quot;: { // ALP app view to be extended with filter fragment
+                    &quot;SmartFilterBarControlConfigurationExtension|CZ_EASILINEITEMS_SADL&quot;: { // &lt;Filter Bar Extension&gt;|&lt;Entity Set&gt;
+		    &quot;className&quot;: &quot;sap.ui.core.Fragment&quot;,
+		    &quot;fragmentName&quot;: &quot;analytics2.alr.ext.fragments.CustomFilters&quot;, // extended Fragment declared using namespace
+		    &quot;type&quot;: &quot;XML&quot;
+		},
+		... // Other view extensions
+		... 
+	    } // End of ALP view extensions
+	} // End of view extensions
+      }
+   }
+}
+</pre>
+                              </div>
+                           
+                           			
+                           <div class="p">Sample of a custom view XML
+                              fragment:<pre class="pre codeblock prettyprint">&lt;core:FragmentDefinition xmlns=&quot;sap.m&quot; xmlns:smartfilterbar=&quot;sap.ui.comp.smartfilterbar&quot; xmlns:core=&quot;sap.ui.core&quot;&gt;
+    &lt;smartfilterbar:ControlConfiguration key=&quot;CustomFilters&quot; index=&quot;99&quot; visibleInAdvancedArea=&quot;true&quot; label=&quot;Custom Filter&quot; groupId=&quot;_BASIC&quot;&gt;
+        &lt;smartfilterbar:customControl&gt;
+            &lt;ComboBox id=&quot;CustomFilters-combobox&quot;&gt;
+                &lt;core:Item key=&quot;0&quot; text=&quot;Item1&quot;/&gt;
+                &lt;core:Item key=&quot;1&quot; text=&quot;Item2&quot;/&gt;
+                &lt;core:Item key=&quot;2&quot; text=&quot;Item3&quot;/&gt;
+            &lt;/ComboBox&gt;
+        &lt;/smartfilterbar:customControl&gt;
+    &lt;/smartfilterbar:ControlConfiguration&gt;
+&lt;/core:FragmentDefinition&gt;
+</pre>
+                              </div>
+                           
+                           			
+                           <div class="p">Sample of a custom filter controller
+                              extension:<pre class="pre codeblock prettyprint">sap.ui.controller(&quot;analytics2.alr.ext.controller.CustomFiltersController&quot;, {
+    onInitSmartFilterBarExtension: function(oEvent) {
+       // the custom field in the filter bar might have to be bound to a custom data model
+       // if a value change in the field shall trigger a follow up action, this method is the 
+       // place to define and bind an event handler to the field
+       // Example:
+       var oSmartFilterBar = oEvent.getSource();
+       oSmartFilterBar.getControlByKey(&quot;CustomFilters&quot;).attachSelectionChange(function(oChangeEvent){
+	//code
+       },this);
+       jQuery.sap.log.info(&quot;onInitSmartFilterBarExtension initialized&quot;);
+    },
+    onBeforeRebindTableExtension: function(oEvent) {
+       // usually the value of the custom field should have an effect on the selected data in the table. 
+       // So this is the place to add a binding parameter depending on the value in the custom field.
+    },
+    onBeforeRebindChartExtension: function(oEvent) {
+        // usually the value of the custom field should have an effect on the selected data in the chart. 
+        // So this is the place to add a binding parameter depending on the value in the custom field.
+    },
+    getCustomAppStateDataExtension : function(oCustomData) {
+        // the content of the custom field shall be stored in the app state, so that it can be restored
+        // later again e.g. after a back navigation. The developer has to ensure that the content of the
+        // field is stored in the object that is returned by this method.
+        // Example:
+        var oComboBox = this.byId(&quot;CustomFilters-combobox&quot;);
+            if (oComboBox){
+	     oCustomData.CustomPriceFilter = oComboBox.getSelectedKey();
+	 }
+        },
+    restoreCustomAppStateDataExtension : function(oCustomData) {
+        // in order to to restore the content of the custom field in the filter bar e.g. after a 
+        // back navigation, an object with the content is handed over to this method and the developer 
+        // has to ensure, that the content of the custom field is set accordingly
+        // also, empty properties have to be set
+        // Example:
+        if ( oCustomData.CustomPriceFilter !== undefined ){
+	if ( this.byId(&quot;CustomFilters-combobox&quot;) ) {
+	    this.byId(&quot;CustomFilters-combobox&quot;).setSelectedKey(oCustomData.CustomPriceFilter);
+	}
+        }
+    }
+});
+</pre>
+                              </div>
+                           
+                           
+                           <aside class="note remember  insertion"><span class="title">Remember</span> 
+                              
+                              <div class="p">
+                                 
+                                 <ul class="ul" id="loio7251ea37044040629589478d43692713__ul_d1t_yp1_wy">
+                                    
+                                    <li class="li">
+                                       
+                                       <p class="p">The custom filters do not show up in visual filters.</p>
+                                       
+                                       
+                                    </li>
+                                    
+                                    
+                                    <li class="li">
+                                       
+                                       <p class="p">If you define logic in  the
+                                          <samp class="ph codeph">onBeforeRebindChartExtension</samp> or
+                                          <samp class="ph codeph">onBeforeRebindTableExtension</samp> to handle values
+                                          coming from the custom filter fields, then these values are also
+                                          triggered when the table or chart area is refreshed. This ensures
+                                          that custom filters are also synchronized when the filter mode is
+                                          changed.
+                                       </p>
+                                       
+                                       
+                                    </li>
+                                    
+                                    
+                                    <li class="li">
+                                       
+                                       <div class="p">When you choose the <span class="ph uicontrol">Clear</span> button, ALP triggers
+                                          <samp class="ph codeph">onClearFilterExtension</samp>, which  clears all
+                                          filter dimensions. This means that you need to define the logic in
+                                          the application controller extension to handle the clear event for
+                                          custom filters. For
+                                          example:<pre class="pre codeblock prettyprint">onClearFilterExtension: function(oEvent) {
+        // Logic for clearing extended filters
+        &apos;use strict&apos;;
+        if ( this.byId(&quot;CustomFilters-combobox&quot;) ) {
+             this.byId(&quot;CustomFilters-combobox&quot;).setSelectedKey(null);
+        }
+}</pre>
+                                          </div>
+                                       
+                                       
+                                    </li>
+                                    
+                                    
+                                 </ul>
+                                 
+                                 
+                              </div>
+                              
+                              
+                           </aside>
+                           
+                           		
+                        </div>
+                        
+                        	
+                     </div>
+                     
+                     <div class="related-links"> 
+                        
+                        <div class="relinfo">
+                           <div class="relinfotitle ">Related Information</div>
+                           
+                           <div><a class="link" href="../../#/topic/9504fb4c9fc741c29bc0cc3c1f5fe83b.html" target="_top">Extending Analytical List Page</a></div>
+                           
+                        </div>
+                        
+                     </div>
+                  </div>
+                  
+               </section>
+               <div class="clear"></div>
+               
+            </div>
+            <div class="clearfix"></div>
+         </div>
+      </div>
+      <div class="clearfix"></div>
+      <div id="footer-container" class="grid_12">
+         <footer>
+            	
+            <div id="custom-footerSpacer"></div>
+            	
+            
+         </footer>
+         
+         
+      </div>
+   </body>
+</html>

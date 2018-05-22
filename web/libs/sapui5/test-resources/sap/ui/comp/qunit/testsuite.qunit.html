@@ -1,0 +1,116 @@
+<html>
+	<head>
+		<title>QUnit TestSuite for sap.ui.comp</title>
+		<script id="sap-ui-bootstrap" src='../../../../../resources/sap-ui-core.js'> </script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-redirect.js"></script>
+	</head>
+	<body>
+		<script>
+
+			/**
+			 * Add test pages to this test suite function.
+			 * Please order alphabetically
+			 */
+			function suite() {
+				var suite = new parent.jsUnitTestSuite(),
+					contextPath = "/" + window.location.pathname.split("/")[1],
+					belowIE10 = (sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version < 10);
+				//Using IE? We only support IE10 and above!
+				if(!belowIE10){
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/odata/MetadataAnalyser.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/odata/ChartMetadata.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/odata/CriticalityMetadata.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/odata/ODataType.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/odata/FieldSelector.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/odata/FieldSelectorController.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/odata/FieldSelectorModelConverter.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/odata/SideEffects.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfilterbar/AdditionalConfigurationHelper.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfilterbar/ControlConfiguration.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfilterbar/GroupConfiguration.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfilterbar/SelectOption.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfilterbar/SmartFilterBar.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfilterbar/FilterProvider.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartform/flexibility/FormP13nHandler.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/providers/BaseValueListProvider.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/providers/ChartProvider.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/providers/ControlProvider.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/providers/TableProvider.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/providers/ValueHelpProvider.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/providers/ValueListProvider.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/filterbar/FilterBar.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/filterbar/FilterItem.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/filterbar/FilterGroupItem.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/filterbar/VariantConverterTo.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/filterbar/VariantConverterFrom.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/variants/EditableVariantItem.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/variants/VariantItem.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/variants/VariantManagement.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/valuehelpdialog/ValueHelpDialog.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/valuehelpdialog/ItemsCollection.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smarttable/SmartTable.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartchart/SmartChart.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/Util.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/Controller.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/ColumnsController.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/SortController.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/FilterController.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/GroupController.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/test/Personalization.opa.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/test/PersonalizationRestore.opa.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/test/PersonalizationRestoreWithVariant.opa.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/test/PersonalizationChart.opa.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/test/PersonalizationPerformance.opa.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/ColumnHelper.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/AnnotationHelper.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/BindingUtil.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/ControlFactoryBase.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/FieldControl.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/JSONControlFactory.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/JSONTypes.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/ODataHelper.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/ODataTypes.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/ODataControlFactory.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/SideEffectUtil.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/SmartField.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/SmartLabel.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartfield/Types.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartvariants/SmartVariantManagement.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartvariants/SmartVariantManagementUi2.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartvariants/PersonalizableInfo.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartform/SmartForm.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartform/Group.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartform/GroupElement.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartform/flexibility/FieldList.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartform/flexibility/FieldListNode.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartform/flexibility/DialogContent.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartform/flexibility/Input.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/smartform/flexibility/changes/AddGroup.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/smartform/flexibility/changes/AddField.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/smartform/flexibility/changes/MoveFields.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/smartform/flexibility/changes/MoveGroups.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/smartform/flexibility/changes/OrderFields.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/smartform/flexibility/changes/OrderGroups.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/smartform/flexibility/changes/RenameGroup.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/smartform/flexibility/changes/RenameField.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/smartform/flexibility/changes/RemoveField.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/smartform/flexibility/changes/RemoveGroup.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/navpopover/NavigationPopover.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/navpopover/NavigationPopoverHandler.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/navpopover/SemanticObjectController.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/navpopover/SmartLink.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/smartform/flexibility/AdaptationDialogSmartForm.opa.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/personalization/test/Personalization.opa.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/filterbar/FilterBar.opa.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartmicrochart/SmartBulletMicroChart.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartmicrochart/SmartAreaMicroChart.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/smartmicrochart/SmartMicroChart.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/config/condition/DateRangeType.qunit.html");
+					suite.addTestPage(contextPath + "/test-resources/sap/ui/comp/qunit/designtime/Designtime.qunit.html");
+				}
+				return suite;
+			}
+
+			</script>
+	</body>
+</html>

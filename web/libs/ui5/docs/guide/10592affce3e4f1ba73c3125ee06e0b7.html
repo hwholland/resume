@@ -1,0 +1,344 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="So far, we have a list of posts on the home page of the app. But typically, a post comes with more details that should be displayed on a separate detail page. We call it the post page because it displays details of a post. In this step we will introduce a new journey to test the post page. We write tests that trigger typical navigation events with OPA. Testing navigation greatly helps in reducing manual testing efforts as it covers a lot of testing paths. It is good practice to cover every view of your application with at least one test, since OPA will check if an exception is thrown. In this way you can detect critical errors very fast."/>
+<meta name="description" content="So far, we have a list of posts on the home page of the app. But typically, a post comes with more details that should be displayed on a separate detail page. We call it the post page because it displays details of a post. In this step we will introduce a new journey to test the post page. We write tests that trigger typical navigation events with OPA. Testing navigation greatly helps in reducing manual testing efforts as it covers a lot of testing paths. It is good practice to cover every view of your application with at least one test, since OPA will check if an exception is thrown. In this way you can detect critical errors very fast."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=06838472826122788"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=06838472826122788"/>
+<title>Step 8: Testing Navigation</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio10592affce3e4f1ba73c3125ee06e0b7">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 8: Testing Navigation</h1>
+
+	
+	<div class="body conbody"><div class="abstract">
+		 <span class="shortdesc">So far, we have a list of posts on the home page of the app. But typically, a post
+			comes with more details that should be displayed on a separate detail page. We call it
+			the post page because it displays details of a post.</span>
+
+		 <span class="shortdesc">In this step we will introduce a new journey to test the post page.
+			We write tests that trigger typical navigation events with OPA.
+			Testing navigation greatly helps in reducing manual testing efforts
+			as it covers a lot of testing paths. It is good practice to cover
+			every view of your application with at least one test, since OPA
+			will check if an exception is thrown. In this way you can detect
+			critical errors very fast.</span>
+
+	</div>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio10592affce3e4f1ba73c3125ee06e0b7__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loio10592affce3e4f1ba73c3125ee06e0b7__image_xkl_rkv_3t" src="loiocf3e0a650c6647b08410fab5b09d606d_LowRes.png"/>
+			<div class="figcap">We add an OPA test that selects an item from the table and navigates to the post
+					page</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the Demo Kit <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.testing.08/preview" alt="../../explored.html#/sample/sap.m.tutorial.testing.08/preview" title="../../explored.html#/sample/sap.m.tutorial.testing.08/preview">Testing - Step 8</a></span>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/test/integration/PostJourney.js (New)</div><div type="webapp/test/integration/PostJourney.js (New)">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.require(
+	["sap/ui/test/opaQunit"],
+	function (opaTest) {
+		"use strict";
+		QUnit.module("Post");
+		opaTest("Should see the post page when a user clicks on an entry of the list", function (Given, When, Then) {
+			// Arrangements
+			Given.iStartMyApp();
+			//Actions
+			When.onTheWorklistPage.iPressOnTheItemWithTheID("PostID_15");
+			// Assertions
+			Then.onThePostPage.theTitleShouldDisplayTheName("Jeans");
+		});
+		opaTest("Should go back to the TablePage", function (Given, When, Then) {
+			// Actions
+			When.onThePostPage.iPressTheBackButton();
+
+			// Assertions
+			Then.onTheWorklistPage.iShouldSeeTheTable();
+		});
+		opaTest("Should be on the post page again when browser forwards is pressed", function (Given, When, Then) {
+			// Actions
+			When.onTheBrowser.iPressOnTheForwardButton();
+			// Assertions
+			Then.onThePostPage.theTitleShouldDisplayTheName("Jeans").
+				and.iTeardownMyAppFrame();
+		});
+	}
+);</span></pre></div>
+
+			<p class="p">This new journey for the <span class="ph uicontrol">Post</span> page introduces a test case that tests
+				the navigation and also tests if the browser history is in the correct state, so
+				that the user can navigate through our app with the back and forward button of the
+				browser. This time, instead of adding a test we will add a new journey. </p>
+
+			<p class="p">A journey represents a user’s task in our app. Journeys start with the startup of our
+				app and end with a teardown in the last test. We don’t write isolated tests here,
+				since starting up the app takes a lot of time and doing it too often slows down our
+				test execution and feedback time considerably. If the execution speed of the tests
+				is no problem, you may also write isolated tests. </p>
+
+			<div class="p">Our new journey consists of three user interaction steps: <ol class="ol" id="loio10592affce3e4f1ba73c3125ee06e0b7__ol_aln_nlv_3t">
+					<li class="li">
+						<p class="p">User chooses a <span class="ph uicontrol">Post</span> to view the details</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">User chooses the <span class="ph uicontrol">Back</span> button on the
+								<span class="ph uicontrol">Detail</span> page of the
+								<span class="ph uicontrol">Post</span> to see the list again</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"> User chooses the <span class="ph uicontrol">Forward</span> button to revisit the
+							details of the post</p>
+
+					</li>
+
+				</ol>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/test/integration/pages/Worklist.js – action object</div><div type="webapp/test/integration/pages/Worklist.js – action object">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.require([
+		'sap/ui/test/Opa5',
+		'sap/ui/test/matchers/AggregationLengthEquals',
+		'sap/ui/test/matchers/PropertyStrictEquals',
+		<span class="ph emphasis emphasis">'sap/ui/test/matchers/BindingPath',</span>
+		'sap/ui/demo/bulletinboard/test/integration/pages/Common',
+		'sap/ui/test/actions/Press'
+
+	],
+	function (Opa5, AggregationLengthEquals, PropertyStrictEquals, <span class="ph emphasis emphasis">BindingPath,</span> Common) {
+		"use strict";
+		var sViewName = "Worklist",
+			sTableId = "table";
+		Opa5.createPageObjects({
+			onTheWorklistPage: {
+				baseClass: Common,
+				actions: {
+…
+<span class="ph emphasis emphasis">                        ,
+					iPressOnTheItemWithTheID: function (sId) {
+						return this.waitFor({
+							controlType: "sap.m.ColumnListItem",
+							viewName: sViewName,
+							matchers:  new BindingPath({
+								path: "/Posts('" + sId + "')"
+							}),
+							actions: new Press(),
+							errorMessage: "No list item with the id " + sId + " was found."
+						});
+					}</span></pre></div>
+
+			<p class="p">Now that we have written our spec how the navigation to the <span class="ph uicontrol">Post</span> page is planned, we first need to implement the "click" on a list
+				item. To identify the item we are looking for, we use the <samp class="ph codeph">BindingPath</samp> matcher. Doing so, we make sure that even if the order of
+				the items changes, we always choose the same item. The <samp class="ph codeph">press</samp> action simulates a user click on the item.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/test/integration/pages/Post.js (New)</div><div type="webapp/test/integration/pages/Post.js (New)">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.require([
+		'sap/ui/test/Opa5',
+		'sap/ui/test/matchers/Properties',
+		'sap/ui/demo/bulletinboard/test/integration/pages/Common',
+		'sap/ui/test/actions/Press'
+	],
+	function (Opa5, Properties, Common, Press) {
+		"use strict";
+		var sViewName = "Post";
+		Opa5.createPageObjects({
+			onThePostPage: {
+				baseClass: Common,
+				actions: {
+					iPressTheBackButton: function () {
+						return this.waitFor({
+							id: "page",
+							viewName: sViewName,
+							actions: new Press(),
+							errorMessage: "Did not find the nav button on object page"
+						});
+					}
+				},
+				assertions: {
+					theTitleShouldDisplayTheName: function (sName) {
+						return this.waitFor({
+							success: function () {
+								return this.waitFor({
+									id: "objectHeader",
+									viewName: sViewName,
+									matchers: new Properties({
+										title: sName
+									}),
+									success: function (oPage) {
+										Opa5.assert.ok(true, "was on the remembered detail page");
+									},
+									errorMessage: "The Post " + sName + " is not shown"
+								});
+							}
+						});
+					}
+				}
+			}
+		});
+	});
+</span></pre></div>
+
+			<p class="p">After navigating to the <span class="ph uicontrol">Post</span> page, we need a new OPA5
+					<samp class="ph codeph">Page</samp> object for the page to implement our actions and
+				assertions. </p>
+
+			<p class="p">An OPA5 <samp class="ph codeph">Page</samp> object is used to group and reuse actions and
+				assertions that are related to a specific part of the screen. For more information,
+				see <a class="xref" href="ce4b180d97064ad088a901b53ed48b21.html" title="Advanced topics and best practices for OPA tests.">Cookbook for OPA5</a>. </p>
+
+			<p class="p">We implement a <samp class="ph codeph">press</samp> event on the page’s <samp class="ph codeph">nav</samp> button
+				and we assert that we are on the correct page by checking the title in the object
+				header. The <samp class="ph codeph">nav</samp> button is retrieved via DOM reference, because the
+				page does not offer us an API here. Since the DOM ID is the most stable attribute,
+				we are using this to retrieve the button.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/test/integration/pages/Worklist.js – assertion object</div><div type="webapp/test/integration/pages/Worklist.js – assertion object">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">,
+					iShouldSeeTheTable: function () {
+						return this.waitFor({
+							id: sTableId,
+							viewName: sViewName,
+							success: function () {
+								Opa5.assert.ok(true, "The table is visible");
+							},
+							errorMessage: "Was not able to see the table."
+						});
+					}</span></pre></div>
+
+			<p class="p">After going back, we want to move forwards again, but we need to check if the back
+				navigation actually took place. So we assert that we are back on our table of posts
+				again. We achieve this with a very simple <samp class="ph codeph">waitFor</samp> statement just
+				checking if the table is present.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/test/integration/pages/Browser.js (New)</div><div type="webapp/test/integration/pages/Browser.js (New)">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.require([
+		'sap/ui/test/Opa5',
+		'sap/ui/demo/bulletinboard/test/integration/pages/Common'
+	],
+	function (Opa5, Common) {
+		"use strict";
+		Opa5.createPageObjects({
+			onTheBrowser: {
+				baseClass: Common,
+				actions: {
+					iPressOnTheForwardButton: function () {
+						return this.waitFor({
+							success: function () {
+								Opa5.getWindow().history.forward();
+							}
+						});
+					}
+				},
+				assertions: {}
+			}
+		});
+	}); </span></pre></div>
+
+			<p class="p">We now implement an action that is triggered when the <span class="ph uicontrol">Forward</span> button is
+				chosen. Since it is not part of the browser's UI and it could be used on any page of
+				our application, we just declare our browser’s UI as an own OPA page object. To
+				simulate the <span class="ph uicontrol">Forward</span> button, we use the
+					<samp class="ph codeph">history</samp> API of the browser. We have to wrap our action in a
+					<samp class="ph codeph">waitFor</samp> statement. Otherwise the action would be executed
+				before our app is started. </p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/test/integration/AllJourneys.js</div><div type="webapp/test/integration/AllJourneys.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">webapp/test/integration/AllJourneys.js
+jQuery.sap.require("sap.ui.qunit.qunit-css");
+jQuery.sap.require("sap.ui.thirdparty.qunit");
+jQuery.sap.require("sap.ui.qunit.qunit-junit");
+sap.ui.require([
+	"sap/ui/test/Opa5",
+	"sap/ui/demo/bulletinboard/test/integration/pages/Common",
+	"sap/ui/demo/bulletinboard/test/integration/pages/Worklist"<span class="ph emphasis emphasis">,
+	"sap/ui/demo/bulletinboard/test/integration/pages/Browser",
+	"sap/ui/demo/bulletinboard/test/integration/pages/Post"
+</span>
+], function (Opa5, Common) {
+	"use strict";
+	Opa5.extendConfig({
+		arrangements: new Common(),
+		viewNamespace: "sap.ui.demo.bulletinboard.view."
+	});
+	sap.ui.require([
+		"sap/ui/demo/bulletinboard/test/integration/WorklistJourney"<span class="ph emphasis emphasis">,
+		"sap/ui/demo/bulletinboard/test/integration/PostJourney"
+</span>
+	], function () {
+		QUnit.start();
+	});
+});</pre></div>
+
+			<p class="p">To make navigation tests complete, we add the new OPA page objects and journeys to
+				the <span class="ph filepath">AllJourneys</span> file that is invoked by the OPA test page. We
+				add the OPA page objects <samp class="ph codeph">Browser</samp> and <samp class="ph codeph">Object</samp> and
+				start the object and the navigation journey.</p>
+
+			<p class="p">If you execute the tests now, you can see in the logs of the developer tools that OPA
+				is waiting for the object page to be displayed. Of course, this will not happen as
+				it is not yet implemented. But we already have a pretty good idea on how we will
+				implement the feature in the next step</p>
+
+		</div></div>
+
+	</div>
+
+
+
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="291c9121e6044ab381e0b51716f97f52.html" title="In this tutorial we will test application functionality with the testing tools that are delivered with OpenUI5. At different steps of this tutorial you will write tests using QUnit, OPA5, and the mock server. Additionally, you will learn about testing strategies, Test Driven Development (TDD), and much more.">Testing</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="016e0d44f8ff47d2bdf4fdad9b7bf7cd.html" title="Let’s switch back to developing and add the missing feature for the test we implemented in the previous step. We will simply change the table to a growing table as this is a basic feature of the table. This will display a trigger at the end of the table that the user can click on to display more items.">Step 7: Changing the Table to a Growing Table</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="4a9f063d4a4143d5b5c10416677f04b6.html" title="Now that we have covered all kinds of tests for navigation, we introduce our Post page that shows details of a post in the bulletin board. To achieve this, we have to introduce a new view/controller pair and adjust the routing of the application.">Step 9: Adding the Post Page</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.test.matchers.BindingPath.html" alt="../../docs/api/symbols/sap.ui.test.matchers.BindingPath.html" title="../../docs/api/symbols/sap.ui.test.matchers.BindingPath.html">API Reference: <samp class="ph codeph">sap.ui.test.matchers.BindingPath</samp></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

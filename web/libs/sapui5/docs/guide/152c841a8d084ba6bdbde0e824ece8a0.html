@@ -1,0 +1,79 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="When you develop SAPUI5 apps, the code completion and app preview features are based on SAPUI5 runtime libraries installed in your Eclipse. However, after you have deployed the app to the ABAP server and executed it there, it uses the SAPUI5 runtime libraries installed on the ABAP server."/>
+<meta name="description" content="When you develop SAPUI5 apps, the code completion and app preview features are based on SAPUI5 runtime libraries installed in your Eclipse. However, after you have deployed the app to the ABAP server and executed it there, it uses the SAPUI5 runtime libraries installed on the ABAP server."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6935733269141681"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6935733269141681"/>
+<title>Server Version Check for SAPUI5 Runtime Libraries</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio152c841a8d084ba6bdbde0e824ece8a0">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Server Version Check for <span class="ph pname">SAPUI5</span>
+		Runtime Libraries</h1>
+
+	
+	<div class="body"><p class="shortdesc">When you develop <span class="ph pname">SAPUI5</span> apps,
+		the code completion and app preview features are based on <span class="ph pname">SAPUI5</span> runtime libraries installed in
+		your Eclipse. However, after you have deployed the app to the ABAP server and executed it
+		there, it uses the <span class="ph pname">SAPUI5</span> runtime
+		libraries installed on the ABAP server.</p>
+
+		<p class="p">We therefore recommend that you always have the same library version installed in Eclipse and
+			on the ABAP server. If this is not the case, for example, if the local version is higher
+			than the one on the server, the following could happen: </p>
+
+		<ul class="ul" id="loio152c841a8d084ba6bdbde0e824ece8a0__ul_o3s_5ym_3j">
+			<li class="li">You may use features during development that are not yet available on the server.</li>
+
+			<li class="li">When you test your app in Eclipse, the app may behave differently, for example, because in
+				the newer runtime version some issues are fixed which still occur on the
+				server.</li>
+
+		</ul>
+
+		<p class="p">Please refer to the compatibility rules which apply to <span class="ph pname">SAPUI5</span> runtime libraries (see
+				<a class="xref" href="91f087396f4d1014b6dd926db0e91070.html" title="The following sections describe what SAP can change in major, minor, and patch releases. Always consider these rules when developing apps, features, or controls with or for SAPUI5.">Compatibility Rules</a>).</p>
+
+		<p class="p">When you share an <span class="ph pname">SAPUI5</span> application
+			project with the <span class="ph pname">SAPUI5</span> ABAP
+			repository (or start the submit wizard), the version of the local libraries is compared
+			with the server. If the versions differ, a warning message shows the current versions.
+			If you want to proceed, you can ignore this warning message. In this case, we recommend
+			that you do the following:</p>
+
+		<ul class="ul" id="loio152c841a8d084ba6bdbde0e824ece8a0__ul_aq1_31n_3j">
+			<li class="li">Check the JavaScript documentation of the used controls and their methods for
+					<samp class="ph codeph">@since</samp> tags. They indicate which version has introduced a new
+				feature which you are going to use.</li>
+
+			<li class="li">When testing in Eclipse you should configure it to use the runtime libraries located on the
+				server instead of the local ones, see <a class="xref" href="61ee9ed2369f4764a6d713abcf73afc1.html" title="The location of the SAPUI5 library that is used for testing may differ depending on several parameters.">SAPUI5 Library Location Used for
+					Testing</a>.</li>
+
+			<li class="li">Always test your app on the server after submitting changes.</li>
+
+		</ul>
+
+		<div class="p">
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">SAP Web IDE uses a similar check. For more information, see <a class="xref" href="https://help.hana.ondemand.com/webide/frameset.htm?32d0631767ed4b8e85762cf40b943638.html" alt="https://help.hana.ondemand.com/webide/frameset.htm?32d0631767ed4b8e85762cf40b943638.html" title="https://help.hana.ondemand.com/webide/frameset.htm?32d0631767ed4b8e85762cf40b943638.html">Server Version Check for SAPUI5 Runtime
+						Libraries</a>.</p>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

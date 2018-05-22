@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The sap.ui.comp.smartform.SmartForm control makes it possible to render a form using OData metadata annotations. Depending on user authorizations, the form enables users, for example, to switch from display to edit mode, add and group fields, rename field labels, and implement a user input check."/>
+<meta name="description" content="The sap.ui.comp.smartform.SmartForm control makes it possible to render a form using OData metadata annotations. Depending on user authorizations, the form enables users, for example, to switch from display to edit mode, add and group fields, rename field labels, and implement a user input check."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=15726044229850777"/>
+<title>Smart Form</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio99e33bdfde074bb48d2e603fa5ecd2d0">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Smart Form</h1>
+<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">sap.ui.comp.smartform.SmartForm</samp> control makes it possible to render
+		a form using OData metadata annotations. Depending on user authorizations, the form enables
+		users, for example, to switch from display to edit mode, add and group fields, rename field
+		labels, and implement a user input
+		check.</p>
+<p class="p">For more information
+			about this control, see <a class="xref" href="../../docs/api/symbols/sap.ui.comp.smartform.SmartForm.html" alt="../../docs/api/symbols/sap.ui.comp.smartform.SmartForm.html" title="../../docs/api/symbols/sap.ui.comp.smartform.SmartForm.html">https://sapui5.hana.ondemand.com/sdk/#docs/api/symbols/sap.ui.comp.smartform.SmartForm.html</a> and <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.comp.smartform.SmartForm/samples" alt="../../explored.html#/entity/sap.ui.comp.smartform.SmartForm/samples" title="../../explored.html#/entity/sap.ui.comp.smartform.SmartForm/samples">https://sapui5.hana.ondemand.com/sdk/explored.html#/entity/sap.ui.comp.smartform.SmartForm/samples</a>.</p>
+</div>
+<div class="topic concept nested1" id="concept_fx5_21v_3r"><h2 class="title topictitle2">Overview</h2>
+<div class="body conbody"><p class="p">The <samp class="ph codeph">SmartForm</samp> control displays form content. If used in combination with the
+					<samp class="ph codeph">SmartField</samp> control and OData metadata annotations along with
+				additional
+				configuration, a form can be created with minimal effort.</p>
+<p class="p">The <samp class="ph codeph">SmartForm</samp> control supports the following features:</p>
+<ul class="ul" id="concept_fx5_21v_3r__ul_n3l_ckc_jr"><li class="li">
+					<p class="p">Adaptation settings</p>
+
+					<div class="p">A key user can adapt the form for all users in one client by doing the following:<ul class="ul" id="concept_fx5_21v_3r__ul_d3r_3kc_jr"><li class="li">
+								<p class="p">Adding and hiding fields</p>
+
+							</li>
+<li class="li">
+								<p class="p">Adding and hiding groups</p>
+
+							</li>
+<li class="li">
+								<p class="p">Changing the order of fields and groups</p>
+
+							</li>
+<li class="li">
+								<p class="p">Renaming field labels</p>
+
+							</li>
+</ul>
+</div>
+
+				</li>
+<li class="li">
+					<p class="p"><span class="ph uicontrol">Display/Edit</span> button</p>
+
+					<p class="p">This optional button allows the
+						user
+						to toggle from display to edit mode. </p>
+
+					<div class="note note"><span class="notetitle">Note</span> 
+						<p class="p">Fields are automatically displayed with the
+							appropriate
+							control, for example, texts on the user interface in
+							display mode and user input in edit mode.</p>
+
+					</div>
+
+				</li>
+<li class="li">
+					<p class="p">Field labels</p>
+
+					<p class="p">For fields of type <samp class="ph codeph">SmartField</samp>, the
+							<samp class="ph codeph">SmartForm</samp> control automatically creates a label based
+						on the OData metadata annotations.</p>
+
+				</li>
+<li class="li">
+					<p class="p"><span class="ph uicontrol">Check</span> button</p>
+
+					<p class="p">This optional button allows the user to check the current user input. </p>
+
+					<div class="note note"><span class="notetitle">Note</span> 
+						<p class="p">For fields of type <samp class="ph codeph">SmartField</samp>, values will be checked
+							based on the OData metadata annotations. Fields with errors will be
+							circled in red. When the user clicks on one of these fields, the
+							relevant error message will be displayed. </p>
+
+					</div>
+
+				</li>
+</ul>
+<p class="p">Forms consist of groups (<samp class="ph codeph">sap.ui.comp.smartform.Group</samp>) and group
+				elements (<samp class="ph codeph">sap.ui.comp.smartform.GroupElement</samp>). </p>
+<p class="p">A group element is a collection of controls that are displayed along with a label.
+				Typically, a group element consists of exactly one control and the respective label.
+				Multiple group elements can be grouped together. This group then also has a
+				label.</p>
+<p class="p">The <samp class="ph codeph">SmartForm</samp> control aggregates groups, and a group aggregates
+					<samp class="ph codeph">groupElements</samp>. The <samp class="ph codeph">groupElements</samp> themselves
+				aggregate elements of type <samp class="ph codeph">sap.ui.core.Control</samp>.</p>
+</div>
+</div>
+<div class="topic concept nested1" id="concept_bcn_5dv_3r"><h2 class="title topictitle2">Layout</h2>
+<div class="body conbody"><p class="p">The <samp class="ph codeph">SmartForm</samp> control uses a <samp class="ph codeph">ResponsiveGridLayout</samp>
+				that can be adjusted. The following properties are exposed in the aggregation
+				layout:</p>
+<ul class="ul" id="concept_bcn_5dv_3r__ul_ucp_qxy_jr"><li class="li">
+					<p class="p"><samp class="ph codeph">labelSpanL</samp>, <samp class="ph codeph">labelSpanM</samp>,
+							<samp class="ph codeph">labelSpanS</samp></p>
+
+				</li>
+<li class="li">
+					<p class="p">
+						<samp class="ph codeph">emptySpanL</samp>
+						<samp class="ph codeph">emptySpanM</samp>, <samp class="ph codeph">emptySpanS</samp></p>
+
+				</li>
+<li class="li">
+					<p class="p"><samp class="ph codeph">columnsL</samp>, <samp class="ph codeph">columnsM</samp></p>
+
+				</li>
+<li class="li">
+					<p class="p"><samp class="ph codeph">breakpointL</samp>, <samp class="ph codeph">breakpointM</samp>
+					</p>
+
+				</li>
+</ul>
+<p class="p">Alternatively, <samp class="ph codeph">ResponsiveLayout</samp> can be used to display the fields
+				next to each other with a label on top. This type of layout can be defined using the
+					<samp class="ph codeph">useHorizontalLayout</samp> property.</p>
+<p class="p">The form will be embedded in an <samp class="ph codeph">sap.m.Panel</samp> if the
+					<samp class="ph codeph">expandable</samp> property is set. Using this property, the form can
+				also be collapsed and expanded.</p>
+<div class="section"><div class="section_title">Group Layout</div><div type="Group Layout">
+				
+				<p class="p">The aggregation layout of a group can be used to define a
+						<samp class="ph codeph">GridData</samp> layout. With this layout, the
+					span
+					of a single group can be changed to allow this group to have more than one
+					column. Moreover, a line break can be inserted to display the group in a new
+					line.</p>
+
+			</div></div>
+<div class="section"><div class="section_title">Toolbar</div><div type="Toolbar">
+				
+				<p class="p">The <samp class="ph codeph">SmartForm</samp> control uses a toolbar for displaying the
+					title
+					of the form and the following buttons (if
+					configured):</p>
+
+				<ul class="ul" id="concept_bcn_5dv_3r__ul_olr_chz_jr"><li class="li">
+						<p class="p"><span class="ph uicontrol">Display/Edit </span>(<samp class="ph codeph">editTogglable</samp>
+							property )</p>
+
+					</li>
+<li class="li"><span class="ph uicontrol">Check</span> (<samp class="ph codeph">checkButton</samp> property)</li>
+<li class="li">Adaptation
+						settings</li>
+</ul>
+
+				<p class="p">Alternatively, the custom toolbar can be used (<samp class="ph codeph">customToolbar</samp>
+					aggregation). The <samp class="ph codeph">SmartForm</samp> control will then replace the
+					standard toolbar with the custom toolbar and add the
+					title
+					and the buttons if requested.</p>
+
+			</div></div>
+</div>
+</div>
+<div class="topic concept nested1" id="concept_mgc_s2v_3r"><h2 class="title topictitle2">Annotations</h2>
+<div class="body conbody"><p class="p">The following table shows a selection of the annotations used by the
+					<samp class="ph codeph">SmartForm</samp> control:</p>
+
+<div class="tablenoborder"><table summary="" id="concept_mgc_s2v_3r__table_e1j_cd5_mr" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 1:
+					Annotations</span></caption>
+<colgroup><col width="25%"/><col width="25%"/><col width="25%"/><col width="25%"/></colgroup>
+<thead class="thead" align="left"><tr class="row"><th class="entry" valign="top" width="25%" id="d3591542e327">
+								<p class="p">Element</p>
+
+							</th>
+<th class="entry" valign="top" width="25%" id="d3591542e332">
+								<p class="p">Annotation</p>
+
+							</th>
+<th class="entry" valign="top" width="25%" id="d3591542e337">
+								<p class="p">Further Distinction</p>
+
+							</th>
+<th class="entry" valign="top" width="25%" id="d3591542e342">Comment</th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry" valign="top" width="25%" headers="d3591542e327 ">
+								<p class="p">Field Label </p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e332 ">
+								<p class="p"><samp class="ph codeph">sap:label</samp></p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e337 ">
+								<p class="p"/>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e342 ">
+								<p class="p">Text used for group element label </p>
+
+							</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="25%" headers="d3591542e327 ">
+								<p class="p">Mandatory attribute</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e332 ">
+								<p class="p"><samp class="ph codeph">Nullable='false'</samp></p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e337 ">
+								<p class="p"/>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e342 "> </td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="25%" headers="d3591542e327 ">
+								<p class="p">Field control</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e332 ">
+								<p class="p"><samp class="ph codeph">sap:field-control</samp></p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e337 ">
+								<p class="p"/>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e342 "> </td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="25%" headers="d3591542e327 ">
+								<p class="p">Display format</p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e332 ">
+								<p class="p"><samp class="ph codeph">sap:display-format</samp></p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e337 ">
+								<p class="p"><samp class="ph codeph">UpperCase</samp>
+								</p>
+
+								<p class="p"><samp class="ph codeph">NonNegative</samp></p>
+
+							</td>
+<td class="entry" valign="top" width="25%" headers="d3591542e342 ">
+								<p class="p"/>
+
+							</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="topic concept nested1" id="concept_m1j_ltz_jr"><h2 class="title topictitle2">Key-User-Specific Adaptation</h2>
+<div class="body conbody"><p class="p">To enable key user adaptation settings, the following prerequisites have to be fulfilled:</p>
+<ul class="ul" id="concept_m1j_ltz_jr__ul_hkr_jyz_jr"><li class="li">
+					<p class="p">Use of stable IDs for every <samp class="ph codeph">Group</samp>,
+							<samp class="ph codeph">GroupElement</samp>, and field in the XML view </p>
+
+					<p class="p">The adaptation settings use control IDs to identify the entities that can be modified.</p>
+
+				</li>
+<li class="li">
+					<p class="p">Use of the <samp class="ph codeph">entityType</samp> property</p>
+
+					<p class="p">The property determines the entity type of the OData service defining the
+						fields that can be added to the form.</p>
+
+					<p class="p">Fields that must not be available on the adaptation dialog can be listed in the
+							<samp class="ph codeph">ignoredFields</samp> property. Separate the property names by
+						commas without using spaces.</p>
+
+				</li>
+</ul>
+</div>
+</div>
+<div class="topic concept nested1" id="concept_elt_hfz_jr"><h2 class="title topictitle2">Integration of <samp class="ph codeph">SmartField</samp> Control</h2>
+<div class="body conbody"><p class="p">The <samp class="ph codeph">SmartForm</samp> control allows you to define a default configuration for the
+					<samp class="ph codeph">SmartField</samp> control. This configuration is done using the
+					<samp class="ph codeph">customData</samp> aggregation. The complete
+					<samp class="ph codeph">customData</samp> aggregation is copied to the
+					<samp class="ph codeph">SmartField</samp> control. </p>
+<p class="p">Also, the value for the <samp class="ph codeph">defaultDropDownDisplayBehaviour</samp> key is set to
+					<samp class="ph codeph">displayBehaviour</samp> in the <samp class="ph codeph">SmartField</samp>
+				configuration if it has not been defined for the <samp class="ph codeph">SmartField</samp> control
+				itself. </p>
+</div>
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Smart Form";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

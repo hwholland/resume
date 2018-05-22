@@ -1,0 +1,121 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8557088812388342"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8557088812388342"/>
+<title>The Smart Filter Bar Object</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob96dbb603b004b399a5b787794d2fe60">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">The Smart Filter Bar Object</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">The analytical configuration can optionally contain a smart filter bar object, which
+			defines the configuration of the smart filter bar used in an APF-based application. The
+			smart filter bar can be used as an alternative for facet filters and provides global
+			filters that are applied to all analysis steps of an analysis path. A configuration can
+			have either facet filters or a smart filter bar, not both.</p>
+
+		<p class="p">The annotation file of the service root defines which properties and parameters are
+			displayed in the smart filter bar. Therefore, the manifest.json file of the component
+			must contain the data source definition of the service root as well as the data source
+			definition of the corresponding annotation file.</p>
+
+		<p class="p">The smart filter bar object has the following format:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">{
+    "type" : "smartFilterBar",
+    "id" : "SmartFilterBar ID",
+    "service" : "&lt;service root&gt;",
+    "entitySet" : "&lt;entity set name&gt;",
+}
+</pre></div>
+
+		<p class="p">The properties used in the step object denote the following:</p>
+
+		
+<div class="table-wrapper tablenoborder"><table summary="" id="loiob96dbb603b004b399a5b787794d2fe60__table_kf2_rzf_v1b" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+				
+				
+				<thead class="thead" align="left">
+					<tr class="row">
+						<th class="entry" valign="top" width="50%" id="d14623899e43">
+							<p class="p">Property</p>
+
+						</th>
+
+						<th class="entry" valign="top" width="50%" id="d14623899e49">
+							<p class="p">Description</p>
+
+						</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody class="tbody">
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d14623899e43 ">
+							<p class="p"><span class="ph sap-technical-name sap-technical-name">id</span></p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d14623899e49 ">
+							<p class="p">Unique ID of type string</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d14623899e43 ">
+							<p class="p"><span class="ph sap-technical-name sap-technical-name">service</span></p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d14623899e49 ">
+							<p class="p">Path to OData service root</p>
+
+						</td>
+
+					</tr>
+
+					<tr class="row">
+						<td class="entry" valign="top" width="50%" headers="d14623899e43 ">
+							<p class="p"><span class="ph sap-technical-name sap-technical-name">entitySet</span></p>
+
+						</td>
+
+						<td class="entry" valign="top" width="50%" headers="d14623899e49 ">
+							<p class="p">Entity set that corresponds to the data source, for example, the SAP
+								HANA view. The entity set provides the properties and parameters
+								that can be displayed in the smart filter bar.</p>
+
+						</td>
+
+					</tr>
+
+				</tbody>
+
+			</table>
+</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

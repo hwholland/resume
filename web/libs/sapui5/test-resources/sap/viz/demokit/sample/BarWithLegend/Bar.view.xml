@@ -1,0 +1,17 @@
+<mvc:View height="100%" width="100%" controllerName="sap.viz.sample.BarWithLegend.Bar" 
+    xmlns= "sap.m"
+    xmlns:viz="sap.viz.ui5.controls" 
+    xmlns:mvc="sap.ui.core.mvc"  
+    xmlns:l= "sap.ui.layout"
+    xmlns:c= "sap.ui.commons"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+    <ScrollContainer height="100%" width="100%" horizontal="true" vertical="true" focusable="true">
+    	<c:Button id="idButton" class="sapUiSmallMargin" text="Show / Hide Legend"/>
+    	<viz:Popover id="idPopOver_small"></viz:Popover>
+    	<viz:Popover id="idPopOver_large"></viz:Popover>
+    	<l:HorizontalLayout class="sapUiSmallMargin" >
+    		<viz:VizFrame id="idVizFrame_small" class="sapUiSmallMargin" uiConfig="{applicationSet:'fiori'}" vizType="bar"  width= "320px" height="480px"></viz:VizFrame>
+    		<viz:VizFrame id="idVizFrame_large" class="sapUiSmallMargin" uiConfig="{applicationSet:'fiori'}" vizType="bar"  width= "500px" height="700px"></viz:VizFrame>
+    	</l:HorizontalLayout>
+    </ScrollContainer>
+</mvc:View>

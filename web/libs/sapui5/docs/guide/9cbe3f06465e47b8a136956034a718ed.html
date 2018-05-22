@@ -1,0 +1,132 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="This library contains controls to visualize charts and diagrams that are lightweight and easy to use."/>
+<meta name="description" content="This library contains controls to visualize charts and diagrams that are lightweight and easy to use."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=32834531345034057"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=32834531345034057"/>
+<title>sap.suite.ui.microchart</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio9cbe3f06465e47b8a136956034a718ed">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">sap.suite.ui.microchart</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">This library contains controls to visualize charts and diagrams that are lightweight and
+		easy to use. </p>
+
+		<div class="p">
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">The following sections only provide additional information for some of the controls. <span class="ph">For a
+						complete list of all controls and their documentation, see the <a class="xref" href="../../docs/api/symbols/sap.ui.html" alt="../../docs/api/symbols/sap.ui.html" title="../../docs/api/symbols/sap.ui.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html" alt="../../explored.html" title="../../explored.html">Samples</a>.</span>
+					</p>
+
+			</div>
+
+		</div>
+
+		<p class="p"><samp class="ph codeph">MicroCharts</samp> give a quick overview of customer-defined key figures like KPIs as
+			graphical items and display the current status of defined key figures or thresholds.</p>
+
+		<p class="p">The different values can be visualized in the charts by a semantically-colored representation
+			and can be defined by the customer to correspond to the significance of the figures. For
+			example, you can display critical statuses in red or you can display thresholds in
+			specific colors to represent the significant values of your business data.</p>
+
+		<div class="p"><samp class="ph codeph">MicroCharts</samp> have a responsive design and can adapt their appearance and
+			functions to the screen size of the devices. In the responsive mode, if
+				<samp class="ph codeph">MicroCharts</samp> are included in further controls (for example generic
+			tiles or flex boxes), the control adapts to the available space provided by the parent
+				control.<div class="note note"><span class="notetitle">Note</span> You can include a <samp class="ph codeph">MicroChart</samp> control into a
+					<samp class="ph codeph">GenericTile</samp> control in the responsive mode only. However, if
+				you define a width, a height, and size properties, this data is overwritten and the
+				responsive mode is used.</div>
+</div>
+
+		<img class="image" id="loio9cbe3f06465e47b8a136956034a718ed__image_lym_h1m_55" src="loiofc12e0861db74e03baea5908cdf2d1c6_LowRes.png" alt="Different microcharts" title="Different microcharts"/>
+		<div class="section"><div class="section_title">Prerequisites</div><div type="Prerequisites">
+			
+			<p class="p">With the new <samp class="ph codeph">sap.suite.ui.microchart</samp> library, the available MicroChart
+				controls of the <samp class="ph codeph">sap.suite.ui.commons</samp> library have been moved to
+				their own library with <span class="ph pname">SAPUI5</span> version 1.34.</p>
+
+			<ul class="ul" id="loio9cbe3f06465e47b8a136956034a718ed__ul_v5b_ccm_55">
+				<li class="li">
+					<p class="p">If you have already included a <samp class="ph codeph">MicroChart</samp> control before <span class="ph pname">SAPUI5</span> version 1.34,
+						a wrapper ensures that the embedding still works for each control. To
+						benefit from all enhancements or new features for the
+							<samp class="ph codeph">MicroChart</samp> controls as of <span class="ph pname">SAPUI5</span> 1.34, you need
+						to switch to the controls to the new library. With <span class="ph pname">SAPUI5</span> 1.34, all
+							<samp class="ph codeph">MicroChart</samp> controls in the
+							<samp class="ph codeph">sap.suite.ui.commons</samp> library are marked as deprecated.
+						The respective controls are as follows:</p>
+
+					<ul class="ul" id="loio9cbe3f06465e47b8a136956034a718ed__ul_z35_dcm_55">
+						<li class="li"><samp class="ph codeph">AreaMicroChart</samp></li>
+
+						<li class="li"><samp class="ph codeph">BulletMicroChart</samp></li>
+
+						<li class="li"><samp class="ph codeph">ColumnMicroChart</samp></li>
+
+						<li class="li"><samp class="ph codeph">ComparisonMicroChart</samp>
+						</li>
+
+						<li class="li"><samp class="ph codeph">DeltaMicroChart</samp></li>
+
+						<li class="li"><samp class="ph codeph">HarveyBallMicroChart</samp></li>
+
+					</ul>
+
+					<div class="note note"><span class="notetitle">Note</span> 
+						<p class="p">During the move, the following controls and their elements have been
+							renamed:</p>
+
+						<ul class="ul" id="loio9cbe3f06465e47b8a136956034a718ed__ul_bkj_vcm_55">
+							<li class="li"><samp class="ph codeph">MicroAreaChart</samp> to
+								<samp class="ph codeph">AreaMicroChart</samp></li>
+
+							<li class="li"><samp class="ph codeph">ComparisonChart</samp> to
+									<samp class="ph codeph">ComparisonMicroChart</samp></li>
+
+							<li class="li"><samp class="ph codeph">BulletChart</samp> to
+								<samp class="ph codeph">BulletMicroChart</samp></li>
+
+						</ul>
+
+					</div>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="aa93bdb245914ebba9583b24dad94938.html" title="Displays a ring chart that represents a percentage value.">Radial Micro Chart</a></strong><br/>
+</div>
+<div><strong><a class="link" href="bb5813c4e7b2426985eed65965320f00.html" title="Displays a series of values as segmented lines along a threshold line.">Line Micro Chart</a></strong><br/>
+</div>
+<div><strong><a class="link" href="d4c48c84e413424ca2833e7e57fce56f.html" title="The control shows a progress chart that displays the overall progress and a summary of the items.">Stacked Bar Micro Chart</a></strong><br/>
+</div>
+</ul>
+
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="74b59efa0eef48988d3b716bd0ecc933.html" title="Browser and platform support for the SAPUI5 libraries on iOS, Android, macOS, and Windows platforms.">Browser and Platform Support</a></div>
+<div><a class="link" href="363cd16eba1f45babe3f661f321a7820.html" title="SAPUI5 provides a set of JavaScript and CSS libraries, which can be combined in an application using the combinations that are supported.">Supported Library Combinations</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.suite.ui.microchart.html" alt="../../docs/api/symbols/sap.suite.ui.microchart.html" title="../../docs/api/symbols/sap.suite.ui.microchart.html">API Reference: <samp class="ph codeph">sap.suite.ui.microchart</samp></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

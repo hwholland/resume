@@ -1,0 +1,42 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:form="sap.ui.layout.form"
+	xmlns:mvc="sap.ui.core.mvc">
+	<Panel id='tilePanel' expandable="true" expanded="false"
+		expand="onTilePanelExpanded" headerText="{i18n>TILES}">
+		<content>
+			<Table id="tileGrid" items="{path:'evaluation>/CHIPS',factory:'.getChipRow'}"
+				inset="false" fixedLayout="false">
+				<columns>
+
+				</columns>
+			</Table>
+		</content>
+	</Panel>
+	<Panel id='drilldownPanel' expandable="true" expanded="false"
+		expand='onDrillDownPanelExpanded' headerText="{i18n>DRILL_DOWN_CONFIGURATION}">
+		<content>
+			<form:SimpleForm minWidth="1024" maxContainerCols="4"
+				width="100%" editable="false" layout="ResponsiveGridLayout"
+				labelSpanL="4" labelSpanM="4" emptySpanL="0" emptySpanM="0"
+				columnsL="1" columnsM="1">
+				<form:content>
+					<Label text="{i18n>FILTERS}" design="Bold" />
+					<Text text="{evaluation>/DRILLDOWN/FILTERS}"/>
+					<Label text="{i18n>HEADERS_CONFIGURED}" design="Bold" />
+					<Text text="{evaluation>/DRILLDOWN/HEADERS_COUNT}" />
+					<Label text="{i18n>VIEWS_CONFIGURED}" design="Bold" />
+					  <l:Grid content="{evaluation>/DRILLDOWN/VIEWS}" defaultSpan="L8 M8 S8" hSpacing="0" vSpacing="0">
+    					<l:content>
+    						<Link text="{evaluation>TITLE}" press="onViewPressed" class=""></Link>
+       					</l:content>
+  					</l:Grid>
+<!-- 					<FlexBox items = "{evaluation>/DRILLDOWN/VIEWS}"> -->
+<!-- 					<items> -->
+<!-- 						<Link text="{evaluation>TITLE}" press="onViewPressed" class="sapUiSmallMarginRight"></Link> -->
+<!-- 					</items> -->
+<!-- 					</FlexBox> -->
+				</form:content>
+			</form:SimpleForm>
+		</content>
+	</Panel>
+</core:FragmentDefinition>

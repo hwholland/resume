@@ -1,0 +1,239 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The Resources.json file lists all resources in a component or library folder. It resides next to each manifest.json in the generated results."/>
+<meta name="description" content="The Resources.json file lists all resources in a component or library folder. It resides next to each manifest.json in the generated results."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8055002327153047"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8055002327153047"/>
+<title>Resources.json File</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioadcbcf8b50924556ab3f321fcd9353ea">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Resources.json File</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">Resources.json</samp> file lists all resources in a component or library
+		folder. It resides next to each <samp class="ph codeph">manifest.json</samp> in the generated
+		results.</p>
+
+		<p class="p">The file is generated during build time and its main purpose is for mobile packaging, as
+				<samp class="ph codeph">resources.json</samp> mentions all files inside the application. If an app
+			has a <samp class="ph codeph">resources.json</samp> file, it is mentioned in the
+				<samp class="ph codeph">manifest.json</samp> under <samp class="ph codeph">sap.app/resources</samp>.</p>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">This file is used by SAP Tools like the SAP Fiori Client Packager. It will be
+				generated automatically when using SAP WebIDE.</p>
+
+		</div>
+
+		<p class="p">The list of resources is stored in an array in the <samp class="ph codeph">resources</samp> property of the
+			top level JSON object. The top level object can also contain the
+				<samp class="ph codeph">_version</samp> property, which can be omitted if the value is
+				<samp class="ph codeph">1.0.0</samp>. For each resource, the following entries are possible:</p>
+
+		<div class="table-wrapper"><table summary="" id="loioadcbcf8b50924556ab3f321fcd9353ea__simpletable_gxm_1lt_c5" border="1" class="simpletable"><tr class="sthead">
+				<th valign="bottom" align="left" id="d9611858e59" class="stentry" width="33.333333333333336%">
+					<p class="p">Property</p>
+
+				</th>
+
+				<th valign="bottom" align="left" id="d9611858e65" class="stentry" width="33.333333333333336%">
+					<p class="p">Type</p>
+
+				</th>
+
+				<th valign="bottom" align="left" id="d9611858e71" class="stentry" width="33.333333333333336%">
+					<p class="p">Description</p>
+
+				</th>
+
+			</tr>
+<tr class="strow">
+				<td valign="top" headers="d9611858e59" class="stentry">
+					<p class="p"><samp class="ph codeph">name</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e65" class="stentry">
+					<p class="p"><samp class="ph codeph">string</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e71" class="stentry">
+					<p class="p">Relative path of the resource as accessible in a server; starts with the
+						first name segment, for example <samp class="ph codeph">Component.js</samp>
+						(mandatory)</p>
+
+				</td>
+
+			</tr>
+<tr class="strow">
+				<td valign="top" headers="d9611858e59" class="stentry">
+					<p class="p"><samp class="ph codeph">isDebug</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e65" class="stentry">
+					<p class="p"><samp class="ph codeph">Boolean</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e71" class="stentry">
+					<p class="p">When set to <samp class="ph codeph">true</samp>, the resource is a debug source, the <span class="ph"><span class="ph pname">OpenUI5</span></span>
+						build derives the flag from the naming convention (<samp class="ph codeph">-dbg(.controller
+							.view .fragment).js</samp>) (optional)</p>
+
+				</td>
+
+			</tr>
+<tr class="strow">
+				<td valign="top" headers="d9611858e59" class="stentry">
+					<p class="p"><samp class="ph codeph">locale</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e65" class="stentry">
+					<p class="p"><samp class="ph codeph">string</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e71" class="stentry">
+					<p class="p">Locale of the resource for known i18n resources; the <span class="ph"><span class="ph pname">OpenUI5</span></span> build derives the
+						locale from the naming convention (<samp class="ph codeph">*_[locale].properties</samp>)
+						(optional)</p>
+
+				</td>
+
+			</tr>
+<tr class="strow">
+				<td valign="top" headers="d9611858e59" class="stentry">
+					<p class="p"><samp class="ph codeph">raw</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e65" class="stentry">
+					<p class="p"><samp class="ph codeph">string</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e71" class="stentry">
+					<p class="p">Name of the corresponding resource in the raw (developer) language for known
+						i18n resources; for <samp class="ph codeph">messagebundle.en.properties</samp>, for
+						example, the corresponding raw file is
+							<samp class="ph codeph">messagebundle.properties</samp> (optional)</p>
+
+				</td>
+
+			</tr>
+<tr class="strow">
+				<td valign="top" headers="d9611858e59" class="stentry">
+					<p class="p"><samp class="ph codeph">merged</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e65" class="stentry">
+					<p class="p"><samp class="ph codeph">boolean</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e71" class="stentry">
+					<p class="p">Indicates whether the resource is a merged resource (optional)</p>
+
+					<p class="p">By default, the <span class="ph"><span class="ph pname">OpenUI5</span></span> build
+						determines this from naming conventions
+							<samp class="ph codeph">(library-preload.json</samp>, <samp class="ph codeph">library-all.js</samp>,
+							<samp class="ph codeph">Component-preload.js</samp>), but it also allows to add more
+						merged files by manual configuration of the build step. SAP Web IDE may use
+						other knowledge for this; it knows, for example, that it merges the
+							<samp class="ph codeph">Component-preload.js</samp>.</p>
+
+				</td>
+
+			</tr>
+<tr class="strow">
+				<td valign="top" headers="d9611858e59" class="stentry">
+					<p class="p"><samp class="ph codeph">theme</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e65" class="stentry">
+					<p class="p"><samp class="ph codeph">string</samp></p>
+
+				</td>
+
+				<td valign="top" headers="d9611858e71" class="stentry">
+					<p class="p">Indicates a theme-dependant resource (optional)</p>
+
+					<p class="p">The <span class="ph"><span class="ph pname">OpenUI5</span></span> build determines this from the naming convention
+							<samp class="ph codeph">**themes&lt;theme&gt;/ **</samp></p>
+
+				</td>
+
+			</tr>
+</table></div>
+
+		<div class="example"><h2 class="exampletitle">Example</h2>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+{
+    "resources":[
+        {
+            "name": ".library"
+        },
+        {
+            "name": ".theming"
+        },
+        {
+            "name": "DynamicSideContent-dbg.js",
+            "isDebug":true
+        },
+        {
+            "name": "DynamicSideContent.js"
+        },
+        {
+            "name": "DynamicSideContentRenderer-dbg.js",
+            "isDebug":true
+        },
+ 
+        ...
+ 
+        {
+            "name": "library-preload.json",
+            "merged":true
+        },
+ 
+        ...
+ 
+        {
+            "name": "messagebundle_de.properties",
+            "raw":"messagebundle.properties",
+            "locale":"de"
+        },
+ 
+        ...
+ 
+        {
+            "name": "themes/sap_belize/library.less",
+            "theme":"sap_belize"
+        }
+ 
+        ...
+ 
+    ]
+}</pre></div>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

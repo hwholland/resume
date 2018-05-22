@@ -1,0 +1,1325 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>QUnit test for app.Main.controller - sap.ovp</title>
+
+    <script id="sap-ui-bootstrap"
+            type="text/javascript"
+            src="../../../../../resources/sap-ui-core.js"
+            data-sap-ui-resourceroots='{
+				"sap.ovp.test": "../../"
+			}'>
+    </script>
+
+    <link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+    <script src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+    <script src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+    <script src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+    <script src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+
+    <script>
+        (function () {
+            "use strict";
+            /* module, ok, test, jQuery, sap */
+
+            var oController;
+
+            module("sap.ovp.app.Main", {
+                /**
+                 * This method is called before each test
+                 */
+                setup: function () {
+                    oController = new sap.ui.controller("sap.ovp.app.Main");
+                },
+                /**
+                 * This method is called after each test. Add every restoration code here
+                 *
+                 */
+                teardown: function () {
+                    oController.destroy();
+                }
+            });
+/*
+            test("Read with no filters", function(){
+                var fnRead = sinon.spy();
+                oController.oCardsModels = {
+                    "model1": {
+                        refresh: function(){
+                            this.read();
+                        },
+                        read: fnRead
+
+                    }
+                };
+
+                oController.onGlobalFilterSearch();
+                ok(fnRead.callCount === 0, "Read should not be called if no change in the filters");
+                oController.onGlobalFilterChange();
+                oController.onGlobalFilterSearch();
+                ok(fnRead.calledOnce === true, "Read should be called when changing the filters");
+            });
+
+            test("Read is overridden", function(){
+                var fnRead = sinon.spy();
+                var readArgs = ["/somepath"];
+                var getGlobalFilterStub = sinon.stub(oController, "getGlobalFilter");
+                getGlobalFilterStub.returns({
+                    getFilters: function () {
+                        return [{aFilters: [{sPath: "filterField1"}]}];
+                    }
+                });
+                oController._getEntityTypeFromPath = function() {
+                    return {property : [{name : "filterField1"}, {name : "filterField2"}]};
+                };
+                oController.getView = function() {
+                    return {
+                        getModel : function(modelName){
+                            if (modelName === "ui") {
+                                return new sap.ui.model.json.JSONModel({cards: {card1: {model: "model1"}}});
+                            } else {
+                                return {
+                                    refresh: function(){
+                                        this.read.apply(this, readArgs);
+                                    },
+                                    read: fnRead,
+                                    setUseBatch: function(){}
+
+                                };
+                            }
+                        }
+                    }
+                };
+                oController.oCardsModels = {};
+                oController.oLoadedComponents = {};
+                oController._initCardModel("model1");
+                ok(fnRead != oController.oCardsModels["model1"].read, "Read should be overridden");
+                oController.onGlobalFilterSearch();
+                ok(fnRead.callCount === 0, "Read should not be called if no change in the filters");
+
+                //first scenario - only global filter is defined
+                oController.onGlobalFilterChange();
+                oController.onGlobalFilterSearch();
+                ok(fnRead.calledOnce === true, "Read should be called when changing the filters");
+                var args = fnRead.getCall(0).args;
+                assert.deepEqual(args[0], "/somepath", "read first arguments should be the path");
+                assert.deepEqual(args[1].filters.length, 1, "read first arguments should be the path");
+
+                //second scenario - global filter is defined in addition to card internal filter
+                var createFilterParamsStub = sinon.stub(sap.ui.model.odata.ODataUtils, "createFilterParams");
+                createFilterParamsStub.returns("$filter=(someotherFilter)")
+                readArgs[1] = {urlParameters: ["$filter=(somefilter)"]};
+                oController.onGlobalFilterChange();
+                oController.onGlobalFilterSearch();
+                sinon.assert.callCount(fnRead, 2);
+                var args = fnRead.getCall(1).args;
+                assert.deepEqual(args[0], "/somepath", "read first arguments should be the path");
+                assert.deepEqual(args[1].filters, undefined, "read first arguments should be the path");
+                assert.deepEqual(args[1].urlParameters[0], "$filter=(somefilter)%20and%20(someotherFilter)", "read first arguments should be the path");
+                createFilterParamsStub.restore();
+
+            });
+
+            test("Read with different relevant filters", function(){
+                var relevantFilters = oController._getEntityRelevantFilters({property : [{name : "filterField1"}, {name : "filterField2"}]}, [{aFilters : [{sPath : "filterField1"}]}]);
+                ok(relevantFilters[0].aFilters.length === 1, "Relevant filters should be of length 1");
+                relevantFilters = oController._getEntityRelevantFilters({property : [{name : "filterField1"}, {name : "filterField2"}]}, [{aFilters : [{sPath : "filterField1"}, {sPath : "filterField2"}]}]);
+                ok(relevantFilters[0].aFilters.length === 2, "Relevant filters should be of length 2");
+            });
+
+            test("Card Template Class is not valid", function () {
+                jQuery.sap.declare("sap.ovp.test.card.Component");
+                assert.deepEqual(oController._checkIsCardValid("sap.ovp.test.card"), false, "wrong Card Template Class should not pass card validation");
+            });
+
+            test("Card template Class is not typeof sap.ovp.cards.generic.Component", function () {
+                jQuery.sap.declare("sap.ovp.test.card.Component");
+                sap.ui.core.UIComponent.extend("sap.ovp.test.card.Component",{});
+
+                assert.deepEqual(oController._checkIsCardValid("sap.ovp.test.card"), false, "Card Template Class which is not typeof sap.ovp.cards.generic.Component should not pass card validation");
+            });
+
+            test("Card template Class is exactly sap.ovp.cards.generic.Component", function () {
+                jQuery.sap.declare("sap.ovp.cards.generic.Component");
+                sap.ui.core.UIComponent.extend("sap.ovp.cards.generic.Component",{});
+
+                assert.deepEqual(oController._checkIsCardValid("sap.ovp.cards.generic"), true, "Card template Class is exactly sap.ovp.cards.generic.Component");
+            });
+
+            test("Card template Class is typeof sap.ovp.cards.generic.Component", function () {
+                jQuery.sap.declare("sap.ovp.test.card.Component");
+                jQuery.sap.require("sap.ovp.cards.generic.Component");
+
+                sap.ovp.cards.generic.Component.extend("sap.ovp.test.card.Component",{});
+
+                assert.deepEqual(oController._checkIsCardValid("sap.ovp.test.card"), true, "Card template Class is typeof sap.ovp.cards.generic.Component");
+            });
+
+            test("Card is typeof sap.ovp.cards.generic.Component and contains viewReplacements for sap.ovp.cards.generic.Card", function () {
+                jQuery.sap.declare("sap.ovp.test.card.Component");
+                jQuery.sap.require("sap.ovp.cards.generic.Component");
+
+                sap.ovp.cards.generic.Component.extend("sap.ovp.test.card.Component",{
+                    metadata: {
+                        customizing: {
+                            "sap.ui.viewReplacements": {
+                                "sap.ovp.cards.generic.Card": {}
+                            }
+                        }
+                    }
+                });
+
+                assert.deepEqual(oController._checkIsCardValid("sap.ovp.test.card"), false,
+                        "Card is typeof sap.ovp.cards.generic.Component and contains viewReplacements for sap.ovp.cards.generic.Card should not pass card validation");
+            });
+
+            test("Card is typeof sap.ovp.cards.generic.Component and contains valid viewReplacements", function () {
+                jQuery.sap.declare("sap.ovp.test.card.Component");
+                jQuery.sap.require("sap.ovp.cards.generic.Component");
+
+                sap.ovp.cards.generic.Component.extend("sap.ovp.test.card.Component",{
+                    metadata: {
+                        customizing: {
+                            "sap.ui.viewReplacements": {
+                                "sap.ovp.whatever.whatever2": {}
+                            }
+                        }
+                    }
+                });
+
+                assert.deepEqual(oController._checkIsCardValid("sap.ovp.test.card"), true,
+                        "Card is typeof sap.ovp.cards.generic.Component and contains valid viewReplacements should pass card validation");
+            });
+
+            test("Card is typeof sap.ovp.cards.generic.Component and contains valid viewReplacements", function () {
+                jQuery.sap.declare("sap.ovp.test.card.Component");
+                jQuery.sap.require("sap.ovp.cards.generic.Component");
+
+                sap.ovp.cards.generic.Component.extend("sap.ovp.test.card.Component",{
+                    metadata: {
+                        customizing: {
+                            "sap.ui.viewReplacements": {
+                                "sap.ovp.whatever.whatever2": {}
+                            }
+                        }
+                    }
+                });
+
+                assert.deepEqual(oController._checkIsCardValid("sap.ovp.test.card"), true,
+                        "Card is typeof sap.ovp.cards.generic.Component and contains valid viewReplacements should pass card validation");
+            });
+
+            test("Card is typeof sap.ovp.cards.generic.Component but override createContent function", function () {
+                jQuery.sap.declare("sap.ovp.test.card.Component");
+                jQuery.sap.require("sap.ovp.cards.generic.Component");
+
+                sap.ovp.cards.generic.Component.extend("sap.ovp.test.card.Component",{
+                    createContent: function () {}
+                });
+
+                assert.deepEqual(oController._checkIsCardValid("sap.ovp.test.card"), false,
+                        "Card is typeof sap.ovp.cards.generic.Component but override createContent function should not pass card validation");
+            });
+
+            test("Card is typeof sap.ovp.cards.generic.Component but override getPreprocessors function", function () {
+                jQuery.sap.declare("sap.ovp.test.card.Component");
+                jQuery.sap.require("sap.ovp.cards.generic.Component");
+
+                sap.ovp.cards.generic.Component.extend("sap.ovp.test.card.Component",{
+                    getPreprocessors: function () {}
+                });
+
+                assert.deepEqual(oController._checkIsCardValid("sap.ovp.test.card"), false,
+                        "Card is typeof sap.ovp.cards.generic.Component but override getPreprocessors function should not pass card validation");
+            });
+
+            test("Card implements getCustomPreprocessor method", function () {
+                jQuery.sap.declare("sap.ovp.test.card.Component");
+                jQuery.sap.require("sap.ovp.cards.generic.Component");
+
+                sap.ovp.cards.generic.Component.extend("sap.ovp.test.card.Component",{
+                    metadata: {
+                        getCustomPreprocessor : function() {}
+                    }
+                });
+
+                assert.deepEqual(oController._checkIsCardValid("sap.ovp.test.card"), true,
+                        "Card implements getCustomPreprocessor method should pass card validation");
+            });
+
+            function _mockGlobalFilter(){
+                var globalFilter = {
+                    isFilterLoaded: false,
+                    variantId: undefined,
+                    hasRequiredFields: false,
+                    attachAfterVariantLoad: sinon.spy(),
+                    attachInitialise: sinon.spy(),
+                    attachSearch: sinon.spy(),
+                    attachFilterChange: sinon.spy(),
+                    setVisible: sinon.spy(),
+                    addFieldToAdvancedArea: sinon.spy(),
+                    clearVariantSelection: sinon.spy(),
+                    clear : sinon.spy(),
+                    setDataSuiteFormat: sinon.spy(),
+                    getCurrentVariantId: function(){return this.variantId},
+                    search: function(){return !this.hasRequiredFields}
+                };
+                var getGlobalFilterStub = sinon.stub(oController, "getGlobalFilter");
+                getGlobalFilterStub.returns(globalFilter);
+
+                return globalFilter;
+            }
+
+            asyncTest("Init Global Filter - no variant no required fields", function () {
+                var globalFilter = _mockGlobalFilter();
+                oController._initGlobalFilter();
+                oController.oNavigationHandler = {parseNavigation: function (){}};
+                sap.ui.generic.app.navigation.service.NavType = {initial : undefined};
+
+                sinon.assert.callCount(globalFilter.attachAfterVariantLoad, 1);
+                sinon.assert.callCount(globalFilter.attachFilterChange, 1);
+                sinon.assert.callCount(globalFilter.attachInitialise, 1);
+                sinon.assert.callCount(globalFilter.attachSearch, 1);
+
+                //call the initialize callback
+                globalFilter.attachInitialise.args[0][0].call(globalFilter.attachInitialise.args[0][1]);
+                oController.oGlobalFilterLodedPromise.then(function(){
+                    start();
+                    ok(true, "no variant and no required fields - filter should be marked as loaded after initialzed is called");
+                });
+            });
+
+            asyncTest("Init Global Filter - with variant no required fields", function () {
+                var globalFilter = _mockGlobalFilter();
+                oController._initGlobalFilter();
+                sap.ui.generic.app.navigation.service.NavType = {initial : undefined};
+                oController.oNavigationHandler = {
+                    parseNavigation: function () {
+                        return new jQuery.Deferred().resolve();
+                    }
+                };
+
+                sinon.assert.callCount(globalFilter.attachAfterVariantLoad, 1);
+                sinon.assert.callCount(globalFilter.attachFilterChange, 1);
+                sinon.assert.callCount(globalFilter.attachInitialise, 1);
+                sinon.assert.callCount(globalFilter.attachSearch, 1);
+
+                var variantLoaded = false;
+                var fnfilterLoaded = function(){
+                    start();
+                    if(variantLoaded){
+                        ok(true, "with variant and with no required fields - filter should be marked as loaded only after variant loaded is called");
+                    } else {
+                        ok(false, "with variant and with no required fields - filter should be marked as loaded only after variant loaded is called");
+                    }
+                };
+                oController.oGlobalFilterLodedPromise.then(fnfilterLoaded);
+
+                //call the initialize callback
+                globalFilter.variantId = "someVariantId";
+                globalFilter.attachInitialise.args[0][0].call(globalFilter.attachInitialise.args[0][1]);
+                setTimeout(function(){
+                    globalFilter.attachAfterVariantLoad.args[0][0].call(globalFilter.attachAfterVariantLoad.args[0][1]);
+                    variantLoaded = true;
+                }, 1);
+
+            });
+
+            asyncTest("Init Global Filter - with variant and with required fields", function () {
+                var globalFilter = _mockGlobalFilter();
+                oController._initGlobalFilter();
+                oController.oNavigationHandler = {
+                    parseNavigation: function () {
+                        return new jQuery.Deferred().resolve();
+                    }
+                };
+
+                sinon.assert.callCount(globalFilter.attachAfterVariantLoad, 1);
+                sinon.assert.callCount(globalFilter.attachFilterChange, 1);
+                sinon.assert.callCount(globalFilter.attachInitialise, 1);
+                sinon.assert.callCount(globalFilter.attachSearch, 1);
+
+                var searchCalled = false;
+                var fnfilterLoaded = function(){
+                    start();
+                    if(searchCalled){
+                        ok(true, "with variant and with required fields - filter should be marked as loaded only after search called");
+                    } else {
+                        ok(false, "with variant and with required fields - filter should be marked as loaded only after search called");
+                    }
+                };
+                oController.oGlobalFilterLodedPromise.then(fnfilterLoaded);
+
+                //call the initialize callback
+                globalFilter.variantId = "someVariantId";
+                globalFilter.hasRequiredFields = true;
+                globalFilter.attachInitialise.args[0][0].call(globalFilter.attachInitialise.args[0][1]);
+                setTimeout(function(){
+                    globalFilter.attachAfterVariantLoad.args[0][0].call(globalFilter.attachAfterVariantLoad.args[0][1]);
+                }, 1);
+                setTimeout(function(){
+                    globalFilter.attachSearch.args[0][0].call(globalFilter.attachSearch.args[0][1]);
+                    searchCalled = true;
+                }, 3);
+            });
+
+            test("validate _getCardId no viewId prefix", function() {
+                var cardId = "card00";
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        }
+                    }
+                };
+                var res = oController._getCardId(cardId);
+                ok(res, cardId);
+            });
+
+            test("validate _getCardId with viewId prefix", function() {
+                var cardId = "mainAppID--card00";
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        }
+                    }
+                };
+                var res = oController._getCardId(cardId);
+                ok(res, "card00");
+            });
+
+            test("validate _mergeCards without oVariant", function() {
+                var oLayoutCardsArray = [
+                    {id: "card00", visibility:true},
+                    {id: "card01", visibility:false},
+                    {id: "card02", visibility:true},
+                    {id: "card03", visibility:false},
+                    {id: "card04", visibility:true}
+                ];
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        }
+                    }
+                };
+                var oResult = oController._mergeCards(oLayoutCardsArray, null);
+
+                deepEqual(oResult, oLayoutCardsArray, "should return the same cards from layout array");
+            });
+
+            test("validate _mergeCards without oVariant and empty layout cards array", function() {
+                var oLayoutCardsArray = [];
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        }
+                    }
+                };
+                var oResult = oController._mergeCards(oLayoutCardsArray, null);
+
+                deepEqual(oResult, oLayoutCardsArray, "should return empty cards array");
+            });
+
+            test("validate _mergeCards without oVariant and without layout cards array", function() {
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        }
+                    }
+                };
+                var oResult = oController._mergeCards(null, null);
+
+                deepEqual(oResult, [], "should return empty cards array");
+            });
+
+            test("validate _mergeCards without oVariant.cards", function() {
+                var oLayoutCardsArray = [
+                    {id: "card00", visibility:true},
+                    {id: "card01", visibility:false},
+                    {id: "card02", visibility:true},
+                    {id: "card03", visibility:false},
+                    {id: "card04", visibility:true}
+                ];
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        }
+                    }
+                };
+                var oResult = oController._mergeCards(oLayoutCardsArray, {});
+
+                deepEqual(oResult, oLayoutCardsArray, "should return the same cards from layout array");
+            });
+
+            test("validate _mergeCards card exist in oVariand and not in oLayout", function() {
+                var oLayoutCardsArray = [
+                    {id: "card00", visibility:true},
+                    {id: "card01", visibility:false},
+                    {id: "card02", visibility:true},
+                    {id: "card03", visibility:false},
+                    {id: "card04", visibility:true}
+                ];
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        }
+                    }
+                };
+                var oResult = oController._mergeCards(oLayoutCardsArray, {cards: [
+                    {id: "card00", visibility:true},
+                    {id: "card01", visibility:false},
+                    {id: "card02", visibility:true},
+                    {id: "card03", visibility:false},
+                    {id: "card04", visibility:true},
+                    {id: "card10", visibility:true},
+                    {id: "card11", visibility:false},
+                    {id: "card12", visibility:true},
+                    {id: "card13", visibility:false},
+                    {id: "card14", visibility:true}
+                ]});
+
+                deepEqual(oResult, oLayoutCardsArray);
+            });
+
+            test("validate _mergeCards card exist in oVariand and not in oLayout and visibility taken from oVariant", function() {
+                var oLayoutCardsArray = [
+                    {id: "card00", visibility:true},
+                    {id: "card01", visibility:false},
+                    {id: "card02", visibility:true},
+                    {id: "card03", visibility:false},
+                    {id: "card04", visibility:true}
+                ];
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        }
+                    }
+                };
+                var expectedResult = [
+                    {id: "card00", visibility:true},
+                    {id: "card01", visibility:true},
+                    {id: "card02", visibility:true},
+                    {id: "card03", visibility:true},
+                    {id: "card04", visibility:true}
+                ];
+                var oResult = oController._mergeCards(oLayoutCardsArray, {cards: expectedResult.concat([
+                    {id: "card10", visibility:true},
+                    {id: "card11", visibility:false},
+                    {id: "card12", visibility:true},
+                    {id: "card13", visibility:false},
+                    {id: "card14", visibility:true}
+                ])});
+
+                deepEqual(oResult, expectedResult);
+            });
+
+            test("validate _mergeCards oLayout contains additional cards which not exist in oVariant", function() {
+                var oLayoutCardsArray = [
+                    {id: "card00", visibility:true},
+                    {id: "card01", visibility:false},
+                    {id: "card02", visibility:true},
+                    {id: "card03", visibility:false},
+                    {id: "card04", visibility:true}
+                ];
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        }
+                    }
+                };
+                var oResult = oController._mergeCards(oLayoutCardsArray, {cards: [
+                    {id: "card04", visibility:false}
+                ]});
+
+                var expectedResult = [
+                    {id: "card04", visibility:false},
+                    {id: "card00", visibility:true},
+                    {id: "card01", visibility:false},
+                    {id: "card02", visibility:true},
+                    {id: "card03", visibility:false}
+                ];
+                deepEqual(oResult, expectedResult);
+            });
+
+            test("validate _mergeCards with oVariant and without layout cards array", function() {
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        }
+                    }
+                };
+                var oResult = oController._mergeCards(null, [
+                    {id: "card00", visibility:true},
+                    {id: "card01", visibility:false},
+                    {id: "card02", visibility:true},
+                    {id: "card03", visibility:false},
+                    {id: "card04", visibility:true}
+                ]);
+
+                deepEqual(oResult, [], "should return empty cards array");
+            });
+
+            test("validate _getCardArrayAsVariantFormat", function() {
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        }
+                    }
+                };
+
+                var aInput = [
+                    {
+                        getId: function () {return "card00";},
+                        getVisible: function () {return false;}
+                    },
+                    {
+                        getId: function () {return "card01";},
+                        getVisible: function () {return true;}
+                    },
+                    {
+                        getId: function () {return "card02";},
+                        getVisible: function () {return false;}
+                    },
+                    {
+                        getId: function () {return "card03";},
+                        getVisible: function () {return true;}
+                    }
+                ];
+                var aExpexted = [
+                    {id: "card00", visibility: false},
+                    {id: "card01", visibility: true},
+                    {id: "card02", visibility: false},
+                    {id: "card03", visibility: true}
+                ];
+
+                var oResult = oController._getCardArrayAsVariantFormat(aInput);
+
+                deepEqual(oResult, aExpexted);
+            });
+
+            test("validate _getCardFromManifest card is exist in the array", function() {
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        },
+                        getModel : function() {
+                            return new sap.ui.model.json.JSONModel({cards: [{id:"card00"}, {id:"card01"}, {id:"card02"}, {id:"card03"}]});
+                        }
+                    }
+                };
+
+                var cardResult = oController._getCardFromManifest("card03");
+                ok(cardResult.id=="card03");
+            });
+
+            test("validate _getCardFromManifest card is exist in the array", function() {
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        },
+                        getModel : function() {
+                            return new sap.ui.model.json.JSONModel({cards: [{id:"card00"}, {id:"card01"}, {id:"card02"}, {id:"card03"}]});
+                        }
+                    }
+                };
+
+                var cardResult = oController._getCardFromManifest("card03");
+                ok(cardResult.id == "card03");
+            });
+
+            test("validate _getCardFromManifest card does not exist in the array", function() {
+                oController.getView = function() {
+                    return {
+                        getId: function () {
+                            return "mainAppID";
+                        },
+                        getModel : function() {
+                            return new sap.ui.model.json.JSONModel({cards: [{id:"card00"}, {id:"card01"}, {id:"card02"}, {id:"card03"}]});
+                        }
+                    }
+                };
+
+                var cardResult = oController._getCardFromManifest("card07");
+                ok(cardResult === null);
+            });
+
+            test("validate _updateLayoutWithOrderedCards", function() {
+                var fnRemoveAllContentFunc = new sinon.spy();
+                var fnSetVisibleFunc = new sinon.spy();
+                var fnAddContentFunc = new sinon.spy();
+
+                oController.getLayout = function () {
+                    return {
+                        removeAllContent : fnRemoveAllContentFunc,
+                        addContent: fnAddContentFunc
+                    };
+                };
+                oController.aOrderedCards = [
+                    {id: "card00", visibility: false},
+                    {id: "card01", visibility: true},
+                    {id: "card02", visibility: false},
+                    {id: "card03", visibility: true}
+                ];
+
+                oController.getView = function() {
+                    return {
+                        byId: function (oCard) {
+                            return {
+                                setVisible: fnSetVisibleFunc
+                            };
+                        }
+                    }
+                };
+                oController._updateLayoutWithOrderedCards();
+
+                ok(fnRemoveAllContentFunc.calledOnce);
+                sinon.assert.callCount(fnSetVisibleFunc, 4);
+                ok(fnSetVisibleFunc.args[0][0] === false);
+                ok(fnSetVisibleFunc.args[1][0] === true);
+                ok(fnSetVisibleFunc.args[2][0] === false);
+                ok(fnSetVisibleFunc.args[3][0] === true);
+                sinon.assert.callCount(fnAddContentFunc, 4);
+            });
+
+            asyncTest("validate _initSmartVariantManagement no variant", function() {
+                jQuery.sap.require("sap.ui.comp.smartvariants.PersonalizableInfo");
+                oController._createPersistencyControlForSmartVariantManagement = function () {
+                    sap.ui.core.Control.extend("testing.Control", {
+                        metadata : {
+                            properties : {
+                                persistencyKey : {type : "string", group : "Misc", defaultValue : null}
+                            }
+                        },
+                        fetchVariant: function() { return {}; },
+                        applyVariant: function(oVariant) {}
+                    });
+
+                    var dummyControl = new testing.Control({persistencyKey:"ovpTestVariant"});
+                    dummyControl._sOwnerId = "testId";
+                    var oComponent = new sap.ui.core.Component("testId",{});
+
+                    return dummyControl;
+                };
+
+                jQuery.sap.require("sap.ui.core.util.MockServer");
+                var server = new sap.ui.core.util.MockServer({
+                    requests: [{
+                        method: "GET",
+                        // have MockServer fixed and pass just the URL!
+                        path: "/sap/bc/lrep/flex/data/sap.ui.core.Component",
+                        response: function (oXHR) {
+                            oXHR.respondJSON(200,
+                                    {"Content-Type": "application/json"},
+                                    {});
+                        }
+                    }]
+                });
+
+                server.start();
+                oController._initSmartVariantManagement();
+                setTimeout(function () {
+                    start();
+                    oController.oPersistencyVariantPromise.then(function (oVariant) {
+                        ok(oVariant === null);
+                        server.stop();
+                        sap.ui.getCore().getComponent("testId").destroy();
+                    });
+                }, 200);
+            });
+
+//            asyncTest("validate _initSmartVariantManagement with variant", function () {
+//                var oComponent, dummyControl;
+//                jQuery.sap.require("sap.ui.comp.smartvariants.PersonalizableInfo");
+//                oController._createPersistencyControlForSmartVariantManagement = function () {
+//                    sap.ui.core.Control.extend("testing.Control", {
+//                        metadata: {
+//                            properties: {
+//                                persistencyKey: {type: "string", group: "Misc", defaultValue: null}
+//                            }
+//                        },
+//                        fetchVariant: function () {
+//                            return {};
+//                        },
+//                        applyVariant: function (oVariant) {
+//                        }
+//                    });
+//
+//                    dummyControl = new testing.Control({persistencyKey: "ovpTestVariant"});
+//                    dummyControl._sOwnerId = "testId";
+//                    oComponent = new sap.ui.core.UIComponent("testId", {});
+//
+//                    return dummyControl;
+//                };
+//
+//                jQuery.sap.require("sap.ui.core.util.MockServer");
+//                var server = new sap.ui.core.util.MockServer({
+//                    requests: [{
+//                        method: "GET",
+//                        // have MockServer fixed and pass just the URL!
+//                        path: "/sap/bc/lrep/flex/data/sap.ui.core.UIComponent.Component",
+//                        response: function (oXHR) {
+//                            oXHR.respondJSON(200,
+//                                    {"Content-Type": "application/json"},
+//                                    {
+//                                        "changes": [
+//                                            {
+//                                                "fileName": "id_1445521504780_141",
+//                                                "fileType": "change",
+//                                                "changeType": "defaultVariant",
+//                                                "component": "sap.ovp.demo.Component",
+//                                                "packageName": "",
+//                                                "content": {
+//                                                    "defaultVariantName": "id_1446737648663_159"
+//                                                },
+//                                                "selector": {
+//                                                    "persistencyKey": "ovpTestVariant"
+//                                                },
+//                                                "layer": "USER",
+//                                                "texts": {},
+//                                                "namespace": "sap.ui.core.UIComponent/changes/default",
+//                                                "creation": "2015-10-22T13:45:06.4199760Z",
+//                                                "originalLanguage": "EN",
+//                                                "conditions": {},
+//                                                "support": {
+//                                                    "generator": "Change.createInitialFileContent",
+//                                                    "service": "",
+//                                                    "user": "DAYANN"
+//                                                }
+//                                            },
+//                                            {
+//                                                "fileName": "id_1446737648663_159",
+//                                                "fileType": "variant",
+//                                                "changeType": "OVPVariant",
+//                                                "component": "sap.ui.core.UIComponent",
+//                                                "packageName": "",
+//                                                "content": {
+//                                                    "cards": [
+//                                                        {
+//                                                            "id": "card00",
+//                                                            "visibility": false
+//                                                        },
+//                                                        {
+//                                                            "id": "card01",
+//                                                            "visibility": false
+//                                                        },
+//                                                        {
+//                                                            "id": "card02",
+//                                                            "visibility": false
+//                                                        },
+//                                                        {
+//                                                            "id": "card03",
+//                                                            "visibility": true
+//                                                        },
+//                                                        {
+//                                                            "id": "card04",
+//                                                            "visibility": true
+//                                                        }
+//                                                    ]
+//                                                },
+//                                                "selector": {
+//                                                    "persistencyKey": "ovpTestVariant"
+//                                                },
+//                                                "layer": "USER",
+//                                                "texts": {
+//                                                    "variantName": {
+//                                                        "value": "Personalisation",
+//                                                        "type": "XFLD"
+//                                                    }
+//                                                },
+//                                                "namespace": "sap.ui.core.UIComponent",
+//                                                "creation": "2015-11-05T15:34:09.1026960Z",
+//                                                "originalLanguage": "EN",
+//                                                "conditions": {},
+//                                                "support": {
+//                                                    "generator": "Change.createInitialFileContent",
+//                                                    "service": "TBD",
+//                                                    "user": "DAYANN"
+//                                                }
+//                                            }
+//                                        ],
+//                                        "settings": {
+//                                            "isKeyUser": true,
+//                                            "isAtoAvailable": true,
+//                                            "isAtoEnabled": false,
+//                                            "isProductiveSystem": false
+//                                        }
+//                                    });
+//                        }
+//                    }]
+//                });
+//
+//                server.start();
+//                oController._initSmartVariantManagement();
+//                setTimeout(function () {
+//                    start();
+//                    oController.oPersistencyVariantPromise.then(function (oVariant) {
+//                        deepEqual(oVariant, {
+//                            "cards": [
+//                                {"id": "card00", "visibility": false},
+//                                {"id": "card01", "visibility": false},
+//                                {"id": "card02", "visibility": false},
+//                                {"id": "card03", "visibility": true},
+//                                {"id": "card04", "visibility": true}
+//                            ]
+//                        });
+//                        sap.ui.getCore().getComponent("testId").destroy();
+//                        server.stop();
+//                    });
+//                }, 200);
+//            });
+
+            asyncTest("validate oPersistencyVariantPromise onAfterRendering flow", function () {
+                var oComponent, dummyControl;
+                jQuery.sap.require("sap.ui.comp.smartvariants.PersonalizableInfo");
+                oController._createPersistencyControlForSmartVariantManagement = function () {
+                    sap.ui.core.Control.extend("testing.Control", {
+                        metadata: {
+                            properties: {
+                                persistencyKey: {type: "string", group: "Misc", defaultValue: null}
+                            }
+                        },
+                        fetchVariant: function () {
+                            return {};
+                        },
+                        applyVariant: function (oVariant) {
+                        }
+                    });
+
+                    dummyControl = new testing.Control({persistencyKey: "ovpTestVariant"});
+                    dummyControl._sOwnerId = "testId";
+                    sap.ui.core.UIComponent.extend("sap.ovp.testControl", {});
+                    oComponent = new sap.ovp.testControl("testId", {});
+
+                    return dummyControl;
+                };
+
+                oController._initGlobalFilter = function () {};
+                oController.getLayout = function () {
+                    return {
+                        getContent: function () { return [{getId: function () { return "card00"}, getVisible: function () { return false; }},
+                            {getId: function () { return "card01"}, getVisible: function () { return false; }},
+                            {getId: function () { return "card02"}, getVisible: function () { return false; }}
+                        ];},
+                        removeAllContent: function () {},
+                        addStyleClass: function () {},
+                        getMetadata: function () { return {getName: function() {"sap.ovp.ui.EasyScanLayout"} } }
+                    };
+                };
+                oController._getCardId = function (id) { return id; };
+                oController._updateLayoutWithOrderedCards = function () {};
+                oController._initShowHideCardsButton= function () {};
+                oController.oGlobalFilterLodedPromise = {then:function(){}};
+
+                jQuery.sap.require("sap.ui.core.util.MockServer");
+                var server = new sap.ui.core.util.MockServer({
+                    requests: [{
+                        method: "GET",
+                        // have MockServer fixed and pass just the URL!
+                        path: "/sap/bc/lrep/flex/data/sap.ovp.testControl.Component",
+                        response: function (oXHR) {
+                            oXHR.respondJSON(200,
+                                    {"Content-Type": "application/json"},
+                                    {
+                                        "changes": [
+                                            {
+                                                "fileName": "id_1445521504780_141",
+                                                "fileType": "change",
+                                                "changeType": "defaultVariant",
+                                                "component": "sap.ovp.demo.Component",
+                                                "packageName": "",
+                                                "content": {
+                                                    "defaultVariantName": "id_1446737648663_159"
+                                                },
+                                                "selector": {
+                                                    "persistencyKey": "ovpTestVariant"
+                                                },
+                                                "layer": "USER",
+                                                "texts": {},
+                                                "namespace": "sap.ovp.testControl/changes/default",
+                                                "creation": "2015-10-22T13:45:06.4199760Z",
+                                                "originalLanguage": "EN",
+                                                "conditions": {},
+                                                "support": {
+                                                    "generator": "Change.createInitialFileContent",
+                                                    "service": "",
+                                                    "user": "DAYANN"
+                                                }
+                                            },
+                                            {
+                                                "fileName": "id_1446737648663_159",
+                                                "fileType": "variant",
+                                                "changeType": "OVPVariant",
+                                                "component": "sap.ovp.testControl",
+                                                "packageName": "",
+                                                "content": {
+                                                    "cards": [
+                                                        {
+                                                            "id": "card00",
+                                                            "visibility": false
+                                                        },
+                                                        {
+                                                            "id": "card01",
+                                                            "visibility": false
+                                                        },
+                                                        {
+                                                            "id": "card02",
+                                                            "visibility": false
+                                                        },
+                                                        {
+                                                            "id": "card03",
+                                                            "visibility": true
+                                                        },
+                                                        {
+                                                            "id": "card04",
+                                                            "visibility": true
+                                                        }
+                                                    ]
+                                                },
+                                                "selector": {
+                                                    "persistencyKey": "ovpTestVariant"
+                                                },
+                                                "layer": "USER",
+                                                "texts": {
+                                                    "variantName": {
+                                                        "value": "Personalisation",
+                                                        "type": "XFLD"
+                                                    }
+                                                },
+                                                "namespace": "sap.ovp.testControl",
+                                                "creation": "2015-11-05T15:34:09.1026960Z",
+                                                "originalLanguage": "EN",
+                                                "conditions": {},
+                                                "support": {
+                                                    "generator": "Change.createInitialFileContent",
+                                                    "service": "TBD",
+                                                    "user": "DAYANN"
+                                                }
+                                            }
+                                        ],
+                                        "settings": {
+                                            "isKeyUser": true,
+                                            "isAtoAvailable": true,
+                                            "isAtoEnabled": false,
+                                            "isProductiveSystem": false
+                                        }
+                                    });
+                        }
+                    }]
+                });
+
+                server.start();
+                oController.onInit();
+                oController.onAfterRendering();
+                setTimeout(function () {
+                    start();
+                    ok(oController.persistencyVariantLoaded = true);
+                    deepEqual(oController.aManifestOrderedCards, [{"id": "card00", "visibility": false},
+                        {"id": "card01", "visibility": false},
+                        {"id": "card02", "visibility": false}
+                    ]);
+                    sap.ui.getCore().getComponent("testId").destroy();
+                    server.stop();
+                }, 200);
+            });
+
+            asyncTest("validate _saveVaraint without variant", function() {
+                var oComponent, dummyControl;
+                jQuery.sap.require("sap.ui.comp.smartvariants.PersonalizableInfo");
+                oController._createPersistencyControlForSmartVariantManagement = function () {
+                    sap.ui.core.Control.extend("testing.Control", {
+                        metadata : {
+                            properties : {
+                                persistencyKey : {type : "string", group : "Misc", defaultValue : null}
+                            }
+                        },
+                        fetchVariant: function() { return {}; },
+                        applyVariant: function(oVariant) {}
+                    });
+
+                    dummyControl = new testing.Control({persistencyKey:"ovpTestVariant"});
+                    dummyControl._sOwnerId = "testId";
+                    sap.ui.core.UIComponent.extend("ovp.test.Comp", {});
+                    oComponent = new ovp.test.Comp("testId",{});
+
+                    return dummyControl;
+                };
+
+                jQuery.sap.require("sap.ui.core.util.MockServer");
+                var server = new sap.ui.core.util.MockServer({
+                    requests: [{
+                        method: "GET",
+                        // have MockServer fixed and pass just the URL!
+                        path: "/sap/bc/lrep/flex/data/ovp.test.Comp.Component",
+                        response: function (oXHR) {
+                            oXHR.respondJSON(200,
+                                    {"Content-Type": "application/json"},
+                                    {});
+                        }
+                    }]
+                });
+
+                server.start();
+                oController._initSmartVariantManagement();
+                oController.smartVariandManagement.fireSave = sinon.spy();
+                oController.saveVariant();
+                setTimeout(function () {
+                    start();
+                    ok(oController.smartVariandManagement.fireSave.calledOnce);
+                    oController.smartVariandManagement.fireSave.calledWith({
+                        name: "Personalisation",
+                        global: false,
+                        overwrite: false,
+                        key: null,
+                        def: true
+                    });
+                    sap.ui.getCore().getComponent("testId").destroy();
+                    server.stop();
+                }, 100);
+            });
+
+            asyncTest("validate saveVariant with variant", function () {
+                var oComponent, dummyControl;
+                jQuery.sap.require("sap.ui.comp.smartvariants.PersonalizableInfo");
+                oController._createPersistencyControlForSmartVariantManagement = function () {
+                    sap.ui.core.Control.extend("testing.Control", {
+                        metadata: {
+                            properties: {
+                                persistencyKey: {type: "string", group: "Misc", defaultValue: null}
+                            }
+                        },
+                        fetchVariant: function () {
+                            return {};
+                        },
+                        applyVariant: function (oVariant) {
+                        }
+                    });
+
+                    dummyControl = new testing.Control({persistencyKey: "ovpTestVariant"});
+                    dummyControl._sOwnerId = "testId";
+                    sap.ui.core.UIComponent.extend("ovp.test.save.Component", {});
+                    oComponent = new ovp.test.save.Component("testId", {});
+
+                    return dummyControl;
+                };
+
+                jQuery.sap.require("sap.ui.core.util.MockServer");
+                var server = new sap.ui.core.util.MockServer({
+                    requests: [{
+                        method: "GET",
+                        // have MockServer fixed and pass just the URL!
+                        path: "/sap/bc/lrep/flex/data/ovp.test.save.Component",
+                        response: function (oXHR) {
+                            oXHR.respondJSON(200,
+                                    {"Content-Type": "application/json"},
+                                    {
+                                        "changes": [
+                                            {
+                                                "fileName": "id_1445521504780_141",
+                                                "fileType": "change",
+                                                "changeType": "defaultVariant",
+                                                "component": "sap.ovp.demo.Component",
+                                                "packageName": "",
+                                                "content": {
+                                                    "defaultVariantName": "id_1446737648663_159"
+                                                },
+                                                "selector": {
+                                                    "persistencyKey": "ovpTestVariant"
+                                                },
+                                                "layer": "USER",
+                                                "texts": {},
+                                                "namespace": "ovp.test.save.Component/changes/default",
+                                                "creation": "2015-10-22T13:45:06.4199760Z",
+                                                "originalLanguage": "EN",
+                                                "conditions": {},
+                                                "support": {
+                                                    "generator": "Change.createInitialFileContent",
+                                                    "service": "",
+                                                    "user": "DAYANN"
+                                                }
+                                            },
+                                            {
+                                                "fileName": "id_1446737648663_159",
+                                                "fileType": "variant",
+                                                "changeType": "OVPVariant",
+                                                "component": "ovp.test.save.Component",
+                                                "packageName": "",
+                                                "content": {
+                                                    "cards": [
+                                                        {
+                                                            "id": "card00",
+                                                            "visibility": false
+                                                        },
+                                                        {
+                                                            "id": "card01",
+                                                            "visibility": false
+                                                        },
+                                                        {
+                                                            "id": "card02",
+                                                            "visibility": false
+                                                        },
+                                                        {
+                                                            "id": "card03",
+                                                            "visibility": true
+                                                        },
+                                                        {
+                                                            "id": "card04",
+                                                            "visibility": true
+                                                        }
+                                                    ]
+                                                },
+                                                "selector": {
+                                                    "persistencyKey": "ovpTestVariant"
+                                                },
+                                                "layer": "USER",
+                                                "texts": {
+                                                    "variantName": {
+                                                        "value": "Personalisation",
+                                                        "type": "XFLD"
+                                                    }
+                                                },
+                                                "namespace": "ovp.test.save.Component",
+                                                "creation": "2015-11-05T15:34:09.1026960Z",
+                                                "originalLanguage": "EN",
+                                                "conditions": {},
+                                                "support": {
+                                                    "generator": "Change.createInitialFileContent",
+                                                    "service": "TBD",
+                                                    "user": "DAYANN"
+                                                }
+                                            }
+                                        ],
+                                        "settings": {
+                                            "isKeyUser": true,
+                                            "isAtoAvailable": true,
+                                            "isAtoEnabled": false,
+                                            "isProductiveSystem": false
+                                        }
+                                    });
+                        }
+                    }]
+                });
+
+                server.start();
+                oController._initSmartVariantManagement();
+                oController.smartVariandManagement.fireSave = sinon.spy();
+                oController.saveVariant();
+                setTimeout(function () {
+                    start();
+                    ok(oController.smartVariandManagement.fireSave.calledOnce);
+                    oController.smartVariandManagement.fireSave.calledWith({
+                        name: "Personalisation",
+                        global: false,
+                        overwrite: true,
+                        key: "id_1446737648663_159",
+                        def: true
+                    });
+                    sap.ui.getCore().getComponent("testId").destroy();
+                    server.stop();
+                }, 200);
+            });
+
+            test("validate _createPersistencyControlForSmartVariantManagement initialLoading", function() {
+                oController.getLayout = function () {
+                    return {
+                        getContent: function () { return []; }
+                    };
+                };
+                var oControl = oController._createPersistencyControlForSmartVariantManagement();
+
+                ok(oControl.getProperty("persistencyKey") === "ovpVariant");
+                ok(oControl.fetchVariant && (typeof oControl.fetchVariant === 'function'));
+                oController.isInitialLoading = true;
+                var oRes = oControl.fetchVariant();
+                deepEqual(oRes, {});
+                ok(oController.isInitialLoading === false);
+            });
+
+            test("validate _createPersistencyControlForSmartVariantManagement not initialLoading", function() {
+                oController.getLayout = function () {
+                    return {
+                        getContent: function () { return [{getId: function () { return "card00"}, getVisible: function () { return false; }},
+                            {getId: function () { return "card01"}, getVisible: function () { return false; }},
+                            {getId: function () { return "card02"}, getVisible: function () { return false; }}
+                        ];},
+                        getMetadata: function () { return {getName: function() {"sap.ovp.ui.EasyScanLayout"} } }
+                    };
+                };
+                oController._getCardId = function (id) { return id; };
+                var oControl = oController._createPersistencyControlForSmartVariantManagement();
+
+                ok(oControl.getProperty("persistencyKey") === "ovpVariant");
+                ok(oControl.fetchVariant && (typeof oControl.fetchVariant === 'function'));
+                oController.isInitialLoading = false;
+                var oRes = oControl.fetchVariant();
+                deepEqual(oRes, {"cards": [ {"id": "card00", "visibility": false},
+                        {"id": "card01", "visibility": false},
+                        {"id": "card02","visibility": false}
+                    ]});
+                ok(oController.isInitialLoading === false);
+            });
+
+            test("validate _setNavigationVariantToGlobalFilter INITIAL scenario", function() {
+                var globalFilter = _mockGlobalFilter();
+                sap.ui.generic.app.navigation.service.NavType = {initial: "INITIAL"};
+                oController._setNavigationVariantToGlobalFilter(null, null, "INITIAL");
+
+                ok(globalFilter.addFieldToAdvancedArea.notCalled);
+                ok(globalFilter.clearVariantSelection.notCalled);
+                ok(globalFilter.clear.notCalled);
+                ok(globalFilter.setDataSuiteFormat.notCalled);
+            });
+
+            test("validate _setNavigationVariantToGlobalFilter INITIAL scenario", function() {
+                sap.ui.generic.app.navigation.service.NavType = {initial: "INITIAL"};
+                var globalFilter = _mockGlobalFilter();
+                var oAppData = {
+                    bNavSelVarHasDefaultsOnly: false,
+                    selectionVariant: '{"SelectionVariantID":"id_1439107526072_425","SelectOptions":[{"PropertyName":"OverdueTime","Ranges":[{"Sign":"I","Option":"GT","Low":"1","High":""}]}]}'
+                };
+                oController._setNavigationVariantToGlobalFilter(oAppData, null, "xAppState");
+
+                ok(globalFilter.addFieldToAdvancedArea.calledOnce);
+                equals(globalFilter.addFieldToAdvancedArea.args[0][0], "OverdueTime");
+                ok(globalFilter.clearVariantSelection.calledOnce);
+                ok(globalFilter.clear.calledOnce);
+                ok(globalFilter.setDataSuiteFormat.calledOnce);
+                equals(globalFilter.setDataSuiteFormat.args[0][0], oAppData.selectionVariant);
+            });
+
+            asyncTest("validate _parseNavigationVariant", function() {
+                var globalFilter = _mockGlobalFilter();
+                oController.oNavigationHandler = {
+                    parseNavigation : function () {
+                        return new jQuery.Deferred().resolve("test");
+                    }
+                };
+                oController._parseNavigationVariant();
+                start();
+                oController.oParseNavigationPromise.done(function (result) {
+                    ok(result == "test");
+                });
+            });*/
+        }());
+
+    </script>
+</head>
+<body>
+<h1 id="qunit-header"></h1>
+<h2 id="qunit-banner"></h2>
+<h2 id="qunit-userAgent"></h2>
+<div id="qunit-testrunner-toolbar"></div>
+<ol id="qunit-tests"></ol>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Now it is time to build our first little UI by replacing the “Hello World” text in the HTML body by the OpenUI5 control sap.m.Text. In the beginning, we will use the JavaScript control interface to set up the UI, the control instance is then placed into the HTML body."/>
+<meta name="description" content="Now it is time to build our first little UI by replacing the “Hello World” text in the HTML body by the OpenUI5 control sap.m.Text. In the beginning, we will use the JavaScript control interface to set up the UI, the control instance is then placed into the HTML body."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=474433868910225"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=474433868910225"/>
+<title>Step 3: Controls</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioddbceecd7d3d42eea9cf78a820a238fb">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 3: Controls</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Now it is time to build our first little UI by replacing the “Hello World” text in the
+		HTML body by the <span class="ph"><span class="ph pname">OpenUI5</span></span> control
+			<samp class="ph codeph">sap.m.Text</samp>. In the beginning, we will use the JavaScript control
+		interface to set up the UI, the control instance is then placed into the HTML body. </p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loioddbceecd7d3d42eea9cf78a820a238fb__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loioddbceecd7d3d42eea9cf78a820a238fb__image_efd_dkn_wr" src="loio7cad93a924694474acd782b34e162d4b_HiRes.png"/>
+			<div class="figcap">The "Hello World" text is now displayed by a <span class="ph"><span class="ph pname">OpenUI5</span></span> control</div></div></div>
+
+		</div></div>
+
+		<div class="section">
+			<div class="section_title">Coding</div>
+			<p class="p">You can view and download all files <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.walkthrough.03/preview" alt="../../explored.html#/sample/sap.m.tutorial.walkthrough.03/preview" title="../../explored.html#/sample/sap.m.tutorial.walkthrough.03/preview">Walkthrough - Step 3</a></span>.</p>
+
+			<div class="section_title">webapp/index.html</div>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+   &lt;head&gt;
+      &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+      &lt;meta charset="utf-8"&gt;
+      &lt;title&gt;Walkthrough&lt;/title&gt;
+      &lt;script
+         id="sap-ui-bootstrap"
+         src="/resources/sap-ui-core.js"
+         data-sap-ui-theme="sap_belize"
+         data-sap-ui-libs="sap.m"
+         data-sap-ui-compatVersion="edge"
+         data-sap-ui-preload="async" &gt;
+      &lt;/script&gt;
+      &lt;script&gt;
+         sap.ui.getCore().attachInit(function () {
+<span class="ph emphasis emphasis">            new sap.m.Text({
+               text : "Hello World"
+            }).placeAt("content");</span>
+         });
+      &lt;/script&gt;
+   &lt;/head&gt;
+<span class="ph emphasis emphasis">   &lt;body class="sapUiBody" id="content"&gt;
+   &lt;/body&gt;</span>
+&lt;/html&gt;</pre></div>
+
+			<p class="p">Instead of using native JavaScript to display a dialog we want to use a simple <span class="ph"><span class="ph pname">OpenUI5</span></span> control.
+				Controls are used to define appearance and behavior of parts of the screen. </p>
+
+			<p class="p">In the example above, the callback of the <samp class="ph codeph">init</samp> event is where we now
+				instantiate a <span class="ph"><span class="ph pname">OpenUI5</span></span>
+				text control. The name of the control is prefixed by the namespace of its control
+				library <samp class="ph codeph">sap.m</samp> and the options are passed to the constructor with a
+				JavaScript object. For our control we set the <samp class="ph codeph">text</samp> property to the
+				value “Hello World”.</p>
+
+			<p class="p">We chain the constructor call of the control to the standard method <samp class="ph codeph">placeAt</samp>
+				that is used to place <span class="ph"><span class="ph pname">OpenUI5</span></span> controls inside
+				a node of the document object model (DOM) or any other <span class="ph"><span class="ph pname">OpenUI5</span></span> control
+				instance. We pass the ID of a DOM node as an argument. As the target node we use the
+				body tag of the HTML document and give it the ID <samp class="ph codeph">content</samp>. The class
+					<samp class="ph codeph">sapUiBody</samp> adds additional theme-dependent styles for displaying
+					<span class="ph"><span class="ph pname">OpenUI5</span></span> apps. </p>
+
+			<p class="p">All controls of <span class="ph"><span class="ph pname">OpenUI5</span></span> have a
+				fixed set of properties, aggregations, and associations for configuration. You can
+				find their descriptions in the Demo Kit.
+				In addition, each controls comes with a set of public functions that you can look up
+				in the API reference.</p>
+
+			<p class="p">Don’t forget to remove the “Hello World” <samp class="ph codeph">p</samp>.</p>
+
+			<div class="p">
+				<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">Only instances of <samp class="ph codeph">sap.ui.core.Control</samp> or their subclasses can be rendered
+						stand-alone and have a <samp class="ph codeph">placeAt</samp> function. Each control
+						extends <samp class="ph codeph">sap.ui.core.Element</samp> that can only be rendered
+						inside controls. Check the API reference to learn more about the inheritance
+						hierarchy of controls. The API documentation of each control refers to the
+						directly known subclasses. </p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="3da5f4be63264db99f2e5b04c5e853db.html" title="In this tutorial we will introduce you to all major development paradigms of OpenUI5.">Walkthrough</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="fe12df2e338e43598977d09f3d191b7b.html" title="Before we can do something with OpenUI5, we need to load and initialize it. This process of loading and initializing OpenUI5 is called bootstrapping. Once this bootstrapping is finished, we simply display an alert.">Step 2: Bootstrap</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="1409791afe4747319a3b23a1e2fc7064.html" title="Putting all our UI into the index.html file will very soon result in a messy setup and there is quite a bit of work ahead of us. So let’s do a first modularization by putting the sap.m.Text control into a dedicated view.">Step 4: XML Views</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="91f0a22d6f4d1014b6dd926db0e91070.html" title="Controls are used to define the appearance and behavior of screen areas.">Working with Controls</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.m.Text.html" alt="../../docs/api/symbols/sap.m.Text.html" title="../../docs/api/symbols/sap.m.Text.html">API Reference: <samp class="ph codeph">sap.m.Text</samp></a></div>
+<div><a class="link" target="_blank" href="../../explored.html#/entity/sap.m.Text/samples" alt="../../explored.html#/entity/sap.m.Text/samples" title="../../explored.html#/entity/sap.m.Text/samples">Samples: <samp class="ph codeph">sap.m.Text</samp>
+			</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.core.Control.html" alt="../../docs/api/symbols/sap.ui.core.Control.html" title="../../docs/api/symbols/sap.ui.core.Control.html">API Reference: <samp class="ph codeph">sap.ui.core.Control</samp></a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.core.Element.html" alt="../../docs/api/symbols/sap.ui.core.Element.html" title="../../docs/api/symbols/sap.ui.core.Element.html">API Reference: <samp class="ph codeph">sap.ui.core.Element</samp></a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.base.ManagedObject.html" alt="../../docs/api/symbols/sap.ui.base.ManagedObject.html" title="../../docs/api/symbols/sap.ui.base.ManagedObject.html">API Reference: <samp class="ph codeph">sap.ui.base.ManagedObject</samp></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<core:View
+	controllerName="sap.suite.ui.commons.sample.GenericTile2x1SingleCont.GenericTile2x1SingleCont"
+	xmlns="sap.suite.ui.commons"
+	xmlns:core="sap.ui.core">
+	<GenericTile 
+		header="Guy Incognito mentioned you in Sales Pitch March:"
+		size="M" 
+		frameType="TwoByOne"
+		press="press"
+		headerImage="test-resources/sap/suite/ui/commons/demokit/images/headerImg2.jpg">
+		<tileContent>
+			<TileContent footer="New Notifications" size="M">
+				<content>
+					<JamContent 
+						size="M" 
+						contentText="@@notify Great outcome of the Presentation today. The new functionality and the new design was well received." 
+						subheader="about 1 minute ago in Computer Market"
+						value="132"> 
+					</JamContent>
+				</content>
+			</TileContent>
+		</tileContent>
+	</GenericTile>
+	<GenericTile 
+		size="M" 
+		frameType="TwoByOne"
+		press="press"
+		backgroundImage="test-resources/sap/suite/ui/commons/demokit/images/NewsImage1.png">
+		<tileContent>
+			<TileContent footer="August 21, 2013" size="M">
+				<content>
+					<NewsContent 
+						size="M" 
+						contentText="SAP Unveils Powerful New Player Comparison Tool Exclusively on NFL.com" 
+						subheader="SAP News">
+					</NewsContent>
+				</content>
+			</TileContent>
+		</tileContent>
+	</GenericTile>
+	<GenericTile 
+		press="press"
+		header="Comparative Annual Totals"
+		subheader="Expenses By Region"
+		frameType="TwoByOne"
+		size="Auto"
+		state="Loaded">
+		<tileContent>
+			<TileContent unit="EUR" size="Auto" footer="Compare across regions" frameType="TwoByOne">
+				<content>
+					<NumericContent value="-431.241.621,5" scale="MM" indicator="Up" size="Auto" truncateValueTo="14" valueColor="Error" width="100%"/>
+				</content>
+			</TileContent>
+		</tileContent>
+	</GenericTile>
+		<GenericTile 
+		press="press"
+		header="Total Income Change"
+		subheader="By year"
+		frameType="TwoByOne"
+		size="Auto"
+		state="Loaded">
+		<tileContent>
+			<TileContent unit="EUR" size="Auto" footer="Current vs previous" frameType="TwoByOne">
+				<content>
+					<DeltaMicroChart size="M" value1="35" value2="33" title1="Jan 2015" title2="Jan 2014" displayValue1="35 Mio" displayValue2="33 Mio" deltaDisplayValue="2 Mio" color="Good" width="100%"/>
+				</content>
+			</TileContent>
+		</tileContent>
+	</GenericTile>
+</core:View>

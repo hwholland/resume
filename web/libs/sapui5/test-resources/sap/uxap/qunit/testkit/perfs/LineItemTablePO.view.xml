@@ -1,0 +1,39 @@
+<mvc:View
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m"
+        controllerName="sap.uxap.testkit.perfs.LineItemTableController">
+
+    <Table growing="true"
+           items="{model>CPURCHASEORDER}">
+        <columns>
+            <Column>
+                <Text text="Name"/>
+            </Column>
+            <Column>
+                <Text text="ABC Indicator"/>
+            </Column>
+            <Column>
+                <Text text="Payment Terms"/>
+            </Column>
+            <Column>
+                <Text text="Incoterms"/>
+            </Column>
+            <Column>
+                <Text text="Minimum Order Value"/>
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{model>PurchaseOrder}"/>
+                    <Text text="{model>PurchaseOrderNetAmount}"/>
+                    <Text text="{model>PurgDocumentTypeDescription}"/>
+                    <Text text="{path:'model>PurchasingDocumentOrderDate', type:'sap.ui.model.type.Date'}"/>
+                    <Text text="{model>Status}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+
+    </Table>
+
+</mvc:View>

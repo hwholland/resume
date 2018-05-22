@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="Declarative programming allows you to define the UI within the HTML document as elements."/>
+<meta name="description" content="Declarative programming allows you to define the UI within the HTML document as elements."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=35459912544592154"/>
+<title>Declarative Support</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio91f130196f4d1014b6dd926db0e91070">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Declarative Support</h1>
+<div class="body conbody"><p class="shortdesc">Declarative programming allows you to define the UI within the HTML document as
+		elements.</p>
+<p class="p">For this, <span class="ph"><span class="ph pname">SAPUI5</span></span> provides the  <samp class="ph codeph">sap.ui.core.plugin.DeclarativeSupport</samp> plugin that
+			can be included either as required or marked as a module in the initial bootstrap script
+			tag. The plugin parses the document and converts its tags with special attributes into
+		<span class="ph"><span class="ph pname">SAPUI5</span></span> controls. </p>
+<p class="p">Declarative support is aware of properties,
+			associations, events, and aggregations in a <span class="ph"><span class="ph pname">SAPUI5</span></span> control manner. This means
+		that you can specify them within the markup of the HTML document either as data
+		attributes or as child elements. 
+	 </p>
+<p class="p">The following sections provide an overview of the
+	 	declarative support and introduce the use of declarative support in <span class="ph"><span class="ph pname">SAPUI5</span></span>. 
+	 </p>
+<div class="section" id="loio91f130196f4d1014b6dd926db0e91070__section_C1D3894EF36F4766B06E27E5675CA11F"><div class="section_title">Example</div><div type="Example"> 
+		 
+		<p class="p">The following example shows the concept by
+		  combining a 
+		  <samp class="ph codeph">sap.ui.commons.TextField</samp> with a 
+		  <samp class="ph codeph">sap.ui.commons.Button</samp>
+		  control. When you click the button, the value of the text field is displayed in
+		  an alert box: 
+		</p>
+ 
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!text/html</samp>
+&lt;!Doctype HTML&gt;
+&lt;html&gt;  &lt;title&gt;Declarative Programming for SAPUI5 - sample01&lt;/title&gt;
+&lt;script id="sap-ui-bootstrap"
+     type="text/javascript"
+     src="resources/sap-ui-core.js"
+     data-sap-ui-theme="sap_bluecrystal"
+     data-sap-ui-libs="sap.ui.commons"
+     data-sap-ui-modules="sap.ui.core.plugin.DeclarativeSupport"
+     &gt;
+  &lt;/script&gt;
+
+&lt;/head&gt;
+&lt;body class="sapUiBody"&gt;
+
+  &lt;div data-sap-ui-type="sap.ui.commons.TextField" id="message" class="my-button" data-value="Hello World"&gt;&lt;/div&gt;
+  &lt;div data-sap-ui-type="sap.ui.commons.Button" data-text="Click me!" data-press="handlePress"&gt;&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+ 
+	 </div></div>
+<div class="section" id="loio91f130196f4d1014b6dd926db0e91070__section_E477586F3CAD4371AC5E8CAEB1021D5E"><div class="section_title">Summary: Attributes Used by Declarative Support</div><div type="Summary: Attributes Used by Declarative Support"> 
+		 
+		<p class="p">The table summarizes the attributes used by
+		  declarative support and gives examples. 
+		</p>
+ 
+		<table summary="" border="1" class="simpletable"><tr class="sthead"><th valign="bottom" align="left" id="d2935608e66" class="stentry">Attribute</th>
+<th valign="bottom" align="left" id="d2935608e68" class="stentry">Description</th>
+<th valign="bottom" align="left" id="d2935608e70" class="stentry">Example</th>
+</tr>
+<tr class="strow"><td valign="top" headers="d2935608e66" class="stentry"><samp class="ph codeph">data-sap-ui-type</samp></td>
+<td valign="top" headers="d2935608e68" class="stentry">Type of control</td>
+<td valign="top" headers="d2935608e70" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.ui.commons.Button"&gt;&lt;/div&gt;</samp></td>
+</tr>
+<tr class="strow"><td valign="top" headers="d2935608e66" class="stentry"><samp class="ph codeph">data-sap-ui-aggregation</samp></td>
+<td valign="top" headers="d2935608e68" class="stentry">Defines the aggregation that shall be used for the
+				element or child element</td>
+<td valign="top" headers="d2935608e70" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.ui.commons.Panel"&gt;&lt;div
+							data-sap-ui-aggregation="title" data-sap-ui-type="sap.ui.commons.Title"
+							data-text="My Panel"&gt;&lt;/div&gt;&lt;/div&gt;</samp></td>
+</tr>
+<tr class="strow"><td valign="top" headers="d2935608e66" class="stentry"><samp class="ph codeph">data-sap-ui.default-aggregation</samp></td>
+<td valign="top" headers="d2935608e68" class="stentry">Sets or overrides the default aggregation of a
+				control</td>
+<td valign="top" headers="d2935608e70" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.ui.commons.Panel"
+							data-sap-ui-default-aggregation="title"&gt;&lt;div
+							data-sap-ui-type="sap.ui.commons.Title" data-text="My
+							Panel"&gt;&lt;/div&gt;&lt;/div&gt;</samp>
+					</td>
+</tr>
+<tr class="strow"><td valign="top" headers="d2935608e66" class="stentry"><samp class="ph codeph">id</samp></td>
+<td valign="top" headers="d2935608e68" class="stentry">Defines the ID property of a control</td>
+<td valign="top" headers="d2935608e70" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.ui.commons.Button" id="myButton"&gt;&lt;/div&gt;</samp>
+					</td>
+</tr>
+<tr class="strow"><td valign="top" headers="d2935608e66" class="stentry"><samp class="ph codeph">class</samp></td>
+<td valign="top" headers="d2935608e68" class="stentry">Adds a style class to the control</td>
+<td valign="top" headers="d2935608e70" class="stentry"><samp class="ph codeph">&lt;div data-sap-ui-type="sap.ui.commons.Button"
+							class="myButton"&gt;&lt;/div&gt;</samp>
+					</td>
+</tr>
+</table>
+ 
+	 </div></div>
+<div class="section"><div class="section_title">More Information</div><div type="More Information">
+			
+			<p class="p"><span class="ph">You can find a complete sample under "<a class="xref" href="../../test-resources/testsuite/testframe.html" alt="../../test-resources/testsuite/testframe.html" title="../../test-resources/testsuite/testframe.html">Testsuite</a></span><span class="ph menucascade"><img src="images/navstart.gif" alt="Start of the navigation path" title="Start of the navigation path"/> <span class="ph uicontrol">sap.ui.core</span> <img src="images/navstep.gif" alt="Next navigation step" title="Next navigation step"/> <span class="ph uicontrol">DeclarativeSupport</span> <img src="images/navend.gif" alt="End of the navigation path" title="End of the navigation path"/></span>.</p>
+
+		</div></div>
+</div>
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="91f17d636f4d1014b6dd926db0e91070.html" title="Declarative support needs to be enabled in the HTML document by adding an attribute to the SAPUI5 bootstrap script tag.">Enabling Declarative Support</a></strong><br/>
+</div>
+<div><strong><a class="link" href="91f1539c6f4d1014b6dd926db0e91070.html" title="For declarative support, define the controls in your HTML document as HTML tags.">Defining Controls</a></strong><br/>
+</div>
+<div><strong><a class="link" href="91f161996f4d1014b6dd926db0e91070.html" title="For setting a property, define the property as a data attribute of the corresponding HTML tag.">Declarative Support: Properties</a></strong><br/>
+</div>
+<div><strong><a class="link" href="91f13d9a6f4d1014b6dd926db0e91070.html" title="An association is defined as a data attribute of the HTML tag. Instead of passing the reference to another control you define the ID of another control.">Declarative Support: Associations</a></strong><br/>
+</div>
+<div><strong><a class="link" href="91f15ad16f4d1014b6dd926db0e91070.html" title="The value of the event data attribute contains the name of a JavaScript function which will be used as callback once the event has been triggered.">Declarative Support: Events</a></strong><br/>
+</div>
+<div><strong><a class="link" href="91f136c76f4d1014b6dd926db0e91070.html" title="Aggregation support is required to allow nested controls for layout containers and/or add elements to a control, for example, for ComboBox.">Declarative Support: Aggregations</a></strong><br/>
+</div>
+<div><strong><a class="link" href="020990b1210e47c89a58a4f4e790c476.html" title="Declarative support in SAPUI5 also enables data binding.">Declarative Support: Data Binding</a></strong><br/>
+</div>
+<div><strong><a class="link" href="91f1454b6f4d1014b6dd926db0e91070.html" title="SAPUI5 provides a plugin for controls that are defined as declarative markup on startup time.">Compiling Declarative HTML</a></strong><br/>
+</div>
+</ul>
+
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Declarative Support";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

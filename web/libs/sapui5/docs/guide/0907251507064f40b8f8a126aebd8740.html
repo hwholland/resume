@@ -1,0 +1,120 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="SmartMultiEdit enables you to perform mass editing operations on objects of the same structure that have similar properties."/>
+<meta name="description" content="SmartMultiEdit enables you to perform mass editing operations on objects of the same structure that have similar properties."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=0008113740998273444"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=0008113740998273444"/>
+<title>Smart Multi Edit</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio0907251507064f40b8f8a126aebd8740">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Smart Multi Edit</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"><samp class="ph codeph">SmartMultiEdit</samp> enables you to perform mass editing operations on
+		objects of the same structure that have similar properties.</p>
+
+		<div class="note caution"><span class="cautiontitle">Caution</span> 
+                <p class="p">Controls in the <samp class="ph codeph">sap.ui.comp</samp> library (smart controls) focus
+                    strongly on SAP Fiori elements.</p>
+
+                <p class="p">We will continue to maintain the library and all of its controls in the future.
+                    However, there will be no development of new features unless specifically
+                    requested by SAP Fiori elements.</p>
+
+            </div>
+
+		<p class="p"><span class="ph">For more
+				information about this control, see the <a class="xref" href="../../docs/api/symbols/sap.ui.comp.smartmultiedit.html" alt="../../docs/api/symbols/sap.ui.comp.smartmultiedit.html" title="../../docs/api/symbols/sap.ui.comp.smartmultiedit.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.comp.smartmultiedit.Container/samples" alt="../../explored.html#/entity/sap.ui.comp.smartmultiedit.Container/samples" title="../../explored.html#/entity/sap.ui.comp.smartmultiedit.Container/samples">samples</a> in the Demo Kit.</span></p>
+
+		<div class="section" id="loio0907251507064f40b8f8a126aebd8740__section_cqd_cfr_rcb"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p">With <samp class="ph codeph">SmartMultiEdit</samp>, you can edit multiple homogeneous objects
+				simultaneously. It allows you to select a field value from a combo box for all
+				objects being edited. <samp class="ph codeph">SmartMultiEdit</samp> can also handle metadata for a
+				specific OData property when you need to enable mass editing for multiple
+				contexts.</p>
+
+			<p class="p"><samp class="ph codeph">SmartMultiEdit</samp> consists of two controls:</p>
+
+			<ul class="ul" id="loio0907251507064f40b8f8a126aebd8740__ul_ugf_2mt_scb">
+				<li class="li">
+					<p class="p"><span class="ph"><a class="xref" href="../../docs/api/symbols/sap.ui.comp.smartmultiedit.Field.html" alt="../../docs/api/symbols/sap.ui.comp.smartmultiedit.Field.html" title="../../docs/api/symbols/sap.ui.comp.smartmultiedit.Field.html"><samp class="ph codeph">SmartMultiEdit.Field</samp></a></span> – A field that allows
+						you to select a new value and apply it to the selected objects that include
+						this field in their structure.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph"><a class="xref" href="../../docs/api/symbols/sap.ui.comp.smartmultiedit.Container.html" alt="../../docs/api/symbols/sap.ui.comp.smartmultiedit.Container.html" title="../../docs/api/symbols/sap.ui.comp.smartmultiedit.Container.html"><samp class="ph codeph">SmartMultiEdit.Container</samp></a></span> – A container that
+						provides the layout and context bindings for the
+							<samp class="ph codeph">SmartMultiEdit</samp> fields it includes.</p>
+
+				</li>
+
+			</ul>
+
+			<div class="fig fignone" id="loio0907251507064f40b8f8a126aebd8740__fig_wtn_dj5_scb"><div class="figcontainer">
+				<img class="image" id="loio0907251507064f40b8f8a126aebd8740__image_u42_2j5_scb" src="loiod474f0ca18104456b28c419ae33dc883_HiRes.jpg" alt="Smart Multi Edit Fields in a Smart Form Dialog" title="Smart Multi Edit Fields in a Smart Form Dialog"/>
+			</div></div>
+
+		</div></div>
+
+		<div class="section" id="loio0907251507064f40b8f8a126aebd8740__section_m3v_cfr_rcb"><div class="section_title">Details</div><div type="Details">
+			
+			<p class="p"><span class="ph emphasis emphasis">Implementation and Layout</span></p>
+
+			<ul class="ul" id="loio0907251507064f40b8f8a126aebd8740__ul_u3q_vc5_scb">
+				<li class="li">
+					<p class="p">You can implement <samp class="ph codeph">SmartMultiEdit</samp> along with a <a class="xref" href="bed8274140d04fc0b9bcb2db42d8bac2.html" title="The sap.ui.comp.smarttable.SmartTable control is used to create different types of tables based on OData metadata. The control allows the user to define personalized table settings.">smart table</a>, adding
+						a button for it to the smart table's toolbar. When you click the button, a
+						dialog appears that contains a <a class="xref" href="99e33bdfde074bb48d2e603fa5ecd2d0.html" title="The sap.ui.comp.smartform.SmartForm control makes it possible to render a form. Depending on user authorizations, the form enables users, for example, to switch from display to edit mode, add and group fields, rename field labels, and implement a user input check.">smart form</a> with
+						editable <samp class="ph codeph">SmartMultiEdit</samp> fields.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">To specify the layout of the smart form dialog that contains the
+							<samp class="ph codeph">SmartMultiEdit</samp> fields, use the <samp class="ph codeph">layout</samp>
+						aggregation in the <samp class="ph codeph">SmartMultiEdit.Container</samp> control.</p>
+
+				</li>
+
+			</ul>
+
+			<p class="p"><span class="ph emphasis emphasis">Data Binding</span></p>
+
+			<ul class="ul" id="loio0907251507064f40b8f8a126aebd8740__ul_fss_1d5_scb">
+				<li class="li">
+					<p class="p">You can define the <a class="xref" href="54e0ddf695af4a6c978472cecb01c64d.html" title="Bindings connect SAPUI5 view elements to model data, allowing changes in the model to be reflected in the view element and vice versa.">context
+							binding</a> and the OData entity set for your multi edit fields using
+						the <samp class="ph codeph">contexts</samp> and <samp class="ph codeph">entitySet</samp> properties in
+						the <samp class="ph codeph">SmartMultiEdit.Container</samp> control.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">To specify the OData property related to a specific <samp class="ph codeph">SmartMultiEdit</samp> field,
+						use the <samp class="ph codeph">propertyName</samp> property of the
+							<samp class="ph codeph">SmartMultiEdit.Field</samp> control.</p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

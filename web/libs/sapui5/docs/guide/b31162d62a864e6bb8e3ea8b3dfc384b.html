@@ -1,0 +1,75 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=006799978828098463"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=006799978828098463"/>
+<title>Displaying the Editing Status</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob31162d62a864e6bb8e3ea8b3dfc384b">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Displaying the Editing Status</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">In draft-enabled applications, the edit, locked, unsaved data, or draft status is displayed in
+			the first column to which you have added the semantic key using the semantic key
+			annotation. For more information, see <a class="xref" href="668ea184f58c4378a5394f54b4ae205d.html" title="The editing status reflects the state of the object or entry in terms of the processing cycle. For example, it can give the user information about whether the item can be accessed or its level of completion.">Editing Status</a>.</p>
+
+		<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="STTA_PROD_MAN.STTA_C_MP_ProductType"&gt;
+&lt;Annotation Term="Common.SemanticKey"&gt;
+&lt;Collection&gt;
+&lt;PropertyPath&gt;ProductForEdit&lt;/PropertyPath&gt;
+&lt;/Collection&gt;
+&lt;/Annotation&gt;
+&lt;/Annotations&gt;
+</pre></div>
+
+		</div>
+
+		<p class="p">If you have not added a semantic key to the line items, the editing status is displayed in
+			the <span class="ph uicontrol">Title</span> or <span class="ph uicontrol">Description</span> column, depending
+			on the available information:</p>
+
+		<ul class="ul" id="loiob31162d62a864e6bb8e3ea8b3dfc384b__ul_zst_d42_sz">
+			<li class="li">
+				<p class="p">If a semantic key annotation is available for the <samp class="ph codeph">entityType</samp>,
+					directly under the <samp class="ph codeph">entityType</samp>, the value of the first semantic
+					key is displayed in bold font, and the editing status is added, if
+					available.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">If no semantic key annotation is available, the system checks whether the
+						<samp class="ph codeph">headerInfo/Title/Value/Path</samp> is under the
+						<samp class="ph codeph">LineItem</samp> annotation. </p>
+
+				<p class="p">If applicable, this column is displayed in bold font and the editing status is
+					added, if available.</p>
+
+				<p class="p">If not applicable, the system checks whether the
+						<samp class="ph codeph">headerInfo/Description/Value/Path</samp> is under the
+						<samp class="ph codeph">LineItem</samp> annotation. If applicable, this column is
+					displayed in bold font and the editing status is added, if available. </p>
+
+			</li>
+
+		</ul>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

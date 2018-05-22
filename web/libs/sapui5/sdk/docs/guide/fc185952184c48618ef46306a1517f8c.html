@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The &lt;template:if&gt; instruction evaluates a condition expressed via existing SAPUI5 data binding features, such as extended syntax; in the preprocessing it is removed or replaced by its child elements based on the value of this condition."/>
+<meta name="description" content="The &lt;template:if&gt; instruction evaluates a condition expressed via existing SAPUI5 data binding features, such as extended syntax; in the preprocessing it is removed or replaced by its child elements based on the value of this condition."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4903218350228322"/>
+<title>if</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loiofc185952184c48618ef46306a1517f8c">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">if</h1>
+<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">&lt;template:if&gt;</samp> instruction evaluates a condition expressed via
+		existing <span class="ph"><span class="ph pname">SAPUI5</span></span> data binding
+		features, such as extended syntax; in the preprocessing it is removed or replaced by its
+		child elements based on the value of this condition.  </p>
+<p class="p">For more information, see <a class="xref" href="099f0a2851ad4118af36345f7dd13ea8.html" title="Extended syntax can be used to add filters and sorters for aggregation binding. One or multiple objects can be defined.">Using Extended
+				Syntax to Add Filters and Sorters</a>
+		</p>
+<p class="p">You set the condition to the <samp class="ph codeph">test</samp> attribute of the <samp class="ph codeph">if</samp>
+			instruction. It is recommended to use expression binding if you need to write logical
+			expressions or convert values into Booleans. You can also use formatter functions, as
+			with any <span class="ph"><span class="ph pname">SAPUI5</span></span> binding,
+			such as <samp class="ph codeph">sap.ui.model.odata.AnnotationHelper.isMultiple</samp>. For more
+			information, see <samp class="ph codeph">sap.ui.model.odata.AnnotationHelper.isMultiple</samp> in the
+			API Reference.</p>
+<div class="p">
+			<div class="note note"><span class="notetitle">Note</span> The test condition is treated as a property binding and the result is converted to the
+				Boolean type according to the usual JavaScript rules, with the exception of the
+				string <samp class="ph codeph">"false"</samp>, which is converted to the Boolean
+					<samp class="ph codeph">false</samp> for convenience. For more information about the
+				JavaScript rules, see the ECMAScript® Language Specification on the <a class="extlink" href="http://help.sap.com/disclaimer?site=http://www.ecma-international.org/" alt="http://www.ecma-international.org/" title="http://www.ecma-international.org/">ECMA
+					International<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a> website.</div>
+
+		</div>
+<div class="example"><h2 class="exampletitle">Example</h2><div class="title authorexampletitle">"if" Instruction to Include an Image Only if the URL is Set</div>
+			
+			<p class="p">The output of the template below after preprocessing is as follows: If the test
+				condition does not hold, the <samp class="ph codeph">&lt;template:if&gt;</samp> node is dropped and
+				if the test condition holds, the node is replaced by its content.</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;template:if test="{meta&gt;ImageUrl}"&gt;
+  &lt;Image src="{path: 'meta&gt;ImageUrl', formatter: 'sap.ui.model.odata.AnnotationHelper'}" /&gt;
+&lt;/template:if&gt;</pre></div>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">The example above shows a shortcut syntax where
+						<samp class="ph codeph">&lt;template:then&gt;</samp> can be omitted in case no
+						<samp class="ph codeph">&lt;template:else&gt;</samp> is present.</p>
+
+			</div>
+
+		</div>
+<div class="example"><h2 class="exampletitle">Example</h2><div class="title authorexampletitle">"if/then/else" Instruction to Include an Image Only if the URL is Set and Display a Title
+				Otherwise</div>
+			
+			<p class="p">The syntax of this example is more complex due to the additional
+					<samp class="ph codeph">&lt;template:then&gt;</samp>/<samp class="ph codeph">&lt;template:else&gt;</samp>
+				elements. The output is the <samp class="ph codeph">&lt;template:if&gt;</samp> node replaced by the
+				content of the appropriate child node.</p>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;template:if test="{meta&gt;ImageUrl}"&gt;
+  &lt;template:then&gt;
+    &lt;Image src="{path: 'meta&gt;ImageUrl', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
+  &lt;/template:then&gt;
+  &lt;template:else&gt;
+    &lt;Text text="{path: 'meta&gt;Title/Value', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
+  &lt;/template:else&gt;
+&lt;/template:if&gt;</pre></div>
+
+			</div>
+
+		</div>
+<div class="example"><h2 class="exampletitle">Example</h2><div class="title authorexampletitle">if/then/else Instruction</div>
+			
+			<p class="p">It is even possible to check multiple conditions in one
+					<samp class="ph codeph">&lt;template:if&gt;</samp> construct using the
+					<samp class="ph codeph">&lt;template:elseif&gt;</samp> element as shown in the example
+				below.</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;template:if test="{meta&gt;ImageUrl}"&gt;
+  &lt;template:then&gt;
+    &lt;commons:Image src="{path: 'meta&gt;ImageUrl', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
+  &lt;/template:then&gt;
+  &lt;template:elseif test="{meta&gt;TypeImageUrl}"&gt;
+    &lt;commons:Image src="{path: 'meta&gt;TypeImageUrl', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
+  &lt;/template:elseif&gt;
+  &lt;template:else&gt;
+    &lt;commons:TextView text="{path: 'meta&gt;Title/Value', formatter: 'sap.ui.model.odata.AnnotationHelper.format'}" /&gt;
+  &lt;/template:else&gt;
+&lt;/template:if&gt;</pre></div>
+
+		</div>
+</div>
+<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="daf6852a04b44d118963968a1239d2c0.html" title="Expression binding is an enhancement of the SAPUI5 binding syntax, which allows for providing expressions instead of custom formatter functions.">Expression Binding</a></div>
+<div><a class="link" href="5ee619fc1370463ea674ee04b65ed83b.html" title="XML templating lets you use an XML view as a template.">XML Templating in SAPUI5</a></div>
+</div>
+</div></div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="if";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

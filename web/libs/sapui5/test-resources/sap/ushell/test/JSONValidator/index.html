@@ -1,0 +1,462 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+        <title>CDM-Runtime Site JSON Validator</title>
+ <!-- 
+        <script src="/ushell/resources/sap-ui-core.js"
+            id="sap-ui-bootstrap"
+            data-sap-ui-libs="sap.m"
+            data-sap-ui-theme="sap_bluecrystal">
+        </script>
+-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tv4/1.2.7/tv4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tv4/1.2.7/tv4.async-jquery.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <style type="text/css">
+            #JSONTextArea-inner {
+                font-family: monospace;
+            }
+        </style>
+        
+<style>
+table .table { border: 1px; border-color:black}
+</style>
+        
+    
+        
+     <!--     <script src="https://raw.githubusercontent.com/dscape/clarinet/master/clarinet.js"></script>
+        -->
+        <script>
+        // here we go: 
+      //      var clarinet = require("clarinet")
+    var parser = clarinet.parser()
+  ;
+
+parser.onerror = function (e) {
+    console.log(e);
+  // an error happened. e is the error.
+};
+parser.onvalue = function (v) {
+  // got some value.  v is the value. can be string, double, bool, or null.
+};
+parser.onopenobject = function (key) {
+  // opened an object. key is the first key.
+};
+parser.onkey = function (key) {
+  // got a key in an object.
+};
+parser.oncloseobject = function () {
+  // closed an object.
+};
+parser.onopenarray = function () {
+  // opened an array.
+};
+parser.onclosearray = function () {
+  // closed an array.
+};
+parser.onend = function () {
+  // parser stream is done, and ready to have more stuff written to it.
+};
+
+parser.write('{"foo": "bar"}').close();
+        
+  
+
+        function findPathRange(sJSON, sPath) {
+            var oStart = undefined;
+            var oEnd = undefined;
+            var cPath = [""];
+            var depth = {};
+            var aPath = sPath.split("/");
+            var parser = clarinet.parser();
+            function checkPath(sComment, cPath) {
+                if (oEnd) {
+                    return; //done!
+                }
+                if (!oStart && ((cPath.length <= 2) || 
+                        (aPath[cPath.length-1] !== cPath[cPath.length-1]
+                          || aPath[1] !== cPath[1] 
+                        ))) {
+                    return;
+                }
+                //console.log(sComment + cPath.join("/"));
+                if (!oStart && cPath.join("/") === sPath) {
+				    oStart = { line : parser.line, column : parser.column };
+				}
+             	if (oStart && cPath.join("/") != sPath && (cPath.join("/").length <= sPath.length || cPath.join("/").substring(0, sPath.length) !== sPath)) {
+             	    oEnd = { line : parser.line, column : parser.column };
+             	}
+                //console.log(sComment + cPath.join("/"));
+            }
+            
+            function writePath(sComment, cPath) {
+               // console.log(sComment + cPath.join("/"));
+                checkPath(sComment,cPath);
+            }
+            
+              parser.onerror = function (e) {
+	              console.log(e);
+	            // an error happened. e is the error.
+	          };
+	          parser.onvalue = function (v) {
+	            // got some value.  v is the value. can be string, double, bool, or null.
+	          };
+	          parser.onopenobject = function (key) {
+	              if (depth[cPath.length] !== undefined) {
+	                 depth[cPath.length] = depth[cPath.length] + 1;
+	                 cPath.push(depth[cPath.length]);
+	              }
+	              cPath.push(key);
+	              writePath("openObj", cPath);
+	              // opened an object. key is the first key.
+	          };
+	          parser.onkey = function (key) {
+	            // got a key in an object.
+	            cPath.pop();
+	            cPath.push(key);
+	            writePath("onKey  ", cPath);
+	          };
+	          parser.oncloseobject = function () {
+	            // closed an object.
+	            cPath.pop();
+	            if (depth[cPath.length - 1 ] !== undefined) {
+	               cPath.pop();
+	            }
+	            writePath("onClose", cPath);
+	            //depth[cPath.length + 1] = undefined;
+	          };
+	          parser.onopenarray = function () {
+	            // opened an array.
+	            depth[cPath.length] = 0;
+	            writePath("onOpArr ", cPath);
+	 	      };
+	          parser.onclosearray = function () {
+	            // closed an array.
+	            depth[cPath.length] = undefined;
+	            writePath("onCloseArr ", cPath);
+	          };
+	          parser.onend = function () {
+	            // parser stream is done, and ready to have more stuff written to it.
+	          };
+	
+	          parser.write(sJSON);
+	          //'{"foo": "bar", "abc" : [ 1, 2 ], \n "def" : { "hij" : { "a" : 27 }, "klm" : {} }, "mmm" : [ { "a" : 1, "c" : { "e" : 3, "h" : 4}}, {"b" : "2"}]}').close();
+	          return { start : oStart, end : oEnd};
+        }
+ 
+        </script>
+
+<style>
+  .CodeMirror { height: 60%; border: 1px solid #ddd; }
+  .CodeMirror-scroll { max-height: 800px; }
+  .CodeMirror pre { padding-left: 7px; line-height: 1.25; }
+</style>
+        
+<script src="http://codemirror.net/lib/codemirror.js"></script>
+<link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
+<script src="http://codemirror.net/mode/javascript/javascript.js"></script>
+<script src="http://codemirror.net/addon/edit/matchbrackets.js"></script>
+
+        
+<style>
+  .CodeMirror { height: 800px; border: 1px solid #ddd; }
+  .CodeMirror-scroll { max-height: 800px; }
+  .CodeMirror pre { padding-left: 7px; line-height: 1.25; }
+</style>
+        <script>
+          //  sap.ui.localResources("jsonvalidator");
+          //  var app = new sap.m.App({initialPage:"idMain1"});
+          //  var page = sap.ui.view({id:"idMain1", viewName:"jsonvalidator.Main", type:sap.ui.core.mvc.ViewType.JS});
+          //  app.addPage(page);
+          //  app.placeAt("content");
+        </script>
+
+    </head>
+    <body class="sapUiBody" role="application">
+<!--        <textarea style="height:600px" id="demotext"></textarea> -->
+    <script>
+    //document.getElementById("demotext")
+    var myCodeMirror = CodeMirror(document.body, {
+      value: "function myScript() \n {return 100;}\n",
+	  mode:  "javascript",
+	  viewportMargin : 20,
+	  height : "700px",
+	  matchBrackets : true,
+	  lineNumbers : true
+	});
+    var tmout;
+    myCodeMirror.on("change", function() {
+       tmout && clearTimeout(tmout);
+       tmout = setTimeout(function() {
+           doValidate();
+       },300);
+    });
+    function doSth() {
+        myCodeMirror.setSelection({line: 2, ch : 2 }, { line: 2, ch : 4});
+    };
+    </script>
+    <script>
+
+        function loadSchema(sSchemaPath) {
+            var oDeferred = new jQuery.Deferred();
+            jQuery.getJSON(sSchemaPath, function (oSchema) {
+                oDeferred.resolve(oSchema);
+            }).fail(function(sMsg) {
+                console.log("could not get schema " + sSchemaPath);
+            });
+
+            return oDeferred.promise();
+        }
+
+        function getErrorPathContextHtml(oSchema, sErrorPath) {
+            function str(oObject) {
+                return JSON.stringify(oObject, null, "   ");
+            }
+            // traverse the schema until the parent of the leaf
+            var aPathParts = sErrorPath.split("/");
+            var oCurrentNode = oSchema;
+            var sContext;
+            var aRefPathParts;
+            var oPreviousNode;
+            var sPathPart;
+
+            // discard empty entry (leading "/") in case
+            if (sErrorPath.charAt(0) === "/") {
+                aPathParts.shift();
+            }
+
+            while (aPathParts.length > 0) {
+                sPathPart = aPathParts.shift();
+
+                // undo cheap hack from validator lib
+                sPathPart = sPathPart.replace(/\~1/g, "/").replace(/\~0/g, "~");
+
+                oPreviousNode = oCurrentNode;
+                oCurrentNode = oCurrentNode[sPathPart];
+
+
+                // try to resolve a reference if oCurrentNode is undefined
+                if (!oCurrentNode && oPreviousNode.hasOwnProperty("$ref")) {
+                  // very cheap hack
+                  aRefPathParts = oPreviousNode["$ref"].split("/");
+                  try {
+                      oCurrentNode = oSchema[aRefPathParts[1]][aRefPathParts[2]][sPathPart];
+                      
+                  } catch(e) {
+                      oCurrentNode = oPreviousNode;
+                  }
+                }
+
+                if (aPathParts.length === 0 && typeof sContext === "undefined") {
+                    // a leaf node without a context
+                    sContext = "<span class=\"validator-error-path-context-leaf\">" + str(oCurrentNode) + "</span>";
+                } else if (aPathParts.length === 0 && typeof sContext === "string") {
+                    // a leaf node with a context
+                    sContext = sContext.replace(
+                        str(oCurrentNode), "<span class=\"validator-error-path-context-leaf\">" + str(oCurrentNode) + "</span>"
+                    );
+                } else {
+                    // this is a context node
+                    sContext = str(oCurrentNode);
+                }
+            }
+
+            return sContext;
+        }
+        
+        function htmlEncode(value){
+            //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+            //then grab the encoded contents back out.  The div never exists on the page.
+            return $('<div/>').text(value).html();
+          }
+
+        function validate(schema, data, oOptions, oIgnored, oView) {
+            var that = oView;
+            var oSettings = jQuery.extend({
+                errorContainerCss: "body",
+                missingSchemasContainerCss: "body",
+                resultContainerCss: "body",
+                refPrefix: ""
+            }, oOptions);
+
+            var oResult = tv4.validateMultiple(
+                data,
+                schema,
+                true /* checkRecursive */,
+                true /* banUnknownProperties */
+            );
+
+            if (oResult.missing.length > 0) {
+                // Must add to the schema and re-validate
+                // add missing schemas
+                var aMissingPromises = [];
+                oResult.missing
+                    .forEach(function (sUrl) {
+                        var oDeferred = new jQuery.Deferred();
+                        jQuery.getJSON(oSettings.refPrefix + sUrl, function (oSchema) {
+                            jQuery(oSettings.missingSchemasContainerCss).append(
+                                "<div class=\"validator-missingschema\">Loaded sub-schema \"" + sUrl + "\"</div>"
+                            );
+                            tv4.addSchema(sUrl, oSchema);
+                            oDeferred.resolve();
+                        }).fail(function( sMsg) {
+                            console.log("could not get schema" + oSettings.refPrefix + sUrl);
+                        });
+                        aMissingPromises.push(oDeferred.promise());
+                    });
+
+                if (aMissingPromises.length > 0) {
+                    jQuery.when.apply(jQuery, aMissingPromises)
+                        .then(function () {
+                            // revalidate
+                            validate(schema, data, oOptions, undefined, oView);
+                        });
+                    return;
+                }
+
+                jQuery(oSettings.missingSchemasContainerCss)
+                    .append("<div class=\"validator-title\">Missing schemas</div>")
+                    .append(
+                        oResult.missing.map(function (sMissing) {
+                            return "<div class=\"validator-missing\">" + sMissing + "</div>";
+                        }).join("")
+                    );
+            }
+            if (!oResult.valid) {
+                //oView.byId("resultIcon").setSrc("sap-icon://decline").setColor("red");
+                //oView.byId("resultPanel").setExpanded(true);
+                jQuery(oSettings.resultContainerCss)
+                    .append("<div class=\"validator-title\">Errors:</div>")
+                    .append(
+                            "<table cellspacing='0' cellpadding='0' style='border-color:#cccccc;border-width:1px' spacing='0' border='1' padding='0'><thead><tr><th>pos</th><th>msg</th><th>data pos</th><th>schemapos</th></tr></thead><tbody>"     
+                            + 
+                            
+                        oResult.errors.map(function (oError) {
+
+                            var title = "Raw error: " + JSON.stringify(oError, undefined, 3) + "";
+                            
+                            var sError = "<tr title='" + htmlEncode(title) + "'>";
+                            if (oError.dataPath) {
+                                var oRange = findPathRange(myCodeMirror.getValue(), oError.dataPath);
+                                if (oRange.start && oRange.end) {
+                                    sError+= "<td onClick='navTo(" +
+                                            oRange.start.line + "," + oRange.start.column + "," +
+                                             oRange.end.line + "," + oRange.end.column 
+                                         + ")'>(" 
+                                          + oRange.start.line + ":" + oRange.start.column + ")" +
+                                          "-(" + oRange.end.line + ":" + oRange.end.column + ")</td>"
+                                } else { sError += "<td></td>" }
+                            }  else { sError += "<td></td>" }
+                            sError +=  "<td>" + oError.message + "</td>";
+                            sError +=  "<td>" + oError.dataPath + "<br/>" + oError.schemaPath + "</td>";
+                          if (oError.schemaPath) {
+                                sError +=
+                                 "<td class=\"validator-error-path-context\">... " + oError.schemaPath.split("/")[1] + ": " + getErrorPathContextHtml(schema, oError.schemaPath) + "...</td>";
+                            }
+                            sError += "</tr>";
+                            return sError;
+                        }).join("") + "</tbody></table>"
+                    );
+            } else {
+                //oView.byId("resultIcon").setSrc("sap-icon://accept").setColor("green");
+                jQuery(oSettings.validContainerCss)
+                    .append("<div class=\"validator-title\">Valid: " + oResult.valid + "</div>");
+            }
+        }
+
+            var schemas = {
+                "CDMRuntime": {
+                    "description": "Common Data Model runtime json",
+                    "schemaPath": "schemas/cdmruntime/schema.json",    // path to the main schema file
+                    "refPrefix": "schemas/"                     // prefix to prepend when processing refs
+                },
+                "schema" : {
+                    "description": "Meta schema",
+                    "schemaPath": "schemas/metaschema/schema.json",
+                    "refPrefix" : "schemas"
+                },
+                "Not the AppDescriptor": {
+                    "description": "Application Descriptor",
+                    "schemaPath": "schemas/manifest/schema/schema.json",    // path to the main schema file
+                    "refPrefix": "schemas/manifest/schema/"                 // prefix to prepend when processing refs
+                }
+            };
+
+
+            function navTo(sL,sC,eL,eC) {
+                myCodeMirror.setSelection({ line: sL - 1, ch: sC - 2}, { line: eL - 1, ch: eC});
+            }
+
+        function doValidate() {
+                var that = this,
+                    oJson;
+                var search = window.location.search.substring(1);
+                var match = window.location.search.match(/schemakey=([^&]*)/);
+                var sSelectedKey = "CDMRuntime";
+                if ( match ) {
+                    sSelectedKey = decodeURIComponent(match[1]);
+                }
+                jQuery(".validation-results").html("");
+
+                try {
+                    oJson = JSON.parse(myCodeMirror.getValue());
+                } catch (oException) {
+                    //.setSrc("sap-icon://decline").setColor("red");
+                    //that.getView().byId("resultPanel").setExpanded(true);
+                    //document.getElementById("validationResults").
+                    jQuery(".validation-results").append(oException + ": " + oException.stack);
+                    return;
+                }
+
+                loadSchema(this.schemas[sSelectedKey].schemaPath)
+                    .done(function (oSchema) {
+                        validate(oSchema, oJson, {
+                            validContainerCss: ".validation-results",
+                            errorContainerCss: ".validation-results",
+                            missingSchemasContainerCss: ".miss-schema",
+                            resultContainerCss: ".validation-results",
+                            refPrefix: that.schemas[sSelectedKey].refPrefix
+                        }, sSelectedKey,undefined);
+                    })
+                    .fail(function (oError) {
+                        jQuery(".validation-results").append(Object.prototype.toString(oError));
+                    });
+            }
+
+    </script>
+    <script>
+        var source = ""; //  jQuery.sap.getUriParameters().get("source") || "/CDMSiteServiceAdapterData.js",
+            that = this;
+        var search = window.location.search.substring(1);
+        var match = window.location.search.match(/fileurl=([^&]*)/);
+        var pth = "/sap/bc/ui5_demokit/test-resources/sap/ushell/adapters/cdm/CDMSiteServiceAdapterData.js";
+        if ( match ) {
+            pth = decodeURIComponent(match[1]);
+        }
+        setTimeout(function() {
+            var xh = new XMLHttpRequest();
+            xh.open('GET',pth, false); // "/sap/bc/ui5_demokit/test-resources/sap/ushell/adapters/cdm/CDMSiteServiceAdapterData.js", false);
+            xh.send(null);
+            if (xh.status === 200) {
+                myCodeMirror.setValue(xh.responseText);
+            } else {
+                    var xh = new XMLHttpRequest();
+                    xh.open('GET',"example/CDMSiteServiceAdapterData.js", false);
+                    xh.send(null);
+                    if (xh.status === 200) {
+                        myCodeMirror.setValue(xh.responseText);
+                    }
+            }
+        },200);
+    </script>
+    <!--  <input type="button" onClick="doSth()" value="click"></button> -->
+    <div height="300px" class='valixdation-results' style="height:300px;overflow:scroll">
+    <div class='validation-results'> </div>
+    <div heigth="20%" class='miss-schema'>
+    </div>
+    </div>
+   </body>
+</html>

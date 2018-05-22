@@ -1,0 +1,183 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You have various options for configuring the quick view. This documentation provides some examples."/>
+<meta name="description" content="You have various options for configuring the quick view. This documentation provides some examples."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3352582312717838"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3352582312717838"/>
+<title>Quick Views for Smart Link Navigation: Further Configuration Examples</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio1083035f266547159b292c4a0f567ac7">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Quick Views for Smart Link Navigation: Further Configuration Examples</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You have various options for configuring the quick view. This documentation provides
+        some examples.</p>
+
+		<div class="section" id="loio1083035f266547159b292c4a0f567ac7__section_sqm_thq_y1b"><div class="section_title">Example 1</div><div type="Example 1">
+            
+            <div class="fig fignone" id="loio1083035f266547159b292c4a0f567ac7__fig_bfs_5hq_y1b"><div class="figcontainer">
+                <img class="image" id="loio1083035f266547159b292c4a0f567ac7__image_c15_vhq_y1b" src="loio8633539df8a7481c9ffbe2f09a460aa2_LowRes.png"/>
+            </div></div>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint collapsible collapsible">
+&lt;!-- QuickViewFacets annotation for Supplier--&gt;
+            &lt;Annotations Target="STTA_PROD_MAN.STTA_C_MP_SupplierType/EmailAddress" xmlns="http://docs.oasis-open.org/odata/ns/edm"&gt;
+                  &lt;Annotation Term="com.sap.vocabularies.Communication.v1.IsEmailAddress" Bool="true"/&gt;
+            &lt;/Annotations&gt;      
+
+            &lt;Annotations Target="STTA_PROD_MAN.STTA_C_MP_SupplierType/URL" xmlns="http://docs.oasis-open.org/odata/ns/edm"&gt;
+                  &lt;Annotation Term="Org.OData.Core.V1.IsUrl" Bool="true"/&gt;
+            &lt;/Annotations&gt;
+            &lt;Annotations Target="STTA_PROD_MAN.STTA_C_MP_SupplierType/PhoneNumber" xmlns="http://docs.oasis-open.org/odata/ns/edm"&gt;
+                  &lt;Annotation Term="com.sap.vocabularies.Communication.v1.IsPhoneNumber" Bool="true"/&gt;
+            &lt;/Annotations&gt;
+            &lt;Annotations Target="STTA_PROD_MAN.STTA_C_MP_SupplierType"&gt;                
+                &lt;Annotation Term="UI.QuickViewFacets"&gt;
+                    &lt;Collection&gt;
+                        &lt;Record Type="UI.ReferenceFacet"&gt;
+                            &lt;PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#SupplierQuickViewPOC_FieldGroup_1" /&gt;
+                        &lt;/Record&gt;
+                        &lt;Record Type="UI.ReferenceFacet"&gt;
+                            &lt;PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#SupplierQuickViewPOC_FieldGroup_2" /&gt;
+                        &lt;/Record&gt;        
+
+                    &lt;/Collection&gt;
+                &lt;/Annotation&gt;
+                &lt;Annotation Term="UI.FieldGroup" Qualifier="SupplierQuickViewPOC_FieldGroup_1"&gt;
+                    &lt;Record&gt;
+                        &lt;PropertyValue Property="Label" String="The first field group label" /&gt;
+                        &lt;PropertyValue Property="Data"&gt;
+                            &lt;Collection&gt;
+                                &lt;Record Type="UI.DataField"&gt;
+                                    &lt;PropertyValue Property="Label" String="Supplier" /&gt;
+                                    &lt;PropertyValue Property="Value" Path="Supplier"/&gt;
+                                &lt;/Record&gt;
+                                &lt;Record Type="UI.DataField"&gt;
+                                    &lt;PropertyValue Property="Label" String="Company Name" /&gt;
+                                    &lt;PropertyValue Property="Value" Path="CompanyName"/&gt;
+                                &lt;/Record&gt;
+                                &lt;Record Type="UI.DataField"&gt;
+                                    &lt;PropertyValue Property="Label" String="Email Address" /&gt;
+                                    &lt;PropertyValue Property="Value" Path="EmailAddress"/&gt;
+                                &lt;/Record&gt;
+                                &lt;Record Type="UI.DataField"&gt;
+                                    &lt;PropertyValue Property="Label" String="to_Address / FormattedAddress" /&gt;
+                                    &lt;PropertyValue Property="Value" Path="to_Address/FormattedAddress"/&gt;
+                                &lt;/Record&gt;
+                            &lt;/Collection&gt;
+                        &lt;/PropertyValue&gt;
+                    &lt;/Record&gt;
+                &lt;/Annotation&gt;
+                &lt;Annotation Term="UI.FieldGroup" Qualifier="SupplierQuickViewPOC_FieldGroup_2"&gt;
+                    &lt;Record&gt;
+                        &lt;PropertyValue Property="Label" String="The second field group label" /&gt;
+                        &lt;PropertyValue Property="Data"&gt;
+                            &lt;Collection&gt;
+                                &lt;Record Type="UI.DataField"&gt;
+                                    &lt;PropertyValue Property="Label" String="Phone Number" /&gt;
+                                    &lt;PropertyValue Property="Value" Path="PhoneNumber"/&gt;
+                                &lt;/Record&gt;
+                                &lt;Record Type="UI.DataField"&gt;
+                                    &lt;PropertyValue Property="Label" String="URL" /&gt;
+                                    &lt;PropertyValue Property="Value" Path="URL"/&gt;
+                                &lt;/Record&gt;
+                                &lt;Record Type="UI.DataField"&gt;
+                                    &lt;PropertyValue Property="Label" String="to_Address / AddressValidityStartDate" /&gt;
+                                    &lt;PropertyValue Property="Value" Path="to_Address/AddressValidityStartDate"/&gt;
+                                &lt;/Record&gt;
+                            &lt;/Collection&gt;
+                        &lt;/PropertyValue&gt;
+                    &lt;/Record&gt;
+                &lt;/Annotation&gt;
+            &lt;/Annotations&gt;
+</pre></div>
+
+        </div></div>
+
+        <div class="section" id="loio1083035f266547159b292c4a0f567ac7__section_vvp_53q_y1b"><div class="section_title">Example 2: Quick View in Object Page Table</div><div type="Example 2: Quick View in Object Page Table">
+            
+            <div class="p">
+                <div class="note note"><span class="notetitle">Note</span>  Not all columns that are supported in a table support the display of a quick
+                    view.</div>
+
+            </div>
+
+            <div class="fig fignone" id="loio1083035f266547159b292c4a0f567ac7__fig_dg2_cjq_y1b"><div class="figcontainer">
+                <img class="image" id="loio1083035f266547159b292c4a0f567ac7__image_h4b_fjq_y1b" src="loio2f6910fe4e974f85b51638be9d16c4a3_LowRes.png"/>
+            </div></div>
+
+            <p class="p">For the currency, no referential constraint is defined by the service. This is why
+                you need to make the following entry:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint collapsible collapsible">
+&lt;Association Name="assoc_6D52161C1362D99A31996E5BB23202E8" sap:content-version="1"&gt;
+    &lt;End Type="STTA_PROD_MAN.STTA_C_MP_ProductSalesDataType" Multiplicity="1" Role="FromRole_assoc_6D52161C1362D99A31996E5BB23202E8"/&gt;
+    &lt;End Type="STTA_PROD_MAN.I_CurrencyType" Multiplicity="0..1" Role="ToRole_assoc_6D52161C1362D99A31996E5BB23202E8"/&gt;
+    &lt;ReferentialConstraint&gt;
+        &lt;Principal Role="FromRole_assoc_6D52161C1362D99A31996E5BB23202E8"&gt;
+            &lt;PropertyRef Name="Currency"/&gt;
+        &lt;/Principal&gt;
+        &lt;Dependent Role="ToRole_assoc_6D52161C1362D99A31996E5BB23202E8"&gt;
+            &lt;PropertyRef Name="Currency"/&gt;
+        &lt;/Dependent&gt;
+    &lt;/ReferentialConstraint&gt;
+&lt;/Association&gt;
+</pre></div>
+
+            <p class="p">Quick view facets annotation:</p>
+
+            <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint collapsible collapsible">
+&lt;!-- QuickViewFacets annotation for Currency--&gt;
+&lt;Annotations Target="STTA_PROD_MAN.STTA_C_MP_ProductSalesDataType/Currency"&gt;
+    &lt;Annotation Term="Common.SemanticObject" String="EPMProduct"/&gt;
+&lt;/Annotations&gt;           
+&lt;Annotations Target="STTA_PROD_MAN.I_CurrencyType"&gt;           
+    &lt;Annotation Term="UI.QuickViewFacets"&gt;
+        &lt;Collection&gt;
+            &lt;Record Type="UI.ReferenceFacet"&gt;
+                &lt;PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#CurrencyQuickViewPOC_FieldGroup_1" /&gt;
+            &lt;/Record&gt;           
+        &lt;/Collection&gt;
+    &lt;/Annotation&gt;
+    &lt;Annotation Term="UI.FieldGroup" Qualifier="CurrencyQuickViewPOC_FieldGroup_1"&gt;
+        &lt;Record&gt;
+            &lt;PropertyValue Property="Data"&gt;
+                &lt;Collection&gt;
+                    &lt;Record Type="UI.DataField"&gt;
+                        &lt;PropertyValue Property="Label" String="Decimals" /&gt;
+                        &lt;PropertyValue Property="Value" Path="Decimals"/&gt;
+                    &lt;/Record&gt;
+                    &lt;Record Type="UI.DataField"&gt;
+                        &lt;PropertyValue Property="Label" String="CurrencyISOCode" /&gt;
+
+                        &lt;PropertyValue Property="Value" Path="CurrencyISOCode"/&gt;
+                    &lt;/Record&gt;
+                    &lt;Record Type="UI.DataField"&gt;
+                        &lt;PropertyValue Property="Label" String="AlternativeCurrencyKey" /&gt;
+
+                        &lt;PropertyValue Property="Value" Path="AlternativeCurrencyKey"/&gt;
+                    &lt;/Record&gt;                            
+                &lt;/Collection&gt;
+            &lt;/PropertyValue&gt;
+        &lt;/Record&gt;
+    &lt;/Annotation&gt;   
+&lt;/Annotations&gt;
+</pre></div>
+
+        </div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

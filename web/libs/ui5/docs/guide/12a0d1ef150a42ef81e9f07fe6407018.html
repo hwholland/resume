@@ -1,0 +1,172 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, we make it possible to delete user data."/>
+<meta name="description" content="In this step, we make it possible to delete user data."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8778529216607326"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8778529216607326"/>
+<title>Step 7: Delete</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio12a0d1ef150a42ef81e9f07fe6407018">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 7: Delete</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we make it possible to delete user data.</p>
+
+		<div class="section" id="loio12a0d1ef150a42ef81e9f07fe6407018__section_bt4_fxc_z1b"><div class="section_title">Preview</div><div type="Preview">
+			<div class="fig fignone" id="loio12a0d1ef150a42ef81e9f07fe6407018__fig_m3r_hbx_4cb"><div class="figcontainer">
+				
+				<img class="image" id="loio12a0d1ef150a42ef81e9f07fe6407018__image_clx_jbx_4cb" src="loio32509f45ef8549998c73af49b8cfaa01_LowRes.png"/>
+			<div class="figcap">A new <span class="ph uicontrol">Delete User</span> button is added</div></div></div>
+</div></div>
+
+		<div class="section" id="loio12a0d1ef150a42ef81e9f07fe6407018__section_tsr_gxc_z1b"><div class="section_title">Coding</div><div type="Coding">
+			<p class="p">You can view and download all files <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.tutorial.odatav4.07/preview" alt="../../explored.html#/sample/sap.ui.core.tutorial.odatav4.07/preview" title="../../explored.html#/sample/sap.ui.core.tutorial.odatav4.07/preview">OData V4 - Step 7</a></span>.</p>
+</div></div>
+
+		<div class="section" id="loio12a0d1ef150a42ef81e9f07fe6407018__section_pvc_fyc_z1b"><div class="section_title">webapp/App.controller.js</div><div type="webapp/App.controller.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">		<span class="ph emphasis emphasis">onDelete : function () {
+			var oSelected = this.byId("peopleList").getSelectedItem();
+
+			if (oSelected) {
+				oSelected.getBindingContext().delete("$auto").then(function () {
+					MessageToast.show(this._getText("deletionSuccessMessage"));
+				}.bind(this), function (oError) {
+					MessageBox.error(oError.message);
+				});
+			}
+		},</span></pre></div>
+
+			<p class="p">We add the <samp class="ph codeph">onDelete</samp> event handler to the controller. In the event handler, we
+				check whether an item is selected in the table and if so, the related data is
+				deleted from the model. To do that, we retrieve the binding context of the selection
+				and call its <samp class="ph codeph">delete</samp> method. </p>
+
+			<p class="p">We explicitly set the update group ID for the deletion to <span class="keyword apiname">$auto</span> to make
+				sure that the request to the service is sent immediately as a batch request.
+				Otherwise the <samp class="ph codeph">delete</samp> function would apply the deferred batch
+				processing that we defined for the table’s list binding event though,
+					<samp class="ph codeph">delete</samp> does not currently support deferred batch
+				processing.</p>
+
+		</div></div>
+
+		<div class="section" id="loio12a0d1ef150a42ef81e9f07fe6407018__section_pp2_mxc_z1b"><div class="section_title">webapp/App.view.xml</div><div type="webapp/App.view.xml"><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;mvc:View
+	controllerName="sap.ui.core.tutorial.odatav4.controller.App"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true"&gt;
+	&lt;App busy="{appView&gt;/busy}" class="sapUiSizeCompact"&gt;
+		&lt;pages&gt;
+			&lt;Page title="{i18n&gt;peoplePageTitle}"&gt;
+				&lt;content&gt;
+					&lt;Table
+						id="peopleList"
+						growing="true"
+						growingThreshold="10"
+						items="{
+							path: '/People',
+							parameters: {
+								$count: true,
+								$$updateGroupId : 'peopleGroup'
+							}
+						}"
+						<span class="ph emphasis emphasis">mode="SingleSelectLeft"</span>&gt;
+						&lt;headerToolbar&gt;
+							&lt;OverflowToolbar&gt;
+								&lt;content&gt;
+									&lt;ToolbarSpacer/&gt;
+									&lt;SearchField
+										.../&gt;
+									&lt;Button
+										.../&gt;
+									<span class="ph emphasis emphasis">&lt;Button
+										id="deleteUserButton"
+										icon="sap-icon://delete"
+										tooltip="{i18n&gt;deleteButtonText}"
+										enabled="{= !${appView&gt;/hasUIChanges}}"
+										press="onDelete"&gt;
+										&lt;layoutData&gt;
+											&lt;OverflowToolbarLayoutData priority="NeverOverflow"/&gt;
+										&lt;/layoutData&gt;
+									&lt;/Button&gt;</span>
+									&lt;Button
+										.../&gt;
+									&lt;Button
+										...&gt;
+								&lt;/content&gt;
+							&lt;/OverflowToolbar&gt;
+						&lt;/headerToolbar&gt;
+						&lt;columns&gt;
+							...
+						&lt;/columns&gt;
+						&lt;items&gt;
+							...
+						&lt;/items&gt;
+					&lt;/Table&gt;
+				&lt;/content&gt;
+				&lt;footer&gt;
+					...
+				&lt;/footer&gt;
+			&lt;/Page&gt;
+		&lt;/pages&gt;
+	&lt;/App&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">We change the <samp class="ph codeph">mode</samp> of the table to <samp class="ph codeph">SingleSelectLeft</samp> to make
+				it possible to select a row.</p>
+<p class="p">We add the <span class="ph uicontrol">Delete</span> button to the toolbar. With the
+					<samp class="ph codeph">OverflowToolbarLayoutData priority="NeverOverflow"</samp> parameter,
+				we make sure that the button is always visible.</p>
+</div></div>
+
+		<div class="section" id="loio12a0d1ef150a42ef81e9f07fe6407018__section_kl4_d1x_4cb"><div class="section_title">webapp/i18n/i18n.properties</div><div type="webapp/i18n/i18n.properties">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-prefs">...
+# Toolbar
+...
+<span class="ph emphasis emphasis">#XBUT: Button text for delete user
+deleteButtonText=Delete User</span>
+...
+# Messages
+...
+<span class="ph emphasis emphasis">#XMSG: Message for user deleted
+deletionSuccessMessage=User deleted</span>
+...</pre></div>
+
+			<p class="p">We add the missing texts to the properties file.</p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="bcdbde6911bd4fc68fd435cf8e306ed0.html" title="In this tutorial, we explore how features of OData V4 can be used in OpenUI5. We write a small app that consumes data from an OData V4 service to understand how to access, modify, aggregate, and filter data in an OData V4 model.">OData V4</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="b4f12660538147f8839b05cb03f1d478.html" title="In this step, we will make it possible to create and edit (update) user data from the user interface and send the data to the back end.">Step 6: Create and Edit</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="a3e7cb6f671b4b839f37eb5f88429e41.html" title="Our OData service provides one OData operation: the ResetDataSource action. In this step, we add a button that resets all data changes we made during the tutorial to their original state using this action.">Step 8: OData Operations</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="2613ebc835764abd9aefd2e6fa8b7392.html" title="The Context.delete method deletes an entity on the server and updates the user interface accordingly.">Deleting an Entity</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

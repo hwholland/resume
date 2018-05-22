@@ -1,0 +1,574 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+<title>QUnit: sap.suite.ui.microchart.BulletMicroChart</title>
+
+<base href="../../../../../../">
+<!--[if lte IE 9]><script>
+(function() {
+	var baseTag = document.getElementsByTagName('base')[0];
+	baseTag.href = baseTag.href;
+})();
+</script><![endif]-->
+
+<script id="sap-ui-bootstrap" src="resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.suite.ui.microchart">
+</script>
+
+<link rel="stylesheet" type="text/css" href="resources/sap/ui/thirdparty/qunit.css" />
+<script src="resources/sap/ui/thirdparty/qunit.js"></script>
+<script src="resources/sap/ui/qunit/qunit-junit.js"></script>
+<script src="resources/sap/ui/qunit/qunit-coverage.js"></script>
+<script src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script src="resources/sap/ui/thirdparty/sinon.js"></script>
+<script src="resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+<!--[if IE]>
+	<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-ie.js"></script>
+<![endif]-->
+
+<script>
+		jQuery.sap.initMobile();
+
+		jQuery.sap.require("sap.suite.ui.microchart.BulletMicroChart");
+
+		QUnit.module("Control initialization core and theme checks", {
+			beforeEach: function() {
+				this.fnStubIsInitialized = sinon.stub(sap.ui.getCore(), "isInitialized");
+				this.fnSpyAttachInit = sinon.spy(sap.ui.getCore(), "attachInit");
+				this.fnSpyHandleCoreInitialized = sinon.spy(sap.suite.ui.microchart.BulletMicroChart.prototype, "_handleCoreInitialized");
+				this.fnStubThemeApplied = sinon.stub(sap.ui.getCore(), "isThemeApplied");
+				this.fnStubAttachThemeApplied = sinon.stub(sap.ui.getCore(), "attachThemeChanged", function(fn, context) {
+					fn.call(context); //simulate immediate theme change
+				});
+				this.fnSpyHandleThemeApplied = sinon.spy(sap.suite.ui.microchart.BulletMicroChart.prototype, "_handleThemeApplied");
+			},
+			afterEach: function() {
+				this.fnStubIsInitialized.restore();
+				this.fnSpyAttachInit.restore();
+				this.fnSpyHandleCoreInitialized.restore();
+				this.fnStubThemeApplied.restore();
+				this.fnStubAttachThemeApplied.restore();
+				this.fnSpyHandleThemeApplied.restore();
+			}
+		});
+
+		QUnit.test("Core initialization check - no core, no theme", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(false);
+			this.fnStubThemeApplied.returns(false);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.BulletMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+			assert.ok(this.fnSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+		});
+
+		QUnit.test("Core initialization check - no core, but theme", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(false);
+			this.fnStubThemeApplied.returns(true);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.BulletMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+			assert.ok(this.fnSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+		});
+
+		QUnit.test("Core initialization check - core, but no theme", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(true);
+			this.fnStubThemeApplied.returns(false);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.BulletMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+			assert.ok(this.fnSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+		});
+
+		QUnit.test("Core initialization check - core and theme", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(true);
+			this.fnStubThemeApplied.returns(true);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.BulletMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+			assert.ok(this.fnSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+		});
+
+		QUnit.module("Rendering tests", {
+			afterEach: function() {
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("Bullet chart rendered", function(assert) {
+			this.oChart = new sap.suite.ui.microchart.BulletMicroChart("bullet-chart", {
+				size: sap.m.Size.M,
+				scale: "M",
+				actual: { value: 120, color: sap.m.ValueColor.Good},
+				targetValue: 60,
+				forecastValue: 112,
+				minValue: 0,
+				maxValue: 120,
+				showValueMarker: true,
+				mode: "Delta",
+				thresholds: [ { value: 0, color: sap.m.ValueColor.Error }]
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+
+			assert.ok(jQuery.sap.domById("bullet-chart"), "Bullet chart was rendered successfully");
+			assert.equal(jQuery.sap.byId("bullet-chart-bc-target-value").text(), "60M", "Target label was rendered successfully");
+		});
+
+		QUnit.test("Actual value bar not rendered when actual value is 0 and min value is 0", function(assert) {
+			this.oChart = new sap.suite.ui.microchart.BulletMicroChart("bullet-chart", {
+				actual: {
+					value: 0,
+					color: sap.m.ValueColor.Good
+				},
+				minValue: 0,
+				maxValue: 120,
+				showValueMarker: true
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+
+			assert.notOk(jQuery.sap.domById("bullet-chart-bc-bar-value"), "Bullet chart actual value bar was not rendered");
+		});
+
+		QUnit.test("Actual value bar is rendered when actual value is 0 and min value is -120", function(assert) {
+			this.oChart = new sap.suite.ui.microchart.BulletMicroChart("bullet-chart", {
+				actual: {
+					value: 0,
+					color: sap.m.ValueColor.Good
+				},
+				minValue: -120,
+				maxValue: 120,
+				showValueMarker: true
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+
+			assert.ok(jQuery.sap.domById("bullet-chart-bc-bar-value"), "Bullet chart actual value bar was rendered");
+		});
+
+		QUnit.test("Properties and aggregations are not set from the outside", function(assert) {
+			this.oChart = new sap.suite.ui.microchart.BulletMicroChart("bullet-chart").placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+
+			assert.ok(jQuery.sap.domById("bullet-chart"), "Bullet chart was rendered without errors");
+		});
+
+		QUnit.module("Test chart data calculation", {
+			afterEach: function() {
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("Actual value is a maximal one", function(assert) {
+			this.oChart = new sap.suite.ui.microchart.BulletMicroChart( {
+				size: sap.m.Size.L,
+				scale: "M",
+				actual: { value: 120, color: sap.m.ValueColor.Good},
+				targetValue: 60,
+				forecastValue: 112,
+				minValue: 0,
+				maxValue: 120,
+				thresholds: [
+					{ value: 0, color: sap.m.ValueColor.Error },
+					{ value: 1, color: sap.m.ValueColor.Critical },
+					{ value: 2, color: sap.m.ValueColor.Critical },
+					{ value: 3, color: sap.m.ValueColor.Error }
+				]
+			});
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.actualValuePct, 98.05, "Actual value should take 98.05%");
+			assert.equal(aResult.targetValuePct, 49, "Target value should be at 49%");
+			assert.equal(aResult.forecastValuePct, 91.47, "Forecast value should be at 91.47%");
+			assert.equal(aResult.thresholdsPct[0].valuePct, 0, "Threshold should be at 0%");
+			assert.equal(aResult.thresholdsPct[1].valuePct, 0.82, "Threshold should be at 0.82%");
+			assert.equal(aResult.thresholdsPct[2].valuePct, 1.63, "Threshold should be at 1.63%");
+			assert.equal(aResult.thresholdsPct[3].valuePct, 2.45, "Threshold should be at 2.45%");
+		});
+
+		QUnit.test("Threshold value is a maximal one", function(assert) {
+			this.oChart = new sap.suite.ui.microchart.BulletMicroChart( {
+				actual: { value: -130, color: sap.m.ValueColor.Good},
+				targetValue: -65,
+				forecastValue: -125,
+				thresholds: [
+					{ value: 0, color: sap.m.ValueColor.Error },
+					{ value: -75, color: sap.m.ValueColor.Critical },
+					{ value: -80, color: sap.m.ValueColor.Critical },
+					{ value: -85, color: sap.m.ValueColor.Error }
+				]
+			});
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.actualValuePct, 0.05, "Actual value should be at 0.05%");
+			assert.equal(aResult.targetValuePct, 49, "Target value should take 49%");
+			assert.equal(aResult.forecastValuePct, 3.77, "Forecast value should be at 3.77%");
+			assert.equal(aResult.thresholdsPct[0].valuePct, 98, "Threshold should be at 98%");
+			assert.equal(aResult.thresholdsPct[1].valuePct, 41.46, "Threshold should be at 41.46%");
+			assert.equal(aResult.thresholdsPct[2].valuePct, 37.69, "Threshold should be at 37.69%");
+			assert.equal(aResult.thresholdsPct[3].valuePct, 33.92, "Threshold should be at 33.92%");
+		});
+
+		QUnit.test("Min/Max values affect scale", function(assert) {
+			this.oChart = new sap.suite.ui.microchart.BulletMicroChart( {
+				actual: { value: 26, color: sap.m.ValueColor.Good},
+				targetValue: 29,
+				forecastValue: 25,
+				minValue: 0,
+				maxValue: 50,
+				showValueMarker: true,
+				thresholds: [
+					{ value: 21, color: sap.m.ValueColor.Error },
+					{ value: 25, color: sap.m.ValueColor.Critical },
+					{ value: 28, color: sap.m.ValueColor.Critical },
+					{ value: 29, color: sap.m.ValueColor.Error }
+				]
+			});
+
+			var aResult = this.oChart._calculateChartData();
+
+			assert.equal(aResult.actualValuePct, 51.01, "Actual value should be at 51.01%");
+			assert.equal(aResult.targetValuePct, 56.84, "Target value should take 56.84%");
+			assert.equal(aResult.forecastValuePct, 49, "Forecast value should be at 49%");
+			assert.equal(aResult.thresholdsPct[0].valuePct, 41.16, "Threshold should be at 41.16%");
+			assert.equal(aResult.thresholdsPct[1].valuePct, 49, "Threshold should be at 49%");
+			assert.equal(aResult.thresholdsPct[2].valuePct, 54.88, "Threshold should be at 54.88%");
+			assert.equal(aResult.thresholdsPct[3].valuePct, 56.84, "Threshold should be at 56.84%");
+		});
+
+		QUnit.test("Actual and target values are 0 in delta mode", function(assert) {
+			this.oChart = new sap.suite.ui.microchart.BulletMicroChart( {
+				actual: { value: 0, color: sap.m.ValueColor.Good },
+				targetValue: 0,
+				showValueMarker: true,
+				showDeltaValue: true,
+				scale: "%",
+				mode: sap.suite.ui.microchart.BulletMicroChartModeType.Delta,
+				thresholds: [
+					{ value: -20, color: sap.m.ValueColor.Error },
+					{ value: -10, color: sap.m.ValueColor.Critical },
+					{ value: 10, color: sap.m.ValueColor.Critical },
+					{ value: 20, color: sap.m.ValueColor.Error }
+				]
+			});
+
+			var oResult = this.oChart._calculateChartData();
+
+			assert.equal(oResult.actualValuePct, 49.05, "Actual value should be at 49.05%");
+			assert.equal(oResult.targetValuePct, 49, "Target value should take 49%");
+			assert.equal(oResult.forecastValuePct, 0, "Forecast value should be at 0%");
+			assert.equal(oResult.thresholdsPct[0].valuePct, 0.0, "Threshold should be at 0.0%");
+			assert.equal(oResult.thresholdsPct[1].valuePct, 24.50, "Threshold should be at 24.50%");
+			assert.equal(oResult.thresholdsPct[2].valuePct, 73.50, "Threshold should be at 73.50%");
+			assert.equal(oResult.thresholdsPct[3].valuePct, 98.00, "Threshold should be at 98.00%");
+		});
+
+		QUnit.module("Responsiveness", {
+			beforeEach: function() {
+				this._oBC = new sap.suite.ui.microchart.BulletMicroChart("bullet-chart", {
+					isResponsive: true,
+					scale: "M",
+					actual: { value: 120, color: sap.m.ValueColor.Good},
+					targetValue: 100,
+					forecastValue: 110,
+					minValue: 0,
+					maxValue: 120,
+					showValueMarker: true,
+					thresholds: [
+						{ value: 0, color: sap.m.ValueColor.Error },
+						{ value: 50, color: sap.m.ValueColor.Critical },
+						{ value: 150, color: sap.m.ValueColor.Critical },
+						{ value: 200, color: sap.m.ValueColor.Error }
+					]
+				});
+				this._oFB = new sap.m.FlexBox("cc-fb", {
+					items: [this._oBC]
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this._oFB.destroy();
+				this._oBC.destroy();
+			}
+		});
+
+		QUnit.test("Vertical responsiveness: decreasing fonts", function(assert) {
+			//Arrange
+			this._oFB.setWidth("12rem");
+			this._oFB.setHeight("7.5rem");
+			this._oFB.rerender();
+			var mediumFont = parseFloat(this._oBC.$().find(".sapSuiteBMCTopLabel").css("font-size"));
+			this._oFB.setWidth("10rem");
+			this._oFB.setHeight("3.5rem");
+			this._oFB.rerender();
+			var smallFont = parseFloat(this._oBC.$().find(".sapSuiteBMCTopLabel").css("font-size"));
+
+			//Assert
+			assert.equal(this._oBC.$().hasClass("sapSuiteBMCSmallFont"), true, "Added CSS class that commands to use small fonts");
+			assert.equal(smallFont < mediumFont, true, "Font size decrease had actually occured");
+		});
+
+		QUnit.test("Vertical responsiveness: disappearance of labels", function(assert) {
+			//Arrange
+			this._oFB.setWidth("8rem");
+			this._oFB.setHeight("3rem");
+			this._oFB.rerender();
+
+			//Assert
+			assert.equal(this._oBC.$().hasClass("sapSuiteBMCNoLabels"), true, "Added CSS class that signals that labels should be hidden");
+			assert.equal(this._oBC.$().find(".sapSuiteBMCTopLabel").css("display"),"none", "Top label is hidden");
+			assert.equal(this._oBC.$().find(".sapSuiteBMCBottomLabel").css("display"),"none", "Bottom label is hidden");
+		});
+
+		QUnit.test("Vertical responsiveness: chart disappears", function(assert) {
+			//Arrange
+			this._oFB.setWidth("8rem");
+			this._oFB.setHeight("1rem");
+			this._oFB.rerender();
+
+			//Assert
+			assert.equal(this._oBC.$().css("display"),"none", "Last stage of vertical responsiveness: chart disappeared");
+		});
+
+		QUnit.test("Horizontal responsiveness: cannot display labels in medium font, try in small font", function(assert) {
+			//Arrange
+			this._oFB.setWidth("2.5rem");
+			this._oFB.setHeight("8.5rem");
+			this._oFB.rerender();
+
+			//Assert
+			assert.equal(this._oBC.$().css("display"),"block", "Width is not small enough to make chart disappear");
+			assert.equal(this._oBC.$().hasClass("sapSuiteBMCSmallFont"), true, "Added CSS class that commands to use small fonts");
+		});
+
+		QUnit.test("Horizontal responsiveness: chart disappears", function(assert) {
+			//Arrange
+			this._oFB.setWidth("2rem");
+			this._oFB.setHeight("8.5rem");
+			this._oFB.rerender();
+
+			//Assert
+			assert.equal(this._oBC.$().css("display"),"none", "Last stage of horizontal responsiveness: chart disappeared");
+		});
+		QUnit.module("Responsiveness adjustments for the use within GenericTile", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.BulletMicroChart().addStyleClass("sapUiSmallMargin");
+				this.oGenericTile = new sap.m.GenericTile("generic-tile", {
+					tileContent : new sap.m.TileContent({
+						content : this.oChart
+					})
+				});
+			},
+			afterEach: function() {
+				this.oGenericTile.destroy();
+			}
+		});
+
+		QUnit.test("The MicroChart becomes responsive if it is used in a Generic Tile", function(assert) {
+			//Act
+			this.oChart.onBeforeRendering();
+			//Assert
+			assert.ok(this.oChart.getIsResponsive(), "The chart became responsive");
+		});
+
+		QUnit.test("The standard margins are handled if chart is used in a Generic Tile", function(assert) {
+			//Arrange
+			var oRemoveMarginCallback = sinon.spy(sap.suite.ui.microchart, "_removeStandardMargins");
+			//Act
+			this.oChart.onBeforeRendering();
+			//Assert
+			assert.ok(oRemoveMarginCallback.called, "Library function that removes standard margins has been called.");
+		});
+		QUnit.module("Tooltip behavior", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.BulletMicroChart();
+				this.oModel = new sap.ui.model.json.JSONModel({
+					size : "M",
+					Tooltip : "Custom Tooltip"
+				});
+			},
+			afterEach: function() {
+				this.oChart.destroy();
+				this.oModel.destroy();
+			}
+		});
+
+		QUnit.test("Default value for tooltip", function(assert) {
+			//Arrange
+			//Act
+			//Assert
+			assert.deepEqual(this.oChart.getTooltip(), "{AltText}", "Default value set correctly");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, tooltip is not bound", function(assert) {
+			//Arrange
+			//Act
+			this.oChart.setModel(this.oModel);
+			sap.ui.getCore().applyChanges();
+			//Assert
+			assert.deepEqual(this.oChart.getTooltip(), "{AltText}", "Default value set correctly");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, control is bound, tooltip is not bound", function(assert) {
+			//Arrange
+			this.oChart.setAggregation("tooltip", new sap.ui.core.TooltipBase({
+				text : "{/Tooltip}"
+			}));
+			//Act
+			this.oChart.setModel(this.oModel);
+			sap.ui.getCore().applyChanges();
+			//Assert
+			assert.ok(this.oChart.getTooltip(), "Tooltip exists");
+			assert.deepEqual(this.oChart.getTooltip().getText(), "Custom Tooltip", "Tooltip exists");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, control is bound", function(assert) {
+			//Arrange
+			var oModel = new sap.ui.model.json.JSONModel({
+				data : [{
+					size : "M",
+					Tooltip : "Custom Tooltip"
+				}]
+			});
+			var oTable = new sap.m.Table({
+				items : {
+					path : "/data",
+					template : new sap.m.ColumnListItem({
+						cells : [new sap.suite.ui.microchart.BulletMicroChart({
+							forecastValue: 10,
+							targetValue: 15,
+							minValue: 1,
+							maxValue: 5
+						})]
+					})
+				}
+			}).setModel(oModel);
+			//Act
+			sap.ui.getCore().applyChanges();
+			var oChart = oTable.getItems()[0].getCells()[0];
+			//Assert
+			assert.deepEqual(oChart.getTooltip(), null, "Binding is empty, so tooltip aggregation is also empty.");
+			assert.ok(oChart.getTooltip_AsString(), "Tooltip is empty, default tooltip as string appears");
+			assert.ok(oChart.isBound("tooltip"), "Tooltip is bound");
+			//Cleanup
+			oTable.destroy();
+			oModel.destroy();
+		});
+
+		QUnit.module("Execution of functions onAfterRendering", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.BulletMicroChart().placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+				sinon.spy(sap.suite.ui.microchart, "_checkControlIsVisible");
+			},
+			afterEach: function() {
+				sap.suite.ui.microchart._checkControlIsVisible.restore();
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("Visibility check", function(assert) {
+			//Act
+			this.oChart.onAfterRendering();
+			//Assert
+			assert.ok(sap.suite.ui.microchart._checkControlIsVisible.calledOnce, "Method _checkControlIsVisible has been called once.");
+		});
+
+		QUnit.module("Title attribute is added and removed when mouse enters and leaves", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.BulletMicroChart("bullet-chart", {
+					isResponsive: true,
+					scale: "M",
+					actual: { value: 120, color: sap.m.ValueColor.Good },
+					targetValue: 100,
+					forecastValue: 110,
+					minValue: 0,
+					maxValue: 120,
+					showValueMarker: true,
+					thresholds: [
+						{ value: 0, color: sap.m.ValueColor.Error },
+						{ value: 50, color: sap.m.ValueColor.Critical },
+						{ value: 150, color: sap.m.ValueColor.Critical },
+						{ value: 200, color: sap.m.ValueColor.Error }
+					]
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this.oChart.destroy();
+				this.oChart = null;
+			}
+		});
+
+		QUnit.test("Aria-label only includes the standard chart information", function(assert) {
+			// Arrange
+			var sAriaLabel = this.oChart.getAltText();
+			this.oChart.setTooltip("This is a tooltip");
+			// Act
+			sap.ui.getCore().applyChanges();
+			// Assert
+			assert.equal(sAriaLabel, this.oChart.$().attr("aria-label"), "The aria-label includes only chart information");
+			assert.equal(this.oChart.$().attr("title"), null, "The title attribute is not rendered");
+		});
+
+		QUnit.test("Tooltip is showed when mouse enters chart", function(assert) {
+			// Arrange
+			this.oChart.setTooltip("This is a tooltip");
+			sap.ui.getCore().applyChanges();
+			// Act
+			this.oChart.$().trigger("mouseenter");
+			// Assert
+			assert.equal(this.oChart.$().attr("title"), "This is a tooltip", "The title attribute is added when mouse enters the chart");
+		});
+
+		QUnit.test("Tooltip is removed when mouse leaves chart", function(assert) {
+			// Arrange
+			this.oChart.setTooltip("This is a tooltip");
+			sap.ui.getCore().applyChanges();
+			// Act
+			this.oChart.$().trigger("mouseenter");
+			this.oChart.$().trigger("mouseleave");
+			// Assert
+			assert.equal(this.oChart.$().attr("title"), null, "The title attribute is removed when mouse leaves the chart");
+		});
+</script>
+</head>
+
+<body id="body" class="sapUiBody">
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+</body>
+</html>

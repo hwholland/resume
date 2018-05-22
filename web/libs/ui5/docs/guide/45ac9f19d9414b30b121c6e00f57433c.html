@@ -1,0 +1,149 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="With behavior-driven development (BDD), you as a developer start with a user story that defines the business value that the developed app should have. Next, you write a test that verifies the new functionality (this test initially fails). Finally, you write the needed functionality and your test passes. Gherkin is a test framework that supports this approach."/>
+<meta name="description" content="With behavior-driven development (BDD), you as a developer start with a user story that defines the business value that the developed app should have. Next, you write a test that verifies the new functionality (this test initially fails). Finally, you write the needed functionality and your test passes. Gherkin is a test framework that supports this approach."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9213403989123942"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9213403989123942"/>
+<title>Behavior-driven Development with Gherkin</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio45ac9f19d9414b30b121c6e00f57433c">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Behavior-driven Development with Gherkin</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">With behavior-driven development (BDD), you as a developer start with a user story that defines the business value that the developed app should
+		have. Next, you write a test that verifies the new functionality (this test initially fails). Finally, you write the needed functionality and your test
+		passes. Gherkin is a test framework that supports this approach. </p>
+
+		<p class="p">At first, as you are learning BDD, it will take a long time to implement new tests. Resist the temptation to abandon automated testing. The most important
+			software development phase for successful software is the maintenance phase. Automated tests are the best way to ensure an effective maintenance
+			phase, and help ensure that the code quality remains high over time.</p>
+
+		<p class="p">It's true that when you first try automated testing it might take a long time, but even this first attempt will be worthwhile and pay dividends later. In
+			your future projects, when you implement your tests much faster, your initial investment in learning how to do integration testing will really pay
+			off.</p>
+
+		<p class="p">One good way to ensure that you get the most value for your investment of time into automated testing is to ensure that you test the right things.
+			Integration testing is best for testing the main path of the major business scenarios. These are what are called "face-saving tests", in the sense
+			that you will lose face if you try to deliver the software when these major business scenarios are failing. Hence, integration tests are a great way
+			to do a quick and painless smoke test every time you commit a change to your software, to ensure that you haven't broken anything important.</p>
+
+		<p class="p">Since writing integration tests can be time-consuming, it's better to use unit testing to test all of the nuances and failure cases of your software. Unit
+			tests are cheap and easy to write, and are better suited to achieving full test coverage for the software. </p>
+
+		<div class="section"><div class="section_title">Gherkin</div><div type="Gherkin">
+			
+			<p class="p">Gherkin is written in JavaScript and is fully compatible with <span class="ph"><span class="ph pname">OpenUI5</span></span>, OPA, and QUnit. It is
+				based on the <span class="q">“cucumber”</span> tool.</p>
+
+			<div class="p">The advantages of using Gherkin are:<ul class="ul" id="loio45ac9f19d9414b30b121c6e00f57433c__ul_rlj_gnn_kx">
+					<li class="li">
+						<p class="p">You write executable specifications that are easy to understand and that allow the easy generation of integration tests.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Product specification and documentation are <span class="ph emphasis emphasis">always up to date</span>; they evolve during the development project.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Single source of truth: Reduce communication errors across your development team, because the product owner, developers, and testers are all working
+							from the same specification.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Maximize the business value you get out of the time spent writing tests, and keep your focus on the customer and their requirements.</p>
+
+					</li>
+
+				</ul>
+</div>
+
+			<div class="p">The Gherkin library contains the following parts:<ul class="ul" id="loio45ac9f19d9414b30b121c6e00f57433c__ul_iz2_h4n_kx">
+					<li class="li">
+						<p class="p">Feature file</p>
+
+						<div class="p">Software specification written in Gherkin syntax. Feature files are human-readable
+							specifications that are also machine-readable. Features are composed of
+								<span class="ph emphasis emphasis">test scenarios</span>, which are themselves composed
+							of <span class="ph emphasis emphasis">test steps</span>.
+							<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint nocode">Feature: Wearing sunscreen stops skin cancer
+
+  Scenario: Apply sunscreen
+    Given the sun is dangerous
+    When I apply sunscreen
+    Then I protect my skin</pre></div>
+</div>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Steps file</p>
+
+						<div class="p">Translates the feature file into something a computer can understand and execute. The steps
+							file also contains the tests to be executed to ensure that the software
+							behaves according to its specification. The main elements of a steps
+							file are called <span class="ph emphasis emphasis">step
+							definitions</span>.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">this.register(/^I protect my skin$/i, function() {
+  this.assert.assertEqual(this.mySkin, 'protected');
+});</pre></div>
+</div>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Test harness</p>
+
+						<p class="p">Stitches together the feature file and steps file and executes runtime tests on the result using a test framework such as QUnit.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><span class="keyword apiname">DataTableUtils</span></p>
+
+						<p class="p">Convenience library for handling data tables and string normalization.</p>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="9113397cd27e4a1090590e1c4f6edf5f.html" title="Feature files are human-readable specifications that are also machine-readable.">Feature Files</a></strong><br/>
+</div>
+<div><strong><a class="link" href="4b0c51965ebd40059daf3419ba35f694.html" title="Like test-driven development (TDD), behavior-driven development (BDD) with Gherkin encourages us to write more tests because you do it right from the beginning. Having more tests makes it cheaper and easier to maintain the code over time. Let's dive into the specifics using following an example.">Basic Example How to Use Gherkin</a></strong><br/>
+</div>
+<div><strong><a class="link" href="c689cd83e2524251a75d694b09263d07.html" title="Gherkin is compatible with the concept of OPA5 page objects.">Gherkin and OPA Page Objects</a></strong><br/>
+</div>
+<div><strong><a class="link" href="20737a4c64f448d2af9b9745fbe5d762.html" title="It can be handy to calculate the code coverage of your integration tests, for example, to figure out whether you forgot to test something or to provide statistics on your test quality.">Code Coverage</a></strong><br/>
+</div>
+<div><strong><a class="link" href="ebcf60c3b0e24c348b88603bbb8eb16c.html" title="During tesing with Gherkin, errors are logged to the test execution Web page.">Logging</a></strong><br/>
+</div>
+<div><strong><a class="link" href="02ef39f70a244c7cb0cb4d65be6ae396.html">Frequently Asked Questions</a></strong><br/>
+</div>
+</ul>
+
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fcucumber.io%2F" alt="https://cucumber.io/" title="https://cucumber.io/">cucumber Home Page<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fgithub.com%2Fcucumber%2Fcucumber%2Fwiki%2FGherkin" alt="https://github.com/cucumber/cucumber/wiki/Gherkin" title="https://github.com/cucumber/cucumber/wiki/Gherkin">Gherkin documentation on Github<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

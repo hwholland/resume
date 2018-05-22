@@ -1,0 +1,120 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=574936789344824"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=574936789344824"/>
+<title>Adding Custom Fields to the Smart Filter Bar</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio5fb9f57fcf12401bbe39a635e9a32a4e">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Adding Custom Fields to the Smart Filter Bar</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+    <div class="note caution"><span class="cautiontitle">Caution</span>  Extensions should be used with caution and only if you cannot produce the
+      required behavior by other means, such as manifest settings or annotations. <p class="p">After an
+        extension has been created, the display (for example, control placing, CSS, Less) and system
+        behavior (for example, model and binding usage, busy handling) of the extension lies within
+        the application's responsibility and is completely decoupled from SAP Fiori
+      elements.</p>
+</div>
+
+    <div class="p">You can extend the filter bar by using a custom filter field. To enable this, you need to add
+      a view extension and a corresponding controller extension, as in the following example:<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+        <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"extends": {
+			"extensions": {
+		        "sap.ui.controllerExtensions": {
+		          "sap.suite.ui.generic.template.ListReport.view.ListReport": {
+		            "controllerName": "&lt;myNamespace&gt;.ext.controller.CustomFilter"
+		          }
+		        },
+                "sap.ui.viewExtensions": { 
+					"sap.suite.ui.generic.template.ListReport.view.ListReport": {
+			            "SmartFilterBarControlConfigurationExtension|&lt;myEntityset&gt;": {
+				              "className": "sap.ui.core.Fragment",
+				              "fragmentName": "&lt;myNamespace&gt;.ext.fragment.CustomFilter",
+				              "type": "XML"
+				          },</pre></div>
+
+      </div>
+</div>
+
+    <div class="p">You can add additional controls to the smart filter bar. The following methods are
+        mandatory:<ul class="ul" id="loio5fb9f57fcf12401bbe39a635e9a32a4e__ul_ypj_pjb_gv">
+        <li class="li">
+          <p class="p">Using <samp class="ph codeph">onBeforeRebindTable</samp>, you evaluate the settings in the custom
+            fields and add the corresponding filters to the <samp class="ph codeph">bindingParameters</samp> of
+            the table.</p>
+
+        </li>
+
+        <li class="li">
+          <p class="p">Using <samp class="ph codeph">getCustomAppStateData</samp>, you read the state of all custom fields
+            and store that state in the object provided to enable the templates to use it for
+            navigation.</p>
+
+        </li>
+
+        <li class="li">
+          <p class="p">Using <samp class="ph codeph">restoreCustomAppStateData</samp>, you get the custom app state object
+            you provided in <samp class="ph codeph">getCustomAppStateData</samp> and set the corresponding values
+            to your custom controls. For example, you call this method after returning from a
+            navigation.</p>
+
+        </li>
+
+      </ul>
+The <samp class="ph codeph">onInitSmartFilterBar</samp> method is optional. You use it if you need to
+      bind a custom control to its own model or if you want value changes to trigger an action.</div>
+
+    <div class="p">The enhanced controller methods each call a corresponding extension method: <ul class="ul" id="loio5fb9f57fcf12401bbe39a635e9a32a4e__ul_g1r_bdm_1v">
+        <li class="li">
+          <p class="p"><samp class="ph codeph">onBeforeRebindTableExtension</samp></p>
+
+        </li>
+
+        <li class="li">
+          <p class="p"><samp class="ph codeph">getCustomAppStateDataExtension</samp></p>
+
+        </li>
+
+        <li class="li">
+          <p class="p"><samp class="ph codeph">restoreCustomAppStateDataExtension</samp></p>
+
+        </li>
+
+        <li class="li">
+          <p class="p"><samp class="ph codeph">onInitSmartFilterBarExtension</samp>
+          </p>
+
+        </li>
+
+      </ul>
+</div>
+
+    <div class="p">
+      <div class="note note"><span class="notetitle">Note</span> The filterable fields are usually defined by metadata annotations. You only have to use
+        the extension option if the filter attribute can only be calculated by the client.</div>
+
+    </div>
+
+    <p class="p">For an example with step-by-step instructions, see <a class="xref" href="3a515829ffd74239878ebc0d453d001d.html" title="The following example shows the development steps for adding an additional filter to the smart filter bar of the list report.">Adding Filterable Field to the Smart Filter Bar</a>.</p>
+
+  </div>
+
+<div class="related-links"> 
+</div>
+</div></div>
+
+</body>
+</html>

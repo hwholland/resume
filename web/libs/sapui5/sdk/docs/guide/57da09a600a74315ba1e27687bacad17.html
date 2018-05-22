@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="You have different options to test your applications locally."/>
+<meta name="description" content="You have different options to test your applications locally."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9740491288915376"/>
+<title>Testing SAPUI5 Applications</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio57da09a600a74315ba1e27687bacad17">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Testing <span class="ph"><span class="ph pname">SAPUI5</span></span> Applications</h1>
+<div class="body conbody"><p class="shortdesc">You have different options to test your applications locally.</p>
+<div class="section">
+			<p class="p">Depending on the environment your application is running on, you can use different
+				options to deploy and run your <span class="ph"><span class="ph pname">SAPUI5</span></span> applications.
+				But you can always test locally in your Eclipse.</p>
+
+			<p class="p">Before deploying a <span class="ph"><span class="ph pname">SAPUI5</span></span> application that has been created by using the Eclipse <span class="ph"><span class="ph pname">SAPUI5</span></span> application
+				development tool on a Java server, ensure to adopt the <samp class="ph codeph">web.xml</samp> file
+				in the <samp class="ph codeph">&lt;WebContent folder name&gt;/WEB-INF</samp> folder of the <span class="ph"><span class="ph pname">SAPUI5</span></span> application by
+				removing the mapping to the test resources. Test resources should only be used
+				during testing. Remove or comment the following lines:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"> <samp class="ph codeph">#!xml</samp>  
+&lt;servlet-mapping&gt;
+      &lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
+      &lt;url-pattern&gt;/test-resources/*&lt;/url-pattern&gt;
+   &lt;/servlet-mapping&gt;
+</pre></div>
+
+		</div>
+<div class="section"><div class="section_title">Testing in Eclipse</div><div type="Testing in Eclipse">
+			
+			<p class="p">After having created your <span class="ph"><span class="ph pname">SAPUI5</span></span> application using the <span class="ph"><span class="ph pname">SAPUI5</span></span> application development
+				tools, you can test it using the <span class="ph"><span class="ph pname">SAPUI5</span></span> application preview. From there you also can
+				open your application in an external browser. Another option is to configure a Java
+				web server and run your application there. </p>
+
+			<p class="p">If your application has to access resources on a back-end system (OData), you must
+				enable the back-end access for local testing.</p>
+
+		</div></div>
+<div class="section"><div class="section_title">Testing on a Java web server</div><div type="Testing on a Java web server">
+			
+			<p class="p">With or without Eclipse, you always can set up a Java web server, such as Apache
+				tomcat, to run your <span class="ph"><span class="ph pname">SAPUI5</span></span> applications.</p>
+
+		</div></div>
+</div>
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="05a9c69666074a2f831816534c32db9e.html" title="You access the SAPUI5 application preview using the Web App Preview, provided with the embedded Jetty server. You can quickly check on your application and open it in the default browser.">Test in SAPUI5 Application Preview</a></strong><br/>
+</div>
+<div><strong><a class="link" href="93ee8d08ba3446bfb7b1cb9c8564dc5e.html" title="Process to test your SAPUI5 application on a Java Web server">Test Your SAPUI5 Application on a Java Web Server</a></strong><br/>
+</div>
+<div><strong><a class="link" href="d56826f550d74e02b8d4b32cb264de52.html" title="To test on a Java web server, you can install an Apache Tomcat.">Set up Tomcat to test SAPUI5 applications</a></strong><br/>
+</div>
+<div><strong><a class="link" href="415d1fc8cc154cb189809d3cb9747165.html" title="The Mock Server mimics OData backend calls. It is designed to simulate an OData provider and is completely client-based, which means there is no need for network connectivity to a remote host.">The SAPUI5 Mock Server</a></strong><br/>
+</div>
+</ul>
+
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Testing SAPUI5 Applications";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

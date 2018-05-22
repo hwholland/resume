@@ -1,0 +1,88 @@
+<core:View
+	controllerName="sap.suite.ui.commons.sample.FacetOverview.FacetOverview"
+	xmlns="sap.suite.ui.commons"
+	xmlns:m="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+	<FacetOverview 
+		title="Contacts"
+		quantity="4"
+		heightType="Auto"
+		width= "500px"
+		press="press"
+		class="marginTopLeft">
+						<content>
+						<l:Grid defaultSpan="L6 M6 S6" class="sapUtiContactsGrid">
+							<m:HBox class="sapUtiContactsBox">
+								<m:Image src="test-resources/sap/suite/ui/commons/demokit/images/persons/img_contacts_01.png" width="48px" height="48px" class="sapUtiContactsImage"/>
+								<m:VBox>
+								<m:Text text="Megan Miller" class="sapUtiTextName"/>
+								<m:Text text="Sales Representative" class="sapUtiTextValue"/>
+								</m:VBox>
+							</m:HBox>
+							<m:HBox class="sapUtiContactsBox">
+								<m:Image src="test-resources/sap/suite/ui/commons/demokit/images/persons/img_contacts_02.png" width="48px" height="48px" class="sapUtiContactsImage"/>
+								<m:VBox>
+								<m:Text text="Peter McNamara" class="sapUtiTextName"/>
+								<m:Text text="Sales Executive" class="sapUtiTextValue"/>
+								</m:VBox>
+							</m:HBox>
+							<m:HBox class="sapUtiContactsBox">
+								<m:Image src="test-resources/sap/suite/ui/commons/demokit/images/persons/img_contacts_03.png" width="48px" height="48px" class="sapUtiContactsImage"/>
+								<m:VBox>
+								<m:Text text="George W.Brunick" class="sapUtiTextName"/>
+								<m:Text text="Cash Manager" class="sapUtiTextValue"/>
+								</m:VBox>
+							</m:HBox>
+							<m:HBox class="sapUtiContactsBox">
+								<m:Image src="test-resources/sap/suite/ui/commons/demokit/images/persons/img_contacts_04.png" width="48px" height="48px" class="sapUtiContactsImage"/>
+								<m:VBox>
+								<m:Text text="Lilian R.Owens" class="sapUtiTextName"/>
+								<m:Text text="Cash Manager" class="sapUtiTextValue"/>
+								</m:VBox>
+							</m:HBox>
+						</l:Grid>
+						</content>
+	</FacetOverview>
+	<FacetOverview 
+		title="Sales view"
+		width= "500px"
+		heightType="Auto"
+		class="marginTopLeft">
+	</FacetOverview>
+	<FacetOverview 
+		title="Sales Organization 0001 - Walldorf"
+		width= "500px"
+		heightType="M"
+		class="marginTopLeft">
+		<content>
+			<m:VBox class="sapUtiSalesOrgFacet">
+				<m:HBox>
+					<m:Label text="Distribution Channel General Brenenal" class="sapUtiSalesOrgKeyLabel"/>
+					<m:Label text=":" class="sapUtiSalesOrgDelimiter"/>
+					<m:Text text="01 - Electronic Sales" class="sapUtiSalesOrgValueLabel"/>
+				</m:HBox>
+				<m:HBox>
+					<m:Label text="Division" class="sapUtiSalesOrgKeyLabel"/>
+					<m:Label text=":" class="sapUtiSalesOrgDelimiter"/>
+					<m:Text text="01 - Industry" class="sapUtiSalesOrgValueLabel"/>
+				</m:HBox>
+				<m:HBox>
+					<m:Label text="Sales Group" class="sapUtiSalesOrgKeyLabel"/>
+					<m:Label text=":" class="sapUtiSalesOrgDelimiter"/>
+					<m:Link text="001 Sales Group 01" class="sapUtiSalesOrgValueLabel"/>
+				</m:HBox>
+			</m:VBox>
+		</content>
+	</FacetOverview>
+	<FacetOverview 
+		title="Relevant Addresses"
+		width= "500px"
+		heightType="L"
+		class="marginTopLeft"
+		press="press">
+		<content>
+			<core:Fragment id="frag1" fragmentName="sap.suite.ui.commons.sample.FacetOverview.Map" type="JS" />
+		</content>
+	</FacetOverview>
+</core:View>

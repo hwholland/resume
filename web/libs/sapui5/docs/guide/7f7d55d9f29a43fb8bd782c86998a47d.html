@@ -1,0 +1,134 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="This control is intended to help application developers include simple 3D visualisation capability in their application by connecting, configuring and presenting the essential Visualisation Toolkit controls a single composite control."/>
+<meta name="description" content="This control is intended to help application developers include simple 3D visualisation capability in their application by connecting, configuring and presenting the essential Visualisation Toolkit controls a single composite control."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=823325277921088"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=823325277921088"/>
+<title>Viewer</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio7f7d55d9f29a43fb8bd782c86998a47d">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Viewer</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">This control is intended to help application developers include simple 3D visualisation
+		capability in their application by connecting, configuring and presenting the essential
+		Visualisation Toolkit controls a single composite control.</p>
+
+		<div class="section" id="loio7f7d55d9f29a43fb8bd782c86998a47d__section_ehp_gx1_qz"><div class="section_title">API Reference / Sample</div><div type="API Reference / Sample">
+			
+			<ul class="ul" id="loio7f7d55d9f29a43fb8bd782c86998a47d__ul_zcz_1dg_q5">
+				<li class="li"><a class="xref" href="../../docs/api/symbols/sap.ui.vk.Viewer.html" alt="../../docs/api/symbols/sap.ui.vk.Viewer.html" title="../../docs/api/symbols/sap.ui.vk.Viewer.html">sap.ui.vk.Viewer</a> in the
+						<span class="ph uicontrol">API Reference</span> in the Demo Kit</li>
+
+				<li class="li"><a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.vk.tutorial.VIT.01/preview" alt="../../explored.html#/sample/sap.ui.vk.tutorial.VIT.01/preview" title="../../explored.html#/sample/sap.ui.vk.tutorial.VIT.01/preview">Step 1 - 3D Viewer With Single File
+						Loading</a> in the Demo Kit</li>
+
+				<li class="li"><a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.vk.tutorial.VIT.02/preview" alt="../../explored.html#/sample/sap.ui.vk.tutorial.VIT.02/preview" title="../../explored.html#/sample/sap.ui.vk.tutorial.VIT.02/preview">Step 2 - 3D Viewer With Multiple File
+						Loading</a> in the Demo Kit</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p">The Viewer (<samp class="ph codeph">sap.ui.vk.Viewer</samp>) control is intended to help
+				application developers include simple 3D visualisation capability in their
+				application by connecting, configuring and presenting the essential Visual
+				Interaction toolkit (<samp class="ph codeph">sap.ui.vk</samp>) controls into a single, composite
+				control.</p>
+
+			<p class="p">Most applications require the simplest possible visualisation capability, which
+				includes the loading of a single file into the application, and the initialisation
+				of a 3D Viewport. Consumers of such an application also expect to be able to pan,
+				zoom, or rotate (if applicable) the scene, as well as receive visual cues when they
+				select an object in the 3D Viewport. The Viewer control aims to make it as easy as
+				possible for an application developer to include 3D visualisation capability by
+				connecting, configuring and presenting some of the core Visual Interaction toolkit
+				controls into a single, composite control.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Prerequisites</div><div type="Prerequisites">
+			
+			<ul class="ul">
+				<li class="li">You must be able to create or obtain files in the SAP VDS (<span class="ph filepath">.vds</span>) format
+					to be able to display them in the Viewer.</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Details / Features</div><div type="Details / Features"><div class="sectiondiv subsection">
+			<p class="p subsectiontitle">Default Layout</p>
+
+			<p class="p">The following figure shows the default Viewer layout after it is initialized: </p>
+
+				<img class="image" id="loio7f7d55d9f29a43fb8bd782c86998a47d__image_fdv_mgg_q5" src="loio14b82c3e44074fdcbcc04837da3fd342_LowRes.png"/>
+			<p class="p">The following figure shows the Viewer layout with a file loaded and all available controls
+					enabled and visible: </p>
+
+				<img class="image" id="loio7f7d55d9f29a43fb8bd782c86998a47d__image_jxn_bjg_q5" src="loioc90a9d7f58a14a3b928b9b50dea71003_LowRes.png"/>
+		</div><div class="sectiondiv subsection">
+			<p class="p subsectiontitle">Enabling or Disabling Features</p>
+
+			<div class="p">By default, instances of the Toolbar, Scene Tree, and Step Navigation controls
+				are created after a Viewer is initialized. You can change the following Viewer
+				properties so that instances of these features are not created/dislayed: <ul class="ul">
+					<li class="li"><samp class="ph codeph">enableSceneTree</samp></li>
+
+					<li class="li"><samp class="ph codeph">enableStepNavigation</samp></li>
+
+					<li class="li"><samp class="ph codeph">enableToolbar</samp></li>
+
+				</ul>
+</div>
+
+			<p class="p">'Disabling' the Toolbar will result in no Toolbar being shown in the application. </p>
+
+			<p class="p">If the Toolbar feature is enabled, 'disabling' the Scene Tree or Step Navigation feature will
+					result in their respective toolbar buttons being grayed out.</p>
+
+		</div></div></div>
+
+		<div class="section"><div class="section_title">Constraints</div><div type="Constraints">
+			
+			<ul class="ul" id="loio7f7d55d9f29a43fb8bd782c86998a47d__ul_bq3_32g_q5">
+				<li class="li">The Viewer control is only capable of loading the SAP VDS file
+						(<span class="ph filepath">.vds</span>) format. </li>
+
+				<li class="li">The Viewer control is designed for simple consumption scenarios. If an
+					application demands more control of the elements in the Viewer or extended
+					functionality, then the developer may need to compose their own 'Viewer' from
+					the various Visual Interaction toolkit controls.</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Related Information</div><div type="Related Information">
+			
+			<ul class="ul" id="loio7f7d55d9f29a43fb8bd782c86998a47d__ul_xhy_l2g_q5">
+				<li class="li"><a class="xref" href="0e219128fe564855b91ae50d7a29424b.html" title="In this step, you will be creating a 3D Viewer application that allows a user to load a single 2D image or 3D model that is stored locally or remotely.">Step 1: 3D Viewer With Single File Loading</a></li>
+
+				<li class="li"><a class="xref" href="80b0b57480e54a50a08daf468453aa33.html" title="In this step, you will be creating a Viewer application that allows a user to load multiple 3D resources stored locally.">Step 2: 3D Viewer With Multiple File Loading</a></li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

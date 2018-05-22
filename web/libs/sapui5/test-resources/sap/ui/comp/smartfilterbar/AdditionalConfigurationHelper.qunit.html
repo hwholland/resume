@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>qUnit Page for sap.ui.comp.smartfilterbar.AdditionalConfigurationHelper</title>
+
+		<script id="sap-ui-bootstrap" 
+			type="text/javascript"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.ui.comp">
+		</script>
+
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+
+		<script language="javascript">
+		
+		if(!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+      		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		} 		
+			
+		(function() {
+
+			
+			jQuery.sap.require("sap.ui.comp.smartfilterbar.AdditionalConfigurationHelper");
+			jQuery.sap.require("sap.ui.comp.smartfilterbar.ControlConfiguration");
+			jQuery.sap.require("sap.ui.comp.smartfilterbar.GroupConfiguration");
+			jQuery.sap.require("sap.ui.comp.smartfilterbar.SelectOption");
+			jQuery.sap.require("sap.m.Input");
+
+			module("sap.ui.comp.smartfilterbar.AdditionalConfigurationHelper", {
+				setup: function() {
+				},
+				teardown: function() {
+				}
+			});
+
+			
+			
+			test("getJSONFromAdditionalConfiguration shall return an simple empty JS Object", function() {
+				var oAdditionalConfigurationHelper;
+				
+				//Call CUT
+				oAdditionalConfigurationHelper = new sap.ui.comp.smartfilterbar.AdditionalConfigurationHelper([],[]);
+				
+				ok(oAdditionalConfigurationHelper);
+				deepEqual(oAdditionalConfigurationHelper.controlConfiguration, []);
+				deepEqual(oAdditionalConfigurationHelper.groupConfiguration, []);
+			});	
+			
+
+			test("getJSONFromAdditionalConfiguration shall convert the additional configuration into a JS Object", function() {
+				var oGroupConfiguration, oControlConfiguration, oDefaultFilterValue, oCustomControl, oAdditionalConfigurationHelper;
+
+				//Control Configuration
+				oControlConfiguration = new sap.ui.comp.smartfilterbar.ControlConfiguration();
+				oControlConfiguration.setKey("key");
+				oControlConfiguration.setGroupId("groupId");
+				oControlConfiguration.setVisible(false);
+				oControlConfiguration.setMandatory(sap.ui.comp.smartfilterbar.ControlConfiguration.MANDATORY.mandatory);
+				oControlConfiguration.setWidth('12rem');
+				oControlConfiguration.setHasValueHelpDialog(true);
+				oControlConfiguration.setHasTypeAhead(true);
+				oControlConfiguration.setControlType(sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.input);
+				oControlConfiguration.setIndex(5);
+				oControlConfiguration.setFilterType(sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.single);
+				oControlConfiguration.setPreventInitialDataFetchInValueHelpDialog(true);
+				oDefaultFilterValue = new sap.ui.comp.smartfilterbar.SelectOption();
+				oDefaultFilterValue.setLow("low");
+				oControlConfiguration.addDefaultFilterValue(oDefaultFilterValue);
+				oCustomControl = new sap.m.Input();
+				oControlConfiguration.setCustomControl(oCustomControl);
+
+				//Group Configuration
+				oGroupConfiguration = new sap.ui.comp.smartfilterbar.GroupConfiguration();
+				oGroupConfiguration.setKey("key");
+				oGroupConfiguration.setIndex(5);			
+					
+				//Call CUT
+				oAdditionalConfigurationHelper = new sap.ui.comp.smartfilterbar.AdditionalConfigurationHelper([oControlConfiguration],[oGroupConfiguration]);
+				
+				//Assert control Configuration
+				ok(oAdditionalConfigurationHelper);
+				ok(oAdditionalConfigurationHelper.controlConfiguration);
+				equal(oAdditionalConfigurationHelper.controlConfiguration.length, 1);
+				equal(oAdditionalConfigurationHelper.controlConfiguration[0].key, "key");
+				equal(oAdditionalConfigurationHelper.controlConfiguration[0].groupId, "groupId" );
+				strictEqual(oAdditionalConfigurationHelper.controlConfiguration[0].isVisible, false );
+				strictEqual(oAdditionalConfigurationHelper.controlConfiguration[0].mandatory, sap.ui.comp.smartfilterbar.ControlConfiguration.MANDATORY.mandatory );
+				equal(oAdditionalConfigurationHelper.controlConfiguration[0].width, '12rem' );
+				strictEqual(oAdditionalConfigurationHelper.controlConfiguration[0].hasValueHelpDialog, true);
+				strictEqual(oAdditionalConfigurationHelper.controlConfiguration[0].hasTypeAhead, true);
+				equal(oAdditionalConfigurationHelper.controlConfiguration[0].controlType, sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.input);
+				equal(oAdditionalConfigurationHelper.controlConfiguration[0].filterType, sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.single);
+				ok(oAdditionalConfigurationHelper.controlConfiguration[0].defaultFilterValues);
+				equal(oAdditionalConfigurationHelper.controlConfiguration[0].defaultFilterValues.length, 1);
+				equal(oAdditionalConfigurationHelper.controlConfiguration[0].defaultFilterValues[0].low, "low");
+				strictEqual(oAdditionalConfigurationHelper.controlConfiguration[0].preventInitialDataFetchInValueHelpDialog, true);
+				
+				//Assert group Configuration
+				ok(oAdditionalConfigurationHelper.groupConfiguration);
+				equal(oAdditionalConfigurationHelper.groupConfiguration.length, 1);
+				equal(oAdditionalConfigurationHelper.groupConfiguration[0].key, "key");
+				equal(oAdditionalConfigurationHelper.groupConfiguration[0].index, 5);
+				
+			});
+			
+			test("getControlConfigurationByKey shall return undefined if the parameter 'key' is invalid", function() {
+				var oAdditionalConfigurationHelper, oControlConfiguration;
+				oAdditionalConfigurationHelper = new sap.ui.comp.smartfilterbar.AdditionalConfigurationHelper();
+				
+				//Call CUT
+				oControlConfiguration = oAdditionalConfigurationHelper.getControlConfigurationByKey(undefined);
+				
+				strictEqual(oControlConfiguration, undefined);
+			});	
+			
+
+			
+			test("getControlConfigurationByKey shall return undefined if the key does not exist", function() {
+				var oAdditionalConfigurationHelper, oControlConfiguration;				
+				oAdditionalConfigurationHelper = new sap.ui.comp.smartfilterbar.AdditionalConfigurationHelper();
+				
+				//Call CUT
+				oControlConfiguration = oAdditionalConfigurationHelper.getControlConfigurationByKey("iDoNotExist");
+				
+				strictEqual(oControlConfiguration, undefined);
+			});	
+			
+			
+			
+			test("getControlConfigurationByKey shall return the control configuration for the specified key", function() {
+				var oAdditionalConfigurationHelper, oControlConfiguration;
+			
+				//Create Control Configuration
+				oControlConfiguration = new sap.ui.comp.smartfilterbar.ControlConfiguration();
+				oControlConfiguration.setKey("key");
+				oAdditionalConfigurationHelper = new sap.ui.comp.smartfilterbar.AdditionalConfigurationHelper([oControlConfiguration]);
+			
+				//Call CUT
+				oControlConfiguration = oAdditionalConfigurationHelper.getControlConfigurationByKey("key");
+
+				ok(oControlConfiguration);				
+				equal(oControlConfiguration.key, "key");
+			});	
+			
+			
+			test("getGroupConfigurationByKey shall return undefined if the parameter 'key' is invalid", function() {
+				var oAdditionalConfigurationHelper, oGroupConfiguration;
+				oAdditionalConfigurationHelper = new sap.ui.comp.smartfilterbar.AdditionalConfigurationHelper();
+				
+				//Call CUT
+				oGroupConfiguration = oAdditionalConfigurationHelper.getGroupConfigurationByKey(undefined);
+				
+				strictEqual(oGroupConfiguration, undefined);
+			});	
+						
+			
+			test("getGroupConfigurationByKey shall return undefined if the key does not exist", function() {
+				var oAdditionalConfigurationHelper, oGroupConfiguration;				
+				oAdditionalConfigurationHelper = new sap.ui.comp.smartfilterbar.AdditionalConfigurationHelper();
+				
+				//Call CUT
+				oGroupConfiguration = oAdditionalConfigurationHelper.getGroupConfigurationByKey("iDoNotExist");
+				
+				strictEqual(oGroupConfiguration, undefined);
+			});	
+			
+			
+			
+			test("getGroupConfigurationByKey shall return the control configuration for the specified key", function() {
+				var oAdditionalConfigurationHelper, oGroupConfiguration;
+			
+				//Create Control Configuration
+				oGroupConfiguration = new sap.ui.comp.smartfilterbar.GroupConfiguration();
+				oGroupConfiguration.setKey("key");
+				oAdditionalConfigurationHelper = new sap.ui.comp.smartfilterbar.AdditionalConfigurationHelper([], [oGroupConfiguration]);
+			
+				//Call CUT
+				oGroupConfiguration = oAdditionalConfigurationHelper.getGroupConfigurationByKey("key");
+
+				ok(oGroupConfiguration);				
+				equal(oGroupConfiguration.key, "key");
+			});	
+						
+		
+						
+
+		}());
+
+			
+		</script>
+	</head>
+	<body id="body" class="sapUiBody">
+		<h1 id="qunit-header">qUnit Page for sap.ui.comp.smartfilterbar.ControlConfiguration</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		
+		<div id="content"></div>
+	</body>
+</html>

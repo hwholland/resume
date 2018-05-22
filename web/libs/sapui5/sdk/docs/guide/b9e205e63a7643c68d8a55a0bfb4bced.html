@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The MAKit Chart is a SAPUI5 control that provides charting features."/>
+<meta name="description" content="The MAKit Chart is a SAPUI5 control that provides charting features."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3470778229470788"/>
+<title>Building Charts with MAKit</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loiob9e205e63a7643c68d8a55a0bfb4bced">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Building Charts with MAKit</h1>
+<div class="body"><p class="shortdesc">The MAKit Chart is a <span class="ph"><span class="ph pname">SAPUI5</span></span> control that provides charting features.</p>
+<p class="p">MAKit chart is designed for mobile and tablet use. It has unique features such as Value Bubble
+			and Range Selector that make chart report much more rich and interactive.</p>
+<img class="image" id="loiob9e205e63a7643c68d8a55a0bfb4bced__image_ayv_m23_hj" src="loiof403282bc940447682625717801fa62b_LowRes.png" alt="SAPUI5 Mobile makit Chart" title="SAPUI5 Mobile makit Chart"/><p class="p">MAKit chart supports the following touch interactions on mobile devices:</p>
+<ul class="ul" id="loiob9e205e63a7643c68d8a55a0bfb4bced__ul_sxh_423_hj"><li class="li">tap to highlight certain part of the chart</li>
+<li class="li">double tap</li>
+<li class="li">longpress</li>
+<li class="li">two finger pinch to zoom in or out</li>
+<li class="li">one finger drag to move chart's Value Bubble highlight</li>
+<li class="li">two finger swipe to scroll the chart when zoomed in</li>
+</ul>
+<p class="p">Currently, it supports the following chart types:</p>
+<ul class="ul" id="loiob9e205e63a7643c68d8a55a0bfb4bced__ul_vxh_423_hj"><li class="li">Column </li>
+<li class="li">Horizontal bar (table bar)</li>
+<li class="li">Line</li>
+<li class="li">Bubble</li>
+<li class="li">Pie</li>
+<li class="li">Donut</li>
+<li class="li">Waterfall column</li>
+<li class="li">Waterfall bar</li>
+<li class="li">Stacked column</li>
+<li class="li">100% stacked column</li>
+</ul>
+<p class="p">The <dfn class="term">value bubble</dfn> provides an interactive way of showing details of the
+			chart. It provides detailed information, that is, the value of the highlighted chart
+			region. A user can hide or show specific series of the chart by toggling the legends on
+			the value bubble.</p>
+<p class="p">The <dfn class="term">range selector</dfn> provides an overview of the whole chart to the user and
+			also allows to zoom in or out to a specific part of the chart. </p>
+<p class="p">The following controls and elements are provided in the <samp class="ph codeph">sap.makit
+				library</samp>:</p>
+<ul class="ul" id="loiob9e205e63a7643c68d8a55a0bfb4bced__ul_xxh_423_hj"><li class="li"><samp class="ph codeph">sap.makit/Chart</samp> – <span class="ph"><span class="ph pname">SAPUI5</span></span> chart control (type:
+				sap.ui.core/Control)</li>
+<li class="li"><samp class="ph codeph">sap.makit/Axis</samp> – Base type for the chart’s axis (type:
+				sap.ui.core/Element) </li>
+<li class="li"><samp class="ph codeph">sap.makit/CategoryAxis</samp> – Properties of the chart’s category axis
+				(type: sap.makit/Axis) </li>
+<li class="li"><samp class="ph codeph">sap.makit/ValueAxis</samp> – Properties of the chart’s category axis
+				(type: sap.makit/Axis) </li>
+<li class="li"><samp class="ph codeph">sap.makit/Category</samp>– Properties of the chart’s category axis (type:
+				sap.makit/Element) </li>
+<li class="li"><samp class="ph codeph">sap.makit/Value</samp> – Properties of the chart’s value axis (type:
+				sap.makit/ Element) </li>
+<li class="li"><samp class="ph codeph">sap.makit/Series</samp> – Properties of the chart’s series (type:
+				sap.ui.core/Element) </li>
+<li class="li"><samp class="ph codeph">sap.makit/Row</samp> – Row collection for data binding (type:
+				sap.ui.core/Element) </li>
+<li class="li"><samp class="ph codeph">sap.makit/Column</samp> – Column mapping for data binding (type:
+				sap.ui.core/Element) </li>
+<li class="li"><samp class="ph codeph">sap.makit/ValueBubble</samp> – Properties for the chart’s value bubble
+				(type: sap.ui.core/Element) </li>
+</ul>
+<p class="p">Simple Types: </p>
+<ul class="ul" id="loiob9e205e63a7643c68d8a55a0bfb4bced__ul_cyh_423_hj"><li class="li"><samp class="ph codeph">sap.makit/ChartType</samp> – Enumeration for chart type (type:
+				string)</li>
+<li class="li"><samp class="ph codeph">sap.makit/SortOrder</samp> – Enumeration for category’s
+					<samp class="ph codeph">sortOrder</samp> (type: string) </li>
+<li class="li"><samp class="ph codeph">sap.makit/LegendPosition</samp> – Enumeration for
+					<samp class="ph codeph">legendPosition</samp> (type: string) </li>
+<li class="li"><samp class="ph codeph">sap.makit/ValueBubbleStyle</samp> – Enumeration for the value bubble’s
+				positioning style (type: string) for non-Pie/donut/HBar chart</li>
+<li class="li"><samp class="ph codeph">sap.makit/ValueBubblePosition</samp> – Enumeration for the value bubble’s
+				position on pie/donut Chart (type: string)</li>
+</ul>
+</div>
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="31e6fc59d5ca4197a78f514b3357c805.html" title="MAKit charts require data region information and data binding.">Creating a MAKit Chart</a></strong><br/>
+</div>
+<div><strong><a class="link" href="6609249fc27b426d8b48ecc5e594574f.html" title="SAPUI5 provides several attributes to support the configuration of MAKit charts.">Properties of MAKit Charts</a></strong><br/>
+</div>
+<div><strong><a class="link" href="9154478ce02e4dc49fe808b4d4dc6f89.html" title="Combination charts allow multiple layers of a graph to share the same category, but have their own values and series grouped and drawn in different styles.">Combination Chart</a></strong><br/>
+</div>
+<div><strong><a class="link" href="d65ffc05688e48c2af4301f9db336071.html" title="The SAPUI5 theme parameters to allow dynamic styling and theming for MAKit charts.">Configuration of Theme and Styling for MAKit Charts</a></strong><br/>
+</div>
+</ul>
+
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Building Charts with MAKit";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

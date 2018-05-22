@@ -1,0 +1,47 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The fragment logic of JS fragments cannot influence the IDs of controls that are created in the createContent() method."/>
+<meta name="description" content="The fragment logic of JS fragments cannot influence the IDs of controls that are created in the createContent() method."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=26259231643931846"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=26259231643931846"/>
+<title>IDs in JS Fragments</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio896fa9aae5fb40deb209bc31ead99ba7">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">IDs in JS Fragments</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The fragment logic of JS fragments cannot influence the IDs of controls that are
+		created in the <samp class="ph codeph">createContent()</samp> method.</p>
+
+		<p class="p">This behavior is similar to how JS views behave regarding IDs. When a stable ID is given
+			within a JS fragment, the <samp class="ph codeph">this.createId()</samp> method should be used: </p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">createContent: function(oController ) {
+	var oButton  = new sap.m.Button(this.createId("btnInJsFragment"), { 
+	// use createId() to let the fragment influence the ID
+	    text: "Hello JS World"
+	}); 
+	return oButton ; 
+}</pre></div>
+
+		<p class="p">If an ID is given when the fragment is instantiated, <samp class="ph codeph">createId()</samp> will add
+			it as prefix. Else, <samp class="ph codeph">createId()</samp> will leave the given ID untouched.</p>
+
+		<p class="p">It is, however, possible that a containing view may add its prefix. For more information,
+			see <a class="xref" href="f10bf709b05f4adea8f8b8ad9a840247.html" title="For fragments that are used within declarative views, generated IDs are not prefixed.">IDs of Fragments in Views</a>.</p>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

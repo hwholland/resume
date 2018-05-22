@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The &lt;template:repeat instruction iterates the sap.ui.model.ListBinding given by the list attribute."/>
+<meta name="description" content="The &lt;template:repeat instruction iterates the sap.ui.model.ListBinding given by the list attribute."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6048351067118518"/>
+<title>repeat</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio512e545ba66f4214ba0de1eb56f319e1">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">repeat</h1>
+<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">&lt;template:repeat</samp> instruction iterates the
+			<samp class="ph codeph">sap.ui.model.ListBinding</samp> given by the <samp class="ph codeph">list</samp> attribute. </p>
+<div class="p">
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">Sorting and filtering is already supported by the list binding via an extended
+					syntax. For more information, see <a class="xref" href="099f0a2851ad4118af36345f7dd13ea8.html" title="Extended syntax can be used to add filters and sorters for aggregation binding. One or multiple objects can be defined.">Using Extended Syntax to Add
+						Filters and Sorters</a>.</p>
+
+			</div>
+
+		</div>
+<p class="p">The <samp class="ph codeph">var</samp> attribute holds the name of the loop variable which can be used
+			to access the current list element in a child element of <samp class="ph codeph">repeat</samp>. In the
+			preprocessing, <samp class="ph codeph">repeat</samp> is replaced by multiple clones of its content,
+			one clone per list element, with each clone again preprocessed as if it were contained
+			in a <samp class="ph codeph">with</samp> instruction defining the loop variable.</p>
+<p class="p">The following example iterates all fields in the identification annotation from the SAP UI
+			vocabulary in the currently referenced element of the model <samp class="ph codeph">meta</samp> and
+			displays a label and content for each field. It is completely transparent to the
+				<samp class="ph codeph">repeat</samp> implementation whether the list binding refers to data or
+			meta data. The templating engine is replacing "template time" binding expressions which
+			refer to meta data with corresponding runtime binding expression which refer to data.
+			The formatter <samp class="ph codeph">sap.ui.model.odata.AnnotationHelper.format</samp> is used, which
+			encapsulates knowledge about the SAP UI vocabulary and so on.</p>
+<div class="example"><h2 class="exampletitle">Example</h2><div class="title authorexampletitle">Template for "repeat" Instruction</div>
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+&lt;template:repeat list="{meta&gt;com.sap.vocabularies.UI.v1.Identification}" var="field"&gt;
+  &lt;Label text="{path: 'field&gt;Label', formatter: 'sap.ui.model.odata.AnnotationHelper'}" /&gt;
+  &lt;Text text="{path: 'field&gt;Value', formatter: 'sap.ui.model.odata.AnnotationHelper'}" /&gt;
+&lt;/template:repeat&gt;
+</pre></div>
+
+		</div>
+<div class="example"><h2 class="exampletitle">Example</h2><div class="title authorexampletitle">Output Template for the "repeat" Instruction (in Memory Only)</div>
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+&lt;Label text="Product ID" /&gt;
+&lt;Text text="{path:'ProductID',type:'sap.ui.model.odata.type.String',constraints:{"nullable":false,"maxLength":10}}" /&gt;
+&lt;Label text="Price" /&gt;
+&lt;Text text="{path:'Price/Amount',type:'sap.ui.model.odata.type.Decimal',constraints:{"precision":13,"scale":3}}" /&gt;
+&lt;Label text="Category" /&gt;
+&lt;Text text="{path:'Category',type:'sap.ui.model.odata.type.String',constraints:{"maxLength":40}}" /&gt;
+&lt;Label text="Supplier" /&gt;
+&lt;Text text="{path:'SupplierName',type:'sap.ui.model.odata.type.String',constraints:{"maxLength":80}}" /&gt;
+</pre></div>
+
+		</div>
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="repeat";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can use extension points to add custom actions to the list report and the object page."/>
+<meta name="description" content="You can use extension points to add custom actions to the list report and the object page."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3650156338801974"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3650156338801974"/>
+<title>Adding Custom Actions Using Extension Points</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio7619517a92414e27b71f02094bd08d06">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Adding Custom Actions Using Extension Points</h1>
+
+	
+	<div class="body taskbody"><p class="shortdesc">You can use extension points to add custom actions to the list report and the object
+		page.</p>
+
+		<div class="section context"><div class="tasklabel"><h2 class="sectiontitle tasklabel">Context</h2></div>
+			<div class="p"><div class="note caution"><span class="cautiontitle">Caution</span>  Use extensions with caution and only if you cannot produce the required
+					behavior by other means, such as manifest settings or annotations. <p class="p">After an
+						extension has been created, the display (for example, control placing, CSS,
+						Less) and system behavior (for example, model and binding usage, busy
+						handling) of the extension lies within the application's responsibility and
+						is completely decoupled from SAP Fiori elements.</p>
+</div>
+You can define
+				custom actions for the following:<ul class="ul" id="loio7619517a92414e27b71f02094bd08d06__ul_jq3_2wt_sx">
+					<li class="li">List report (global action)</li>
+
+					<li class="li">Table toolbar of the list report</li>
+
+					<li class="li">Header of the object page</li>
+
+					<li class="li">Table toolbar for a specific table on the object page</li>
+
+					<li class="li">Form in a section on the object page</li>
+
+					<li class="li">Footer bar </li>
+
+				</ul>
+These custom actions are displayed as buttons on the UI. When the user selects
+				the action, the system calls a handler function that can be implemented within a
+				controller extension.</div>
+
+		</div>
+		<section class="section procedure"><div class="ol steps tasklabel"><h2 class="sectiontitle tasklabel">Procedure</h2></div><ol class="ol steps"><li class="li step stepexpand">
+				<span class="ph cmd">Implement controller extension</span>
+				<ol type="a" class="ol substeps" id="loio7619517a92414e27b71f02094bd08d06__substeps_cg3_2dc_3z">
+					<li class="li substep substepexpand">
+						<span class="ph cmd">In your app, create a <span class="ph filepath">.controller.js</span> file for your
+							extension.</span>
+						<div class="itemgroup info">
+							<div class="p">In the code sample below, we assume the following:<ul class="ul" id="loio7619517a92414e27b71f02094bd08d06__ul_t44_q4s_sx">
+									<li class="li">
+										<p class="p">App name: <samp class="ph codeph">my_app</samp></p>
+
+									</li>
+
+									<li class="li">File names:
+											<span class="ph filepath">MyListReportExt.controller.js</span>
+										(extending the <samp class="ph codeph">ListReport</samp> controller),
+											<samp class="ph codeph">MyObjectPageExt.controller.js</samp>
+										(extending the <samp class="ph codeph">ObjectPage</samp> controller)</li>
+
+									<li class="li">Location of controller files:
+											<samp class="ph codeph">my_app/webapp/ext/controller</samp></li>
+
+								</ul>
+</div>
+
+						</div>
+					</li>
+
+					<li class="li substep substepexpand">
+						<span class="ph cmd">In your controller extension, implement the event handler functions to be executed when
+							the user selects the action. For example, if you want to extend the
+								<samp class="ph codeph">ListReport</samp> controller, your controller extension
+							should look like this: </span>
+						<div class="itemgroup info">
+							<div class="p">
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">sap.ui.controller("my_app.ext.controller.MyListReportExt", {
+  onCustomAction1 : function(oEvent) { … },
+  onCustomAction2 : function(oEvent) { … },
+  …
+}
+</pre></div>
+
+							</div>
+
+						</div>
+					</li>
+
+				</ol>
+
+				<div class="itemgroup info">
+					<p class="p">When implementing the handler functions for your custom actions, you must use
+						the <a class="xref" href="bd2994b69ef542998becbc69ab093f7e.html" title="This API consists of several elements that are described below. It can be used for the analytical list page, list report, and object page.">API for Developers of Template Extensions</a>.</p>
+
+				</div>
+			</li>
+<li class="li step stepexpand">
+				<span class="ph cmd">Extend the manifest.json file</span>
+				<div class="itemgroup info">
+					<p class="p">In your app's <span class="ph filepath">manifest.json</span> file, under <samp class="ph codeph">sap.ui5 → extends →
+							extensions</samp>, you can specify extensions for the
+							<samp class="ph codeph">ListReport</samp> and the <samp class="ph codeph">ObjectPage</samp>
+						controllers.</p>
+
+					<p class="p">Specify the following information and extend the manifest files as described below: </p>
+
+					
+<div class="table-wrapper tablenoborder"><table summary="" id="loio7619517a92414e27b71f02094bd08d06__table_ccj_hrz_51b" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+							
+							
+							<tbody class="tbody">
+								<tr class="row">
+									<td class="entry" valign="top" width="50%">
+										<p class="p"><samp class="ph codeph">&lt;entity set&gt;</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%">
+										<p class="p">Entity set that is displayed on the list report or on the
+											object page (for example,
+												<samp class="ph codeph">SMART_C_Product</samp>)</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="50%">
+										<p class="p"><samp class="ph codeph">&lt;Action 1&gt;</samp>, <samp class="ph codeph">&lt;Action
+												2&gt;</samp>, …</p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%">
+										<p class="p">Action names</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="50%">
+										<p class="p"><samp class="ph codeph">&lt;id&gt;</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%">
+										<p class="p">ID to be used for the action button</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="50%">
+										<p class="p"><samp class="ph codeph">&lt;button text&gt;</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%">
+										<p class="p">Text to be displayed on the button (typically a binding to an i18n entry, for example,
+												<samp class="ph codeph">{i18n&gt;MY_BUTTON_TEXT}</samp>)</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="50%">
+										<p class="p"><samp class="ph codeph">&lt;handler function&gt;</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%">
+										<p class="p">Handler function that is called when the user selects the action button </p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="50%">
+										<p class="p"><samp class="ph codeph">&lt;global&gt; </samp>(required)</p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%">
+										<p class="p">Indicates whether this is a global action.The default value is
+											<samp class="ph codeph">false</samp>.</p>
+
+										<div class="note note"><span class="notetitle">Note</span> If a determining property is set along with the global
+											property, the action is rendered as a global action
+											since this takes precedence.</div>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="50%">
+										<p class="p">Relevant only for table toolbar actions in the list
+											report and object page:
+												<samp class="ph codeph">&lt;requiresSelection&gt;</samp>
+											(optional)</p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%">
+										<p class="p"> Property that indicates whether the action requires a
+											selection of items (<samp class="ph codeph">true</samp>) or not
+												(<samp class="ph codeph">false</samp>). The default value is
+												<samp class="ph codeph">true</samp>.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="50%">
+										<p class="p">Relevant only for list report actions and object page
+											header actions: <samp class="ph codeph">&lt;determining&gt;</samp>
+											(optional)</p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%">
+										<p class="p">Property that indicates whether the action should be
+											displayed in the footer of the page
+												(<samp class="ph codeph">true</samp>) or not
+												(<samp class="ph codeph">false</samp>). The default value is
+												<samp class="ph codeph">false</samp>.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="50%">
+										<p class="p"/>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%">
+										<p class="p"/>
+
+									</td>
+
+								</tr>
+
+							</tbody>
+
+						</table>
+</div>
+
+				</div>
+				<div class="itemgroup info">
+					<div class="p">
+						<ul class="ul" id="loio7619517a92414e27b71f02094bd08d06__ul_pbp_vgc_3z">
+							<li class="li">
+								<p class="p">Table toolbar action for the list report</p>
+
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+...
+"extends": {
+  "extensions": {
+    "sap.ui.controllerExtensions": {
+      "sap.suite.ui.generic.template.ListReport.view.ListReport": {
+        "controllerName": "my_app.ext.controller.MyController",
+          "sap.ui.generic.app": {
+            "&lt;entity set&gt;": {
+              "EntitySet": "&lt;entity set&gt;",
+              "Actions": {
+                "&lt;Action 1&gt;": {
+                  "id" : "&lt;id&gt;",
+                  "text" : "&lt;button text&gt;",
+                  "press" : "&lt;handler function&gt;",
+                  "requiresSelection": &lt;true|false&gt;
+                },
+                "&lt;Action 2&gt;": {
+                  ...
+                },
+                ...
+              }
+              ...
+</pre></div>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Action for the object page header</p>
+
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">...
+"extends": {
+  "extensions": {
+    "sap.ui.controllerExtensions": {
+      ...
+      "sap.suite.ui.generic.template.ObjectPage.view.Details": {
+        "controllerName": "my_app.ext.controller.DetailsExtension",
+          "sap.ui.generic.app": {
+            "&lt;entity set&gt;": {
+              "EntitySet": "&lt;entity set&gt;",
+              "Header" : {
+                "Actions": {
+                  "&lt;Action 1&gt;": {
+                    "id" : "&lt;id&gt;",
+                    "text" : "&lt;button text&gt;",
+                    "press" : "&lt;handler function&gt;"
+                  },
+                  "&lt;Action 2&gt;": { ... }
+                }
+              },
+...
+</pre></div>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Table toolbar action for the object page</p>
+
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+...
+"extends": {
+  "extensions": {
+    "sap.ui.controllerExtensions": {
+      ...
+      "sap.suite.ui.generic.template.ObjectPage.view.Details": {
+        "controllerName": "my_app.ext.controller.DetailsExtension",
+          "sap.ui.generic.app": {
+            "&lt;entity set&gt;": {
+              "EntitySet": "&lt;entity set&gt;",
+              "Sections": {
+                "&lt;SmartTable Facet ID&gt;": {
+                  "id" : "&lt;SmartTable Facet ID&gt;",
+                  "Actions": {
+                    "&lt;SmartTable Action 1&gt;": {
+                      "id" : "&lt;id&gt;",
+                      "text" : "&lt;button text&gt;",
+                      "press" : "&lt;handler function&gt;",
+                      "requiresSelection": &lt;true|false&gt;
+                    },
+                    "&lt;SmartTable Action 2&gt;": { ... }
+                  }
+...
+</pre></div>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Form action for the object page</p>
+
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+
+...
+"extends": {
+  "extensions": {
+    "sap.ui.controllerExtensions": {
+      ...
+      "sap.suite.ui.generic.template.ObjectPage.view.Details": {
+        "controllerName": "my_app.ext.controller.DetailsExtension",
+          "sap.ui.generic.app": {
+            "&lt;entity set&gt;": {
+              "EntitySet": "&lt;entity set&gt;",
+              "Sections": {
+                "&lt;Form Facet ID&gt;": {
+                  "id": "&lt;Form Facet ID&gt;",
+                  "Actions": {
+                    "&lt;Action 1&gt;": {
+                      "id" : "&lt;id&gt;",
+                      "text" : "&lt;button text&gt;",
+                      "press" : "&lt;handler function&gt;"
+                    },
+                    "&lt;Action 2&gt;": { ... }
+                  }
+...
+</pre></div>
+
+							</li>
+
+							<li class="li">
+								<div class="p">Footer bar action in the list
+									report:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">"sap.ui5": {
+   "extends": {
+      "extensions": {
+         "sap.ui.controllerExtensions": {
+            "sap.suite.ui.generic.template.ListReport.view.ListReport": {
+               "controllerName": "my_app.ext.controller.MyController",
+               "sap.ui.generic.app": {
+                  "&lt;entity set&gt;": {
+                     "EntitySet": "&lt;entity set&gt;",
+                     "Actions": {
+                        "&lt;Action 1&gt;": {
+                           "id": "&lt;id&gt;",
+                           "text": "&lt;button text&gt;",
+                           "press": "&lt;handler function&gt;",
+                           "determining": true
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}
+
+</pre></div>
+</div>
+
+							</li>
+
+							<li class="li">
+								<div class="p">Footer bar action in the object
+									page:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+"sap.ui5": {
+   "extends": {
+      "extensions": {
+         "sap.ui.controllerExtensions": {
+            "sap.suite.ui.generic.template.ObjectPage.view.Detail": {
+               "controllerName": "my_app.ext.controller.MyController",
+               "sap.ui.generic.app": {
+                  "&lt;entity set&gt;": {
+                     "EntitySet": "&lt;entity set&gt;",
+                     "Header": {
+                        "Actions": {
+                           "&lt;Action 1&gt;": {
+                              "id": "&lt;id&gt;",
+                              "text": "&lt;button text&gt;",
+                              "press": "&lt;handler function&gt;",
+                              "determining": true
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}
+
+
+</pre></div>
+</div>
+
+							</li>
+
+							<li class="li">
+								<p class="p">List report (global action)</p>
+
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+...
+
+"extends": {
+
+  "extensions": {
+
+    "sap.ui.controllerExtensions": {
+      "sap.suite.ui.generic.template.ListReport.view.ListReport": {
+
+        "controllerName": "my_app.ext.controller.MyController",
+
+          "sap.ui.generic.app": {
+
+            "&lt;entity set&gt;": {
+
+              "EntitySet": "&lt;entity set&gt;",
+
+              "Actions": {
+
+                "&lt;Action 1&gt;": {
+                  "id" : "&lt;id&gt;",
+
+                  "text" : "&lt;button text&gt;",
+
+                  "press" : "&lt;handler function&gt;",
+
+                  "global": &lt;true|false&gt;
+
+                },
+
+                "&lt;Action 2&gt;": {
+
+                  ...
+
+                },
+
+                ...
+
+              }
+
+              ...
+</pre></div>
+
+							</li>
+
+						</ul>
+
+					</div>
+
+				</div>
+			</li>
+</ol>
+</section>
+	</div>
+
+<div class="related-links"> 
+</div>
+</div></div>
+
+</body>
+</html>

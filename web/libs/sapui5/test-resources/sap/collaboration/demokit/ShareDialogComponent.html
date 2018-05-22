@@ -1,0 +1,331 @@
+<!DOCTYPE HTML>
+<html data-sap-ui-dk-category="Components/Collaboration" data-sap-ui-dk-controls="sap.collaboration.components.fiori.sharing.dialog.component">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8"/>
+		<title>Share Dialog Component - SAPUI5 Demo Kit</title>
+		<script id="sap-ui-bootstrap"
+				src="../../../../resources/sap-ui-core.js"
+				data-sap-ui-theme="sap_bluecrystal"
+				data-sap-ui-libs="sap.m,sap.ui.commons,sap.ui.demokit"
+				>
+		</script>
+		
+		<script>
+			jQuery.sap.require("sap.collaboration.library");
+			jQuery.sap.require("sap.ui.core.util.MockServer");
+			jQuery.sap.getObject("sap.ui.demokit", 0)._supportedThemes = ["sap_bluecrystal"];
+			
+			var oMockServerUrl1 = "/sap/opu/odata/sap/SM_INTEGRATION_V2_SRV/";
+			var oMockServerUrl2 = "/sap/bc/ui2/smi/rest_tunnel/Jam/api/v1/OData/";
+			var oMockServerUrl3 = "/sap/bc/ui2/smi/rest_tunnel/Jam/api/v1/";
+				
+			//Mock Server for the SMI V2 OData Service
+			this.oMockServer1 = new sap.ui.core.util.MockServer({
+					rootUri : oMockServerUrl1
+				});
+			
+			this.oMockServer1.simulate("mockserver/smiodata/SMIV2_metadata.xml");
+	 		
+	 		var aRequests = oMockServer1.getRequests();
+	 		
+	 		aRequests.push({
+	 			method: "GET",
+	 			path: new RegExp("GetCollaborationHostURL"),
+	 			response: function(oXhr){
+	 				oXhr.respondJSON(200, {}, '{ "d": { "GetCollaborationHostURL": { "__metadata": { "type": "SM_INTEGRATION_V2_SRV.CollaborationHostURL" }, "URL": "somedomain" } } }');
+	 			}
+	 		});
+	 		
+	 		aRequests.push({
+	 			method: "GET",
+	 			path: new RegExp("MapInternalBOToExternalBO.+"),
+	 			response: function(oXhr){
+	 				oXhr.respondFile(200, null, 'mockserver/smiodata/MapInternalBOToExternalBO.json');
+	 			}
+	 		});
+	 		
+	 		aRequests.push({
+	 	 		method : "POST",
+	 	 		path : new RegExp("UploadTargetFile.*"),
+	 	 		response : function(oXhr) {
+	 	 			oXhr.respondJSON(200, null, '{"d":{"results":[]}}');
+	 	 			}
+	 	 		});
+	 		
+	 		this.oMockServer1.setRequests(aRequests);
+		    this.oMockServer1.start();
+	 		
+		    
+		    //Mock Server for the Jam OData
+	 		this.oMockServer2 = new sap.ui.core.util.MockServer({
+				rootUri : oMockServerUrl2
+			});
+	 		
+	 		this.oMockServer2.simulate("mockserver/jamodata/JamODataV1_metadata.xml", {
+	 			sMockdataBaseUrl: "mockserver/jamodata/",
+	 			bGenerateMissingMockData: false
+	 		});
+			aRequests = oMockServer2.getRequests();
+	 		
+			aRequests.push({
+	 			method: "GET",
+	 			path: new RegExp("/"),
+	 			response: function(oXhr){
+	 				oXhr.respondFile(200, { "x-csrf-token" : "123456" }, 'mockserver/jamodata/JamODataRoot.json');
+	 			}
+	 		});
+			
+	 		aRequests.push({
+	 			method: "GET",
+	 			path: new RegExp("Self"),
+	 			response: function(oXhr){
+	 				oXhr.respondFile(200, null, 'mockserver/jamodata/Self.json');
+	 			}
+	 		});
+	 		
+	 		aRequests.push({
+				method : "GET",
+				path : new RegExp("Folders\\(\\'Folder-(w+)\\'\\)\/Folders"),
+				response : function(oXhr) {
+					oXhr.respondJSON(200, null, '{"d":{"results":[]}}');
+				}
+	 		});
+	 		
+	 		aRequests.push({
+				method : "HEAD",
+				path : new RegExp("files\/(.*)"),
+				response : function(oXhr) {
+					oXhr.respond(200, {"Content-Length" : 31 }, null);
+				}
+			}); 
+	 		
+	 		aRequests.push({
+				method : "GET",
+				path :  new RegExp("files\/(.*)"),
+				response : function(oXhr) {
+					oXhr.respondFile(200, null, "./mockserver/responses/testFile.txt");
+				}
+	 		});
+	 		
+	 		aRequests.push({
+				method : "POST",
+				path : new RegExp("PostContentItem\/\\?(.*)"),
+				response : function(oXhr) {
+					oXhr.respondJSON(200, null, "{'d':{'results':[]}}");
+				}
+	 		});
+	 		
+	 		aRequests.push({
+				method : "GET",
+				path : new RegExp("Groups.*Folder.*"),
+				response : function(oXhr) {
+					oXhr.respondFile(200, null, "./mockserver/responses/folders.json");
+				}
+	 		});
+	 		
+	 		aRequests.push({
+	 	 		method : "GET",
+	 	 		path : new RegExp("Folders.*Folders.*"),
+	 	 		response : function(oXhr) {
+	 	 			oXhr.respondFile(200, null, "./mockserver/responses/folders.current.json");
+	 	 			}
+	 	 		});
+			
+	 		aRequests.push({
+	 	 		method : "POST",
+	 	 		path : new RegExp("ExternalObjects"),
+	 	 		response : function(oXhr) {
+	 	 			oXhr.respondJSON(200, null, '{"d":{"results":[]}}');
+	 	 			}
+	 	 		});
+	 		
+	 		
+	 		this.oMockServer2.setRequests(aRequests);
+		    this.oMockServer2.start();
+		    
+		    //Mock Server for the Jam REST API
+		    this.oMockServer3 = new sap.ui.core.util.MockServer({
+				rootUri : oMockServerUrl3
+			});
+		    aRequests = oMockServer3.getRequests();
+		    
+		    aRequests.push({
+	 			method: "POST",
+	 			path: new RegExp("feed/post"),
+	 			response: function(oXhr){
+	 				oXhr.respond(200, null, null);
+	 			}
+	 		});
+		    
+		    this.oMockServer3.setRequests(aRequests);
+		    this.oMockServer3.start();
+		</script>
+		
+<script id='ShareLink'>
+	var oObjectListItem1 = new sap.m.ObjectListItem("object_item1",{
+		title : "Sales Order 1",
+		number : "788.885,23",
+		numberUnit : "EUR",
+		firstStatus: new sap.m.ObjectStatus({text : "Open", state:"Warning"})
+	});
+	
+	var oSharingDialogComponent1 = sap.ui.getCore().createComponent({
+		name: "sap.collaboration.components.fiori.sharing.dialog",
+		id: "sharingDialogComponent",
+		settings: {
+			object:{
+				display: oObjectListItem1,
+				id: "http://sap.com/CRM/SaleOrders(111)",
+				share: "This is Sales Order 1"
+			}
+		}
+	});
+				
+	var openSharingDialogButton1 = new sap.m.Button({
+		text: "Share Link and Comment",
+		press : function() {
+			oSharingDialogComponent1.open();
+		}
+	});
+	
+	openSharingDialogButton1.placeAt("example1");
+</script>
+		
+<script id='ShareAttachments'>
+	var oObjectListItem2 = new sap.m.ObjectListItem("object_item2",{
+		title: "Sales Order 2",
+		number: "788,885.23",
+		numberUnit: "USD",
+		firstStatus: new sap.m.ObjectStatus({text : "Open", state:"Warning"})
+	});
+	
+	jQuery.sap.require("sap.collaboration.components.fiori.sharing.attachment.Attachment");
+	var aFiles = [];
+	aFiles.push(new sap.collaboration.components.fiori.sharing.attachment.Attachment( "PDF Document.pdf", "application/pdf", "http://localhost/odata.srv/files/PDF Document.pdf"));
+	aFiles.push(new sap.collaboration.components.fiori.sharing.attachment.Attachment( "Word Doc.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "http://localhost/odata.srv/files/Word Doc.docx"));
+	aFiles.push(new sap.collaboration.components.fiori.sharing.attachment.Attachment( "Excel Spreadsheet.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "http://localhost/odata.srv/files/Excel Spreadsheet.xlsx"));
+	aFiles.push(new sap.collaboration.components.fiori.sharing.attachment.Attachment( "Presentation.pptxx", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "http://localhost/odata.srv/files/Presentation.pptx"));
+	aFiles.push(new sap.collaboration.components.fiori.sharing.attachment.Attachment( "Image1.jpg", "image/jpg", "http://localhost/odata.srv/files/Image1.jpg"));
+	aFiles.push(new sap.collaboration.components.fiori.sharing.attachment.Attachment( "Image2.png", "image/png", "http://localhost/odata.srv/files/Image2.png"));
+	aFiles.push(new sap.collaboration.components.fiori.sharing.attachment.Attachment( "Image3.gif", "image/gif", "http://localhost/odata.srv/files/Image3.gif"));
+	aFiles.push(new sap.collaboration.components.fiori.sharing.attachment.Attachment( "Video1.wmv", "video/x-ms-wmv", "http://localhost/odata.srv/files/Video1.wmv"));
+	aFiles.push(new sap.collaboration.components.fiori.sharing.attachment.Attachment( "Video2.mov", "video/quicktime", "http://localhost/odata.srv/files/Video2.mov"));
+	aFiles.push(new sap.collaboration.components.fiori.sharing.attachment.Attachment( "Video3.mpg", "video/mpeg", "http://localhost/odata.srv/files/Video3.mpg")); 		
+	
+	var oSharingDialogComponent2 = sap.ui.getCore().createComponent({
+		name: "sap.collaboration.components.fiori.sharing.dialog",
+		id: "sharingDialogComponent2",
+		settings:{
+			object:{
+				display: oObjectListItem2,
+				id: "http://sap.com/CRM/SaleOrders(111)",
+				share: "This is Sales Order 2"
+				},
+			attachments:{
+				attachmentsArray: aFiles
+	       	}
+		}
+	});
+	
+	var openSharingDialogButton2 = new sap.m.Button({
+		text: "Share Attachments",
+		press : function() {
+				oSharingDialogComponent2.open();
+		}
+	});
+	
+	openSharingDialogButton2.placeAt("example2");
+</script>
+		
+<script id='ShareExternalObject'>
+	var oObjectListItem3 = new sap.m.ObjectListItem("object_item3",{
+		title: "Sales Order 3",
+		number: "788,885.23",
+		numberUnit: "USD",
+		firstStatus: new sap.m.ObjectStatus({text : "Open", state:"Warning"})
+	});
+	
+	var externalObject = {
+			appContext: "CRM",
+			odataServicePath: "/sap/opu/odata/sap/CRM_BUPA_ODATA",
+			collection: "OpportunityCollection",
+			key: "ObjectID='4D4B224D89DD4E36E10000000A42823A'",
+			name: oObjectListItem3.getTitle()
+	};	
+	
+	var oSharingDialogComponent3 = sap.ui.getCore().createComponent({
+		name: "sap.collaboration.components.fiori.sharing.dialog",
+		id: "sharingDialogComponent3",
+		settings: {
+			object:{
+				display: oObjectListItem3,
+				id:"http://sap.com/CRM/SaleOrders(111)",
+				share: "This is Sales Order 3"
+			},
+			externalObject: externalObject
+		}
+	});
+	
+	var openSharingDialogButton3 = new sap.m.Button({
+		text: "Share External Object",
+		press : function(){
+			oSharingDialogComponent3.open();
+		}
+	});
+	
+	openSharingDialogButton3.placeAt("example3");
+</script>
+		
+</head>
+	
+	<body class="sapUiDemokitBody" role="application">
+		<h1 color="Blue" icon="images/comps/share-dialog.png">Share Dialog Component</h1>
+		
+		<h2>Introduction</h2>
+		
+		<p>
+			The <b>Share Dialog</b> component is an SAPUI5 component that you can use to create a dialog in your application to enable you to enter or edit information shared to SAP Jam. 
+		</p>
+		<p>
+			The Share operation requires the following information: 
+			<ul>
+				<li>The SAP Jam group: You can choose the group from the value help button rendered inside the component.</li>
+				<li>The content of the group's feed entry, which is composed of two parts:
+					<ul>
+						<li>Comment: The comment is provided in the text area that is rendered inside the component.</li>
+						<li>ID: A hidden ID (often a URL) passed from the application to SAP Jam</li>
+					</ul>
+				</li>
+				<li>Attachments: The user can upload attachments to a folder in an SAP Jam group</li>
+				<li>Business object: The user shares a business object from the back-end in SAP Jam. This can represent an element from the back-end such as a sales order, opportunity, etc., and is referred to as an external object in SAP Jam.</li>
+			</ul>
+		</p>
+		
+		<!-- a invisible dummy heading to avoid automatic insertion of a 'settings' section -->
+		<h2 id="settings" style="display:none">Settings</h2>
+		
+		<h2>Examples</h2>
+		
+		<h3>Example 1: Share Link and Comments</h3>
+		<div code-sample="example1" script="ShareLink"></div>
+		
+		<br/>
+		
+		<h3>Example 2: Share Attachments, Link and Comments</h3>
+		<div code-sample="example2" script="ShareAttachments"></div>
+		
+		<br/>
+		
+		<h3>Example 3: Share Business Object</h3>
+		<div code-sample="example3" script="ShareExternalObject">
+			<p><b>Note:</b> You cannot share an external object to SAP Jam from the Demo Kit. However, you can view the source code to see how to enable a business object in the Share Dialog component.</p>
+		</div>
+		
+		
+		<br/>
+		
+		<p>See <a class="sapUiDemokitSrcLink" href="../../../../docs/api/symbols/sap.collaboration.components.fiori.sharing.dialog.Component.html" >API documentation</a></p>  
+						
+	</body>
+</html>

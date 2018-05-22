@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="One important building block of smart controls is the SmartField control that, depending on the OData metadata defined, allows you to renders other controls and, for example, define fields with certain attributes based on the metadata."/>
+<meta name="description" content="One important building block of smart controls is the SmartField control that, depending on the OData metadata defined, allows you to renders other controls and, for example, define fields with certain attributes based on the metadata."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3727148057580887"/>
+<title>Step 1: Smart Field</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/framewrapper.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loioed8fda66cd3b406cbd22f6019188ce82">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 1: Smart Field</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">One important building block of smart controls is the <samp class="ph codeph">SmartField</samp>
+		control that, depending on the OData metadata defined, allows you to renders other controls
+		and, for example, define fields with certain attributes based on the metadata. </p>
+
+		<p class="p">So we start our journey into the world of smart controls by looking at the
+				<samp class="ph codeph">SmartField</samp> control and, in particular, an example in which a price
+			together with its currency is displayed. Later we will see more complex examples.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loioed8fda66cd3b406cbd22f6019188ce82__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loioed8fda66cd3b406cbd22f6019188ce82__image_jfw_x43_js" src="loio379bc52065a64aad8601231b0824362f_HiRes.png"/>
+			<div class="figcap">Smart Field</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Explored</span> app in the Demo Kit
+					<span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.01/preview" alt="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.01/preview" title="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.01/preview">Smart Controls - Step 1 - Smart
+					Field</a></span>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">SmartField.view.xml</div><div type="SmartField.view.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>&lt;mvc:View
+	xmlns:mvc="sap.ui.core.mvc"
+	controllerName="sap.ui.demo.smartControls.SmartField"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:smartField="sap.ui.comp.smartfield"&gt;
+	&lt;form:SimpleForm 
+		minWidth="1024"
+		maxContainerCols="2"
+		editable="true"
+		layout="ResponsiveGridLayout"
+		labelSpanL="3"
+		labelSpanM="3"
+		emptySpanL="4"
+		emptySpanM="4"
+		columnsL="1"
+		columnsM="1"
+		class="editableForm"&gt;
+		&lt;form:content&gt;
+			&lt;smartField:SmartLabel labelFor="idPrice"/&gt;
+			&lt;smartField:SmartField value="{Price}" id="idPrice"/&gt;
+		&lt;/form:content&gt;
+	&lt;/form:SimpleForm&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">This view basically specifies a form with an appropriate layout, the content of which consists
+				of a <samp class="ph codeph">SmartLabel</samp> control along with a <samp class="ph codeph">SmartField</samp>
+				control . The connection between <samp class="ph codeph">SmartLabel</samp> and
+					<samp class="ph codeph">SmartField</samp> is essential since metadata for
+					<samp class="ph codeph">SmartLabel</samp> is controlled via the binding of
+					<samp class="ph codeph">SmartField</samp>. <samp class="ph codeph">SmartField</samp> and
+					<samp class="ph codeph">SmartLabel</samp> are connected by <samp class="ph codeph">id</samp> and
+					<samp class="ph codeph">labelFor</samp>, respectively, in this case
+				<samp class="ph codeph">idPrice</samp>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">SmartField.controller.js</div><div type="SmartField.controller.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>sap.ui.define([
+	"sap/ui/core/mvc/Controller"
+], function(Controller) {
+	"use strict";
+
+	return Controller.extend("sap.ui.demo.smartControls.SmartField", {
+		onInit: function() {
+			this.getView().bindElement("/Products('4711')");
+		}
+	});
+
+});</pre></div>
+
+			<p class="p">In the <samp class="ph codeph">SmartField.controller.js</samp> file you will see that we bind the view to
+					<samp class="ph codeph">"/Products('4711')"</samp>. </p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">metadata.xml</div><div type="metadata.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;edmx:Edmx Version="1.0"
+		   xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+		   xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+		   xmlns:sap="http://www.sap.com/Protocols/SAPData"&gt;
+	&lt;edmx:DataServices m:DataServiceVersion="2.0"&gt;
+		&lt;Schema Namespace="com.sap.wt01"
+				sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm"&gt;
+			&lt;EntityType Name="Product"&gt;
+				&lt;Key&gt;
+					&lt;PropertyRef Name="ProductId"/&gt;
+				&lt;/Key&gt;
+				&lt;Property Name="ProductId" Type="Edm.String"/&gt;
+				&lt;Property Name="Price" Type="Edm.String"
+						  sap:unit="CurrencyCode" MaxLength="3" sap:label="Price"
+						  sap:updatable="true"/&gt;
+				&lt;Property Name="CurrencyCode" Type="Edm.String"
+						  MaxLength="3" sap:label="Currency" sap:semantics="currency-code"
+						  sap:updatable="true"/&gt;
+			&lt;/EntityType&gt;
+			&lt;EntityContainer m:IsDefaultEntityContainer="true"
+							 sap:supported-formats="atom json"&gt;
+				&lt;EntitySet Name="Products" EntityType="com.sap.wt01.Product"
+						   sap:updatable="true"/&gt;
+			&lt;/EntityContainer&gt;
+		&lt;/Schema&gt;
+	&lt;/edmx:DataServices&gt;
+&lt;/edmx:Edmx&gt;
+</pre></div>
+
+			<p class="p">The metadata document corresponds to the <samp class="ph codeph">$metadata</samp> document of your OData
+				service. You will find the <samp class="ph codeph">Price</samp> and the
+					<samp class="ph codeph">CurrencyCode</samp> metadata here, and, in particular, you will see
+				that the <samp class="ph codeph">Price</samp> property defines <samp class="ph codeph">CurrencyCode</samp> as
+				its unit. The relationship is automatically picked up by
+				<samp class="ph codeph">SmartField</samp>, and it decides on the particular rendering of the price
+				along with with its currency based on additional metadata, such as
+					<samp class="ph codeph">Type</samp> and <samp class="ph codeph">MaxLength</samp>. With
+					<samp class="ph codeph">sap:updatable="true"</samp> we define that the field is editable;
+					<samp class="ph codeph">sap:updatable="false"</samp> would indicate that the field is
+				read-only. All Boolean-like properties default to true if not specified otherwise.
+				To make this clearer, however, we sometimes still include them in the
+					<samp class="ph codeph">metadata.xml</samp> document, like
+					<samp class="ph codeph">sap:updatable="true</samp>" in this case. Later, we will see other
+				examples of how the <samp class="ph codeph">SmartField</samp> control shows a “smart” behavior as
+				to which controls are rendered on the UI.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Products.json</div><div type="Products.json">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>[{
+	"ProductId": "4711",
+	"Price": 856.49,
+	"CurrencyCode": "EUR"
+}]</pre></div>
+
+			<p class="p">Finally, we include the <samp class="ph codeph">Products.json</samp> file (as referred to in the
+					<samp class="ph codeph">metadata.xml</samp> as <samp class="ph codeph">EntitySet</samp>) in our example,
+				which contains the data shown on the UI.</p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="64bde9a8879d4f418e2849f7285dd757.html" title="In this tutorial you learn how to work with smart controls.">Smart Controls</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="0e84ac7c9d3e4acaa49e61e6ee808649.html" title="Preparation steps for the Smart Controls tutorial">Prerequisites</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="3361e270c62c46c9893eaefb2966d62e.html" title="You can use the SmartField control in combination with the ValueHelpDialog control that allow you to carry out a complex search in order to identify the value you are looking for.">Step 2: Smart Field with Value Help</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="4864403f08c64ca08a2b0ee1fa9cb5e2.html" title="The sap.ui.comp.smartfield.SmartField control offers a wrapper for other controls using OData metadata to determine which control has to be instantiated and makes it possible to add input-enabled fields to an application.">Smart Field</a></div>
+</div>
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Step 1: Smart Field";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=03289678107569094"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=03289678107569094"/>
+<title>Adding a Contact Facet</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioa6a8c0c4849b483eb10e87f6fdf9383c">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Adding a Contact Facet</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">To render a contacts list and contact facet, you add a <samp class="ph codeph">UI.ReferenceFacet</samp> that
+			points to a contact annotation (<samp class="ph codeph">type</samp>). It shows the label of the
+				<samp class="ph codeph">UI.ReferenceFacet</samp> and below the <samp class="ph codeph">fn</samp> property of the
+			contact annotation. If you click on the name, a quickview with the contact details is
+			displayed as shown below:</p>
+
+			<div class="p">
+				<div class="fig fignone" id="loioa6a8c0c4849b483eb10e87f6fdf9383c__fig_g4x_h1w_35"><div class="figcontainer">
+					
+					<img class="image" id="loioa6a8c0c4849b483eb10e87f6fdf9383c__image_xjf_nvv_1v" src="loio076fb4d8a52b46a197c5d93490f0140c_LowRes.png"/>
+				<div class="figcap">Object Page: Contacts</div></div></div>
+
+			</div>
+
+			<p class="p">The facet annotation looks as follows:</p>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Record Type="UI.ReferenceFacet"&gt;
+   &lt;PropertyValue Property="Label" String="Supplier"/&gt;
+   &lt;PropertyValue AnnotationPath="to_Supplier/@Communication.Contact" Property="Target"/&gt;
+&lt;/Record&gt;</pre></div>
+
+			</div>
+
+			<p class="p">The Contact annotation looks as follows:</p>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotations Target="SEPMRA_PROD_MAN.SEPMRA_I_EmployeeType"&gt;
+	&lt;Annotation Term="Communication.Contact"&gt;
+		&lt;Record&gt;
+			&lt;PropertyValue Property="fn" Path="FormattedName"/&gt;
+			&lt;PropertyValue Property="title" Path="JobTitle"/&gt;
+			&lt;PropertyValue Property="org" Path="CompanyName"/&gt;
+			&lt;PropertyValue Property="role" Path="OrganizationRole"/&gt;
+			&lt;PropertyValue Property="n"&gt;
+				&lt;Record&gt;
+					&lt;PropertyValue Property="given" Path="FirstName"/&gt;
+					&lt;PropertyValue Property="additional" Path="MiddleName"/&gt;
+					&lt;PropertyValue Property="surname" Path="LastName"/&gt;
+				&lt;/Record&gt;
+										
+			&lt;/PropertyValue&gt;
+			&lt;PropertyValue Property="photo" Path="EmployeePictureURL"/&gt;
+			&lt;PropertyValue Property="tel"&gt;
+				&lt;Collection&gt;
+					&lt;Record&gt;
+						&lt;PropertyValue Property="type" EnumMember="Communication.PhoneType/fax"/&gt;
+						&lt;PropertyValue Property="uri" Path="FaxNumber"/&gt;
+					&lt;/Record&gt;
+					&lt;Record&gt;
+						&lt;PropertyValue Property="type" EnumMember="Communication.PhoneType/cell"/&gt;
+						&lt;PropertyValue Property="uri" Path="MobilePhoneNumber"/&gt;
+					&lt;/Record&gt;
+					&lt;Record&gt;
+						&lt;PropertyValue Property="type" EnumMember="Communication.PhoneType/work"/&gt;
+						&lt;PropertyValue Property="uri" Path="PhoneNumber"/&gt;
+					&lt;/Record&gt;
+					&lt;Record&gt;
+						&lt;PropertyValue Property="type" EnumMember=""/&gt;
+						&lt;PropertyValue Property="address" Path="FaxNumber"/&gt;
+					&lt;/Record&gt;
+				&lt;/Collection&gt;
+			&lt;/PropertyValue&gt;
+			&lt;PropertyValue Property="email"&gt;
+				&lt;Collection&gt;
+					&lt;Record&gt;
+						&lt;PropertyValue Property="type" EnumMember="Communication.ContactInformationType/work"/&gt;
+						&lt;PropertyValue Property="address" Path="EmailAddress"/&gt;
+					&lt;/Record&gt;
+				&lt;/Collection&gt; 
+			&lt;/PropertyValue&gt;
+		&lt;/Record&gt;
+	&lt;/Annotation&gt;
+&lt;/Annotations&gt;				</pre></div>
+
+			</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

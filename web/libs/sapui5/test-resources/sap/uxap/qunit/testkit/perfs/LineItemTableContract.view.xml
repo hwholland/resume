@@ -1,0 +1,39 @@
+<mvc:View
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m"
+        controllerName="sap.uxap.testkit.perfs.LineItemTableController">
+
+    <Table growing="true"
+           items="{model>/Vendors('3511')/CCONTRACT}">
+        <columns>
+            <Column>
+                <Text text="Number"/>
+            </Column>
+            <Column>
+                <Text text="Agreement Type"/>
+            </Column>
+            <Column>
+                <Text text="Release Value"/>
+            </Column>
+            <Column>
+                <Text text="Target Value"/>
+            </Column>
+            <Column>
+                <Text text="Validity"/>
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{model>PurchaseContract}"/>
+                    <Text text="{model>PurgDocumentTypeDescription}"/>
+                    <Text text="{model>PurchaseContractRelOrderAmount}"/>
+                    <Text text="{model>ContractTargetValue}"/>
+                    <Text text="{path:'model>ValidityStartDate', type:'sap.ui.model.type.Date'} - {path:'model>ValidityEndDate', type:'sap.ui.model.type.Date'}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+
+    </Table>
+
+</mvc:View>

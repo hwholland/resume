@@ -1,0 +1,69 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The Worklist app implements a busy indication concept as specified by the SAP Fiori Design Guidelines."/>
+<meta name="description" content="The Worklist app implements a busy indication concept as specified by the SAP Fiori Design Guidelines."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6638753946122705"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6638753946122705"/>
+<title>Busy Indication</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio5cb1169c748b4da58a9c981fb0b491c7">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Busy Indication</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The Worklist app implements a busy indication concept as specified by the SAP Fiori
+		Design Guidelines.</p>
+
+		<div class="p">Calling the app will result in the following:<ul class="ul" id="loio5cb1169c748b4da58a9c981fb0b491c7__ul_vxk_wc1_bt">
+				<li class="li">
+					<p class="p">Only initially a global busy indicator is displayed that overlays the whole
+						app until the metadata of the service is loaded.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">A local busy indicator is displayed on the worklist table or on the page of
+						the object view while the data from the service is loading.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">When controls are loading additional data or getting refreshed, a local busy
+						indication is displayed automatically.</p>
+
+				</li>
+
+			</ul>
+</div>
+
+		<p class="p">By default, the busy indicator delay is set to one second for all controls. This would first
+			show the UI for a second, then show a busy indication until the data is loaded. To avoid
+			this behavior initially and show the busy indicator immediately without delay the
+			following concept is implemented in the app: The <samp class="ph codeph">busyIndicatorDelay</samp> and
+				<samp class="ph codeph">busy</samp> properties of certain controls (<samp class="ph codeph">AppView</samp>,
+				<samp class="ph codeph">Table</samp> on the <span class="ph uicontrol">Worklist</span> page,
+				<samp class="ph codeph">FullScreenPage</samp> on the <span class="ph uicontrol">Object</span> page) are bound
+			to the local view model and manipulated in the controllers of the app. The delay is
+			initially set to "0" for displaying the busy indicator immediately, and reset to the
+			previous value after the initial loading is done.</p>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">You can find more information about busy indicators, busy states, and busy handling in general
+				in the <a class="xref" href="https://experience.sap.com/fiori-design/" alt="https://experience.sap.com/fiori-design/" title="https://experience.sap.com/fiori-design/">SAP Fiori Design Guidelines</a>.</p>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

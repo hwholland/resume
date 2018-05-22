@@ -1,0 +1,21 @@
+For blanket integration with QUnit test fixture:
+ 
+Step 1: Load the blanket JS file within the test fixture:
+	<script src="../../../../../tests/helper/coverage/blanket.js"></script>
+
+Step 2: Add data-cover attribute to the script tag of the file for which coverage needs to be reported
+	<script src="../../../../../sap/apf/ui/reuse/view/analysisPath.view.js" data-cover></script>
+
+Step 3: Run the test fixture with URL param coverage=true OR check the 'Enable Coverage' check-box in the QUnit test page
+
+
+For coverage integration with 'all.html' test suite:
+
+Step 1: Include blanket.js and blanket.css in  all.html
+	<script src="../../../../tests/helper/coverage/blanket.js"></script>
+	<link rel="stylesheet" href="../../../../tests/helper/coverage/blanket.css">
+	
+Step 2: Run all.html with URL param 'coverage=true' OR check the 'Enable Coverage' check-box in the test page. 
+The URL param is cascaded down to all the test fixtures running within the test suite, and the coverage report of each test fixture is embedded within the test suite against each item.
+
+

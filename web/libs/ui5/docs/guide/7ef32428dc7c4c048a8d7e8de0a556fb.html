@@ -1,0 +1,147 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can measure the code coverage for your test inside the Control.qunit.html page either via HTML or JavaScript code using Blanket.js."/>
+<meta name="description" content="You can measure the code coverage for your test inside the Control.qunit.html page either via HTML or JavaScript code using Blanket.js."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=43243427036737225"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=43243427036737225"/>
+<title>Code Coverage Measurement</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio7ef32428dc7c4c048a8d7e8de0a556fb">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Code Coverage Measurement</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You can measure the code coverage for your test inside the
+			<span class="ph filepath">Control.qunit.html</span> page either via HTML or JavaScript code using
+			<span class="ph filepath">Blanket.js</span>.</p>
+
+		<div class="section"><div class="section_title">HTML</div><div type="HTML">
+			
+			<div class="p">With the following line you enable <span class="ph filepath">Blanket.js</span> to measure the code
+				coverage:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-coverage.js"&gt;&lt;/script&gt;</pre></div>
+With
+				this argument, all files that are executed during the test run are added to the
+				result. </div>
+
+			<div class="p">If you want to limit the test run, you can use the following code:<ul class="ul" id="loio7ef32428dc7c4c048a8d7e8de0a556fb__ul_b5s_mtz_vw">
+					<li class="li">
+						<div class="p">Limit test to a single
+							file:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-coverage.js"
+	data-sap-ui-cover-<span class="ph emphasis emphasis">only</span>="sap/ui/core/Popup.js"
+&gt;&lt;/script&gt;</pre></div>
+</div>
+
+					</li>
+
+					<li class="li">
+						<div class="p">Limit test to multiple files (provide an array with comma-separated sources that should occur in the
+							result):<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-coverage.js"
+	data-sap-ui-cover-<span class="ph emphasis emphasis">only</span>="[sap/ui/core/Popup.js, sap/ui/core/EventProvider]"
+&gt;&lt;/script&gt;</pre></div>
+</div>
+
+					</li>
+
+					<li class="li">
+						<div class="p">Limit test to a specific
+							library:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-coverage.js"
+	data-sap-ui-cover-<span class="ph emphasis emphasis">only</span>="sap/ui/core/"
+&gt;&lt;/script&gt;</pre></div>
+</div>
+
+					</li>
+
+					<li class="li">
+						<div class="p">Exclude specific
+							objects:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-coverage.js"
+	data-sap-ui-cover-<span class="ph emphasis emphasis">never</span>="sap/m/"
+&gt;&lt;/script&gt;</pre></div>
+</div>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">JavaScript</div><div type="JavaScript">
+			
+			<div class="p">Inside your test page, you can add these lines before running the
+				tests:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">jQuery.sap.require("sap.ui.qunit.qunit-coverage");</pre></div>
+</div>
+
+			<div class="p">If you want to limit the test run, you can use the following code:<ul class="ul" id="loio7ef32428dc7c4c048a8d7e8de0a556fb__ul_kvr_lzz_vw">
+					<li class="li">
+						<div class="p">Limit test to a single
+							file:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">if (window.blanket) {
+	blanket.options("sap-ui-cover-<span class="ph emphasis emphasis">only</span>", "sap/ui/core/Popup.js");
+}</pre></div>
+</div>
+
+					</li>
+
+					<li class="li">
+						<div class="p">Limit test to multiple files (provide an array with comma-separated sources that should occur in the
+							result):<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">if (window.blanket) {
+	blanket.options("sap-ui-cover-<span class="ph emphasis emphasis">only</span>", "[sap/ui/core/Popup.js, sap/ui/core/EventProvide]");
+}</pre></div>
+</div>
+
+					</li>
+
+					<li class="li">
+						<div class="p">Limit test to a specific
+							library:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">if (window.blanket) {
+	blanket.options("sap-ui-cover-<span class="ph emphasis emphasis">only</span>", "sap/ui/core/");
+}</pre></div>
+</div>
+
+					</li>
+
+					<li class="li">
+						<div class="p">Exclude specific
+							objects:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">if (window.blanket) {
+	blanket.options("sap-ui-cover-<span class="ph emphasis emphasis">never</span>", "sap/ui/example/thirdparty/");
+}</pre></div>
+</div>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Results</div><div type="Results">
+			
+			<p class="p">To view the results of the measurement, select the <span class="ph uicontrol">Enable coverage</span> checkbox on the test page. This will trigger a new test
+				run. </p>
+
+			<p class="p">In this example the coverage is limited to one specific file - the only one that is important for this test.</p>
+
+			<div class="fig fignone" id="loio7ef32428dc7c4c048a8d7e8de0a556fb__fig_fkv_hwz_vw"><div class="figcontainer">
+				<img class="image" id="loio7ef32428dc7c4c048a8d7e8de0a556fb__image_qyg_jwz_vw" src="loio358de53ac5684012b55fb043e1f6e999_LowRes.jpg"/>
+			</div></div>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fgithub.com%2Falex-seville%2Fblanket%2Fblob%2Fmaster%2Fdocs%2Fintermediate_browser.md" alt="https://github.com/alex-seville/blanket/blob/master/docs/intermediate_browser.md" title="https://github.com/alex-seville/blanket/blob/master/docs/intermediate_browser.md">More information about <span class="ph filepath">Blanket.js</span><img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

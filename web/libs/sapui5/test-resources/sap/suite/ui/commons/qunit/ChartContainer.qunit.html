@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>ChartContainer - sap.suite.ui.commons</title>
+	<script id="sap-ui-bootstrap" type="text/javascript"
+			src="../../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-libs="sap.suite.ui.commons, sap.m"
+			data-sap-ui-language="en">
+	</script>
+
+	<!-- QUnit libraries -->
+	<link rel="stylesheet"
+		  href="../../../../../../resources/sap/ui/thirdparty/qunit.css"
+		  type="text/css" media="screen" />
+	<script src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+	<script>
+		if(!(sap.ui.Device.browser.msie && sap.ui.Device.browser.version <= 8)) {
+			jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		}
+		sap.ui.getCore().loadLibrary("sap.viz");
+
+		// This function deletes cached information within VizFrame about themes and rendering.
+		// We are not testing the VizFrame rendering part. We only need the VizFrame for testing ChartContainer Logic.
+		// To avoid failing tests, we stub the function to avoid empty caches.
+		jQuery.sap.require("sap.viz.ui5.controls.VizFrame");
+		var oStub = sinon.stub(sap.viz.ui5.controls.VizFrame.prototype, "_clearVariables");
+	</script>
+
+	<script type="text/javascript" src="ChartContainerEventHandling.qunit.js"></script>
+	<script type="text/javascript" src="ChartContainerDimensionSelectors.qunit.js"></script>
+	<script type="text/javascript" src="ChartContainerGetSetPrivateMethods.qunit.js"></script>
+	<script type="text/javascript" src="ChartContainerSegmentedButton.qunit.js"></script>
+	<script type="text/javascript" src="ChartContainerHelperMethods.qunit.js"></script>
+	<script type="text/javascript" src="ChartContainerLifecycleMethods.qunit.js"></script>
+	<script type="text/javascript" src="ChartContainerPublicAggregationGetSet.qunit.js"></script>
+	<script type="text/javascript" src="ChartContainerPublicMethods.qunit.js"></script>
+	<script type="text/javascript" src="ChartContainerPublicPropertyGetSet.qunit.js"></script>
+	<script type="text/javascript" src="ChartContainerAggregationBinding.qunit.js"></script>
+</head>
+<body class="sapUiBody">
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+</body>

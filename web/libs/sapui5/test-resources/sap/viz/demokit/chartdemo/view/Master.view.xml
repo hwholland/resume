@@ -1,0 +1,110 @@
+<mvc:View
+	controllerName="sap.ui.demo.chartdemo.view.Master"
+	displayBlock="true"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+  xmlns:fct="sap.suite.ui.commons"
+
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core"
+>
+   
+
+	<Page
+		title="Viz Chart DemoApp"
+    class="marginBoxContent"
+    showNavButton="false">
+ 
+
+    <List
+    id="MeasureList"
+    mode="MultiSelect"
+    includeItemInSelection="true"
+     >
+    <headerToolbar>
+
+      	<Toolbar 
+          class="measureToolBar">
+        <Label text="Measure" class="toolBarTextHeader"></Label>
+      </Toolbar>
+      </headerToolbar>
+      
+     <StandardListItem
+      id="Profit"                  
+      title="Profit"
+      description="profit"
+      selected="true"
+
+     />
+     <StandardListItem
+      id="Cost"              
+      title="Cost"
+      description="cost"
+      selected="true"
+     />
+     <StandardListItem
+      id="Revenue"                 
+      title="Revenue"
+      description="revenue"
+      selected="true"
+     />
+</List>
+
+  
+<Toolbar 
+    class="measureToolBar">
+        <Label text="Chart Type" class="toolBarText"></Label>
+      </Toolbar>
+	
+   <content>
+       <Select
+        id="select"
+        width="80%" name="test"
+        class="selectType" >
+
+        <items>
+          <core:Item text="Bar" key="Bar"/>
+        </items>
+        <items>
+          <core:Item text="Line" key="Line"/>
+        </items>
+        <items>
+          <core:Item text="Column" key="Column"/>
+        </items>
+        <items>
+          <core:Item text="Stacked Column" key="Stacked_Column"/>
+        </items>
+      </Select>
+      <Select
+        id="selectColor"
+        width="80%" name="test"
+        class="selectColor" >
+        <items>
+          <core:Item text="Default Color" key="Default_Color"/>
+        </items>
+        <items>
+          <core:Item text="Semantic Color" key="Semantic_Color"/>
+        </items>
+      </Select>
+		</content>
+		<Toolbar 
+      class="measureToolBar">
+        <Label text="Popover Effect" class="toolBarText"></Label>
+      </Toolbar>
+		<content title="pop">
+		<Select
+        id="selectPopover"
+        width="80%" name="test" class="selectPop" >
+        <items>
+          <core:Item text="Default" key="Default"/>
+        </items>
+        <items>
+          <core:Item text="Customer Popover" key="Customer_Popover"/>
+        </items>
+      </Select>
+  </content>
+	</Page>
+</mvc:View>
+
+
+  

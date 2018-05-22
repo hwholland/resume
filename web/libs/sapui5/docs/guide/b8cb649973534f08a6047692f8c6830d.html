@@ -1,0 +1,192 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="If required, you can replace standard UI texts for apps that you have created with SAP Fiori elements."/>
+<meta name="description" content="If required, you can replace standard UI texts for apps that you have created with SAP Fiori elements."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=35221849981030806"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=35221849981030806"/>
+<title>Replacing Standard UI Texts</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob8cb649973534f08a6047692f8c6830d">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Replacing Standard UI Texts</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">If required, you can replace standard UI texts for apps that you have created with SAP
+		Fiori elements.</p>
+
+		<p class="p">Standard texts are available in the generic framework (for example, the button texts for draft
+			concepts) and belong to the template components (for example, list report and object
+			page). The following sections describe how you replace texts in your generated apps.</p>
+
+		<p class="p">When you have created your specific application component, for example, in the SAP Web IDE,
+			standard texts are available from a specific template component
+				(<samp class="ph codeph">sap.suite.ui.generic.template</samp>) and from the generic template
+			component. </p>
+
+		<p class="p">Standard texts can be overwritten by application-specific texts. Texts from the <em class="ph i">Generic
+				Application Component</em> cannot be replaced.</p>
+
+		<p class="p">Perform the following steps to replace the standard UI texts:</p>
+
+		<ol class="ol" id="loiob8cb649973534f08a6047692f8c6830d__ol_mzt_hqt_l1b">
+			<li class="li">
+				<p class="p">Find the resource file for your application.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Get the standard UI texts for your application.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Copy and paste the standard UI texts to your i18n property file and adapt them as needed.</p>
+
+			</li>
+
+		</ol>
+
+		
+		<div class="section" id="loiob8cb649973534f08a6047692f8c6830d__ResourceFile"><div class="section_title">How to Find the Resource File of Your Application Component</div><div type="How to Find the Resource File of Your Application Component">
+			
+			<p class="p">The SAP Web IDE automatically generates the following folders and files when you create an app
+				with SAP Fiori elements:</p>
+
+			<ul class="ul" id="loiob8cb649973534f08a6047692f8c6830d__ul_h1p_xgc_55">
+				<li class="li">
+					<p class="p">&lt;root-folder&gt;</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">|—i18n</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">|—&lt;shortened template component name&gt;, for example, List Report and
+						Object Page</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">|—&lt;entitySet&gt;</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">|—i18n.properties</p>
+
+					<div class="note note"><span class="notetitle">Note</span> This file contains instructions on how to find the standard UI texts for your
+						application. You need them for the step <a class="xref" href="b8cb649973534f08a6047692f8c6830d.html#loiob8cb649973534f08a6047692f8c6830d__section_zhj_wpt_l1b">How to
+							Replace the Standard UI Texts with Application-Specific
+						Texts</a>.</div>
+
+				</li>
+
+			</ul>
+
+			<div class="p">The folder path to the resource model appears as shown below. Since the
+					<samp class="ph codeph">manifest.json</samp> file also refers to the title and description of
+				the app, there is a general <span class="ph filepath">i18n.properties</span> file on the top
+					level:<ul class="ul" id="loiob8cb649973534f08a6047692f8c6830d__ul_skk_5mr_jt">
+					<li class="li"><samp class="ph codeph">i18n.properties</samp></li>
+
+					<li class="li"><samp class="ph codeph">i18n/ListReport/&lt;entitySet&gt;/POHeaders/i18n.properties</samp></li>
+
+					<li class="li"><samp class="ph codeph">i18n/ObjectPage/&lt;entitySet&gt;/i18n.properties</samp></li>
+
+					<li class="li"><samp class="ph codeph">i18n/ObjectPage/&lt;subEntitySet&gt;/i18n.properties</samp><div class="note note"><span class="notetitle">Note</span> For object
+							pages, the number of i18n files corresponds to the number of object
+							pages defined in the app.</div>
+</li>
+
+				</ul>
+</div>
+
+			<p class="p">The app descriptor (<span class="ph filepath">manifest.json</span> file) of a purchase order application,
+				for example, specifies the SAP UI5 models. </p>
+
+			<div class="p">Example:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"sap.ui5": {
+ 
+        ...
+    "models": {
+        "i18n": {                
+            "type": "sap.ui.model.resource.ResourceModel",                
+            "uri": "i18n/i18n.properties"           
+      },
+ 
+        "i18n|sap.suite.ui.generic.template.ListReport|POHeaders": {
+            "type": "sap.ui.model.resource.ResourceModel",
+            "uri": "i18n/ListReport/POHeaders/i18n.properties"
+              },
+        "i18n|sap.suite.ui.generic.template.ObjectPage|POHeaders": {
+                    "type": "sap.ui.model.resource.ResourceModel",
+                    "uri": "i18n/ObjectPage/POHeaders/i18n.properties"
+              },
+        "i18n|sap.suite.ui.generic.template.ObjectPage|POItems": {
+                    "type": "sap.ui.model.resource.ResourceModel",
+                    "uri": "i18n/ObjectPage/POItems/i18n.properties"
+</pre></div>
+</div>
+
+			<p class="p">The URL reflects the folder path to the resource model. The model's name,
+					<samp class="ph codeph">i18n|sap.suite.ui.generic.template.ObjectPage|POHeaders</samp>, is
+				separated by lines used to identify the specific template component and entity set
+				for which the resource model can be enhanced by editing the
+					<span class="ph filepath">i18n.properties</span> file.</p>
+
+		</div></div>
+
+		<div class="section" id="loiob8cb649973534f08a6047692f8c6830d__section_zhj_wpt_l1b"><div class="section_title">How to Replace the Standard UI Texts with Application-Specific Texts</div><div type="How to Replace the Standard UI Texts with Application-Specific Texts">
+			
+			<div class="p">To replace the standard UI texts, perform the following steps:<ol class="ol" id="loiob8cb649973534f08a6047692f8c6830d__ol_xp2_gmt_l1b">
+					<li class="li">
+						<p class="p">Go to the final block of the standard UI texts that starts as follows:
+								<samp class="ph codeph">#---Final block: texts to be redefined by the application
+								-------</samp></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Copy this block to the corresponding i18n property file of your app under
+								<samp class="ph codeph">webapp/i18n</samp>. </p>
+
+						<p class="p">Consider the detailed instructions that you may find as comments in the original property
+							file: For example, a text might be relevant only for the root object, or
+							it might also be relevant for detail pages of subitems. In the latter
+							case, if you have defined multiple object pages in your app, you have to
+							copy and adapt each of them.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">After copying the blocks to the relevant files, adjust the texts as described in the
+							comment. For example, replace the generic text
+								<span class="keyword uinolabel">object</span> by your entity type name. </p>
+
+					</li>
+
+				</ol>
+</div>
+
+			<div class="note note"><span class="notetitle">Note</span> To save translation costs, do not copy and redefine more texts than needed.</div>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> 
+</div>
+</div></div>
+
+</body>
+</html>

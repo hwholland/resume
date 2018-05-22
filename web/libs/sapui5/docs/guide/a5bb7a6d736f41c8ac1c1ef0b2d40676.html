@@ -1,0 +1,245 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In the first unit test we have just extended the formatters module with a new function. Now we will write a unit test that will test the functionality of an entirely new module."/>
+<meta name="description" content="In the first unit test we have just extended the formatters module with a new function. Now we will write a unit test that will test the functionality of an entirely new module."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7689736151029267"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7689736151029267"/>
+<title>Step 4: Testing a New Module</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioa5bb7a6d736f41c8ac1c1ef0b2d40676">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 4: Testing a New Module</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In the first unit test we have just extended the formatters module with a new function.
+		Now we will write a unit test that will test the functionality of an entirely new module. </p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			<p class="p">A frequently used feature of a bulletin board is to flag interesting posts to mark them for
+				later reading. The UI should contain a button to toggle the flagged state for each
+				item. We will implement this feature with a custom type and again start writing the
+				test case for it first and add the implementation later.</p>
+
+			
+			<div class="fig fignone" id="loioa5bb7a6d736f41c8ac1c1ef0b2d40676__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loioa5bb7a6d736f41c8ac1c1ef0b2d40676__image_b24_kt2_ft" src="loioba4369b669574be29051499ed6f2ce4e_HiRes.png"/>
+			<div class="figcap">The unit test for the <samp class="ph codeph">Flagged</samp> feature will fail until the
+					feature is implemented</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Samples</span> in the Demo Kit
+					
+				<span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.testing.04/preview" alt="../../explored.html#/sample/sap.m.tutorial.testing.04/preview" title="../../explored.html#/sample/sap.m.tutorial.testing.04/preview">Testing - Step 4</a></span>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/model/FlaggedType.js (new)</div><div type="webapp/model/FlaggedType.js (new)">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.define([
+	"sap/ui/model/SimpleType"
+], function (SimpleType) {
+	"use strict";
+	return SimpleType.extend("sap.ui.demo.bulletinboard.model.FlaggedType", {
+		formatValue: function () {
+		},
+		parseValue: function () {
+		},
+		validateValue: function () {
+		}
+	});
+});</span></pre></div>
+
+			<p class="p">We plan to control a button state based on the <samp class="ph codeph">Flagged</samp> property in the model.
+				The button expects a Boolean value for the pressed state. In the model, we have a
+				binary integer representation, so we will again need conversion logic to format the
+				model value. And we also need a back conversion to store a state change in the model
+				when the user clicks the button.</p>
+
+			<div class="p">A formatter function will only take care of one direction so this time we decide to
+				implement a custom data type for the conversions. As with the previous test, we add
+				an empty hull for our new data type in the model folder. The
+					<samp class="ph codeph">FlaggedType</samp> extends the <samp class="ph codeph">SimpleType</samp>. Its
+				interface provides two conversion functions and a validation function:<ul class="ul" id="loioa5bb7a6d736f41c8ac1c1ef0b2d40676__ul_tcl_1gf_ft">
+					<li class="li">
+						<p class="p"><samp class="ph codeph">formatValue</samp>: formats a model value to be displayed in
+							the UI</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">parseValue</samp>: parses a UI value to be stored in the
+							model</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">validateValue</samp>: checks a value for displaying validation
+							errors</p>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/test/unit/model/FlaggedType.js (new)</div><div type="webapp/test/unit/model/FlaggedType.js (new)">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">sap.ui.require(
+	[
+		"sap/ui/demo/bulletinboard/model/FlaggedType"
+	],
+	function (FlaggedType) {
+		"use strict";
+		QUnit.module("FlaggedType - formatting");
+		QUnit.test("Should convert 1 to true", function (assert) {
+			// Act
+			var bFormattedValue = new FlaggedType().formatValue(1);
+			// Assert
+			assert.strictEqual(bFormattedValue , true, "The formatting conversion was correct");
+		});
+		QUnit.test("Should convert other values to false", function (assert) {
+			var oFlaggedType = new FlaggedType();
+			// Act
+			var bFormattedZero = oFlaggedType.formatValue(0);
+			var bFormattedNegativeNumber = oFlaggedType.formatValue(-666);
+			// Assert
+			assert.strictEqual(bFormattedZero, false, "The formatting conversion was correct");
+			assert.strictEqual(bFormattedNegativeNumber, false, "The formatting conversion was correct");
+		});
+		QUnit.module("FlaggedType - parsing");
+		QUnit.test("Should parse false to 0", function (assert) {
+			// Act
+			var iParsedValue = new FlaggedType().parseValue(false);
+			// Assert
+			assert.strictEqual(iParsedValue, 0, "The parsing conversion matched the input");
+		});
+		QUnit.test("Should parse true to 1", function (assert) {
+			// Act
+			var iParsedValue = new FlaggedType().parseValue(true);
+			// Assert
+			assert.strictEqual(iParsedValue, 1, "The parsing conversion matched the input");
+		});
+	}
+);</span></pre></div>
+
+			<p class="p">The new <span class="ph filepath">FlaggedType.js</span> file matches the file name of the implementation
+				and is put in the <span class="ph filepath">model</span> subfolder of the
+					<span class="ph filepath">test/unit</span> folder similar to the implementation under the
+					<span class="ph filepath">webapp</span> folder. By keeping the same structure for tests and
+				productive code, we can easily relate the tests to the implementation. </p>
+
+			<div class="p">We define this testing module with <samp class="ph codeph">sap.ui.require</samp> since we just want to load
+				dependencies but do not want to declare a namespace for this testing module. We load
+				the new and still empty <samp class="ph codeph">FlaggedType</samp> implementation as the only
+				dependency and declare two QUnit modules: one for formatting and one for parsing, to
+				check both the to- and back-conversion of the flagged type.<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">We do not test the validation function of the data type as our conversion is
+						so simple. There are no expected validation errors that we have to take care
+						of.</p>
+
+				</div>
+</div>
+
+			<p class="p">In each QUnit module we define test cases for each condition. For a Boolean conversion there
+				are just two cases, <samp class="ph codeph">true</samp> and <samp class="ph codeph">false</samp>. So we expect
+				that the integer value <samp class="ph codeph">1</samp> is converted to <samp class="ph codeph">true</samp> and
+				everything else to <samp class="ph codeph">false</samp>.</p>
+
+			<p class="p">Let's have a look at the first test case to see how the custom data type is invoked for
+				testing.</p>
+
+			<p class="p">As we have loaded the type as a dependency, we can just access it with the variable
+					<samp class="ph codeph">FlaggedType</samp> and create a new instance of it in each test case.
+				This time we do not create a <samp class="ph codeph">reuse</samp> function but simply create the
+				instance inside the test case. On the type we manually call the function
+					<samp class="ph codeph">formatValue</samp> that we want to test and compare the result to the
+				expected value in an assertion.</p>
+
+			<p class="p">In the second test case, we check all other values, we expect it to be
+					<samp class="ph codeph">0</samp> but it could be also a negative value. So we check both cases
+				in the same test case with a separate assertion each. Only when both assertions are
+				fulfilled the test will be successful.</p>
+
+			<p class="p">The other test cases in the parsing module are similar and check the back conversion
+				from Boolean value to integer value.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/test/unit/allTests.js</div><div type="webapp/test/unit/allTests.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+	"test/unit/model/models",
+	"test/unit/model/formatter"<span class="ph emphasis emphasis">,
+	"test/unit/model/FlaggedType"
+</span>
+], function() {
+	"use strict";
+});</pre></div>
+
+			<p class="p">In the <span class="ph filepath">allTests.js</span> file we just load the new testing module as a
+				dependency so that it is executed automatically whenever we execute the unit
+				tests.</p>
+
+			<p class="p">You can now call the unit tests and check the result. As in the previous
+				step, the tests should fail with an error message that the
+				conversion is not correct. This is expected as we did not
+				implement the conversion logic yet but just the tests for
+				it.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Conventions</div><div type="Conventions">
+			
+			<ul class="ul" id="loioa5bb7a6d736f41c8ac1c1ef0b2d40676__ul_nh5_ybb_nr">
+				<li class="li">
+					<p class="p">Use data types if you need both formatting and parsing of a model value</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Organize the tests in the same file structure as the productive code </p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="291c9121e6044ab381e0b51716f97f52.html" title="In this tutorial we will test application functionality with the testing tools that are delivered with SAPUI5. At different steps of this tutorial you will write tests using QUnit, OPA5, and the mock server. Additionally, you will learn about testing strategies, Test Driven Development (TDD), and much more.">Testing</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="2bf4892527174264808076be32c1e1b0.html" title="We will now take care of the implementation of the price formatter and make sure that the tests we wrote in the previous step run successfully.">Step 3: Adding the Price Formatter</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="69a25bf2f8a2478cbda4b8bbe64039de.html" title="Now that we have implemented the conversion tests, we add the corresponding functionality and show the button to flag a post in the app. The design team has specified that the flag feature should be implemented with a toggle button that has a flag icon.">Step 5: Adding a Flag Button</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.model.SimpleType.html" alt="../../docs/api/symbols/sap.ui.model.SimpleType.html" title="../../docs/api/symbols/sap.ui.model.SimpleType.html">API Reference: <samp class="ph codeph">sap.ui.model.SimpleType</samp></a></div>
+<div><a class="link" href="https://ui5.sap.com/sdk/#/api/sap.ui/methods/sap.ui.require" alt="https://ui5.sap.com/sdk/#/api/sap.ui/methods/sap.ui.require" title="https://ui5.sap.com/sdk/#/api/sap.ui/methods/sap.ui.require">API Reference: <samp class="ph codeph">sap.ui.require</samp></a></div>
+<div><a class="link" href="07e4b920f5734fd78fdaa236f26236d8.html" title="Data that is presented on the UI often has to be converted so that is human readable and fits to the locale of the user. On the other hand, data entered by the user has to be parsed and validated to be understood by the data source. For this purpose, you use formatters and data types.">Formatting, Parsing, and Validating Data</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>qUnit Page for sap.suite.ui.commons.HarveyBallMicroChart</title>
+
+		<script id="sap-ui-bootstrap" 
+			type="text/javascript"
+			src="../../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-libs="sap.ui.commons,sap.suite.ui.commons">
+		</script>
+
+ 		<link rel="stylesheet" href="../../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" /> 
+		<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+
+		<script>
+			jQuery.sap.initMobile();
+
+			QUnit.module("Rendering", {
+				beforeEach : function() {
+					this.oChart = new sap.suite.ui.commons.HarveyBallMicroChart("harvey-ball-micro-chart", {
+						size: "M",
+						total: 355,
+						totalLabel: "360",
+						totalScale: "Mrd",
+						formattedLabel: false,
+						showTotal: true,
+						showFractions: true,
+						tooltip: "Cumulative Totals\n{AltText}\ncalculated in EURO",
+						items: [ new sap.suite.ui.commons.HarveyBallMicroChartItem({
+							fraction: 125,
+							color: sap.suite.ui.commons.InfoTileValueColor.Good,
+							fractionLabel: "130",
+							fractionScale: "Mln",
+							formattedLabel: false
+						})]
+					}).placeAt("qunit-fixture");
+					sap.ui.getCore().applyChanges();
+				},
+				afterEach : function() {
+					this.oChart.destroy();
+				}
+			});
+
+			QUnit.test("HarveyBallMicroChart wrapper is working", function(assert) {
+				assert.ok(jQuery.sap.domById("harvey-ball-micro-chart"), "HarveyBallMicroChart was rendered successfully");
+			});
+
+    	</script>
+	</head>
+	<body id="body" class="sapUiBody">
+		<div id="qunit"></div>
+		<div id="qunit-fixture" style="width: 100%; height: 30%;"></div>
+	</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=10675917659613088"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=10675917659613088"/>
+<title>Viewport</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioacd34672ef33429e99a0247486e37c78">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Viewport</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">The <samp class="ph codeph">sap.ui.vk.Viewport</samp> control provides a rendering canvas for the 3D elements
+			of a loaded scene/loaded scenes.</p>
+
+		<div class="section" id="loioacd34672ef33429e99a0247486e37c78__section_pp2_lx1_qz"><div class="section_title">API Reference / Sample</div><div type="API Reference / Sample">
+			
+			<ul class="ul" id="loioacd34672ef33429e99a0247486e37c78__ul_kxr_wrn_25">
+				<li class="li"><a class="xref" href="../../docs/api/symbols/sap.ui.vk.Viewport.html" alt="../../docs/api/symbols/sap.ui.vk.Viewport.html" title="../../docs/api/symbols/sap.ui.vk.Viewport.html">sap.ui.vk.Viewport</a> in the
+						<span class="ph uicontrol">API Reference</span> in the Demo Kit</li>
+
+				<li class="li"><a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.vk/samples" alt="../../explored.html#/entity/sap.ui.vk/samples" title="../../explored.html#/entity/sap.ui.vk/samples">Step 3 - Standalone Viewport</a> in the Demo Kit</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p">The Viewport control's primary function is to provide a rendering surface for all or
+				part of a loaded scene. The Viewport can occupy all or part of the user
+				interface.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Prerequisites</div><div type="Prerequisites">
+			
+			<div class="p">When initializing a Viewport instance, you must:<ul class="ul" id="loioacd34672ef33429e99a0247486e37c78__ul_u1t_h1n_25">
+					<li class="li">attach it to a <samp class="ph codeph">GraphicsCore</samp> instance, which handles the
+						rendering of loaded scenes</li>
+
+					<li class="li">attach it to a <samp class="ph codeph">Scene</samp> object so that the Viewport knows what
+						scene to render</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Details</div><div type="Details"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Loading Scenes Into the Viewport</p>
+
+				<p class="p">The Viewport supports the loading of the VDS file format.</p>
+
+				<p class="p">File formats that are natively supported by browsers are loaded by the Native
+					Viewport control.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Node Visibility in the Viewport</p>
+
+				<p class="p">The Viewport can be connected to a <samp class="ph codeph">ViewStateManager</samp> object to
+					handle the selection and visibility states of nodes in the scene. This means is
+					that when selecting a node in the scene, that node will be highlighted. In
+					addition, if the Viewport is connected to a Scene Tree control, the selection of
+					a node in the Viewport will highlight the associated item in the Scene Tree.</p>
+
+				<p class="p">The visibility state of a node can only be affected when the Viewport is
+					connected to a Scene Tree. Nodes can be hidden or displayed in the Viewport
+					using the Scene Tree functionality.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Gesture Handling in the Viewport</p>
+
+				<p class="p">Gestures such as pan, zoom, and rotate are captured and processed by the
+						<samp class="ph codeph">sap.ui.vk.Loco</samp> library. The Viewport should be initialized
+					with an instance of the <samp class="ph codeph">sap.ui.vk.Loco</samp> library attached, in
+					order for gestures to be captured and processed.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Keyboard Shortcuts in the Viewport</p>
+
+				<p class="p">In addition to using mouse and touch gestures to navigate the scene in a
+					Viewport, keyboard shortcuts are available. </p>
+
+				
+<div class="table-wrapper tablenoborder"><table summary="" id="loioacd34672ef33429e99a0247486e37c78__table_xls_12h_q5" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Viewport keyboard shortcuts</span></caption>
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+						
+						
+						<thead class="thead" align="left">
+							<tr class="row">
+								<th class="entry" valign="top" width="50%" id="d13692431e142">Keyboard Shortcut</th>
+
+								<th class="entry" valign="top" width="50%" id="d13692431e145">Function</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody class="tbody">
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d13692431e142 "><kbd class="key">DIRECTIONAL ARROW</kbd></td>
+
+								<td class="entry" valign="top" width="50%" headers="d13692431e145 ">Rotate the scene.</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d13692431e142 "><span class="keys">
+										<kbd class="key">SHIFT</kbd>
+										 + <kbd class="key">DIRECTIONAL ARROW</kbd>
+									</span></td>
+
+								<td class="entry" valign="top" width="50%" headers="d13692431e145 ">Pan the scene.</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d13692431e142 "><kbd class="key">+</kbd></td>
+
+								<td class="entry" valign="top" width="50%" headers="d13692431e145 ">Zoom into the scene.</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d13692431e142 "><kbd class="key">-</kbd></td>
+
+								<td class="entry" valign="top" width="50%" headers="d13692431e145 ">Zoom out of the scene.</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+</div>
+
+			</div></div></div>
+
+		<div class="section"><div class="section_title">Constraints</div><div type="Constraints">
+			
+			<ul class="ul" id="loioacd34672ef33429e99a0247486e37c78__ul_vf2_ngh_q5">
+				<li class="li">The Viewport control loads 3D models in the SAP VDS (<span class="ph filepath">.vds</span>)
+					format only. Some 2D image formats can be loaded by the
+						<samp class="ph codeph">sap.ui.vk.NativeViewport</samp> control. See Native Viewport.</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Related Information</div><div type="Related Information">
+			
+			<ul class="ul" id="loioacd34672ef33429e99a0247486e37c78__ul_rv2_jm5_25">
+				<li class="li"><a class="xref" href="ab7021546c72409d84eb97c6b1434e72.html">Scene Tree</a></li>
+
+				<li class="li"><a class="xref" href="ab5acd7a755b4daca01c26616173b4fd.html" title="The Native Viewport control (sap.ui.vk.NativeViewport) provides a rendering canvas for 2D images loaded into the Viewer application.">Native Viewport</a></li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

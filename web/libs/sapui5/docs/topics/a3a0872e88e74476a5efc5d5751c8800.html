@@ -1,0 +1,264 @@
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html lang="en-us" dir="ltr">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Performance</title>
+      <link rel="icon" href="themes/sap-default/img/favicon.ico" type="image/x-icon">
+      <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="abstract" content="The following measures help you improve performance when loading data or modules.">
+      
+      <meta name="description" content="The following measures help you improve performance when loading data or modules.">
+      <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"237531224bb549e28b4a71bef95aa1ad.html","previousTopicHref":"6256083b146e40b896309ead6ccd8751.html"}</script>
+      <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
+      <script type="text/javascript">
+      
+        d4p.cssGridPath = d4p.dev ? 'html5-themes/modules/960-Responsive-Grid/css/' : 'themes/dita-d4p-classic/css/';
+        var ADAPT_CONFIG = {
+          // Where is your CSS?
+          path: d4p.relativePath + d4p.cssGridPath,
+
+          // false = Only run once, when page first loads.
+          // true = Change on window resize and page tilt.
+          dynamic: true,
+
+          // Optional callback... myCallback(i, width)
+          callback: doc_resize,
+
+          // First range entry is the minimum.
+          // Last range entry is the maximum.
+          // Separate ranges by "to" keyword.
+          range: [
+             // small (size-0)
+            '0px    to 760px  =',
+             // medium (size-1, size-2)
+            '760px  to 980px  = ',
+            '980px  to 1270px = ',
+             // large (size-3, size-5)
+            '1270px to 1600px = ',
+            '1600px to 1940px = ',
+             // extra large (size-6)
+            '1940px to 2540px = ',
+            '2540px           = '
+          ]
+        };
+
+        function doc_resize(i, width)
+        {
+          d4p.setBodyClassfunction(i, width);
+        }
+
+
+        
+      </script>
+      <script type="text/javascript" src="toc-info.js"></script>
+      <script type="text/javascript" src="themes/sap-default/js/script.js"></script>
+      
+      		<!--[if lt IE 9]>
+      			<script>
+      			  var e = ("abbr,article,aside,audio,canvas,datalist,details," +
+      			    "figure,footer,header,hgroup,mark,menu,meter,nav,output," +
+      			    "progress,section,time,video").split(',');
+      			  for (var i = 0; i < e.length; i++) {
+      			    document.createElement(e[i]);
+      			  }
+      			</script>
+      		<![endif]-->
+      
+      <script>
+      function addLoadEvent(func) {
+      var oldonload = window.onload;
+      if (typeof window.onload != 'function') {
+      window.onload = func;
+      } else {
+      window.onload = function() {
+      if (oldonload) {
+      oldonload();
+      }
+      func();
+      }
+      }
+      }
+      
+      addLoadEvent(function() { prettyPrint();
+      if ($('#local-navigation').length) {
+      $('#local-navigation').navigation();
+      }
+      
+      
+      });
+      
+      </script>
+      <script type="text/javascript" src="js/prettify.js"> </script>
+      <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
+      <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
+   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+      <div id="d4h5-main-container" class="container_12" role="application">
+         <ul id="page-links" class="hidden">
+            <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
+            <li><a id="skip-to-localnav" href="#local-navigation">Skip to navigation</a></li>
+            <li><a id="skip-to-footer" href="#footer-container">Skip to footer</a></li>
+         </ul>
+         
+         
+         <div id="d4h5-section-container" class="grid_12" style="padding-top: 0;">
+            
+            
+            
+            <div id="d4h5-main-content" class="grid_8 alpha omega" style="margin: 0 0.5em;">
+               <section>
+                  <div id="content-toolbar" class="toolbar hide-for-small"></div>
+                  <div class="page concept  - topic-topic concept-concept " id="loioa3a0872e88e74476a5efc5d5751c8800">
+                     
+                     <h1 class="title topictitle1" hidden>Performance</h1>
+                     
+                     <div class="body conbody">
+                        <p class="shortdesc" hidden>The following measures help you improve performance when loading data or
+                           		modules.
+                        </p>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="Module Loading">
+                              <h2 class="section_title" style="font-size: 1.15em;">Module Loading</h2>
+                              			
+                              			
+                              <p class="p">The app uses an asynchronous bootstrap and all files use the
+                                 				<samp class="ph codeph">sap.ui.define</samp> and <samp class="ph codeph">sap.ui.require</samp> syntax. This
+                                 				allows for asynchronous loading of modules and dependencies and greatly increases
+                                 				the application performance. <span class="ph">For more
+                                    					details, see <samp class="ph codeph">sap.ui.define</samp> and <samp class="ph codeph">sap.ui.require</samp>
+                                    					in the <a class="xref" href="../../#/api/sap.ui" target="_top" alt="#/api/sap.ui" title="#/api/sap.ui">API Reference</a> section of the Demo
+                                    					Kit.</span></p>
+                              
+                              		
+                           </section>
+                        </div>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="Loading Data with Growing List">
+                              <h2 class="section_title" style="font-size: 1.15em;">Loading Data with Growing List</h2>
+                              			
+                              			
+                              <p class="p">The list is set to growing mode so that only the first few items are displayed for performance
+                                 				reasons. Using the <samp class="ph codeph">scrollToLoad</samp> feature, the user can display more
+                                 				items by scrolling down or pressing the trigger at the end of the list.
+                              </p>
+                              
+                              		
+                           </section>
+                        </div>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="Loading Data Depending on Navigation">
+                              <h2 class="section_title" style="font-size: 1.15em;">Loading Data Depending on Navigation</h2>
+                              <p class="p">The way in which app data is loaded
+                                 				varies depending on whether or not the URL used in the navigation references an
+                                 				object, as outlined below.
+                              </p>
+                              
+                              <div xmlns="http://www.w3.org/1999/xhtml" class="sectiondiv subsection">
+                                 				
+                                 <p xmlns="" class="p subsectiontitle">URL References an Object</p>
+                                 
+                                 				
+                                 <p xmlns="" class="p">In this scenario, two requests are sent out simultaneously for a) the master list
+                                    					for a set of items and b) the detail page for the item that is referenced in the
+                                    					URL. This behavior is intended and optimizes the performance for most cases.
+                                 </p>
+                                 
+                                 			
+                              </div>
+                              <div xmlns="http://www.w3.org/1999/xhtml" class="sectiondiv subsection">
+                                 				
+                                 <p xmlns="" class="p subsectiontitle">URL Does Not Reference an Object</p>
+                                 
+                                 				
+                                 <p xmlns="" class="p">In this scenario, a first request is sent out to load the master list items. A second request
+                                    					will be sent out automatically if additional properties and related entities are
+                                    					bound (examples: line items when creating a template using the wizard, or any
+                                    					additional property for resolving the detail page binding, either by 1)
+                                    					expanding to a related entity or 2) properties in the same collection used in
+                                    					the master-list that have been excluded by using a select on the master-list
+                                    					items binding but are used on the detail screen). Here, the URL will be
+                                    					referencing the selected items and a reload will run into the &#x201C;URL references an
+                                    					object&#x201D; scenario.
+                                 </p>
+                                 
+                                 			
+                              </div>
+                              <aside class="note note  insertion"><span class="title">Note</span> 
+                                 				
+                                 <div class="p">
+                                    					
+                                    <ul class="ul" id="loioa3a0872e88e74476a5efc5d5751c8800__ul_nyw_svm_rv">
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p">The implementation that sends two requests simultaneously is chosen
+                                             								intentionally: it is very unlikely that the requested entity based
+                                             								on the hash lies within the first 20 items requested by the list in
+                                             								the <span class="keyword apiname">Master</span> view (growing threshold is the list
+                                             								default). This means that the overall startup time is faster in most
+                                             								cases, even though two requests are sent.
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p">When a URL does not reference an object, the application updates the
+                                             								URL to reference the first object in the list, which makes the
+                                             								implementation where the URL references an object the standard
+                                             								case.
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       					
+                                    </ul>
+                                    
+                                    				
+                                 </div>
+                                 
+                                 			
+                              </aside>
+                              
+                           </section>
+                        </div>
+                        
+                        		
+                        	
+                     </div>
+                     
+                  </div>
+                  
+               </section>
+               <div class="clear"></div>
+               
+            </div>
+            <div class="clearfix"></div>
+         </div>
+      </div>
+      <div class="clearfix"></div>
+      <div id="footer-container" class="grid_12">
+         <footer>
+            	
+            <div id="custom-footerSpacer"></div>
+            	
+            
+         </footer>
+         
+         
+      </div>
+   </body>
+</html>

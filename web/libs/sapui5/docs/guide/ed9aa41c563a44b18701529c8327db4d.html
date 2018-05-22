@@ -1,0 +1,114 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="A draft is an interim version of a business entity that has not yet been explicitly saved as an active version. Drafts are saved automatically in the background whenever users add or change information within a business entity while in edit state (auto-save). SAP Fiori elements support the creation of apps using draft handling."/>
+<meta name="description" content="A draft is an interim version of a business entity that has not yet been explicitly saved as an active version. Drafts are saved automatically in the background whenever users add or change information within a business entity while in edit state (auto-save). SAP Fiori elements support the creation of apps using draft handling."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4201522414251012"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4201522414251012"/>
+<title>Draft Handling</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioed9aa41c563a44b18701529c8327db4d">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Draft Handling</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">A draft is an interim version of a business entity that has not yet been explicitly
+		saved as an active version. Drafts are saved automatically in the background whenever users
+		add or change information within a business entity while in edit state (auto-save). SAP
+		Fiori elements support the creation of apps using draft handling.</p>
+
+		<p class="p">Drafts are used as follows:</p>
+
+		<ul class="ul" id="loioed9aa41c563a44b18701529c8327db4d__ul_r5c_1fj_kz">
+			<li class="li">
+				<p class="p">To keep unsaved changes if an editing activity is interrupted, allowing users to
+					resume editing later.</p>
+
+			</li>
+
+			<li class="li">To prevent data loss if an app terminates unexpectedly</li>
+
+			<li class="li">
+				<p class="p">As a locking mechanism to prevent multiple users from editing the same object
+					concurrently, and to make users aware when there are unsaved changes by another
+					user.</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p">When a user starts creating a new business entity or edits an existing one, a draft is
+			created in parallel in the background to enable field validation and dynamic field
+			control (showing additional fields based on user interaction), and to provide default
+			values for fields based on recent data entry. A draft can be validated for consistency
+			and completeness at any time. This returns a list of messages.</p>
+
+		<p class="p">While the user is modifying a business entity, a saving indicator shows when a draft is
+			saved implicitly. The user still needs to choose the <span class="ph uicontrol">Save</span> button
+			to incorporate the changes into an active business document.</p>
+
+		<div class="section" id="loioed9aa41c563a44b18701529c8327db4d__section_x4g_sfj_kz"><div class="section_title">Using the Apply Button</div><div type="Using the Apply Button">
+			
+		</div></div>
+
+		<div class="section">
+			<p class="p">The footer bar of a subobject page contains an <span class="ph uicontrol">Apply</span> button in create
+				mode and edit mode. By choosing this button, users can conclude their current create
+				or edit activity, apply the changes or entries to the draft, and navigate one step
+				up in the object hierarchy.</p>
+
+			<p class="p">When a user edits an object, the system behavior of the <span class="ph uicontrol">Apply</span>
+				button is as follows: <img class="image" id="loioed9aa41c563a44b18701529c8327db4d__image_axl_pfv_1z" src="loio36204dc3fff942668f0c38c93d6684d6_LowRes.png"/></p>
+
+			<ol class="ol" id="loioed9aa41c563a44b18701529c8327db4d__ol_g4k_z2v_1z">
+				<li class="li">
+					<p class="p">On an object page, the user chooses <span class="ph uicontrol">Edit</span>. </p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">The system creates a draft version of the object.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">The user makes changes to the draft version of the object and navigates to a detail page.
+						When choosing <span class="ph uicontrol">Apply</span>, the changes are applied to the
+						draft.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">When the user chooses <span class="ph uicontrol">Save</span>, the changes are saved to
+						the active version of the object.</p>
+
+				</li>
+
+			</ol>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">If the system encounters an error, for example, network issues, after having
+					chosen <span class="ph uicontrol">Apply</span>,  a message is displayed. If the user
+					chooses <span class="ph uicontrol">Cancel</span>, nothing happens. If the user chooses
+						<span class="ph uicontrol">Discard Changes</span>, the system behaves according to the
+					message, for example, the changes are discarded.</p>
+
+			</div>
+
+			<p class="p">For more information on SAP Fiori draft handling, see <a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fexperience.sap.com%2Ffiori-design-web%2Fdraft-handling%2F" alt="https://experience.sap.com/fiori-design-web/draft-handling/" title="https://experience.sap.com/fiori-design-web/draft-handling/">https://experience.sap.com/fiori-design-web/draft-handling/<img src="images/sap_link.png" class="link-sap" alt="Information published on SAP site" title="Information published on SAP site" border="0"/></a>.</p>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

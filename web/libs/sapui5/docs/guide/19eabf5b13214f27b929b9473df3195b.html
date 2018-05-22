@@ -1,0 +1,121 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In XML views, aggregated child controls can be added as child tags."/>
+<meta name="description" content="In XML views, aggregated child controls can be added as child tags."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8571982763604901"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8571982763604901"/>
+<title>Aggregation Handling in XML Views</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio19eabf5b13214f27b929b9473df3195b">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Aggregation Handling in XML Views</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In XML views, aggregated child controls can be added as child tags. </p>
+
+		<div class="section" id="loio19eabf5b13214f27b929b9473df3195b__section_ly2_t1s_xz"><div class="section_title">Aggregations of XML Views</div><div type="Aggregations of XML Views">
+			
+			<p class="p">On root level, you can only define content for the default aggregation, e.g. without
+				adding the <samp class="ph codeph">content</samp> tag. If you want to specify content for another
+				aggregation of a view like <samp class="ph codeph">dependents</samp>, place it in a child
+				control´s <samp class="ph codeph">dependents</samp> aggregation or add it by using the
+					<samp class="ph codeph">addDependent</samp> method.</p>
+
+		</div></div>
+
+		<div class="section" id="loio19eabf5b13214f27b929b9473df3195b__section_fhf_r1s_xz"><div class="section_title">Aggregations of Controls Inside the View</div><div type="Aggregations of Controls Inside the View">
+			
+			<p class="p">Some controls have more than one content area, for example the shell control that has
+				the main content area, a menu bar, a <samp class="ph codeph">headerItems</samp> aggregation, a
+					<samp class="ph codeph">worksetItems</samp> aggregation, and so on. An aggregation tag usually
+				serves as a direct child of a container and contains children. You can only add
+				children directly if the container control has marked one of the child aggregations
+				as default. </p>
+
+			<div class="note note" id="loio19eabf5b13214f27b929b9473df3195b__note_N10028_N10011_N10001"><span class="notetitle">Note</span> 
+				<p class="p">Some containers may not have default content, for example, the splitter container
+					has two equally important content areas. </p>
+
+				<p class="p">The framework supports you by issuing error message in case of errors in the
+					aggregation handling in XML views. </p>
+
+			</div>
+
+			<p class="p">You fill aggregations as shown in the following example. The namespace of the parent
+				control tag and the aggregation tag must be the same. </p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;mvc:View controllerName="sap.hcm.Address" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"&gt;
+   &lt;Panel&gt;
+      &lt;content&gt;  &lt;!-- this is the general way of adding children: use the aggregation name --&gt;
+         &lt;Image src="http://www.sap.com/global/ui/images/global/sap-logo.png"/&gt;
+         &lt;Button text="Press Me"/&gt;
+      &lt;/content&gt;
+   &lt;/Panel&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">If the aggregation of <span class="ph emphasis emphasis">cardinality <samp class="ph codeph">0..1</samp></span> has an
+				alternative type, you have to specify the value with that alternative as an
+				attribute as well.</p>
+
+			<div class="note example"><span class="exampletitle">Example</span> 
+				<div class="p">For the <samp class="ph codeph">noData</samp> aggregation of the
+						<samp class="ph codeph">sap.ui.comp.SmartTable</samp> control, you can either define a
+					string or a nested text control.<div class="table-wrapper"><table summary="" id="loio19eabf5b13214f27b929b9473df3195b__simpletable_mrw_5q2_xbb" border="0" class="simpletable"><tr class="sthead">
+							<th valign="bottom" align="left" id="d1660491e89" class="stentry" width="50%">String</th>
+
+							<th valign="bottom" align="left" id="d1660491e92" class="stentry" width="50%">Nested text control</th>
+
+						</tr>
+<tr class="strow">
+							<td valign="top" headers="d1660491e89" class="stentry">
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;SmartTable noData="No data available"&gt;
+	...
+&lt;/SmartTable&gt;
+</pre></div>
+
+							</td>
+
+							<td valign="top" headers="d1660491e92" class="stentry">
+								<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;SmartTable ....&gt;
+	&lt;noData&gt;
+		&lt;Text text="No data available" icon="sap-icon://..." /&gt;
+	&lt;/noData&gt;
+	...
+&lt;/SmartTable&gt;
+</pre></div>
+
+							</td>
+
+						</tr>
+</table></div>
+</div>
+
+			</div>
+
+			<p class="p">An example for an aggregation with an alternative type is the
+					<samp class="ph codeph">tooltip</samp> aggregation of class
+					<samp class="ph codeph">sap.ui.core.Element</samp>. It has type
+					<samp class="ph codeph">sap.ui.core.TooltipBase</samp>, but also has the alternative type
+					<samp class="ph codeph">String</samp>.</p>
+
+			<p class="p">You can also use attributes to define binding information for aggregations with cardinality
+					<samp class="ph codeph">0..n</samp>. For more information, see <span class="ph uicontrol">Declarative List
+					Binding in XML Views</span> under <a class="xref" href="91f057786f4d1014b6dd926db0e91070.html" title="List binding (or aggregation binding) is used to automatically create child controls according to model data.">List Binding (Aggregation Binding)</a>.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

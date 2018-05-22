@@ -1,0 +1,144 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="We now add a search field to our bulletin board and define a filter that represents the search term. This is done similarly as in step 24 of the Walkthrough tutorial."/>
+<meta name="description" content="We now add a search field to our bulletin board and define a filter that represents the search term. This is done similarly as in step 24 of the Walkthrough tutorial."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5055013920365012"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5055013920365012"/>
+<title>Step 12: Adding a Search</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio0c270b45dd904429ba634656e3a37a73">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 12: Adding a Search</h1>
+
+	
+		
+		<div class="body conbody"><p class="shortdesc">We now add a search field to our bulletin board and define a filter that represents the search term. This is done similarly as in step 24 of the
+		Walkthrough tutorial.</p>
+
+			<div class="section"><div class="section_title">Preview</div><div type="Preview">
+				
+				<div class="fig fignone" id="loio0c270b45dd904429ba634656e3a37a73__fig_k3l_yjj_sx"><div class="figcontainer">
+				
+				<img class="image" id="loio0c270b45dd904429ba634656e3a37a73__image_px2_bpj_sx" src="loiob012fdf751b947f08cf77cf124334c9f_LowRes.png"/>
+			<div class="figcap">Search field</div></div></div>
+
+			</div></div>
+
+			<div class="section"><div class="section_title">Coding</div><div type="Coding">
+				
+				<p class="p">You can view and download all files in the <span class="ph uicontrol">Samples</span> in the Demo Kit <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.testing.12/preview" alt="../../explored.html#/sample/sap.m.tutorial.testing.12/preview" title="../../explored.html#/sample/sap.m.tutorial.testing.12/preview">Testing - Step 12</a></span>.</p>
+
+			</div></div>
+
+			<div class="section"><div class="section_title">webapp/view/Worklist.view.xml</div><div type="webapp/view/Worklist.view.xml">
+				
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">...
+         &lt;Table
+               id="table"
+               width="auto"
+               class="sapUiResponsiveMargin"
+               growing="true"
+               items="{
+               path: '/Posts',
+               sorter: {
+                  path: 'Title',
+                  descending: false
+                  }
+               }"
+               busyIndicatorDelay="{worklistView&gt;/tableBusyDelay}"
+               updateFinished="onUpdateFinished"&gt;
+            &lt;headerToolbar&gt;
+               &lt;Toolbar&gt;
+                  &lt;Label id="tableHeader" text="{worklistView&gt;/worklistTableTitle}"/&gt;
+                  <span class="ph emphasis emphasis">&lt;ToolbarSpacer /&gt;
+                  &lt;SearchField id="searchField" width="auto" search="onFilterPosts" /&gt;</span>
+               &lt;/Toolbar&gt;
+            &lt;/headerToolbar&gt;
+...</pre></div>
+
+			<p class="p">We add a <samp class="ph codeph">ToolbarSpacer</samp> and a <samp class="ph codeph">SearchField</samp> to the <samp class="ph codeph">headerToolbar</samp> of our table.</p>
+
+			</div></div>
+
+			<div class="section"><div class="section_title">webapp/controller/Worklist.controller.js</div><div type="webapp/controller/Worklist.controller.js">
+				
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+	'sap/ui/demo/bulletinboard/controller/BaseController',
+	'sap/ui/model/json/JSONModel',
+	'sap/ui/demo/bulletinboard/model/formatter',
+	'sap/ui/demo/bulletinboard/model/FlaggedType'<span class="ph emphasis emphasis">,
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+</span>
+], function (BaseController, JSONModel, formatter, FlaggedType<span class="ph emphasis emphasis">, Filter, FilterOperator</span>) {
+	"use strict";
+...
+		onUpdateFinished: function (oEvent) {
+			// update the worklist's object counter after the table update
+			var sTitle,
+				oTable = oEvent.getSource(),
+				iTotalItems = oEvent.getParameter("total");
+			// only update the counter if the length is final and
+			// the table is not empty
+			if (iTotalItems &amp;&amp; oTable.getBinding("items").isLengthFinal()) {
+				sTitle = this.getResourceBundle().getText("worklistTableTitleCount", [iTotalItems]);
+			} else {
+				sTitle = this.getResourceBundle().getText("worklistTableTitle");
+			}
+			this.getModel("worklistView").setProperty("/worklistTableTitle", sTitle);
+		},
+
+		<span class="ph emphasis emphasis">onFilterPosts: function (oEvent) {
+
+			// build filter array
+			var aFilter = [];
+			var sQuery = oEvent.getParameter("query");
+			if (sQuery) {
+				aFilter.push(new Filter("Title", FilterOperator.Contains, sQuery));
+			}
+
+			// filter binding
+			var oTable = this.byId("table");
+			var oBinding = oTable.getBinding("items");
+			oBinding.filter(aFilter);
+		},
+</span>
+...</pre></div>
+
+			<p class="p">To enable filtering, we extend the controller with a method that applies the search term entered in the search field to the list binding,
+				similarly as we did for <span class="ph filepath">InvoiceList.controller.js</span> in step 24 of the Walkthrough tutorial.</p>
+
+			</div></div>
+
+		</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="291c9121e6044ab381e0b51716f97f52.html" title="In this tutorial we will test application functionality with the testing tools that are delivered with SAPUI5. At different steps of this tutorial you will write tests using QUnit, OPA5, and the mock server. Additionally, you will learn about testing strategies, Test Driven Development (TDD), and much more.">Testing</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="92959b10ecf14582b65eaadb40571156.html" title="In this step, we will write a test that simulates a user search. We will enter the search string into the search field and check if the correct results are shown in worklist table.">Step 11: Testing User Input</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="19ccd473c9a14c2ab7529303a2232d2c.html" title="In this step we want to write a test that simulates user interaction with an icon tab bar. We want to change the tab and check if the correct content is shown.">Step 13: Testing User Interaction</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="5295470d7eee46c1898ee46c1b9ad763.html" title="In this step, we add a search field for our product list and define a filter that represents the search term. When searching, the list is automatically updated to show only the items that match the search term.">Step 42 of Walkthrough: Filtering</a></div>
+</div>
+</div>
+	
+</div></div>
+
+</body>
+</html>

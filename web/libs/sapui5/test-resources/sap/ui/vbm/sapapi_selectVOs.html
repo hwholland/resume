@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<link href="style/sapvbistyle.css" type="text/css" rel="stylesheet" />
+	<script src="../../../../resources/sap-ui-core.js"
+		id="Script1"
+		data-sap-ui-libs="sap.ui.vbm"
+		data-sap-ui-theme="sap_bluecrystal">
+	</script>
+
+	<script>
+
+		function onSubmit(e) {
+			if (evtoutput.innerText !== undefined)
+				evtoutput.innerText = e.getParameter("data");
+			else
+				if (evtoutput.textContent !== undefined)
+					evtoutput.textContent = e.getParameter("data");	// due to ff
+		};
+
+		// creation of visual business
+		var oVBI1 = new sap.ui.vbm.VBI('vbiWrap', {
+			width: "100%",
+			height: 750,
+			submit: onSubmit        // set the event handler
+		});
+		oVBI1.placeAt("content");
+
+		// load the json and set the default text area text
+		var dat = $.getJSON("media/vbselect/mainVO.json", function (dat) {
+			oVBI1.load(dat);
+		});
+
+	</script>
+</head>
+
+<body class="sapUiBody">
+	<h1>Visual Business UI5: MultiSelection Test for different VOs</h1>
+	<ul>
+		<li>Test multi selection for spots, routes, areas ( one area is multi area ) and circles ( geo and pixel circles).</li>
+		<li>Selection cardinality for each VO is 0:n.</li>
+		<li>Use keystroke 'a' for lasso selection; keystroke 'r' for rectangular selection</li> 
+		<li>The ctl-key toggles the selection; the shift-key adds a selection; no modifier just sets a new selection for the affected VO.</li>
+	</ul>
+	<div id="content"></div>
+	<br />
+	<textarea style="width: 100%; box-sizing: border-box" id="evtoutput" rows="8"></textarea>
+</body>
+</html>

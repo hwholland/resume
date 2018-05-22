@@ -1,0 +1,278 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Add custom filters to your Overview Page application. It provides end users an option to filter the data displayed in one or more cards."/>
+<meta name="description" content="Add custom filters to your Overview Page application. It provides end users an option to filter the data displayed in one or more cards."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=2652346835707068"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=2652346835707068"/>
+<title>Custom Filters</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio4739893805f74a409e241698858ee424">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Custom Filters</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">Add custom filters to your Overview Page application. It provides end users an option to
+		filter the data displayed in one or more cards. </p>
+
+		<div class="section" id="loio4739893805f74a409e241698858ee424__section_uhm_ptp_zy"><div class="section_title">Steps</div><div type="Steps">
+			
+			<ol class="ol" id="loio4739893805f74a409e241698858ee424__ol_ej2_qtp_zy">
+				<li class="li">
+					<p class="p">Create view extension fragment.</p>
+
+					
+<div class="table-wrapper tablenoborder"><table summary="" id="loio4739893805f74a409e241698858ee424__table_khm_ztp_zy" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap"/></caption>
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+							
+							
+							<thead class="thead" align="left">
+								<tr class="row">
+									<th class="entry" valign="top" width="50%" id="d4795780e42">
+										<p class="p">Property</p>
+
+									</th>
+
+									<th class="entry" valign="top" width="50%" id="d4795780e48">
+										<p class="p">Description</p>
+
+									</th>
+
+								</tr>
+
+							</thead>
+
+							<tbody class="tbody">
+								<tr class="row">
+									<td class="entry" valign="top" width="50%" headers="d4795780e42 ">
+										<p class="p"><samp class="ph codeph">groupId</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%" headers="d4795780e48 ">
+										<div class="p">Enter group ID to associate the custom controller to a group.<div class="note note"><span class="notetitle">Note</span> 
+												<p class="p">If the group ID is do not exist, the filter is
+												added to the basic group.</p>
+
+											</div>
+</div>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="50%" headers="d4795780e42 ">
+										<p class="p"><samp class="ph codeph">key</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%" headers="d4795780e48 ">
+										<p class="p">Enter a property of an entity type to define the filter
+											criteria.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="50%" headers="d4795780e42 ">
+										<p class="p"><samp class="ph codeph">visibleInAdvancedArea</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%" headers="d4795780e48 ">
+										<p class="p">Enable this property to view custom filters on the filter
+											bar.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="50%" headers="d4795780e42 ">
+										<p class="p"><samp class="ph codeph">Input id</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%" headers="d4795780e48 ">
+										<p class="p">Enter a property of an entity type to define the input criteria. </p>
+
+									</td>
+
+								</tr>
+
+							</tbody>
+
+						</table>
+</div>
+
+					<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> For example, create
+							<span class="ph filepath">customFilter.fragment.xml</span> file and provide required
+						information.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;core:FragmentDefinition xmlns="sap.m" xmlns:smartfilterbar="sap.ui.comp.smartfilterbar" xmlns:core="sap.ui.core"&gt;
+    &lt;!-- Product ID Filter --&gt;
+    &lt;smartfilterbar:ControlConfiguration groupId="_BASIC" key="ProductID"
+                                         label="Product ID (Extension)"
+                                         visibleInAdvancedArea="true"&gt;
+        &lt;smartfilterbar:customControl&gt;
+            &lt;Input id="ProductID" type="Text"/&gt;
+        &lt;/smartfilterbar:customControl&gt;
+    &lt;/smartfilterbar:ControlConfiguration&gt;
+    &lt;smartfilterbar:ControlConfiguration groupId="GlobalFilters" key="SalesOrderID"
+                                         label="Sales Order ID (Extension)"
+                                         visibleInAdvancedArea="false"&gt;
+        &lt;smartfilterbar:customControl&gt;
+            &lt;Input id="SalesOrderID" type="Text"/&gt;
+        &lt;/smartfilterbar:customControl&gt;
+    &lt;/smartfilterbar:ControlConfiguration&gt;
+&lt;/core:FragmentDefinition&gt;</pre></div>
+</div>
+
+				</li>
+
+				<li class="li">Create controller extension. For example, create
+						<span class="ph filepath">customFilter.controller.js</span> file and define the
+					following functions.<ul class="ul" id="loio4739893805f74a409e241698858ee424__ul_bfv_q5q_zy">
+						<li class="li">
+							<div class="p">Define <samp class="ph codeph">getCustomFilters()</samp> to return a filter
+								object.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">        getCustomFilters: function () {
+
+            var oValue1 = this.oView.byId("ProductID").getValue();
+            var oValue2 = this.oView.byId("SalesOrderID").getValue();
+
+
+            var aFilters = [], oFilter1, oFilter2;
+
+            if (oValue1) {
+                oFilter1 = new Filter({
+
+                    path: "ProductID",
+                    operator: "EQ",
+                    value1: oValue1
+
+                });
+
+                aFilters.push(oFilter1);
+
+            }
+
+            if (oValue2) {
+                oFilter2 = new Filter({
+
+                    path: "SalesOrderID",
+                    operator: "EQ",
+                    value1: oValue2
+
+                });
+
+                aFilters.push(oFilter2);
+            }
+
+            if (aFilters &amp;&amp; aFilters.length &gt; 0) {
+                return (new Filter(aFilters, true));
+            }
+            
+        },</pre></div>
+</div>
+
+						</li>
+
+						<li class="li">
+							<div class="p">Define <samp class="ph codeph">getCustomAppStateDataExtension(oCustomData)</samp>
+								to store the application
+								state.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">        getCustomAppStateDataExtension: function (oCustomData) {
+            //the content of the custom field shall be stored in the app state, so that it can be restored later again e.g. after a back navigation.
+            //The developer has to ensure, that the content of the field is stored in the object that is returned by this method.
+            if (oCustomData) {
+
+                var oCustomField1 = this.oView.byId("ProductID");
+                var oCustomField2 = this.oView.byId("SalesOrderID");
+                if (oCustomField1) {
+                    oCustomData.ProductID = oCustomField1.getValue();
+                }
+                if (oCustomField2) {
+                    oCustomData.SalesOrderID = oCustomField2.getValue();
+                }
+            }
+        },</pre></div>
+</div>
+
+						</li>
+
+						<li class="li">Define <samp class="ph codeph">restoreCustomAppStateDataExtension(oCustomData)</samp>
+							to restore the application
+							state.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">        restoreCustomAppStateDataExtension: function (oCustomData) {
+            //in order to to restore the content of the custom field in the filter bar e.g. after a back navigation,
+            //an object with the content is handed over to this method and the developer has to ensure, that the content of the custom field is set accordingly
+            //also, empty properties have to be set
+            if (oCustomData) {
+
+                if (oCustomData.ProductID) {
+                    var oCustomField1 = this.oView.byId("ProductID");
+                    oCustomField1.setValue(oCustomData.ProductID);
+                }
+
+                if (oCustomData.SalesOrderID) {
+                    var oCustomField2 = this.oView.byId("SalesOrderID");
+                    oCustomField2.setValue(oCustomData.SalesOrderID);
+                }
+            }
+
+        },</pre></div>
+</li>
+
+					</ul>
+</li>
+
+				<li class="li">Add controller and view extension settings to the manifest.<div class="note note"><span class="notetitle">Note</span> 
+						<div class="p">Ensure to use the same entity type in both
+								<samp class="ph codeph">viewExtensions</samp> and
+								<samp class="ph codeph">globalFilterEntityType</samp> settings. For example,
+							see<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">		"extends": {
+			"extensions": {
+				"sap.ui.controllerExtensions": {
+					"sap.ovp.app.Main": {
+						"controllerName": "sap.ovp.demo.ext.customFilter"
+					}
+				},
+				"sap.ui.viewExtensions": {
+					"sap.ovp.app.Main": {
+						"SmartFilterBarControlConfigurationExtension|GlobalFilters": {
+							"className": "sap.ui.core.Fragment",
+							"fragmentName": "sap.ovp.demo.ext.customFilter",
+							"type": "XML"
+						}
+					}
+				}
+			}
+		}
+	},
+	"sap.ovp": {
+		"globalFilterModel": "salesOrder",
+		"globalFilterEntityType": "GlobalFilters",
+		...
+		...
+		}</pre></div>
+</div>
+
+					</div>
+</li>
+
+			</ol>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>
