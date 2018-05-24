@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link href="style/sapvbistyle.css" type="text/css" rel="stylesheet" />
+
+        <script src="../../../../resources/sap-ui-core.js"
+            id="sap-ui-bootstrap"
+            data-sap-ui-libs="sap.ui.vbm"
+            data-sap-ui-theme="sap_bluecrystal" >
+        </script>
+
+		
+
+
+        <script>
+            // creation of the visual business control...........................//
+        
+            sap.ui.localResources("vbitestapp");
+            var bArrow = true;
+            var oVBI1 = new sap.ui.vbm.VBI('vbiWrap2',
+            {
+                width : 1200,
+                height: 620
+            });
+            oVBI1.placeAt("content");
+
+            // load the json into the vbi control................................//
+            var main = $.getJSON("media/vblabeltext/mainNewDesignBase.json", function( main ) 
+            {
+                oVBI1.load( main );
+                onToggleArrow();
+            });
+            
+            function onToggleArrow()
+            {
+               var file  = bArrow ? "media/vblabeltext/mainNewDesignDataArrow.json" : "media/vblabeltext/mainNewDesignDataRounded.json";
+               var datToggled = $.getJSON(file, function( datToggled ) 
+               {
+                   oVBI1.load( datToggled );
+               });
+               bArrow = !bArrow;               
+            };
+            
+        </script>
+    </head>
+    
+    <body class="sapUiBody" >
+        <h1>Visual Business UI5: Labels for Spots</h1>
+	<ul>
+		<li>The labels are aligned to their spot as shown</li>
+		<li>Top/Bottom/Left/Right  aligned labels have an arrow.</li>
+		<li>With the toggle button you can switch to the rounded design.</li>
+		<li>Note: In the rounded design arrows are only supported for Top or Bottom aligned labels.</li>
+	</ul>        
+        <div id="content"></div>
+        <button id="btnToggleArrow"  onClick="onToggleArrow()"> Toggle</button>
+    </body>
+</html>

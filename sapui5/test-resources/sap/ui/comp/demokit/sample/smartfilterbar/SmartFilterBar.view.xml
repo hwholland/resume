@@ -1,0 +1,24 @@
+<core:View xmlns:core="sap.ui.core" xmlns="sap.m"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	controllerName="sap.ui.comp.sample.smartfilterbar.SmartFilterBar" height="100%">		
+		<smartFilterBar:SmartFilterBar id="smartFilterBar" entityType="LineItems">
+			<smartFilterBar:controlConfiguration>						
+				<smartFilterBar:ControlConfiguration
+					key="MyOwnFilterField" index="1" label="Custom Filter Field"
+					groupId="_BASIC" width="300px" mandatory="mandatory"
+					visibleInAdvancedArea="true">
+					<smartFilterBar:customControl>
+						<Select id="foo" customData:hasValue="true">
+							<core:Item key="1" text="ONE" />
+							<core:Item key="2" text="TWO" />
+							<core:Item key="3" text="THREE" />
+						</Select>
+					</smartFilterBar:customControl>
+				</smartFilterBar:ControlConfiguration>
+				</smartFilterBar:controlConfiguration>					
+			</smartFilterBar:SmartFilterBar>
+		<smartTable:SmartTable entitySet="LineItemsSet" smartFilterId="smartFilterBar" tableType="Table" useExportToExcel="true" useVariantManagement="false" useTablePersonalisation="true" header="Line Items" showRowCount="true"/>
+</core:View>

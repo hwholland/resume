@@ -1,0 +1,55 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="It can be handy to calculate the code coverage of your integration tests, for example, to figure out whether you forgot to test something or to provide statistics on your test quality."/>
+<meta name="description" content="It can be handy to calculate the code coverage of your integration tests, for example, to figure out whether you forgot to test something or to provide statistics on your test quality."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=061125732025993695"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=061125732025993695"/>
+<title>Code Coverage</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio20737a4c64f448d2af9b9745fbe5d762">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Code Coverage</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">It can be handy to calculate the code coverage of your integration tests, for example, to figure out whether you forgot to test something or to
+		provide statistics on your test quality.</p>
+
+		<p class="p">At test execution time, Gherkin offers the option <span class="ph uicontrol">Enable coverage</span> at the top left of the test results. Enabling the option reruns
+			the tests and then lists the files that were tested at the bottom of the page.</p>
+
+		<div class="fig fignone" id="loio20737a4c64f448d2af9b9745fbe5d762__fig_fpg_2pv_kx"><div class="figcontainer">
+			<img class="image" id="loio20737a4c64f448d2af9b9745fbe5d762__image_ucm_3pv_kx" src="loio58d6e82cf5184288a2926951d8d12c30_LowRes.png"/>
+		</div></div>
+
+		<div class="p">Gherkin calculates code coverage for any JavaScript file that is loaded after the test harness. This may cause some system libraries to appear in the
+			results. You can specify which files to calculate code coverage for by adding code to your HTML bootstrap file (after loading <span class="ph"><span class="ph pname">SAPUI5</span></span>, but before running your tests), as
+			follows.<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;script
+  src="path/to/resources/sap/ui/qunit/qunit-coverage.js"
+  data-sap-ui-cover-only="GherkinWithOPA5/"
+  data-sap-ui-cover-never="sap/ui/"&gt;
+&lt;/script&gt;</pre></div>
+</div>
+
+		<p class="p">For more information, see the documentation for Blanket.js on GitHub. Keep in mind that the attribute name is slightly different in the <span class="ph"><span class="ph pname">SAPUI5</span></span> implementation (<samp class="ph codeph">data-sap-ui-cover-only</samp> instead of
+				<samp class="ph codeph">data-cover-only</samp>).</p>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fgithub.com%2Falex-seville%2Fblanket%2Fblob%2Fmaster%2Fdocs%2Fintermediate_browser.md" alt="https://github.com/alex-seville/blanket/blob/master/docs/intermediate_browser.md" title="https://github.com/alex-seville/blanket/blob/master/docs/intermediate_browser.md"><span class="ph filepath">Blanket.js</span> Documentation on GitHub<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+<div><a class="link" href="7ef32428dc7c4c048a8d7e8de0a556fb.html" title="You can measure the code coverage for your test inside the Control.qunit.html page either via HTML or JavaScript code using Blanket.js.">Code Coverage Measurement</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

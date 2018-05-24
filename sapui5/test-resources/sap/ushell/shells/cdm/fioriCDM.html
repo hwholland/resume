@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2009-2014 SAP SE, All Rights Reserved -->
+<html class="sapUShellFullHeight">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <!--  version 0.2 -->
+        <title>Fiori Launchpad CDM local</title>
+
+        <!-- iPhone splash screens -->
+        <link href="../../../../../resources/sap/ushell/themes/base/img/splashscreen/320_x_460.png"  media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+        <link href="../../../../../resources/sap/ushell/themes/base/img/splashscreen/640_x_920.png"  media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+        <link href="../../../../../resources/sap/ushell/themes/base/img/splashscreen/640_x_1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+
+        <!-- iPad splash screens -->
+        <link href="../../../../../resources/sap/ushell/themes/base/img/splashscreen/768_x_1004.png"  media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 1)"  rel="apple-touch-startup-image">
+        <link href="../../../../../resources/sap/ushell/themes/base/img/splashscreen/1024_x_748.png"  media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+        <link href="../../../../../resources/sap/ushell/themes/base/img/splashscreen/1536_x_2008.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)"  rel="apple-touch-startup-image">
+        <link href="../../../../../resources/sap/ushell/themes/base/img/splashscreen/2048_x_1496.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+
+        <link id="icon-fonts-Fiori2" rel="stylesheet" type="text/css" href="../../../../../resources/sap/ushell/themes/base/IconFonts.css"/>
+        <link id="Fiori2-loading" rel="stylesheet" type="text/css" href="../../../../../resources/sap/ushell/themes/base/flower-standalone.css"/>
+        <script>
+            (function () {
+
+                window["sap-ushell-config"] = {
+                    defaultRenderer: "fiori2",
+                    renderers: {
+                        fiori2: {
+                            componentData: {
+                                config: {
+                                    enableSearch: false,
+                                    enableUserDefaultParameters: true,
+                                    rootIntent: "Shell-home"
+                                }
+                            }
+                        }
+                    },
+                    /*"modulePaths": {
+                    "sap.ushell.adapters.cdm": "/sap/bc/ui5_demokit/test-resources/sap/ushell/adapters/cdm",
+                    "sap.ushell.services.CommonDataModel" : "/sap/bc/ui5_demokit/test-resources/sap/ushell/services/CommonDataModel",
+                    "sap.ushell.personalization": "/sap/bc/ui5_demokit/test-resources/sap/ushell/personalization"
+                    }, */
+                    "modulePaths": {
+                        "sap.ushell.adapters.local": "../../../../../resources/sap/ushell/adapters/local",
+                        "sap.ushell.adapters.cdm": "../../../../../resources/sap/ushell/adapters/cdm",
+                        "sap.ushell.services.CommonDataModel" : "../../../../../resources/sap/ushell/services/CommonDataModel",
+                        "sap.ushell.cdmSiteData": "../../../../../test-resources/sap/ushell/cdmSiteData"
+                    },
+                    services: {
+                        CommonDataModel : {
+                            module: "sap.ushell.services.CommonDataModel",
+                            adapter: {
+                                module: "sap.ushell.adapters.cdm.CommonDataModelAdapter",
+                                config : {
+                                    ignoreSiteDataPersonalization : true
+                                }
+                            }
+                        },
+                        ClientSideTargetResolution : {
+                            adapter : {
+                                module : "sap.ushell.adapters.cdm.ClientSideTargetResolutionAdapter"
+                            }
+                        },
+                        LaunchPage :  {
+                            adapter: {
+                                module: "sap.ushell.adapters.cdm.LaunchPageAdapter"
+                            }
+                        },
+                        Personalization: {
+                            adapter: {
+                                module: "sap.ushell.adapters.local.PersonalizationAdapter"
+                            }
+                        },
+                        AppState: {
+                            adapter: {
+                                module: "sap.ushell.adapters.local.AppStateAdapter"
+                            }
+                        },
+                        NavTargetResolution: {
+                            config: {
+                                "runStandaloneAppFolderWhitelist": {
+                                    "*" : true
+                                },
+                                allowTestUrlComponentConfig : true,
+                                "enableClientSideTargetResolution": true
+                            }
+                        },
+                        SupportTicket: {
+                            // switched off as the local adapter is not connected to a ticket system
+                            config: {
+                                enabled: false
+                            }
+                        },
+                        EndUserFeedback: {
+                            adapter: {
+                                config: {
+                                    enabled: false
+                                }
+                            }
+                        }
+                    }
+                };
+
+                var isIE = function isIE() {
+                    var bIE = navigator.appName == 'Microsoft Internet Explorer';
+                    var bIE11 = (navigator.appName == 'Netscape') && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null);
+
+                    return bIE || bIE11;
+                }();
+
+                var sUI5LibraryRootPath = "../../../../../resources"; // "/sap/bc/ui5_ui5/ui2/ushell/resources";
+                var oUi5ResourceRoots = {"": sUI5LibraryRootPath };
+                // since the core of UI5 isn't loaded yet we must read the debug flags here to
+                // determine if we should load core-min-1 - 3 files the same is done in jquery.sap.global.js file
+                var bDebugSources = /sap-ui-debug=(true|x|X)/.test(window.location.search);
+
+                // Check local storage
+                try {
+                    bDebugSources = bDebugSources || /^(true|x|X)$/.test(window.localStorage.getItem("sap-ui-debug"));
+                } catch (e) {
+                    fnWarning('failed to read debug mode from local storage');
+                }
+
+                //set the debug sources flag
+                window["sap-ui-debug"] = bDebugSources;
+                sScriptTags =   "<script id='sap-ushell-bootstrap' src='../../bootstrap/cdm" + (bDebugSources ? "-dbg" : "") + ".js' "
+                                    + (isIE && !bDebugSources ? "defer" : "") + "><\/script>" +
+                                "<script id='sap-ui-bootstrap' src='" + sUI5LibraryRootPath + "/sap/fiori/core-min-0.js' " +
+                                "data-sap-ui-evt-oninit='main();' " +
+                                "data-sap-ui-xx-bindingSyntax='complex' " +
+                                "data-sap-ui-libs='sap.fiori, sap.m, sap.ushell' " +
+                                "data-sap-ui-theme='sap_bluecrystal' " +
+                                "data-sap-ui-compatVersion='1.16' " +
+                                "data-sap-ui-resourceroots='" + JSON.stringify(oUi5ResourceRoots) + "' " +
+                                (isIE ? "defer" : "") +
+                                "><\/script>";
+
+                if (!bDebugSources) {
+                    sScriptTags +=  "<script src='" + sUI5LibraryRootPath + "/sap/fiori/core-min-1.js' " + (isIE ? "defer" : "") + "><\/script>" +
+                                    "<script src='" + sUI5LibraryRootPath + "/sap/fiori/core-min-2.js' " + (isIE ? "defer" : "") + "><\/script>" +
+                                    "<script src='" + sUI5LibraryRootPath + "/sap/fiori/core-min-3.js' " + (isIE ? "defer" : "") + "><\/script>";
+                }
+
+                window.document.write(sScriptTags);
+
+              })();
+        </script>
+
+        <script type="text/javascript">
+
+        /**
+         * Main method to be executed once SAPUI5 has been initialized.
+         */
+        function main() {
+            "use strict";
+            /*global sap */
+
+            var sValue = jQuery.sap.getUriParameters().get("sap-ushell-cdm-site-url");
+            if (sValue) {
+                jQuery.sap.getObject("sap-ushell-config.services.CommonDataModel.adapter.config", 0)
+                    .cdmSiteUrl = sValue;
+            }
+
+            jQuery.sap.setIcons({
+                'phone': '../../../../../resources/sap/ushell/themes/base/img/launchicons/57_iPhone_Desktop_Launch.png',
+                'phone@2': '../../../../../resources/sap/ushell/themes/base/img/launchicons/114_iPhone-Retina_Web_Clip.png',
+                'tablet': '../../../../../resources/sap/ushell/themes/base/img/launchicons/72_iPad_Desktop_Launch.png',
+                'tablet@2': '../../../../../resources/sap/ushell/themes/base/img/launchicons/144_iPad_Retina_Web_Clip.png',
+                'favicon': '../../../../../resources/sap/ushell/themes/base/img/launchpad_favicon.ico',
+                'precomposed': true
+            });
+
+            // load and register Fiori2 icon font
+            jQuery.sap.require("sap.ushell.iconfonts");
+            jQuery.sap.require("sap.ushell.services.AppConfiguration");
+            sap.ushell.iconfonts.registerFiori2IconFont();
+
+            // clean fiori loading screen markup before placing main content
+            var oContent = sap.ushell.Container.createRenderer();
+            jQuery("#canvas").empty();
+            oContent.placeAt("canvas");
+        }
+        </script>
+    </head>
+
+    <body class="sapUiBody sapUShellFullHeight" role="application">
+        <div id="canvas" class="sapUShellFullHeight">
+            <!--  the Fiori2 loading screen for different browsers (as SAPUI5 is not loaded yet, will be replaced by Launchpad):
+                * in pure HTML with CSS animation for modern browsers
+                * animated gif image for <=IE9 (IE10+ doesn't support conditional comments)
+            -->
+            <!--[if IE]>
+                <div id="fiori2-startup-flower" class="sandbox">
+                    <img src="../../../../../resources/sap/ushell/themes/base/img/flower_anim.gif" />
+                </div>
+            <![endif]-->
+            <!--[if !IE]> -->
+            <div id="fiori2-startup-flower" class="sandbox">
+                <div class="fiori2-blossom">
+                    <div class="fiori2-leafContainer fiori2-leafContainer1">
+                        <div class="fiori2-leaf fiori2-leaf1"></div>
+                    </div>
+                    <div class="fiori2-leafContainer fiori2-leafContainer2">
+                        <div class="fiori2-leaf fiori2-leaf2"></div>
+                    </div>
+                    <div class="fiori2-leafContainer fiori2-leafContainer3">
+                        <div class="fiori2-leaf fiori2-leaf3"></div>
+                    </div>
+                    <div class="fiori2-leafContainer fiori2-leafContainer4">
+                        <div class="fiori2-leaf fiori2-leaf4"></div>
+                    </div>
+                    <div class="fiori2-leafContainer fiori2-leafContainer5">
+                        <div class="fiori2-leaf fiori2-leaf5"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- <![endif] -->
+        </div>
+    </body>
+</html>

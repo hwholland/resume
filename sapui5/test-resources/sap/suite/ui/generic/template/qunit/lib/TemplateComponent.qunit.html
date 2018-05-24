@@ -1,0 +1,285 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+		<title>QUnit: TemplateComponent</title>
+
+		<base href="../../../../../../../../">
+		<!--[if lte IE 9]><script type="text/javascript">
+		(function() {
+			var baseTag = document.getElementsByTagName('base')[0];
+			baseTag.href = baseTag.href;
+		})();
+		</script><![endif]-->
+
+		<script id="sap-ui-bootstrap"
+			type="text/javascript"
+			src="resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true">
+		</script>
+
+		<link rel="stylesheet" href="resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+		
+		
+
+		<script type="text/javascript">
+		sap.ui.require([		        		
+       		"sap/suite/ui/generic/template/lib/TemplateComponent",
+       		"sap/ui/generic/app/transaction/TransactionController",
+       		"sap/ui/generic/app/transaction/DraftController",
+       		"sap/ui/generic/app/AppComponent",
+       		"sap/ui/core/mvc/XMLView",
+       		"sap/ui/core/util/MockServer",
+       		"sap/ui/model/json/JSONModel",
+       		"sap/ui/model/odata/v2/ODataModel",
+       		"sap/ui/thirdparty/sinon", 
+       		"sap/ui/thirdparty/sinon-qunit",
+       		"sap/ui/core/CustomData",
+       		
+
+		    ],function(TemplateComponent, TransactionController,DraftController,AppComponent,XMLView,MockServer,JSONModel,ODataModel,mockserver) {
+			"use strict";
+			var _sBindingPath;
+			var oMockServer;
+		
+			QUnit.module("sap.suite.ui.generic.template.lib.TemplateComponent", {
+				setup: function() {	
+					 
+		   			this.oTemplateComponent = new TemplateComponent();
+		   			this.oTemplateComponent._sBindingPath = "SEPMRA_C_PD_Product(ActiveProduct='HT-1001',ProductDraftUUID=guid'005056A7-004E-1ED5-8EED-C27B5E2595D4')";
+		   			var oAppComponentStub = sinon.createStubInstance(AppComponent);		   			
+
+				},
+				teardown: function() {
+					this.oTemplateComponent.destroy();
+				},
+				
+				getMockModel: function() {
+					//jQuery.sap.require("test-resources/sap/suite/ui/generic/template/demokit/sample.manage.products/webapp/localService/mockserver.js");
+					var oModel, oMockServer;
+					oMockServer = new sap.ui.core.util.MockServer({
+						rootUri: "/sap/opu/odata/sap/SEPMRA_PROD_MAN/"
+					});
+					var oMetaDataURI = "test-resources/sap/suite/ui/generic/template/demokit/sample.sales.orders/webapp/localService/metadata.xml";
+					var baseURI = "test-resources/sap/suite/ui/generic/template/demokit/sample.sales.orders/webapp/localService/";
+					oMockServer.simulate(oMetaDataURI, {
+						'sMockdataBaseUrl': baseURI ,
+						'bGenerateMissingMockData': true
+					},true);
+					oMockServer.start();
+  				    oModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/SEPMRA_PROD_MAN/", {
+					annotationURI: [
+							"test-resources/sap/suite/ui/generic/template/demokit/sample.sales.orders/webapp/localService/annotations.xml",
+							"test-resources/sap/suite/ui/generic/template/demokit/sample.sales.orders/webapp/annotations/annotations.xml"
+							
+						]
+					});
+					oModel.setSizeLimit(10);
+				
+					return oModel;
+				}
+
+			});
+			
+			QUnit.test("Shall be instantiable", function(assert) {
+				assert.ok(this.oTemplateComponent);
+			});
+			return;
+			QUnit.test("has function getCreateMode", function() {
+				equal(typeof this.oTemplateComponent.getCreateMode, "function", "getCreateMode function availability");
+			});
+
+			QUnit.test("has function init", function() {
+				equal(typeof this.oTemplateComponent.init, "function", "init function availability");
+			});
+
+			QUnit.test("has function getEntityType", function() {
+				equal(typeof this.oTemplateComponent.getEntityType, "function", "getEntityType function availability");
+			});
+
+			QUnit.test("has function onActivate", function() {
+				equal(typeof this.oTemplateComponent.onActivate, "function", "onActivate function availability");
+			});
+
+			QUnit.test("has function refreshBinding", function() {
+				equal(typeof this.oTemplateComponent.refreshBinding, "function", "refreshBinding function availability");
+			});
+
+			QUnit.test("has function updateBindingContext", function() {
+				equal(typeof this.oTemplateComponent.updateBindingContext, "function", "updateBindingContext function availability");
+			});
+
+			QUnit.test("_determineStableID: complete id", function(assert) {
+				assert.equal(this.oTemplateComponent.getCreateMode(), false);
+			});
+
+
+			QUnit.test("check method getEntityType", function() {
+				assert.expect(2);
+				var done = assert.async();
+				var oModel = this.getMockModel();
+				assert.ok(oModel, "oModel Okay");
+				var that = this;
+				if (oModel) {
+					oModel.getMetaModel().loaded().then(function() {
+						var oTemplateComponent = that.oTemplateComponent;
+						oTemplateComponent.setModel(oModel);
+						//sinon.stub(oTemplateComponent, "getEntitySet").returns("SEPMRA_C_PD_Product");
+						sinon.stub(oTemplateComponent, "getEntitySet").returns("SEPM_I_BusinessPartner_E");
+						var result_entity = oTemplateComponent.getEntityType();
+						//assert.equal(result_entity, "SEPMRA_C_PD_ProductType","SEPMRA_C_PD_Product types are equal");
+						assert.equal(result_entity, "SEPM_I_BusinessPartner_EType","SEPMRA_C_PD_Product types are equal");
+						done();
+					});
+				}
+
+			});
+
+
+			QUnit.test("function getEntityType not equal", function() {
+				assert.expect(2);
+				var done = assert.async();
+				var oModel = this.getMockModel();
+				assert.ok(oModel, "oModel Okay");
+				var that = this;
+				if (oModel) {
+					oModel.getMetaModel().loaded().then(function() {
+						var oTemplateComponent = that.oTemplateComponent;
+						oTemplateComponent.setModel(oModel);
+						sinon.stub(oTemplateComponent, "getEntitySet").returns("SEPM_I_BusinessPartner_E");
+						var result_entity = oTemplateComponent.getEntityType();
+						assert.notEqual(result_entity, "SEPMRA_C_PD_Product",false,"SEPMRA_C_PD_Product type values are not equal");
+						done();
+					});
+				}
+
+			});
+			
+			QUnit.test("function getCreateMode", function() {
+				/* Binding value copied from reference sap ui generic template */
+				//var sBindingPath = "SEPMRA_C_PD_Product(ActiveProduct='HT-1001',ProductDraftUUID=guid'005056A7-004E-1ED5-8EED-C27B5E2595D4')";
+				var sBindingPath = "SEPMRA_C_PD_Product";
+				assert.expect(2);
+				var done = assert.async();
+				var oModel = this.getMockModel();
+				assert.ok(oModel, "oModel Okay");
+				var that = this;
+				//var test_bindingCntxt = new sap.ui.base.ManagedObject.getBindingContext(oModel);
+				//var test_bindingCntxt1 = new sap.ui.model.odata.v2.ODataContextBinding(oModel);
+				if (oModel) {
+					oModel.getMetaModel().loaded().then(function() {
+						
+						var oMetaModel = oModel.getMetaModel();			
+						
+						var oTemplateComponent = that.oTemplateComponent;
+						oTemplateComponent.setModel(oModel);
+						sinon.stub(oTemplateComponent, "getEntitySet").returns("SEPMRA_C_PD_Product");
+						var result = oTemplateComponent.getCreateMode(sBindingPath);
+						assert.equal(result,false,"Expected value is false. There is no entity result for sBindingPath from model");
+						done();
+					});
+				}
+
+			});
+			
+			QUnit.test("function init", function() {	
+				//this._sBindingPath = "SEPMRA_C_PD_Product(ActiveProduct='HT-1001',ProductDraftUUID=guid'005056A7-004E-1ED5-8EED-C27B5E2595D4')";
+				this.oTemplateComponent.init();
+				assert.ok(true,'Function working ok ');
+			});
+			
+				
+			
+			QUnit.module("TemplateComponent: Component settings", {
+				setup: function() {	
+					this.oTemplateComponent = new TemplateComponent();
+		   			var oAppComponentStub = sinon.createStubInstance(AppComponent);	
+		   			var oTestComponentContainer = { bindElement: function() {return "test bind element"},
+                            getElementBinding: function() { return { getPath: function() { return "ComponentContainer/TestPath/" },
+                            refresh: function() {return "test"}}},
+							unbindElement: function() {},
+							
+					};
+		   			this.oTemplateComponent._sBindingPath = "SEPMRA_C_PD_Product(ActiveProduct='HT-1001',ProductDraftUUID=guid'005056A7-004E-1ED5-8EED-C27B5E2595D4')";
+		   			this.oTemplateComponent.getComponentContainer = function(){return oTestComponentContainer;};
+
+				},
+				teardown: function() {
+					this.oTemplateComponent.destroy();
+				},	
+				getMockModel: function() {
+					//jQuery.sap.require("test-resources/sap/suite/ui/generic/template/demokit/sample.manage.products/webapp/localService/mockserver.js");
+					var oModel, oMockServer;
+					oMockServer = new sap.ui.core.util.MockServer({
+						rootUri: "/sap/opu/odata/sap/SEPMRA_PROD_MAN/"
+					});
+					var oMetaDataURI = "test-resources/sap/suite/ui/generic/template/demokit/sample.sales.orders/webapp/localService/metadata.xml";
+					var baseURI = "test-resources/sap/suite/ui/generic/template/demokit/sample.sales.orders/webapp/localService/";
+					oMockServer.simulate(oMetaDataURI, {
+						'sMockdataBaseUrl': baseURI ,
+						'bGenerateMissingMockData': true
+					},true);
+					oMockServer.start();
+  				    oModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/SEPMRA_PROD_MAN/", {
+					annotationURI: [
+							"test-resources/sap/suite/ui/generic/template/demokit/sample.sales.orders/webapp/localService/annotations.xml",
+							"test-resources/sap/suite/ui/generic/template/demokit/sample.sales.orders/webapp/annotations/annotations.xml"
+							
+						]
+					});
+					oModel.setSizeLimit(10);
+				
+					return oModel;
+				}
+
+			});			
+/*			QUnit.test("function bindComponent", function() {	
+				this.oTemplateComponent.bindComponent();
+				assert.ok(true,'bindComponent called with mokced TemplateComponent');
+								
+			}); */
+			
+			QUnit.test("function onActivate", function() {	
+				var sBindingPath = "SEPMRA_C_PD_Product";
+				var done = assert.async();
+				//assert.expect(2);
+				//var oTestMetaModel = sinon.createStubInstance(sap.ui.model.odata.ODataMetaModel);
+				var oTestModel = sinon.createStubInstance(sap.ui.model.json.JSONModel);
+				//oTestModel.getModel().returns({refresh: function(){return true}});
+				var that = this;
+				if (oTestModel) {					
+					var oTemplateComponent = that.oTemplateComponent;
+					//refresh function is initiated...
+					sinon.stub(oTemplateComponent, "getModel").returns({
+					refresh:function(){return true}});
+					oTemplateComponent.setModel(oTestModel, "ui");
+					oTemplateComponent.onActivate(sBindingPath);
+					assert.ok(true,'onActivate called with mokced TemplateComponent');
+					//assert.ok(oTemplateComponent.getModel.calledOnce,'onActivate called with mokced TemplateComponent');
+					done();					
+				}
+								
+			});
+			QUnit.test("function refreshBinding", function() {		
+				this.oTemplateComponent.refreshBinding();
+				
+				assert.ok(true,'refreshBinding called with mokced TemplateComponent and Element Binding');
+				
+											
+			});	
+			
+			
+		
+		});
+	</script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+	</body>
+</html>

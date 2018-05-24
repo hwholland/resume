@@ -1,0 +1,764 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for sap.ui.comp.config.condition.DateRangeType</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" 
+	data-sap-ui-noConflict="true"
+	data-sap-ui-xx-bindingSyntax="complex"
+	data-sap-ui-libs="sap.ui.comp">
+	
+</script>
+<script>
+	top["blanket.filter.only"] = "condition";
+</script>
+<link rel="stylesheet" href="../../../../../../resources/sap/ui/thirdparty/qunit.css"	type="text/css" media="screen" />
+<script type="text/javascript"src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+
+<script type="text/javascript">
+
+	(function() {
+
+		jQuery.sap.require("sap.ui.comp.smartfilterbar.FilterProvider");
+		jQuery.sap.require("sap.ui.comp.smartfilterbar.ControlConfiguration");
+		jQuery.sap.require("sap.ui.comp.config.condition.DateRangeType");
+		var oModel = sinon.createStubInstance(sap.ui.model.odata.ODataModel);
+		module("sap.ui.comp.config.condition.DateRangeType", {
+			setup: function() {
+				this.oFilterProvider = new sap.ui.comp.smartfilterbar.FilterProvider({entityType: "foo", model: oModel });
+				var oEmptyJson = {"SomeCrap":"","SomeMoreCrap":{"items":[],"value":""}};
+				this.oNonEmptyJson = {"CountryCode":{"value":"dsagfdsg","items":[{"key":"GT","text":"Guatemala"},{"key":"GQ","text":"Equatorial Guin"},{"key":"GH","text":"Ghana"},{"key":"GA","text":"Gabon"},{"key":"FI","text":"Finland"},{"key":"DJ","text":"Djibouti"},{"key":"EE","text":"Estonia"},{"key":"BH","text":"Bahrain"},{"key":"BE","text":"Belgium"},{"key":"AX","text":""},{"key":"AS","text":"Samoa, America"},{"key":"AQ","text":"Antarctica"},{"key":"AI","text":"Anguilla"},{"key":"AF","text":"Afghanistan"},{"key":"AD","text":"Andorran"}]},"RegionCode":{"value":"fds","items":[{"key":"CA","text":"CA"},{"key":"CL","text":"[object Object] (CL)"},{"key":"CH","text":"[object Object] (CH)"},{"key":"CO","text":"[object Object] (CO)"},{"key":"FR","text":"[object Object] (FR)"},{"key":"NL","text":"[object Object] (NL)"},{"key":"NO","text":"[object Object] (NO)"},{"key":"ID","text":"[object Object] (ID)"},{"key":"HU","text":"[object Object] (HU)"},{"key":"AR","text":"[object Object] (AR)"}]}};
+				this.oJson = jQuery.extend(true, {}, this.oNonEmptyJson, oEmptyJson);
+				this.sJson = JSON.stringify(this.oJson);
+			},
+			teardown: function() {
+				this.oFilterProvider.destroy();
+			}
+		});
+
+		test("Static Methods Test", function() {			
+			var DateRangeType = sap.ui.comp.config.condition.DateRangeType;
+			var oUDate = DateRangeType.setStartTime(new sap.ui.core.date.UniversalDate());
+			strictEqual(oUDate.oDate.getHours() === 0, true, "setStartTime: Start hours set correctly");
+			strictEqual(oUDate.oDate.getMinutes() === 0, true, "setStartTime: Start minutes set correctly");
+			strictEqual(oUDate.oDate.getSeconds() === 0, true, "setStartTime: Start seconds set correctly");
+			strictEqual(oUDate.oDate.getMilliseconds() === 0, true, "setStartTime: Start milliseconds set correctly");
+
+			var oUDate = DateRangeType.setStartTime();
+			strictEqual(oUDate.oDate.getHours() === 0, true, "setStartTime: Start hours set correctly");
+			strictEqual(oUDate.oDate.getMinutes() === 0, true, "setStartTime: Start minutes set correctly");
+			strictEqual(oUDate.oDate.getSeconds() === 0, true, "setStartTime: Start seconds set correctly");
+			strictEqual(oUDate.oDate.getMilliseconds() === 0, true, "setStartTime: Start milliseconds set correctly");
+
+			var oUDate = DateRangeType.setEndTime(new sap.ui.core.date.UniversalDate());
+			strictEqual(oUDate.oDate.getHours() === 23, true, "setEndTime: End hours set correctly");
+			strictEqual(oUDate.oDate.getMinutes() === 59, true, "setEndTime: End minutes set correctly");
+			strictEqual(oUDate.oDate.getSeconds() === 59, true, "setEndTime: End seconds set correctly");
+			strictEqual(oUDate.oDate.getMilliseconds() === 999, true, "setEndTime: End milliseconds set correctly");
+		
+			var oUDate = DateRangeType.setEndTime(new sap.ui.core.date.UniversalDate());
+			strictEqual(oUDate.oDate.getHours() === 23, true, "setEndTime: End hours set correctly");
+			strictEqual(oUDate.oDate.getMinutes() === 59, true, "setEndTime: End minutes set correctly");
+			strictEqual(oUDate.oDate.getSeconds() === 59, true, "setEndTime: End seconds set correctly");
+			strictEqual(oUDate.oDate.getMilliseconds() === 999, true, "setEndTime: End milliseconds set correctly");
+			
+			var oDate = new sap.ui.core.date.UniversalDate();
+			oDate.setDate(1);
+			oDate.setMonth(0);
+			oDate.setFullYear(2000);
+			
+			//DateRange DAY 
+			var aRange = DateRangeType.getDateRange(1,"DAY", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 1 DAY: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 1 DAY:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 1 DAY:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 1 DAY:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 1 DAY:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 1 DAY:Start month set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 1 DAY:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  1 DAY: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 1 DAY: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 1 DAY: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 1 DAY: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 1, true, "getDateRange 1 DAY:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 0, true, "getDateRange 1 DAY:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 1 DAY:End year set correctly");
+			
+			var aRange = DateRangeType.getDateRange(2,"DAY", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 2 DAY: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 2 DAY:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 2 DAY:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 2 DAY:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 2 DAY:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 2 DAY:Start month set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 2 DAY:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  2 DAY: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 2 DAY: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 2 DAY: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 2 DAY: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 2, true, "getDateRange 2 DAY:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 0, true, "getDateRange 2 DAY:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 2 DAY:End year set correctly");
+
+			var aRange = DateRangeType.getDateRange(32,"DAY", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 32 DAY: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 32 DAY:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 32 DAY:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 32 DAY:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 32 DAY:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 32 DAY:Start month set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 32 DAY:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange 32 DAY: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 32 DAY: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 32 DAY: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 32 DAY: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 1, true, "getDateRange 32 DAY:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 1, true, "getDateRange 32 DAY:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 32 DAY:End year set correctly");
+
+			var aRange = DateRangeType.getDateRange(367,"DAY", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 367 DAY: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 367 DAY:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 367 DAY:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 367 DAY:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 367 DAY:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 367 DAY:Start month set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 367 DAY:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange 367 DAY: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 367 DAY: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 367 DAY: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 367 DAY: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 1, true, "getDateRange 367 DAY:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 0, true, "getDateRange 367 DAY:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2001, true, "getDateRange 367 DAY:End year set correctly");
+
+			//DateRange WEEK
+			var aRange = DateRangeType.getDateRange(1,"WEEK", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 1 WEEK: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 1 WEEK:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 1 WEEK:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 1 WEEK:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 1 WEEK:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 1 WEEK:Start month set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 1 WEEK:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  1 WEEK: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 1 WEEK: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 1 WEEK: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 1 WEEK: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 7, true, "getDateRange 1 WEEK:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 0, true, "getDateRange 1 WEEK:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 1 WEEK:End year set correctly");
+		
+			var aRange = DateRangeType.getDateRange(2,"WEEK", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 2 WEEK: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 2 WEEK:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 2 WEEK:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 2 WEEK:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 2 WEEK:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 2 WEEK:Start month set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 2 WEEK:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  2 WEEK: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 2 WEEK: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 2 WEEK: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 2 WEEK: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 14, true, "getDateRange 2 WEEK:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 0, true, "getDateRange 2 WEEK:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 2 WEEK:End year set correctly");
+			
+			var aRange = DateRangeType.getDateRange(5,"WEEK", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 5 WEEK: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 5 WEEK:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 5 WEEK:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 5 WEEK:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 5 WEEK:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 5 WEEK:Start month set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 5 WEEK:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  5 WEEK: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 5 WEEK: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 5 WEEK: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 5 WEEK: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 4, true, "getDateRange 5 WEEK:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 1, true, "getDateRange 5 WEEK:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 5 WEEK:End year set correctly");
+			
+			var aRange = DateRangeType.getDateRange(53,"WEEK", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 53 WEEK: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 53 WEEK:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 53 WEEK:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 53 WEEK:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 53 WEEK:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 53 WEEK:Start month set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 53 WEEK:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  53 WEEK: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 53 WEEK: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 53 WEEK: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 53 WEEK: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 5, true, "getDateRange 53 WEEK:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 0, true, "getDateRange 53 WEEK:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2001, true, "getDateRange 53 WEEK:End year set correctly");
+		
+			//DateRange MONTH
+			var aRange = DateRangeType.getDateRange(1,"MONTH", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 1 MONTH: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 1 MONTH:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 1 MONTH:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 1 MONTH:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 1 MONTH:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 1 MONTH:Start month set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 1 MONTH:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  1 MONTH: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 1 MONTH: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 1 MONTH: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 1 MONTH: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 31, true, "getDateRange 1 MONTH:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 0, true, "getDateRange 1 MONTH:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 1 MONTH:End year set correctly");
+			
+			var aRange = DateRangeType.getDateRange(2,"MONTH", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 2 MONTH: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 2 MONTH:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 2 MONTH:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 2 MONTH:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 2 MONTH:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 2 MONTH:Start month set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 2 MONTH:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  2 MONTH: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 2 MONTH: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 2 MONTH: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 2 MONTH: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 29, true, "getDateRange 2 MONTH:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 1, true, "getDateRange 2 MONTH:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 2 MONTH:End year set correctly");
+			
+			var aRange = DateRangeType.getDateRange(13,"MONTH", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 13 MONTH: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 13 MONTH:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 13 MONTH:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 13 MONTH:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 13 MONTH:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 13 MONTH:Start month set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 13 MONTH:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  13 MONTH: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 13 MONTH: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 13 MONTH: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 13 MONTH: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 31, true, "getDateRange 13 MONTH:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 0, true, "getDateRange 13 MONTH:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2001, true, "getDateRange 13 MONTH:End year set correctly");
+
+			//DateRange QUARTER
+			var aRange = DateRangeType.getDateRange(1,"QUARTER", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 1 QUARTER: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 1 QUARTER:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 1 QUARTER:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 1 QUARTER:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 1 QUARTER:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 1 QUARTER:Start QUARTER set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 1 QUARTER:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  1 QUARTER: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 1 QUARTER: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 1 QUARTER: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 1 QUARTER: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 31, true, "getDateRange 1 QUARTER:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 2, true, "getDateRange 1 QUARTER:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 1 QUARTER:End year set correctly");
+			
+			var aRange = DateRangeType.getDateRange(2,"QUARTER", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 2 QUARTER: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 2 QUARTER:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 2 QUARTER:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 2 QUARTER:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 2 QUARTER:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 2 QUARTER:Start QUARTER set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 2 QUARTER:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  2 QUARTER: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 2 QUARTER: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 2 QUARTER: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 2 QUARTER: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 30, true, "getDateRange 2 QUARTER:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 5, true, "getDateRange 2 QUARTER:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 2 QUARTER:End year set correctly");
+			
+			var aRange = DateRangeType.getDateRange(4,"QUARTER", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 4 QUARTER: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 4 QUARTER:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 4 QUARTER:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 4 QUARTER:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 4 QUARTER:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 4 QUARTER:Start QUARTER set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 4 QUARTER:Start year set correctly");
+				
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  4 QUARTER: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 4 QUARTER: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 4 QUARTER: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 4 QUARTER: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 31, true, "getDateRange 4 QUARTER:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 11, true, "getDateRange 4 QUARTER:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 4 QUARTER:End year set correctly");
+			
+			//DateRange YEAR
+			var aRange = DateRangeType.getDateRange(1,"YEAR", oDate);
+			strictEqual(aRange[0].oDate.getHours() === 0, true, "getDateRange 1 YEAR: Start hours set correctly");
+			strictEqual(aRange[0].oDate.getMinutes() === 0, true, "getDateRange 1 YEAR:Start minutes set correctly");
+			strictEqual(aRange[0].oDate.getSeconds() === 0, true, "getDateRange 1 YEAR:Start seconds set correctly");
+			strictEqual(aRange[0].oDate.getMilliseconds() === 0, true, "getDateRange 1 YEAR:Start milliseconds set correctly");
+			strictEqual(aRange[0].oDate.getDate() === 1, true, "getDateRange 1 YEAR:Start date set correctly");
+			strictEqual(aRange[0].oDate.getMonth() === 0, true, "getDateRange 1 YEAR:Start YEAR set correctly");
+			strictEqual(aRange[0].oDate.getFullYear() === 2000, true, "getDateRange 1 YEAR:Start year set correctly");
+		
+			strictEqual(aRange[1].oDate.getHours() === 23, true, "getDateRange  1 YEAR: End hours set correctly");
+			strictEqual(aRange[1].oDate.getMinutes() === 59, true, "getDateRange 1 YEAR: End minutes set correctly");
+			strictEqual(aRange[1].oDate.getSeconds() === 59, true, "getDateRange 1 YEAR: End seconds set correctly");
+			strictEqual(aRange[1].oDate.getMilliseconds() === 999, true, "getDateRange 1 YEAR: End milliseconds set correctly");
+			strictEqual(aRange[1].oDate.getDate() === 31, true, "getDateRange 1 YEAR:End date set correctly");
+			strictEqual(aRange[1].oDate.getMonth() === 11, true, "getDateRange 1 YEAR:End month set correctly");
+			strictEqual(aRange[1].oDate.getFullYear() === 2000, true, "getDateRange 1 YEAR:End year set correctly");
+			
+			//ERROR
+			var aRange = DateRangeType.getDateRange(1,"XXX", oDate);
+			strictEqual(aRange.length === 0, true, "No type given");
+			
+		});
+		
+		test("Checking DefaultValues", function() {
+			var DateRangeType =  sap.ui.comp.config.condition.DateRangeType;
+			var oDate1 = DateRangeType.getWeekStartDate(new sap.ui.core.date.UniversalDate());
+			var oDate2 = DateRangeType.getWeekStartDate();
+			//var iDiff = oDate2.getTime() - oDate1.getTime()
+			strictEqual(oDate2.getTime() - oDate1.getTime() >= 0 , true, "DateRangeType.getWeekStartDate without date");
+			
+			oDate1 = DateRangeType.getMonthStartDate (new sap.ui.core.date.UniversalDate());
+			oDate2 = DateRangeType.getMonthStartDate ();
+			//iDiff = oDate2.getTime() - oDate1.getTime()
+			strictEqual(oDate2.getTime() - oDate1.getTime() >= 0 , true, "DateRangeType.getMonthStartDate without date");
+			
+			oDate1 = DateRangeType.getQuarterStartDate  (new sap.ui.core.date.UniversalDate(2000, 8, 12));
+			strictEqual( oDate1.getMonth(), 6, "DateRangeType.getQuarterStartDate returns Month 6");
+			
+			oDate1 = DateRangeType.getQuarterStartDate  (new sap.ui.core.date.UniversalDate());
+			oDate2 = DateRangeType.getQuarterStartDate  ();
+			var iDiff = oDate2.getTime() - oDate1.getTime()
+			strictEqual( iDiff >= 0 && iDiff <=10, true, "DateRangeType.getQuarterStartDate  without date");
+			
+			var oDateRangeType = new DateRangeType("TestFieldName");
+			var aResult = oDateRangeType.getDefaultValues(DateRangeType.Operations.DATERANGE);
+			strictEqual(aResult[0] === null, true, "DateRangeType.Operations.DATERANGE value1 = null");
+			strictEqual(aResult[1] === null, true, "DateRangeType.Operations.DATERANGE value2 = null");
+			
+			var aResult = oDateRangeType.getDefaultValues(DateRangeType.Operations.FROM);
+			strictEqual(aResult[0] === null, true, "DateRangeType.Operations.FROM value1 = null");
+			strictEqual(aResult[1] === null, true, "DateRangeType.Operations.FROM value2 = null");
+			
+			var aResult = oDateRangeType.getDefaultValues(DateRangeType.Operations.TO);
+			strictEqual(aResult[0] === null, true, "DateRangeType.Operations.TO value1 = null");
+			strictEqual(aResult[1] === null, true, "DateRangeType.Operations.TO value2 = null");
+			
+			var aResult = oDateRangeType.getDefaultValues(DateRangeType.Operations.LASTDAYS);
+			strictEqual(aResult[0] === 1, true, "DateRangeType.Operations.LASTDAYS value1 = 1");
+			strictEqual(aResult[1] === null, true, "DateRangeType.Operations.LASTDAYS value2 = null");
+			
+			var aResult = oDateRangeType.getDefaultValues(DateRangeType.Operations.LASTWEEKS);
+			strictEqual(aResult[0] === 1, true, "DateRangeType.Operations.LASTWEEKS value1 = 1");
+			strictEqual(aResult[1] === null, true, "DateRangeType.Operations.LASTWEEKS value2 = null");
+			
+			var aResult = oDateRangeType.getDefaultValues(DateRangeType.Operations.LASTMONTHS);
+			strictEqual(aResult[0] === 1, true, "DateRangeType.Operations.LASTMONTHS value1 = 1");
+			strictEqual(aResult[1] === null, true, "DateRangeType.Operations.LASTMONTHS value2 = null");
+			
+			var aResult = oDateRangeType.getDefaultValues(DateRangeType.Operations.LASTQUARTERS);
+			strictEqual(aResult[0] === 1, true, "DateRangeType.Operations.LASTQUARTERS value1 = 1");
+			strictEqual(aResult[1] === null, true, "DateRangeType.Operations.LASTQUARTERS value2 = null");
+			
+			var aResult = oDateRangeType.getDefaultValues(DateRangeType.Operations.LASTYEARS);
+			strictEqual(aResult[0] === 1, true, "DateRangeType.Operations.LASTYEARS value1 = 1");
+			strictEqual(aResult[1] === null, true, "DateRangeType.Operations.LASTYEARS value2 = null");
+			
+			var aResult = oDateRangeType.getDefaultValues(DateRangeType.Operations.TODAY);
+			strictEqual(aResult[0].getTime() === DateRangeType.setStartTime().getTime(), true, "DateRangeType.Operations.TODAY value1 = today");
+			strictEqual(aResult[1].getTime() === DateRangeType.getDateRange(1,"DAY",true)[1].getTime(), true, "DateRangeType.Operations.TODAY value2 = today");
+			
+		});
+		
+		test("Serialize, initialize without FilterProvider", function() {			
+			var oDateRangeType = new sap.ui.comp.config.condition.DateRangeType("TestFieldName");
+			strictEqual(oDateRangeType.getModel() instanceof sap.ui.model.json.JSONModel, true, "JSON model available");
+			var oData = oDateRangeType.getModel().getData();
+			
+			strictEqual(oData.condition !== null && typeof oData.condition === "object", true, "ModelData.condition check: object");
+			strictEqual(oData.condition.key === "TestFieldName", true, "ModelData.condition check: fieldname");
+			strictEqual(oData.condition.operation === "", true, "ModelData.condition check: operation");
+			strictEqual(oData.condition.value1 === null, true, "ModelData.condition check: value1");
+			strictEqual(oData.condition.value2 === null, true, "ModelData.condition check: value2");
+			
+			var oModel = oDateRangeType.getModel();
+			strictEqual(typeof oModel.getProperty("", oDateRangeType.getConditionContext()) === "object", true, "Model.getProperty.condition check: object");
+			strictEqual(oModel.getProperty("key", oDateRangeType.getConditionContext()) === "TestFieldName", true, "Model.getProperty.condition check: fieldname");
+			strictEqual(oModel.getProperty("operation", oDateRangeType.getConditionContext()) === "", true, "Model.getProperty.condition check: operation");
+			strictEqual(oModel.getProperty("value1", oDateRangeType.getConditionContext()) === null, true, "Model.getProperty.condition check: value1");
+			strictEqual(oModel.getProperty("value2", oDateRangeType.getConditionContext()) === null, true, "Model.getProperty.condition check: value2");
+			
+			var DateRangeType = sap.ui.comp.config.condition.DateRangeType;
+			var aValues = DateRangeType.getDateRange(2, "WEEK", DateRangeType.getWeekStartDate(new sap.ui.core.date.UniversalDate()));
+			oDateRangeType.initialize({conditionTypeInfo:{
+				name: "sap.ui.comp.config.condition.DateRangeType",
+				data: {
+					key: "TestFieldName",
+					operation: "DATERANGE",
+					value1: aValues[0].oDate,
+					value2: aValues[1].oDate
+				}
+			}});
+			strictEqual(oModel.getProperty("key", oDateRangeType.getConditionContext()) === "TestFieldName", true, "Model.getProperty.condition check: fieldname");
+			strictEqual(oModel.getProperty("operation", oDateRangeType.getConditionContext()) === "DATERANGE", true, "Model.getProperty.condition check: operation");
+			strictEqual(oModel.getProperty("value1", oDateRangeType.getConditionContext()) === aValues[0].oDate, true, "Model.getProperty.condition check: value1");
+			strictEqual(oModel.getProperty("value2", oDateRangeType.getConditionContext()) === aValues[1].oDate, true, "Model.getProperty.condition check: value2");
+
+			var aRanges = oDateRangeType.getFilterRanges();
+			strictEqual(aRanges[0].exclude === false, true, "getFilterRanges: exclude");
+			strictEqual(aRanges[0].keyField === "TestFieldName", true, "getFilterRanges: keyField");
+			strictEqual(aRanges[0].operation === "BT", true, "getFilterRanges: operation");
+			strictEqual(aRanges[0].value1.toString() === aValues[0].oDate.toString(), true, "getFilterRanges: value1");
+			strictEqual(aRanges[0].value2.toString() === aValues[1].oDate.toString(), true, "getFilterRanges: value2");
+
+/* 			var oSerialized = oDateRangeType.serialize();
+			strictEqual(oSerialized.ranges[0].exclude === false, true, "serialize().ranges[0]: exclude");
+			strictEqual(oSerialized.ranges[0].keyField === "TestFieldName", true, "serialize().ranges[0]: keyField");
+			strictEqual(oSerialized.ranges[0].operation === "BT", true, "serialize().ranges[0]: operation");
+			strictEqual(oSerialized.ranges[0].value1 === aValues[0].oDate, true, "serialize().ranges[0]: value1");
+			strictEqual(oSerialized.ranges[0].value2 === aValues[1].oDate, true, "serialize().ranges[0]: value1");
+			strictEqual(oSerialized.conditionTypeInfo.name === "sap.ui.comp.config.condition.DateRangeType", true, "serialize().conditionTypeInfo: name");
+			strictEqual(oSerialized.conditionTypeInfo.data.key === "TestFieldName", true, "serialize().conditionTypeInfo.data: key");
+			strictEqual(oSerialized.conditionTypeInfo.data.operation === "DATERANGE", true, "serialize().conditionTypeInfo.data: operation");
+			strictEqual(oSerialized.conditionTypeInfo.data.value1 === aValues[0].oDate, true, "serialize().conditionTypeInfo.data: value1");
+			strictEqual(oSerialized.conditionTypeInfo.data.value2 === aValues[1].oDate, true, "serialize().conditionTypeInfo.data: value2");
+ */
+ 		});
+		
+		test("Nullable Integer Type", function() {
+			var oType = new sap.ui.model.type.NullableInteger();
+			strictEqual(oType.parseValue("", "string") === null, true, "Nullable Integer Type, null check");
+			strictEqual(oType.parseValue("1", "string") === 1, true, "Nullable Integer Type, 1 check");
+			strictEqual(oType.parseValue(1, "int") === 1, true, "Nullable Integer Type, 1 check");
+			strictEqual(oType.parseValue("01", "string") === 1, true, "Nullable Integer Type, 01 check");
+		});
+		
+		test("Create Controls", function() {
+			var DateRangeType = sap.ui.comp.config.condition.DateRangeType;
+			var oDateRangeType = new DateRangeType("FieldName");
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"sap.ui.comp.config.condition.DateRangeType","data":{"operation":"TODAY","value1":null,"value2":null,"key":"FieldName","calendarType":"Gregorian"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			
+			oDateRangeType.oDateFormat = {UTC:true, style:"short"};
+			var oText = DateRangeType.getTextField(oDateRangeType);
+			strictEqual(oText.getMetadata().getName() === "sap.m.Text", true, "sap.m.Text created");
+			var oBindingInfo = oText.getBindingInfo("text");
+			strictEqual(oBindingInfo.type === "sap.ui.model.type.Date", true, "BindingInfo type sap.ui.model.type.Date");
+			strictEqual(oBindingInfo.parts[0].model === "$smartEntityFilter", true, "BindingInfo model $smartEntityFilter");
+			strictEqual(oBindingInfo.parts[0].path === "value1", true, "BindingInfo path value1");
+			
+			//text
+			var oText = DateRangeType.getTextField(oDateRangeType, true);
+			strictEqual(oText.getMetadata().getName() === "sap.m.Text", true, "sap.m.Text created");
+			var oBindingInfo = oText.getBindingInfo("text");
+			strictEqual(oBindingInfo.parts[0].type.sName === "Date", true, "BindingInfo type Date");
+			strictEqual(oBindingInfo.parts[0].model === "$smartEntityFilter", true, "BindingInfo model $smartEntityFilter");
+			strictEqual(oBindingInfo.parts[0].path === "value1", true, "BindingInfo path value1");
+			strictEqual(oBindingInfo.parts[1].type.sName === "Date", true, "BindingInfo type Date");
+			strictEqual(oBindingInfo.parts[1].model === "$smartEntityFilter", true, "BindingInfo model $smartEntityFilter");
+			strictEqual(oBindingInfo.parts[1].path === "value2", true, "BindingInfo path value2");
+			
+			//int field
+			var oIntField = DateRangeType.getIntField(oDateRangeType);
+			strictEqual(oIntField.getMetadata().getName() === "sap.m.Input", true, "sap.m.Input created");
+			var oBindingInfo = oIntField.getBindingInfo("value");
+			strictEqual(oBindingInfo.parts[0].type === "sap.ui.model.type.NullableInteger", true, "BindingInfo type sap.ui.model.type.NullableInteger");
+			strictEqual(oBindingInfo.parts[0].model === "$smartEntityFilter", true, "BindingInfo model $smartEntityFilter");
+			strictEqual(oBindingInfo.parts[0].path === "value1", true, "BindingInfo path value1");
+
+			var oBindingInfo = oIntField.getBindingInfo("valueState");
+			strictEqual(oBindingInfo.parts[0].model === "$smartEntityFilter", true, "BindingInfo model $smartEntityFilter");
+			strictEqual(oBindingInfo.parts[0].path === "/inputstate", true, "BindingInfo path /inputstate");
+			//execute the formatters
+			var oModel = new sap.ui.model.json.JSONModel({inputstate: "ERROR"});
+			oIntField.setModel(oModel,"$smartEntityFilter");
+			strictEqual(oIntField.getValueState() === "Error", true, "Value State is Error");
+			oModel.setProperty("/inputstate","");
+			strictEqual(oIntField.getValueState() === "None", true, "Value State is None");
+			
+			//description text
+			var oText = DateRangeType.getDescriptionText("CONDITION_DATERANGETYPE_SINGLE_DAY","CONDITION_DATERANGETYPE_MULTIPLE_DAYS");
+			strictEqual(oText.getMetadata().getName() === "sap.m.Text", true, "sap.m.Text created");
+			var oBindingInfo = oText.getBindingInfo("text");
+			strictEqual(oBindingInfo.parts[0].type === "sap.ui.model.type.Integer", true, "BindingInfo type sap.ui.model.type.Integer");
+			strictEqual(oBindingInfo.parts[0].model === "$smartEntityFilter", true, "BindingInfo model $smartEntityFilter");
+			strictEqual(oBindingInfo.parts[0].path === "value1", true, "BindingInfo path value1");
+			
+			var oModel = new sap.ui.model.json.JSONModel({value1: 1});
+			oText.setModel(oModel,"$smartEntityFilter");
+			oText.setBindingContext(oModel.createBindingContext("/"),"$smartEntityFilter");
+			strictEqual(oText.getText() === sap.ui.comp.config.condition.Type.getTranslatedText("CONDITION_DATERANGETYPE_SINGLE_DAY"), true, "Single description Text");
+			oModel.setProperty("/value1",2);
+			strictEqual(oText.getText() === sap.ui.comp.config.condition.Type.getTranslatedText("CONDITION_DATERANGETYPE_MULTIPLE_DAYS"), true, "Multiple description Text");
+			
+			//control factory and exceptional controls
+			var aResult = [];
+			DateRangeType.ControlFactory(oDateRangeType, aResult, DateRangeType.Operations.TODAY);
+			strictEqual(aResult[0].getMetadata().getName() === "sap.m.Text", true, "sap.m.Text created");
+			aResult = [];
+			DateRangeType.ControlFactory(oDateRangeType, aResult, DateRangeType.Operations.LASTDAYS);
+			strictEqual(aResult[0].getMetadata().getName() === "sap.m.Input", true, "sap.m.Input created");
+			
+			aResult = [];
+			DateRangeType.Operations.DATERANGE.getControls(oDateRangeType, aResult);
+			strictEqual(aResult[0].getMetadata().getName() === "sap.m.DateRangeSelection", true, "sap.m.DateRangeSelection created");
+			var oModel = new sap.ui.model.json.JSONModel({inputstate: "ERROR"});
+			aResult[0].setModel(oModel,"$smartEntityFilter");
+			strictEqual(aResult[0].getValueState() === "Error", true, "Value State is Error");
+			oModel.setProperty("/inputstate","");
+			strictEqual(aResult[0].getValueState() === "None", true, "Value State is None");
+			aResult[0].fireChange({valid:true});
+			aResult[0].fireChange({valid:false});
+			
+			aResult = [];
+			DateRangeType.Operations.FROM.getControls(oDateRangeType, aResult);
+			strictEqual(aResult[0].getMetadata().getName() === "sap.m.DatePicker", true, "sap.m.DatePicker created");
+			//execute the formatters
+			var oModel = new sap.ui.model.json.JSONModel({inputstate: "ERROR"});
+			aResult[0].setModel(oModel,"$smartEntityFilter");
+			strictEqual(aResult[0].getValueState() === "Error", true, "Value State is Error");
+			oModel.setProperty("/inputstate","");
+			strictEqual(aResult[0].getValueState() === "None", true, "Value State is None");
+			
+			aResult = [];
+			DateRangeType.Operations.TO.getControls(oDateRangeType, aResult);
+			strictEqual(aResult[0].getMetadata().getName() === "sap.m.DatePicker", true, "sap.m.DatePicker created");
+			//execute the formatters
+			var oModel = new sap.ui.model.json.JSONModel({inputstate: "ERROR"});
+			aResult[0].setModel(oModel,"$smartEntityFilter");
+			strictEqual(aResult[0].getValueState() === "Error", true, "Value State is Error");
+			oModel.setProperty("/inputstate","");
+			strictEqual(aResult[0].getValueState() === "None", true, "Value State is None");
+			
+			aResult = [];
+			DateRangeType.Operations.SPECIFICMONTH.getControls(oDateRangeType, aResult);
+			strictEqual(DateRangeType.Operations.SPECIFICMONTH.defaultValues()[0] === (new Date()).getMonth(), true, "Check Month");
+			strictEqual(aResult[0].getMetadata().getName() === "sap.m.Select", true, "sap.m.Select created");
+			var aMonths = DateRangeType.Operations.SPECIFICMONTH.getValueList();
+			strictEqual(aMonths.length === 12, true, "12 month created");
+			
+			jQuery.sap.require("sap.m.HBox");
+			jQuery.sap.require("sap.m.Label");
+			var oHBox = new sap.m.HBox();
+			var oLabel = new sap.m.Label({text:"Test"});
+			oDateRangeType.initializeFilterItem("100%",oHBox);
+			oDateRangeType.setLabel(oLabel);
+			oDateRangeType.setControls();
+			
+			oDateRangeType.setOperation("LASTQUARTERS");
+			oHBox.getItems()[0].setSelectedKey("LASTWEEKS");
+			
+		});
+		
+/*  		test("Test DateRangeType methods", function() {
+			
+			var DateRangeType = sap.ui.comp.config.condition.DateRangeType;
+			var oDateRangeType = new DateRangeType("FieldName", this.oFilterProvider);
+			this.oFilterProvider._oSmartFilter = {
+					fireFilterChange : function() {
+						bFired = true;
+					}
+				};
+			
+			strictEqual(oDateRangeType.getName() === "sap.ui.comp.config.condition.DateRangeType", true, "getName");
+			strictEqual(oDateRangeType.getType() === "Edm.Date", true, "getType");
+			strictEqual(oDateRangeType.getTokenText() === "", true, "getTokenText");
+			strictEqual(oDateRangeType.getDefaultValues().length === 0, true, "getDefaultValue without operation error");
+			strictEqual(oDateRangeType.getControls() === undefined, true, "getDefaultValue without operation error");
+			strictEqual(oDateRangeType.getParent() === this.oFilterProvider._oSmartFilter, true, "getParent");
+			strictEqual(oDateRangeType.getDefaultOperation().key === "DATERANGE", true, "getDefaultOperation DATERANGE");
+			
+			oDateRangeType.applySettings({operations: {filter : {path: 'category', contains: 'MONTH', exclude:true}}});
+			var aOperations = oDateRangeType.getOperations();
+			var bMonthFound = false;
+			for (var i=0;i<aOperations.length;i++) {
+				if (aOperations[i].category.indexOf("MONTH")>-1) {
+					bMonthFound = true;
+				}
+			}
+			strictEqual(bMonthFound, false, "applySettings exclude filter category month");
+			oDateRangeType.applySettings({operations: {filter : {path: 'category', contains: 'MONTH', exclude:false}}});
+			var aOperations = oDateRangeType.getOperations();
+			var bNoMonthFound = true;
+			for (var i=0;i<aOperations.length;i++) {
+				if (aOperations[i].category.indexOf("MONTH") === -1) {
+					bNoMonthFound = false;
+					break;
+				}
+			}
+			strictEqual(bNoMonthFound, true, "applySettings include filter category month");
+			strictEqual(oDateRangeType.getDefaultOperation().key === "LASTMONTHS", true, "getDefaultOperation LASTMONTHS after filter");
+			
+			oDateRangeType.applySettings({}); //reset the filter
+			strictEqual(Object.keys(DateRangeType.Operations).length === oDateRangeType.getOperations().length, true, "applySettings reset and all operations available");
+			strictEqual(oDateRangeType.getDefaultOperation().key === "DATERANGE", true, "getDefaultOperation DATERANGE");
+				
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"sap.ui.comp.config.condition.DateRangeType","data":{"operation":"TODAY","value1":null,"value2":null,"key":"FieldName","calendarType":"Gregorian"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			oDateRangeType.initialize({"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"FieldName"}],"items":[]});
+			oDateRangeType.initialize({"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"FieldName"},{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"FieldName"}],"items":[]});
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"x","data":{"operation":"TODAY","value1":null,"value2":null,"key":"FieldName","calendarType":"Gregorian"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"sap.ui.comp.config.condition.DateRangeType","data":{"value1":null,"value2":null,"key":"FieldName","calendarType":"Gregorian"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"sap.ui.comp.config.condition.DateRangeType","data":{"operation":"XX","value1":null,"value2":null,"key":"FieldName","calendarType":"Gregorian"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			oDateRangeType.setAsync(true);
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"sap.ui.comp.config.condition.DateRangeType","data":{"operation":"XX","value1":null,"value2":null,"key":"FieldName","calendarType":"Gregorian"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			//processes some pendings to get the internal timers cleared once
+			oDateRangeType.setPending(true);
+			oDateRangeType.setPending(false);
+			oDateRangeType.setPending(true); //
+			oDateRangeType.setPending(false);
+			oDateRangeType.setAsync(false);
+			//Islamic month
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"sap.ui.comp.config.condition.DateRangeType","data":{"operation":"SPECIFICMONTH","value1":3,"value2":null,"key":"FieldName","calendarType":"Islamic"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"sap.ui.comp.config.condition.DateRangeType","data":{"operation":"LASTWEEKS","value1":3,"value2":null,"key":"FieldName","calendarType":"Gregorian"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"sap.ui.comp.config.condition.DateRangeType","data":{"operation":"SPECIFICMONTH","value1":3,"value2":null,"key":"FieldName","calendarType":"Gregorian"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"sap.ui.comp.config.condition.DateRangeType","data":{"operation":"FROM","value1":"","value2":"2011-01-1T21:59:59.999Z","key":"FieldName","calendarType":"Gregorian"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"sap.ui.comp.config.condition.DateRangeType","data":{"operation":"TO","value1":"2016-04-28T21:59:59.999Z","value2":null,"key":"FieldName","calendarType":"Gregorian"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			
+			var bFired = false;
+			oDateRangeType.initialize({"conditionTypeInfo":{"name":"sap.ui.comp.config.condition.DateRangeType","data":{"value1":"2016-04-28T21:59:59.999Z","value2":null,"key":"FieldName","calendarType":"Gregorian"}},"ranges":[{"operation":"BT","value1":"2016-04-27T22:00:00.000Z","value2":"2016-04-28T21:59:59.999Z","exclude":false,"keyField":"BLDAT"}],"items":[]});
+			this.oFilterProvider.setPending(false);
+			strictEqual(bFired, true, "fireFilterChange fired for mocked filterbar")
+		 
+			for (var n in DateRangeType.Operations) {
+				var aDefaultValue = oDateRangeType.getDefaultValues(DateRangeType.Operations[n]);
+				
+				var oData = {
+					operation: n,
+					key: "FieldName",
+					value1 : aDefaultValue[0],
+					value2 : aDefaultValue[1]
+				};
+				
+				oDateRangeType.setCondition(oData);
+				if ("value1" in DateRangeType.Operations[n] && oData.value1 === null) {
+					strictEqual(oDateRangeType.getFilterRanges().length === 0, true, "No default value1, no range");
+				}
+				if ("value2" in DateRangeType.Operations[n] && oData.value2 === null) {
+					strictEqual(oDateRangeType.getFilterRanges().length === 0, true, "No default value2, no range");
+				}
+				if ("value1" in DateRangeType.Operations[n] && oData.value1 !== null && !("value2" in DateRangeType.Operations[n])) {
+					strictEqual(oDateRangeType.getFilterRanges().length > 0, true, "Default value1, leads to range");
+				}
+				if ("value2" in DateRangeType.Operations[n] && oData.value2 !== null && !("value1" in DateRangeType.Operations[n])) {
+					strictEqual(oDateRangeType.getFilterRanges().length > 0, true, "Default value2, leads to range");
+				}
+				if ("value2" in DateRangeType.Operations[n] && oData.value2 !== null && "value1" in DateRangeType.Operations[n] && oData.value1 !== null) {
+					strictEqual(oDateRangeType.getFilterRanges().length > 0, true, "Default value 1, value2, leads to range");
+				}
+				if (!("value2" in DateRangeType.Operations[n]) && !("value1" in DateRangeType.Operations[n])) {
+					strictEqual(oDateRangeType.getFilterRanges().length > 0, true, "No values needed, leads to range");
+				}
+				if (n === "FROM") {
+					var oData = {
+						operation: n,
+						key: "FieldName",
+						value1 : new sap.ui.core.date.UniversalDate(),
+						value2 : null
+					};
+					
+					oDateRangeType.setCondition(oData);
+					strictEqual(oDateRangeType.getFilterRanges().length > 0, true, "Default value1, leads to range");
+				} 
+			}
+			
+			//translatables
+			strictEqual(sap.ui.comp.config.condition.Type.getTranslatedText({bundle:"sap.ui.comp", key:"CONDITION_DATERANGETYPE_SINGLE_DAY"}) === oDateRangeType.getTranslatedText("CONDITION_DATERANGETYPE_SINGLE_DAY"),true,"TranslatedText with object bundle");
+			
+			strictEqual(sap.ui.comp.config.condition.Type.getTranslatedText({bundle:"sap.ui.comp", key:"CONDITION_DATERANGETYPE_SINGLE_DAY"}) === oDateRangeType.getTranslatedText("CONDITION_DATERANGETYPE_SINGLE_DAY"),true,"TranslatedText with object bundle");
+			
+			//create an invalid condition
+			var oData = {
+					key: "FieldName",
+					value1 : aDefaultValue[0],
+					value2 : aDefaultValue[1]
+				};
+			oDateRangeType.setCondition(oData);
+			strictEqual(oDateRangeType.isValidCondition(),false,"Invalid Condition");
+			//
+			delete DateRangeType.Operations.LASTWEEKS["value1"];
+			DateRangeType.Operations.LASTWEEKS["value2"] = null;
+			var oData = {
+							operation:"LASTWEEKS",
+							key: "FieldName",
+							value2 : 1
+						};
+			oDateRangeType.setCondition(oData);
+			var oData = {
+							operation:"LASTWEEKS",
+							key: "FieldName",
+							value2 : null
+						};
+			oDateRangeType.setCondition(oData);
+			strictEqual(oDateRangeType.isValidCondition(), false, "Invalid Condition with ony value2");
+			DateRangeType.Operations.LASTWEEKS["value1"] = null;
+			delete DateRangeType.Operations.LASTWEEKS["value2"];
+		});
+  */
+ 		test("Test Type methods", function() {
+			//base type checks
+			var oFieldMetadata = {isMandatory : false};
+			var oType = new sap.ui.comp.config.condition.Type("FieldName",this.oFilterProvider, oFieldMetadata);
+			strictEqual(oType.getName() === "sap.ui.comp.config.condition.Type", true, "getName");
+			strictEqual(oType.getType() === "Edm", true, "getType");
+			strictEqual(oType.getTokenText() === "", true, "getTokenText");
+			strictEqual(oType.getControls().length === 0, true, "getControls");
+			strictEqual(oType.getOperations().length === 0, true, "getOperations");
+			strictEqual(oType.isValidCondition(), false, "No valid condition in base class");
+			strictEqual(oType.isValidCondition(), false, "No valid condition in base class");
+			
+			var f = function(){};
+			oType.attachPendingChange(f);
+			strictEqual(oType.hasListeners("PendingChange"), true, "hasListeners for PendingChange");
+			oType.detachPendingChange(f);
+			strictEqual(oType.hasListeners("PendingChange"), false, "hasListeners no for PendingChange");
+			strictEqual(oType.getDefaultOperation() === null, true, "No default operations");
+			strictEqual(oType.getFilter() === null, true, "getFilter: No filters");
+			strictEqual(oType.getFilterRanges() === null, true, "getFilterRanges: No Ranges");
+			strictEqual(oType.validate(false), true, "validate : no force");
+			strictEqual(oType.validate(true), true, "validate : force not mandatory");
+			oFieldMetadata.isMandatory = true;
+			strictEqual(oType.validate(true), false, "validate : force mandatory");
+			//push coverage
+			oType.updateOperations();
+		});
+			
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.ui.comp.smartfilterbar.FilterProvider</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="content"></div>
+</body>
+</html>

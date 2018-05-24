@@ -1,0 +1,63 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="OData supports the select parameter, where you can specify lists of properties that are needed by the application, so that unnecessary properties are not returned by the OData request."/>
+<meta name="description" content="OData supports the select parameter, where you can specify lists of properties that are needed by the application, so that unnecessary properties are not returned by the OData request."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=31123743580258045"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=31123743580258045"/>
+<title>Adding the OData Select Parameter</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiobe1209991f4e483ebc7f3d647a5f5427">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Adding the OData Select Parameter </h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">OData supports the <samp class="ph codeph">select</samp> parameter, where you can specify lists of
+    properties that are needed by the application, so that unnecessary properties are not returned
+    by the OData request.</p>
+
+		<div class="section">
+			<p class="p">The <samp class="ph codeph">select</samp> parameter is not added automatically to the OData request in list
+                and table cards as this can affect navigation behavior. However, in some cases where
+                Smart Business OData services are used, the <samp class="ph codeph">select</samp> parameter might
+                be required to show aggregated values to the user. In these cases, the
+                    <samp class="ph codeph">addODataSelect</samp> property must be set in the application manifest
+                file for the relevant card.</p>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<p class="p">The card configuration in the application manifest file looks like this:</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"sap.ovp": {
+    "globalFilterModel": "salesOrder",
+    "globalFilterEntityType": "GlobalFilters",
+    "cards": {
+      "card00": {
+        "model": "salesOrder",
+        "template": "sap.ovp.cards.list",
+        "settings": {     
+          "entitySet": "SalesOrderSet",
+          "category": "Sales Orders with filters",
+          "listType": "extended",
+          "addODataSelect": true
+        }
+      }
+    }
+}</pre></div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

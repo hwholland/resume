@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="If an application is copied, the texts stored in the SAPUI5 text repository of the original application are not copied and are, thus, not available in the copied SAPUI5 application. This also applies to applications using the extension concepts of SAPUI5."/>
+<meta name="description" content="If an application is copied, the texts stored in the SAPUI5 text repository of the original application are not copied and are, thus, not available in the copied SAPUI5 application. This also applies to applications using the extension concepts of SAPUI5."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7300964685900694"/>
+<title>Handling Localized Texts for Extended Applications</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/framewrapper.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loiobe1bde1361954f719dcc38388b29a75a">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Handling Localized Texts for Extended Applications</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">If an application is copied, the texts stored in the <span class="ph pname">SAPUI5</span> text repository of the
+		original application are <span class="ph emphasis emphasis">not</span> copied and are, thus, not available in the
+		copied <span class="ph pname">SAPUI5</span> application. This
+		also applies to applications using the extension concepts of <span class="ph pname">SAPUI5</span>.</p>
+
+		<div class="note caution"><span class="cautiontitle">Caution</span> 
+			<p class="p">Although it is generally possible to copy <span class="ph pname">SAPUI5</span> applications,
+				copying and editing of applications in the <span class="ph pname">SAPUI5</span> text repository must be avoided
+				and we strongly recommend to only use the extension concepts.</p>
+
+		</div>
+
+		<p class="p">To reuse translated texts in the new application, instantiate a resource model with the URL to
+			the corresponding text properties files of the original application. If needed, you can
+			enhance this resource model with its own properties file. For applications located in
+			the ABAP backend, the resource model of another application located in another SAPUI5
+			respository in the ABAP backend can be accessed by its relative path.</p>
+
+		<p class="p">The following example is valid for an application that is stored in the <span class="ph pname">SAPUI5</span> repository
+			in the ABAP backend:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>
+var oModel = new sap.ui.model.resource.ResourceModel({bundleUrl:"../&lt;original bsp application name&gt;/i18n/i18n.properties"});</pre></div>
+
+		<p class="p">If the code is <span class="ph emphasis emphasis">not</span> located at the root level of the application,
+			adjust the path with additional "../" at the beginning.</p>
+
+		<p class="p">You can enhance this with an additional custom text properties file, which resides in the
+			copied application:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>
+oModel.enhance({bundleUrl:"./other18n.properties"});</pre></div>
+
+		<p class="p">The custom text properties file can contain additional texts or texts which overwrite the
+			default ones from the original application.</p>
+
+		<p class="p">If an <span class="ph pname">SAPUI5</span> application is extended
+			or copied, the GUID in the <span class="ph pname">SAPUI5</span> translation key in the
+			copied text properties file must be exchanged with a new one. Each text properties file
+			must contain a unique GUID. You can then upload the application with the new translation
+			key in the text properties file to the ABAP backend by means of the team provider or the
+				<samp class="ph codeph">/UI5/UI5_REPOSITORY_LOAD</samp> upload report. For the localization of the
+			custom texts in the copied application you can use transaction
+			<samp class="ph codeph">se63</samp>.</p>
+
+	</div>
+
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Handling Localized Texts for Extended Applications";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

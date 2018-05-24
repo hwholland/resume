@@ -1,0 +1,209 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="When upgrading to the current SAPUI5 version from a version below 1.30 (released in September 2015), check whether the changes listed below influence your apps."/>
+<meta name="description" content="When upgrading to the current SAPUI5 version from a version below 1.30 (released in September 2015), check whether the changes listed below influence your apps."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8088337323677177"/>
+<title>Upgrading from a Version Below 1.30</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiofe1f31add68041ec8b4c11598fe8a808">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Upgrading from a Version Below 1.30</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">When upgrading to the current <span class="ph"><span class="ph pname">SAPUI5</span></span> version  from a version below 1.30 (released in
+		September 2015), check whether the changes listed below influence your apps.</p>
+
+		<div class="p">This <span class="ph"><span class="ph pname">SAPUI5</span></span> version also contains the following upgrades: <ul class="ul" id="loiofe1f31add68041ec8b4c11598fe8a808__ul_rng_sym_rv">
+				<li class="li">
+					<p class="p">jQuery upgraded from version 1.11.1 to version 2.1.4</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">QUnit upgraded from version 1.10.0 to version 1.16.10</p>
+
+				</li>
+
+			</ul>
+</div>
+
+		<p class="p">This upgrade may impact your <span class="ph"><span class="ph pname">SAPUI5</span></span> apps. The following sections give an overview of our
+			findings and how to deal with them.</p>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">If you use additional open-source libraries that depend on jQuery, check whether they need to be upgraded as well.</p>
+
+		</div>
+
+		<div class="section collapsible"><div class="section_title">jQuery: Dependency onjQuery Code that is Specific to Microsoft Internet Explorer 8.0 (IE8)</div><div type="jQuery: Dependency onjQuery Code that is Specific to Microsoft Internet Explorer 8.0 (IE8)">
+			<p class="p"><span class="ph"><span class="ph pname">SAPUI5</span></span> contained some code that referenced IE8-specific members of the jQuery API
+				(like <samp class="ph codeph">jquery.css.Hooks.opacity.set</samp>). This code has been removed.</p>
+</div></div>
+
+		<div class="section collapsible"><div class="section_title">jQuery: Error Handling in Synchronous XHR Calls</div><div type="jQuery: Error Handling in Synchronous XHR Calls"><p class="p">jQuery 2.x changed the way how
+					<samp class="ph codeph">XMLHttpRequests</samp> (XHR) inside the<samp class="ph codeph"> jQuery.ajax</samp> call. One side-effect of this refactoring is that errors
+				thrown in the success or error callbacks of <samp class="ph codeph">jQuery.ajax</samp> are no longer visible for a caller of synchronous
+					<samp class="ph codeph">jQuery.ajax()</samp> calls. They are caught by the XHR event hooks (like <samp class="ph codeph">onload</samp>, <samp class="ph codeph">onerror</samp>) that
+				jQuery uses now. Only <samp class="ph codeph">try/catch</samp> statements inside the callbacks will catch such exceptions, but not <samp class="ph codeph">try/catch</samp>
+				statements outside the callbacks.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Example</p>
+
+				<div class="p">
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">window.onerror = function(e) {
+    alert("global error handler caught " + e);
+    return true;
+}
+     
+try {
+    jQuery.ajax({
+        url: './nonexisting.json',
+        async: false,
+        dataType: 'json',
+        success: function() {
+            console.info("success");
+        },
+        error: function(xhr,error,status) {
+            ^// this error will not be caught by the try/catch below, only by the global error handler above
+            throw new Error("error fetching resource with jQuery " + jQuery.fn.jquery + ": " + xhr.status + " " + status);
+        }
+    });
+} catch (e) {
+    // never reached with jQuery 2, but worked with jQuery 1.11.1
+    alert("try-catch caught " + e.message);
+}</pre></div>
+
+				</div>
+
+			</div></div></div>
+
+		<div class="section collapsible"><div class="section_title">jQuery: Incompatibility of jQuery.animate and sinon.fakeTimers</div><div type="jQuery: Incompatibility of jQuery.animate and sinon.fakeTimers">
+			
+			<div class="p">As jQuery 2.x only runs on browsers that support ECMAScript 5, the implementation of some
+				helper methods have been changed and now rely on ECMAScript 5 features. One of these
+				methods is <samp class="ph codeph">jQuery.now</samp> which now is implemented as follows:
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">// not the exact code from jQuery, but same effect
+jQuery.now = Date.now;</pre></div>
+</div>
+
+			<p class="p"><span class="ph filepath">sinon.js</span> when instructed to <samp class="ph codeph">fakeTimers</samp> however replaces <samp class="ph codeph">Date.now</samp> with an own version that
+				listens to <samp class="ph codeph">sinon.clock.tick()</samp>. </p>
+
+			<p class="p">This means that when jQuery is loaded before Sinon, it will keep a reference to the original <samp class="ph codeph">Date.now</samp> function in the
+					<samp class="ph codeph">jQuery.now</samp> API. Therefore any code that uses <samp class="ph codeph">jQuery.now()</samp> will not work with Sinon fake timers, or more
+				specific, it will not react on e.g. <samp class="ph codeph">sinon.timer.tick(xyz)</samp>. </p>
+
+			<p class="p">This especially affects jQuery animations and <samp class="ph codeph">sap.ui.core.Popup</samp> that uses these animations.  They won't work with
+					<samp class="ph codeph">sinon.fakeTimers</samp> out of the box. </p>
+
+			<p class="p">To solve this, you can stub the <samp class="ph codeph">jQuery.now()</samp> function when Sinon is used. Stub it in a way that the mocked version of
+					<samp class="ph codeph">Date.now</samp> is called.</p>
+
+		</div></div>
+
+		<div class="section collapsible"><div class="section_title">QUnit: DOM Prerequisites</div><div type="QUnit: DOM Prerequisites"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Problem</p>
+
+				<p class="p">QUnit changed its requirements regarding the test page. While earlier versions accepted fine-grained DOM sections for
+					<samp class="ph codeph">header</samp>, <samp class="ph codeph">banner</samp>, <samp class="ph codeph">userAgent</samp>, or <samp class="ph codeph">tests</samp>, QUnit 1.16.0 only expects (and
+					accepts) a single DOM hook called <samp class="ph codeph">qunit</samp>. All details inside that DOM are managed by QUnit itself. If no DOM element with ID
+						<samp class="ph codeph">qunit</samp> exists, the initialization of QUnit is skipped and no tests are executed.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Solution</p>
+
+				<p class="p">As short-term solution, you can use module <samp class="ph codeph">sap/ui/test/qunit-junit.js</samp> to wrap an existing <samp class="ph codeph">'qunit-header'</samp> in case
+						<samp class="ph codeph">id='qunit'</samp> is missing. </p>
+
+				<p class="p">As long-term solution, you have to migrate test pages to the suggested page content.</p>
+
+			</div></div></div>
+
+		<div class="section collapsible"><div class="section_title">QUnit: start() and stop() Methods</div><div type="QUnit: start() and stop() Methods"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Problem</p>
+
+				<p class="p">When methods <samp class="ph codeph">start()</samp> and <samp class="ph codeph">stop()</samp> are called either unbalanced (more <samp class="ph codeph">start()</samp> than
+						<samp class="ph codeph">stop()</samp> calls) or when they are called outside of a test context, the test fails. Before, this was already regarded as
+					wrong usage in earlier QUnit versions, but tests did not fail.</p>
+
+				<p class="p">For example, test cases fail that unnecessarily use <samp class="ph codeph">stop()</samp> before defining an asynchronous test with
+						<samp class="ph codeph">{asyncTests();</samp>.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Solution</p>
+
+				<p class="p">Remove unnecessary <samp class="ph codeph">start()</samp> and <samp class="ph codeph">stop()</samp> calls.</p>
+
+			</div></div></div>
+
+		<div class="section collapsible"><div class="section_title">QUnit: Removal of Deprecated Methods and 'window' Properties</div><div type="QUnit: Removal of Deprecated Methods and 'window' Properties"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Problem</p>
+
+				<div class="p">QUnit 1.16.0 removed some deprecated methods and reduced the number of globally visible properties.<ul class="ul" id="loiofe1f31add68041ec8b4c11598fe8a808__ul_ng5_v2n_rv">
+						<li class="li">
+							<p class="p"><samp class="ph codeph">QUnit.raises()</samp> and <samp class="ph codeph">window.raises</samp> no longer exist; use <samp class="ph codeph">QUnit.throws</samp>
+								instead.</p>
+
+						</li>
+
+						<li class="li">
+							<div class="p">Module <samp class="ph codeph">sap/ui/test/QUnitUtils.js</samp> restores the old name and exports it to the <samp class="ph codeph">window</samp> object as
+								well. <samp class="ph codeph">window.assert</samp> does no longer expose the value of <samp class="ph codeph">QUnit.assert</samp>. Instead, each test
+								function receives a contextualized instance of <samp class="ph codeph">Assert</samp> which should be used to code assertions like
+								this:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">test("my sophisticated test", function(assert) {
+        assert.equal("x", "u", "'x' should be an 'u'");
+      }</pre></div>
+</div>
+
+						</li>
+
+					</ul>
+</div>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Solution</p>
+
+				<p class="p">As short-term solution, you can use module <samp class="ph codeph">sap/ui/test/qunit-junit.js</samp> to restore the old behavior.</p>
+
+				<p class="p">As long-term solution, migrate to the suggested QUnit APIs.</p>
+
+			</div></div></div>
+
+		<div class="section collapsible"><div class="section_title">QUnit: Assertion Logging</div><div type="QUnit: Assertion Logging"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Problem</p>
+
+				<p class="p">While tests are executed, QUnit collects the result and message of each assertion and displays them to the end user. In QUnit 1.10.0 the
+					report was created after test execution, in QUnit 1.16.0, the QUnit DOM is updated 'on the fly' while the test is running.</p>
+
+				<p class="p">This means that tests that open a popup with a <samp class="ph codeph">followOf</samp> element or, for example, use <samp class="ph codeph">CLOSE_ON_SCROLL</samp> might
+					run into unexpected contexts as the fixture DOM might move due to the live-logging.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Solution</p>
+
+				<p class="p">The live-update cannot be suppressed. As a workaround, you can move the <samp class="ph codeph">UIArea</samp> for the fixtureto the top of the
+						<samp class="ph codeph">&lt;body&gt;</samp> and move the QUnit reporting section <samp class="ph codeph">(&lt;div id='qunit'&gt;&lt;/div&gt;)</samp> after that. Thereby, the
+					DOM update does no longer modify the position of fixture DOM. </p>
+
+			</div></div></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=http://qunitjs.com/cookbook/" alt="http://qunitjs.com/cookbook/" title="http://qunitjs.com/cookbook/">Cookbook for QUnit on <samp class="ph codeph">http://qunitjs.com/</samp>
+			<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

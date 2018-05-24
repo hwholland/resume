@@ -1,0 +1,733 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+<title>QUnit: sap.suite.ui.microchart.HarveyBallMicroChart</title>
+<base href="../../../../../../">
+<!--[if lte IE 9]><script>
+(function() {
+	var baseTag = document.getElementsByTagName('base')[0];
+	baseTag.href = baseTag.href;
+})();
+</script><![endif]-->
+
+<script id="sap-ui-bootstrap" src="resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.suite.ui.microchart">
+</script>
+
+<link rel="stylesheet" type="text/css"
+	href="resources/sap/ui/thirdparty/qunit.css" />
+<script src="resources/sap/ui/thirdparty/qunit.js"></script>
+<script src="resources/sap/ui/qunit/qunit-junit.js"></script>
+<script src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+<!--[if IE]>
+	<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-ie.js"></script>
+<![endif]-->
+<script>
+	(function() {
+		jQuery.sap.initMobile();
+		jQuery.sap.require("sap.suite.ui.microchart.HarveyBallMicroChart");
+
+		QUnit.module("Control initialization core and theme checks", {
+			beforeEach: function() {
+				this.oStubIsInitialized = sinon.stub(sap.ui.getCore(), "isInitialized");
+				this.oSpyAttachInit = sinon.spy(sap.ui.getCore(), "attachInit");
+				this.oSpyHandleCoreInitialized = sinon.spy(sap.suite.ui.microchart.HarveyBallMicroChart.prototype, "_handleCoreInitialized");
+				this.oStubThemeApplied = sinon.stub(sap.ui.getCore(), "isThemeApplied");
+				this.oStubAttachThemeApplied = sinon.stub(sap.ui.getCore(), "attachThemeChanged", function(fn, context) {
+					fn.call(context); //simulate immediate theme change
+				});
+				this.oSpyHandleThemeApplied = sinon.spy(sap.suite.ui.microchart.HarveyBallMicroChart.prototype, "_handleThemeApplied");
+			},
+			afterEach: function() {
+				this.oStubIsInitialized.restore();
+				this.oSpyAttachInit.restore();
+				this.oSpyHandleCoreInitialized.restore();
+				this.oStubThemeApplied.restore();
+				this.oStubAttachThemeApplied.restore();
+				this.oSpyHandleThemeApplied.restore();
+			}
+		});
+
+		QUnit.test("Core not loaded and theme not loaded", function(assert) {
+			//Arrange
+			this.oStubIsInitialized.returns(false);
+			this.oStubThemeApplied.returns(false);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.HarveyBallMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.oSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+			assert.ok(this.oSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.oStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+			assert.ok(this.oSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+		});
+
+		QUnit.test("Core not loaded and theme loaded", function(assert) {
+			//Arrange
+			this.oStubIsInitialized.returns(false);
+			this.oStubThemeApplied.returns(true);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.HarveyBallMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.oSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+			assert.ok(this.oSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.oStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+			assert.ok(this.oSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+		});
+
+		QUnit.test("Core loaded and theme not loaded", function(assert) {
+			//Arrange
+			this.oStubIsInitialized.returns(true);
+			this.oStubThemeApplied.returns(false);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.HarveyBallMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.oSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+			assert.ok(this.oSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.oStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+			assert.ok(this.oSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+		});
+
+		QUnit.test("Core loaded and theme loaded", function(assert) {
+			//Arrange
+			this.oStubIsInitialized.returns(true);
+			this.oStubThemeApplied.returns(true);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.HarveyBallMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.oSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+			assert.ok(this.oSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.oStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+			assert.ok(this.oSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+		});
+
+		if (!(sap.ui.Device.browser.msie && sap.ui.Device.browser.version <= 8)) {
+			jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		}
+
+		QUnit.module("Rendering Tests - sap.suite.ui.microchart.HarveyBallMicroChart", {
+			beforeEach : function() {
+				this.oHbmc1 = new sap.suite.ui.microchart.HarveyBallMicroChart("rmc1", {
+					size: "M",
+					total: 355,
+					totalLabel: "360",
+					totalScale: "Mrd",
+					formattedLabel: false,
+					showTotal: true,
+					showFractions: true,
+					tooltip: "Cumulative Totals\n{AltText}\ncalculated in EURO",
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 125,
+						color: sap.m.ValueColor.Good,
+						fractionLabel: "130",
+						fractionScale: "Mln",
+						formattedLabel: false
+					})]
+				}).placeAt("qunit-fixture");
+
+				this.oHbmc2 = new sap.suite.ui.microchart.HarveyBallMicroChart("rmc2", {
+					size: "M",
+					total: 355,
+					totalScale: "Mrd",
+					formattedLabel: false,
+					showTotal: true,
+					showFractions: true,
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 240,
+						color: sap.m.ValueColor.Good,
+						fractionScale: "Mln",
+						formattedLabel: false
+					})]
+				}).placeAt("qunit-fixture");
+
+				this.oHbmc3 = new sap.suite.ui.microchart.HarveyBallMicroChart("rmc3", {
+					size: "M",
+					total: 360,
+					totalLabel: "360",
+					totalScale: "Mrd",
+					formattedLabel: false,
+					showTotal: false,
+					showFractions: false,
+					tooltip: "Test tooltip",
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 355,
+						color: sap.m.ValueColor.Good,
+						fractionLabel: "130",
+						fractionScale: "Mln",
+						formattedLabel: false
+					})]
+				}).placeAt("qunit-fixture");
+
+				this.oHbmc4 = new sap.suite.ui.microchart.HarveyBallMicroChart("rmc4", {
+					size: "M",
+					total: 360,
+					totalLabel: "100KHz",
+					totalScale: "Mrd",
+					formattedLabel: true,
+					showTotal: true,
+					showFractions: true,
+					tooltip: "Cumulative Totals\n{AltText}\ncalculated in EURO",
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 4,
+						color: sap.m.ValueColor.Good,
+						fractionLabel: "21Kg",
+						fractionScale: "Mln",
+						formattedLabel: true
+					})]
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function() {
+				this.oHbmc1.destroy();
+				this.oHbmc2.destroy();
+				this.oHbmc3.destroy();
+				this.oHbmc4.destroy();
+			}
+		});
+
+		QUnit.test("Control rendering test - Labels instead of values",
+			function(assert) {
+				assert.ok(jQuery.sap.domById("rmc1"), "Control 1 was rendered");
+				assert.ok(jQuery.sap.byId("rmc1-harvey-ball").length > 0, "HarveyBallMicroChart was rendered");
+				assert.equal(jQuery.sap.domById("rmc1-fraction").innerHTML, "130", "Fraction from label should appear in control");
+				assert.equal(jQuery.sap.domById("rmc1-fraction-scale").innerHTML, "Mln", "Fraction scale should appear in control");
+				assert.equal(jQuery.sap.domById("rmc1-total").innerHTML, "360", "Total should appear in control");
+				assert.equal(jQuery.sap.domById("rmc1-total-scale").innerHTML, "Mrd", "Total scale should appear in control");
+			});
+
+		QUnit.test("Control rendering test - No labels, values only",
+			function(assert) {
+				assert.ok(jQuery.sap.domById("rmc2"), "Control 1 was rendered");
+				assert.ok(jQuery.sap.byId("rmc2-harvey-ball").length > 0, "HarveyBallMicroChart was rendered");
+				assert.equal(jQuery.sap.domById("rmc2-fraction").innerHTML, "240", "Fraction from value should appear in control");
+				assert.equal(jQuery.sap.domById("rmc2-fraction-scale").innerHTML, "Mln", "Fraction scale should appear in control");
+				assert.equal(jQuery.sap.domById("rmc2-total").innerHTML, "355", "Total from value should appear in control");
+				assert.equal(jQuery.sap.domById("rmc2-total-scale").innerHTML, "Mrd", "Total scale should appear in control");
+				assert.equal(jQuery.sap.byId("rmc2-fraction").is(':visible'), true, "Fraction should appear in control");
+				assert.equal(jQuery.sap.byId("rmc2-fraction-scale").is(':visible'), true, "Fraction scale should appear in control");
+				assert.equal(jQuery.sap.byId("rmc2-total").is(':visible'), true, "Total should appear in control");
+				assert.equal(jQuery.sap.byId("rmc2-total-scale").is(':visible'), true, "Total scale should appear in control");
+			});
+
+		QUnit.test("Control rendering test - Labels display switched off",
+			function(assert) {
+				assert.ok(jQuery.sap.domById("rmc3"), "Control 1 was rendered");
+				assert.ok(jQuery.sap.byId("rmc3-harvey-ball").length > 0, "HarveyBallMicroChart was rendered");
+				assert.equal(jQuery.sap.byId("rmc3-fraction").is(':visible'), false, "Fraction should not appear in control");
+				assert.equal(jQuery.sap.byId("rmc3-fraction-scale").is(':visible'), false, "Fraction scale should not appear in control");
+				assert.equal(jQuery.sap.byId("rmc3-total").is(':visible'), false, "Total should not appear in control");
+				assert.equal(jQuery.sap.byId("rmc3-total-scale").is(':visible'), false, "Total scale should not appear in control");
+			});
+
+		QUnit.test("Control rendering test - Formatted labels", function(assert) {
+			assert.ok(jQuery.sap.domById("rmc4"), "control 1 was rendered");
+			assert.ok(jQuery.sap.byId("rmc4-harvey-ball").length > 0, "harvey ball chart was rendered");
+			assert.equal(jQuery.sap.domById("rmc4-fraction").innerHTML, "21", "Fraction from formatted label should appear in control");
+			assert.equal(jQuery.sap.domById("rmc4-fraction-scale").innerHTML, "Kg", "Fraction scale  from formatted label should appear in control");
+			assert.equal(jQuery.sap.domById("rmc4-total").innerHTML, "100", "Total from formatted label should appear in control");
+			assert.equal(jQuery.sap.domById("rmc4-total-scale").innerHTML, "KHz", "Total scale from formatted label should appear in control");
+		});
+
+		QUnit.module("Calculation Tests - sap.suite.ui.microchart.HarveyBallMicroChart", {
+			beforeEach : function() {
+				this.oHbmc1 = new sap.suite.ui.microchart.HarveyBallMicroChart("rmc1", {
+					size: "M",
+					total: 355,
+					totalLabel: "360",
+					totalScale: "Mrd",
+					formattedLabel: false,
+					showTotal: true,
+					showFractions: true,
+					tooltip: "Cumulative Totals\n{AltText}\ncalculated in EURO",
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 125,
+						color: sap.m.ValueColor.Good,
+						fractionLabel: "130",
+						fractionScale: "Mln",
+						formattedLabel: false
+					})]
+				}).placeAt("qunit-fixture");
+
+				this.oHbmc2 = new sap.suite.ui.microchart.HarveyBallMicroChart("rmc2", {
+					size: "M",
+					total: 355,
+					totalScale: "Mrd",
+					formattedLabel: false,
+					showTotal: true,
+					showFractions: true,
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 240,
+						color: sap.m.ValueColor.Good,
+						fractionScale: "Mln",
+						formattedLabel: false
+					})]
+				}).placeAt("qunit-fixture");
+
+				this.oHbmc3 = new sap.suite.ui.microchart.HarveyBallMicroChart("rmc3", {
+					size: "M",
+					total: 360,
+					totalLabel: "360",
+					totalScale: "Mrd",
+					formattedLabel: false,
+					showTotal: false,
+					showFractions: false,
+					tooltip: "Test tooltip",
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 355,
+						color: sap.m.ValueColor.Good,
+						fractionLabel: "130",
+						fractionScale: "Mln",
+						formattedLabel: false
+					})]
+				}).placeAt("qunit-fixture");
+
+				this.oHbmc4 = new sap.suite.ui.microchart.HarveyBallMicroChart("rmc4", {
+					size: "M",
+					total: 360,
+					totalLabel: "100KHz",
+					totalScale: "Mrd",
+					formattedLabel: true,
+					showTotal: true,
+					showFractions: true,
+					tooltip: "Cumulative Totals\n{AltText}\ncalculated in EURO",
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 4,
+						color: sap.m.ValueColor.Good,
+						fractionLabel: "21Kg",
+						fractionScale: "Mln",
+						formattedLabel: true
+					})]
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function() {
+				this.oHbmc1.destroy();
+				this.oHbmc2.destroy();
+				this.oHbmc3.destroy();
+				this.oHbmc4.destroy();
+			}
+		});
+
+		QUnit.test("Calculation test - Less than 180 degrees", function(assert) {
+			this.oHbmc1.getRenderer()._calculatePath(this.oHbmc1);
+			assert.equal(this.oHbmc1.getRenderer()._serializePieChart(), "M36,36 L36,4 A32,32 0 0,1 61.64,55.15 L36,36 z", "Chart path should be calculated correctly for angles < 180 degrees");
+		});
+
+		QUnit.test("Calculation test - Greater than 180 degrees", function(assert) {
+			this.oHbmc2.getRenderer()._calculatePath(this.oHbmc2);
+			assert.equal(this.oHbmc2.getRenderer()._serializePieChart(), "M36,36 L36,4 A32,32 0 1,1 7.39,50.34 L36,36 z", "Chart path should be calculated correctly for angles > 180 degrees");
+		});
+
+		QUnit.test("Calculation test - Between 350 and 360 degrees", function(assert) {
+			this.oHbmc3.getRenderer()._calculatePath(this.oHbmc3);
+			assert.equal(this.oHbmc3.getRenderer()._serializePieChart(), "M37.5,36 L37.5,4 A32,32 0 1,1 34.5,4 L34.5,36 z", "Chart path should be calculated correctly for angles 350..360 degrees");
+		});
+
+		QUnit.test("Calculation test - Between 0 and 10 degrees", function(assert) {
+			this.oHbmc4.getRenderer()._calculatePath(this.oHbmc4);
+			assert.equal(this.oHbmc4.getRenderer()._serializePieChart(), "M34.5,36 L34.5,4 A32,32 0 0,1 37.5,4 L37.5,36 z", "Chart path should be calculated correctly for angles 0..10 degrees");
+		});
+
+		QUnit.module("Accessibility Tests - sap.suite.ui.microchart.HarveyBallMicroChart", {
+			beforeEach : function() {
+				this.oHbmc1 = new sap.suite.ui.microchart.HarveyBallMicroChart("rmc1", {
+					size: "M",
+					total: 355,
+					totalLabel: "360",
+					totalScale: "Mrd",
+					formattedLabel: false,
+					showTotal: true,
+					showFractions: true,
+					tooltip: "Cumulative Totals\n{AltText}\ncalculated in EURO",
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 125,
+						color: sap.m.ValueColor.Good,
+						fractionLabel: "130",
+						fractionScale: "Mln",
+						formattedLabel: false
+					})]
+				}).placeAt("qunit-fixture");
+
+				this.oHbmc2 = new sap.suite.ui.microchart.HarveyBallMicroChart("rmc2", {
+					size: "M",
+					total: 355,
+					totalScale: "Mrd",
+					formattedLabel: false,
+					showTotal: true,
+					showFractions: true,
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 240,
+						color: sap.m.ValueColor.Good,
+						fractionScale: "Mln",
+						formattedLabel: false
+					})]
+				}).placeAt("qunit-fixture");
+
+				this.oHbmc3 = new sap.suite.ui.microchart.HarveyBallMicroChart("rmc3", {
+					size: "M",
+					total: 360,
+					totalLabel: "360",
+					totalScale: "Mrd",
+					formattedLabel: false,
+					showTotal: false,
+					showFractions: false,
+					tooltip: "Test tooltip",
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 355,
+						color: sap.m.ValueColor.Good,
+						fractionLabel: "130",
+						fractionScale: "Mln",
+						formattedLabel: false
+					})]
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function() {
+				this.oHbmc1.destroy();
+				this.oHbmc2.destroy();
+				this.oHbmc3.destroy();
+			}
+		});
+
+		QUnit.test("Test alternative text", function(assert) {
+			// Act
+			var sAltText = this.oHbmc1.getAltText();
+			// Assert
+			assert.equal(sAltText.indexOf("360Mrd") >= 0, true, "AltText should contain total value and scaling factor");
+			assert.equal(sAltText.indexOf("130Mln") >= 0, true, "AltText should contain fraction value and scaling factor");
+		});
+
+		QUnit.test("Test tooltip text - Custom tooltip including AltText specified", function(assert) {
+			// Arrange
+			this.oHbmc1.$().trigger("mouseenter");
+			// Act
+			var sTitle = jQuery.sap.domById("rmc1").title;
+			// Assert
+			assert.equal(sTitle.indexOf("360Mrd") >= 0, true, "Tooltip should contain total value and scaling factor");
+			assert.equal(sTitle.indexOf("130Mln") >= 0, true, "Tooltip should contain fraction value and scaling factor");
+			assert.equal(sTitle.indexOf("Cumulative Totals") >= 0, true, "Tooltip should contain custom text");
+		});
+
+		QUnit.test("Test tooltip text - Custom tooltip not including AltText specified", function(assert) {
+			// Arrange
+			this.oHbmc3.$().trigger("mouseenter");
+			// Act
+			var sTitle = jQuery.sap.domById("rmc3").title;
+			// Assert
+			assert.equal(sTitle.indexOf("360Mrd") >= 0, false, "Tooltip should not contain total value and scaling factor");
+			assert.equal(sTitle.indexOf("130Mln") >= 0, false, "Tooltip should not contain fraction value and scaling factor");
+			assert.equal(sTitle.indexOf("Test tooltip") >= 0, true, "Tooltip should contain custom text");
+		});
+
+		QUnit.test("Test tooltip text - No tooltip specified", function(assert) {
+			// Arrange
+			this.oHbmc2.$().trigger("mouseenter");
+			// Act
+			var sTitle = jQuery.sap.domById("rmc2").title;
+			// Assert
+			assert.equal(sTitle.indexOf("355Mrd") >= 0, true, "Tooltip should contain total value and scaling factor");
+			assert.equal(sTitle.indexOf("240Mln") >= 0, true, "Tooltip should contain fraction value and scaling factor");
+		});
+
+		QUnit.module("Null Values check", {
+			beforeEach : function() {
+				this.oChart = new sap.suite.ui.microchart.HarveyBallMicroChart("chart", {
+					size: "M",
+					total: 355,
+					totalLabel: "360",
+					totalScale: "Mrd",
+					formattedLabel: false,
+					showTotal: true,
+					showFractions: true,
+					tooltip: "Cumulative Totals\n{AltText}\ncalculated in EURO",
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 125,
+						color: sap.m.ValueColor.Good,
+						formattedLabel: false
+					})]
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function () {
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("Rendered, without error", function(assert) {
+			assert.ok(this.oChart.$().length > 0, "control 1 was rendered");
+		});
+
+		QUnit.module("Responsiveness tests", {
+			beforeEach : function() {
+				this.oChart = new sap.suite.ui.microchart.HarveyBallMicroChart("mChart", {
+					total: 355,
+					isResponsive: true,
+					totalLabel: "360",
+					totalScale: "Mrd",
+					formattedLabel: false,
+					showTotal: true,
+					showFractions: true,
+					tooltip: "Cumulative Totals\n{AltText}\ncalculated in EURO",
+					items: [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+						fraction: 125,
+						color: sap.m.ValueColor.Good,
+						fractionLabel: "130",
+						fractionScale: "Mln",
+						formattedLabel: false
+					})]
+				});
+				this.oFlexBox = new sap.m.FlexBox("flexbox", {
+					height: "50px",
+					width: "50px",
+					items: [this.oChart]
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function () {
+				this.oFlexBox.destroy();
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("Text disappears when the font is smaller than 12px", function(assert) {
+			// Arrange
+			var sDisplayNone = "none";
+			var sChartStyle = this.oChart.$().css("display");
+			var sText1Style = this.oChart.$().find("#sapSuiteHBMCTopText").css("display");
+			var sText2Style = this.oChart.$().find("#sapSuiteHBMCBottomText").css("display");
+
+			// Assert
+			assert.notEqual(sChartStyle, sDisplayNone, "Chart is displayed");
+			assert.equal(sText1Style, sDisplayNone, "Text1 is hidden");
+			assert.equal(sText2Style, sDisplayNone, "Text2 is hidden");
+		});
+
+		QUnit.test("Test that the whole microchart is hidden when the size is smaller than 24px", function(assert) {
+			// Arrange
+			this.oFlexBox.setWidth("22px");
+			this.oFlexBox.setHeight("22px");
+			// Act
+			this.oFlexBox.rerender();
+			// Assert
+			var sDisplayNone = "display: none";
+			var aChartStyle = jQuery.sap.domById("mChart").getAttribute("style").split(";");
+			var bIsDisplayNone = false;
+			for (var i = 0; i < aChartStyle.length; i++) {
+				if (aChartStyle[i].trim() === sDisplayNone) {
+					bIsDisplayNone = true;
+				}
+			}
+			assert.ok(bIsDisplayNone, "Chart is hidden");
+		});
+
+		QUnit.module("After rendering size manipulation in GenericTile", {
+			beforeEach : function() {
+				this.oChart = new sap.suite.ui.microchart.HarveyBallMicroChart("mChart", {
+					isResponsive : true,
+					total : 100,
+					totalScale: "Mrd"
+				});
+				this.oGenericTile = new sap.m.GenericTile({
+					tileContent : [new sap.m.TileContent({
+						content : this.oChart
+					})]
+				}).placeAt("qunit-fixture");
+			},
+			afterEach : function() {
+				this.oChart.destroy();
+				this.oChart = null;
+				this.oGenericTile.destroy();
+				this.oGenericTile = null;
+			}
+		});
+
+		QUnit.test("Size adjustments in case of chart located iside of GenericTile", function(assert) {
+			//Arrange
+			var oAdjustTcCallback = sinon.spy(sap.suite.ui.microchart.HarveyBallMicroChart.prototype, "_resizeForTileContent");
+			//Act
+			this.oChart.onAfterRendering();
+			//Assert
+			assert.ok(oAdjustTcCallback.called, "Called function that performs the necessary adjustments in case of chart located iside of GenericTile.");
+		});
+
+		QUnit.module("Responsiveness adjustments for the use within GenericTile", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.HarveyBallMicroChart().addStyleClass("sapUiSmallMargin");
+				this.oGenericTile = new sap.m.GenericTile("generic-tile", {
+					tileContent : new sap.m.TileContent({
+						content : this.oChart
+					})
+				});
+			},
+			afterEach: function() {
+				this.oGenericTile.destroy();
+			}
+		});
+
+		QUnit.test("The MicroChart becomes responsive if it is used in a Generic Tile", function(assert) {
+			//Act
+			this.oChart.onBeforeRendering();
+			//Assert
+			assert.ok(this.oChart.getIsResponsive(), "The chart became responsive");
+		});
+
+		QUnit.test("The standard margins are handled if chart is used in a Generic Tile", function(assert) {
+			//Arrange
+			var oRemoveMarginCallback = sinon.spy(sap.suite.ui.microchart, "_removeStandardMargins");
+			//Act
+			this.oChart.onBeforeRendering();
+			//Assert
+			assert.ok(oRemoveMarginCallback.called, "Library function that removes standard margins has been called.");
+		});
+
+		QUnit.module("Tooltip behavior", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.ComparisonMicroChart();
+				this.oModel = new sap.ui.model.json.JSONModel({
+					size : "M",
+					Tooltip : "Custom Tooltip"
+				});
+			},
+			afterEach: function() {
+				this.oChart.destroy();
+				this.oModel.destroy();
+			}
+		});
+
+		QUnit.test("Default value for tooltip", function(assert) {
+			//Arrange
+			//Act
+			//Assert
+			assert.deepEqual(this.oChart.getTooltip(), "{AltText}", "Default value set correctly");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, tooltip is not bound", function(assert) {
+			//Arrange
+			//Act
+			this.oChart.setModel(this.oModel);
+			sap.ui.getCore().applyChanges();
+			//Assert
+			assert.deepEqual(this.oChart.getTooltip(), "{AltText}", "Default value set correctly");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, control is bound, tooltip is not bound", function(assert) {
+			//Arrange
+			this.oChart.setAggregation("tooltip", new sap.ui.core.TooltipBase({
+				text : "{/Tooltip}"
+			}));
+			//Act
+			this.oChart.setModel(this.oModel);
+			sap.ui.getCore().applyChanges();
+			//Assert
+			assert.ok(this.oChart.getTooltip(), "Tooltip exists");
+			assert.deepEqual(this.oChart.getTooltip().getText(), "Custom Tooltip", "Tooltip exists");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, control is bound", function(assert) {
+			//Arrange
+			var oModel = new sap.ui.model.json.JSONModel({
+				data : [{
+					size : "M",
+					Tooltip : "Custom Tooltip"
+				}]
+			});
+			var oTable = new sap.m.Table({
+				items : {
+					path : "/data",
+					template : new sap.m.ColumnListItem({
+						cells : [new sap.suite.ui.microchart.HarveyBallMicroChart({
+							total: 4.20,
+							totalLabel: "Some value",
+							totalScale: "M",
+							items : [new sap.suite.ui.microchart.HarveyBallMicroChartItem({
+								fractionLabel: "Some fraction",
+								fractionScale: "Some scale"
+							})]
+						})]
+					})
+				}
+			}).setModel(oModel);
+			//Act
+			sap.ui.getCore().applyChanges();
+			var oChart = oTable.getItems()[0].getCells()[0];
+			//Assert
+			assert.deepEqual(oChart.getTooltip(), null, "Binding is empty, so tooltip aggregation is also empty.");
+			assert.ok(oChart.getTooltip_AsString(), "Tooltip is empty, default tooltip as string appears");
+			assert.ok(oChart.isBound("tooltip"), "Tooltip is bound");
+			//Cleanup
+			oTable.destroy();
+			oModel.destroy();
+		});
+
+		QUnit.module("Title attribute is added and removed when mouse enters and leaves", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.HarveyBallMicroChart("mChart", {
+					total : 100,
+					totalScale: "Mrd"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this.oChart.destroy();
+				this.oChart = null;
+			}
+		});
+
+		QUnit.test("Aria-label only includes the standard chart information", function(assert) {
+			// Arrange
+			var sAriaLabel = this.oChart.getAltText();
+			this.oChart.setTooltip("This is a tooltip");
+			// Act
+			sap.ui.getCore().applyChanges();
+			// Assert
+			assert.equal(this.oChart.$().attr("aria-label"), sAriaLabel, "The aria-label includes only chart information");
+			assert.equal(this.oChart.$().attr("title"), null, "The title attribute is not rendered");
+		});
+
+		QUnit.test("Tooltip is shown when mouse enters chart", function(assert) {
+			// Arrange
+			this.oChart.setTooltip("This is a tooltip");
+			sap.ui.getCore().applyChanges();
+			// Act
+			this.oChart.$().trigger("mouseenter");
+			// Assert
+			assert.equal(this.oChart.$().attr("title"), "This is a tooltip", "The title attribute is added when mouse enters the chart");
+		});
+
+		QUnit.test("Tooltip is removed when mouse leaves chart", function(assert) {
+			// Arrange
+			this.oChart.setTooltip("This is a tooltip");
+			sap.ui.getCore().applyChanges();
+			// Act
+			this.oChart.$().trigger("mouseenter");
+			this.oChart.$().trigger("mouseleave");
+			// Assert
+			assert.equal(this.oChart.$().attr("title"), null, "The title attribute is removed when mouse leaves the chart");
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<div id="qunit"></div>
+	<div id="qunit-fixture" style="width: 100%; height: 30%;"></div>
+</body>
+</html>

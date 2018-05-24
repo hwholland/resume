@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+		<title>QUnit: sap.gantt.config.ContainerLayout</title>
+		<script id="sap-ui-bootstrap"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.gantt">
+		</script>
+		<link rel="stylesheet" type="text/css" href="../../../../../resources/sap/ui/thirdparty/qunit.css"/>
+		<script src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+			sap.ui.require([
+				"sap/gantt/config/ContainerLayout",
+				"sap/gantt/config/GanttChartLayout",
+				"sap/ui/thirdparty/sinon",
+				"sap/ui/thirdparty/sinon-qunit"
+			], function (ContainerLayout, GanttChartLayout) {
+				"use strict";
+
+				QUnit.module("Create config.ContainerLayout with default values.", {
+					setup: function () {
+						this.oConfig = new ContainerLayout();
+					},
+					teardown: function () {
+						this.oConfig.destroy();
+						this.oConfig = undefined;
+					}
+				});
+
+				QUnit.test("Test default configuration values." , function (assert) {
+					assert.strictEqual(this.oConfig.getKey(), sap.gantt.config.DEFAULT_CONTAINER_SINGLE_LAYOUT_KEY);
+					assert.strictEqual(this.oConfig.getText(), sap.ui.getCore().getLibraryResourceBundle("sap.gantt").getText("XLST_SINGLE_LAYOUT"));
+					assert.strictEqual(this.oConfig.getOrientation(), sap.ui.core.Orientation.Vertical);
+					assert.strictEqual(this.oConfig.getActiveModeKey(), sap.gantt.config.DEFAULT_MODE_KEY);
+					assert.strictEqual(this.oConfig.getToolbarSchemeKey(), sap.gantt.config.DEFAULT_CONTAINER_TOOLBAR_SCHEME_KEY);
+					assert.strictEqual(this.oConfig.getSelectionPanelSize(), "30%");
+					assert.deepEqual(this.oConfig.getGanttChartLayouts(), []);
+				});
+
+				QUnit.module("Create config.ContainerLayout with customized values.", {
+					setup: function () {
+						this.aGanttChartLayouts = [
+						new GanttChartLayout({
+							viewSize: "40%",
+							activeModeKey: "A",
+							hierarchyKey: "HK",
+						}),
+						new GanttChartLayout({
+							viewSize: "35%",
+							activeModeKey: "D",
+							hierarchyKey: "HK2",
+						})];
+						this.oConfig = new ContainerLayout({
+							key: "CONTAINERLAYOUT",
+							text: "Container Layout",
+							orientation: sap.ui.core.Orientation.Horizontal,
+							activeModeKey: "D",
+							toolbarSchemeKey: "ToolbarScheme",
+							selectionPanelSize: "25%",
+							ganttChartLayouts: this.aGanttChartLayouts
+						});
+					},
+					teardown: function () {
+						this.oConfig.destroy();
+						this.oConfig = undefined;
+					}
+				});
+
+				QUnit.test("Test customized configuration values.", function (assert) {
+					assert.strictEqual(this.oConfig.getKey(), "CONTAINERLAYOUT");
+					assert.strictEqual(this.oConfig.getText(), "Container Layout");
+					assert.strictEqual(this.oConfig.getOrientation(), sap.ui.core.Orientation.Horizontal);
+					assert.strictEqual(this.oConfig.getActiveModeKey(), "D");
+					assert.strictEqual(this.oConfig.getToolbarSchemeKey(), "ToolbarScheme");
+					assert.strictEqual(this.oConfig.getSelectionPanelSize(), "25%");
+					assert.deepEqual(this.oConfig.getGanttChartLayouts(), this.aGanttChartLayouts);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+	</body>
+</html>

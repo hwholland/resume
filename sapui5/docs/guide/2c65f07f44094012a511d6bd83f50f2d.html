@@ -1,0 +1,149 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="SAP Fiori elements control the navigation within an app (internal navigation). This section describes the configuration options that you have."/>
+<meta name="description" content="SAP Fiori elements control the navigation within an app (internal navigation). This section describes the configuration options that you have."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=01758106659903591"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=01758106659903591"/>
+<title>Configuring Internal Navigation</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio2c65f07f44094012a511d6bd83f50f2d">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Configuring Internal Navigation</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">SAP Fiori elements control the navigation within an app (internal navigation). This
+		section describes the configuration options that you have.</p>
+
+		<div class="section"><div class="section_title">Standard Navigation Within an App</div><div type="Standard Navigation Within an App">
+			
+			<p class="p">In the manifest.json, you define which pages are available in the app. At the top level, a
+				"pages"array is defined. This array should have only one point of entry. This is the
+				main entry point to the app and should always be a list report. Each page can have a
+				"pages" array containing all subpages of the given page. Only one subpage is allowed
+				in the list report. This  should be an object page for the same entity set. An
+				object page can have several subpages.</p>
+
+			<p class="p">You can control whether it is possible to navigate to a detail page. It simply depends on
+				whether you keep the predefined definition of a subpage: </p>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"sap.ui.generic.app": {
+    "pages":[{
+        "entitySet": "MyEntitySet",
+        "component": {
+            "name": "sap.suite.ui.generic.template.ListReport",
+            "list": true
+        },
+        // Navigation to detail page: eliminate this block if no navigation is needed
+        "pages": [{
+            "entitySet": "MyEntitySet",
+            "component": {
+                "name": "sap.suite.ui.generic.template.ObjectPage"
+            },
+            "pages": [{
+                    "navigationProperty": "to_MyOtherEntitySet",
+                    "entitySet": "MyOtherEntitySet",
+                "component": {
+                    "name": "sap.suite.ui.generic.template.ObjectPage"
+                },
+            }, {
+                "navigationProperty": "to_MyOtherEntitySetAlternateNavigation",
+                "entitySet": "MyOtherEntitySet",
+                "component": {
+                    "name": "sap.suite.ui.generic.template.ObjectPage"
+                },
+            }, {
+                "navigationProperty": "to_MyThirdEntitySet",
+                "entitySet": "MyThirdEntitySet",
+                "component": {
+                    "name": "sap.suite.ui.generic.template.ObjectPage"
+                },
+            }]
+    }]
+}
+</pre></div>
+
+			</div>
+
+			<p class="p">The same holds true for the navigation to a second object page. This is possible only when the
+				definition is kept in the manifest. If you want to have multiple subpages on the
+				same level, you need to have multiple definitions. The subpages are identified by
+				the corresponding entity set and the navigation property. </p>
+
+			<p class="p">A chevron indicates the navigation options. The user can navigate by clicking on the
+				line. </p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p"> In a non-draft app, if the user is on an object page in edit mode and has made
+					changes, before the navigation has been executed, the system displays a message
+					indicating that the changes will be lost if the user navigates without saving
+					first.</p>
+
+			</div>
+
+		</div></div>
+
+		<div class="section" id="loio2c65f07f44094012a511d6bd83f50f2d__section_dnp_sr1_1cb"><div class="section_title">Navigation Between Entities of an App</div><div type="Navigation Between Entities of an App">
+			
+			<div class="p">You can  link entities within an app. This allows users to navigate between the
+				entities within the application. You can use  this so-called app-internal linking in
+				the object header, in sections, and tables. For example, within a sales order app,
+				you can link from a sales order to another sales order, from a sales order item to
+				the sales order header, or from a sales order schedule line to a schedule line of
+				another sales order.<div class="note note"><span class="notetitle">Note</span> <p class="p">This feature is available only on the object page.</p>
+You cannot
+					use this feature in combination with the flexible column layout.</div>
+</div>
+
+			<p class="p">The following example shows how to use the
+					<samp class="ph codeph">DataFieldWithNavigationPath</samp> annotation to link entities:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotation Term="UI.FieldGroup" Qualifier="NavExample"&gt;
+    &lt;Record&gt;
+        &lt;PropertyValue Property="Data"&gt;
+            &lt;Collection&gt;
+                &lt;Record Type="UI.DataFieldWithNavigationPath"&gt;
+                    &lt;PropertyValue Property="Label" String="Ref. Sales Order" /&gt;
+                    &lt;PropertyValue Property="Value" Path="RefSalesOrderID" /&gt;
+                    &lt;PropertyValue Property="Target" Path="to_SalesOrder" /&gt;
+                &lt;/Record&gt;
+            &lt;/Collection&gt;
+        &lt;/PropertyValue&gt;
+    &lt;/Record&gt;
+&lt;/Annotation&gt;</pre></div>
+
+			
+			
+			
+			
+			
+		</div></div>
+
+		<div class="section" id="loio2c65f07f44094012a511d6bd83f50f2d__section_opy_jxj_gz"><div class="section_title">Navigation after Executing a Function</div><div type="Navigation after Executing a Function">
+			
+			<p class="p">Navigation may also be required after the execution of a regular
+					<span class="ph sap-technical-name sap-technical-name">FunctionImport</span> that is not tagged as a
+					<span class="ph sap-technical-name sap-technical-name">DataFieldForIntentBasedNavigation</span>. The
+				behavior after the execution of the function is controlled by the application as
+				follows: If the <span class="ph sap-technical-name sap-technical-name">FunctionImport</span> returns
+					<span class="ph sap-technical-name sap-technical-name">multiplicity 1</span> and
+					<span class="ph sap-technical-name sap-technical-name">ReturnType=EntityType + EntitySet</span>, then
+				the SAP Fiori element navigates to the instance that is returned by the function
+				import.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

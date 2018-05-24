@@ -1,0 +1,124 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="A helper class, designed to facilitate the implementation of apps based on the sap.f.FlexibleColumnLayout control and the SAP Fiori 2.0 design guidelines."/>
+<meta name="description" content="A helper class, designed to facilitate the implementation of apps based on the sap.f.FlexibleColumnLayout control and the SAP Fiori 2.0 design guidelines."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7702174343472742"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7702174343472742"/>
+<title>Flexible Column Layout Semantic Helper</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio623b01e57b2349e0888d9dc16020b135">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Flexible Column Layout Semantic Helper</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">A helper class, designed to facilitate the implementation of apps based on the
+			<samp class="ph codeph">sap.f.FlexibleColumnLayout</samp> control and the SAP Fiori 2.0 design
+		guidelines.</p>
+
+		<div class="p"><samp class="ph codeph">FlexibleColumnLayout</samp> gives you the freedom to implement any app logic that
+			involves changing the layout (showing/hiding columns) as a result of the user’s actions.
+			However, there are certain UX patterns that are considered as optimal and are
+			recommended for SAP Fiori 2.0 apps. The
+				<samp class="ph codeph">FlexibleColumnLayoutSemanticHelper</samp> class helps you implement them
+			by giving you tips about what layout to display when. <div class="note note"><span class="notetitle">Note</span> Using this class is NOT
+				mandatory in order to build an app with the <samp class="ph codeph">FlexibleColumnLayout</samp>,
+				but makes it easier to achieve the optimal UX recommended in the SAP Fiori 2.0
+				design guidelines.</div>
+</div>
+
+		<p class="p">The first 3 logical levels of information are displayed in the three columns side by
+			side, and the forth (and others) are displayed in the <samp class="ph codeph">End</samp> column in
+			fullscreen. If at any time the user opens a page in fullscreen, all subsequent levels
+			are also displayed in fullscreen.</p>
+
+		<p class="p">Here is a short overview of some of the rules of the default rule set:</p>
+
+		<ul class="ul" id="loio623b01e57b2349e0888d9dc16020b135__ul_rm5_5tb_wy">
+			<li class="li">
+				<p class="p">The control starts with <samp class="ph codeph">OneColumn</samp> layout (usually to display a list of
+					items).</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">When the user selects an item from the <samp class="ph codeph">Begin</samp> column, the item's details are
+					displayed in the <samp class="ph codeph">Mid</samp> column and the layout should change to
+						<samp class="ph codeph">TwoColumnsBeginExpanded</samp>. Two action buttons are displayed
+					on the page in the <samp class="ph codeph">Mid</samp> column –
+						<span class="ph uicontrol">Fullscreen</span> and <span class="ph uicontrol">Close</span>.</p>
+
+				<ul class="ul" id="loio623b01e57b2349e0888d9dc16020b135__ul_fsz_wtb_wy">
+					<li class="li">
+						<p class="p">Choosing the <span class="ph uicontrol">Close</span> button changes the layout back to
+								<samp class="ph codeph">OneColumn</samp>.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Choosing the <span class="ph uicontrol">Fullscreen</span> button changes the layout to
+								<samp class="ph codeph">MidColumnFullScreen</samp>. The
+								<span class="ph uicontrol">Fullscreen</span> button is then replaced with an
+								<span class="ph uicontrol">ExitFullscreen</span> button, which restores the
+							layout to <samp class="ph codeph">TwoColumnsBeginExpanded</samp>.</p>
+
+					</li>
+
+				</ul>
+
+			</li>
+
+			<li class="li">
+				<p class="p">If the user selects an item from the <samp class="ph codeph">Mid</samp> column:</p>
+
+				<ul class="ul" id="loio623b01e57b2349e0888d9dc16020b135__ul_is3_15b_wy">
+					<li class="li">
+						<p class="p">If the current layout is
+								<samp class="ph codeph">TwoColumnsBeginExpanded</samp>/<samp class="ph codeph">TwoColumnsMidExpanded</samp>,
+							the layout changes to <samp class="ph codeph">ThreeColumnsMidExpanded</samp>. The
+								<span class="ph uicontrol">Close</span> and <span class="ph uicontrol">Fullscreen</span>
+							buttons should now be displayed only in the <samp class="ph codeph">End</samp>
+							column.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">If the current layout is <samp class="ph codeph">MidColumnFullScreen</samp>, the layout changes to
+								<samp class="ph codeph">EndColumnFullScreen</samp>.</p>
+
+					</li>
+
+				</ul>
+
+			</li>
+
+			<li class="li">
+				<p class="p">If the user selects an item from the <samp class="ph codeph">End</samp> column (which represents the third
+					logical level of information), the layout should change to
+						<samp class="ph codeph">EndColumnFullScreen</samp> and the forth (then fifth, etc.)
+					logical level should again be displayed in the <samp class="ph codeph">End</samp> column.</p>
+
+			</li>
+
+		</ul>
+
+	</div>
+
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="933965ba8c0440308e1e3233be7bc52f.html" title="Overview of the two main methods used in the sap.f.FlexibleColumnLayoutSemanticHelper class.">Main Methods</a></strong><br/>
+</div>
+</ul>
+
+</div>
+</div></div>
+
+</body>
+</html>

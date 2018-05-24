@@ -1,0 +1,34 @@
+{
+  "title": "JSON schema for SAP.FLP Namespace",
+
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "description": "Represents FLP specific attributes",
+
+  "type": "object",
+
+  "additionalProperties": false,
+
+  "properties": {
+    "tileSize": {
+      "description": "",
+      "type": "string",
+      "enum": ["1x1", "1x2"]
+    },
+    "type": {
+      "description": "Represents the type of FLP entry. It must be 'application' or 'tile' or 'plugin' 'application' if not present",
+      "type": "string",
+      "enum":["application", "tile", "plugin"]
+    },
+    "config": {
+      "description": "Represents configuration parameters of the FLP entry",
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-zA-Z0-9\\_\\.\\-]*$": {
+          "description": "Represents the configuration key and values"
+        }
+      }
+    }
+  }
+}

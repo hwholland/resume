@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>qUnit Page for sap.ui.generic.app.util.Queue</title>
+
+		<script id="sap-ui-bootstrap" type="text/javascript" 
+			src="../../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.ui.generic.app">	
+		</script>
+
+		<link rel="stylesheet"	href="../../../../../../resources/sap/ui/thirdparty/qunit.css"	type="text/css" media="screen" />
+		<script type="text/javascript"	src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript"	src="../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript"	src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="text/javascript"	src="../../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+		<script type="text/javascript"	src="../../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+		<script type="text/javascript">
+
+		<!-- add the qunit-coverage.js to add client-side coverage to QUnit tests -->
+		//if (!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+		//	jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		//}
+
+		(function() {
+			jQuery.sap.require("sap.ui.generic.app.util.Queue");
+			
+			QUnit.module("sap.ui.generic.app.util.Queue", {
+				beforeEach: function() {
+					this.oQueue = new sap.ui.generic.app.util.Queue(5);	
+				},
+				afterEach: function() {
+					this.oQueue.destroy();
+				}
+			});
+
+			QUnit.test("Shall be instantiable", function() {
+				assert.ok(this.oQueue);
+			});
+
+			QUnit.test("enqueue on empty queue shall execute item immediately", function() {
+				var done = assert.async();
+				var that = this, bFunc = false, fFunc = function() {
+					bFunc = true;
+				};
+
+				this.oQueue.enqueue(fFunc).then(function(oResult) {
+					assert.ok(bFunc);
+					//assert.equal(that.oQueue._aQueue.length, 0);
+					done();
+				}, function(oResult) {
+					assert.ok(false);
+					done();
+				});
+			});
+
+			QUnit.test("enqueue on full queue shall reject the promise", function() {	
+				var done = assert.async();
+				var oQueue, bFunc = false, fFunc = function() {
+					bFunc = true;
+				};
+
+				oQueue = new sap.ui.generic.app.util.Queue(0);
+				oQueue.enqueue(fFunc).then(function(oResult) {
+					assert.ok(false);
+					done();
+				}, function(oResult) {
+					assert.ok(!bFunc);
+					assert.ok(oResult.message);
+					done();
+				});
+				oQueue.destroy();
+			});
+
+			QUnit.test("enqueue on unrestricted queue shall never reject the promise", function() {	
+				var done = assert.async();
+				var oQueue, bFunc = false, fFunc = function() {
+					bFunc = true;
+				};
+				
+				oQueue = new sap.ui.generic.app.util.Queue();
+				oQueue.enqueue(fFunc).then(function(oResult) {
+					assert.ok(bFunc);
+					done();
+				}, function(oResult) {
+					assert.ok(false);
+					done();
+				});
+				oQueue.destroy();
+			});
+
+			QUnit.test("_cancel shall reject the promise", function() {
+				var done = assert.async();
+				var bFunc = false, fFunc, oItem; 
+				
+				fFunc = function() {
+					bFunc = true;
+				};
+				oItem = {
+					fn: fFunc
+				};
+				oItem.jqdeferred = jQuery.Deferred();
+				oItem.defer = new Promise(function (fulfill, reject) {
+					oItem.jqdeferred.then(fulfill, reject);
+				});
+				oItem.wait = oItem.defer.then(fFunc);
+				this.oQueue._aQueue.push(oItem);
+				
+				oItem.defer.then(function(oResult) {
+					assert.ok(false);
+					done();
+				}, function(oResult) {
+					assert.ok(!bFunc);
+					assert.ok(oResult.message);
+					done();
+				})
+				this.oQueue._cancel();
+			});
+
+			QUnit.test("execution of two items", function() {
+				var done = assert.async();
+				var bFunc1 = false, oItem = {
+					fn: function() {}
+				};
+				oItem.jqdeferred = jQuery.Deferred();
+				oItem.defer = new Promise(function (fulfill, reject) {
+					oItem.jqdeferred.then(fulfill, reject);
+				});
+				oItem.wait = oItem.defer.then(oItem.fn);
+				this.oQueue._aQueue.push(oItem);
+
+				this.oQueue.enqueue(function() {
+					bFunc1 = true;
+				}).then(function() {
+					assert.ok(bFunc1);
+					done();
+				}, function() {
+					assert.ok(false);
+					done();
+				});
+
+				this.oQueue._execNext();
+			});
+
+			QUnit.test("Shall be destructible", function() {
+				this.oQueue.destroy();
+				assert.ok(this.oQueue);
+				assert.equal(this.oQueue._aQueue.length, 0);
+			});
+
+		}());
+		</script>
+	</head>
+	<body id="body" class="sapUiBody">
+		<h1 id="qunit-header">qUnit Page for sap.ui.generic.app.util.Queue</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</body>
+</html>

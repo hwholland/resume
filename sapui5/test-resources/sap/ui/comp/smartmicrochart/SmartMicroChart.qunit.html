@@ -1,0 +1,386 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>QUnit Page for sap.ui.comp.smartmicrochart.SmartMicroChart</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal"
+	data-sap-ui-libs="sap.ui.comp">
+</script>
+
+<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css"/>
+<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+
+<script type="text/javascript">
+	(function() {
+		jQuery.sap.initMobile();
+		if (!(sap.ui.Device.browser.msie && sap.ui.Device.browser.version <= 8)) {
+			jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		}
+
+		jQuery.sap.require("sap/ui/core/util/MockServer");
+		jQuery.sap.require("sap/ui/model/odata/v2/ODataModel");
+
+		QUnit.module("SmartMicroChart on ChartType/Bullet", {
+			beforeEach : function() {
+				this.oMockServer = new sap.ui.core.util.MockServer({
+					rootUri : "smartmicrochart.SmartMicroChart/"
+				});
+				this.oMockServer.simulate("../demokit/sample/smartmicrochart/SmartMicroChart/mockserver/metadata.xml", {
+					sMockdataBaseUrl : "../demokit/sample/smartmicrochart/SmartMicroChart/mockserver"
+				});
+				this.oMockServer.start();
+				this.oModel = new sap.ui.model.odata.v2.ODataModel("smartmicrochart.SmartMicroChart/", true);
+				this.oSmartMicroChart = new sap.ui.comp.smartmicrochart.SmartMicroChart({
+					entitySet : "Products"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function() {
+				this.oMockServer.stop();
+				this.oMockServer.destroy();
+				this.oModel.destroy();
+				this.oSmartMicroChart.destroy();
+			}
+		});
+
+		QUnit.test("Shall have an entitySet property from constructor", function(assert) {
+			assert.deepEqual(this.oSmartMicroChart.getEntitySet(), "Products");
+		});
+
+		QUnit.test("Check default values", function(assert) {
+			assert.deepEqual(this.oSmartMicroChart.getWidth(), "164px");
+			assert.deepEqual(this.oSmartMicroChart.getHeight(), "74px");
+			assert.ok(this.oSmartMicroChart.getShowLabel());
+			assert.ok(!this.oSmartMicroChart.getIsResponsive());
+		});
+
+		QUnit.test("Check chartType delegation to _chart Aggregation", function(assert) {
+			var done = assert.async();
+			//Arrange
+			this.oSmartMicroChart.attachInitialize(handleInit.bind(this));
+			//Act
+			this.oSmartMicroChart.setModel(this.oModel)
+			//Assert
+			function handleInit() {
+				assert.deepEqual(this.oSmartMicroChart.getChartType(), "Bullet");
+				done();
+			}
+		});
+
+		QUnit.module("SmartMicroChart on ChartType/Area", {
+			beforeEach : function() {
+				this.oMockServer = new sap.ui.core.util.MockServer({
+					rootUri : "smartmicrochart.SmartMicroChart/"
+				});
+				this.oMockServer.simulate("../demokit/sample/smartmicrochart/SmartMicroChart/mockserver/metadata.xml", {
+					sMockdataBaseUrl : "../demokit/sample/smartmicrochart/SmartMicroChart/mockserver"
+				});
+				this.oMockServer.start();
+				this.oModel = new sap.ui.model.odata.v2.ODataModel("smartmicrochart.SmartMicroChart/", true);
+				this.oSmartMicroChart = new sap.ui.comp.smartmicrochart.SmartMicroChart({
+					entitySet : "Series"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function() {
+				this.oMockServer.stop();
+				this.oMockServer.destroy();
+				this.oModel.destroy();
+				this.oSmartMicroChart.destroy();
+			}
+		});
+
+		QUnit.test("Check chartType delegation to _chart Aggregation", function(assert) {
+			var done = assert.async();
+			//Arrange
+			this.oSmartMicroChart.attachInitialize(handleInit.bind(this));
+			//Act
+			this.oSmartMicroChart.setModel(this.oModel);
+			sap.ui.getCore().applyChanges();
+			//Assert
+			function handleInit() {
+				assert.deepEqual(this.oSmartMicroChart.getChartType(), "Area");
+				done();
+			}
+		});
+
+		QUnit.module("check bindElement", {
+			beforeEach : function() {
+				this.oMockServer = new sap.ui.core.util.MockServer({
+					rootUri : "smartmicrochart.SmartMicroChart/"
+				});
+				this.oMockServer.simulate("../demokit/sample/smartmicrochart/SmartMicroChart/mockserver/metadata.xml", {
+					sMockdataBaseUrl : "../demokit/sample/smartmicrochart/SmartMicroChart/mockserver"
+				});
+				this.oMockServer.start();
+				this.oModel = new sap.ui.model.odata.v2.ODataModel("smartmicrochart.SmartMicroChart/", true);
+				this.oSmartMicroChart = new sap.ui.comp.smartmicrochart.SmartMicroChart({
+					entitySet : "Products"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function() {
+				this.oMockServer.stop();
+				this.oMockServer.destroy();
+				this.oModel.destroy();
+				this.oSmartMicroChart.destroy();
+			}
+		});
+
+		QUnit.test("Check if _chart aggregation was bound", function(assert) {
+			var done = assert.async();
+			//Arrange
+			this.oSmartMicroChart.attachInitialize(handleInit.bind(this));
+			//Act
+			this.oSmartMicroChart.setModel(this.oModel);
+			//Assert
+			function handleInit() {
+				this.oSmartMicroChart.bindElement("/Products('PC')");
+				assert.equal(this.oSmartMicroChart.getObjectBinding().getPath(), "/Products('PC')");
+				done();
+			}
+		});
+
+		QUnit.module("Check Metadata", {
+			beforeEach : function() {
+				this.oSmartMicroChart = new sap.ui.comp.smartmicrochart.SmartMicroChart({
+					entitySet : "Products"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function() {
+				this.oSmartMicroChart.destroy();
+			}
+		});
+
+		QUnit.test("_checkChartMetadata works correctly", function(assert) {
+			//Arrange
+			this.oSmartMicroChart._oChartViewMetadata = {
+					chartType : "area",
+					annotation : {
+						ChartType : {
+							EnumMember : "UiVoca/Area"
+						}
+					}
+				};
+			//Act
+			//Assert
+			assert.ok(this.oSmartMicroChart._checkChartMetadata());
+		});
+
+		QUnit.test("_checkChartMetadata works correctly is case incorrect 'chartType.EnumMember' is provided", function(assert) {
+			//Arrange
+			var oMock = {
+				chartType : {},
+				annotation : {
+					ChartType : {
+						EnumMember : {}
+					}
+				}
+			};
+			this.oSmartMicroChart._oChartViewMetadata = oMock;
+			//Act
+			//Assert
+			assert.ok(!this.oSmartMicroChart._checkChartMetadata());
+		});
+
+		QUnit.test("_checkChartMetadata works correctly is case incorrect 'chartType' is provided", function(assert) {
+			//Arrange
+			var oMock = {
+				chartType : {},
+				annotation : {
+				}
+			};
+			this.oSmartMicroChart._oChartViewMetadata = oMock;
+			//Act
+			//Assert
+			assert.ok(!this.oSmartMicroChart._checkChartMetadata());
+		});
+
+		QUnit.test("_checkChartMetadata works correctly is case nothing is provided", function(assert) {
+			//Arrange
+			var oMock = {};
+			this.oSmartMicroChart._oChartViewMetadata = oMock;
+			//Act
+			//Assert
+			assert.ok(!this.oSmartMicroChart._checkChartMetadata());
+		});
+
+		QUnit.module("createInnerChart", {
+			beforeEach : function() {
+				this.oSmartMicroChart = new sap.ui.comp.smartmicrochart.SmartMicroChart({
+					entitySet : "Products"
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+				this.oSpy = sinon.spy(jQuery.sap.log, "error");
+			},
+			afterEach : function() {
+				this.oSmartMicroChart.destroy();
+				this.oSpy.restore();
+			}
+		});
+
+		QUnit.test("_createInnerChart works correctly in case of not supported 'ChartType'", function(assert) {
+			//Arrange
+			var oMock = {
+				chartType : "scatter",
+				annotation : {
+					ChartType : {
+						EnumMember : "UiVoca/Scatter"
+					}
+				}
+			};
+			this.oSmartMicroChart._oChartViewMetadata = oMock;
+			//Act
+			this.oSmartMicroChart._createInnerChart();
+			//Assert
+			assert.ok(!this.oSmartMicroChart.getAggregation("_chart"));
+			assert.ok(this.oSpy.calledOnce);
+		});
+
+		QUnit.test("_createInnerChart works correctly in case of not correct 'chartType.EnumMember'", function(assert) {
+			//Arrange
+			var oMock = {
+				chartType : "line",	// AreaChart is mapped to LineChart
+				annotation : {
+					ChartType : {
+						EnumMember : {}
+					}
+				}
+			};
+			this.oSmartMicroChart._oChartViewMetadata = oMock;
+			//Act
+			this.oSmartMicroChart._createInnerChart();
+			//Assert
+			assert.ok(!this.oSmartMicroChart.getAggregation("_chart"));
+			assert.ok(this.oSpy.calledOnce);
+		});
+
+		QUnit.test("_createInnerChart works correctly in case of LineChart mapping but not Area'", function(assert) {
+			//Arrange
+			var oMock = {
+				chartType : "line",	// AreaChart is mapped to LineChart
+				annotation : {
+					ChartType : {
+						EnumMember : "UiVoca/Scatter"
+					}
+				}
+			};
+			this.oSmartMicroChart._oChartViewMetadata = oMock;
+			//Act
+			this.oSmartMicroChart._createInnerChart();
+			//Assert
+			assert.ok(!this.oSmartMicroChart.getAggregation("_chart"));
+			assert.ok(this.oSpy.calledOnce);
+		});
+
+		QUnit.module("Delegation of association", {
+			beforeEach : function() {
+				this.oTitleLabel = new sap.m.Label("TitleLabel");
+				this.oDescriptionLabel = new sap.m.Label("DescriptionLabel");
+				this.oUnitOfMeasureLabel = new sap.m.Label("UnitOfMeasureLabel");
+				this.oSmartMicroChart = new sap.ui.comp.smartmicrochart.SmartMicroChart({
+					entitySet : "Products",
+					chartTitle : this.oTitleLabel,
+					chartDescription : this.oDescriptionLabel,
+					unitOfMeasure : this.oUnitOfMeasureLabel
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+				this.oSpy = sinon.spy(jQuery.sap.log, "error");
+			},
+			afterEach : function() {
+				this.oSmartMicroChart.destroy();
+				this.oTitleLabel.destroy();
+				this.oDescriptionLabel.destroy();
+				this.oUnitOfMeasureLabel.destroy();
+				this.oSpy.restore();
+			}
+		});
+
+		QUnit.test("Title, Description and UnitOfMeasure in case of SmartBulletMicroChart", function(assert) {
+			//Arrange
+			var oMock = {
+				chartType : "bullet",	// AreaChart is mapped to LineChart
+				annotation : {
+					ChartType : {
+						EnumMember : "UiVoca/Bullet"
+					}
+				}
+			};
+			this.oSmartMicroChart._oChartViewMetadata = oMock;
+			//Act
+			this.oSmartMicroChart._createInnerChart();
+			this.oSmartMicroChart.invalidate();
+			sap.ui.getCore().applyChanges();
+			//Assert
+			var oInnerChart = this.oSmartMicroChart.getAggregation("_chart");
+			assert.deepEqual(oInnerChart.getAssociation("chartTitle"), "TitleLabel");
+			assert.deepEqual(oInnerChart.getAssociation("chartDescription"), "DescriptionLabel");
+			assert.deepEqual(oInnerChart.getAssociation("unitOfMeasure"), "UnitOfMeasureLabel");
+		});
+
+		QUnit.test("Title, Description and UnitOfMeasure in case of SmartAreaMicroChart", function(assert) {
+			//Arrange
+			var oMock = {
+				chartType : "line",	// AreaChart is mapped to LineChart
+				annotation : {
+					ChartType : {
+						EnumMember : "UiVoca/Area"
+					}
+				}
+			};
+			this.oSmartMicroChart._oChartViewMetadata = oMock;
+			//Act
+			this.oSmartMicroChart._createInnerChart();
+			this.oSmartMicroChart.invalidate();
+			sap.ui.getCore().applyChanges();
+			//Assert
+			var oInnerChart = this.oSmartMicroChart.getAggregation("_chart");
+			assert.deepEqual(oInnerChart.getAssociation("chartTitle"), "TitleLabel");
+			assert.deepEqual(oInnerChart.getAssociation("chartDescription"), "DescriptionLabel");
+			assert.deepEqual(oInnerChart.getAssociation("unitOfMeasure"), "UnitOfMeasureLabel");
+		});
+
+		QUnit.module("Passing parent context to the child in case of using responsiveness for annotated charts", {
+			beforeEach : function() {
+				this.oSmartMicroChart = new sap.ui.comp.smartmicrochart.SmartMicroChart({
+					entitySet : "Products",
+					isResponsive: true
+				});
+				this.oSmartMicroChart._oChartViewMetadata = {
+					chartType : "bullet",
+					annotation : {
+						ChartType : {
+							EnumMember : "UiVoca/Bullet"
+						}
+					}
+				};
+				this.oSmartMicroChart._createInnerChart();
+			},
+			afterEach : function() {
+				this.oSmartMicroChart.destroy();
+			}
+		});
+
+		QUnit.test("Passing parent context from SmartMicroChart", function(assert) {
+			//Arrange
+			sinon.spy(sap.suite.ui.microchart, "_passParentContextToChild");
+			//Act
+			this.oSmartMicroChart.onBeforeRendering();
+			//Assert
+			assert.ok(sap.suite.ui.microchart._passParentContextToChild.calledOnce, "The function that passes parent rendering context to the child has been called.");
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+</body>
+</html>

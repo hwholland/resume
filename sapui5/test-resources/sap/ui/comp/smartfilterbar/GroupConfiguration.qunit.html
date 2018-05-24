@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>qUnit Page for sap.ui.comp.smartfilterbar.ControlConfiguration</title>
+
+		<script id="sap-ui-bootstrap" 
+			type="text/javascript"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.ui.comp">
+		</script>
+
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+
+		<script language="javascript">
+		
+		if(!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+      		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		} 		
+			
+		(function() {
+
+			jQuery.sap.require("sap.ui.comp.smartfilterbar.GroupConfiguration");
+			
+			module("sap.ui.comp.smartfilterbar.GroupConfiguration", {
+				setup: function() {
+					this.oGroupConfiguration = new sap.ui.comp.smartfilterbar.GroupConfiguration();
+					this.oGroupConfiguration.setKey("Address");
+
+				},
+				teardown: function() {
+				}
+			});
+
+			test("Shall be instantiable", function() {
+				ok(this.oGroupConfiguration);
+			});
+			
+			test("The index shall be configureable", function() {
+				var iIndex;
+				
+				//Call CUT
+				this.oGroupConfiguration.setIndex(42);
+
+				strictEqual(this.oGroupConfiguration.getIndex(), 42);
+			});	
+
+			
+			test("The default index shall be undefined", function() {
+				//Call CUT
+				strictEqual(this.oGroupConfiguration.getIndex(), undefined);
+			});	
+			
+			test("The label shall be configureable", function() {
+				var sLabel;
+				
+				//Call CUT
+				this.oGroupConfiguration.setLabel("Hello World");
+
+				strictEqual(this.oGroupConfiguration.getLabel(), "Hello World");
+			});	
+
+			
+			test("The default label shall be undefined", function() {
+				//Call CUT
+				strictEqual(this.oGroupConfiguration.getLabel(), undefined);
+			});	
+
+			
+
+		}());
+
+		</script>
+	</head>
+	<body id="body" class="sapUiBody">
+		<h1 id="qunit-header">qUnit Page for sap.ui.comp.smartfilterbar.ControlConfiguration</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		
+		<div id="content"></div>
+	</body>
+</html>

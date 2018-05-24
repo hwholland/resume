@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<control xmlns="http://www.sap.com/sap.ui.library.xsd">
+    <name>smartform/flexibility/FieldListNode</name>
+    <derived/>
+    <documentation>A node within the field list control</documentation>
+    <baseType>sap.ui.core/Control</baseType>
+    <properties>
+        <property name="label" type="sap.ui.core/string" group="Misc">
+            <documentation>The label</documentation>
+        </property>
+        <property name="isVisible" type="sap.ui.core/boolean" group="Misc">
+            <documentation>is visible flag</documentation>
+        </property>
+        <property name="isSelected" type="sap.ui.core/boolean" group="Misc">
+            <documentation>is node selected</documentation>
+        </property>
+    </properties>
+    <events>
+        <event name="selected" allowPreventDefault="false">
+            <documentation>node was selected</documentation>
+            <parameters>
+                <parameter name="target" type="sap.ui.comp/smartform/flexibility/FieldListNode">
+                    <documentation>The inner node which was clicked</documentation>
+                </parameter>
+            </parameters>
+        </event>
+        <event name="labelChanged" allowPreventDefault="false">
+            <documentation>label of node was changed</documentation>
+            <parameters>
+                <parameter name="target" type="sap.ui.comp/smartform/flexibility/FieldListNode">
+                    <documentation>The inner node which was clicked</documentation>
+                </parameter>
+            </parameters>
+        </event>
+        <event name="nodeHidden" allowPreventDefault="false">
+            <documentation>node was hidden</documentation>
+            <parameters>
+                <parameter name="target" type="sap.ui.comp/smartform/flexibility/FieldListNode">
+                    <documentation>The inner node which was hidden</documentation>
+                </parameter>
+            </parameters>
+        </event>
+    </events>
+    <aggregations>
+        <aggregation name="nodes" type="sap.ui.comp/smartform/flexibility/FieldListNode" cardinality="0..n">
+            <documentation>Nodes representing either a Form, a Group or a field</documentation>
+        </aggregation>
+        <aggregation name="layout" type="sap.ui.core/Control" cardinality="0..1">
+            <documentation>private aggregation</documentation>
+        </aggregation>
+    </aggregations>
+</control>

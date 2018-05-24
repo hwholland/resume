@@ -1,0 +1,1446 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="sap.suite.ui.microchart" xmlns:n1="sap.m" xmlns:n2="sap.suite.ui.microchart" xmlns:n0="sap.ui.core">
+<xsd:import namespace="sap.m"/>
+<xsd:import namespace="sap.ui.core"/>
+<xsd:element name="AreaMicroChart" type="n2:_AreaMicroChartType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Chart that displays the history of values and target values as segmented lines and shows thresholds as colored background. This control replaces the deprecated sap.suite.ui.commons.MicroAreaChart.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="AreaMicroChartItem" type="n2:_AreaMicroChartItemType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>Graphical representation of the area micro chart regarding the value lines, the thresholds, and the target values.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="AreaMicroChartLabel" type="n2:_AreaMicroChartLabelType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>Displays or hides the labels for start and end dates, start and end values, and minimum and maximum values.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="AreaMicroChartPoint" type="n2:_AreaMicroChartPointType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>Contains the data for the point.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="BulletMicroChart" type="n2:_BulletMicroChartType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Displays a colored horizontal bar representing a current value on top of a background bar representing the compared value. The vertical bars can represent the numeric values, the scaling factors, the thresholds, and the target values.  This control replaces the deprecated sap.suite.ui.commons.BulletChart.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="BulletMicroChartData" type="n2:_BulletMicroChartDataType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>Contains the thresholds data.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="ColumnMicroChart" type="n2:_ColumnMicroChartType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Compares different values which are represented as vertical bars. This control replaces the deprecated sap.suite.ui.commons.ColumnMicroChart.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="ColumnMicroChartData" type="n2:_ColumnMicroChartDataType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>Defines the column chart data.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="ColumnMicroChartLabel" type="n2:_ColumnMicroChartLabelType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>Displays or hides the labels of a column micro chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="ComparisonMicroChart" type="n2:_ComparisonMicroChartType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Illustrates values as colored bar charts with title, numeric value, and scaling factor in the content area. This control replaces the deprecated sap.suite.ui.commons.ComparisonChart.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="ComparisonMicroChartData" type="n2:_ComparisonMicroChartDataType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>Contains the values of the comparison chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="DeltaMicroChart" type="n2:_DeltaMicroChartType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Represents the delta of two values as a chart. This control replaces the deprecated sap.suite.ui.commons.DeltaMicroChart.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="HarveyBallMicroChart" type="n2:_HarveyBallMicroChartType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Displays a pie chart with highlighted sectors.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="HarveyBallMicroChartItem" type="n2:_HarveyBallMicroChartItemType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>Configures the slices of the pie chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="InteractiveBarChart" type="n2:_InteractiveBarChartType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>The InteractiveBarChart control belongs to the chart control group in the MicroChart library with less interactive features to provide more information on a chart value.
+By selecting a bar you can get more details on the displayed value.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="InteractiveBarChartBar" type="n2:_InteractiveBarChartBarType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>A bar element for the InteractiveBarChart.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="InteractiveDonutChart" type="n2:_InteractiveDonutChartType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>The InteractiveDonutChart control belongs to the chart control group in the MicroChart library with less interactive features to provide more information on a chart value.
+By selecting a segment you can get more details on the displayed value.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="InteractiveDonutChartSegment" type="n2:_InteractiveDonutChartSegmentType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>A donut chart segment.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="InteractiveLineChart" type="n2:_InteractiveLineChartType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>The InteractiveLineChart control belongs to the chart control group in the MicroChart library with less interactive features to provide more information on a chart value.
+By selecting a point you can get more details on the displayed value.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="InteractiveLineChartPoint" type="n2:_InteractiveLineChartPointType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>A point element for the InteractiveLineChart.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="RadialMicroChart" type="n2:_RadialMicroChartType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Displays a ring chart highlighting a current status. The status is displayed with a semantically colored radial bar and a percentage value.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="StackedBarMicroChart" type="n2:_StackedBarMicroChartType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>Illustrates values as stacked and colored bar charts displaying numeric values (as absolute values or percentages) inside the bars.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="StackedBarMicroChartBar" type="n2:_StackedBarMicroChartBarType" substitutionGroup="n0:Element">
+<xsd:annotation>
+<xsd:documentation>Contains the values of the stacked bar chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<!--type definition for UIElement 'sap.suite.ui.microchart.AreaMicroChart'-->
+<xsd:complexType name="_AreaMicroChartType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<!--default aggregation 'lines'-->
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:AreaMicroChartItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="chart" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The configuration of the actual values line.
+The color property defines the color of the line.
+Points are rendered in the same sequence as in this aggregation.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="maxThreshold" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The configuration of the max threshold area. The color property defines the color of the area above the max threshold line. Points are rendered in the same sequence as in this aggregation.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="innerMaxThreshold" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The configuration of the upper line of the inner threshold area. The color property defines the color of the area between inner thresholds. For rendering of the inner threshold area, both innerMaxThreshold and innerMinThreshold aggregations must be defined. Points are rendered in the same sequence as in this aggregation.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="innerMinThreshold" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The configuration of the bottom line of the inner threshold area. The color property is ignored. For rendering of the inner threshold area, both innerMaxThreshold and innerMinThreshold aggregations must be defined. Points are rendered in the same sequence as in this aggregation.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="minThreshold" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The configuration of the min threshold area. The color property defines the color of the area below the min threshold line. Points are rendered in the same sequence as in this aggregation.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="target" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The configuration of the target values line. The color property defines the color of the line. Points are rendered in the same sequence as in this aggregation.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="firstXLabel" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The label on X axis for the first point of the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartLabel"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="firstYLabel" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The label on Y axis for the first point of the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartLabel"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="lastXLabel" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The label on X axis for the last point of the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartLabel"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="lastYLabel" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The label on Y axis for the last point of the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartLabel"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="maxLabel" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The label for the maximum point of the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartLabel"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="minLabel" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The label for the minimum point of the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:AreaMicroChartLabel"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="lines" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The set of lines.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:AreaMicroChartItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="width" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>The width of the chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="height" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>The height of the chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="maxXValue" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>If this property is set it indicates the value X axis ends with.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="minXValue" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>If this property is set it indicates the value X axis ends with.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="maxYValue" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>If this property is set it indicates the value X axis ends with.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="minYValue" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>If this property is set it indicates the value X axis ends with.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="view" type="n2:_AreaMicroChartViewTypeType">
+<xsd:annotation>
+<xsd:documentation>The view of the chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="colorPalette" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The color palette for the chart. If this property is set,
+semantic colors defined in AreaMicroChartItem are ignored.
+Colors from the palette are assigned to each line consequentially.
+When all the palette colors are used, assignment of the colors begins
+from the first palette color.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showLabel" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Determines if the labels are displayed or not.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isResponsive" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If this set to true, width and height of the control are determined by the width and height of the container in which the control is placed. Width and height properties are ignored in such case.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The event is triggered when the chart is pressed.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.AreaMicroChartItem'-->
+<xsd:complexType name="_AreaMicroChartItemType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:sequence>
+<!--default aggregation 'points'-->
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:AreaMicroChartPoint"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="points" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The set of points for this graphic element.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:AreaMicroChartPoint"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="color" type="n1:_ValueColorType">
+<xsd:annotation>
+<xsd:documentation>The graphic element color.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="title" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The line title.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.AreaMicroChartLabel'-->
+<xsd:complexType name="_AreaMicroChartLabelType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:attribute name="color" type="n1:_ValueColorType">
+<xsd:annotation>
+<xsd:documentation>The graphic element color.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="label" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The line title.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.AreaMicroChartPoint'-->
+<xsd:complexType name="_AreaMicroChartPointType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:attribute name="x" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>X value for the given point.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="y" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>Y value for the given point.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.BulletMicroChart'-->
+<xsd:complexType name="_BulletMicroChartType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<!--default aggregation 'actual'-->
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:BulletMicroChartData"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="actual" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>Actual data of the BulletMicroChart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:BulletMicroChartData"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="thresholds" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>Threshold data of the BulletMicroChart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:BulletMicroChartData"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="size" type="n1:_SizeType">
+<xsd:annotation>
+<xsd:documentation>The size of the microchart. If not set, the default size is applied based on the size of the device tile.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="mode" type="n2:_BulletMicroChartModeTypeType">
+<xsd:annotation>
+<xsd:documentation>The mode of displaying the actual value itself or the delta between the actual value and the target value. If not set, the actual value is displayed.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="scale" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The scaling suffix that is added to the actual and target values.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="forecastValue" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The forecast value that is displayed in Actual  mode only. If set, the forecast value bar appears in the background of the actual value bar.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="targetValue" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The target value that is displayed as a black vertical bar.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="minValue" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The minimum scale value for the bar chart used for defining a fixed size of the scale in different instances of this control.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="maxValue" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The maximum scale value for the bar chart used for defining a fixed size of the scale in different instances of this control.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showActualValue" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If set to true, shows the numeric actual value. This property works in Actual mode only.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showDeltaValue" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If set to true, shows the calculated delta value instead of the numeric actual value regardless of the showActualValue setting. This property works in Delta mode only.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showTargetValue" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If set to true, shows the numeric target value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showValueMarker" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If set to true, shows the value marker.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="actualValueLabel" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>If set, displays a specified label instead of the numeric actual value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="deltaValueLabel" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>If set, displays a specified label instead of the calculated numeric delta value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="targetValueLabel" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>If set, displays a specified label instead of the numeric target value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="width" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>The width of the chart. If it is not set, the size of the control is defined by the size property.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="scaleColor" type="n2:_CommonBackgroundTypeType">
+<xsd:annotation>
+<xsd:documentation>The background color of the scale.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isResponsive" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If this set to true, width and height of the control are determined by the width and height of the container in which the control is placed. Size and Width properties are ignored in such case.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The event is triggered when the chart is pressed.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.BulletMicroChartData'-->
+<xsd:complexType name="_BulletMicroChartDataType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:attribute name="value" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The actual value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="color" type="n1:_ValueColorType">
+<xsd:annotation>
+<xsd:documentation>The semantic color of the actual value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.ColumnMicroChart'-->
+<xsd:complexType name="_ColumnMicroChartType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<!--default aggregation 'columns'-->
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:ColumnMicroChartData"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="columns" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The column chart data.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:ColumnMicroChartData"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="leftTopLabel" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The label on the left top corner of the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:ColumnMicroChartLabel"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="rightTopLabel" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The label on the right top corner of the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:ColumnMicroChartLabel"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="leftBottomLabel" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The label on the left bottom corner of the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:ColumnMicroChartLabel"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="rightBottomLabel" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The label on the right bottom corner of the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0">
+<xsd:element ref="n2:ColumnMicroChartLabel"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="size" type="n1:_SizeType">
+<xsd:annotation>
+<xsd:documentation>Updates the size of the chart. If not set then the default size is applied based on the device tile.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="width" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>The width of the chart. If it is not set, the width of the control is defined by the size property.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="height" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>The height of the chart. If it is not set, the height of the control is defined by the size property.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isResponsive" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If set to true, width and height of the control are determined by the width and height of the container in which the control is placed. Size, width and height properties are ignored in this case.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The event is fired when the user chooses the column chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.ColumnMicroChartData'-->
+<xsd:complexType name="_ColumnMicroChartDataType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:attribute name="color" type="n1:_ValueColorType">
+<xsd:annotation>
+<xsd:documentation>The graphic element color.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="label" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The line title.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="value" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The actual value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The event is fired when the user chooses the column data.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.ColumnMicroChartLabel'-->
+<xsd:complexType name="_ColumnMicroChartLabelType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:attribute name="color" type="n1:_ValueColorType">
+<xsd:annotation>
+<xsd:documentation>The graphic element color.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="label" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The line title.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.ComparisonMicroChart'-->
+<xsd:complexType name="_ComparisonMicroChartType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<!--default aggregation 'data'-->
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:ComparisonMicroChartData"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="data" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The comparison chart bar data.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:ComparisonMicroChartData"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="size" type="n1:_SizeType">
+<xsd:annotation>
+<xsd:documentation>The size of the chart. If not set, the default size is applied based on the size of the device tile.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="scale" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The scaling suffix that is added to the actual and target values.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="minValue" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The minimum scale value for the chart used to define the value range of the scale for comparing different values.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="maxValue" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The maximum scale value for the chart used to define the value range of the scale for comparing different values.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="view" type="n2:_ComparisonMicroChartViewTypeType">
+<xsd:annotation>
+<xsd:documentation>The view of the chart. If not set, the Normal view is used by default.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="colorPalette" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The color palette for the chart. If this property is set, semantic colors defined in ComparisonData are ignored. Colors from the palette are assigned to each bar consequentially. When all the palette colors are used, assignment of the colors begins from the first palette color.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="shrinkable" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If it is set to true, the height of the control is defined by its content.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="width" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>The width of the chart. If it is not set, the size of the control is defined by the size property.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="height" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>Height of the chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isResponsive" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If this set to true, width and height of the control are determined by the width and height of the container in which the control is placed. Size and Width properties are ignored in such case.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The event is triggered when the chart is pressed.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.ComparisonMicroChartData'-->
+<xsd:complexType name="_ComparisonMicroChartDataType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:attribute name="value" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The value for comparison.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="color" type="n1:_ValueColorType">
+<xsd:annotation>
+<xsd:documentation>The semantic color of the value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="title" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The comparison bar title.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="displayValue" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>If this property is set then it will be displayed instead of value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The event is fired when the user chooses the comparison chart bar.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.DeltaMicroChart'-->
+<xsd:complexType name="_DeltaMicroChartType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:attribute name="value1" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The first value for delta calculation.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="value2" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The second value for delta calculation.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="title1" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The first value title.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="title2" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The second value title.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="displayValue1" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>If this property is set, it is rendered instead of value1.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="displayValue2" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>If this property is set, it is rendered instead of value2.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="deltaDisplayValue" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>If this property is set, it is rendered instead of a calculated delta.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="color" type="n1:_ValueColorType">
+<xsd:annotation>
+<xsd:documentation>The semantic color of the delta value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="width" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>The width of the chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="size" type="n1:_SizeType">
+<xsd:annotation>
+<xsd:documentation>The size of the chart. If is not set, the default size is applied based on the device type.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isResponsive" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If this set to true, width and height of the control are determined by the width and height of the container in which the control is placed. Size and Width properties are ignored in such case.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The event is fired when the user chooses the delta micro chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.HarveyBallMicroChart'-->
+<xsd:complexType name="_HarveyBallMicroChartType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<!--default aggregation 'items'-->
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:HarveyBallMicroChartItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="items" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The set of points for this graphic element.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:HarveyBallMicroChartItem"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="total" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The total value. This is taken as 360 degrees value on the chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="totalLabel" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The total label. If specified, it is displayed instead of the total value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="totalScale" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The scaling factor that is displayed next to the total value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="formattedLabel" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If set to true, the totalLabel parameter is considered as the combination of the total value and its scaling factor. The default value is false. It means that the total value and the scaling factor are defined separately by the total and the totalScale properties accordingly.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showTotal" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If it is set to true, the total value is displayed next to the chart. The default setting is true.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showFractions" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If it is set to true, the fraction values are displayed next to the chart. The default setting is true.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="size" type="n1:_SizeType">
+<xsd:annotation>
+<xsd:documentation>The size of the chart. If it is not set, the default size is applied based on the device type.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="colorPalette" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The color palette for the chart. If this property is set, semantic colors defined in HarveyBallMicroChart are ignored. Colors from the palette are assigned to each slice consequentially. When all the palette colors are used, assignment of the colors begins from the first palette color.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="width" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>The width of the chart. If it is not set, the size of the control is defined by the size property.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="isResponsive" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If this set to true, width and height of the control are determined by the width and height of the container in which the control is placed. Size and Width properties are ignored in such case.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The event is triggered when the chart is pressed.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.HarveyBallMicroChartItem'-->
+<xsd:complexType name="_HarveyBallMicroChartItemType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:attribute name="color" type="n1:_ValueColorType">
+<xsd:annotation>
+<xsd:documentation>The slice color.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="fraction" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The fraction value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="fractionLabel" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The fraction label. If specified, it is displayed instead of the fraction value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="fractionScale" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The scaling factor that is displayed after the fraction value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="formattedLabel" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If set to true, the fractionLabel parameter is considered as the combination of the fraction value and scaling factor. The default value is false. It means that the fraction value and the scaling factor are defined separately by the fraction and the fractionScale properties accordingly.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.InteractiveBarChart'-->
+<xsd:complexType name="_InteractiveBarChartType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<!--default aggregation 'bars'-->
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:InteractiveBarChartBar"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="bars" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>Bars displayed on the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:InteractiveBarChartBar"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="maxDisplayedBars" type="xsd:int">
+<xsd:annotation>
+<xsd:documentation>Maximal number of displayed bars.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="selectionEnabled" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Enables the selection in the chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="min" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>Begin of displayed scale.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="max" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>End of displayed scale.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="selectionChanged" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Event is fired when user has selected or deselected a bar.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.InteractiveBarChartBar'-->
+<xsd:complexType name="_InteractiveBarChartBarType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:attribute name="label" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The label for the chart bar</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="selected" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Determines if the chart bar is in selected state</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="displayedValue" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The value label to be displayed on the bar in the chart</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="value" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The numeric value of the chart bar to be displayed on bar</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.InteractiveDonutChart'-->
+<xsd:complexType name="_InteractiveDonutChartType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<!--default aggregation 'segments'-->
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:InteractiveDonutChartSegment"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="segments" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>Aggregation which contains all segments.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:InteractiveDonutChartSegment"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="maxDisplayedSegments" type="xsd:int">
+<xsd:annotation>
+<xsd:documentation>Number of segments to be displayed.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="selectionEnabled" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Switch which enables or disables selection.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="selectionChanged" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Event is fired when a user has selected or deselected a segment or a legend entry.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.InteractiveDonutChartSegment'-->
+<xsd:complexType name="_InteractiveDonutChartSegmentType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:attribute name="label" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Displayed text for the segment.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="selected" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Indicator for the selected state.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="value" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The value representing a percentage or an absolute value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="displayedValue" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The value that is directly displayed on the legend.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.InteractiveLineChart'-->
+<xsd:complexType name="_InteractiveLineChartType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<!--default aggregation 'points'-->
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:InteractiveLineChartPoint"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="points" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>Points displayed in the chart.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:InteractiveLineChartPoint"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="maxDisplayedPoints" type="xsd:int">
+<xsd:annotation>
+<xsd:documentation>The maximum number of points to be displayed on the chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="selectionEnabled" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>If this property is set to true, one or multiple points are selectable.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="selectionChanged" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Event is fired when a user has selected or deselected a point.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.InteractiveLineChartPoint'-->
+<xsd:complexType name="_InteractiveLineChartPointType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:attribute name="label" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The bottom label for the chart point</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="selected" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Determines if the chart point is in selected state</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="value" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The numeric value of the chart point</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="displayedValue" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The value label to be displayed near the point in the chart</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.RadialMicroChart'-->
+<xsd:complexType name="_RadialMicroChartType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:attribute name="total" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The total value. This is taken as 360 degrees value on the chart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="fraction" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The fraction of the total value that is displayed.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="percentage" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The percentage that is displayed.
+When a percentage is set, properties total and fraction are not considered.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="valueColor" type="n1:_ValueCSSColorType">
+<xsd:annotation>
+<xsd:documentation>The color shown in the completed path.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="size" type="n1:_SizeType">
+<xsd:annotation>
+<xsd:documentation>The size of the chart. If it is not set, the Responsive size is used.
+Size XS is not supported</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The event is triggered when the chart is pressed.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.StackedBarMicroChart'-->
+<xsd:complexType name="_StackedBarMicroChartType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:sequence>
+<!--default aggregation 'bars'-->
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:StackedBarMicroChartBar"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+<xsd:element name="bars" minOccurs="0">
+<xsd:annotation>
+<xsd:documentation>The stacked bar chart items.</xsd:documentation>
+</xsd:annotation>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+<xsd:element ref="n2:StackedBarMicroChartBar"/>
+<xsd:element ref="n0:Fragment"/>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:sequence>
+<xsd:attribute name="size" type="n1:_SizeType">
+<xsd:annotation>
+<xsd:documentation>The size of the chart. If not set, the default size is applied based on the size of the device tile.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="maxValue" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The maximum value can be set to scale StackedBarMicroChartBar values to the same base.
+If maxValue is smaller than the sum of all StackedMicroChartBar values, the maxValue is ignored. All values are shown as percentage values (same behavior as maxValue is not used).
+If maxValue is equal or bigger than the sum of all StackedMicroChartBars, all values are scaled to the value of maxValue and the percentage mode is turned off. Absolute values are shown instead.
+The difference between the sum and maxValue is shown as invisible bar, thus e.g. different StackedBarMicroChart instances can be compared.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="precision" type="xsd:int">
+<xsd:annotation>
+<xsd:documentation>The precision of the rounding for the calculated percentage values of the bars. It defines how many digits after the decimal point are displayed. The default is set to 1 digit.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="press" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The event is fired when the user chooses the microchart.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<!--type definition for UIElement 'sap.suite.ui.microchart.StackedBarMicroChartBar'-->
+<xsd:complexType name="_StackedBarMicroChartBarType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ElementType">
+<xsd:attribute name="value" type="xsd:float">
+<xsd:annotation>
+<xsd:documentation>The value for stacked bar chart. It is used in order to determine the width of the bar</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="valueColor" type="n1:_ValueCSSColorType">
+<xsd:annotation>
+<xsd:documentation>The color of the bar.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="displayValue" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>If this property is set, then it will be displayed instead of value.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:simpleType name="_AreaMicroChartViewTypeType">
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="Normal">
+<xsd:annotation>
+<xsd:documentation>The view with labels on the top and bottom.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Wide">
+<xsd:annotation>
+<xsd:documentation>The view with labels on the left and right.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="_BulletMicroChartModeTypeType">
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="Actual">
+<xsd:annotation>
+<xsd:documentation>Displays the Actual value.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Delta">
+<xsd:annotation>
+<xsd:documentation>Displays delta between the Actual and Threshold values.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="_CommonBackgroundTypeType">
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="Lightest">
+<xsd:annotation>
+<xsd:documentation>The lightest background color.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="ExtraLight">
+<xsd:annotation>
+<xsd:documentation>Extra light background color.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Light">
+<xsd:annotation>
+<xsd:documentation>Light background color.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="MediumLight">
+<xsd:annotation>
+<xsd:documentation>Medium light background color.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Medium">
+<xsd:annotation>
+<xsd:documentation>Medium background color.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Dark">
+<xsd:annotation>
+<xsd:documentation>Dark background color.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="ExtraDark">
+<xsd:annotation>
+<xsd:documentation>Extra dark background color.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Darkest">
+<xsd:annotation>
+<xsd:documentation>The darkest background color.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Transparent">
+<xsd:annotation>
+<xsd:documentation>The transparent background color.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="_ComparisonMicroChartViewTypeType">
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="Normal">
+<xsd:annotation>
+<xsd:documentation>Titles and values are displayed above the bars.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="Wide">
+<xsd:annotation>
+<xsd:documentation>Titles and values are displayed in the same line with the bars.</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:schema>

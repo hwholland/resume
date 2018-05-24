@@ -1,0 +1,300 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="LOIO.FOLDER.IWB_FOLDER_ID" content="1234AC50C238B656E10000000A445394"/>
+<meta name="LOIO.FOLDER.IWB_TECH_NAME" content="HELPX.UI_EXT"/>
+<meta name="LOIO.FOLDER.IWB_FOLDER_GROUP" content="SAPXH"/>
+<meta name="LOIO.FOLDER.IWB_SHH_KEY" content=""/>
+<meta name="LOIO.FOLDER.IWB_TRANSLATION_MEMORY" content=""/>
+<meta name="LOIO.FOLDER.TERM_DOMAIN" content="FF"/>
+<meta name="LOIO.IWB_TYPE" content="ICG"/>
+<meta name="LOIO.IWB_SHH_KEY" content=""/>
+<meta name="LOIO.KW_CONVREF.CLASS" content=""/>
+<meta name="LOIO.KW_CONVREF.OBJID" content=""/>
+<meta name="PHIO.IWB_INDUSTRY" content="SHL"/>
+<meta name="PHIO.RELEASE" content="1.0_2014Q3"/>
+<meta name="PHIO.CREATED_AT" content="20140605161052"/>
+<meta name="PHIO.LAST_CHANGED_AT" content="20140605161052"/>
+<meta name="PHIO.IWB_LEVEL" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9027691039466379"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9027691039466379"/>
+<title>Analytical Configuration</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio5a467c53595a6655e10000000a423f68">
+<div id="wrapper"><div id="container">
+
+                          <h1 class="title topictitle1">Analytical Configuration</h1>
+
+                          
+                          <div class="body">
+                                                  <p class="p">The analytical configuration of APF specifies,
+                                                  for example, the available analysis steps, the
+                                                  representations that are used for each step, and
+                                                  the categories in which the analysis steps are
+                                                  displayed. It is written in JavaScript Object
+                                                  Notation (JSON) format.</p>
+
+                                                  <p class="p">Some of the objects used to specify the
+                                                  analytical content must be registered under a
+                                                  unique ID and can be accessed using this ID. The
+                                                  IDs must be unique within the configuration of an
+                                                  APF-based Web application.</p>
+
+                                                  <p class="p">The following table lists the objects used in
+                                                  an analytical configuration:</p>
+
+                                                  
+<div class="table-wrapper tablenoborder"><table summary="" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+                                                  
+                                                  
+                                                  <thead class="thead" align="left">
+                                                  <tr class="row">
+                                                  <th class="entry" valign="top" width="50%" id="d6165222e84"><p class="p">Object Type</p>
+
+                                                  </th>
+
+                                                  <th class="entry" valign="top" width="50%" id="d6165222e89"><p class="p">Unique ID Required</p>
+
+                                                  </th>
+
+                                                  </tr>
+
+                                                  </thead>
+
+                                                  <tbody class="tbody">
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 "><p class="p"><samp class="ph codeph">step</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 "><p class="p">Yes</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 ">
+                                                  <p class="p"><samp class="ph codeph">hierarchicalStep</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 ">
+                                                  <p class="p">Yes</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 ">
+                                                  <p class="p"><samp class="ph codeph">request</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 ">
+                                                  <p class="p">Yes</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 "><p class="p"><samp class="ph codeph">binding</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 "><p class="p">Yes</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 "><p class="p"><samp class="ph codeph">representation</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 "><p class="p">Yes</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 "><p class="p"><samp class="ph codeph">representationType</samp>
+                                                  (optional)</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 "><p class="p">Yes</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 ">
+                                                  <p class="p"><samp class="ph codeph">facetFilter</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 ">
+                                                  <p class="p">Yes</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 ">
+                                                  <p class="p"><samp class="ph codeph">smartFilterBarConfiguration</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 ">
+                                                  <p class="p">Yes</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 ">
+                                                  <p class="p"><samp class="ph codeph">navigationTarget</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 ">
+                                                  <p class="p">Yes</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 "><p class="p"><samp class="ph codeph">category</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 "><p class="p">Yes</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 "><p class="p"><samp class="ph codeph">label</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 "><p class="p">No</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e84 "><p class="p"><samp class="ph codeph">thumbnail</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="50%" headers="d6165222e89 "><p class="p">No</p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  </tbody>
+
+                                                  </table>
+</div>
+
+                                                  <div class="section"><div class="section_title">General Rules</div><div type="General Rules">
+                                                  <p class="p">The following rules apply when working with
+                                                  configuration objects in Analysis Path
+                                                  Framework:</p>
+
+                                                  <ul class="ul">
+                                                  <li class="li"><p class="p">Value representations in configuration
+                                                  objects must comply with the JSON format.</p>
+</li>
+
+                                                  <li class="li"><p class="p">String values must be in double
+                                                  quotes.</p>
+</li>
+
+                                                  <li class="li"><p class="p">The <span class="ph uicontrol">type</span> property is
+                                                  optional, but it is useful for debugging and
+                                                  comprehensibility.</p>
+</li>
+
+                                                  <li class="li"><p class="p">The <span class="ph uicontrol">id</span> property is
+                                                  mandatory for those objects that require a unique
+                                                  ID. It must be a unique ID of type
+                                                  string.</p>
+</li>
+
+                                                  <li class="li"><p class="p">Depending on the object type, configuration
+                                                  objects can contain various other properties.
+                                                  Changes to a set of properties must be compatible
+                                                  with the original configuration object. You can,
+                                                  for example, add new properties.</p>
+
+                                                  <div class="note note"><span class="notetitle">Note</span> <p class="p">Customer modifications may
+                                                  conflict with the SAP namespace and can be
+                                                  overwritten when updates are imported.</p>
+
+                                                  </div>
+
+                                                  </li>
+
+                                                  </ul>
+
+                                                  </div></div>
+
+                          </div>
+
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="3cda7d53b5c19456e10000000a423f68.html">The Configuration Root Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="4bda7d53b5c19456e10000000a423f68.html">The Step Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="33da7d53b5c19456e10000000a423f68.html">The Request Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="5e467c53595a6655e10000000a423f68.html">The Binding Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="6a467c53595a6655e10000000a423f68.html">The Representation Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="6f467c53595a6655e10000000a423f68.html">The Representation Type Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="2a43fbb03ace4b9386ee57b16a632858.html">The Facet Filter Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="b96dbb603b004b399a5b787794d2fe60.html">The Smart Filter Bar Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="5cfe2c19414f42abbc7a9a7363707ac3.html">The Navigation Target Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="44fa08b1bee34a9f883e5f4e768d428d.html">The Configuration Header Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="62467c53595a6655e10000000a423f68.html">The Category Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="66467c53595a6655e10000000a423f68.html">The Label Object</a></strong><br/>
+</div>
+<div><strong><a class="link" href="c5da7d53b5c19456e10000000a423f68.html">The Thumbnail Object</a></strong><br/>
+</div>
+</ul>
+
+</div>
+</div></div>
+
+</body>
+</html>

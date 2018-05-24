@@ -1,0 +1,101 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can add a progress indicator to a table."/>
+<meta name="description" content="You can add a progress indicator to a table."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=45274985884510466"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=45274985884510466"/>
+<title>Adding a Progress Indicator to a Table</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio43f6f0faa1b64c5aa92bcde379be9054">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Adding a Progress Indicator to a Table</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You can add a progress indicator to a table.</p>
+
+		<p class="p">The progress indicator allows you to visually represent the level of completion of a
+			project or a goal, for example.</p>
+
+		<p class="p">It can be used to express completion values either as a percentage or as absolute numbers
+			(for example, 8 of 10).</p>
+
+		<div class="fig fignone" id="loio43f6f0faa1b64c5aa92bcde379be9054__fig_ubg_1xk_zv"><div class="figcontainer">
+			
+			<img class="image" id="loio43f6f0faa1b64c5aa92bcde379be9054__image_akh_zwk_zv" src="loioc6d1e04ecd9d48be8ff75e7d662f9734_LowRes.png"/>
+		<div class="figcap">Progress Indicator</div></div></div>
+
+		
+		
+		<div class="section"><div class="section_title">Code Samples</div><div type="Code Samples">
+			
+			<p class="p">The code samples below show a progress indicator that expresses the value of the
+				field <span class="ph uicontrol">Product Revenue</span> from the back-end system. </p>
+
+			<p class="p"><span class="ph emphasis emphasis">Add Progress Indicator: Percentage</span></p>
+
+			<p class="p">If the back-end system provides a percentage value for the relevant field, add the
+					<samp class="ph codeph">#AS_DATAPOINT</samp> type to the relevant <samp class="ph codeph">lineItem</samp>
+				annotation and the <samp class="ph codeph">@UI.dataPoint: {visualization: #PROGRESS}</samp>
+				annotation for the relevant field as shown below:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">@UI.lineItem: {position:30, type:#AS_DATAPOINT}
+				
+@UI.dataPoint: {visualization:#PROGRESS}
+
+Product.Revenue
+</pre></div>
+
+			<p class="p"><span class="ph emphasis emphasis">Add Progress Indicator: Absolute Numbers</span></p>
+
+			<p class="p">If the back-end system does not provide a percentage value, assign a value to the
+					<samp class="ph codeph">targetValueElement</samp> property of the data point that is then
+				deemed to be 100%. (In this example, this represents the
+					<samp class="ph codeph">TargetRevenue</samp> field.) If you want to use a fixed value as the
+				target value, you can set the <samp class="ph codeph">targetValue</samp> property to this value
+				instead, which is then deemed to be 100%. </p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">@UI.lineItem: {position:30, type:#AS_DATAPOINT}
+				
+@UI.dataPoint: {targetValueElement:'TargetRevenue', visualization:#PROGRESS}
+
+Product.Revenue
+</pre></div>
+
+			<p class="p"><span class="ph emphasis emphasis">Change Color of Progress Bar</span></p>
+
+			<p class="p">If required, you can set up the progress bar so that it changes color to reflect the
+				state of the progress depending on the <samp class="ph codeph">criticality</samp> value as shown
+				in the figure below.</p>
+
+			<div class="fig fignone" id="loio43f6f0faa1b64c5aa92bcde379be9054__fig_qyl_hxk_zv"><div class="figcontainer">
+				
+				<img class="image" id="loio43f6f0faa1b64c5aa92bcde379be9054__image_cyx_wxk_zv" src="loio5fc72657bf704c5289ae4794fb1e36ab_LowRes.png"/>
+			<div class="figcap">Progress Indicator: Colors Reflect State of Progress</div></div></div>
+
+			<div class="p">To do so, assign a value to the <samp class="ph codeph">criticality</samp> property. In the example
+				below, this is determined by the <samp class="ph codeph">RevenueCriticality</samp> field from the
+				back-end
+				system:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">@UI.lineItem: {position:30, type:#AS_DATAPOINT, criticality:'RevenueCriticality'}
+					
+@UI.dataPoint: {targetValueElement:'TargetRevenue', visualization:#PROGRESS}
+
+Product.Revenue
+</pre></div>
+</div>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

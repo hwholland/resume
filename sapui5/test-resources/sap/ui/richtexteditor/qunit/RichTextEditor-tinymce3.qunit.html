@@ -1,0 +1,361 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>RichTextEditor - sap.ui.richtexteditor</title>
+		
+		<!-- This unit test is tailored for TinyMCE -->
+		
+
+    <script id="sap-ui-bootstrap" 
+			type="text/javascript"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_platinum"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.ui.richtexteditor" >
+		</script>
+    
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+
+		<script>
+		
+		function onReady() {
+			ok(editorReady("myRTE1"), "when 'ready' is fired, the editor should be really ready.");
+			window.eventReady = true;
+			
+			if (window.testReady) {
+				oRichTextEditor1.destroy();
+				start();
+			}
+		}
+		
+		test("Initial Check", function() {
+			ok((sap.ui.richtexteditor.RichTextEditor !== undefined) 
+				&& (sap.ui.richtexteditor.RichTextEditor != null), "RichTextEditor class should exist");
+		});
+	
+		asyncTest("Control Creation and Destruction", function() {
+			expect(11);
+			
+			ok(window.tinymce === undefined, "tinymce may not be definied initially.");
+			ok(window.tinyMCE === undefined, "tinyMCE may not be definied initially.");
+			
+			var oRichTextEditor1 = new sap.ui.richtexteditor.RichTextEditor("myRTE1", {
+				width:"400px", 
+				height:"300px"
+			});
+			oRichTextEditor1.placeAt("rteArea1");
+			
+			executeWhenReady("myRTE1", function() {
+				ok(true, "This point should be reached, which means the editor is rendered and initialized correctly.");
+				
+				ok(window.tinymce !== undefined, "tinymce must be definied");
+				ok(window.tinyMCE !== undefined, "tinyMCE must be definied");
+				
+				ok(window.tinymce !== undefined, "tinymce must be definied");
+				equals(tinymce.editors.length, 1, "There must be one tinymce editor now");
+				ok(tinymce.editors["myRTE1-textarea"] !== undefined, "tinymce editor 'myRTE1-textarea' must be definied");
+				equals(tinymce.editors["myRTE1-textarea"].editorId, "myRTE1-textarea", "tinymce id must be 'myRTE1-textarea'");
+				
+				oRichTextEditor1.destroy();
+				
+				equals(tinymce.editors.length, 0, "There must be no tinymce editor now");
+				ok(tinymce.editors["myRTE1-textarea"] === undefined, "tinymce editor 'myRTE1-textarea' must not be definied after destruction");
+				start();
+			});
+		});
+		
+		
+		asyncTest("Control Creation and Size", function() {
+			expect(4);
+			window.testReady = window.eventReady = false;
+
+			var oRichTextEditor1 = new sap.ui.richtexteditor.RichTextEditor("myRTE1", {
+				width:"400px", 
+				height:"300px",
+				ready: onReady
+			});
+			//Cleanup UIArea because placeAt only adds new control to UIArea
+			sap.ui.getCore().getUIArea("rteArea1").removeAllContent();
+			oRichTextEditor1.placeAt("rteArea1");
+			
+			executeWhenReady("myRTE1", function() {
+				equals(tinymce.editors.length, 1, "There must be again one tinymce editor now");
+				equals(jQuery.sap.domById("myRTE1").offsetWidth, 400, "Editor width should be 400px");
+				equals(jQuery.sap.domById("myRTE1").offsetHeight, 300, "Editor height should be 300px");
+	//TODO			//equals(jQuery.sap.domById("myRTE1").firstChild.nextSibling.offsetHeight, 300, "Editor inner height should be 300px");
+				//equals(jQuery.sap.domById("myRTE1").firstChild.nextSibling.offsetHeight, 300, "Editor inner table height should be 300px");
+				
+				window.testReady = true;
+				
+				if (window.eventReady) {
+					oRichTextEditor1.destroy();
+					start();
+				}
+			});
+		});
+		
+		
+		asyncTest("getNativeApi", function() {
+			expect(3);
+
+			var oRichTextEditor1 = new sap.ui.richtexteditor.RichTextEditor("myRTE1", {
+	    	width:"400px", 
+	    	height:"300px"
+	    });
+			//Cleanup UIArea because placeAt only adds new control to UIArea
+			sap.ui.getCore().getUIArea("rteArea1").removeAllContent();
+			oRichTextEditor1.placeAt("rteArea1");
+			
+			executeWhenReady("myRTE1", function() {
+				equals(tinymce.editors.length, 1, "There must be again one tinymce editor now");
+				var nativeApi = oRichTextEditor1.getNativeApi();
+				equals(nativeApi.editorId, "myRTE1-textarea", "nativeApi id must be 'myRTE1-textarea'");
+				ok(nativeApi == tinymce.editors[0], "nativeApi must equal the existing editor"); // equals and deepEquals gives a "too much recursion" error
+				
+				oRichTextEditor1.destroy();
+				start();
+			});
+		});
+		
+		
+		asyncTest("Check InitialValue", function() {
+			expect(4);
+			var myValue = "<p><span>Hello <strong>World!</strong></span></p>".toUpperCase();
+			
+			var oRichTextEditor1 = new sap.ui.richtexteditor.RichTextEditor("myRTE1", {
+	    	width:"400px", 
+	    	height:"300px",
+	    	value:myValue
+	    });
+			oRichTextEditor1.placeAt("rteArea1");
+			
+			executeWhenReady("myRTE1", function() {
+				equals(oRichTextEditor1.getValue().toUpperCase(), myValue, "Editor should have the correct value");
+				
+				var iframe = jQuery.sap.domById("myRTE1-textarea_ifr");
+				var iframeHTML = iframe.contentWindow.document.body.innerHTML;
+				var instHTML = oRichTextEditor1.getNativeApi().getBody().innerHTML;
+				var contentHTML = oRichTextEditor1.getNativeApi().getContent();
+				
+				// check the actual content in two ways
+				equals(iframeHTML.toUpperCase(), myValue, "Editor iframe should have the correct value");
+				equals(instHTML.toUpperCase(), myValue, "Editor iframe should have the correct value");
+				equals(contentHTML.toUpperCase(), myValue, "Editor iframe should have the correct value");
+
+				oRichTextEditor1.destroy();
+				start();
+			});
+		});
+		
+		asyncTest("setValue", function() {
+			expect(4);
+			var myValue = "<p><span>Hello <strong>World!</strong></span></p>".toUpperCase();
+			
+			var oRichTextEditor1 = new sap.ui.richtexteditor.RichTextEditor("myRTE1", {
+	    	width:"400px", 
+	    	height:"300px"
+	    });
+			oRichTextEditor1.placeAt("rteArea1");
+			
+			executeWhenReady("myRTE1", function() {
+				oRichTextEditor1.setValue(myValue);
+				equals(oRichTextEditor1.getValue().toUpperCase(), myValue, "Editor should immediately have the correct value");
+				
+				setTimeout(function() {
+					var iframe = jQuery.sap.domById("myRTE1-textarea_ifr");
+					var iframeHTML = iframe.contentWindow.document.body.innerHTML;
+					var instHTML = oRichTextEditor1.getNativeApi().getBody().innerHTML;
+					var contentHTML = oRichTextEditor1.getNativeApi().getContent();
+					
+					// check the actual content in two ways
+					equals(iframeHTML.toUpperCase(), myValue, "Editor iframe should have the correct value");
+					equals(instHTML.toUpperCase(), myValue, "Editor iframe should have the correct value");
+					equals(contentHTML.toUpperCase(), myValue, "Editor iframe should have the correct value");
+					
+					oRichTextEditor1.destroy();
+					start();
+				}, 800); // to be safe... a check for after rerendering would be better
+			});
+		});
+
+		asyncTest("setValue sanitization", function() {
+			expect(4);
+			var myValue = "<p><span>Hello <strong>World!</strong></span><script>alert('XSS')<\/script></p>".toUpperCase();
+			var mySanitizedValue = "<p><span>Hello <strong>World!</strong></span></p>".toUpperCase();
+			
+			var oRichTextEditor1 = new sap.ui.richtexteditor.RichTextEditor("myRTE1", {
+	    	width:"400px", 
+	    	height:"300px"
+	    });
+			oRichTextEditor1.placeAt("rteArea1");
+			
+			executeWhenReady("myRTE1", function() {
+				oRichTextEditor1.setValue(myValue);
+				equals(oRichTextEditor1.getValue().toUpperCase(), mySanitizedValue, "Editor should immediately have the correct value");
+				
+				setTimeout(function() {
+					var iframe = jQuery.sap.domById("myRTE1-textarea_ifr");
+					var iframeHTML = iframe.contentWindow.document.body.innerHTML;
+					var instHTML = oRichTextEditor1.getNativeApi().getBody().innerHTML;
+					var contentHTML = oRichTextEditor1.getNativeApi().getContent();
+					
+					// check the actual content in two ways
+					equals(iframeHTML.toUpperCase(), mySanitizedValue, "Editor iframe should have the correct value");
+					equals(instHTML.toUpperCase(), mySanitizedValue, "Editor iframe should have the correct value");
+					equals(contentHTML.toUpperCase(), mySanitizedValue, "Editor iframe should have the correct value");
+					
+					oRichTextEditor1.destroy();
+					start();
+				}, 800); // to be safe... a check for after rerendering would be better
+			});
+		});
+
+		asyncTest("readonly link target modification", function() {
+			expect(2);
+			var myValue = "<p><a id='l1' href='http://www.sap.com'>link1</a><a id='l2' target='_top' href='http://www.sap.com'>link2</a></p>";
+			
+			var oRichTextEditor1 = new sap.ui.richtexteditor.RichTextEditor("myRTE1", {
+	    	width:"400px", 
+	    	height:"300px",
+	    	editable: false
+	    });
+			oRichTextEditor1.placeAt("rteArea1");
+			
+			executeWhenReady("myRTE1", function() {
+				oRichTextEditor1.setValue(myValue);
+				
+				setTimeout(function() {
+					var oDoc = oRichTextEditor1.getNativeApi().getDoc();
+					
+					// check the actual content in two ways
+					equals(oDoc.getElementById("l1").target, "_blank", "Target should be blank");
+					equals(oDoc.getElementById("l2").target, "_blank", "Target should be blank");
+					
+					oRichTextEditor1.destroy();
+					start();
+				}, 800); // to be safe... a check for after rerendering would be better
+			});
+		});		
+		
+		asyncTest("Check Toolbar groups", function() {
+			expect(3);
+
+			var oRichTextEditor1 = new sap.ui.richtexteditor.RichTextEditor("myRTE1", {
+				width:"400px", 
+				height:"300px"
+			});
+			oRichTextEditor1.placeAt("rteArea1");
+			
+			executeWhenReady("myRTE1", function() {
+				equals(jQuery("span.mce_justifyfull").length, 1, "Text justify button should be there");
+				equals(jQuery("span.mce_emotions").length, 0, "The smiley button should not be there");
+				oRichTextEditor1.setShowGroupInsert(true);
+				
+				setTimeout(function(){
+					equals(jQuery("span.mce_emotions").length, 1, "The smiley button should now be there");
+					
+					oRichTextEditor1.destroy();
+					start();
+				}, 800); // to be safe... a check for after rerendering would be better
+			});
+		});
+		
+		
+		asyncTest("Non-default Plugins", function() {
+			expect(17);
+
+			var oRichTextEditor1 = new sap.ui.richtexteditor.RichTextEditor("myRTE1", {
+				width: "400px", 
+				height: "300px",
+				useLegacyTheme: false
+			});
+			
+			oRichTextEditor1.addPlugin({ name : "searchreplace" });
+			
+			oRichTextEditor1.addPlugin({ name : "contextmenu" });
+			
+			oRichTextEditor1.addPlugin("preview");
+			
+			oRichTextEditor1.addPlugin("media");
+			oRichTextEditor1.addButtonGroup("media");
+			oRichTextEditor1.addButtonGroup("tablecontrols");
+			
+			oRichTextEditor1.placeAt("rteArea1");
+			
+			executeWhenReady("myRTE1", function() {
+				// Check for loaded plugins
+				equals("Contextmenu", new tinymce.plugins.ContextMenu().getInfo().longname, "Context menu plugin loaded");
+				equals("Search/Replace", new tinymce.plugins.SearchReplacePlugin().getInfo().longname, "Search/Replace plugin loaded");
+				equals("Preview", new tinymce.plugins.Preview().getInfo().longname, "Preview plugin loaded");
+				ok(typeof(tinymce.plugins.TablePlugin) === "function" , "Table plugin loaded");
+				ok(typeof(tinymce.plugins.MediaPlugin) === "function" , "Media plugin loaded");
+
+				// Check for existence of Buttons
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_media").length, 1, "Media button shown");
+				// Check for existence of Table Buttons
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_table").length, 1, "Table button shown");
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_row_props").length, 1, "Row Properties button shown");
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_cell_props").length, 1, "Cell Properties button shown");
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_row_before").length, 1, "Row Before button shown");
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_row_after").length, 1, "Row After button shown");
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_delete_row").length, 1, "Delete Row button shown");
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_col_before").length, 1, "Column Before button shown");
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_col_after").length, 1, "Column After button shown");
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_delete_col").length, 1, "Delete Column button shown");
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_split_cells").length, 1, "Split Cells shown");
+				equals(jQuery("#myRTE1-textarea_toolbar1").find(".mceButton.mce_merge_cells").length, 1, "Merge Cells button shown");
+	
+				setTimeout(function(){
+					oRichTextEditor1.destroy();
+					start();
+				}, 800); // to be safe... a check for after rerendering would be better
+			});
+		});
+		
+		
+		
+		
+		/**
+		 * Executes the given function once the editor with the given ID has been rendered by TinyMCE.
+		 * If bStartAfter is set to true, also start() is called to continue after an asynchronous test.
+		 */
+		function executeWhenReady(sEditorId, fnTestFunction, bStartAfter) {
+			// try later if editor not yet rendered
+			if(!editorReady(sEditorId)) {
+				setTimeout(function() {
+					executeWhenReady(sEditorId, fnTestFunction, bStartAfter);
+				}, 100);
+				return;
+			}
+
+			// now do the test
+			fnTestFunction.call();
+			
+			// start next test if required
+			if (bStartAfter) {
+				start();
+			}
+		}
+		
+		function editorReady(sEditorId) {
+			var iframeId = sEditorId + "-textarea_ifr";
+			var iframe = jQuery.sap.domById(iframeId);
+			return (iframe != null && iframe != undefined); // TODO
+		}
+		    
+		</script>
+	</head>
+	<body>
+		<h1 id="qunit-header">qUnit Page for RichTextEditor</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup, will be hidden</div>
+		
+		<div id="rteArea1"></div>
+	</body>
+</html>

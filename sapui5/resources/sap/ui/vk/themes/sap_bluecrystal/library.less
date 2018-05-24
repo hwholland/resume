@@ -1,0 +1,50 @@
+/* NOTE: This file was generated as an optimized version of "library.source.less" for the Theme Designer. */
+
+/*!
+ * ${copyright}
+ */
+
+@import "../base/library.less";
+@import "../../../../../../Base/baseLib/sap_bluecrystal/base.less"; /* ORIGINAL IMPORT PATH: "../../../../../sap/ui/core/themes/sap_bluecrystal/base.less" */
+
+@import "../../../../../sap/ui/core/themes/sap_bluecrystal/global.less";
+/* START "MapContainer.less" */
+/*...........................................................................*/
+/* LESS for control sap.ui.vk/MapContainer.control...........................*/
+/*...........................................................................*/
+
+@sapUiVkMCOverlayShadow: 0px 1px 3px 0px rgba(0,0,0,0.5); 
+
+.sapUiVkMapContainer { 	
+	.sapUiVkContainerBaseToolbarArea .sapMBtnTransparent:not(.sapMToggleBtnPressed), .sapUiVkMapContainerNavbarArea .sapMBtnTransparent:not(.sapMToggleBtnPressed){
+	  	/* make transparent button in toolbar look like segmented button */
+		background-color: @sapUiSegmentedButtonBackground;
+		border-radius: 0px;
+		border-color: @sapUiSegmentedButtonBorderColor;
+	}
+	html.sap-desktop & .sapMSegBBtnFocusable:not(.sapMSegBBtnSel):hover,  /* needed for segmented button on hover */
+	.sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable:not(.sapMToggleBtnPressed) { /* needed for tranparent toolbar button on hover */
+		background-color: @sapUiButtonHoverBackground;
+	}
+	.sapUiVkContainerBaseToolbarArea .sapMBtnInner, .sapUiVkMapContainerNavbarArea .sapMBtnInner {
+		box-shadow: @sapUiVkMCOverlayShadow;
+	}
+	:not(.sapMBtnDisabled)>.sapMBtnInner.sapMBtnActive .sapMBtnIcon { 	/* button active state */
+		color: @sapUiSegmentedButtonIconColor;
+	}
+	.sapMSegB, .sapUiSizeCompact & .sapMSegB  {
+		box-shadow: @sapUiVkMCOverlayShadow;
+		padding: 0;
+	}
+}
+
+html:not(.sap-phone) .sapUiVkMapContainer {
+	.sapUiVkListPanelStack {
+		box-shadow: @sapUiVkMCOverlayShadow;
+	}
+	.sapUiVkMapContainerListPanelArea {
+		padding: 0.0625rem 0.125rem; /* needed for shadow bleeding from inner div */
+	}
+}
+/* END "MapContainer.less" */
+

@@ -1,0 +1,1038 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for
+	sap.suite.ui.generic.template.lib.NavigationController</title>
+
+<base href="../../../../../../../../">
+		<!--[if lte IE 9]><script type="text/javascript">
+		(function() {
+			var baseTag = document.getElementsByTagName('base')[0];
+			baseTag.href = baseTag.href;
+		})();
+		</script><![endif]-->
+
+		<script id="sap-ui-bootstrap"
+			type="text/javascript"
+			src="resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true">
+		</script>
+
+		<link rel="stylesheet" href="resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon.js"></script>
+		<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+		
+		
+<script type="text/javascript">
+<!-- add the qunit-coverage.js to add client-side coverage to QUnit tests -->
+	if (!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+	}
+	(function() {
+		jQuery.sap.require("sap.suite.ui.generic.template.lib.NavigationController");
+		jQuery.sap.require("sap.ui.generic.app.AppComponent");
+		jQuery.sap.require("sap.m.NavContainer");
+		jQuery.sap.require("sap.ui.model.odata.v2.ODataModel");
+		jQuery.sap.require("sap.ui.core.routing.Router");
+		jQuery.sap.require("sap.ui.core.routing.Views");
+		jQuery.sap.require("sap.ui.core.Control");
+		var oConfig = {
+			"pages": [
+				{
+					"entitySet": "I_AIS_E_SalesOrder_A",
+					"component": {
+						"name": "sap.suite.ui.generic.template.ListReport"
+					}
+				}
+			]
+		};
+		var oTemplateContract = {
+			oApplication: {
+				onAfterNavigate: jQuery.noop,
+				onBypassed: jQuery.noop,
+				onRouteMatched: jQuery.noop
+			}	
+		};
+		
+		module("sap.suite.ui.generic.template.lib.NavigationController", {
+			setup: function() {
+				var oComponent = sinon.createStubInstance(sap.suite.ui.generic.template.lib.AppComponent);
+				oComponent.getConfig = function(){
+					return oConfig;
+				};
+				var oNavContainer = sinon.createStubInstance(sap.m.NavContainer);
+				oTemplateContract.oNavContainer = oNavContainer;
+				oTemplateContract.getText = jQuery.noop;
+				//oComponent.getConfig.returns(oConfig);
+				var oModel = sinon.createStubInstance(sap.ui.model.odata.v2.ODataModel);
+				this.oMetaModel = {};
+				oModel.getMetaModel.returns(this.oMetaModel);
+				oComponent.getModel.returns(oModel);
+				this.oRouter = sinon.createStubInstance(sap.ui.core.routing.Router);
+				oComponent.getRouter.returns(this.oRouter);
+				this.oRouter._oViews = sinon.createStubInstance(sap.ui.core.routing.Views);
+				this.oNavigationController = new sap.suite.ui.generic.template.lib.NavigationController(oComponent, oTemplateContract);
+			},
+			teardown: function() {
+				this.oNavigationController.destroy();
+			}
+		});
+
+		test("Shall be instantiable", function() {
+			ok(this.oNavigationController);
+		});
+
+		test("instantiation of the class shall call initialise the Router when no startup parameters are passed", function() {		
+			var oSpy = sinon.spy(this.oNavigationController, "_initialiseRouting");
+
+			strictEqual(oSpy.calledOnce, false);
+			//Router should already have been initialised
+			strictEqual(this.oRouter.initialize.calledOnce, true);
+
+			this.oNavigationController._initialise();
+			
+			strictEqual(oSpy.calledOnce, true);
+			//Router would be initialised a 2nd time
+			strictEqual(this.oRouter.initialize.calledTwice, true);
+		});		
+		
+		test("instantiation of the class shall call not initialise the Router - with startup parameters", function() {		
+			var oStartupParameters = {"SalesOrderId":["1"],"SalesOrderDraftUUID":["00000000-0000-0000-0000-000000000000"]};
+			var oSpy = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			var oProcessParameterSpy = sinon.stub(this.oNavigationController, "_processStartupParameters");
+
+			strictEqual(oSpy.calledOnce, false);
+			strictEqual(oProcessParameterSpy.calledOnce, false);
+			//Router should already have been initialised
+			strictEqual(this.oRouter.initialize.calledOnce, true);
+
+			//mock startup parameters
+			var oComponent = this.oNavigationController.oComponent;
+			oComponent.getComponentData.returns({startupParameters:oStartupParameters});
+			this.oNavigationController._initialise();
+			
+			//tests
+			//_initialiseRouting is not called
+			strictEqual(oSpy.calledOnce, false);
+			//_processStartupParameters is called
+			strictEqual(oProcessParameterSpy.calledOnce, true);
+			//Router would not be initialised a 2nd time
+			strictEqual(this.oRouter.initialize.calledTwice, false);
+		});
+		
+		test("instantiation of the class shall initialise the Router - with startup parameters, when hash is set", function() {		
+			var oStartupParameters = {"SalesOrderId":["1"],"SalesOrderDraftUUID":["00000000-0000-0000-0000-000000000000"]};
+			var oSpy = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			var oProcessParameterSpy = sinon.stub(this.oNavigationController, "_processStartupParameters");
+
+			strictEqual(oSpy.calledOnce, false);
+			strictEqual(oProcessParameterSpy.calledOnce, false);
+			//Router should already have been initialised
+			strictEqual(this.oRouter.initialize.calledOnce, true);
+
+			//mock startup parameters
+			var oComponent = this.oNavigationController.oComponent;
+			var oHashChanger = sinon.createStubInstance(sap.ui.core.routing.HashChanger);
+			oHashChanger.getHash.returns("foo");
+			this.oNavigationController._oHashChanger = oHashChanger;
+			oComponent.getComponentData.returns({startupParameters:oStartupParameters});
+			this.oNavigationController._initialise();
+			
+			//tests			
+			strictEqual(oSpy.calledOnce, true);
+			
+			strictEqual(oProcessParameterSpy.calledOnce, false);
+			
+			strictEqual(this.oRouter.initialize.calledTwice, true);
+		});
+		
+		test("_processStartupParameters with no page as target", function() {	
+			var oSpy_readObject = sinon.spy(this.oNavigationController, "_readObject");
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			this.oRouter.getRoute.returns( false );
+			
+			var oStartupParameters = {"SalesOrderId":["1"],"SalesOrderDraftUUID":["00000000-0000-0000-0000-000000000000"]};
+			//mock startup parameters
+			this.oNavigationController._oStartupParameters= oStartupParameters;		
+			
+			var oPromise = jQuery.Deferred().resolve();
+			var oMetaModel = sinon.createStubInstance(sap.ui.model.odata.ODataMetaModel);
+			oMetaModel.loaded.returns(oPromise);
+			var oModel = this.oNavigationController.oComponent.getModel()
+			oModel.getMetaModel.returns(oMetaModel);
+			
+			//mock the entityset
+			oMetaModel.getODataEntitySet.returns({name:"SalesOrder"}); 
+			var oEntityType = { key: {propertyRef: [{name: "SalesOrderId"}, {name: "SalesOrderDraftUUID"}]  }  };
+			oMetaModel.getODataEntityType.returns(oEntityType);
+			
+			this.oNavigationController._processStartupParameters();
+			
+			strictEqual(oMetaModel.getODataEntitySet.calledOnce, false);
+			strictEqual(oModel.createKey.calledOnce, false);
+			strictEqual(oSpy_readObject.calledOnce, false);
+			strictEqual(oSpy_initialiseRouting.calledOnce, true);
+			
+		});
+		
+		test("_processStartupParameters with full key", function() {	
+			var oSpy_readObject = sinon.spy(this.oNavigationController, "_readObject");
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			this.oRouter.getRoute.returns( true );
+			
+			var oStartupParameters = {"SalesOrderId":["1"],"SalesOrderDraftUUID":["00000000-0000-0000-0000-000000000000"]};
+			//mock startup parameters
+			this.oNavigationController._oStartupParameters= oStartupParameters;		
+			
+			var oPromise = jQuery.Deferred().resolve();
+			var oMetaModel = sinon.createStubInstance(sap.ui.model.odata.ODataMetaModel);
+			oMetaModel.loaded.returns(oPromise);
+			var oModel = this.oNavigationController.oComponent.getModel()
+			oModel.getMetaModel.returns(oMetaModel);
+			
+			//mock the entityset
+			oMetaModel.getODataEntitySet.returns({name:"SalesOrder"}); 
+			var oEntityType = { key: {propertyRef: [{name: "SalesOrderId"}, {name: "SalesOrderDraftUUID"}]  }  };
+			oMetaModel.getODataEntityType.returns(oEntityType);
+			
+			this.oNavigationController._processStartupParameters();
+			
+			strictEqual(oMetaModel.getODataEntitySet.calledOnce, true);
+			strictEqual(oModel.createKey.calledOnce, true);
+			strictEqual(oSpy_readObject.calledOnce, false);
+			strictEqual(oSpy_initialiseRouting.calledOnce, true);
+			
+		});
+		
+		test("_processStartupParameters with more than one full key", function() {	
+			var oSpy_readObject = sinon.spy(this.oNavigationController, "_readObject");
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			this.oRouter.getRoute.returns( true );
+			
+			var oStartupParameters = {"SalesOrderId":["1","2"],"SalesOrderDraftUUID":["00000000-0000-0000-0000-000000000000","00000000-0000-0000-0000-000000000001"]};
+			//mock startup parameters
+			this.oNavigationController._oStartupParameters= oStartupParameters;		
+			
+			var oPromise = jQuery.Deferred().resolve();
+			var oMetaModel = sinon.createStubInstance(sap.ui.model.odata.ODataMetaModel);
+			oMetaModel.loaded.returns(oPromise);
+			var oModel = this.oNavigationController.oComponent.getModel()
+			oModel.getMetaModel.returns(oMetaModel);
+			
+			//mock the entityset
+			oMetaModel.getODataEntitySet.returns({name:"SalesOrder"}); 
+			var oEntityType = { key: {propertyRef: [{name: "SalesOrderId"}, {name: "SalesOrderDraftUUID"}]  }  };
+			oMetaModel.getODataEntityType.returns(oEntityType);
+			
+			this.oNavigationController._processStartupParameters();
+			
+			//indpendent from the test case
+			strictEqual(oMetaModel.getODataEntitySet.calledOnce, true);
+			//test specific
+			strictEqual(oModel.createKey.calledOnce, false);
+			strictEqual(oSpy_readObject.calledOnce, false);
+			strictEqual(oSpy_initialiseRouting.calledOnce, true);
+			
+		});
+
+		test("_processStartupParameters with no full key", function() {	
+			var oSpy_readObject = sinon.spy(this.oNavigationController, "_readObject");
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			this.oRouter.getRoute.returns( true );
+			
+			var oStartupParameters = {"NoKeyField":["ABC"]};
+			//mock startup parameters
+			this.oNavigationController._oStartupParameters= oStartupParameters;		
+			
+			var oPromise = jQuery.Deferred().resolve();
+			var oMetaModel = sinon.createStubInstance(sap.ui.model.odata.ODataMetaModel);
+			oMetaModel.loaded.returns(oPromise);
+			var oModel = this.oNavigationController.oComponent.getModel()
+			oModel.getMetaModel.returns(oMetaModel);
+			
+			//mock the entityset
+			oMetaModel.getODataEntitySet.returns({name:"SalesOrder"}); 
+			var oEntityType = { key: {propertyRef: [{name: "SalesOrderId"}, {name: "SalesOrderDraftUUID"}]  }  };
+			oMetaModel.getODataEntityType.returns(oEntityType);
+			
+			this.oNavigationController._processStartupParameters();
+			
+			//indpendent from the test case
+			strictEqual(oMetaModel.getODataEntitySet.calledOnce, true);
+			//test specific
+			strictEqual(oModel.createKey.calledOnce, false);
+			strictEqual(oSpy_readObject.calledOnce, false);
+			strictEqual(oSpy_initialiseRouting.calledOnce, true);
+			
+		});
+		
+		test("_processStartupParameters with semantic key", function() {	
+			var oSpy_readObject = sinon.spy(this.oNavigationController, "_readObject");
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			this.oRouter.getRoute.returns( true );
+			
+			var oStartupParameters = {"SalesOrderId":["1"]};
+			//mock startup parameters
+			this.oNavigationController._oStartupParameters= oStartupParameters;		
+			
+			var oPromise = jQuery.Deferred().resolve();
+			var oMetaModel = sinon.createStubInstance(sap.ui.model.odata.ODataMetaModel);
+			oMetaModel.loaded.returns(oPromise);
+			var oModel = this.oNavigationController.oComponent.getModel()
+			oModel.getMetaModel.returns(oMetaModel);
+			
+			//mock the entityset
+			oMetaModel.getODataEntitySet.returns({name:"SalesOrder"}); 
+			var oEntityType = { key: {propertyRef: [{name: "SalesOrderId"}, {name: "SalesOrderDraftUUID"}]  },
+			                    "com.sap.vocabularies.Common.v1.SemanticKey": [{PropertyPath: "SalesOrderId"}]
+			                  };
+			oMetaModel.getODataEntityType.returns(oEntityType);
+			
+			this.oNavigationController._processStartupParameters();
+			
+			//indpendent from the test case
+			strictEqual(oMetaModel.getODataEntitySet.calledOnce, true);
+			//test specific
+			strictEqual(oModel.createKey.calledOnce, false);
+			strictEqual(oSpy_readObject.calledOnce, true);
+			strictEqual(oSpy_initialiseRouting.calledOnce, false);
+			
+		});
+		
+		test("_processStartupParameters with more than one semantic key", function() {	
+			var oSpy_readObject = sinon.spy(this.oNavigationController, "_readObject");
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			this.oRouter.getRoute.returns( true );
+			
+			var oStartupParameters = {"SalesOrderId":["1", "2"]};
+			//mock startup parameters
+			this.oNavigationController._oStartupParameters= oStartupParameters;		
+			
+			var oPromise = jQuery.Deferred().resolve();
+			var oMetaModel = sinon.createStubInstance(sap.ui.model.odata.ODataMetaModel);
+			oMetaModel.loaded.returns(oPromise);
+			var oModel = this.oNavigationController.oComponent.getModel()
+			oModel.getMetaModel.returns(oMetaModel);
+			
+			//mock the entityset
+			oMetaModel.getODataEntitySet.returns({name:"SalesOrder"}); 
+			var oEntityType = { key: {propertyRef: [{name: "SalesOrderId"}, {name: "SalesOrderDraftUUID"}]  },
+			                    "com.sap.vocabularies.Common.v1.SemanticKey": [{PropertyPath: "SalesOrderId"}]
+			                  };
+			oMetaModel.getODataEntityType.returns(oEntityType);
+			
+			this.oNavigationController._processStartupParameters();
+			
+			//indpendent from the test case
+			strictEqual(oMetaModel.getODataEntitySet.calledOnce, true);
+			//test specific
+			strictEqual(oModel.createKey.calledOnce, false);
+			strictEqual(oSpy_readObject.calledOnce, false);
+			strictEqual(oSpy_initialiseRouting.calledOnce, true);
+			
+		});
+		
+		test("_processStartupParameters with no full semantic key", function() {	
+			var oSpy_readObject = sinon.spy(this.oNavigationController, "_readObject");
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			this.oRouter.getRoute.returns( true );
+			
+			var oStartupParameters = {"SalesOrderId":["1"]};
+			//mock startup parameters
+			this.oNavigationController._oStartupParameters= oStartupParameters;		
+			
+			var oPromise = jQuery.Deferred().resolve();
+			var oMetaModel = sinon.createStubInstance(sap.ui.model.odata.ODataMetaModel);
+			oMetaModel.loaded.returns(oPromise);
+			var oModel = this.oNavigationController.oComponent.getModel()
+			oModel.getMetaModel.returns(oMetaModel);
+			
+			//mock the entityset
+			oMetaModel.getODataEntitySet.returns({name:"SalesOrder"}); 
+			var oEntityType = { key: {propertyRef: [{name: "SalesOrderId"}, {name: "SalesOrderDraftUUID"}]  },
+			                    "com.sap.vocabularies.Common.v1.SemanticKey": [{PropertyPath: "SalesOrderId"},
+			                                                                   {PropertyPath: "SalesOrderIdItem"}]
+			                  };
+			oMetaModel.getODataEntityType.returns(oEntityType);
+			
+			this.oNavigationController._processStartupParameters();
+			
+			//indpendent from the test case
+			strictEqual(oMetaModel.getODataEntitySet.calledOnce, true);
+			//test specific
+			strictEqual(oModel.createKey.calledOnce, false);
+			strictEqual(oSpy_readObject.calledOnce, false);
+			strictEqual(oSpy_initialiseRouting.calledOnce, true);
+			
+		});
+		
+		
+		test("_readObject shall trigger read with specified filters", function() {	
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			
+			var aSemanticKey = [{PropertyPath: "SalesOrderId"}];
+			var oStartupParameters = {"SalesOrderId":["1"]};		
+			
+			var oModel = this.oNavigationController.oComponent.getModel();			
+			this.oNavigationController._readObject(aSemanticKey, oStartupParameters, oModel);
+			
+			strictEqual(oModel.read.calledOnce, true);
+			strictEqual(oSpy_initialiseRouting.calledOnce, false);
+			var oReadParameters = oModel.read.args[0][1];
+			var aFilters = oReadParameters.filters;
+			strictEqual(aFilters.length, 1);
+			
+			var oFilter = aFilters[0];
+			strictEqual(oFilter instanceof sap.ui.model.Filter, true);
+			strictEqual(oFilter.sPath,"SalesOrderId");
+			strictEqual(oFilter.oValue1,"1");
+		});
+		
+		test("_readObject shall trigger read and intitialise routing on success - no result returned", function() {	
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			
+			var aSemanticKey = [{PropertyPath: "SalesOrderId"}];
+			var oStartupParameters = {"SalesOrderId":["1"]};		
+					
+			var oModel = this.oNavigationController.oComponent.getModel();			
+			this.oNavigationController._readObject(aSemanticKey, oStartupParameters, oModel);
+			
+			strictEqual(oModel.read.calledOnce, true);
+			strictEqual(oSpy_initialiseRouting.calledOnce, false);
+			var oReadParameters = oModel.read.args[0][1];
+			
+			oReadParameters.success();
+			strictEqual(oModel.getKey.calledOnce, false);
+			strictEqual(oSpy_initialiseRouting.calledOnce, true);
+		});
+		
+		test("_readObject shall trigger read and use the ActiveEntity from result", function() {	
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			
+			var aSemanticKey = [{PropertyPath: "SalesOrderId"}];
+			var oStartupParameters = {"SalesOrderId":["1"]};		
+					
+			var oModel = this.oNavigationController.oComponent.getModel();			
+			this.oNavigationController._readObject(aSemanticKey, oStartupParameters, oModel);
+			
+			strictEqual(oModel.read.calledOnce, true);
+			strictEqual(oSpy_initialiseRouting.calledOnce, false);
+			var oReadParameters = oModel.read.args[0][1];
+			strictEqual(oModel.getKey.calledOnce, false);
+			oReadParameters.success({results:[{"row1":"dummy"},{"row2":"dummy"}, {"row3":"dummy", "IsActiveEntity": true}]});
+			strictEqual(oModel.getKey.calledOnce, true);
+			deepEqual(oModel.getKey.calledWith({"row3":"dummy", "IsActiveEntity": true}),true);
+			strictEqual(oSpy_initialiseRouting.calledOnce, true);
+		});
+		
+		test("_readObject shall trigger read and use the 1st key from result, when no ActiveEntity exists", function() {	
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			
+			var aSemanticKey = [{PropertyPath: "SalesOrderId"}];
+			var oStartupParameters = {"SalesOrderId":["1"]};		
+					
+			var oModel = this.oNavigationController.oComponent.getModel();			
+			this.oNavigationController._readObject(aSemanticKey, oStartupParameters, oModel);
+			
+			strictEqual(oModel.read.calledOnce, true);
+			strictEqual(oSpy_initialiseRouting.calledOnce, false);
+			var oReadParameters = oModel.read.args[0][1];
+			strictEqual(oModel.getKey.calledOnce, false);
+			oReadParameters.success({results:[{"row1":"dummy"},{"row2":"dummy"}]});
+			strictEqual(oModel.getKey.calledOnce, true);
+			deepEqual(oModel.getKey.calledWith({"row1":"dummy"}),true);
+			strictEqual(oSpy_initialiseRouting.calledOnce, true);
+		});
+		
+		test("_readObject shall trigger read and intitialise routing on error", function() {	
+			var oSpy_initialiseRouting = sinon.spy(this.oNavigationController, "_initialiseRouting");
+			
+			var aSemanticKey = [{PropertyPath: "SalesOrderId"}];
+			var oStartupParameters = {"SalesOrderId":["1"]};		
+					
+			var oModel = this.oNavigationController.oComponent.getModel();			
+			this.oNavigationController._readObject(aSemanticKey, oStartupParameters, oModel);
+			
+			strictEqual(oModel.read.calledOnce, true);
+			strictEqual(oSpy_initialiseRouting.calledOnce, false);
+			var oReadParameters = oModel.read.args[0][1];
+			
+			oReadParameters.error();
+			strictEqual(oSpy_initialiseRouting.calledOnce, true);
+		});
+		
+		test("navigateToContext shall call setHash on the Router-HashChanger with path from Context", function() {
+			var sPath = "/SalesOrderItem(12345)";
+			var oHashChangerStub = {
+				replaceHash: sinon.stub(),
+				setHash: sinon.stub(),
+				getHash: sinon.stub()
+			};
+			this.oRouter.oHashChanger = oHashChangerStub;
+			var oContext = {
+				getPath: function() {
+					return sPath;
+				}
+			}
+			strictEqual(oHashChangerStub.getHash.calledOnce, false);
+			strictEqual(oHashChangerStub.setHash.calledOnce, false);
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, false);
+
+			this.oNavigationController.navigateToContext(oContext);
+
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, false);
+			strictEqual(oHashChangerStub.getHash.calledOnce, true);
+			strictEqual(oHashChangerStub.setHash.calledOnce, true);
+			strictEqual(oHashChangerStub.setHash.calledWith(sPath.substring(1)), true);
+		});
+
+		test("navigateToContext shall call setHash on the Router-HashChanger with path from Context and navigationProperty", function() {
+			var sPath = "/SalesOrderItem(12345)";
+			var sNavProperty = "toItem";
+			var oHashChangerStub = {
+				replaceHash: sinon.stub(),
+				setHash: sinon.stub(),
+				getHash: sinon.stub()
+			};
+			oHashChangerStub.getHash.returns("SalesOrder(1)");
+			this.oRouter.oHashChanger = oHashChangerStub;
+			var oContext = {
+				getPath: function() {
+					return sPath;
+				}
+			}
+			strictEqual(oHashChangerStub.getHash.calledOnce, false);
+			strictEqual(oHashChangerStub.setHash.calledOnce, false);
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, false);
+
+			this.oNavigationController.navigateToContext(oContext, sNavProperty);
+
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, false);
+			strictEqual(oHashChangerStub.getHash.calledOnce, true);
+			strictEqual(oHashChangerStub.setHash.calledOnce, true);
+			strictEqual(oHashChangerStub.setHash.calledWith("SalesOrder(1)/toItem(12345)"), true);
+		});
+
+		test("navigateToContext shall call setHash on the Router-HashChanger with path from Context and navigationProperty, ignoring query params from current hash", function() {
+			var sPath = "/SalesOrderItem(12345)";
+			var sNavProperty = "/toItem";
+			var oHashChangerStub = {
+				replaceHash: sinon.stub(),
+				setHash: sinon.stub(),
+				getHash: sinon.stub()
+			};
+			oHashChangerStub.getHash.returns("SalesOrder(1)?somequeryparam=abcd");
+			this.oRouter.oHashChanger = oHashChangerStub;
+			var oContext = {
+				getPath: function() {
+					return sPath;
+				}
+			}
+			strictEqual(oHashChangerStub.getHash.calledOnce, false);
+			strictEqual(oHashChangerStub.setHash.calledOnce, false);
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, false);
+
+			this.oNavigationController.navigateToContext(oContext, sNavProperty);
+
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, false);
+			strictEqual(oHashChangerStub.getHash.calledOnce, true);
+			strictEqual(oHashChangerStub.setHash.calledOnce, true);
+			strictEqual(oHashChangerStub.setHash.calledWith("SalesOrder(1)/toItem(12345)"), true);
+		});
+		
+		test("navigateToContext shall call setHash on the Router-HashChanger with path from Context and navigationProperty, ignoring query params and replacing navigationProperty path", function() {
+			var sPath = "/SalesOrderItem(12345)";
+			var sNavProperty = "/toItem";
+			var oHashChangerStub = {
+				replaceHash: sinon.stub(),
+				setHash: sinon.stub(),
+				getHash: sinon.stub()
+			};
+			oHashChangerStub.getHash.returns("SalesOrder(1)/toItem(123)?somequeryparam=abcd");
+			this.oRouter.oHashChanger = oHashChangerStub;
+			var oContext = {
+				getPath: function() {
+					return sPath;
+				}
+			}
+			strictEqual(oHashChangerStub.getHash.calledOnce, false);
+			strictEqual(oHashChangerStub.setHash.calledOnce, false);
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, false);
+
+			this.oNavigationController.navigateToContext(oContext, sNavProperty);
+
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, false);
+			strictEqual(oHashChangerStub.getHash.calledOnce, true);
+			strictEqual(oHashChangerStub.setHash.calledOnce, true);
+			strictEqual(oHashChangerStub.setHash.calledWith("SalesOrder(1)/toItem(12345)"), true);
+		});
+
+		test("navigateToContext shall call replaceHash on the Router-HashChanger with path from Context and navigationProperty, when bReplace is passed", function() {
+			var sPath = "/SalesOrderItem(12345)";
+			var sNavProperty = "toItem";
+			var oHashChangerStub = {
+				replaceHash: sinon.stub(),
+				setHash: sinon.stub(),
+				getHash: sinon.stub()
+			};
+			oHashChangerStub.getHash.returns("SalesOrder(1)");
+			this.oRouter.oHashChanger = oHashChangerStub;
+			var oContext = {
+				getPath: function() {
+					return sPath;
+				}
+			}
+			strictEqual(oHashChangerStub.getHash.calledOnce, false);
+			strictEqual(oHashChangerStub.setHash.calledOnce, false);
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, false);
+
+			this.oNavigationController.navigateToContext(oContext, sNavProperty, true);
+
+			strictEqual(oHashChangerStub.getHash.calledOnce, true);
+			strictEqual(oHashChangerStub.setHash.calledOnce, false);
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, true);
+			strictEqual(oHashChangerStub.replaceHash.calledWith("SalesOrder(1)/toItem(12345)"), true);
+		});
+
+		test("navigateToRoot shall call setHash on the Router-HashChanger with '' in the path", function() {
+			var oHashChangerStub = {
+				replaceHash: sinon.stub(),
+				setHash: sinon.stub(),
+				getHash: sinon.stub()
+			};
+			oHashChangerStub.getHash.returns("SalesOrder(1)");
+			this.oRouter.oHashChanger = oHashChangerStub;
+
+			strictEqual(oHashChangerStub.getHash.calledOnce, false);
+			strictEqual(oHashChangerStub.setHash.calledOnce, false);
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, false);
+
+			this.oNavigationController.navigateToRoot();
+
+			strictEqual(oHashChangerStub.replaceHash.calledOnce, false);
+			strictEqual(oHashChangerStub.getHash.calledOnce, false);
+			strictEqual(oHashChangerStub.setHash.calledOnce, true);
+			strictEqual(oHashChangerStub.setHash.calledWith(""), true);
+		});
+
+		test("navigateToMessagePage shall call 'to' on the NavContainer with the message page instance", function() {
+			var oNavContainer = {
+				addPage: sinon.stub(),
+				to: sinon.stub()
+			}
+			oTemplateContract.oNavContainer = oNavContainer;
+
+			var mParams = {
+				title: "SomeTitle",
+				text: "SomeText",
+				icon: "SomeIcon"
+			};
+
+			strictEqual(oNavContainer.addPage.calledOnce, false);
+			strictEqual(oNavContainer.to.calledOnce, false);
+
+			this.oNavigationController.navigateToMessagePage(mParams);
+			var oPage = oNavContainer.addPage.args[0][0];
+			strictEqual(oNavContainer.addPage.calledOnce, true);
+			strictEqual(oPage.getTitle(), "SomeTitle");
+			strictEqual(oPage.getText(), "SomeText");
+			strictEqual(oPage.getIcon(), "SomeIcon");
+			strictEqual(oNavContainer.to.calledOnce, true);
+			strictEqual(oNavContainer.to.calledWith(oPage), true);
+		});
+
+		test("navigateToMessagePage shall call 'to' on the NavContainer with the message page instance and icon from entitySet", function() {
+			var oNavContainer = {
+				addPage: sinon.stub(),
+				to: sinon.stub()
+			}
+			oTemplateContract.oNavContainer = oNavContainer;
+
+			var mParams = {
+				entitySet: "SalesOrder",
+				title: "SomeTitle",
+				text: "SomeText",
+				icon: "SomeIcon"
+			};
+
+			var oEntityType = {
+				name: "SalesOrder",
+				"com.sap.vocabularies.UI.v1.HeaderInfo": {
+					"TypeImageUrl": {
+						"String": "SomeIconFromEntity"
+					}
+				}
+			}
+
+			this.oMetaModel.getODataEntitySet = sinon.stub();
+			this.oMetaModel.getODataEntitySet.returns({
+				entityType: "SalesOrder"
+			});
+			this.oMetaModel.getODataEntityType = sinon.stub();
+			this.oMetaModel.getODataEntityType.returns(oEntityType);
+
+			strictEqual(oNavContainer.addPage.calledOnce, false);
+			strictEqual(oNavContainer.to.calledOnce, false);
+			strictEqual(this.oMetaModel.getODataEntitySet.calledOnce, false);
+			strictEqual(this.oMetaModel.getODataEntityType.calledOnce, false);
+
+			this.oNavigationController.navigateToMessagePage(mParams);
+			var oPage = oNavContainer.addPage.args[0][0];
+
+			strictEqual(this.oMetaModel.getODataEntitySet.calledOnce, true);
+			strictEqual(this.oMetaModel.getODataEntityType.calledOnce, true);
+
+			strictEqual(oNavContainer.addPage.calledOnce, true);
+			strictEqual(oPage.getTitle(), "SomeTitle");
+			strictEqual(oPage.getText(), "SomeText");
+			strictEqual(oPage.getIcon(), "SomeIconFromEntity");
+			strictEqual(oNavContainer.to.calledOnce, true);
+			strictEqual(oNavContainer.to.calledWith(oPage), true);
+		});
+
+		test("bypassed event of the router shall call navigateToMessagePage", function() {
+			var oNavSpy = sinon.spy(this.oNavigationController, "navigateToMessagePage");
+
+			var oNavContainer = {
+				addPage: sinon.stub(),
+				to: sinon.stub()
+			}
+			oTemplateContract.oNavContainer = oNavContainer;
+
+			strictEqual(oNavSpy.calledOnce, false);
+
+			var fBypassedHandler = this.oRouter.attachBypassed.args[0][0];
+			var fThis = this.oRouter.attachBypassed.args[0][1];
+			fBypassedHandler.call(fThis, {});
+
+			strictEqual(oNavSpy.calledOnce, true);
+			// This check needs to be refactored. Do not check on internal variables.
+/*			deepEqual(oNavSpy.calledWith({
+				title: this.oNavigationController._sNavigationTitle,
+				replaceURL: true
+			}), true); */
+		});
+		
+		test("routeMatched event of the router shall call _activateView", function() {
+			var oActivateSpy = sinon.spy(this.oNavigationController, "_activateView");
+
+			var oOldInstance = {
+				onDeactivate: sinon.stub()
+			};
+			oTemplateContract.oNavContainer = {
+				getCurrentPage: function() {
+					return {
+						getComponentInstance: function() {
+							return oOldInstance;
+						}
+					};
+				},
+				getPreviousPage: function() {
+					return {
+						getComponentInstance: function() {
+							return oOldInstance;
+						}
+					};
+				}
+			};
+			var fRouteMatched = this.oRouter.attachRouteMatched.args[0][0];
+			var fThis = this.oRouter.attachRouteMatched.args[0][1];
+			var oEventParam = {
+				getParameter: sinon.stub()
+			};
+			var oView = sinon.createStubInstance(sap.ui.core.Control);
+			var oNewInstance = {
+				onActivate: sinon.stub()
+			};
+			oView.getComponentInstance = function() {
+				return oNewInstance;
+			};
+			var oRouteConfig = {};
+			var oArgs = {};
+			oEventParam.getParameter.withArgs("view").returns(oView);
+			oEventParam.getParameter.withArgs("config").returns(oRouteConfig);
+			oEventParam.getParameter.withArgs("arguments").returns(oArgs);
+
+			strictEqual(oActivateSpy.calledOnce, false);
+			strictEqual(oOldInstance.onDeactivate.calledOnce, false);
+			strictEqual(oNewInstance.onActivate.calledOnce, false);
+
+			fRouteMatched.call(fThis, oEventParam);
+
+			strictEqual(oActivateSpy.calledOnce, true);
+			strictEqual(oActivateSpy.calledWith(oView, undefined), true);
+			strictEqual(oOldInstance.onDeactivate.calledOnce, true);
+			strictEqual(oNewInstance.onActivate.calledOnce, true);
+			strictEqual(oEventParam.getParameter.called, true);
+			strictEqual(oEventParam.getParameter.callCount, 3);
+		});
+		
+		test("routeMatched event of the router shall call _activateView and wait until BeforeRendering delegate is fired", function() {
+			var oActivateSpy = sinon.spy(this.oNavigationController, "_activateView");
+
+			var oOldInstance = {
+				onDeactivate: sinon.stub()
+			};
+			oTemplateContract.oNavContainer = {
+				getCurrentPage: function() {
+					return {
+						getComponentInstance: function() {
+							return oOldInstance;
+						}
+					};
+				},
+				getPreviousPage: function() {
+					return {
+						getComponentInstance: function() {
+							return oOldInstance;
+						}
+					};
+				}
+			};
+			var fRouteMatched = this.oRouter.attachRouteMatched.args[0][0];
+			var fThis = this.oRouter.attachRouteMatched.args[0][1];
+			var oEventParam = {
+				getParameter: sinon.stub()
+			};
+			var oView = sinon.createStubInstance(sap.ui.core.Control);
+			
+			oView.getComponentInstance = sinon.stub();
+			var oRouteConfig = {};
+			var oArgs = {};
+			oEventParam.getParameter.withArgs("view").returns(oView);
+			oEventParam.getParameter.withArgs("config").returns(oRouteConfig);
+			oEventParam.getParameter.withArgs("arguments").returns(oArgs);
+
+			strictEqual(oActivateSpy.calledOnce, false);
+			strictEqual(oOldInstance.onDeactivate.calledOnce, false);
+
+			fRouteMatched.call(fThis, oEventParam);
+			
+			strictEqual(oActivateSpy.calledOnce, true);
+			strictEqual(oOldInstance.onDeactivate.calledOnce, false);
+			strictEqual(oView.addEventDelegate.calledOnce, true);
+			var oEventDelegate = oView.addEventDelegate.args[0][0];
+			ok(oEventDelegate && oEventDelegate.onBeforeRendering);
+			
+			//Setup data for new instance
+			var oNewInstance = {
+				onActivate: sinon.stub()
+			};
+			oView.getComponentInstance.returns(oNewInstance);			
+			
+			// Simulate onBeforeRendering being called
+			oEventDelegate.onBeforeRendering.call(this.oNavigationController);
+
+			strictEqual(oActivateSpy.calledTwice, true);
+			strictEqual(oActivateSpy.calledWith(oView, undefined), true);
+			strictEqual(oOldInstance.onDeactivate.calledOnce, true);
+			strictEqual(oNewInstance.onActivate.calledOnce, true);
+			strictEqual(oEventParam.getParameter.called, true);
+			strictEqual(oEventParam.getParameter.callCount, 3);
+		});
+
+		test("routeMatched event of the router - test for 'root' operation", function() {
+			var oBindSpy = sinon.spy(this.oNavigationController, "_activateView");
+
+			var fRouteMatched = this.oRouter.attachRouteMatched.args[0][0];
+			var fThis = this.oRouter.attachRouteMatched.args[0][1];
+			var oEventParam = {
+				getParameter: sinon.stub()
+			};
+			var oView = sinon.createStubInstance(sap.ui.core.Control);
+			var oRouteConfig = {
+				operation: "root"
+			};
+			var oArgs = {};
+			oEventParam.getParameter.withArgs("view").returns(oView);
+			oEventParam.getParameter.withArgs("config").returns(oRouteConfig);
+			oEventParam.getParameter.withArgs("arguments").returns(oArgs);
+
+			strictEqual(oBindSpy.calledOnce, false);
+
+			fRouteMatched.call(fThis, oEventParam);
+
+			strictEqual(oBindSpy.calledOnce, true);
+			strictEqual(oBindSpy.calledWith(oView, undefined), true);
+			strictEqual(oEventParam.getParameter.called, true);
+			strictEqual(oEventParam.getParameter.callCount, 2);
+
+		});
+
+		test("routeMatched event of the router - test for local context path", function() {
+			var sPath = "/SalesOrder(123)";
+			var oBindSpy = sinon.spy(this.oNavigationController, "_activateView");
+
+			var fRouteMatched = this.oRouter.attachRouteMatched.args[0][0];
+			var fThis = this.oRouter.attachRouteMatched.args[0][1];
+			var oEventParam = {
+				getParameter: sinon.stub()
+			};
+			var oView = sinon.createStubInstance(sap.ui.core.Control);
+			oView.getModel.returns(this.oNavigationController.oComponent.getModel());
+			var oRouteConfig = {
+				operation: "root"
+			};
+			var oArgs = {};
+			oEventParam.getParameter.withArgs("view").returns(oView);
+			oEventParam.getParameter.withArgs("config").returns(oRouteConfig);
+			oEventParam.getParameter.withArgs("arguments").returns(oArgs);
+
+			strictEqual(oBindSpy.calledOnce, false);
+
+			this.oNavigationController._oTargetContextPath = sPath;
+
+			fRouteMatched.call(fThis, oEventParam);
+
+			strictEqual(oBindSpy.calledOnce, true);
+			strictEqual(oBindSpy.calledWith(oView, sPath), true);
+			strictEqual(oEventParam.getParameter.called, true);
+			strictEqual(oEventParam.getParameter.callCount, 2);
+		});
+
+		test("routeMatched event of the router - test for bookmark/non context path", function() {
+			var sPath = "/SalesOrder(123)/toItem(12345)";
+			var sBindingPath = "/SalesOrderItem(12345)";
+			var sPattern = "SalesOrder({keys1})/toItem({keys2})";
+			var sEntity = "SalesOrderItem";
+			var sNavigationProp = "toItem";
+			var oBindSpy = sinon.spy(this.oNavigationController, "_activateView");
+			var oContextPathSpy = sinon.spy(this.oNavigationController, "_getContextPath");
+
+			var fRouteMatched = this.oRouter.attachRouteMatched.args[0][0];
+			var fThis = this.oRouter.attachRouteMatched.args[0][1];
+			var oEventParam = {
+				getParameter: sinon.stub()
+			};
+			var oView = sinon.createStubInstance(sap.ui.core.Control);
+			oView.getModel.returns(this.oNavigationController.oComponent.getModel());
+			var oRouteConfig = {
+				operation: "detail",
+				pattern: sPattern,
+				navigationProperty: sNavigationProp,
+				entitySet: sEntity
+			};
+			var oArgs = {
+				"keys1": "123",
+				"keys2": "12345"
+			};
+			oEventParam.getParameter.withArgs("view").returns(oView);
+			oEventParam.getParameter.withArgs("config").returns(oRouteConfig);
+			oEventParam.getParameter.withArgs("arguments").returns(oArgs);
+
+			strictEqual(oBindSpy.calledOnce, false);
+			strictEqual(oContextPathSpy.calledOnce, false);
+
+			fRouteMatched.call(fThis, oEventParam);
+
+			strictEqual(oBindSpy.calledOnce, true);
+			strictEqual(oBindSpy.calledWith(oView, sBindingPath), true);
+			strictEqual(oEventParam.getParameter.called, true);
+			strictEqual(oEventParam.getParameter.callCount, 3);
+			strictEqual(oContextPathSpy.calledOnce, true);
+			strictEqual(oContextPathSpy.calledWith(oRouteConfig), true);
+		});
+		
+
+		test("test _generateComplexTableRoutes", function() {
+			var aComplexTable_DynamicRouting_Manifest_Input = [{
+				"entitySet": "STTA_C_MP_Product",
+				"component": {
+					"name": "sap.suite.ui.generic.template.ListReport",
+					"list": true,
+					"settings": {
+						"gridTable": false,
+						"multiSelect": true,
+						"smartVariantManagement": true
+					}
+				},
+				"pages": [{
+					"entitySet": "STTA_C_MP_Product",
+					"component": {
+						"name": "sap.suite.ui.generic.template.ObjectPage",
+						"settings": {
+							"gridTable": false,
+							"sections": {
+								"to_ProductText::com.sap.vocabularies.UI.v1.LineItem": {
+									"navigationProperty": "to_ProductText",
+									"entitySet": "STTA_C_MP_ProductText",
+									"tableMode": "ComplexTable"
+								}
+							}
+						}
+					},
+					"pages": [{
+						"navigationProperty": "to_ProductText",
+						"entitySet": "STTA_C_MP_ProductText",
+						"component": {
+							"name": "sap.suite.ui.generic.template.ObjectPage"
+						}
+					}]
+				}]
+			}];
+			
+			
+			var aComplexTable_DynamicRouting_Manifest_Result = aComplexTable_DynamicRouting_Manifest_Input;
+			aComplexTable_DynamicRouting_Manifest_Result[0].pages[0].pages[1] = {
+					"navigationProperty": "to_ProductText",
+					"entitySet": "STTA_C_MP_ProductText",
+					"component": {
+						"name": "sap.suite.ui.generic.template.ListReport",
+						"list": true,
+						"settings": {
+							"gridTable": false,
+							"complexListId": "to_ProductText::com.sap.vocabularies.UI.v1.LineItem",
+							"smartVariantManagement": true
+						}
+					},
+					"pages": [{
+						"navigationProperty": "to_ProductText",
+						"entitySet": "STTA_C_MP_ProductText",
+						"component": {
+							"name": "sap.suite.ui.generic.template.ObjectPage"
+						}
+					}]
+			};
+			//Test 0 - complex table NOT configured
+			var aTestResult;
+			
+			var aComplexTable_DynamicRouting_Not_Set = aComplexTable_DynamicRouting_Manifest_Input;
+			aComplexTable_DynamicRouting_Not_Set[0].pages[0].component.settings = {};
+			aTestResult = this.oNavigationController._preprocessForComplexTable(aComplexTable_DynamicRouting_Not_Set);
+			assert.deepEqual(aTestResult, aComplexTable_DynamicRouting_Not_Set, "ComplexTable not configured: routeConfig not as expected");
+			
+			//Test 1 - complex table configured
+			var aTestResult;
+			aTestResult = this.oNavigationController._preprocessForComplexTable(aComplexTable_DynamicRouting_Manifest_Input);
+			assert.deepEqual(aTestResult, aComplexTable_DynamicRouting_Manifest_Result, "ComplexTable configured DynamicRouting: routeConfig not as expected");
+			
+		});
+
+		test("Destroy", function() {
+			var oSpy = sinon.spy(sap.ui.base.Object.prototype, "destroy");
+
+			// Call CUT
+			this.oNavigationController.destroy();
+
+			strictEqual(oSpy.calledOnce, true);
+			strictEqual(this.oNavigationController.oRouter, null);
+			strictEqual(this.oNavigationController.oViews, null);
+			strictEqual(this.oNavigationController.oComponent, null);
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.suite.ui.generic.template.lib.NavigationController</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="content"></div>
+</body>
+</html>

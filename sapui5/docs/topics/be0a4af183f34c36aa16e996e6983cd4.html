@@ -1,0 +1,378 @@
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html lang="en-us" dir="ltr">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Upgrading from a Version Below 1.20</title>
+      <link rel="icon" href="themes/sap-default/img/favicon.ico" type="image/x-icon">
+      <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="abstract" content="When upgrading to the current SAPUI5 version from a version below 1.20 (released in April 2014), check whether the changes listed below influence your apps.">
+      
+      <meta name="description" content="When upgrading to the current SAPUI5 version from a version below 1.20 (released in April 2014), check whether the changes listed below influence your apps.">
+      <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"91f087396f4d1014b6dd926db0e91070.html","previousTopicHref":"fe1f31add68041ec8b4c11598fe8a808.html"}</script>
+      <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
+      <script type="text/javascript">
+      
+        d4p.cssGridPath = d4p.dev ? 'html5-themes/modules/960-Responsive-Grid/css/' : 'themes/dita-d4p-classic/css/';
+        var ADAPT_CONFIG = {
+          // Where is your CSS?
+          path: d4p.relativePath + d4p.cssGridPath,
+
+          // false = Only run once, when page first loads.
+          // true = Change on window resize and page tilt.
+          dynamic: true,
+
+          // Optional callback... myCallback(i, width)
+          callback: doc_resize,
+
+          // First range entry is the minimum.
+          // Last range entry is the maximum.
+          // Separate ranges by "to" keyword.
+          range: [
+             // small (size-0)
+            '0px    to 760px  =',
+             // medium (size-1, size-2)
+            '760px  to 980px  = ',
+            '980px  to 1270px = ',
+             // large (size-3, size-5)
+            '1270px to 1600px = ',
+            '1600px to 1940px = ',
+             // extra large (size-6)
+            '1940px to 2540px = ',
+            '2540px           = '
+          ]
+        };
+
+        function doc_resize(i, width)
+        {
+          d4p.setBodyClassfunction(i, width);
+        }
+
+
+        
+      </script>
+      <script type="text/javascript" src="toc-info.js"></script>
+      <script type="text/javascript" src="themes/sap-default/js/script.js"></script>
+      
+      		<!--[if lt IE 9]>
+      			<script>
+      			  var e = ("abbr,article,aside,audio,canvas,datalist,details," +
+      			    "figure,footer,header,hgroup,mark,menu,meter,nav,output," +
+      			    "progress,section,time,video").split(',');
+      			  for (var i = 0; i < e.length; i++) {
+      			    document.createElement(e[i]);
+      			  }
+      			</script>
+      		<![endif]-->
+      
+      <script>
+      function addLoadEvent(func) {
+      var oldonload = window.onload;
+      if (typeof window.onload != 'function') {
+      window.onload = func;
+      } else {
+      window.onload = function() {
+      if (oldonload) {
+      oldonload();
+      }
+      func();
+      }
+      }
+      }
+      
+      addLoadEvent(function() { prettyPrint();
+      if ($('#local-navigation').length) {
+      $('#local-navigation').navigation();
+      }
+      
+      
+      });
+      
+      </script>
+      <script type="text/javascript" src="js/prettify.js"> </script>
+      <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
+      <link type="text/css" rel="stylesheet" href="css/overrides.css"><script type="text/javascript" src="js/linkNavigation.js"></script></head>
+   <body class="en-us sap-default centered navigation-default">
+      <div id="d4h5-main-container" class="container_12" role="application">
+         <ul id="page-links" class="hidden">
+            <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
+            <li><a id="skip-to-localnav" href="#local-navigation">Skip to navigation</a></li>
+            <li><a id="skip-to-footer" href="#footer">Skip to footer</a></li>
+         </ul>
+         
+         
+         <div id="d4h5-section-container" class="grid_12" style="padding-top: 0;">
+            
+            
+            
+            <div id="d4h5-main-content" class="grid_8 alpha omega" style="margin: 0 0.5em;">
+               <section>
+                  <div id="content-toolbar" class="toolbar hide-for-small"></div>
+                  <div class="page topic  - topic-topic " id="loiobe0a4af183f34c36aa16e996e6983cd4">
+                     
+                     <h1 class="title topictitle1" hidden>Upgrading from a Version Below 1.20</h1>
+                     
+                     <div class="body">
+                        <p class="shortdesc" hidden>When upgrading to the current <span class="ph"><span class="ph pname">SAPUI5</span></span> version  from a version below 1.20 (released in
+                           		April 2014), check whether the changes listed below influence your apps.
+                        </p>
+                        
+                        		
+                        <div class="p">This <span class="ph"><span class="ph pname">SAPUI5</span></span> version also contains the following upgrades: 
+                           <ul class="ul" id="loiobe0a4af183f34c36aa16e996e6983cd4__ul_rng_sym_rv">
+                              				
+                              <li class="li">
+                                 					
+                                 <p class="p">jQuery upgraded to version 1.10.2</p>
+                                 
+                                 				
+                              </li>
+                              
+                              				
+                              <li class="li">
+                                 					
+                                 <p class="p">QUnit upgraded to version 1.10.4</p>
+                                 
+                                 				
+                              </li>
+                              
+                              			
+                           </ul>
+                           
+                        </div>
+                        
+                        		
+                        <p class="p">This upgrade may impact your <span class="ph"><span class="ph pname">SAPUI5</span></span> apps. The following sections give an overview of our
+                           			findings and how to deal with them.
+                        </p>
+                        
+                        		
+                        <aside class="note note  insertion"><span class="title">Note</span> 
+                           			
+                           <p class="p">If you use additional open-source libraries that depend on jQuery, check whether they need to be upgraded as well.</p>
+                           
+                           		
+                        </aside>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="Upgrade to jQuery version 1.10.2">
+                              <h2 class="section_title" style="font-size: 1.15em;">Upgrade to jQuery version 1.10.2</h2>
+                              			
+                              			
+                              <p class="p">This upgrade requires changes to <span class="ph"><span class="ph pname">SAPUI5</span></span> controls and may also influence other controls or the
+                                 				application. For more information about the jQuery upgrade, see the jQuery Upgrade
+                                 				Guide. The following list gives an overview of the changes that affect <span class="ph"><span class="ph pname">SAPUI5</span></span>.
+                              </p>
+                              
+                              			
+                              <ul class="ul" id="loiobe0a4af183f34c36aa16e996e6983cd4__ul_vps_qgg_gn">
+                                 				
+                                 <li class="li">
+                                    					
+                                    <p class="p">Findings</p>
+                                    
+                                    					
+                                    <ul class="ul" id="loiobe0a4af183f34c36aa16e996e6983cd4__ul_tmd_z1m_fn">
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p">Setting height or width of a JQuery object</p>
+                                          
+                                          							
+                                          <p class="p">When setting the height or width of an object via
+                                             									<samp class="ph codeph">jQuery(...).height(&quot;1px&quot;)</samp> and the object used
+                                             								the CSS-property <samp class="ph codeph">box-sizing</samp>, the height of the box
+                                             								instead of the content was changed. As of jQuery 1.8.0, the function
+                                             								changes the content height regardless of the
+                                             									<samp class="ph codeph">box-sizing</samp> property.
+                                          </p>
+                                          
+                                          							
+                                          <p class="p">For more information and recommendations, see the jQuery API
+                                             								documentation on <a class="extlink" href="http://help.sap.com/disclaimer?site=http://api.jquery.com" target="_blank" alt="http://api.jquery.com" title="http://api.jquery.com">http://api.jquery.com<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a>.
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p"><samp class="ph codeph">jQuery(&#x2026;).data(&quot;events&quot;)</samp></p>
+                                          
+                                          							
+                                          <p class="p"><samp class="ph codeph">jQuery(...).data(&quot;events&quot;)</samp> has been removed with jQuery 1.9. An
+                                             								alternative is now available and part of the
+                                             									<samp class="ph codeph">QUnitUtils</samp>:
+                                             									<samp class="ph codeph">jQuery#_sapTest_dataEvents()</samp>.
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p"><samp class="ph codeph">strictEqual</samp> in QUnit tests
+                                          </p>
+                                          
+                                          							
+                                          <p class="p">Do <span class="ph emphasis emphasis">not</span> compare
+                                             									<samp class="ph codeph">jQuery(...).attr(&quot;tabindex&quot;)</samp> with
+                                             									<samp class="ph codeph">strictEqual</samp> or <samp class="ph codeph">===</samp>. As an
+                                             								alternative, use string values or <samp class="ph codeph">prop(&quot;tabindex&quot;)</samp>
+                                             								which returns a parsed value.
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p"><samp class="ph codeph">font-weight: &quot;normal&quot;</samp></p>
+                                          
+                                          							
+                                          <p class="p">jQuery 1.10 converts <samp class="ph codeph">font-weight: &quot;normal&quot;</samp> to the
+                                             								value 400. The workaround
+                                             									<samp class="ph codeph">jQuery#_sapTest_cssFontWeight()</samp> is provided in
+                                             									<samp class="ph codeph">QUnitUtils</samp> that hides the differences between
+                                             								browser and jQuery.
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       					
+                                    </ul>
+                                    
+                                    				
+                                 </li>
+                                 
+                                 				
+                                 <li class="li">
+                                    					
+                                    <p class="p">Check for jQuery version</p>
+                                    
+                                    					
+                                    <p class="p">To fix issues for a newer or different jQuery version, you can use
+                                       							<samp class="ph codeph">jQuery.sap.Version(jQuery.fn.jquery).toString()</samp> or
+                                       							<samp class="ph codeph">jQuery.sap.Version(jQuery.fn.jquery).getMajor()</samp> to
+                                       						check the version. You use this core function to check the major, minor,
+                                       						patch and all appending stuff of the version.
+                                    </p>
+                                    
+                                    				
+                                 </li>
+                                 
+                                 				
+                                 <li class="li">
+                                    					
+                                    <p class="p">Deprecated and removed functions</p>
+                                    
+                                    					
+                                    <ul class="ul" id="loiobe0a4af183f34c36aa16e996e6983cd4__ul_ajt_xgg_gn">
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p">Common</p>
+                                          
+                                          							
+                                          <p class="p">Check for functions that have been deprecated in jQuery versions 1.7,
+                                             								1.8, or 1.9 and may have been removed in jQuery 1.10. See the
+                                             								corresponding jQuery documentation.
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p"><samp class="ph codeph">.live()</samp></p>
+                                          
+                                          							
+                                          <p class="p">This function has been set as deprecated in jQuery version 1.7 and
+                                             								was removed in jQuery version 1.9. For recommendations how to
+                                             								replace the <samp class="ph codeph">.live()</samp> function, see the respective
+                                             								jQery documentation.
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       					
+                                    </ul>
+                                    
+                                    				
+                                 </li>
+                                 
+                                 			
+                              </ul>
+                              
+                              		
+                           </section>
+                        </div>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="JQuery UI Upgrade to 1.10.4">
+                              <h2 class="section_title" style="font-size: 1.15em;">JQuery UI Upgrade to 1.10.4</h2>
+                              			
+                              			
+                              <p class="p">jQuery UI version 1.10.4 contains incompatible changes to jQuery UI version 1.8.23. For more
+                                 				information, see the jQuery UI 1.9 Upgrade Guide and the jQuery UI 1.10 Upgrade
+                                 				Guide.
+                              </p>
+                              
+                              			
+                              <p class="p">A major incompatible change is in <samp class="ph codeph">jQuery.ui.position</samp>, where the offset
+                                 				property has been removed. <span class="ph"><span class="ph pname">SAPUI5</span></span> runtime adopted
+                                 				this change, for example in <samp class="ph codeph">Popup</samp>, but applications may need to
+                                 				adopt their logic too.
+                              </p>
+                              
+                              			
+                              <p class="p">Also, the file names for jQuery UI effects have changed. Applications using the jQuery UI
+                                 				effects may also have to adopt their logic. In IE8 and jQuery version &lt;1.8, the
+                                 				detection whether the new <samp class="ph codeph">jQueryUi</samp> logic is active or not fails.
+                                 				This may be due to interaction issues between jQuery UI version 1.10 and jQuery
+                                 				version 1.7. In this case, the new jQuery UI position logic is used: Applications
+                                 				that still want to use jQuery version 1.7.1 and jQuery UI version 1.8 or older have
+                                 				to load the jQueryUI core and not only the position module.
+                              </p>
+                              
+                              		
+                           </section>
+                        </div>
+                        
+                        	
+                     </div>
+                     
+                  </div>
+                  
+               </section>
+               <div class="clear"></div>
+               
+            </div>
+            <div class="clearfix"></div>
+         </div>
+      </div>
+      <div class="clearfix"></div>
+      <div id="footer-container" class="grid_12">
+         <footer>
+            	
+            <div id="custom-footerSpacer"></div>
+            	
+            
+         </footer>
+         
+         
+      </div>
+   </body>
+</html>

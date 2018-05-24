@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8"> 
+
+		<title>QUnit: sap.gantt.shape.ext.ubc.UbcOverCapacityZonePolygon</title>
+
+		<script id="sap-ui-bootstrap"
+			src="../../../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.gantt">
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="../../../../../../../resources/sap/ui/thirdparty/qunit.css"/>
+		<script src="../../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script src="../../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script src="../../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+		<!-- add the qunit-coverage.js to add client-side coverage to QUnit tests -->
+		if(!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+		      jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		}
+		
+			sap.ui.require([
+				"sap/gantt/shape/ext/ubc/UbcOverCapacityZonePolygon",
+				"sap/gantt/def/SvgDefs",
+				"sap/gantt/def/pattern/SlashPattern",
+				"sap/gantt/config/Shape",
+				"sap/gantt/config/TimeHorizon",
+				"sap/gantt/GanttChart",
+				"sap/ui/thirdparty/sinon",
+				"sap/ui/thirdparty/sinon-qunit"
+			], function (UbcOverCapacityZonePolygon, SvgDefs, SlashPattern, ShapeConfig, TimeHorizon, GanttChart) {
+				"use strict";
+				
+				QUnit.module("Create BC shapes by GanttChart", {
+					setup: function () {
+						this.oShapeConfigUbcOverCapacityZonePolygon = new ShapeConfig({
+							key: "ubcOverCapacityZonePolygon",
+							shapeClassName: "sap.gantt.shape.ext.ubc.UbcOverCapacityZonePolygon",
+							shapeProperties: {
+								fill: "#234FF0"
+							}
+						});
+						
+						// GanttChart object which creates shape instance
+						sap.gantt.config.DEFAULT_TIME_AXIS.setPlanHorizon(new TimeHorizon({
+							startTime: "20140901000000",
+							endTime: "20141031000000"
+						}));
+						this.oGanttChart = new GanttChart({
+							shapes: [this.oShapeConfigUbcOverCapacityZonePolygon ]
+						});
+						
+						// call back parameter
+						this.oData = {
+								period: [ {"start_date": "20140922000000", "demand": "5", "supply": "7"},
+								          {"start_date": "20140923000000", "demand": "6", "supply": "5"},
+								          {"start_date": "20140924000000", "demand": "4", "supply": "6"},
+								          {"start_date": "20140925000000", "demand": "5", "supply": "6"},
+								          {"start_date": "20140926000000", "demand": "4", "supply": "5"}
+						          		]
+									};
+						// call back parameter
+						this.oRowInfo = {
+							rowHeight: 32,
+							y: 0,
+							uid: "PATH:0000|SCHEME:ac_main[0]",
+							data: {
+								ubcOverCapacityZonePolygon: [this.oData]
+							}
+						};	
+						// oUbcOverCapacityZonePolygon instance created by GanttChart
+						this.oUbcOverCapacityZonePolygon = this.oGanttChart._oShapeInstance.ubcOverCapacityZonePolygon;
+					},
+					teardown: function () {
+						this.oUbcOverCapacityZonePolygon = undefined;
+						this.oShapeConfig = undefined;
+						this.oData = undefined;
+						this.oRowInfo = undefined;
+						this.oGanttChart.destroy();
+					}
+				});
+				
+				
+				QUnit.test("Test get value of get<Property>() methods." , function (assert) {
+					assert.strictEqual(this.oUbcOverCapacityZonePolygon.getFill(this.oData, this.oRowInfo),
+							"#234FF0",	"The default ubcOverCapacityZonePolygon fill can be get successfully.");
+					assert.strictEqual(this.oUbcOverCapacityZonePolygon.getStroke(this.oData, this.oRowInfo),
+							"#CAC7BA",	"The default ubcOverCapacityZonePolygon stroke can be get successfully.");
+					assert.strictEqual(this.oUbcOverCapacityZonePolygon.getStrokeWidth(this.oData, this.oRowInfo),
+							0.3,	"The default ubcOverCapacityZonePolygon strokeWidth can be get successfully.");
+					//assert.strictEqual(this.oUbcOverCapacityZonePolygon.getPoints(this.oData, this.oRowInfo),
+					//		"0,0 1350,0 1350,32 0,32",	"The default ubcOverCapacityZonePolygon getPoints can be get successfully.");
+					
+				});
+				
+				
+				QUnit.module("Create BC shapes by GanttChart with default values", {
+					setup: function () {
+						var oSvgDefs = new sap.gantt.def.SvgDefs({
+							defs: [new sap.gantt.def.pattern.SlashPattern("pattern_slash_FF0067", {
+								stroke: "#FF0067"
+							})]
+						});
+						
+						this.oShapeConfigUbcOverCapacityZonePolygonDef = new ShapeConfig({
+							key: "ubcOverCapacityZonePolygon",
+							shapeClassName: "sap.gantt.shape.ext.ubc.UbcOverCapacityZonePolygon",
+							shapeProperties: {
+								backgroundColor: "#FF0067",
+								pattern: "slash",
+								stroke: "#45FF08",
+								strokeWidth: 1,
+								points: "0,0 1350,0 1350,32 0,32"
+							}
+						});
+						
+						// GanttChart object which creates shape instance
+						sap.gantt.config.DEFAULT_TIME_AXIS.setPlanHorizon(new TimeHorizon({
+							startTime: "20140901000000",
+							endTime: "20141031000000"
+						}));
+						this.oGanttChart = new GanttChart({
+							shapes: [this.oShapeConfigUbcOverCapacityZonePolygonDef ]
+						});
+						
+						// call back parameter
+						this.oData = {
+										//Below is for different shapes.
+								       	startTime: "20140919000000",
+										endTime: "20141012000000"
+									};
+						// call back parameter
+						this.oRowInfo = {
+							rowHeight: 32,
+							y: 0,
+							uid: "PATH:0000|SCHEME:ac_main[0]",
+							data: {
+								ubcOverCapacityZonePolygon: [this.oData]
+							}
+						};	
+						// oUbcOverCapacityZonePolygon instance created by GanttChart
+						this.oUbcOverCapacityZonePolygonDef = this.oGanttChart._oShapeInstance.ubcOverCapacityZonePolygon;
+					},
+					teardown: function () {
+						this.oUbcOverCapacityZonePolygonDef = undefined;
+						this.oShapeConfig = undefined;
+						this.oData = undefined;
+						this.oRowInfo = undefined;
+						this.oGanttChart.destroy();
+					}
+				});
+				
+				
+				QUnit.test("Test get value of get<Property>() methods with default shapeConfig values." , function (assert) {
+					assert.strictEqual(this.oUbcOverCapacityZonePolygonDef.getFill(this.oData, this.oRowInfo),
+							"url(#pattern_slash_FF0067)",	"The default ubcOverCapacityZonePolygon fill can be get successfully.");
+					assert.strictEqual(this.oUbcOverCapacityZonePolygonDef.getStroke(this.oData, this.oRowInfo),
+							"#45FF08",	"The default ubcOverCapacityZonePolygon stroke can be get successfully.");
+					assert.strictEqual(this.oUbcOverCapacityZonePolygonDef.getStrokeWidth(this.oData, this.oRowInfo),
+							1,	"The default ubcOverCapacityZonePolygon strokeWidth can be get successfully.");
+					assert.strictEqual(this.oUbcOverCapacityZonePolygonDef.getPoints(this.oData, this.oRowInfo),
+							"0,0 1350,0 1350,32 0,32",	"The default ubcOverCapacityZonePolygon getPoints can be get successfully.");
+					
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+	</body>
+</html>

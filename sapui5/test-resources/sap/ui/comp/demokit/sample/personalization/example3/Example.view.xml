@@ -1,0 +1,49 @@
+<core:View xmlns:core="sap.ui.core"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
+	controllerName="sap.ui.comp.sample.personalization.example3.Example">
+
+	<Table id="MTable" items="{/ProductCollection}">
+		<headerToolbar>
+			<Toolbar>
+				<Label text="Products"></Label>
+				<ToolbarSpacer></ToolbarSpacer>
+				<Button icon="sap-icon://action-settings" press="onP13nDialogPress" />
+			</Toolbar>
+		</headerToolbar>
+		<columns>
+			<Column width="12em"
+				customData:p13nData='\{"columnKey":"Name", "sortProperty":"Name", "filterProperty":"Name", 
+				"leadingProperty":"Name", "aggregationRole":"dimension"\}'>
+				<Text text="Product" />
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true"
+				customData:p13nData='\{"columnKey":"SupplierName", "sortProperty":"SupplierName", "filterProperty":"SupplierName", "leadingProperty":"SupplierName", "aggregationRole":"dimension"\}'>
+				<Text text="Supplier" />
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right"
+				customData:p13nData='\{"columnKey":"Category", "sortProperty":"Category", "filterProperty":"Category","leadingProperty":"Category", "aggregationRole":"dimension"\}'>
+				<Text text="Category" />
+			</Column>
+			<Column hAlign="Right"
+				customData:p13nData='\{"columnKey":"Price", "sortProperty":"Price", "filterProperty":"Price","leadingProperty":"Price", "aggregationRole":"dimension", "type":"numeric"\}'>
+				<Text text="Price" />
+			</Column>
+			<Column hAlign="Right" visible="false"
+				customData:p13nData='\{"columnKey":"ShortDescription", "sortProperty":"ShortDescription", "filterProperty":"ShortDescription"\}'>
+				<Text text="ShortDescription" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<ObjectIdentifier title="{Name}" text="{ProductId}" />
+					<Text text="{SupplierName}" />
+					<Text text="{Category}" />
+					<ObjectNumber number="{Price}" unit="{CurrencyCode}" />
+					<Text text="{ShortDescription}" />
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</core:View>

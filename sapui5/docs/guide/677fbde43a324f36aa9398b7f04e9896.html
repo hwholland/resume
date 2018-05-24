@@ -1,0 +1,173 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Using the @Communication.Contact annotation, you can enable a contact quick view in a table."/>
+<meta name="description" content="Using the @Communication.Contact annotation, you can enable a contact quick view in a table."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=39252811291708667"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=39252811291708667"/>
+<title>Adding a Contact Quick View to a Table</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio677fbde43a324f36aa9398b7f04e9896">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Adding a Contact Quick View to a Table</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Using the <samp class="ph codeph">@Communication.Contact</samp> annotation, you can enable a contact
+		quick view in a table. </p>
+
+		<p class="p"> The quick view can be displayed from the list report and the object page, as shown
+			below.</p>
+
+		<div class="fig fignone" id="loio677fbde43a324f36aa9398b7f04e9896__fig_s3y_qyd_qz"><div class="figcontainer">
+			
+			<img class="image" id="loio677fbde43a324f36aa9398b7f04e9896__image_xxc_2yd_qz" src="loio47d4042345b749c1afa8b62485fbb134_LowRes.png"/>
+		<div class="figcap">Displaying a Contact Quick View in a Table</div></div></div>
+
+		<div class="section" id="loio677fbde43a324f36aa9398b7f04e9896__section_dkt_hb2_qz"><div class="section_title">Code Sample</div><div type="Code Sample">In the example, the
+                                <samp class="ph codeph">UI.LineItem</samp> annotation needs to be added under the
+                                <samp class="ph codeph">ProductType</samp> entity, as follows: <div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+                                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"> &lt;Annotation Term="UI.LineItem"&gt;
+                                      &lt;Collection&gt;
+                                             
+                                              &lt;Record Type="UI.DataFieldForAction"&gt;
+                                                     &lt;PropertyValue Property="Label" String="Activate" /&gt;
+                                                     &lt;PropertyValue Property="Action"
+                                                      String="STTA_PROD_MAN.STTA_PROD_MAN_Entities/STTA_C_MP_ProductActivation"/&gt;
+                                                     &lt;PropertyValue Property="InvocationGrouping"
+                                                             EnumMember="UI.OperationGroupingType/ChangeSet" /&gt;
+                                             &lt;/Record&gt;
+                                             
+                                              &lt;Record Type="UI.DataField"&gt;
+                                                     &lt;PropertyValue Property="Value" Path="ProductPictureURL" /&gt;
+                                                     &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High" /&gt;
+                                             &lt;/Record&gt;
+                                             &lt;Record Type="UI.DataField"&gt;
+                                                     &lt;PropertyValue Property="Value" Path="ProductForEdit" /&gt;
+                                                     &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High" /&gt;
+                                             &lt;/Record&gt;
+                                             &lt;Record Type="UI.DataField"&gt;
+                                                     &lt;PropertyValue Property="Value" Path="ProductCategory" /&gt;
+                                                     &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High" /&gt;
+                                             &lt;/Record&gt;
+                                             &lt;Record Type="UI.DataFieldWithIntentBasedNavigation"&gt;
+                                                     &lt;PropertyValue Property="Label" String="Supplier (with IBN)" /&gt;
+                                                     &lt;PropertyValue Property="Value" Path="Supplier" /&gt;
+                                                     &lt;PropertyValue Property="SemanticObject" String="EPMProduct" /&gt;
+                                                     &lt;PropertyValue Property="Action" String="manage" /&gt;
+                                             &lt;/Record&gt;
+                                             
+                                              &lt;Record Type="UI.DataFieldForAnnotation"&gt;
+                                                     &lt;PropertyValue Property="Label" String="{@i18n&amp;gt;@Supplier}"/&gt;
+                                                     &lt;PropertyValue Property="Target"
+                                                             AnnotationPath="to_Supplier/@Communication.Contact"/&gt;
+                                                     &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High" /&gt;
+                                             &lt;/Record&gt;
+                                             &lt;Record Type="UI.DataField"&gt;
+                                                     &lt;PropertyValue Property="Criticality"
+                                                             Path="to_StockAvailability/StockAvailability" /&gt;
+                                                     &lt;PropertyValue Property="Value"
+                                                             Path="to_StockAvailability/StockAvailability" /&gt;
+                                                     &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High" /&gt;
+                                             &lt;/Record&gt;
+                                             &lt;Record Type="UI.DataFieldForAnnotation"&gt;
+                                                     &lt;PropertyValue Property="Label" String="Rating" /&gt;
+                                                     &lt;PropertyValue Property="Target" AnnotationPath="@UI.DataPoint#Rating" /&gt;
+                                             &lt;/Record&gt;
+                                             &lt;Record Type="UI.DataFieldForAnnotation"&gt;
+                                                     &lt;PropertyValue Property="Label" String="Progress" /&gt;
+                                                     &lt;PropertyValue Property="Criticality"
+                                                             Path="to_StockAvailability/Quantity" /&gt;
+                                                     &lt;PropertyValue Property="Target" AnnotationPath="@UI.DataPoint#Progress" /&gt;
+                                             &lt;/Record&gt;
+                                             &lt;Record Type="UI.DataField"&gt;
+                                                     &lt;PropertyValue Property="Value" Path="Price" /&gt;
+                                                     &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High" /&gt;
+                                             &lt;/Record&gt;
+                                             &lt;Record Type="UI.DataFieldForAction"&gt;
+                                                     &lt;PropertyValue Property="Label" String="Copy" /&gt;
+                                                     &lt;PropertyValue Property="IconUrl" String="sap-icon://copy" /&gt;
+                                                     &lt;PropertyValue Property="Action"
+                                                             String="STTA_PROD_MAN.STTA_PROD_MAN_Entities/STTA_C_MP_ProductCopy" /&gt;
+                                                     &lt;PropertyValue Property="Inline" Bool="true" /&gt;
+                                                     &lt;PropertyValue Property="Determining" Bool="true" /&gt;
+                                                     &lt;PropertyValue Property="InvocationGrouping"
+                                                             EnumMember="UI.OperationGroupingType/Isolated" /&gt;
+                                             &lt;/Record&gt;
+                                             &lt;Record Type="UI.DataFieldForIntentBasedNavigation"&gt;
+                                                     &lt;PropertyValue Property="Label" String="{@i18n&amp;gt;@MANAGE_PRODUCTS_(ST)_2}" /&gt;
+                                                     &lt;PropertyValue Property="SemanticObject" String="EPMProduct" /&gt;
+                                                     &lt;PropertyValue Property="Action" String="manage_st" /&gt;
+                                                     &lt;PropertyValue Property="Inline" Bool="false" /&gt;
+                                                     &lt;PropertyValue Property="Determining" Bool="false" /&gt;
+                                                     &lt;PropertyValue Property="RequiresContext" Bool="true" /&gt;
+                                             &lt;/Record&gt;
+                                             
+                                             &lt;Record Type="UI.DataFieldForIntentBasedNavigation"&gt;
+                                                     &lt;PropertyValue Property="Label" String="{@i18n&amp;gt;@Inline_Nav_MasterDetail}" /&gt;
+                                                     &lt;PropertyValue Property="SemanticObject" String="EPMProduct" /&gt;
+                                                     &lt;PropertyValue Property="Action" String="manage" /&gt;
+                                                     &lt;PropertyValue Property="Inline" Bool="true" /&gt;
+                                                     &lt;PropertyValue Property="Determining" Bool="false" /&gt;
+                                                     &lt;PropertyValue Property="RequiresContext" Bool="false" /&gt;
+                                             &lt;/Record&gt;
+                                             &lt;Record Type="UI.DataFieldForAnnotation"&gt;
+                                                     &lt;PropertyValue Property="Label" String="Sales"/&gt;
+                                                     &lt;PropertyValue Property="Target" AnnotationPath="to_ProductSalesPrice/@UI.Chart#SalesPriceAreaChart"/&gt;
+                                             &lt;/Record&gt;
+                                             &lt;Record Type="UI.DataFieldForAnnotation"&gt;
+                                                     &lt;PropertyValue Property="Label" String="Revenue"/&gt;
+                                                     &lt;PropertyValue Property="Target" AnnotationPath="to_ProductSalesRevenue/@UI.Chart#GrossSalesRevenueBulletChart"/&gt;
+                                             &lt;/Record&gt;
+                                      &lt;/Collection&gt;
+                              &lt;/Annotation&gt; </pre></div>
+
+                        </div>
+<p class="p">The <samp class="ph codeph">Communication.Contact</samp>
+                                annotation term is defined under the <samp class="ph codeph">SupplierType</samp>
+                                entity as follows:</p>
+<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+                                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"> &lt;Annotation Term="Communication.Contact"&gt;
+                                      &lt;Record&gt;
+                                             &lt;PropertyValue Property="fn" Path="CompanyName" /&gt;
+                                             &lt;PropertyValue Property="tel"&gt;
+                                                     &lt;Collection&gt;
+                                                            &lt;Record&gt;
+                                                                    &lt;PropertyValue Property="type"
+                                                                            EnumMember="Communication.PhoneType/fax" /&gt;
+                                                                    &lt;PropertyValue Property="uri" Path="FaxNumber" /&gt;
+                                                            &lt;/Record&gt;
+                                                            &lt;Record&gt;
+                                                                    &lt;PropertyValue Property="type"
+                                                                            EnumMember="Communication.PhoneType/preferred Communication.PhoneType/work" /&gt;
+                                                                    &lt;PropertyValue Property="uri" Path="PhoneNumber" /&gt;
+                                                            &lt;/Record&gt;
+                                                     &lt;/Collection&gt;
+                                             &lt;/PropertyValue&gt;
+                                             &lt;PropertyValue Property="email"&gt;
+                                                     &lt;Collection&gt;
+                                                            &lt;Record&gt;
+                                                                    &lt;PropertyValue Property="type"
+                                                                            EnumMember="Communication.ContactInformationType/work Communication.ContactInformationType/pref" /&gt;
+                                                                    &lt;PropertyValue Property="address" Path="EmailAddress" /&gt;
+                                                            &lt;/Record&gt;
+                                                     &lt;/Collection&gt;
+                                             &lt;/PropertyValue&gt;
+                                      &lt;/Record&gt;
+                              &lt;/Annotation&gt;</pre></div>
+
+                        </div>
+</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

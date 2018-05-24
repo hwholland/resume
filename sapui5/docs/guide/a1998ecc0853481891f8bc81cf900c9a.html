@@ -1,0 +1,189 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The GenericTile control is the basic concept that displays any kind of content within a tile comprising for example news, feeds, images, micro charts, or numeric content."/>
+<meta name="description" content="The GenericTile control is the basic concept that displays any kind of content within a tile comprising for example news, feeds, images, micro charts, or numeric content."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4398933436456789"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4398933436456789"/>
+<title>Generic Tile</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioa1998ecc0853481891f8bc81cf900c9a">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Generic Tile</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">GenericTile</samp> control is the basic concept that displays any kind of
+		content within a tile comprising for example news, feeds, images, micro charts, or numeric
+		content.</p>
+
+		<div class="section"><div class="section_title">Overview</div><div type="Overview"><p class="p"><samp class="ph codeph">GenericTile</samp> controls are responsive and adapt
+				their size to the size of the devices they are used on: the control is available in
+				small and large size and depending on the media screen size, the appropriate size is
+				chosen automatically. Therefore, the <samp class="ph codeph">size</samp> property is deprecated
+				and should not be used anymore.</p>
+<span class="ph emphasis emphasis">Layout</span><p class="p">The
+					<samp class="ph codeph">GenericTile</samp> control provides a header area, a content area, and
+				a status area. Within these areas, different data can be displayed depending on the
+				app the tile belongs to, for example, text in the header area, charts or an icon in
+				the content area, or text only in the footer area.</p>
+<ul class="ul" id="loioa1998ecc0853481891f8bc81cf900c9a__ul_msg_k14_dw">
+				<li class="li">
+					<p class="p">Header area</p>
+
+					<p class="p">The headline and a subtitle can be displayed. The header area is mandatory,
+						but if the <samp class="ph codeph">NewsContent</samp> control is used in the content area,
+						no header and subheader should be used.</p>
+
+					<p class="p">If you use <samp class="ph codeph">HeaderMode</samp>, up to five lines of header can be
+						displayed and the content area is not displayed.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Content area</p>
+
+					<p class="p">The <samp class="ph codeph">TileContent</samp> control that represents the content area is
+						the universal container for different content types. This means that the
+							<samp class="ph codeph">TileContent</samp> control can contain one of the following
+						controls:</p>
+
+					<ul class="ul" id="loioa1998ecc0853481891f8bc81cf900c9a__ul_hfm_cbl_q5">
+						<li class="li">
+							<p class="p"><samp class="ph codeph">NumericContent</samp> (<samp class="ph codeph">frameType</samp> 1x1):
+								numeric value and icon</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">FeedContent</samp> (<samp class="ph codeph">frameType</samp> 2x1): up to
+								two lines of text</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">NewsContent</samp> (<samp class="ph codeph">frameType</samp> 2x1): text
+								and background image</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">MicroCharts</samp> (<samp class="ph codeph">frameType</samp> 1x1):
+								charts</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">ImageContent</samp> (<samp class="ph codeph">frameType</samp> 1x1):
+								images and icons</p>
+
+						</li>
+
+					</ul>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Status area</p>
+
+					<p class="p">A status can be displayed. The status area is not mandatory.</p>
+
+				</li>
+
+			</ul>
+<p class="p"/>
+<span class="ph emphasis emphasis">SlideTile</span><p class="p"><samp class="ph codeph">GenericTile</samp> controls of the
+				2x1 <samp class="ph codeph">frameType</samp> can be implemented as <samp class="ph codeph">SlideTile</samp>
+				control. The <samp class="ph codeph">GenericTile</samp> control added to the
+					<samp class="ph codeph">SlideTile</samp> control appears alternately, showing one content at a
+				time. The animated content of the slide tile includes a navigation option to pause
+				the slide show or to navigate forward or backward to the slide. You can use
+					<samp class="ph codeph">SlideTile</samp> controls, for example, in day-to-day business to
+				display news.</p>
+<p class="p"/>
+<span class="ph emphasis emphasis">Tooltip Rendering</span><p class="p">The
+					<samp class="ph codeph">GenericTile</samp> control generates a tooltip only if the header or
+				subheader are truncated. In that case, the tooltip contains the full text of the
+				truncated header or subheader. </p>
+<p class="p">If the <samp class="ph codeph">GenericTile</samp> control
+				contains a <samp class="ph codeph">MicroChart</samp> control in its content area, the generated
+				tooltip contains information about the embedded <samp class="ph codeph">MicroChart</samp>
+				content.</p>
+<p class="p">If an application provides an own tooltip, the generated tooltip of
+				the <samp class="ph codeph">GenericTile</samp> control is overwritten and the tooltip of the
+				application is displayed. You can suppress the tooltip for your application by
+				providing a tooltip consisting of whitespaces only. The ARIA label is not
+				changed.</p>
+<p class="p"/>
+<span class="ph emphasis emphasis">Line Mode</span><p class="p">With this mode, you can switch the
+				visual representation of the <samp class="ph codeph">GenericTile</samp> from the rectangular
+				format to an in-line format only by changing the value of the <samp class="ph codeph">mode</samp>
+				property and keeping all other settings as already set. After the switch, the API
+				for the tiles and links stays consistent, and the control's ID and the contents stay
+				the same. Only the header and subtitle are rendered.</p>
+</div></div>
+
+		<div class="section"><div class="section_title">API Reference/Sample</div><div type="API Reference/Sample">
+			
+			<p class="p">For more information about the <samp class="ph codeph">GenericTile</samp> control, see the <a class="xref" href="../../docs/api/symbols/sap.m.GenericTile.html" alt="../../docs/api/symbols/sap.m.GenericTile.html" title="../../docs/api/symbols/sap.m.GenericTile.html">API Reference</a> in the Demo Kit and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.GenericTile/samples" alt="../../explored.html#/entity/sap.m.GenericTile/samples" title="../../explored.html#/entity/sap.m.GenericTile/samples">sample</a> in the Demo Kit.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Constraints</div><div type="Constraints">
+			
+			<p class="p">With <span class="ph pname">SAPUI5</span> 1.34, the
+				following controls are moved from the <samp class="ph codeph">sap.suite.ui.commons</samp> library
+				to the <samp class="ph codeph">sap.m</samp> library:</p>
+
+			<ul class="ul" id="loioa1998ecc0853481891f8bc81cf900c9a__ul_kyg_ncl_q5">
+				<li class="li"><samp class="ph codeph">GenericTile</samp></li>
+
+				<li class="li"><samp class="ph codeph">TileContent</samp></li>
+
+				<li class="li"><samp class="ph codeph">FeedContent</samp> (formerly <samp class="ph codeph">JamContent</samp>)</li>
+
+				<li class="li"><samp class="ph codeph">NewsContent</samp></li>
+
+				<li class="li"><samp class="ph codeph">NumericContent</samp></li>
+
+				<li class="li"><samp class="ph codeph">SlideTile</samp> (formerly <samp class="ph codeph">DynamicContainer</samp>)</li>
+
+			</ul>
+
+			<p class="p">The following controls have not been transferred to the <samp class="ph codeph">sap.m</samp> library and are
+				no longer used:</p>
+
+			<ul class="ul" id="loioa1998ecc0853481891f8bc81cf900c9a__ul_a5t_ycl_q5">
+				<li class="li">
+					<p class="p"><samp class="ph codeph">GenericTile2X2</samp></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">TileContent2X2</samp></p>
+
+				</li>
+
+			</ul>
+
+			<p class="p">If you have already included one of these controls before <span class="ph pname">SAPUI5</span> 1.34, a wrapper
+				ensures that the embedding still works for each control. To benefit from all
+				enhancements and new features for one of these controls as of <span class="ph pname">SAPUI5</span> 1.34, you need to
+				switch to the controls in the <samp class="ph codeph">sap.m</samp> library. With <span class="ph pname">SAPUI5</span> 1.34, all these
+				controls in the <samp class="ph codeph">sap.suite.ui.commons</samp> library are marked as
+					<span class="ph emphasis emphasis">deprecated</span>.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Single selection in the list report view table is enabled by default. If you want, you can enable multi-select single-action for your app."/>
+<meta name="description" content="Single selection in the list report view table is enabled by default. If you want, you can enable multi-select single-action for your app."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8786558342033838"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8786558342033838"/>
+<title>Enabling Multiple Selection in Table</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio116b5d82e8c545e2a56e1b51b8b0a9bd">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Enabling Multiple Selection in Table</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">Single selection in the list report view table is enabled by default. If you want, you
+		can enable multi-select single-action for your app.</p>
+
+		<p class="p">This allows users to select multiple items from the table in the list report and then choose a
+			simple custom action button. After triggering the action, the user stays on the same
+			page (no navigation) on which error messages will also be displayed. </p>
+
+		<div class="p">When <samp class="ph codeph">multiSelect</samp> is set to <samp class="ph codeph">true</samp> in the
+				<span class="ph filepath">manifest.json</span> file of a list report table, the table switches
+			from single-select to multi-select, as shown in the following example
+			code:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+"sap.ui.generic.app": {
+
+  "_version": "1.1.0",
+
+  "pages": [
+
+   {
+
+    "entitySet": "STTA_C_MP_Product",
+
+    "component": {
+
+     "name": "sap.suite.ui.generic.template.ListReport",
+
+     "list": true,
+
+     "settings" : {
+
+         "gridTable"   : false,
+
+         "multiSelect" : true
+
+     }</pre></div>
+</div>
+
+		<p class="p">Note that the custom action button must not have action parameters, and the results must
+			be displayed on the page on which the action has been triggered.</p>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="To make our list of invoices even more user-friendly, we sort it alphabetically instead of just showing the order from the data model. Additionally, we introduce groups and add the company that ships the products so that the data is easier to consume."/>
+<meta name="description" content="To make our list of invoices even more user-friendly, we sort it alphabetically instead of just showing the order from the data model. Additionally, we introduce groups and add the company that ships the products so that the data is easier to consume."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9042423622769686"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9042423622769686"/>
+<title>Step 25: Sorting and Grouping</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc4b2a32bb72f483faa173e890e48d812">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 25: Sorting and Grouping</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">To make our list of invoices even more user-friendly, we sort it alphabetically instead
+		of just showing the order from the data model. Additionally, we introduce groups and add the
+		company that ships the products so that the data is easier to consume.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loioc4b2a32bb72f483faa173e890e48d812__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loioc4b2a32bb72f483faa173e890e48d812__image_eyk_sh2_yr" src="loio80771b1120ce4d14b9d0ebf1fe98bce9_HiRes.png"/>
+			<div class="figcap">The list is now sorted and grouped by the shipping company</div></div></div>
+
+		</div></div>
+
+		<div class="section">
+			<div class="section_title">Coding</div>
+			<p class="p">You can view and download all files <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.walkthrough.25/preview" alt="../../explored.html#/sample/sap.m.tutorial.walkthrough.25/preview" title="../../explored.html#/sample/sap.m.tutorial.walkthrough.25/preview">Walkthrough - Step 25</a></span>.</p>
+
+			<div class="section_title">webapp/view/InvoiceList.view.xml</div>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+   controllerName="sap.ui.demo.walkthrough.controller.InvoiceList"
+   xmlns="sap.m"
+   xmlns:mvc="sap.ui.core.mvc"&gt;
+   &lt;List
+      id="invoiceList"
+      class="sapUiResponsiveMargin"
+      width="auto"
+      <span class="ph emphasis emphasis">items="{
+         path : 'invoice&gt;/Invoices',
+         sorter : {
+            path : 'ProductName' 
+         }
+      }"</span> &gt;
+      &lt;headerToolbar&gt;
+         ...
+      &lt;/headerToolbar&gt;
+      &lt;items&gt;
+         ...
+      &lt;/items&gt;
+   &lt;/List&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">We add a declarative sorter to our binding syntax. As usual, we transform the simple binding
+				syntax to the object notation, specify the path to the data, and now add an
+				additional <samp class="ph codeph">sorter</samp> property. We specify the data path by which the
+				invoice items should be sorted, the rest is done automatically. By default, the
+				sorting is ascending, but you could also add a property <samp class="ph codeph">descending</samp>
+				with the value <samp class="ph codeph">true</samp> inside the sorter property to change the
+				sorting order. </p>
+
+			<p class="p">If we run the app now we can see a list of invoices sorted by the name of the
+				products.</p>
+
+		</div>
+
+		<div class="section"><div class="section_title">webapp/view/InvoiceList.view.xml</div><div type="webapp/view/InvoiceList.view.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+controllerName="sap.ui.demo.walkthrough.controller.InvoiceList"
+xmlns="sap.m"
+xmlns:mvc="sap.ui.core.mvc"&gt;
+&lt;List
+		id="invoiceList"
+		class="sapUiResponsiveMargin"
+		width="auto"
+		items="{
+			path : 'invoice&gt;/Invoices',
+			<span class="ph emphasis emphasis">sorter : {
+				path : 'ShipperName',
+				group : true
+			}</span>
+		}"&gt;
+	&lt;headerToolbar&gt;
+		&lt;Toolbar&gt;
+			&lt;Title text="{i18n&gt;invoiceListTitle}"/&gt;
+			&lt;ToolbarSpacer/&gt;
+			&lt;SearchField width="50%" search="onFilterInvoices"/&gt;
+		&lt;/Toolbar&gt;
+	&lt;/headerToolbar&gt;
+	&lt;items&gt;
+		…
+	&lt;/items&gt;
+&lt;/List&gt;
+&lt;/mvc:View&gt;
+</pre></div>
+
+			<p class="p">We modify the view and add a different sorter, or better; we change the sorter and
+				set the attribute <samp class="ph codeph">group</samp> to true. We also specify the path to the
+					<samp class="ph codeph">ShipperName</samp> data field. This groups the invoice items by the
+				shipping company.</p>
+
+			<p class="p">As with the sorter, no further action is required. The list and the data binding features of
+					<span class="ph"><span class="ph pname">SAPUI5</span></span> will do the
+				trick to display group headers automatically and categorize the items in the groups.
+				We could define a custom grouping function if we wanted by setting the
+					<samp class="ph codeph">groupHeaderFactory</samp> property, but the result looks already
+				fine.</p>
+
+		</div></div>
+
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="3da5f4be63264db99f2e5b04c5e853db.html" title="In this tutorial we will introduce you to all major development paradigms of SAPUI5.">Walkthrough</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="5295470d7eee46c1898ee46c1b9ad763.html" title="In this step, we add a search field for our product list and define a filter that represents the search term. When searching, the list is automatically updated to show only the items that match the search term.">Step 24: Filtering</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="44062441f3bd4c67a4f665ae362d1109.html" title="So far we have only worked with local JSON data, but now we will access a real OData service. Instead of implementing an own OData service we will simply use the publicly available Northwind OData service to visualize remote data. You will be surprised how little needs to be changed in order to make this work!">Step 26: Remote OData Service</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.model.Sorter.html" alt="../../docs/api/symbols/sap.ui.model.Sorter.html" title="../../docs/api/symbols/sap.ui.model.Sorter.html">API Reference: <samp class="ph codeph">sap.ui.model.Sorter</samp></a></div>
+<div><a class="link" target="_blank" href="../../explored.html#/sample/sap.m.sample.ListGrouping/preview" alt="../../explored.html#/sample/sap.m.sample.ListGrouping/preview" title="../../explored.html#/sample/sap.m.sample.ListGrouping/preview">Sample: List - Grouping
+				</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

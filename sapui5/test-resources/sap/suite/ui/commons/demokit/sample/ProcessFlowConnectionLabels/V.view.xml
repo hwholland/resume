@@ -1,0 +1,41 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:m="sap.m"
+        xmlns="sap.suite.ui.commons"
+        controllerName="sap.suite.ui.commons.sample.ProcessFlowConnectionLabels.C"
+        xmlns:html="http://www.w3.org/1999/xhtml">
+  <html:br/>
+  <m:Panel>
+    <m:Label text="Process Flow sample with connection labels - zooming buttons and highlighted items"/>
+    <html:br/>
+    <m:Button text="Zoom In" press="onZoomIn"/>
+    <m:Button text="Zoom Out" press="onZoomOut"/>
+    <m:ToggleButton text="Toggle Connection Labels" pressed="true" press="onHideConnectionLabels"/>
+    <m:ToggleButton text="Toggle Highlighted Path" press="onHighlightPath"/>
+    <m:Button text="Reset Selected Path" press="onResetSelection"/>
+    <ProcessFlow id="processflow1" showLabels="true" scrollable="false" foldedCorners="true" wheelZoomable="false" nodePress="onNodePress" labelPress="onLabelPress" nodeTitlePress="onNodeTitlePress" nodes="{/nodes}" lanes="{/lanes}">
+      <nodes>
+        <ProcessFlowNode laneId="{lane}" nodeId="{id}" title="{title}" titleAbbreviation = "{titleAbbreviation}" isTitleClickable = "{isTitleClickable}" children="{children}" state="{state}" stateText="{stateText}" texts="{texts}" highlighted="{highlighted}" focused="{focused}" type="{type}"/>
+      </nodes>
+      <lanes>
+        <ProcessFlowLaneHeader laneId="{id}" iconSrc="{icon}" text="{label}" position="{position}"/>
+      </lanes>
+    </ProcessFlow>
+    <html:br/>
+    </m:Panel>
+    <m:Panel>
+    <m:Label text="Process Flow sample (simple) with zooming buttons - scrollable"/>
+    <html:br/>
+    <m:Button text="Zoom In" press="onZoomInS"/>
+    <m:Button text="Zoom Out" press="onZoomOutS"/>
+    <html:div style="height:600px;width:800px">
+    <ProcessFlow id="processflow2" showLabels="true" scrollable="true" wheelZoomable="true" nodePress="onNodePress" labelPress="onLabelPress" nodes="{/nodes}" lanes="{/lanes}">
+      <nodes>
+        <ProcessFlowNode laneId="{lane}" nodeId="{id}" title="{title}" titleAbbreviation = "{titleAbbreviation}" isTitleClickable = "{isTitleClickable}" children="{children}" state="{state}" stateText="{stateText}" texts="{texts}" highlighted="{highlighted}" focused="{focused}" type="{type}"/>
+      </nodes>
+      <lanes>
+        <ProcessFlowLaneHeader laneId="{id}" iconSrc="{icon}" text="{label}" position="{position}"/>
+      </lanes>
+    </ProcessFlow>
+    </html:div>
+    <html:br/>
+  </m:Panel>
+</mvc:View>

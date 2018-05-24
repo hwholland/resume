@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<control xmlns="http://www.sap.com/sap.ui.library.xsd">
+    <name>ObjectMarker</name>
+    <derived/>
+    <author>SAP SE</author>
+    <documentation>The &lt;code&gt;sap.m.ObjectMarker&lt;/code&gt; control represents one of the following predefined types:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Flagged&lt;/code&gt;
+&lt;li&gt;&lt;code&gt;Favorite&lt;/code&gt;
+&lt;li&gt;&lt;code&gt;Draft&lt;/code&gt;
+&lt;li&gt;&lt;code&gt;Locked&lt;/code&gt;
+&lt;li&gt;&lt;code&gt;Unsaved Changes&lt;/code&gt;
+&lt;/ul&gt;</documentation>
+    <since>1.38</since>
+    <baseType>sap.ui.core/Control</baseType>
+    <properties>
+        <property name="type" type="sap.m/ObjectMarkerType" group="Misc">
+            <documentation>Sets one of the predefined types.</documentation>
+        </property>
+        <property name="visibility" type="sap.m/ObjectMarkerVisibility" group="Misc">
+            <documentation>Sets one of the visibility states.</documentation>
+        </property>
+    </properties>
+    <events>
+        <event name="press" allowPreventDefault="false">
+            <documentation>Event is fired when the &lt;code&gt;ObjectMarker&lt;/code&gt; is interactive and the user taps/clicks on it.</documentation>
+        </event>
+    </events>
+    <aggregations>
+        <aggregation name="_innerControl" type="sap.ui.core/Control" cardinality="0..1" visibility="hidden">
+            <documentation>Internal control that should be &lt;code&gt;sap.m.Link&lt;/code&gt; for interactive and &lt;code&gt;sap.m.Text&lt;/code&gt;
+for non-interactive &lt;code&gt;ObjectMarker&lt;/code&gt;.</documentation>
+        </aggregation>
+    </aggregations>
+</control>

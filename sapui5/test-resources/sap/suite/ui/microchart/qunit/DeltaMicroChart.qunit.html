@@ -1,0 +1,606 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+<title>QUnit: sap.suite.ui.microchart.DeltaMicroChart</title>
+
+<base href="../../../../../../">
+<!--[if lte IE 9]><script>
+(function() {
+	var baseTag = document.getElementsByTagName('base')[0];
+	baseTag.href = baseTag.href;
+})();
+</script><![endif]-->
+
+<script id="sap-ui-bootstrap" src="resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.suite.ui.microchart">
+</script>
+
+<link rel="stylesheet" type="text/css" href="resources/sap/ui/thirdparty/qunit.css" />
+<script src="resources/sap/ui/thirdparty/qunit.js"></script>
+<script src="resources/sap/ui/qunit/qunit-junit.js"></script>
+<script src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+<!--[if IE]>
+	<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-ie.js"></script>
+<![endif]-->
+<script>
+(function() {
+	jQuery.sap.initMobile();
+	jQuery.sap.require("sap.suite.ui.microchart.DeltaMicroChart");
+	var fnCallback;
+
+	if (!(sap.ui.Device.browser.msie && sap.ui.Device.browser.version <= 8)) {
+		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+	}
+
+	var bPress = false;
+
+	QUnit.module("Control initialization core and theme checks", {
+		beforeEach: function() {
+			this.fnStubIsInitialized = sinon.stub(sap.ui.getCore(), "isInitialized");
+			this.fnSpyAttachInit = sinon.spy(sap.ui.getCore(), "attachInit");
+			this.fnSpyHandleCoreInitialized = sinon.spy(sap.suite.ui.microchart.DeltaMicroChart.prototype, "_handleCoreInitialized");
+			this.fnStubThemeApplied = sinon.stub(sap.ui.getCore(), "isThemeApplied");
+			this.fnStubAttachThemeApplied = sinon.stub(sap.ui.getCore(), "attachThemeChanged", function(fn, context) {
+				fn.call(context); //simulate immediate theme change
+			});
+			this.fnSpyHandleThemeApplied = sinon.spy(sap.suite.ui.microchart.DeltaMicroChart.prototype, "_handleThemeApplied");
+		},
+		afterEach: function() {
+			this.fnStubIsInitialized.restore();
+			this.fnSpyAttachInit.restore();
+			this.fnSpyHandleCoreInitialized.restore();
+			this.fnStubThemeApplied.restore();
+			this.fnStubAttachThemeApplied.restore();
+			this.fnSpyHandleThemeApplied.restore();
+		}
+	});
+
+	QUnit.test("Core not loaded and theme not loaded", function(assert) {
+		//Arrange
+		this.fnStubIsInitialized.returns(false);
+		this.fnStubThemeApplied.returns(false);
+
+		//Act
+		var oChart = new sap.suite.ui.microchart.DeltaMicroChart();
+
+		//Assert
+		assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+		assert.ok(this.fnSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+		assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+		assert.ok(this.fnStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+		assert.ok(this.fnSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+	});
+
+	QUnit.test("Core not loaded and theme loaded", function(assert) {
+		//Arrange
+		this.fnStubIsInitialized.returns(false);
+		this.fnStubThemeApplied.returns(true);
+
+		//Act
+		var oChart = new sap.suite.ui.microchart.DeltaMicroChart();
+
+		//Assert
+		assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+		assert.ok(this.fnSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+		assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+		assert.ok(this.fnStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+		assert.ok(this.fnSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+	});
+
+	QUnit.test("Core loaded and theme not loaded", function(assert) {
+		//Arrange
+		this.fnStubIsInitialized.returns(true);
+		this.fnStubThemeApplied.returns(false);
+
+		//Act
+		var oChart = new sap.suite.ui.microchart.DeltaMicroChart();
+
+		//Assert
+		assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+		assert.ok(this.fnSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+		assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+		assert.ok(this.fnStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+		assert.ok(this.fnSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+	});
+
+	QUnit.test("Core loaded and theme loaded", function(assert) {
+		//Arrange
+		this.fnStubIsInitialized.returns(true);
+		this.fnStubThemeApplied.returns(true);
+
+		//Act
+		var oChart = new sap.suite.ui.microchart.DeltaMicroChart();
+
+		//Assert
+		assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+		assert.ok(this.fnSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+		assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+		assert.ok(this.fnStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+		assert.ok(this.fnSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+	});
+
+	QUnit.module("Calculate chart configuration - sap.suite.ui.microchart.DeltaMicroChart", {
+		beforeEach: function() {
+			this.oDmc = new sap.suite.ui.microchart.DeltaMicroChart();
+		},
+		afterEach: function() {
+			this.oDmc.destroy();
+		}
+	});
+
+	QUnit.test("calcChartData - empty & equal values", function(assert) {
+		var oDimensions = this.oDmc._calcChartData();
+
+		assert.equal(oDimensions.delta.left, true, "The delta bar is on the left.");
+		assert.equal(oDimensions.delta.width, 0, "The delta bar width is 0.");
+		assert.equal(oDimensions.delta.isFirstStripeUp, false, "The first delta stripe is down.");
+		assert.equal(oDimensions.delta.isMax, false, "The delta has not max width.");
+		assert.equal(oDimensions.delta.isZero, true, "The both values are 0.");
+		assert.equal(oDimensions.delta.isEqual, true, "The both values are equal.");
+
+		assert.equal(oDimensions.bar1.left, true, "The bar1 is on the left.");
+		assert.equal(oDimensions.bar1.width, 0, "The bar1 width is 0.");
+		assert.equal(oDimensions.bar1.isSmaller, false, "The bar1 is not smaller.");
+
+		assert.equal(oDimensions.bar2.left, true, "The bar2 is on the left.");
+		assert.equal(oDimensions.bar2.width, 0, "The bar2 width is 0.");
+		assert.equal(oDimensions.bar2.isSmaller, false, "The bar2 is not smaller.");
+	});
+
+	QUnit.test("calcChartData - positive values", function(assert) {
+		this.oDmc.setValue1(100);
+		this.oDmc.setValue2(200);
+
+		var oDimensions = this.oDmc._calcChartData();
+
+		assert.equal(oDimensions.delta.left, false, "The delta bar is on the right.");
+		assert.equal(oDimensions.delta.width, 50, "The delta bar width is 50%.");
+		assert.equal(oDimensions.delta.isFirstStripeUp, true, "The first delta stripe is up.");
+		assert.equal(oDimensions.delta.isMax, false, "The delta has not max width.");
+		assert.equal(oDimensions.delta.isZero, false, "The both values are 0.");
+		assert.equal(oDimensions.delta.isEqual, false, "The both values are not equal.");
+
+		assert.equal(oDimensions.bar1.left, true, "The bar1 is on the left.");
+		assert.equal(oDimensions.bar1.width, 50, "The bar1 width is 50%.");
+		assert.equal(oDimensions.bar1.isSmaller, true, "The bar1 is smaller.");
+
+		assert.equal(oDimensions.bar2.left, true, "The bar2 is on the left.");
+		assert.equal(oDimensions.bar2.width, 100, "The bar2 width is 100%.");
+		assert.equal(oDimensions.bar2.isSmaller, false, "The bar2 is not smaller.");
+	});
+
+	QUnit.test("calcChartData - negative values", function(assert) {
+		this.oDmc.setValue1(-100);
+		this.oDmc.setValue2(-200);
+
+		var oDimensions = this.oDmc._calcChartData();
+
+		assert.equal(oDimensions.delta.left, true, "The delta bar is on the left.");
+		assert.equal(oDimensions.delta.width, 50, "The delta bar width is 50%.");
+		assert.equal(oDimensions.delta.isFirstStripeUp, false, "The first delta stripe is down.");
+		assert.equal(oDimensions.delta.isMax, false, "The delta has not max width.");
+		assert.equal(oDimensions.delta.isZero, false, "The both values are 0.");
+		assert.equal(oDimensions.delta.isEqual, false, "The both values are not equal.");
+
+		assert.equal(oDimensions.bar1.left, false, "The bar1 is on the right.");
+		assert.equal(oDimensions.bar1.width, 50, "The bar1 width is 50%.");
+		assert.equal(oDimensions.bar1.isSmaller, true, "The bar1 is smaller.");
+
+		assert.equal(oDimensions.bar2.left, false, "The bar2 is on the right.");
+		assert.equal(oDimensions.bar2.width, 100, "The bar2 width is 100%.");
+		assert.equal(oDimensions.bar2.isSmaller, false, "The bar2 is not smaller.");
+	});
+
+	QUnit.test("calcChartData - negative values", function(assert) {
+		this.oDmc.setValue1(-100);
+		this.oDmc.setValue2(-200);
+
+		var oDimensions = this.oDmc._calcChartData();
+
+		assert.equal(oDimensions.delta.left, true, "The delta bar is on the left.");
+		assert.equal(oDimensions.delta.width, 50, "The delta bar width is 50%.");
+		assert.equal(oDimensions.delta.isFirstStripeUp, false, "The first delta stripe is down.");
+		assert.equal(oDimensions.delta.isMax, false, "The delta has not max width.");
+		assert.equal(oDimensions.delta.isZero, false, "The both values are 0.");
+		assert.equal(oDimensions.delta.isEqual, false, "The both values are not equal.");
+
+		assert.equal(oDimensions.bar1.left, false, "The bar1 is on the right.");
+		assert.equal(oDimensions.bar1.width, 50, "The bar1 width is 50%.");
+		assert.equal(oDimensions.bar1.isSmaller, true, "The bar1 is smaller.");
+
+		assert.equal(oDimensions.bar2.left, false, "The bar2 is on the right.");
+		assert.equal(oDimensions.bar2.width, 100, "The bar2 width is 100%.");
+		assert.equal(oDimensions.bar2.isSmaller, false, "The bar2 is not smaller.");
+	});
+
+	QUnit.test("calcChartData - mixed values", function(assert) {
+		this.oDmc.setValue1(50);
+		this.oDmc.setValue2(-200);
+
+		var oDimensions = this.oDmc._calcChartData();
+
+		assert.equal(oDimensions.delta.left, false, "The delta bar is on the right.");
+		assert.equal(oDimensions.delta.width, 100, "The delta bar width is 100%.");
+		assert.equal(oDimensions.delta.isFirstStripeUp, false, "The first delta stripe is down.");
+		assert.equal(oDimensions.delta.isMax, true, "The delta has max width.");
+		assert.equal(oDimensions.delta.isZero, false, "The both values are 0.");
+		assert.equal(oDimensions.delta.isEqual, false, "The both values are not equal.");
+
+		assert.equal(oDimensions.bar1.left, false, "The bar1 is on the right.");
+		assert.equal(oDimensions.bar1.width, 20, "The bar1 width is 50%.");
+		assert.equal(oDimensions.bar1.isSmaller, true, "The bar1 is smaller.");
+
+		assert.equal(oDimensions.bar2.left, true, "The bar2 is on the left.");
+		assert.equal(oDimensions.bar2.width, 80, "The bar2 width is 80%.");
+		assert.equal(oDimensions.bar2.isSmaller, false, "The bar2 is not smaller.");
+	});
+
+	QUnit.test("Test rounding support", function(assert) {
+		var bIsRoundingSupported = this.oDmc._isRoundingSupported();
+		assert.equal(bIsRoundingSupported, false, "rounding is supported");
+	});
+
+	QUnit.test("Test rounding unsupport", function(assert) {
+		jQuery.sap.byId("dmc-calc1").width(1);
+		this.oDmc._oChartData = this.oDmc._calcChartData();
+		this.oDmc._adjustRound();
+		var bIsRoundingSupported = this.oDmc._isRoundingSupported();
+		assert.equal(bIsRoundingSupported, false, "rounding is unsupported");
+	});
+
+	QUnit.test("Test calc support", function(assert) {
+		var bIsCalcSupported = this.oDmc._isCalcSupported();
+		assert.equal(bIsCalcSupported, false, "calc is supported");
+	});
+
+	QUnit.test("Test calc unsupport", function(assert) {
+		jQuery.sap.byId("dmc-calc1").css("max-width", "0px");
+		this.oDmc._adjustCalc();
+		var bIsCalcSupported = this.oDmc._isCalcSupported();
+		assert.equal(bIsCalcSupported, false, "calc is supported");
+	});
+
+	QUnit.test("Test digits after decimal point has been rendered", function(assert) {
+		var iDigitsAfterDecimalPoint = this.oDmc._digitsAfterDecimalPoint();
+		assert.equal(iDigitsAfterDecimalPoint, 0, "digits after decimal point were rendered");
+	});
+
+	QUnit.module("Rendering - sap.suite.ui.microchart.DeltaMicroChart", {
+		
+		beforeEach: function() {
+			this.oDmc = new sap.suite.ui.microchart.DeltaMicroChart("dmc01", {
+				value1: 5,
+				value2: 20,
+				title1: "title1",
+				title2: "title2",
+				press: function(oEvent) {
+					sap.m.MessageToast.show("The delta micro chart is pressed.");
+					bPress = true;
+				}
+			}).placeAt("qunit-fixture");	
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach: function() {
+			this.oDmc.destroy();
+		}
+	});
+		
+	QUnit.test("Test labels", function(assert) {
+		assert.equal(jQuery.sap.byId("dmc01-title1").text(), "title1", "title1 was rendered");
+		assert.equal(jQuery.sap.byId("dmc01-title2").text(), "title2", "title2 was rendered");
+		assert.equal(jQuery.sap.byId("dmc01-value1").text(), "5", "value1 was rendered");
+		assert.equal(jQuery.sap.byId("dmc01-value2").text(), "20", "value2 was rendered");
+		assert.equal(jQuery.sap.byId("dmc01-delta").text(), "15", "delta was rendered");
+	});
+
+	QUnit.test("Correct classes are used for zero values", function(assert) {
+		// Arrange
+		this.oDmc.setValue2(0);
+		// Act
+		sap.ui.getCore().applyChanges();
+		var $UniqueNonzeroBar = jQuery(this.oDmc.$().find('.sapSuiteDMCBar1')),
+			$UniqueZeroBar = jQuery(this.oDmc.$().find('.sapSuiteDMCBar2'));
+		// Assert
+		assert.ok($UniqueNonzeroBar.hasClass("sapSuiteDMCBarUniqueNonzero"), "Unique non zero bar has correct class");
+		assert.ok($UniqueZeroBar.hasClass("sapSuiteDMCBarZeroWidth"), "Zero bar has correct class");
+	});
+
+	QUnit.test("Aria label only includes the standard chart information", function(assert) {
+		// Arrange
+		var sAriaLabelText = this.oDmc.getAltText();
+		this.oDmc.setTooltip("This is dmc tooltip");
+		// Act
+		sap.ui.getCore().applyChanges();
+		// Assert
+		assert.equal(sAriaLabelText, this.oDmc.$().attr("aria-label"), "The aria-label includes chart information");
+		assert.equal(null, this.oDmc.$().attr("title"), "Title is not rendered");
+	});
+
+	QUnit.module("Title attribute is added and removed when mouse enters and leaves", {
+		beforeEach: function() {
+			this.oDmc = new sap.suite.ui.microchart.DeltaMicroChart("dmc", {
+				value1: 5,
+				value2: 20,
+				title1: "title1",
+				title2: "title2",
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach: function() {
+			this.oDmc.destroy();
+			this.oDmc = null;
+		}
+	});
+
+	QUnit.test("Tooltip is showed when mouse enters chart", function(assert) {
+		// Arrange
+		this.oDmc.setTooltip("This is dmc tooltip");
+		sap.ui.getCore().applyChanges();
+		// Act
+		this.oDmc.$().trigger("mouseenter");
+		// Assert
+		assert.equal("This is dmc tooltip", this.oDmc.$().attr("title"), "The title attribute is added when mouse enters the chart");
+	});
+
+	QUnit.test("Tooltip is removed when mouse leaves chart", function(assert) {
+		// Arrange
+		this.oDmc.setTooltip("This is dmc tooltip");
+		sap.ui.getCore().applyChanges();
+		// Act
+		this.oDmc.$().trigger("mouseenter");
+		this.oDmc.$().trigger("mouseleave");
+		// Assert
+		assert.equal(null, this.oDmc.$().attr("title"), "The title attribute is removed when mouse leaves the chart");
+	});
+
+	QUnit.module("Responsiveness - sap.suite.ui.microchart.DeltaMicroChart", {
+		beforeEach: function() {
+			this.oDmc = new sap.suite.ui.microchart.DeltaMicroChart("dmc01", {
+				value1: 5,
+				value2: 20,
+				title1: "title1",
+				title2: "title2",
+				isResponsive: true,
+				press: function(oEvent) {
+					sap.m.MessageToast.show("The delta micro chart is pressed.");
+					bPress = true;
+				}
+			});
+			this._oFB = new sap.m.FlexBox("cc-fb", {
+				items: [this.oDmc]
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach: function() {
+			this.oDmc.destroy();
+			this._oFB.destroy();
+		}
+	});
+
+	QUnit.test("Vertical responsiveness: vertically centered at large hight", function(assert) {
+		//Arrange
+		this._oFB.setWidth("12rem");
+		this._oFB.setHeight("8.5rem");
+		this._oFB.rerender();
+		var emptySpaceTotalHeight = this.oDmc.$().height() - this.oDmc.$().find(".sapSuiteDMCVerticalAlignmentContainer").height();
+		var internalRelativeTopShiftOfChart = this.oDmc.$().find(".sapSuiteDMCVerticalAlignmentContainer")[0].getBoundingClientRect().top - this.oDmc.$()[0].getBoundingClientRect().top;
+		var internalRelativeBottomShiftOfChart = this.oDmc.$()[0].getBoundingClientRect().bottom - this.oDmc.$().find(".sapSuiteDMCVerticalAlignmentContainer")[0].getBoundingClientRect().bottom;
+
+		//Assert
+		assert.equal(internalRelativeTopShiftOfChart>0 && internalRelativeBottomShiftOfChart>0 && emptySpaceTotalHeight >0, true, "Empty space exists, can proceed with ");
+		assert.equal(Math.round(emptySpaceTotalHeight), Math.round(internalRelativeTopShiftOfChart * 2), "Offset from top is equal to half of empty space");
+		assert.equal(Math.round(emptySpaceTotalHeight), Math.round(internalRelativeBottomShiftOfChart * 2), "Offset from bottom is equal to half of empty space");
+	});
+
+	QUnit.test("Vertical responsiveness: decreasing fonts", function(assert) {
+		//Arrange
+		this._oFB.setWidth("12rem");
+		this._oFB.setHeight("6.5rem");
+		this._oFB.rerender();
+		var mediumFont = parseFloat(this.oDmc.$().find(".sapSuiteDMCLbls.sapSuiteDMCResponsive").css("font-size"));
+		this._oFB.setWidth("10rem");
+		this._oFB.setHeight("4.5rem");
+		this._oFB.rerender();
+		var smallFont = parseFloat(this.oDmc.$().find(".sapSuiteDMCLbls.sapSuiteDMCResponsive").css("font-size"));
+
+		//Assert
+		assert.ok(this.oDmc.$().hasClass("sapSuiteDMCSmallFont"), "Added CSS class that commands to use small fonts");
+		assert.ok(smallFont < mediumFont, "Font size decrease had actually occured");
+	});
+
+	QUnit.test("Vertical responsiveness: disappearence of chart", function(assert) {
+		//Arrange
+		this._oFB.setWidth("8rem");
+		this._oFB.setHeight("2rem");
+		this._oFB.rerender();
+
+		//Assert
+		assert.equal(this.oDmc.$().find(".sapSuiteDMCResponsive.sapSuiteDMCChart").css("display"),"none", "Chart is hidden");
+		assert.equal(this.oDmc.$().find(".sapSuiteDMCLbls .sapSuiteDMCDelta").css("display"),"none", "Middle label on the right side is hidden");
+	});
+
+	QUnit.test("Vertical responsiveness: disappearence of chart and top label", function(assert) {
+		//Arrange
+		this._oFB.setWidth("8rem");
+		this._oFB.setHeight("1.2rem");
+		this._oFB.rerender();
+
+		//Assert
+		assert.equal(this.oDmc.$().find(".sapSuiteDMCResponsive.sapSuiteDMCChart").css("display"),"none", "Chart is hidden");
+		assert.equal(this.oDmc.$().find(".sapSuiteDMCLbls .sapSuiteDMCDelta").css("display"),"none", "Middle label on the right side is hidden");
+		assert.equal(this.oDmc.$().find(".sapSuiteDMCPositionTop.sapSuiteDMCTitle").css("display"),"none", "Top label on the left is hidden");
+		assert.equal(this.oDmc.$().find(".sapSuiteDMCLbls .sapSuiteDMCValue1").css("display"),"none", "Top label on the right is hidden");
+	});
+
+	QUnit.test("Vertical responsiveness: disappearence of the whole control", function(assert) {
+		//Arrange
+		this._oFB.setWidth("8rem");
+		this._oFB.setHeight("0.5rem");
+		this._oFB.rerender();
+
+		//Assert
+		assert.equal(this.oDmc.$().css("display"),"none", "Control is hidden");
+	});
+
+	QUnit.test("Horizontal responsiveness: disappearence of the left side", function(assert) {
+		//Arrange
+		this._oFB.setWidth("4rem");
+		this._oFB.setHeight("4.5rem");
+		this._oFB.rerender();
+		//Assert
+		assert.equal(this.oDmc.$().css("display"),"inline-block", "The whole control is not hidden yet");
+		assert.equal(this.oDmc.$().find(".sapSuiteDMCResponsive.sapSuiteDMCCnt").css("display"),"none", "Not enough space to display the left side even with truncated text. Left side is hidden completely");
+	});
+
+	QUnit.test("Horizontal responsiveness: disappearence of the whole control", function(assert) {
+		//Arrange
+		this._oFB.setWidth("1.5rem");
+		this._oFB.setHeight("4.5rem");
+		this._oFB.rerender();
+
+		//Assert
+		assert.equal(this.oDmc.$().css("display"),"none", "Control is hidden");
+	});
+
+	QUnit.module("Responsiveness adjustments for the use within GenericTile", {
+		beforeEach: function() {
+			this.oChart = new sap.suite.ui.microchart.DeltaMicroChart().addStyleClass("sapUiSmallMargin");
+			this.oGenericTile = new sap.m.GenericTile("generic-tile", {
+				tileContent : new sap.m.TileContent({
+					content : this.oChart
+				})
+			});
+		},
+		afterEach: function() {
+			this.oGenericTile.destroy();
+		}
+	});
+
+	QUnit.test("The MicroChart becomes responsive if it is used in a Generic Tile", function(assert) {
+		//Act
+		this.oChart.onBeforeRendering();
+		//Assert
+		assert.ok(this.oChart.getIsResponsive(), "The chart became responsive");
+	});
+
+	QUnit.test("The standard margins are handled if chart is used in a Generic Tile", function(assert) {
+		//Arrange
+		var oRemoveMarginCallback = sinon.spy(sap.suite.ui.microchart, "_removeStandardMargins");
+		//Act
+		this.oChart.onBeforeRendering();
+		//Assert
+		assert.ok(oRemoveMarginCallback.called, "Library function that removes standard margins has been called.");
+	});
+	QUnit.module("Tooltip behavior", {
+		beforeEach: function() {
+			this.oChart = new sap.suite.ui.microchart.ComparisonMicroChart();
+			this.oModel = new sap.ui.model.json.JSONModel({
+				size : "M",
+				Tooltip : "Custom Tooltip"
+			});
+		},
+		afterEach: function() {
+			this.oChart.destroy();
+			this.oModel.destroy();
+		}
+	});
+
+	QUnit.test("Default value for tooltip", function(assert) {
+		//Arrange
+		//Act
+		//Assert
+		assert.deepEqual(this.oChart.getTooltip(), "{AltText}", "Default value set correctly");
+		assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+	});
+
+	QUnit.test("Model exists, tooltip is not bound", function(assert) {
+		//Arrange
+		//Act
+		this.oChart.setModel(this.oModel);
+		sap.ui.getCore().applyChanges();
+		//Assert
+		assert.deepEqual(this.oChart.getTooltip(), "{AltText}", "Default value set correctly");
+		assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+	});
+
+	QUnit.test("Model exists, control is bound, tooltip is not bound", function(assert) {
+		//Arrange
+		this.oChart.setAggregation("tooltip", new sap.ui.core.TooltipBase({
+			text : "{/Tooltip}"
+		}));
+		//Act
+		this.oChart.setModel(this.oModel);
+		sap.ui.getCore().applyChanges();
+		//Assert
+		assert.ok(this.oChart.getTooltip(), "Tooltip exists");
+		assert.deepEqual(this.oChart.getTooltip().getText(), "Custom Tooltip", "Tooltip exists");
+		assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+	});
+
+	QUnit.test("Model exists, control is bound", function(assert) {
+		//Arrange
+		var oModel = new sap.ui.model.json.JSONModel({
+			data : [{
+				size : "M",
+				Tooltip : "Custom Tooltip"
+			}]
+		});
+		var oTable = new sap.m.Table({
+			items : {
+				path : "/data",
+				template : new sap.m.ColumnListItem({
+					cells : [new sap.suite.ui.microchart.DeltaMicroChart({
+						value1: 4.20,
+						value2: 23,
+						title1: "Value1",
+						title2: "Value2",
+						displayValue1: "Dispaly value 1",
+						displayValue2: "Dispaly value 2"
+					})]
+				})
+			}
+		}).setModel(oModel);
+		//Act
+		sap.ui.getCore().applyChanges();
+		var oChart = oTable.getItems()[0].getCells()[0];
+		//Assert
+		assert.deepEqual(oChart.getTooltip(), null, "Binding is empty, so tooltip aggregation is also empty.");
+		assert.ok(oChart.getTooltip_AsString(), "Tooltip is empty, default tooltip as string appears");
+		assert.ok(oChart.isBound("tooltip"), "Tooltip is bound");
+		//Cleanup
+		oTable.destroy();
+		oModel.destroy();
+	});
+
+	QUnit.module("Execution of functions onAfterRendering", {
+		beforeEach: function() {
+			this.oChart = new sap.suite.ui.microchart.DeltaMicroChart().placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+			sinon.spy(sap.suite.ui.microchart, "_checkControlIsVisible");
+		},
+		afterEach: function() {
+			sap.suite.ui.microchart._checkControlIsVisible.restore();
+			this.oChart.destroy();
+		}
+	});
+
+	QUnit.test("Visibility check", function(assert) {
+		//Act
+		this.oChart.onAfterRendering();
+		//Assert
+		assert.ok(sap.suite.ui.microchart._checkControlIsVisible.calledOnce, "Method _checkControlIsVisible has been called once.");
+	});
+
+}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+</body>
+</html>

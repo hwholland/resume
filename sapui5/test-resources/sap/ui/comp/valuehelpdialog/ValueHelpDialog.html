@@ -1,0 +1,1179 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<title>Value Help Dialog - sap.ui.comp</title>
+
+<!-- ********************************************************************** -->
+<!-- SAPUI5 Bootstrap:                                                     -->
+<!-- Extend the "libs" property if you like to import additional libraries  -->
+<!-- ********************************************************************** -->
+<script id="sap-ui-bootstrap" 
+	type="text/javascript"
+	data-sap-ui-libs="sap.ui.comp, sap.m, sap.ui.table"
+	data-sap-ui-theme="sap_bluecrystal"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-compatVersion="edge">
+</script>
+
+<script type="text/javascript">	
+	jQuery.sap.require("sap.ui.comp.valuehelpdialog.ValueHelpDialog");
+	jQuery.sap.require("sap.ui.comp.filterbar.FilterBar");
+	jQuery.sap.require("sap.ui.comp.smartfilterbar.FilterProvider");
+
+	var aKeys= ["CompanyCode", "CompanyName"];
+
+	var token1= new sap.m.Token({key: "0001", text:"SAP SE (0001)"});
+	var token2= new sap.m.Token({key: "0002", text: "SAP Labs India (0002)"});
+	var rangeToken1= new sap.m.Token({key: "i1", text: "ID: a..z"}).data("range", { "exclude": false, "operation": sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.BT, "keyField": "CompanyCode", "value1": "a", "value2": "z"});
+	var rangeToken2= new sap.m.Token({key: "i2", text: "ID: =foo"}).data("range", { "exclude": false, "operation": sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.EQ, "keyField": "CompanyCode", "value1": "foo", "value2": ""});
+	var rangeToken3= new sap.m.Token({key: "e1", text: "ID !(=foo)"}).data("range", { "exclude": true, "operation": sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.EQ, "keyField": "CompanyCode", "value1": "foo", "value2": ""});
+	var	aTokens= [token1, token2, rangeToken1, rangeToken2, rangeToken3];   
+	
+	var oTreeItems = {
+	         		CompanyCode: "root",
+	         		CompanyName: "root",
+	         		children: [
+		         		{
+		         			//CompanyCode: "Rock",
+		         			//CompanyName: "Rockmusik",
+		         		    "CompanyCode": "0001",
+		         		    "CompanyName": "SAP SE",
+		         		    "Email": "gatesfernandez@quintity.com",
+		         		    "Phone": "+1 (826) 451-3236",
+		         		    "Street": "River Street 835",
+		         		    "City": "Veguita",
+		         		    "Country": "Cocos (Keeling Islands)",
+		         		    "Price": "2,904.03",
+		         		    "CurrencyCode": "EUR",
+		         		    "BoolCode": true,
+		         		    "Date": new Date(),
+		         			
+		         			children: [
+			         			{ 
+			         				CompanyCode: "Rock'n'Roll",
+			         				CompanyName: "late 1940s",
+			         				children: [ 
+			         					{
+			         						CompanyCode: "Elvis Presley",
+			         						CompanyName: "*1935 - +1977"
+			         					},
+			         					{
+			         						CompanyCode: "Chuck Berry",
+			         						CompanyName: "*1926"
+			         					},
+			         					{  
+			         						CompanyCode: "Keith Richards",
+			         						CompanyName: "*1943"
+			         					}
+			         				]
+			         			},
+			         			{
+			         				CompanyCode: "Heavy Metal",
+			         				CompanyName: "late 1960s",
+			         				children: [
+				         				{
+				         					CompanyCode: "Black Sabbath",
+				         					CompanyName: "founded 1968"
+				         				},
+				         				{
+				         					CompanyCode: "Judas Priest",
+				         					CompanyName: "founded 1969"
+				         				}
+			         				]
+			         			},
+			         			{
+			         				CompanyCode: "Grunge",
+			         				CompanyName: "Mid-1980s",
+			         				children: [
+				         				{
+				         					CompanyCode: "Nirvana",
+				         					CompanyName: "1987"
+				         				},
+				         				{
+				         					CompanyCode: "Soundgarden",
+				         					CompanyName: "1984"
+				         				},
+				         				{
+				         					CompanyCode: "Alice in Chains",
+				         					CompanyName: "1987"
+				         				}
+			         				]
+			         			}
+		         			]
+		         		},
+		         		{
+		         			//CompanyCode: "Hip-Hop",
+		         			//CompanyName: "Hip-Hop",
+		         		    "CompanyCode": "0002",
+		         		    "CompanyName": "SAP Labs India",
+		         		    "Email": "gatesfernandez@zoarere.com",
+		         		    "Phone": "+1 (990) 516-2987",
+		         		    "Street": "Woodhull Street 740",
+		         		    "City": "Babb",
+		         		    "Country": "Western Sahara",
+		         		    "Price": "2,999.79",
+		         		    "CurrencyCode": "JPY",
+		         		    "BoolCode": false,
+		         		    "Date": new Date(),
+		         			children: [
+			         			{
+			         				CompanyCode: "Old-School",
+			         				CompanyName: "Mid 1970s",
+			         				children: [
+				         				{
+				         					CompanyCode: "The Sugarhill Gang",
+				         					CompanyName: "1973"
+				         				},
+				         				{
+				         					CompanyCode: "Grandmaster Flash and the Furious Five",
+				         					CompanyName: "1978"
+				         				}
+			         				]
+			         			},
+			         			{
+			         				CompanyCode: "Rap-Rock",
+			         				CompanyName: "early 1980s",
+			         				children:  [
+				         				{
+				         					CompanyCode: "Run-D.M.C.",
+				         					CompanyName: "1981 - 2002"
+				         				},
+				         				{
+				         					CompanyCode: "Beastie Boys",
+				         					CompanyName: "1981 - 2012"
+				         				}
+			         				]
+			         			},
+			         			{
+			         				CompanyCode: "Gangsta rap",
+			         				CompanyName: "mid 1980s",
+			         				children: [
+				         				{
+				         					CompanyCode: "2Pac",
+				         					CompanyName: "1971 - 1996"
+				         				},
+				         				{
+				         					CompanyCode: "N.W.A",
+				         					CompanyName: "1986 - 1991, 1998 - 2002"
+				         				}
+			         				]
+			         			}
+		         			]
+		         		},
+		         		{
+		         			CompanyCode: "Swing/Big Band",
+		         			CompanyName: "1930s",
+		         			children: [
+			         			{
+			         				CompanyCode: "Frank Sinatra",
+			         				CompanyName: "1915 - 1998"
+			         			},
+			         			{
+			         				CompanyCode: "Count Basie",
+			         				CompanyName: "1904 - 1984"
+			         			}
+		         			]
+		         		},
+		         		{
+		         			CompanyCode: "ZZZ",
+		         			CompanyName: "None"
+		         		}
+		         	]
+	};
+	
+	
+	var aItems= 
+ 	[
+	  {
+	    "CompanyCode": "0001",
+	    "CompanyName": "SAP SE",
+	    "Email": "gatesfernandez@quintity.com",
+	    "Phone": "+1 (826) 451-3236",
+	    "Street": "River Street 835",
+	    "City": "Veguita",
+	    "Country": "Cocos (Keeling Islands)",
+	    "Price": "2,904.03",
+	    "CurrencyCode": "EUR",
+	    "BoolCode": true,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0002",
+	    "CompanyName": "SAP Labs India",
+	    "Email": "gatesfernandez@zoarere.com",
+	    "Phone": "+1 (990) 516-2987",
+	    "Street": "Woodhull Street 740",
+	    "City": "Babb",
+	    "Country": "Western Sahara",
+	    "Price": "2,999.79",
+	    "CurrencyCode": "JPY",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0003",
+	    "CompanyName": "ANDRYX",
+	    "Email": "gatesfernandez@andryx.com",
+	    "Phone": "+1 (877) 584-3223",
+	    "Street": "Kingston Avenue 234",
+	    "City": "Tyhee",
+	    "Country": "Indonesia",
+	    "Price": "3,787.33",
+	    "CurrencyCode": "JPY",
+	    "BoolCode": true,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0004",
+	    "CompanyName": "NAXDIS",
+	    "Email": "gatesfernandez@naxdis.com",
+	    "Phone": "+1 (844) 406-3829",
+	    "Street": "Kenmore Terrace 352",
+	    "City": "Weogufka",
+	    "Country": "Lebanon",
+	    "Price": "1,409.28",
+	    "CurrencyCode": "EUR",
+	    "BoolCode": true,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0005",
+	    "CompanyName": "ZILODYNE",
+	    "Email": "gatesfernandez@zilodyne.com",
+	    "Phone": "+1 (963) 499-2190",
+	    "Street": "Conover Street 963",
+	    "City": "Graball",
+	    "Country": "Sudan",
+	    "Price": "3,684.14",
+	    "CurrencyCode": "JPY",
+	    "BoolCode": true,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0006",
+	    "CompanyName": "OPTICON",
+	    "Email": "gatesfernandez@opticon.com",
+	    "Phone": "+1 (974) 428-2229",
+	    "Street": "Hicks Street 491",
+	    "City": "Wauhillau",
+	    "Country": "Macau",
+	    "Price": "1,636.51",
+	    "CurrencyCode": "USD",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0007",
+	    "CompanyName": "EXOPLODE",
+	    "Email": "gatesfernandez@exoplode.com",
+	    "Phone": "+1 (960) 526-2398",
+	    "Street": "Caton Avenue 854",
+	    "City": "Barstow",
+	    "Country": "Zambia",
+	    "Price": "1,000.76",
+	    "CurrencyCode": "EUR",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0008",
+	    "CompanyName": "SENSATE",
+	    "Email": "gatesfernandez@sensate.com",
+	    "Phone": "+1 (987) 524-2004",
+	    "Street": "Varick Avenue 832",
+	    "City": "Hatteras",
+	    "Country": "Tanzania",
+	    "Price": "3,281.51",
+	    "CurrencyCode": "USD",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0009",
+	    "CompanyName": "MICROLUXE",
+	    "Email": "gatesfernandez@microluxe.com",
+	    "Phone": "+1 (831) 497-3795",
+	    "Street": "Elizabeth Place 171",
+	    "City": "Nipinnawasee",
+	    "Country": "Dominican Republic",
+	    "Price": "3,707.49",
+	    "CurrencyCode": "JPY",
+	    "BoolCode": true,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0010",
+	    "CompanyName": "FLUMBO",
+	    "Email": "gatesfernandez@flumbo.com",
+	    "Phone": "+1 (939) 428-2762",
+	    "Street": "Madison Place 334",
+	    "City": "Neahkahnie",
+	    "Country": "Cook Islands",
+	    "Price": "3,208.85",
+	    "CurrencyCode": "USD",
+	    "BoolCode": true,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0011",
+	    "CompanyName": "ENQUILITY",
+	    "Email": "gatesfernandez@enquility.com",
+	    "Phone": "+1 (829) 588-2268",
+	    "Street": "Friel Place 821",
+	    "City": "Staples",
+	    "Country": "Christmas Island",
+	    "Price": "1,475.17",
+	    "CurrencyCode": "JPY",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0012",
+	    "CompanyName": "MAINELAND",
+	    "Email": "gatesfernandez@maineland.com",
+	    "Phone": "+1 (890) 563-3099",
+	    "Street": "Sutter Avenue 797",
+	    "City": "Jessie",
+	    "Country": "Seychelles",
+	    "Price": "3,143.76",
+	    "CurrencyCode": "USD",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0013",
+	    "CompanyName": "ZILLAR",
+	    "Email": "gatesfernandez@zillar.com",
+	    "Phone": "+1 (941) 548-2792",
+	    "Street": "Celeste Court 987",
+	    "City": "Bradenville",
+	    "Country": "US Minor Outlying Islands",
+	    "Price": "3,784.07",
+	    "CurrencyCode": "USD",
+	    "BoolCode": true,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0014",
+	    "CompanyName": "ENTHAZE",
+	    "Email": "gatesfernandez@enthaze.com",
+	    "Phone": "+1 (801) 507-2306",
+	    "Street": "Front Street 156",
+	    "City": "Hamilton",
+	    "Country": "Togo",
+	    "Price": "2,638.79",
+	    "CurrencyCode": "JPY",
+	    "BoolCode": true,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0015",
+	    "CompanyName": "MEDALERT",
+	    "Email": "gatesfernandez@medalert.com",
+	    "Phone": "+1 (932) 600-3996",
+	    "Street": "Jefferson Street 287",
+	    "City": "Brambleton",
+	    "Country": "Myanmar",
+	    "Price": "1,473.13",
+	    "CurrencyCode": "EUR",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0016",
+	    "CompanyName": "TERSANKI",
+	    "Email": "gatesfernandez@tersanki.com",
+	    "Phone": "+1 (965) 584-3121",
+	    "Street": "Rock Street 358",
+	    "City": "Herald",
+	    "Country": "Chad",
+	    "Price": "1,270.66",
+	    "CurrencyCode": "EUR",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0017",
+	    "CompanyName": "PORTICO",
+	    "Email": "gatesfernandez@portico.com",
+	    "Phone": "+1 (852) 535-3383",
+	    "Street": "Gerritsen Avenue 811",
+	    "City": "Robinson",
+	    "Country": "Zimbabwe",
+	    "Price": "2,862.41",
+	    "CurrencyCode": "USD",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0018",
+	    "CompanyName": "ZEROLOGY",
+	    "Email": "gatesfernandez@zerology.com",
+	    "Phone": "+1 (876) 527-3684",
+	    "Street": "Walker Court 275",
+	    "City": "Gloucester",
+	    "Country": "Saint Kitts and Nevis",
+	    "Price": "2,322.42",
+	    "CurrencyCode": "EUR",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0019",
+	    "CompanyName": "INSURITY",
+	    "Email": "gatesfernandez@insurity.com",
+	    "Phone": "+1 (957) 532-3324",
+	    "Street": "Union Street 897",
+	    "City": "Ballico",
+	    "Country": "Hong Kong",
+	    "Price": "3,974.90",
+	    "CurrencyCode": "USD",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0020",
+	    "CompanyName": "OVOLO",
+	    "Email": "gatesfernandez@ovolo.com",
+	    "Phone": "+1 (853) 420-3932",
+	    "Street": "Ocean Avenue 519",
+	    "City": "Waverly",
+	    "Country": "Greece",
+	    "Price": "1,110.43",
+	    "CurrencyCode": "JPY",
+	    "BoolCode": true,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0021",
+	    "CompanyName": "IRACK",
+	    "Email": "gatesfernandez@irack.com",
+	    "Phone": "+1 (839) 506-2922",
+	    "Street": "Sullivan Place 864",
+	    "City": "Maybell",
+	    "Country": "Qatar",
+	    "Price": "3,038.98",
+	    "CurrencyCode": "EUR",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0022",
+	    "CompanyName": "CHILLIUM",
+	    "Email": "gatesfernandez@chillium.com",
+	    "Phone": "+1 (996) 497-2711",
+	    "Street": "Jay Street 244",
+	    "City": "Cochranville",
+	    "Country": "Saint Lucia",
+	    "Price": "3,158.95",
+	    "CurrencyCode": "EUR",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0023",
+	    "CompanyName": "VELOS",
+	    "Email": "gatesfernandez@velos.com",
+	    "Phone": "+1 (957) 460-3686",
+	    "Street": "Prospect Avenue 472",
+	    "City": "Grenelefe",
+	    "Country": "Kyrgyzstan",
+	    "Price": "3,415.25",
+	    "CurrencyCode": "EUR",
+	    "BoolCode": false,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0024",
+	    "CompanyName": "NETBOOK",
+	    "Email": "gatesfernandez@netbook.com",
+	    "Phone": "+1 (930) 550-2120",
+	    "Street": "Vandervoort Place 404",
+	    "City": "Leyner",
+	    "Country": "Denmark",
+	    "Price": "3,283.04",
+	    "CurrencyCode": "JPY",
+	    "BoolCode": true,
+	    "Date": new Date()
+	  },
+	  {
+	    "CompanyCode": "0025",
+	    "CompanyName": "ZENSUS",
+	    "Email": "gatesfernandez@zensus.com",
+	    "Phone": "+1 (935) 455-2399",
+	    "Street": "Dahlgreen Place 790",
+	    "City": "Jacksonburg",
+	    "Country": "Rwanda",
+	    "Price": "3,054.33",
+	    "CurrencyCode": "EUR",
+	    "BoolCode": true,
+	    "Date": new Date()
+	  }
+	];	
+	
+	var bIgnoreTokenChange= false;
+	
+	var theTokenInput = new sap.m.MultiInput({
+	 	enableMultiLineMode: sap.ui.Device.system.phone,
+		suggestionItems: { 
+			path: "/items", 
+			template: new sap.ui.core.Item({
+					key:"{CompanyCode}", text:"{CompanyName}"
+			   }) 
+		},
+		tokenChange: function(oControlEvent) {
+			if (bIgnoreTokenChange) {
+				return;
+			}
+			if (oControlEvent.getParameter("type") === sap.m.MultiInput.TokenChangeType.TokensChanged) {
+				var aRemovedTokens = oControlEvent.getParameter("removedTokens");
+				for ( var j = 0; j < aRemovedTokens.length; j++) {
+					var sKey = aRemovedTokens[j].getKey();
+
+					for (var i in aTokens){
+				        if (aTokens[i].getKey() === sKey) {
+				            aTokens.splice(i,1);
+				            break;
+				        }
+				    }
+				}
+			}			
+/*	the Removed event on the Phone will not be raised with a valid token		
+ 	
+	if (oControlEvent.getParameter("type") === sap.m.MultiInput.TokenChangeType.Removed) {
+				var sKey = oControlEvent.getParameter("token").getKey();
+				for (var i in aTokens){
+			        if(aTokens[i].getKey() === sKey) {
+			            aTokens.splice(i,1);
+			            break;
+			        }
+			    }
+			} */
+		}
+	});
+
+	theTokenInput.addValidator(function(args) {
+		var token = args.suggestedToken;
+		if (token) {
+			var sText = token.getText();
+			var sKey = token.getKey();
+			token.setKey(sKey);
+			token.setText(sText + " (" + sKey + ")");
+			aTokens.push(token);
+			return token;
+		}
+	});
+
+	theTokenInput.setTokens(aTokens);
+ 	
+	var oModel1= new sap.ui.model.json.JSONModel();
+	oModel1.setData({ items: aItems, tokens: [] });
+	theTokenInput.setModel(oModel1);
+	
+
+	var bRangesOnly= false;
+	var bSupportRanges= true;
+	var bIntervalOnly= false;
+	var bFilter= false;
+	var oValueHelpDialog = null;
+	
+	theTokenInput.attachValueHelpRequest(function() {
+ 			if (oValueHelpDialog) {
+ 				//sometimes we get two ValueHelpRequests events, so we ignore the second when we have a 
+				return;
+			}
+		
+			var i = oRBGroup.getSelectedIndex();
+			
+			if (i === 0) {
+				bRangesOnly= false;
+				bSupportRanges= true;
+				bIntervalOnly= false;
+				bFilter= false;
+			}
+			if (i === 1) {
+				bRangesOnly= false;
+				bSupportRanges= false;
+				bIntervalOnly= false;
+				bFilter= false;
+			}
+			if (i === 2) {
+				bRangesOnly= true;
+				bSupportRanges= true;
+				bIntervalOnly= false;
+				bFilter= false;
+			}
+			if (i === 3) {
+				bRangesOnly= true;
+				bSupportRanges= true;
+				bIntervalOnly= false;
+				bFilter= true;
+			}
+			if (i === 4) {
+				bRangesOnly= true;
+				bSupportRanges= true;
+				bIntervalOnly= true;
+				bFilter= false;
+			}
+			
+			oValueHelpDialog = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
+				basicSearchText: theTokenInput.getValue(), 
+				title: bFilter ? "Enter Some Filters" : "Company",
+				supportMultiselect: !singleSelect.getSelected(),
+				supportRanges: bSupportRanges,
+				supportRangesOnly: bRangesOnly,
+				filterMode: bFilter,
+  				maxIncludeRanges: bIntervalOnly ? 1 :-1,
+   				maxExcludeRanges: bIntervalOnly ? 0 : (bFilter ? 0 : -1),
+ 				key: aKeys[0],		
+ 				//displayFormat: "UpperCase", 
+				descriptionKey: aKeys[1],
+
+				ok: function(oControlEvent) {
+					aTokens = oControlEvent.getParameter("tokens");
+
+					var sTokens= ""; 
+					for (i = 0; i < aTokens.length; i++) {
+						var oToken = aTokens[i];
+						sTokens+= oToken.getText() + " ";
+					}
+					sap.m.MessageToast.show("Tokens= "+sTokens);
+
+					
+					bIgnoreTokenChange= true;
+					theTokenInput.setTokens(aTokens);
+					bIgnoreTokenChange= false;
+
+					oValueHelpDialog.close();
+					oValueHelpDialog= null;
+				},
+
+				cancel: function(oControlEvent) {
+					sap.m.MessageToast.show("Cancel pressed!");
+					oValueHelpDialog.close();
+					oValueHelpDialog= null;
+				},
+
+				afterClose: function() {
+					this.destroy();
+					if (!sap.ui.Device.system.phone) {
+						theTokenInput.focus();
+					}
+				},
+				
+				selectionChange: function(oControlEvent) {
+					var oTable = oValueHelpDialog.getTable();
+
+					if (oTable instanceof sap.ui.table.Table) {
+						var tableSelectionParams = oControlEvent.getParameter("tableSelectionParams");
+						var rowIndex = tableSelectionParams.rowIndex;
+						var rowIndices = tableSelectionParams.rowIndices;
+						var bSelected = oTable.isIndexSelected(rowIndex);
+						console.log("ItemSelected " + bSelected + " " + rowIndex + " " + (rowIndices ? rowIndices.length : 0));
+			
+						if (rowIndex === -1) {
+							return;
+						}
+						
+						// select two rows of the table
+						if (rowIndices.length === 1) {
+							var j= rowIndices[0]+1;
+							rowIndices.push(j);
+							if (bSelected) {
+								oTable.addSelectionInterval(j, j);
+							} else {
+								oTable.removeSelectionInterval(j, j);
+							}
+						}
+						
+						//oControlEvent.mParameters.useDefault = true;
+						var aUpdateTokens = oControlEvent.getParameter("updateTokens");
+						
+						for (var i = 0; i < rowIndices.length; i++) {
+							var index = rowIndices[i];
+							var oContext = oTable.getContextByIndex(index);
+							var oRow = oContext ? oContext.getObject() : null;
+			
+							if (oRow) {
+								var sKey = oRow[oValueHelpDialog.getKey()];
+								aUpdateTokens.push({
+									sKey: sKey,
+									oRow: oRow,
+									bSelected: oTable.isIndexSelected(index)
+								});
+							}
+						}
+					} 
+						
+					if (oTable instanceof sap.m.Table) {
+						var listItem = oControlEvent.getParameter("listItem");
+						var listItems = oControlEvent.getParameter("listItems");
+						var bSelected = oControlEvent.getParameter("selected");
+						console.log("ItemSelected " + bSelected + " " + listItem + " " + (listItems ? listItems.length : 0));
+					}
+					
+					sap.m.MessageToast.show("event ItemSelected fired.");
+				},
+
+				tokenRemove: function(oControlEvent) {
+					if (!useExternalTable.getSelected()) {
+						return;
+					}
+				
+					var aTokenKeys = oControlEvent.getParameter("tokenKeys")
+					sap.m.MessageToast.show("event TokenRemoved fired.");
+
+					var i, j;
+					var oTable = oValueHelpDialog.getTable();
+					if (oTable instanceof sap.ui.table.Table) {
+						var oRows = oTable.getBinding("rows");
+						for (j = 0; j < aTokenKeys.length; j++) {
+							var sTokenKey = aTokenKeys[j];							
+							for (i = 0; i < oRows.getLength(); i++) {
+								var oContext;
+								if (oRows.getContextByIndex)
+								{
+									oContext = oRows.getContextByIndex(i);
+								} else { 
+									//oContext = oTable.getContextByIndex(oRows.aIndices[i]);
+									oContext = oRows.getContexts()[i];
+								}
+								if (oContext) {
+									var oRow = oContext.getObject();
+									if (oRow[oValueHelpDialog.getKey()] === sTokenKey) {
+										oTable.removeSelectionInterval(i, i);
+										break;
+									}
+								}
+							}
+						}
+					}
+					
+				},
+				
+				updateSelection: function(oControlEvent) {
+					if (!useExternalTable.getSelected()) {
+						return;
+					}
+					var aTokenKeys = oControlEvent.getParameter("tokenKeys");
+					sap.m.MessageToast.show("event updateSelection fired.");
+					
+					var i, j;
+					var oTable = oValueHelpDialog.getTable();
+					if (oTable instanceof sap.ui.table.Table) {
+						var oRows = oTable.getBinding("rows");
+						for (j = 0; j < aTokenKeys.length; j++) {
+							var sTokenKey = aTokenKeys[j];
+							for (i = 0; i < oRows.getLength(); i++) {
+								var oContext;
+								if (oRows.getContextByIndex)
+								{
+									oContext = oRows.getContextByIndex(i);
+								} else { 
+									oContext = oRows.getContexts()[i];
+								}
+								if (oContext) {
+									oRow = oContext.getObject();
+									if (oRow[oValueHelpDialog.getKey()] === sTokenKey) {
+										oTable.addSelectionInterval(i, i);
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+	
+			});
+			
+			// begin table handling #################################################
+			if (useExternalTable.getSelected()) {
+				// assign an extern table instance
+				//oValueHelpDialog.setTable(new sap.ui.table.Table());
+				//oValueHelpDialog.setTable(new sap.m.Table());
+				//oValueHelpDialog.setTable(new sap.ui.table.AnalyticalTable());
+				
+				var oTreeTable = new sap.ui.table.TreeTable();
+				
+/* 				oTreeTable.addColumn( new sap.ui.table.Column({label: "Company Code", template: "CompanyCode"}));
+				oTreeTable.addColumn( new sap.ui.table.Column({label: "Company Name", template: "CompanyName"}));
+				oTreeTable.addColumn( new sap.ui.table.Column({label: "City", template: "City"}));
+				oTreeTable.addColumn( new sap.ui.table.Column({label: "Currency Code", template: "CurrencyCode"}));
+				oTreeTable.addColumn( new sap.ui.table.Column({label: "Date", template: "Date"}));
+				oTreeTable.addColumn( new sap.ui.table.Column({label: "Boolean", template: "BoolCode"})); 
+
+				var oModel = new sap.ui.model.json.JSONModel();
+				oModel.setData(oTreeItems);
+				oTreeTable.setModel(oModel);
+				oTreeTable.bindRows("/");
+ */
+				oValueHelpDialog.setTable(oTreeTable);
+
+				//oValueHelpDialog.setTable( jQuery.proxy( fncCreateSmartTable, this)(sap.ui.comp.smarttable.TableType.Table) ); //AnalyticalTable, ResponsiveTable, TreeTable);
+			}
+
+			var oTable = null; //oValueHelpDialog.getTable();
+			//if (!(oTable instanceof sap.ui.table.TreeTable) && !this.oSmartTable && (oValueHelpDialog._bTableCreatedInternal || oTable instanceof sap.m.Table || oTable.clearSelection)) {
+			if (!this.oSmartTable && (oValueHelpDialog._bTableCreatedInternal || !oTable || oTable instanceof sap.m.Table || (oTable && oTable.clearSelection))) {
+				var oColModel = new sap.ui.model.json.JSONModel();
+				oColModel.setData({
+					cols: [
+					      	{label: "Company Code", template: "CompanyCode"},
+					        {label: "Company Name", template: "CompanyName"},
+					        {label: "City", template: "City", demandPopin: true},
+					        {label: "Currency Code", template: "CurrencyCode", demandPopin: true},
+					        {label: "Date", template: "Date", type:"date", oType:new sap.ui.model.type.Date(), demandPopin: true},
+					        {label: "Boolean", template: "BoolCode", type:"boolean", demandPopin: true} 
+					      ]
+				});
+			 	if (sap.ui.Device.system.phone) {
+			 		oColModel.getData().cols.pop();
+			 		oColModel.getData().cols.pop();
+			 	}
+				
+				oValueHelpDialog.getTable().setModel(oColModel, "columns");
+	
+				var oRowsModel = new sap.ui.model.json.JSONModel();
+				oRowsModel.setData(aItems);
+				oValueHelpDialog.getTable().setModel(oRowsModel);
+				
+				if (oValueHelpDialog.getTable().bindRows) {
+					oValueHelpDialog.getTable().bindRows("/"); 
+				}
+				if (oValueHelpDialog.getTable().bindItems) { 
+					var oTable = oValueHelpDialog.getTable();
+					
+					oTable.bindAggregation("items", "/", function(sId, oContext) { 
+						var aCols = oTable.getModel("columns").getData().cols;
+					
+						return new sap.m.ColumnListItem({
+							cells: aCols.map(function (column) {
+								var colname = column.template;
+								return new sap.m.Label({ text: "{" + colname + "}" });
+							})
+						});
+					});
+				}
+			} 
+			
+			//oValueHelpDialog.setIncludeRangeOperations([ sap.ui.comp.valuehelpdialog.ValueHelpRangeOperation.BT ]);			
+			if (multipleKeyFields.getSelected()) {
+				oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}, {key:"CompanyName", label : "Name", type:"string", maxLength: "10"}, {key: "Number", label: "Numeric", type: "numeric", precision: "5", scale: "2"}, {key:"Date", label : "Date", type: "date"}, {key:"Time", label : "Time", type: "time"}, {key:"Bool", label : "Boolean", type: "boolean"}]);
+			} else {
+				oValueHelpDialog.setRangeKeyFields([{key: "CompanyCode", label: "ID"}]);
+			}
+			oValueHelpDialog.setTokens(aTokens);			
+			
+			// Begin of Filterbar handling #########################################
+			var oFilterBar= new sap.ui.comp.filterbar.FilterBar({
+				advancedMode: true,
+				filterBarExpanded: false, //sap.ui.Device.system.phone,
+				//showGoOnFB: !sap.ui.Device.system.phone,
+ 				filterGroupItems: [new sap.ui.comp.filterbar.FilterGroupItem({ groupTitle: "More Fields", groupName: "gn1", name: "n1", label: "Company Code", control: new sap.m.Input(), visibleInFilterBar: true}),
+				                   new sap.ui.comp.filterbar.FilterGroupItem({ groupTitle: "More Fields", groupName: "gn1", name: "n2", label: "Company Name", control: new sap.m.Input(), visibleInFilterBar: true}),
+				                   new sap.ui.comp.filterbar.FilterGroupItem({ groupTitle: "More Fields", groupName: "gn1", name: "n3", label: "City", control: new sap.m.Input(), visibleInFilterBar: true}),
+				                   new sap.ui.comp.filterbar.FilterGroupItem({ groupTitle: "More Fields", groupName: "gn1", name: "n4", label: "Currency Code", control: new sap.m.Input(), visibleInFilterBar: true})],
+				search: function(oEvent) {
+					var aSearchItems = oEvent.mParameters.selectionSet;
+					var sMsg;
+					if (this.getBasicSearch()) {
+						sMsg= sap.ui.getCore().byId(this.getBasicSearch()).getValue();
+						for (var i = 0; i<aSearchItems.length; i++) {
+							sMsg += "/" + aSearchItems[i].getValue();
+						}
+					}
+					sap.m.MessageToast.show("Search pressed '"+sMsg+"'");
+				},
+				clear: function(oEvent) {
+					sap.m.MessageToast.show("Clear pressed");
+				}
+			});
+			
+			if (oFilterBar.setBasicSearch && showBasicSearch.getSelected()) {
+ 				oFilterBar.setBasicSearch(new sap.m.SearchField({
+					showSearchButton: false, 
+					placeholder: "Search"
+					//search: function(event) {
+					//	oValueHelpDialog.getFilterBar().search();
+					//} 
+				}));  
+			}
+			oValueHelpDialog.setFilterBar(oFilterBar);
+			
+			// Begin of CollectiveSearch handling ####################################
+ 			oValueHelpDialog.oSelectionTitle.setText("Select Search Template");
+			oValueHelpDialog.oSelectionTitle.setVisible(true);
+			oValueHelpDialog.oSelectionButton.setVisible(showCollectiveSearch.getSelected());
+			
+			var i, oPopOver, oList, fOnSelect;
+			
+			fOnSelect = jQuery.proxy(function(oEvt) {
+				var oSource = oEvt.getParameter("listItem");
+				oPopOver.close();
+				if (oSource) {
+					oAnnotation = oSource.data("_annotation");
+					if (oAnnotation) {
+						oValueHelpDialog.oSelectionTitle.setText(oAnnotation);
+						oValueHelpDialog.oSelectionTitle.setTooltip(oAnnotation);
+					}
+				}				
+			}, this);
+			
+			oList = new sap.m.List({
+				mode: sap.m.ListMode.SingleSelectMaster,
+				selectionChange: fOnSelect
+			});
+			
+			for (i = 0; i < 50; i++) {
+				var sTitle = i === 10 ? "Search Template verrrrryyyyyyyy verrrrrrrrrrryyyyyyyyyy long " : "Search Template " + i;
+				oItem = new sap.m.StandardListItem({
+					title: sTitle
+				});
+				oItem.data("_annotation", sTitle);
+				oList.addItem(oItem);
+			}
+			oList.setSelectedItem(oList.getItems()[0]);
+			oValueHelpDialog.oSelectionTitle.setText(oList.getItems()[0].getTitle());
+			oValueHelpDialog.oSelectionTitle.setTooltip(oList.getItems()[0].getTitle());
+			
+			oPopOver = new sap.m.ResponsivePopover({
+				placement: sap.m.PlacementType.Bottom,
+				showHeader: true,
+				title: "Select Search Template",
+				contentHeight: "30rem",
+				content: [
+					oList
+				]
+			});
+			
+			oValueHelpDialog.oSelectionButton.attachPress(function() {
+				oPopOver.openBy(this);
+			});	
+			// End of CollectiveSearch handling ##############################
+		
+			if (this.$().closest(".sapUiSizeCompact").length > 0) { // check if the Token field runs in Compact mode
+				oValueHelpDialog.addStyleClass("sapUiSizeCompact");
+			} else {
+				oValueHelpDialog.addStyleClass("sapUiSizeCozy");
+			}
+			
+			oValueHelpDialog.open();
+			oValueHelpDialog.update();
+		}
+	);
+	
+	var theCompactMode= new sap.m.CheckBox({
+		selected: sap.ui.Device.system.desktop,
+		//text: "Compact Mode",
+		select : function() {
+			$("body").toggleClass("sapUiSizeCompact");
+		}
+	});
+	
+	var multipleKeyFields= new sap.m.CheckBox({
+		selected: true,
+		//text: "multipe KeyField Values",
+		select : function() {
+		}
+	});
+	
+	var singleSelect= new sap.m.CheckBox({
+		selected: false,
+		//text: "Single Select Table",
+		select : function() {
+		}
+	});
+	
+	var showCollectiveSearch = new sap.m.CheckBox({
+		selected: true,
+		//text: "show Collective Search",
+		select : function() {
+		}
+	});
+
+	
+	var showBasicSearch = new sap.m.CheckBox({
+		selected: true,
+		//text: "has Basic Search",
+		select : function() {
+		}
+	});
+	
+	var useExternalTable = new sap.m.CheckBox({
+		selected: false,
+		//text: "use External Table",
+		select : function() {
+		}
+	});
+	
+	$( document ).ready(function() {
+		if (theCompactMode.getSelected()) {
+			$("body").addClass("sapUiSizeCompact");
+		}
+	});
+
+	
+	// Simple RadioButtonGroup
+	var oRBGroup = new sap.m.RadioButtonGroup("RBG1"); 
+	oRBGroup.setTooltip("Group 1");
+	
+	var oButton = new sap.m.RadioButton("RB1-1"); 
+	oButton.setText("Normal"); 
+	oRBGroup.addButton(oButton);
+	
+	oButton = new sap.m.RadioButton("RB1-2");
+	oButton.setText("List only");
+	oRBGroup.addButton(oButton);
+
+	oButton = new sap.m.RadioButton("RB1-3"); 
+	oButton.setText("Conditions only"); 
+	oRBGroup.addButton(oButton);
+
+	oButton = new sap.m.RadioButton("RB1-4"); 
+	oButton.setText("multiple Conditions"); 
+	oRBGroup.addButton(oButton);
+
+	oButton = new sap.m.RadioButton("RB1-5"); 
+	oButton.setText("single Condition"); 
+	oRBGroup.addButton(oButton);
+
+	oRBGroup.setSelectedIndex(0);
+	oRBGroup.attachSelect(function(oEvent) {
+		var i = oEvent.getSource().getSelectedIndex();
+	});
+
+	
+	this.oSmartTable = null;
+	
+	var fncCreateSmartTable = function(mTableType) {
+		jQuery.sap.require("sap.ui.core.util.MockServer");
+		this.oMockServer = new sap.ui.core.util.MockServer({
+			rootUri: "my.valuehelpdialog.example/"
+		});
+		this.oMockServer.simulate("../../../../../test-resources/sap/ui/comp/valuehelpdialog/mockserver/metadata.xml", "../../../../../test-resources/sap/ui/comp/valuehelpdialog/mockserver/");
+		this.oMockServer.start();
+	
+		this.oSmartTable = new sap.ui.comp.smarttable.SmartTable("mysmartTable", {
+			tableType: mTableType, // sap.ui.comp.smarttable.TableType.Table, //AnalyticalTable, ResponsiveTable, TreeTable
+			entitySet: "ValueHelpCollection", 
+			//header: "Items",
+			demandPopin: true,
+			editable: false,
+			useVariantManagement: false,
+			useTablePersonalisation: false, 
+			showRowCount: false, 
+			useExportToExcel: false, 
+			enableAutoBinding: true,
+			initialise: jQuery.proxy(function() {
+				var oTable = this.oSmartTable.getTable();
+				
+				if (oTable instanceof sap.m.Table) {
+					oTable.setMode(sap.m.ListMode.MultiSelect);
+					oTable.attachSelectionChange(function(oEvent) {
+						var eventParams = oEvent.mParameters;
+						var n = eventParams.listItems.length;
+						
+						console.log("selected Items : "+n);
+					});
+				}
+				if (oTable instanceof sap.ui.table.Table) {
+					oTable.setSelectionMode(sap.ui.table.SelectionMode.MultiToggle); // sap.ui.table.SelectionMode.Single
+					oTable.attachRowSelectionChange(function(oEvent) {
+						var table = oEvent.getSource();
+						var aIndices = oEvent.getParameter("rowIndices");
+						var n = aIndices.length;
+						
+						console.log("selected Items : "+n);
+					});
+				}
+				
+			}, this) 
+		});
+		
+		// create and set ODATA Model
+		this.oSmartTable.setModel(new sap.ui.model.odata.ODataModel("my.valuehelpdialog.example", true));
+		
+		return this.oSmartTable;
+	}
+	
+	
+	if (false) { //sap.ui.Device.system.phone) {
+		jQuery.proxy( fncCreateSmartTable, this)(sap.ui.comp.smarttable.TableType.Table); //AnalyticalTable, ResponsiveTable, TreeTable);
+	}
+
+	
+	var editableSimpleForm = new sap.ui.layout.form.SimpleForm({
+		minWidth : 1024,
+		maxContainerCols : 2,
+		editable: true,
+		content : [
+			new sap.ui.core.Title({ 
+				text: "MultiInput Field with Tokens"
+			}),
+			new sap.m.Label({
+				text: 'Company'
+			}),
+			theTokenInput,
+			new sap.ui.core.Title({ 
+				text: "Settings"
+			}),
+			new sap.m.Label({
+				text: 'Compact Mode'
+			}), 
+			theCompactMode,
+			new sap.m.Label({
+				text: 'multipe KeyField Values'
+			}), 
+			multipleKeyFields,
+			new sap.m.Label({
+				text: 'Single Select Table'
+			}), 
+			singleSelect,
+			new sap.m.Label({
+				text: 'show Collective Search'
+			}),
+			showCollectiveSearch,
+			new sap.m.Label({
+				text: 'has Basic Search'
+			}),
+			showBasicSearch,
+			new sap.m.Label({
+				text: 'use external Table'
+			}),
+			useExternalTable,
+			new sap.m.Label({
+				text: 'Value Help Types'
+			}),
+			oRBGroup
+		]
+	});
+	
+	var formPage = new sap.m.Page("formPage", {
+		title : "Test Page for sap.ui.comp.valuehelpdialog.ValueHelpDialog",
+		content: [
+			new sap.m.VBox({
+				width : "100%",
+				items : [
+					editableSimpleForm]
+			})
+		]
+	}).addStyleClass("sapUiFioriObjectPage");
+
+	
+	if (this.oSmartTable) {
+		formPage.getContent()[0].addItem(this.oSmartTable);
+	}
+
+
+	var app = new sap.m.App("myApp", {initialPage:"formPage"});
+	app.addPage(formPage).placeAt("content");
+	
+</script>
+</head>
+<body class="sapUiBody" role="application">
+	<div id="content" style="display:inline" ></div>
+</body>
+</html>

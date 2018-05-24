@@ -1,0 +1,53 @@
+<core:View xmlns:core="sap.ui.core"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns="sap.ui.commons" xmlns:table="sap.ui.table" xmlns:html="http://www.w3.org/1999/xhtml"
+	controllerName="sap.ui.comp.sample.personalization.example4.Example">
+
+	<table:Table id="UITable" visibleRowCountMode="Auto"
+		items="{/ProductCollection}">
+		<table:toolbar>
+			<Toolbar>
+				<Label text="Products"></Label>
+				<rightItems>
+					<Button icon="sap-icon://action-settings" press="onP13nDialogPress" />
+				</rightItems>
+			</Toolbar>
+		</table:toolbar>
+		<table:Column sortProperty="Name" filterProperty="Name"
+			showFilterMenuEntry="false" customData:p13nData='\{"columnKey":"Name"\}'>
+			<Label text="Product" />
+			<table:template>
+				<TextView text="{Name}"></TextView>
+			</table:template>
+		</table:Column>
+		<table:Column sortProperty="SupplierName" filterProperty="SupplierName"
+			showFilterMenuEntry="false" customData:p13nData='\{"columnKey":"SupplierName"\}'>
+			<Label text="Supplier" />
+			<table:template>
+				<TextView text="{SupplierName}"></TextView>
+			</table:template>
+		</table:Column>
+		<table:Column sortProperty="Category" filterProperty="Category"
+			showFilterMenuEntry="false" customData:p13nData='\{"columnKey":"Category"\}'>
+			<Label text="Category" />
+			<table:template>
+				<TextView text="{Category}"></TextView>
+			</table:template>
+		</table:Column>
+		<table:Column sortProperty="Price" filterProperty="Price"
+			showFilterMenuEntry="false" customData:p13nData='\{"columnKey":"Price"\}'>
+			<Label text="Price" />
+			<table:template>
+				<TextView text="{Price}"></TextView>
+			</table:template>
+		</table:Column>
+		<table:Column visible="false" sortProperty="Description"
+			filterProperty="Description" showFilterMenuEntry="false"
+			customData:p13nData='\{"columnKey":"Description"\}'>
+			<Label text="Description" />
+			<table:template>
+				<TextView text="{Description}"></TextView>
+			</table:template>
+		</table:Column>
+	</table:Table>
+</core:View>

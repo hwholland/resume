@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>qUnit Page for sap.suite.ui.commons.DeltaMicroChart</title>
+
+		<script id="sap-ui-bootstrap" 
+			type="text/javascript"
+			src="../../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-libs="sap.m,sap.ui.commons,sap.suite.ui.commons"
+			data-sap-ui-language="en">
+		</script>
+
+ 		<link rel="stylesheet" href="../../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" /> 
+		<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+
+		<script>
+			QUnit.module("Rendering", {
+				beforeEach: function() {
+					this.oChart = new sap.suite.ui.commons.DeltaMicroChart("delta-micro-chart", {
+						value1: 5,
+						value2: 20,
+						title1: "title1",
+						title2: "title2",
+						press: function(oEvent) {
+							sap.m.MessageToast.show("The delta micro chart is pressed.");
+							bPress = true;
+						}
+					}).placeAt("qunit-fixture");
+					sap.ui.getCore().applyChanges();
+				},
+				afterEach: function() {
+					this.oChart.destroy();
+				}
+			});
+
+			QUnit.test("DeltaMicroChart wrapper is working", function(assert) {
+				assert.ok(jQuery.sap.domById("delta-micro-chart"), "DeltaMicroChart was rendered successfully");
+			});
+
+		</script>
+	</head>
+	<body id="body" class="sapUiBody">
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+	</body>
+</html>

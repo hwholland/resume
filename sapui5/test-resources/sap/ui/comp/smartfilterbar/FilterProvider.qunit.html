@@ -1,0 +1,924 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for sap.ui.comp.smartfilterbar.FilterProvider</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.ui.comp">
+	
+</script>
+
+<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css"	type="text/css" media="screen" />
+<script type="text/javascript"src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+
+<script type="text/javascript">
+
+	if(!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+		jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+	} 		
+	
+	(function() {
+
+		jQuery.sap.require("sap.ui.comp.smartfilterbar.FilterProvider");
+		jQuery.sap.require("sap.ui.comp.smartfilterbar.ControlConfiguration");
+		var oModel = sinon.createStubInstance(sap.ui.model.odata.ODataModel);
+		module("sap.ui.comp.smartfilterbar.FilterProvider", {
+			setup: function() {
+				this.oFilterProvider = new sap.ui.comp.smartfilterbar.FilterProvider({entityType: "foo", model: oModel });
+				var oEmptyJson = {"SomeCrap":"","SomeMoreCrap":{"items":[],"value":""}};
+				this.oNonEmptyJson = {"CountryCode":{"value":"dsagfdsg","items":[{"key":"GT","text":"Guatemala"},{"key":"GQ","text":"Equatorial Guin"},{"key":"GH","text":"Ghana"},{"key":"GA","text":"Gabon"},{"key":"FI","text":"Finland"},{"key":"DJ","text":"Djibouti"},{"key":"EE","text":"Estonia"},{"key":"BH","text":"Bahrain"},{"key":"BE","text":"Belgium"},{"key":"AX","text":""},{"key":"AS","text":"Samoa, America"},{"key":"AQ","text":"Antarctica"},{"key":"AI","text":"Anguilla"},{"key":"AF","text":"Afghanistan"},{"key":"AD","text":"Andorran"}]},"RegionCode":{"value":"fds","items":[{"key":"CA","text":"CA"},{"key":"CL","text":"[object Object] (CL)"},{"key":"CH","text":"[object Object] (CH)"},{"key":"CO","text":"[object Object] (CO)"},{"key":"FR","text":"[object Object] (FR)"},{"key":"NL","text":"[object Object] (NL)"},{"key":"NO","text":"[object Object] (NO)"},{"key":"ID","text":"[object Object] (ID)"},{"key":"HU","text":"[object Object] (HU)"},{"key":"AR","text":"[object Object] (AR)"}]}};
+				this.oJson = jQuery.extend(true, {}, this.oNonEmptyJson, oEmptyJson);
+				this.sJson = JSON.stringify(this.oJson);
+			},
+			teardown: function() {
+				this.oFilterProvider.destroy();
+			}
+		});
+
+		test("Shall be instantiable", function() {			
+			ok(this.oFilterProvider);
+		});
+
+		test("Shall contain an instance of metadata analyser", function() {			
+			ok(this.oFilterProvider._oMetadataAnalyser);
+			strictEqual(this.oFilterProvider._oMetadataAnalyser instanceof sap.ui.comp.odata.MetadataAnalyser, true);
+		});
+		
+		test("Shall contain the Metadata for the smart filter bar", function() {			
+			ok(this.oFilterProvider._aFilterBarViewMetadata);
+		});
+		
+		test("Shall return a JSON Model", function() {			
+			ok(this.oFilterProvider.oModel);
+			strictEqual(this.oFilterProvider.getModel() instanceof sap.ui.model.json.JSONModel, true);
+		});
+		
+		test("Shall return an array of view metadata", function() {			
+			var aFilterViewMetadata = this.oFilterProvider.getFilterBarViewMetadata();
+			ok(aFilterViewMetadata);
+		});
+		
+		test("Shall return an empty array if there are no filters", function() {			
+			var aFilters, aNames = [];
+			aFilters = this.oFilterProvider.getFilters(aNames);
+			ok(aFilters);
+			strictEqual(aFilters.length, 0);			
+		});
+			
+		test("Shall return an array of filters", function() {			
+			var oJsonModel = new sap.ui.model.json.JSONModel({foo:"test",foo1:"test1",foo2:"test2"});
+			this.oFilterProvider.oModel = oJsonModel;
+			var aNames = ["foo","foo1"]; //Visible field names
+			aFilters=this.oFilterProvider.getFilters(aNames);
+			ok(aFilters);			
+			//Top level filters
+			strictEqual(aFilters.length, 1);
+			//Get the internal filters array from the top level filter array
+			aFilters = aFilters[0].aFilters;
+			strictEqual(aFilters.length, 2);	
+			//order doesn't matter here but it should be one of these
+			strictEqual(aFilters[1] instanceof sap.ui.model.Filter, true);
+			strictEqual(aFilters[1].sPath, "foo");
+			strictEqual(aFilters[1].oValue1, "test");			
+		});
+		
+		test("Method _getControlConstructor shall create the MultiInput control as per the metadata/configuration", function() {
+			var fControlConstructor, oFilterFieldODataMetadata, oFieldViewMetadata;
+
+			oFieldViewMetadata = {
+					controlType: sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.input,
+					filterRestriction:sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.multiple,
+					hasValueHelpDialog:true
+			};
+			fControlConstructor = this.oFilterProvider._getControlConstructor(oFieldViewMetadata);	
+			equal(fControlConstructor, sap.m.MultiInput);		
+		});
+
+		
+		test("Method _getControlConstructor shall create MultiInput control without a dialog if the valuehelpDialog is explicitly switched off", function() {
+			var fControlConstructor, oFilterFieldODataMetadata, oFieldViewMetadata;
+
+			oFieldViewMetadata = {
+					controlType: sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.input,
+					filterRestriction:sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.multiple,
+					hasValueHelpDialog:false
+			};
+			fControlConstructor = this.oFilterProvider._getControlConstructor(oFieldViewMetadata);	
+			equal(fControlConstructor, sap.m.MultiInput);		
+		});
+		
+		
+		test("Method _getControlConstructor shall create the MultiComboBox control as per the metadata/configuration", function() {
+			var fControlConstructor, oFieldViewMetadata;
+			
+			oFieldViewMetadata = {
+					controlType: sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.dropDownList,
+					filterRestriction:sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.multiple
+			};
+			fControlConstructor = this.oFilterProvider._getControlConstructor(oFieldViewMetadata);			
+			equal(fControlConstructor, sap.m.MultiComboBox);
+		});
+		
+		test("Method _getControlConstructor shall create the ComboBox control as per the metadata", function() {
+			var fControlConstructor, oFieldViewMetadata;
+			
+			oFieldViewMetadata = {
+					controlType: sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.dropDownList,
+					filterRestriction:sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.single
+			};
+			fControlConstructor = this.oFilterProvider._getControlConstructor(oFieldViewMetadata);			
+			equal(fControlConstructor, sap.m.ComboBox);
+			
+		});
+		
+		test("Method _getControlConstructor shall create the DatePicker control as per the metadata (single-value)", function() {
+			var fControlConstructor, oFieldViewMetadata;
+			
+			oFieldViewMetadata = {
+					controlType: sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.date,
+					filterRestriction:sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.single
+			};
+			fControlConstructor = this.oFilterProvider._getControlConstructor(oFieldViewMetadata);			
+			equal(fControlConstructor, sap.m.DatePicker);
+		});
+		
+		test("Method _getControlConstructor shall create the MultiInput control as per the metadata (multi-value)", function() {
+			var fControlConstructor, oFieldViewMetadata;
+			
+			oFieldViewMetadata = {
+					controlType: sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.date,
+					filterRestriction:sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.multiple
+			};
+			fControlConstructor = this.oFilterProvider._getControlConstructor(oFieldViewMetadata);			
+			equal(fControlConstructor, sap.m.MultiInput);
+		});
+		
+		test("Method _getControlConstructor shall create the MultiInput control as per the metadata (unrestricted/unknown)", function() {
+			var fControlConstructor, oFieldViewMetadata;
+			
+			oFieldViewMetadata = {
+					controlType: sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.date,
+					filterRestriction:"foo"//unrestricted
+			};
+			fControlConstructor = this.oFilterProvider._getControlConstructor(oFieldViewMetadata);			
+			equal(fControlConstructor, sap.m.MultiInput);
+		});
+		
+		test("Method _getControlConstructor shall create the DateRangeSelection control as per the metadata", function() {
+			var fControlConstructor, oFieldViewMetadata;
+			
+			oFieldViewMetadata = {
+					controlType: sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.date,
+					filterRestriction:sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.interval
+			};
+			fControlConstructor = this.oFilterProvider._getControlConstructor(oFieldViewMetadata);			
+			equal(fControlConstructor, sap.m.DateRangeSelection);
+		});
+		
+		test("Method _getControlConstructor shall return sap.m.Input for Edm.String and single-value", function() {
+			var fControlConstructor, oFieldViewMetadata;
+			
+			oFieldViewMetadata = {
+					controlType: sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.input,
+					filterRestriction:sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.single,
+					hasValueHelpDialog:true
+			};
+			fControlConstructor = this.oFilterProvider._getControlConstructor(oFieldViewMetadata);			
+			equal(fControlConstructor, sap.m.Input);
+			
+			oFieldViewMetadata = {
+					controlType: sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.input,
+					filterRestriction:sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.single,
+					hasValueHelpDialog:false
+			};
+			fControlConstructor = this.oFilterProvider._getControlConstructor(oFieldViewMetadata);			
+			equal(fControlConstructor, sap.m.Input);
+
+		});
+		
+		
+		test("Destroy", function() {
+			equal(this.oFilterProvider.bIsDestroyed, undefined);
+			this.oFilterProvider.destroy();
+			equal(this.oFilterProvider._oMetadataAnalyser, null);
+			equal(this.oFilterProvider._aFilterBarViewMetadata,null);
+			strictEqual(this.oFilterProvider.bIsDestroyed, true);
+		});
+		
+		test("Method _isVisible shall return the visible flag from the additional configuration", function() {			
+			var bIsVisible;
+			
+			//Call CUT
+			bIsVisible = this.oFilterProvider._isVisible({isVisible:false});
+			
+			strictEqual(bIsVisible, false);			
+		});
+
+		
+		test("Method _isMandatory shall use the value from the OData metadata if there is no additional configuration", function() {			
+			var bIsMandatory;
+			
+			//Call CUT
+			bIsMandatory = this.oFilterProvider._isMandatory({requiredField:true}, undefined);
+			
+			strictEqual(bIsMandatory, true);			
+		});
+			
+		test("Method _isMandatory shall use the value from the additional configuration", function() {			
+			var bIsMandatory;
+			
+			//Call CUT
+			bIsMandatory = this.oFilterProvider._isMandatory({requiredField:true}, {mandatory: sap.ui.comp.smartfilterbar.ControlConfiguration.MANDATORY.notMandatory});
+			
+			strictEqual(bIsMandatory, false);			
+		});
+		
+		test("Method _isMandatory shall use the value from the OData metadata if the additional configuration has no explicit value", function() {			
+			var bIsMandatory;
+			
+			//Call CUT
+			bIsMandatory = this.oFilterProvider._isMandatory({requiredField:true}, {mandatory: sap.ui.comp.smartfilterbar.ControlConfiguration.MANDATORY.auto});
+			
+			strictEqual(bIsMandatory, true);			
+		});
+			
+
+		
+		test("Method _getIndex shall return the index from the additional configuration", function() {			
+			var index;
+			
+			//Call CUT
+			index = this.oFilterProvider._getIndex({}, {index:0});
+			
+			strictEqual(index, 0);			
+		});
+			
+		test("Method _getIndex shall return undefined if there is no index from the additional configuration", function() {			
+			var index;
+			
+			//Call CUT
+			index = this.oFilterProvider._getIndex({}, undefined);
+			
+			strictEqual(index, undefined);			
+		});
+			
+		
+		test("Method _getGroupIndex shall return the index from the additional configuration for groups", function() {			
+			var index;
+			
+			//Call CUT
+			index = this.oFilterProvider._getGroupIndex({index:5});
+			
+			strictEqual(index, 5);			
+		});
+		
+		
+		
+		test("Method _applyGroupId shall consider the groupId of a field", function() {			
+			var oGroup1, oGroup2;
+			
+			oGroup1 = { groupName: "group1", fields:[{key:"field1", groupId:"group2"}, {key:"field2", groupId:"group1"}]};
+			oGroup2 = { groupName: "group2"};
+			this.oFilterProvider._aFilterBarViewMetadata = [oGroup1, oGroup2];
+			
+			//Call CUT
+			this.oFilterProvider._applyGroupId();
+			
+			ok(this.oFilterProvider._aFilterBarViewMetadata);
+			equal(this.oFilterProvider._aFilterBarViewMetadata[0].groupName, "group1");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].groupName, "group2");
+			strictEqual(this.oFilterProvider._aFilterBarViewMetadata[0].fields.length, 1, "field1 shall be removed from group1");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[0].fields[0].key, "field2");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].fields.length, 1, "field1 shall be moved to group2");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].fields[0].key, "field1");
+		});		
+		
+		
+		test("Method _applyGroupId shall consider the groupId of all fields", function() {			
+			var oGroup1, oGroup2;
+			
+			oGroup1 = { groupName: "group1", fields:[{key:"field1", groupId:"group2"}, {key:"field2", groupId:"group2"}]};
+			oGroup2 = { groupName: "group2"};
+			this.oFilterProvider._aFilterBarViewMetadata = [oGroup1, oGroup2];
+			
+			//Call CUT
+			this.oFilterProvider._applyGroupId();
+			
+			ok(this.oFilterProvider._aFilterBarViewMetadata);
+			equal(this.oFilterProvider._aFilterBarViewMetadata.length, 2);
+			equal(this.oFilterProvider._aFilterBarViewMetadata[0].groupName, "group1");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].groupName, "group2");
+			strictEqual(this.oFilterProvider._aFilterBarViewMetadata[0].fields.length, 0, "field1 shall be removed from group1");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].fields.length, 2);
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].fields[0].key, "field1");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].fields[1].key, "field2");
+		});		
+		
+		test("Method _applyGroupId shall not break if a field is moved to its origin group", function() {			
+			var oGroup1;
+			
+			oGroup1 = { groupName: "group1", fields:[{key:"field1", groupId:"group1"}]};
+			this.oFilterProvider._aFilterBarViewMetadata = [oGroup1];
+			
+			//Call CUT
+			this.oFilterProvider._applyGroupId();
+			
+			ok(this.oFilterProvider._aFilterBarViewMetadata);
+			equal(this.oFilterProvider._aFilterBarViewMetadata.length, 1);
+			equal(this.oFilterProvider._aFilterBarViewMetadata[0].groupName, "group1");
+			strictEqual(this.oFilterProvider._aFilterBarViewMetadata[0].fields.length, 1);
+			equal(this.oFilterProvider._aFilterBarViewMetadata[0].fields[0].key, "field1");
+		});		
+		
+		
+		test("Method _applyGroupId shall not break if there are no groups", function() {			
+			this.oFilterProvider._aFilterBarViewMetadata = [];
+			
+			//Call CUT
+			this.oFilterProvider._applyGroupId();
+			
+			ok(this.oFilterProvider._aFilterBarViewMetadata);
+			equal(this.oFilterProvider._aFilterBarViewMetadata.length, 0);
+		});		
+				
+		
+		test("Method _applyIndexes shall consider the index of groups", function() {			
+			
+			this.oFilterProvider._aFilterBarViewMetadata = [{ key: "group1", index:2}, { key: "group2"}, { key: "group3"}];
+			
+			//Call CUT
+			this.oFilterProvider._applyIndexes();
+			
+			ok(this.oFilterProvider._aFilterBarViewMetadata);
+			equal(this.oFilterProvider._aFilterBarViewMetadata.length, 3);
+			equal(this.oFilterProvider._aFilterBarViewMetadata[0].key, "group2");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].key, "group3");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[2].key, "group1");
+		});
+		
+		test("Method _applyIndexes shall consider the index of groups. If there are no indexes, the originl order shall be kept", function() {			
+			
+			this.oFilterProvider._aFilterBarViewMetadata = [{ key: "group1"}, { key: "group2"}, { key: "group3"}];
+			
+			//Call CUT
+			this.oFilterProvider._applyIndexes();
+			
+			ok(this.oFilterProvider._aFilterBarViewMetadata);
+			equal(this.oFilterProvider._aFilterBarViewMetadata.length, 3);
+			equal(this.oFilterProvider._aFilterBarViewMetadata[0].key, "group1");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].key, "group2");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[2].key, "group3");
+		});
+		
+		test("Method _applyIndexes shall consider the index of groups. The index shall be zero based.", function() {			
+			
+			this.oFilterProvider._aFilterBarViewMetadata = [{ key: "group1", index:2}, { key: "group2", index:0}, { key: "group3"}];
+			
+			//Call CUT
+			this.oFilterProvider._applyIndexes();
+			
+			ok(this.oFilterProvider._aFilterBarViewMetadata);
+			equal(this.oFilterProvider._aFilterBarViewMetadata.length, 3);
+			equal(this.oFilterProvider._aFilterBarViewMetadata[0].key, "group2");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].key, "group3");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[2].key, "group1");
+		});
+
+		
+		test("Method _applyIndexes shall consider the index of groups. Too large indexes shall be appended to the Array", function() {			
+			
+			this.oFilterProvider._aFilterBarViewMetadata = [{ key: "group1", index:2}, { key: "group2", index:8}, { key: "group3"}];
+			
+			//Call CUT
+			this.oFilterProvider._applyIndexes();
+			
+			ok(this.oFilterProvider._aFilterBarViewMetadata);
+			equal(this.oFilterProvider._aFilterBarViewMetadata.length, 3);
+			equal(this.oFilterProvider._aFilterBarViewMetadata[0].key, "group3");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].key, "group1");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[2].key, "group2");
+		});
+
+
+		
+		test("Method _applyIndexes shall consider the index of groups. Fields having the same index shall keep their original order", function() {			
+			
+			this.oFilterProvider._aFilterBarViewMetadata = [{ key: "group1", index:2}, { key: "group2", index:1}, { key: "group3", index:1}];
+			
+			//Call CUT
+			this.oFilterProvider._applyIndexes();
+			
+			ok(this.oFilterProvider._aFilterBarViewMetadata);
+			equal(this.oFilterProvider._aFilterBarViewMetadata.length, 3);
+			equal(this.oFilterProvider._aFilterBarViewMetadata[0].key, "group2");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[1].key, "group3");
+			equal(this.oFilterProvider._aFilterBarViewMetadata[2].key, "group1");
+		});
+
+		
+		
+		
+		test("Method _getGroupLabel shall return the label from the additional configuration if specified", function() {			
+			var sLabel;
+			
+			//Call CUT
+			sLabel = this.oFilterProvider._getGroupLabel({},{label:"Hello World"});
+			
+			equal(sLabel, "Hello World");
+		});
+		
+		test("Method _getGroupLabel shall return the label from the OData metadata if there is no additional configuration", function() {			
+			var sLabel;
+			
+			//Call CUT
+			sLabel = this.oFilterProvider._getGroupLabel({groupLabel:"ODataLabel"},undefined);
+			
+			equal(sLabel, "ODataLabel");
+		});
+		
+		test("Method _getGroupID shall return the groupId from the additional configuration if specified, ignoring metadata", function() {			
+			var sGroupID;
+			sGroupID = this.oFilterProvider._getGroupID({requiredField:true},{groupId:"Some_Group"});			
+			strictEqual(sGroupID, "Some_Group");
+		});
+		
+		test("Method _getGroupID shall return the groupId  as '_BASIC' if field is required in metadata,  and no additional configuration is specified", function() {			
+			var sGroupID;			
+			sGroupID = this.oFilterProvider._getGroupID({requiredField:true},{});			
+			strictEqual(sGroupID, "_BASIC");
+		});
+		
+		test("Method _createControl shall return the custom control if it is specified in the additional configuration", function() {			
+			var oControl, oControlActual;
+			
+			oControl = new sap.m.Input();
+			
+			//Call CUT
+			oControlActual = this.oFilterProvider._createControl({customControl:oControl});
+			
+			equal(oControlActual, oControl);
+		});
+		
+		test("Method _createControl shall set MaxLength according to the metadata if the controlType is sap.m.Input", function() {	
+			sinon.spy(sap.m.Input.prototype,"setMaxLength");
+			var oFieldViewMetadata = {
+					fControlConstructor:sap.m.Input,
+					fieldName: "foo",
+					maxLength: "10"
+			};
+			
+			this.oFilterProvider._createControl(oFieldViewMetadata);
+			
+			strictEqual(sap.m.Input.prototype.setMaxLength.calledOnce, true);
+			strictEqual(sap.m.Input.prototype.setMaxLength.calledWith(10), true);
+			sap.m.Input.prototype.setMaxLength.restore();
+		});
+		
+		test("Method _createControl shall create type from ODataType during binding if the controlType is sap.m.Input", function() {	
+			sinon.spy(sap.m.Input.prototype,"bindProperty");
+			var oFieldViewMetadata = {
+					fControlConstructor:sap.m.Input,
+					fieldName: "foo",
+					type: "Edm.Decimal"
+			};
+			
+			this.oFilterProvider._createControl(oFieldViewMetadata);
+			
+			strictEqual(sap.m.Input.prototype.bindProperty.calledOnce, true);
+			var bindingArgs = sap.m.Input.prototype.bindProperty.args[0][1];
+			strictEqual(bindingArgs.type instanceof sap.ui.model.odata.type.Decimal, true);
+			sap.m.Input.prototype.bindProperty.restore();
+		});
+		
+		
+		
+		test("Method _getAdditionalConfigurationForCustomFilterFields shall return the the key of all custom filter fields", function() {			
+			var aAdditionalCustomFieldConfiguration;
+			
+			this.oFilterProvider._oAdditionalConfiguration = {getControlConfiguration: sinon.stub().returns([{key:"field1"}, {key:"field2"}])};
+			this.oFilterProvider._oMetadataAnalyser = {getAllFilterableFieldNamesByEntityTypeName: sinon.stub().returns(["field2", "field3"])};
+			
+			//Call CUT
+			aAdditionalCustomFieldConfiguration = this.oFilterProvider._getAdditionalConfigurationForCustomFilterFields();
+			
+			ok(aAdditionalCustomFieldConfiguration);
+			equal(aAdditionalCustomFieldConfiguration.length, 1);
+			equal(aAdditionalCustomFieldConfiguration[0].key, "field1");
+		});
+		
+		test("Method _getAdditionalConfigurationForCustomGroups shall return the the key of all custom groups", function() {			
+			var aAdditionalCustomGroupConfiguration, aODATAGroup;
+			
+			this.oFilterProvider._oAdditionalConfiguration = {getGroupConfiguration: sinon.stub().returns([{key:"group1"}, {key:"custom"}])};
+			aODATAGroup = [{groupName:"group1"}, {groupName:"group2"}];
+			
+			//Call CUT
+			aAdditionalCustomGroupConfiguration = this.oFilterProvider._getAdditionalConfigurationForCustomGroups(aODATAGroup);
+			
+			ok(aAdditionalCustomGroupConfiguration);
+			equal(aAdditionalCustomGroupConfiguration.length, 1);
+			equal(aAdditionalCustomGroupConfiguration[0].key, "custom");
+		});
+		
+		
+		
+		test("Method _createFieldMetadataForCustomFilterFields shall return undefined if there is no custom control in the additional configuration", function() {			
+			var oControlConfiguration, oFieldMetadata;
+			
+			oControlConfiguration = {customControl: undefined};
+
+			//Call CUT
+			oFieldMetadata = this.oFilterProvider._createFieldMetadataForCustomFilterFields(oControlConfiguration);
+			
+			strictEqual(oFieldMetadata, undefined);
+		});
+		
+		test("Method _createFieldMetadataForCustomFilterFields shall return the view metadata for a custom filter fields", function() {			
+			var oControlConfiguration, oFieldMetadata;
+			
+			oControlConfiguration = {customControl: new sap.m.Input(), key:"key", label:"label", groupId:"groupId", index:5};
+
+			//Call CUT
+			oFieldMetadata = this.oFilterProvider._createFieldMetadataForCustomFilterFields(oControlConfiguration);
+			
+			ok(oFieldMetadata);
+			ok(oFieldMetadata.control instanceof sap.m.Input);
+			equal(oFieldMetadata.name, "key");
+			equal(oFieldMetadata.label, "label");
+			equal(oFieldMetadata.groupId, "groupId");
+			equal(oFieldMetadata.index, 5);
+			equal(oFieldMetadata.isVisible, true);
+			
+		});
+		
+		
+		test("Method _createFieldMetadataForCustomFilterFields shall set a flag isCustomFilterField in the metadata", function() {			
+			var oControlConfiguration, oFieldMetadata;
+			
+			oControlConfiguration = {customControl: new sap.m.Input(), key:"key", label:"label", groupId:"groupId", index:5};
+
+			//Call CUT
+			oFieldMetadata = this.oFilterProvider._createFieldMetadataForCustomFilterFields(oControlConfiguration);
+			
+			ok(oFieldMetadata);
+			strictEqual(oFieldMetadata.isCustomFilterField, true);
+		});
+		
+		
+		
+		test("Method _createFieldMetadataForCustomFilterFields shall consider the isVisible flag from the additional configuration", function() {			
+			var oControlConfiguration, oFieldMetadata;
+			
+			oControlConfiguration = {customControl: new sap.m.Input(), key:"key", label:"label", groupId:"groupId", isVisible:false};
+
+			//Call CUT
+			oFieldMetadata = this.oFilterProvider._createFieldMetadataForCustomFilterFields(oControlConfiguration);
+			
+			strictEqual(oFieldMetadata.isVisible, false);
+		});
+		
+		
+		test("Method _createGroupMetadataForCustomGroup shall return the view metadata for a custom filter fields", function() {			
+			var oGroupConfiguration, oGroupMetadata;
+			
+			oGroupConfiguration = {key:"key", label:"label", index:5};
+
+			//Call CUT
+			oGroupMetadata = this.oFilterProvider._createGroupMetadataForCustomGroup(oGroupConfiguration);
+			
+			ok(oGroupMetadata);
+			equal(oGroupMetadata.groupName, "key");
+			equal(oGroupMetadata.groupLabel, "label");
+			equal(oGroupMetadata.index, 5);
+		});
+				
+		
+		
+		
+		test("Method _createInitialModel shall call _createInitialModelForField for every field", function() {			
+			var oGroup1, oGroup2, oFieldMetadata;
+
+			oGroup1 = { groupName: "group1", fields:[{key:"field1"}, {key:"field2"}]};
+			oGroup2 = { groupName: "group2", fields:[{key:"field3"}]};
+			this.oFilterProvider._aFilterBarViewMetadata = [oGroup1, oGroup2];
+			this.oFilterProvider._createInitialModelForField = sinon.stub();
+
+			//Call CUT
+			oFieldMetadata = this.oFilterProvider._createInitialModel();			
+			
+		 	ok(this.oFilterProvider._createInitialModelForField.calledThrice, "shall be called for every field");
+		});
+		
+		test("Method _createInitialModelForField shall update the JSON data for the model for single value", function() {			
+			var oJSONData = {};
+			this.oFilterProvider._createInitialModelForField(oJSONData,{fieldName:"field1", filterRestriction: sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.single} )
+
+			strictEqual(oJSONData.field1, null);
+		});
+		
+		test("Method _createInitialModelForField shall update the JSON data for the model for mulitple", function() {			
+			var oJSONData = {};
+			this.oFilterProvider._createInitialModelForField(oJSONData,{fieldName:"field1", filterRestriction: sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.multiple} )
+
+			deepEqual(oJSONData.field1, {value:null,items:[]});
+		});
+		
+		test("Method _createInitialModelForField shall update the JSON data for the model for empty/unrstricted", function() {			
+			var oJSONData = {};
+			this.oFilterProvider._createInitialModelForField(oJSONData,{fieldName:"field1", filterRestriction: sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.auto} )
+
+			deepEqual(oJSONData.field1, {value:null,ranges: [],items:[]});
+		});
+		
+		test("Method _createInitialModelForField shall update the JSON data for the model for interval", function() {			
+			var oJSONData = {};
+			this.oFilterProvider._createInitialModelForField(oJSONData,{fieldName:"field1", filterRestriction: sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.interval} )
+
+			deepEqual(oJSONData.field1, {low:null,high:null});
+		});
+		
+		test("Method _createInitialModelForField shall not handle custom filter fields", function() {			
+			var oJSONData = {};
+
+			//Call CUT
+			this.oFilterProvider._createInitialModelForField(oJSONData,{fieldName:"field1", isCustomFilterField:true} )
+
+			strictEqual(oJSONData.field1, undefined);
+		});
+		
+		
+		
+		test("Method _createFieldMetadata shall set a flag isCustomFilterField to false if there is no custom control", function() {			
+			var oODataMetadata, oFieldMetadata, oControlConfiguration;
+			
+			this.oFilterProvider._oAdditionalConfiguration = {getControlConfigurationByKey:sinon.stub()};
+
+			//Call CUT
+			oFieldMetadata = this.oFilterProvider._createFieldMetadata({name:"foo"});
+			
+			strictEqual(oFieldMetadata.isCustomFilterField, false);
+		});
+		
+		test("Method _createFieldMetadata shall set a flag isCustomFilterField if there is a custom control in the additional configuration", function() {			
+			var oODataMetadata, oFieldMetadata, oControlConfiguration;
+			
+			oODataMetadata = {name:"foo"};
+			oControlConfiguration = {customControl: new sap.m.Input()};
+			this.oFilterProvider._oAdditionalConfiguration = {getControlConfigurationByKey:sinon.stub().returns(oControlConfiguration)};
+
+			//Call CUT
+			oFieldMetadata = this.oFilterProvider._createFieldMetadata(oODataMetadata);
+			
+			strictEqual(oFieldMetadata.isCustomFilterField, true);
+		});
+				
+		
+		
+		test("Method _createFieldMetadata shall set a flag isCustomFilterField if there is a custom control in the additional configuration", function() {			
+			var oODataMetadata, oFieldMetadata, oControlConfiguration;
+			
+			oODataMetadata = {name:"foo"};
+			oControlConfiguration = {customControl: new sap.m.Input()};
+			this.oFilterProvider._oAdditionalConfiguration = {getControlConfigurationByKey:sinon.stub().returns(oControlConfiguration)};
+
+			//Call CUT
+			oFieldMetadata = this.oFilterProvider._createFieldMetadata(oODataMetadata);
+			
+			strictEqual(oFieldMetadata.isCustomFilterField, true);
+		});
+		
+		
+		test("Method _getFilterRestriction shall return auto if there are no additional information in OData or control configuration", function() {			
+			var oODataMetadata, sFilterRestriction, oControlConfiguration;
+			
+			oODataMetadata = {};
+			oControlConfiguration = {};
+
+			//Call CUT
+			sFilterRestriction = this.oFilterProvider._getFilterRestriction(oODataMetadata, oControlConfiguration);
+			
+			equal(sFilterRestriction, sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.auto);
+		});
+		
+		test("Method _getFilterRestriction shall return the filter type from the additional configuration if specified", function() {			
+			var oODataMetadata, sFilterRestriction, oControlConfiguration;
+			
+			oODataMetadata = {};
+			oControlConfiguration = {filterType : sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.interval};
+
+			//Call CUT
+			sFilterRestriction = this.oFilterProvider._getFilterRestriction(oODataMetadata, oControlConfiguration);
+			
+			equal(sFilterRestriction, sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.interval);
+		});
+		
+		test("Method _getFilterRestriction shall return the filter type from the OData metadata if there is no additional configuration", function() {			
+			var oODataMetadata, sFilterRestriction, oControlConfiguration;
+			
+			oODataMetadata = {filterRestriction: "multi-value"};
+
+			//Call CUT
+			sFilterRestriction = this.oFilterProvider._getFilterRestriction(oODataMetadata);
+			
+			equal(sFilterRestriction, sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.multiple);
+		});
+		
+		test("Method _getFilterRestriction shall return the value from the additional config as this overrides the OData metadata", function() {			
+			var oODataMetadata, sFilterRestriction, oControlConfiguration;
+			
+			oODataMetadata = {filterRestriction: "multi-value"};
+			oControlConfiguration = {filterType : sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.interval};
+
+			//Call CUT
+			sFilterRestriction = this.oFilterProvider._getFilterRestriction(oODataMetadata, oControlConfiguration);
+			
+			equal(sFilterRestriction, sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.interval);
+		});
+				
+		test("Method _getFilterRestriction shall return the value from the ODAata metadata if the additional config is set to 'auto'", function() {			
+			var oODataMetadata, sFilterRestriction, oControlConfiguration;
+			
+			oODataMetadata = {filterRestriction: "multi-value"};
+			oControlConfiguration = {filterType : sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.auto};
+
+			//Call CUT
+			sFilterRestriction = this.oFilterProvider._getFilterRestriction(oODataMetadata, oControlConfiguration);
+			
+			equal(sFilterRestriction, sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.multiple);
+		});
+				
+
+		test("Method _hasValueHelpDialog shall return false if the control type is set to dropdown", function() {			
+			var bHasValueHelpDialog;
+
+			//Call CUT
+			bHasValueHelpDialog = this.oFilterProvider._hasValueHelpDialog(null, {controlType:sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.dropDownList, hasValueHelpDialog : true});
+			
+			strictEqual(bHasValueHelpDialog, false, "There shall be no value help dialog for a drop down list box");
+		});
+		
+		test("Method _hasValueHelpDialog shall return false, if there are no ValueHelp Annotations and there is a filter-restriction", function() {			
+			var bHasValueHelpDialog, oFieldViewMetadata;
+			oFieldViewMetadata = {filterRestriction: sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.single, oValueListAnnotation: undefined};
+			
+			//Call CUT
+			bHasValueHelpDialog = this.oFilterProvider._hasValueHelpDialog(oFieldViewMetadata, undefined);
+			
+			strictEqual(bHasValueHelpDialog, false);
+		});
+		
+		test("Method _hasValueHelpDialog shall return true, if there are no ValueHelp Annotations and is no filter-restriction", function() {			
+			var bHasValueHelpDialog, oFieldViewMetadata;
+			oFieldViewMetadata = {filterRestriction: sap.ui.comp.smartfilterbar.ControlConfiguration.FILTERTYPE.auto, oValueListAnnotation: undefined};
+			
+			//Call CUT
+			bHasValueHelpDialog = this.oFilterProvider._hasValueHelpDialog(oFieldViewMetadata, undefined);
+			
+			strictEqual(bHasValueHelpDialog, true);
+		});
+		
+
+		
+		test("Method _getControlType shall return the value from the additional configuration (if specified)", function() {			
+			var sControlType;
+
+			//Call CUT
+			sControlType = this.oFilterProvider._getControlType({type: "Edm.DateTime", displayFormat: "Date"}, {controlType : sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.input});
+			
+			equal(sControlType, sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.input);
+		});
+		
+		test("Method _getControlType shall return 'date' if specified in OData metadata and not overwritten in additional configuration", function() {			
+			var sControlType;
+
+			//Call CUT
+			sControlType = this.oFilterProvider._getControlType({type: "Edm.DateTime", displayFormat: "Date"}, undefined);
+			
+			equal(sControlType, sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.date);
+		});
+		
+		test("Method _getControlType shall return 'input' if the type from OData metadata NE string and not overwritten in additional configuration", function() {			
+			var sControlType;
+
+			//Call CUT
+			sControlType = this.oFilterProvider._getControlType({type: "foo"}, undefined);
+			
+			equal(sControlType, sap.ui.comp.smartfilterbar.ControlConfiguration.CONTROLTYPE.input);
+		});
+		
+		test("Method Get Filter Data",function(){
+			this.oFilterProvider.oModel.setData(this.oJson);
+			var oResult = this.oFilterProvider.getFilterData();
+			deepEqual(oResult,this.oJson);			
+		});
+		
+		test("Method Get Filter Data as String",function(){
+			this.oFilterProvider.oModel.setJSON(this.sJson);
+			var sResult = this.oFilterProvider.getFilterDataAsString();
+			strictEqual(sResult,this.sJson);			
+		});
+		
+		test("Method Get Only Filled Filter Data without field names",function(){
+			this.oFilterProvider.oModel.setData(this.oJson);
+			var oResult = this.oFilterProvider.getFilledFilterData();
+			deepEqual(oResult,{});			
+		});
+		
+		test("Method Get Only Filled Filter Data",function(){
+			this.oFilterProvider.oModel.setData(this.oJson);
+			var aFieldNames = [];
+			for(var sName in this.oJson){
+				aFieldNames.push(sName);
+			}
+			var oResult = this.oFilterProvider.getFilledFilterData(aFieldNames);
+			deepEqual(oResult,this.oNonEmptyJson);			
+		});
+		
+		test("Method Get Only Filled Filter Data as String",function(){
+			this.oFilterProvider.oModel.setJSON(this.sJson);
+			var aFieldNames = [];
+			for(var sName in this.oJson){
+				aFieldNames.push(sName);
+			}
+			var sResult = this.oFilterProvider.getFilledFilterDataAsString(aFieldNames);
+			var oResult = JSON.parse(sResult);	
+			deepEqual(oResult,this.oNonEmptyJson);		
+		});
+		
+		test("Method Set Filter Data without replace",function(){
+			this.oFilterProvider.oModel.setData(this.oJson);
+			var oJson = {"SomeCrap":""};
+			this.oFilterProvider.setFilterData(oJson, false);
+			var oResult = this.oFilterProvider.oModel.getData();
+			deepEqual(oResult,this.oJson);			
+		});
+		
+		test("Method Set Filter Data as string without replace",function(){
+			this.oFilterProvider.oModel.setData(this.oJson);
+			var sJson = '{"SomeCrap":""}';
+			this.oFilterProvider.setFilterDataAsString(sJson, false);
+			var sResult = this.oFilterProvider.oModel.getJSON();
+			strictEqual(sResult,this.sJson);			
+		});
+		
+		test("Method Set Filter Data by replacing existing data",function(){
+			this.oFilterProvider.oModel.setData(this.oJson);
+			var oJson = {"SomeCrap":""};
+			this.oFilterProvider.setFilterData(oJson, true);
+			var oResult = this.oFilterProvider.oModel.getData();
+			deepEqual(oResult,oJson);				
+		});
+		
+		test("Method Set Filter Data as string by replacing existing data",function(){
+			this.oFilterProvider.oModel.setData(this.oJson);
+			var oJson = {"SomeCrap":""};
+			var sJson = JSON.stringify(oJson);
+			this.oFilterProvider.setFilterDataAsString(sJson, true);
+			var sResult = this.oFilterProvider.oModel.getJSON();
+			strictEqual(sResult,sJson);	
+		});
+		
+		test("Method _hasBasicSearch shall return false if there is basic search is disabled ",function(){
+			var bHasBasicSearch;
+			this.oFilterProvider = new sap.ui.comp.smartfilterbar.FilterProvider({entityType: "foo", model:oModel, basicSearchFieldName: undefined, enableBasicSearch: false});
+			
+			//Call CUT
+			bHasBasicSearch = this.oFilterProvider._hasBasicSearch();
+			
+			strictEqual(bHasBasicSearch, false);			
+		});
+		
+		test("Method _createBasicSearchFieldMetadata shall create a sap.m.SearchField",function(){
+			var bBasicSearchFieldMetadata, oMetadataAnalyser;
+			
+			var oSmartFilter = {
+				getId: function() {return "SmartFilterBar";}                 
+			};
+			
+			this.oFilterProvider = new sap.ui.comp.smartfilterbar.FilterProvider({entityType: "COMPANY", model:oModel, basicSearchFieldName: "CompanyCode", smartFilter: oSmartFilter});
+			
+			//Call CUT
+			bBasicSearchFieldMetadata = this.oFilterProvider._createBasicSearchFieldMetadata();
+			
+			ok(bBasicSearchFieldMetadata);
+			ok(bBasicSearchFieldMetadata.control instanceof sap.m.SearchField);
+			equal(bBasicSearchFieldMetadata.groupId, sap.ui.comp.smartfilterbar.FilterProvider.BASIC_FILTER_AREA_ID);
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.ui.comp.smartfilterbar.FilterProvider</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="content"></div>
+</body>
+</html>

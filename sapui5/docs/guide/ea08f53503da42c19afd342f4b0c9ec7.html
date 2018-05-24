@@ -1,0 +1,148 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="SAPUI5 provides a set of essential adjustable colors behind the generic predefined CSS rules that enable custom content to use the respective CSS classes for the required colors."/>
+<meta name="description" content="SAPUI5 provides a set of essential adjustable colors behind the generic predefined CSS rules that enable custom content to use the respective CSS classes for the required colors."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8574590782747137"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8574590782747137"/>
+<title>CSS Classes for Theme Parameters</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioea08f53503da42c19afd342f4b0c9ec7">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">CSS Classes for Theme Parameters</h1>
+
+	
+	<div class="body"><p class="shortdesc"><span class="ph"><span class="ph pname">SAPUI5</span></span> provides a set of
+		essential adjustable colors behind the generic predefined CSS rules that enable custom
+		content to use the respective CSS classes for the required colors.</p>
+
+		<p class="p">If <span class="ph"><span class="ph pname">SAPUI5</span></span> applications
+			define their own HTML and CSS content that is not created by any standard
+			<span class="ph"><span class="ph pname">SAPUI5</span></span> controls, switching
+			between different themes or adapting colors using the theme designer won't have any
+			effect on these parts of the application.</p>
+
+		<p class="p">The reason this doesn't work is because this type of styling cannot make use of the <span class="ph"><span class="ph pname">SAPUI5</span></span> theme
+			parameters.</p>
+
+		<div class="p">HTML content like that might be created as part of the following: <ul class="ul" id="loioea08f53503da42c19afd342f4b0c9ec7__ul_bmc_qnw_1cb">
+				<li class="li">
+					<p class="p">JavaScript libraries that are <span class="ph emphasis emphasis">not</span>
+						<span class="ph"><span class="ph pname">SAPUI5</span></span>
+						libraries</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Custom/notepad
+						controls(if they do <span class="ph emphasis emphasis">not</span>
+						belong
+						to a control library with a theme build)</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Plain static HTML or CSS content used in an application</p>
+
+				</li>
+
+			</ul>
+</div>
+
+		<p class="p">To resolve this problem, you can use CSS classes. There is a number of predefined CSS classes
+			that are supplied with color values by LESS CSS parameters of the current theme. These
+			classes can be used in custom HTML content and in custom controls. The names of the CSS
+			classes are generic and derived from the respective theme parameter
+			name.
+			This makes it easier to use the classes, and the names created are not too long or
+			conflict-prone.</p>
+
+		<div class="example"><h2 class="exampletitle">Example</h2>
+			<p class="p">The most straightforward example is the theme parameter <samp class="ph codeph">@sapUiText</samp>.
+				The theme parameter is mainly used for text colors, so the custom CSS rule sets the
+					<samp class="ph codeph">color</samp> property. Every parameter <samp class="ph codeph">sapUiXY</samp> can be
+				provided as a CSS class <samp class="ph codeph">sapThemeXY</samp>. This suggests it is a theme
+				color, and <samp class="ph codeph">sapTheme</samp> is a new and reserved prefix for CSS
+				classes.</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+.sapThemeText {
+   color: @sapUiText;
+}</pre></div>
+
+			<p class="p">This solution is not sufficient if the same color is used for borders, for example.
+				To support this, the color is defined for each CSS color parameter: Once as a text
+				color, once as a background color, once as a border color, and so on. The styled CSS
+				property name is part of the CSS class name, as a suffix:</p>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+.sapThemeText-asColor {
+   color: @sapUiText;
+}
+.sapThemeText-asBackgroundColor {
+   background-color: @sapUiText;
+}
+.sapThemeText-asBorderColor {
+   border-color: @sapUiText;
+}</pre></div>
+
+			<p class="p">Nevertheless, if there is an obvious default CSS property, such as the (text) color
+				for <samp class="ph codeph">@sapUiText</samp> or the background color for
+					<samp class="ph codeph">@sapUiPageBG</samp>, this one is available without suffix. </p>
+
+		</div>
+
+		<p class="p">If an application is using <span class="ph"><span class="ph pname">SAPUI5</span></span>, and a theme is
+			loaded into the page, any custom content like plain HTML, HTML inside HTML controls or
+			HTML/XML views, or HTML rendered by
+			custom/notepad
+			controls can use theming if the respective generic CSS classes are added. If custom HTML
+			should have the font color as
+			defined
+			in the current theme, the application writes:</p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">
+&lt;span class="sapThemeText"&gt;some custom text in custom HTML&lt;/span&gt;</pre></div>
+
+		<p class="p">Whenever the theme is switched or the theme designer is used to modify the standard text
+			color, this span automatically gets the new text color. The same is valid if a
+			custom/notepad
+			control is created. Just make sure the control writes the respective CSS class, for
+			example, by calling <samp class="ph codeph">oRm.addClass("sapThemeText");</samp>: </p>
+
+		<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">
+// the part creating the HTML:
+renderer : function(oRm, oControl) { 
+    oRm.write("&lt;div"); 
+    oRm.writeControlData(oControl); 
+    oRm.addStyle("width", oControl.getSize());  
+    oRm.addStyle("height", oControl.getSize());
+    oRm.writeStyles();
+    oRm.addClass("mySquare");       
+    oRm.addClass("sapThemeText");  // here the CSS class is added which makes the text color depend on the current theme
+    oRm.writeClasses();             
+    oRm.write("&gt;");
+    oRm.writeEscaped(oControl.getText()); 
+    oRm.write("&lt;/div&gt;");
+},
+</pre></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="91a4946b0dcf4356aaaedc4e502864f4.html" title="Overview of the CSS classes currently supported by SAPUI5.">List of Supported CSS Classes</a></div>
+<div><a class="link" href="d12d2ee6a5454d799358d425f9e7c4db.html" title="In this step, we are going to extend the functionality of SAPUI5 with a custom control. We want to rate the product shown on the detail page, so we create a composition of multiple standard controls using the SAPUI5 extension mechanism and add some glue code to make them work nicely together. This way, we can reuse the control across the app and keep all related functionality in one module.">Step 34: Custom Controls</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

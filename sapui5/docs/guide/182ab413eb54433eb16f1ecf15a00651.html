@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="SAPUI5 provides two options to instantiate a component container and a UI component within an application."/>
+<meta name="description" content="SAPUI5 provides two options to instantiate a component container and a UI component within an application."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6614311837672371"/>
+<title>Using UI Components in Applications</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/framewrapper.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio182ab413eb54433eb16f1ecf15a00651">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Using UI Components in Applications</h1>
+
+	
+	<div class="body"><p class="shortdesc"><span class="ph"><span class="ph pname">SAPUI5</span></span> provides two options
+		to instantiate a component container and a UI component within an application.</p>
+
+		<p class="p">To render UI components, you must wrap them in a <samp class="ph codeph">ComponentContainer</samp>. It is
+				<span class="ph emphasis emphasis">not</span> possible to use the <samp class="ph codeph">placeAt</samp> method to
+			place UI components directly in a page. A component container carries specific settings
+			and also contains the lifecycle methods of a regular control, such as the
+				<samp class="ph codeph">onBeforeRendering</samp> and <samp class="ph codeph">onAfterRendering</samp> methods.
+			The lifecycle methods of the <samp class="ph codeph">ComponentContainer</samp> are forwarded to the
+			corresponding methods of the nested UI component.</p>
+
+		<p class="p">You have the following options to load and create a <samp class="ph codeph">UIComponent</samp>:</p>
+
+		<ul class="ul" id="loio182ab413eb54433eb16f1ecf15a00651__ul_pht_yq1_qk">
+			<li class="li">
+				<div class="p">Loading the component before creating the
+					container:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>	var oComponent = sap.ui.component({
+		name: "samples.components.sample"
+	});
+
+	var oContainer = new sap.ui.core.ComponentContainer({
+		component : oComponent
+	});
+	oContainer.placeAt("target");
+</pre></div>
+</div>
+
+			</li>
+
+			<li class="li">
+				<div class="p">Loading the component while creating the
+					container:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>	var oContainer = new sap.ui.core.ComponentContainer({
+		name: "samples.components.sample"
+	});
+	oContainer.placeAt("target");
+</pre></div>
+</div>
+
+			</li>
+
+			<li class="li">
+				<div class="p">Loading the component asynchronously with "manifest first" mode by specifying the URL of the descriptor (<span class="ph filepath">manifest.json</span>):
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>	var oComponent = sap.ui.component({
+		manifestUrl: "samples/components/sample/manifest.json",
+		async: true
+	});
+
+	var oContainer = new sap.ui.core.ComponentContainer({
+		component : oComponent
+	});
+	oContainer.placeAt("target");
+</pre></div>
+</div>
+
+			</li>
+
+			<li class="li">
+				<div class="p">Loading the component asynchronously with "manifest first" mode by specifying the component name:
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>	var oComponent = sap.ui.component({
+		name: "samples.components.sample",
+		manifestFirst: true,
+		async: true
+ 	});
+
+	var oContainer = new sap.ui.core.ComponentContainer({
+		component : oComponent
+	});
+	oContainer.placeAt("target");</pre></div>
+</div>
+
+			</li>
+
+		</ul>
+
+	</div>
+
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Using UI Components in Applications";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

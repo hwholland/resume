@@ -1,0 +1,123 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Allows you to view a list of links with title, picture, icon, or subtitle."/>
+<meta name="description" content="Allows you to view a list of links with title, picture, icon, or subtitle."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9077185421069445"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9077185421069445"/>
+<title>Link List Cards</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio0326f910c6af4fb1b86f2810ee10419e">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Link List Cards</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">Allows you to view a list of links with title, picture, icon, or subtitle.</p>
+
+		
+		<div class="section">
+			<div class="p">Link List card supports the following navigation types:<ul class="ul" id="loio0326f910c6af4fb1b86f2810ee10419e__ul_btx_5kc_xx">
+					<li class="li">QuickView link: To view contact information from a collection. Example, Recent contact
+						list</li>
+
+					<li class="li">Cross App link: To access related applications. Example, intent based
+						navigation</li>
+
+					<li class="li">External URL link</li>
+
+				</ul>
+</div>
+
+		</div>
+
+		<div class="section"><div class="section_title">Link List Card Types</div><div type="Link List Card Types">
+			
+			<p class="p">Supports standard and carousel link list card types.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Standard</div><div type="Standard"><p class="p">Provides list items in order. (Optional) You can </p>
+<ul class="ul" id="loio0326f910c6af4fb1b86f2810ee10419e__ul_jn2_vgf_yx">
+				<li class="li">Add a picture and/or subtitle to the list item.</li>
+
+				<li class="li">Configure card size to view multiple columns, if the dashboard layout has
+					multiple columns.</li>
+
+			</ul>
+<img class="image" id="loio0326f910c6af4fb1b86f2810ee10419e__image_ihv_nrc_xx" src="loiof27c6ec2049241e89de4871046d0efb6_LowRes.png"/>
+		</div></div>
+
+		<div class="section"><div class="section_title">Carousel</div><div type="Carousel"><p class="p">Provides carousel based view. Title and subtitle appears on top
+				of the card, allowing more space for image. You can also configure this list type
+				with multiple columns.</p>
+<img class="image" id="loio0326f910c6af4fb1b86f2810ee10419e__image_xhr_53d_xx" src="loio4a16a45c8c9b48c2982447b289e0dd5c_LowRes.png"/></div></div>
+
+		<div class="section">
+			<div class="p">You can customise the link list information to appear in any of the following ways:<ul class="ul" id="loio0326f910c6af4fb1b86f2810ee10419e__ul_k1c_rld_xx">
+					<li class="li">One/Two Line(s) of<ul class="ul" id="loio0326f910c6af4fb1b86f2810ee10419e__ul_o1y_rld_xx">
+							<li class="li">Text Only</li>
+
+							<li class="li">Text with icon</li>
+
+							<li class="li">Text with image</li>
+
+						</ul>
+
+					</li>
+
+					<li class="li">Interaction States: You can add more interactions on the link list.</li>
+
+				</ul>
+</div>
+
+		</div>
+
+		<div class="section"><div class="section_title">Annotation Examples</div><div type="Annotation Examples">
+			
+		</div></div>
+
+		<div class="section"><span class="ph emphasis emphasis">Standard Link List</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+"card20": {
+    "model": "salesOrder",
+    "template": "sap.ovp.cards.linklist",
+    "settings": {
+        "title": "Dynamic Linklist Card",
+        "targetUri": "https://en.abc.org/wiki/A_2",
+        "subtitle": "NEW CARD",
+        "listFlavor": "standard",
+        "sortBy": "Name",
+        "entitySet": "ProductSet",
+        "sortOrder": "ascending",
+        "headerAnnotationPath": "com.sap.vocabularies.UI.v1.HeaderInfo#header1",
+        "identificationAnnotationPath": "com.sap.vocabularies.UI.v1.Identification#identify1",
+    }
+}
+</pre></div>
+</div>
+
+		<div class="section"><span class="ph emphasis emphasis">Carousel</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"card_20": {
+    "model": "HEPM_OVP_TECH_VAL",
+    "template": "sap.ovp.cards.linklist",
+    "settings": {
+        "title": "{{card20_title}}",
+        "entitySet": "Hepmra_C_OFT_Employee",
+        "listFlavor": "carousel",
+        "sortBy": "Employee",
+        "sortOrder": "ascending",
+    }
+},</pre></div>
+</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

@@ -2,139 +2,95 @@
     "_version": "1.0.0",
     "sap.app": {
         "_version": "1.0.0",
+        "id": "app",
+        "type": "application",
+        "i18n": "model/i18n/i18n.properties",
+        "title": "{{title}}",
+        "description": "{{description}}",
         "applicationVersion": {
             "version": "1.0.0"
         },
         "dataSources": {
-            "navigation": {
+             "tokens": {
                 "type": "json",
-                "uri": "model/navigation.json"
+                "uri": "model/json/tokens.json"
+            },
+            "viz": {
+                "type": "json",
+                "uri": "model/json/viz.json"
+            },
+            "test": {
+                "type": "json",
+                "uri": "model/json/test.json"
             }
-        },
-        "description": "{{description}}",
-        "i18n": "web/model/i18n.properties",
-        "id": "solo.web",
-        "title": "{{title}}",
-        "type": "application"
+        }
     },
     "sap.ui5": {
-        "_version": "1.54.4",
-        "dependencies": {
-            "libs": {
-                "sap.m": {
-                    "lazy": false
-                },
-                "sap.tnt": {
-                    "lazy": false
-                },
-                "sap.ui.core": {
-                    "lazy": false
-                },
-                "sap.ui.layout": {
-                    "lazy": false
-                }
-            },
-            "minUI5Version": "1.54.4"
+        "_version": "1.54.2",
+        "rootView": {
+            "viewName": "resume.web.view.App",
+            "type": "XML",
+             "async": true
         },
         "models": {
-            "navigation": {
-                "dataSource": "navigation",
+            "tokens": {
+                "dataSource": "tokens",
+                "preload": true,
+                "type": "sap.ui.model.json.JSONModel"
+            },
+            "viz": {
+                "dataSource": "viz",
+                "preload": true,
+                "type": "sap.ui.model.json.JSONModel"
+            },
+            "test": {
+                "dataSource": "test",
                 "preload": true,
                 "type": "sap.ui.model.json.JSONModel"
             }
         },
-      "resourceRoots": {
-        "libs": "./libs",
-        "fragment": "/fragment",
-        "dynamic.Spreadsheet": "./component/dynamic/Spreadsheet",
-        "dynamic.Table": "./component/dynamic/Table",
-        "dynamic.SimpleForm": "./component/dynamic/SimpleForm",
-        "event": "./component/event"
-      },
-        "resources": {},
-        "rootView": {
-            "type": "JSON",
-            "async": true,
-            "viewName": "solo.web.view.Nav"
-        },
-        "routing": {
-            "config": {
-                "async": true,
-                "controlAggregation": "pages",
-                "controlId": "NavContainer",
-                "routerClass": "sap.m.routing.Router",
-                "transition": "show"
-            },
-          "routes": [
-            {
-              "name": "Home",
-              "pattern": "",
-              "target": "Home"
-            },
-            {
-                "name": "Record",
-                "pattern": "/record",
-                "target": "Record"
-            },
-            {
-                "name": "Record Contact(s)",
-                "pattern": "/record/person/contact",
-                "target": "Record"
-            },
-            {
-                "name": "View",
-                "pattern": "/view",
-                "target": "View"
-            },
-            {
-                "name": "View Sales Opportunities",
-                "pattern": "/view/sales/opportunity",
-                "target": "View"
-            },
-            {
-                "name": "View Contacts",
-                "pattern": "/view/person/contact",
-                "target": "View"
-            },
-            {
-                "name": "View Companies",
-                "pattern": "/view/company/general",
-                "target": "View"
-            },
-            {
-                "name": "View Customers",
-                "pattern": "/view/company/customer",
-                "target": "View"
-            },
-            {
-                "name": "View Products / Services",
-                "pattern": "/view/thing/product",
-                "target": "View"
-            }
-          ],
-            "targets": {
-                "Home": {
-                    "viewId": "Home",
-                    "async": true,
-                    "viewLevel": 1,
-                    "viewName": "solo.web.view.Home",
-                    "viewType": "JSON"
+        "dependencies": {
+            "minUI5Version": "1.54.2",
+            "libs": {
+                "sap.ui.core": {
+                    "lazy": false
                 },
-                "Record": {
-                    "viewId": "Record",
-                    "async": true,
-                    "viewLevel": 2,
-                    "viewName": "solo.web.view.Record",
-                    "viewType": "JSON"
+                "sap.m": {
+                    "lazy": false
                 },
-                "View": {
-                    "viewId": "View",
-                    "async": true,
-                    "viewLevel": 2,
-                    "viewName": "solo.web.view.View",
-                    "viewType": "JSON"
+                "sap.ui.layout": {
+                    "lazy": false
+                },
+                "sap.uxap": {
+                    "lazy": false
                 }
             }
-        }
+        },
+           "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "controlId": "app",
+                "controlAggregation": "pages",
+                "transition": "show",
+                "async": true
+            },
+            "routes": [
+                {
+                    "pattern": "",
+                    "name": "Home",
+                    "target": "Home"
+                }
+            ],
+            "targets": {
+                "Home": {
+                    "viewName": "resume.web.view.Home",
+                    "viewId": "Home",
+                    "viewLevel": 1,
+                    "viewType": "XML"
+                }
+            }
+        },
+        "resources": {},
+        "resourceRoots": {}
     }
 }

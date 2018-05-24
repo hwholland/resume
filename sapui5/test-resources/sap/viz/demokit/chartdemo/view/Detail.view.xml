@@ -1,0 +1,45 @@
+<mvc:View
+  controllerName="sap.ui.demo.chartdemo.view.Detail"
+  xmlns="sap.suite.ui.commons"
+  xmlns:m="sap.m"
+  xmlns:mvc="sap.ui.core.mvc" 
+  xmlns:viz="sap.viz.ui5.controls"
+  xmlns:layout="sap.ui.layout"
+  xmlns:core="sap.ui.core">
+
+
+
+
+   <ChartContainer
+    id="idChartContainer"
+    title="vizChart"
+    showFullScreen="true"
+    autoAdjustHeight="true"
+    showLegend="true"
+    class="ChartContainerHeader"
+    showPersonalization="false"
+     contentChange="attachContentChange"
+   >
+    <dimensionSelectors>
+      <m:Button id='naviButton' type="Back" press="navButtonPress" visible="{device>/isPhone}"/>
+    </dimensionSelectors>
+
+    <content>
+      <ChartContainerContent
+          
+          icon = "sap-icon://horizontal-bar-chart" 
+         >
+        <content>
+           <viz:Popover id="idPopOver"></viz:Popover>
+          <viz:VizFrame id="idoVizFrame" 
+            uiConfig="{applicationSet:'fiori'}"
+            
+   > </viz:VizFrame>
+        </content>
+       </ChartContainerContent>
+    </content>  
+
+  </ChartContainer>  
+
+</mvc:View>
+

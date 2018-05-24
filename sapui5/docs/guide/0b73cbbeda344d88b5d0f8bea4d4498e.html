@@ -1,0 +1,54 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=11795609808209728"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=11795609808209728"/>
+<title>Address Facet</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio0b73cbbeda344d88b5d0f8bea4d4498e">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Address Facet</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<div class="p">If you add a <span class="ph sap-technical-name sap-technical-name">UI.ReferenceFacet</span> that points to an
+			address annotation, an address facet is displayed in the object page header. It shows
+			the label of the <span class="ph sap-technical-name sap-technical-name">UI.ReferenceFacet</span> and, below,
+			the label property of the address annotation. The label property should contain the
+			whole formatted address, with \n for new lines. <div class="note note"><span class="notetitle">Note</span> Other properties are not
+				interpreted.</div>
+</div>
+
+		<p class="p">Example value for the label property: "Mail Drop: TNE QB\n123 Main Street\nAny Town, CA
+			91921-1234\nU.S.A.". This is shown as follows:</p>
+
+		<img class="image" id="loio0b73cbbeda344d88b5d0f8bea4d4498e__image_rmd_nfp_fz" src="loio8d92094c6610497d8c5c2367fe0ad04b_LowRes.png"/>
+		<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+&lt;Record Type="UI.ReferenceFacet"&gt;
+
+    &lt;PropertyValue Property="Label" String="Shipping Address"/&gt;
+
+    &lt;PropertyValue AnnotationPath="@Communication.Address" Property="Target"/&gt;
+
+&lt;/Record&gt;
+</pre></div>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

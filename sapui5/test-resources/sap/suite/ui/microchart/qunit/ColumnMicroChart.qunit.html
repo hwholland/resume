@@ -1,0 +1,776 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+<title>QUnit: sap.suite.ui.microchart.ColumnMicroChart</title>
+
+<base href="../../../../../../">
+<!--[if lte IE 9]><script>
+(function() {
+	var baseTag = document.getElementsByTagName('base')[0];
+	baseTag.href = baseTag.href;
+})();
+</script><![endif]-->
+
+<script id="sap-ui-bootstrap" src="resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.suite.ui.microchart">
+</script>
+
+<link rel="stylesheet" type="text/css" href="resources/sap/ui/thirdparty/qunit.css" />
+<script src="resources/sap/ui/thirdparty/qunit.js"></script>
+<script src="resources/sap/ui/qunit/qunit-junit.js"></script>
+<script src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+<!--[if IE]>
+	<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-ie.js"></script>
+<![endif]-->
+
+<script>
+	(function() {
+		jQuery.sap.initMobile();
+		jQuery.sap.require("sap.suite.ui.microchart.ColumnMicroChart");
+		var fnCallback, fnBarCallback;
+
+		if (!(sap.ui.Device.browser.msie && sap.ui.Device.browser.version <= 8)) {
+			jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		}
+
+		function pressChart() {
+			jQuery.sap.log.info("Chart pressed");
+		}
+
+		function pressBar() {
+			jQuery.sap.log.info("Bar pressed");
+		}
+
+		QUnit.module("Control initialization core and theme checks", {
+			beforeEach: function() {
+				this.fnStubIsInitialized = sinon.stub(sap.ui.getCore(), "isInitialized");
+				this.fnSpyAttachInit = sinon.spy(sap.ui.getCore(), "attachInit");
+				this.fnSpyHandleCoreInitialized = sinon.spy(sap.suite.ui.microchart.ColumnMicroChart.prototype, "_handleCoreInitialized");
+				this.fnStubThemeApplied = sinon.stub(sap.ui.getCore(), "isThemeApplied");
+				this.fnStubAttachThemeApplied = sinon.stub(sap.ui.getCore(), "attachThemeChanged", function(fn, context) {
+					fn.call(context); //simulate immediate theme change
+				});
+				this.fnSpyHandleThemeApplied = sinon.spy(sap.suite.ui.microchart.ColumnMicroChart.prototype, "_handleThemeApplied");
+			},
+			afterEach: function() {
+				this.fnStubIsInitialized.restore();
+				this.fnSpyAttachInit.restore();
+				this.fnSpyHandleCoreInitialized.restore();
+				this.fnStubThemeApplied.restore();
+				this.fnStubAttachThemeApplied.restore();
+				this.fnSpyHandleThemeApplied.restore();
+			}
+		});
+
+		QUnit.test("Core not loaded and theme not loaded", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(false);
+			this.fnStubThemeApplied.returns(false);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.ColumnMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+			assert.ok(this.fnSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+		});
+
+		QUnit.test("Core not loaded and theme loaded", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(false);
+			this.fnStubThemeApplied.returns(true);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.ColumnMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+			assert.ok(this.fnSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+		});
+
+		QUnit.test("Core loaded and theme not loaded", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(true);
+			this.fnStubThemeApplied.returns(false);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.ColumnMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+			assert.ok(this.fnSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+		});
+
+		QUnit.test("Core loaded and theme loaded", function(assert) {
+			//Arrange
+			this.fnStubIsInitialized.returns(true);
+			this.fnStubThemeApplied.returns(true);
+
+			//Act
+			var oChart = new sap.suite.ui.microchart.ColumnMicroChart();
+
+			//Assert
+			assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+			assert.ok(this.fnSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+			assert.ok(this.fnSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+			assert.ok(this.fnStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+			assert.ok(this.fnSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+		});
+
+		QUnit.module("events", {
+			beforeEach: function() {
+				fnCallback = sinon.spy();
+				this.oChart = new sap.suite.ui.microchart.ColumnMicroChart("test-chart-ev", {
+					columns: [{value: 0}, {value: 10}, {value: 10}, {value: 10}, {value: 10}]
+				}).placeAt("qunit-fixture");		
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("events handling test", function(assert) {
+			assert.ok(!this.oChart.hasListeners("press"), "No press event attached to control");
+			this.oChart.attachPress(pressChart);
+			assert.ok(this.oChart.hasListeners("press"), "Press event attached to control");
+			this.oChart.detachPress(pressChart);
+			assert.ok(!this.oChart.hasListeners("press"), "Press event detached from control");
+			assert.ok(!this.oChart.getColumns()[2].hasListeners("press"), "No press event attached to column 2");
+			this.oChart.getColumns()[2].attachPress(pressBar);
+			assert.ok(this.oChart.getColumns()[2].hasListeners("press"), "Press event attached to column 2");
+			this.oChart.getColumns()[2].detachPress(pressBar);
+			assert.ok(!this.oChart.getColumns()[2].hasListeners("press"), "Press event detached from column 2");
+		});
+
+		QUnit.module("calcColumnsWidth", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.ColumnMicroChart("test-chart", {
+					columns: [{value: 0}, {value: 10	}, {value: 10}, {value: 10}, {value: 10	}]
+				});
+
+				this.aBars = [];
+
+				var iColumnsNum = this.oChart.getColumns().length;
+				for (var i = 0; i < iColumnsNum; i++) {
+					this.aBars.push({});
+				}
+			},
+			afterEach: function() {
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("regular", function(assert) {
+			this.oChart._calcColumnsWidth(3, 3, 100, this.aBars);
+
+			var iColumnsNum = this.oChart.getColumns().length;
+			for (var i = 0; i < iColumnsNum; i++) {
+				assert.equal(this.aBars[i].width, "18.4%", "Columns width");
+				assert.notEqual(this.aBars[i].display, "none", "Column is visible");
+			}
+		});
+
+		QUnit.test("overflow 1", function(assert) {
+			this.oChart._calcColumnsWidth(3, 18, 100, this.aBars);
+			var iColumnsNum = this.oChart.getColumns().length;
+			for (var i = 0; i < iColumnsNum; i++) {
+				if (i < 4) {
+					assert.notEqual(this.aBars[i].display, "none", "Column is visible");
+					assert.equal(this.aBars[i].width, "18.4%", "Columns width");
+				} else {
+					assert.equal(this.aBars[i].display, "none", "Column is invisible");
+				}
+			}
+		});
+
+		QUnit.test("overflow 2", function(assert) {
+			this.oChart._calcColumnsWidth(100, 3, 100, this.aBars);
+			var iColumnsNum = this.oChart.getColumns().length;
+			for (var i = 0; i < iColumnsNum; i++) {
+				if (i < 1) {
+					assert.notEqual(this.aBars[i].display, "none", "Column is visible");
+					assert.equal(this.aBars[i].width, "18.4%", "Columns width");
+				} else {
+					assert.equal(this.aBars[i].display,"none", "Column is invisible");
+				}
+			}
+		});
+
+		QUnit.module("calcColumnsHeight", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.ColumnMicroChart("test-chart");
+				this.aBars = [];
+			},
+			afterEach: function() {
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("regular", function(assert) {
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({ 
+				value: 0
+			}));
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: 0.1
+			}));
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: 50
+			}));
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: -0.1
+			}));
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: -50
+			}));
+
+			var iColumnsNum = this.oChart.getColumns().length;
+			for (var i = 0; i < iColumnsNum; i++) {
+				this.aBars.push({});
+			}
+
+			this.oChart._calcColumnsHeight(100, this.aBars);
+			var iColumnsNum = this.oChart.getColumns().length;
+
+			assert.equal(this.aBars[0].height, "1.00%", "Column height");
+			assert.equal(this.aBars[0].top, "49.00%", "Column top");
+
+			assert.equal(this.aBars[1].height, "1.00%", "Column height");
+			assert.equal(this.aBars[1].top, "49.00%", "Column top");
+
+			assert.equal(this.aBars[2].height, "50.00%", "Column height");
+			assert.equal(this.aBars[2].top, "0.00%", "Column top");
+
+			assert.equal(this.aBars[3].height, "1.00%", "Column height");
+			assert.equal(this.aBars[3].top, "50.00%", "Column top");
+
+			assert.equal(this.aBars[4].height, "50.00%", "Column height");
+			assert.equal(this.aBars[4].top, "50.00%", "Column top");
+		});
+
+		QUnit.test("zero", function(assert) {
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: 0
+			}));
+
+			var iColumnsNum = this.oChart.getColumns().length;
+			for (var i = 0; i < iColumnsNum; i++) {
+				this.aBars.push({});
+			}
+
+			this.oChart._calcColumnsHeight(100, this.aBars);
+			var iColumnsNum = this.oChart.getColumns().length;
+
+			assert.equal(this.aBars[0].height, "NaN%", "Column height is absent");
+			assert.equal(this.aBars[0].top, "NaN%", "Column top is absent");
+		});
+
+		QUnit.test("shiftTop", function(assert) {
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: 0
+			}));
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: -100
+			}));
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: -0.1
+			}));
+
+			var iColumnsNum = this.oChart.getColumns().length;
+			for (var i = 0; i < iColumnsNum; i++) {
+				this.aBars.push({});
+			}
+
+			this.oChart._calcColumnsHeight(100, this.aBars);
+			var iColumnsNum = this.oChart.getColumns().length;
+
+			assert.equal(this.aBars[0].height, "1.00%", "Column height");
+			assert.equal(this.aBars[0].top, "0.00%", "Column top");
+
+			assert.equal(this.aBars[1].height, "99.00%", "Column height");
+			assert.equal(this.aBars[1].top, "1.00%", "Column top");
+
+			assert.equal(this.aBars[2].height, "1.00%", "Column height");
+			assert.equal(this.aBars[2].top, "1.00%", "Column top");
+		});
+
+		QUnit.test("shiftBottom", function(assert) {
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: 0
+			}));
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: 100
+			}));
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: 50
+			}));
+			this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({
+				value: -0.1
+			}));
+
+			var iColumnsNum = this.oChart.getColumns().length;
+			for (var i = 0; i < iColumnsNum; i++) {
+				this.aBars.push({});
+			}
+
+			this.oChart._calcColumnsHeight(100, this.aBars);
+			var iColumnsNum = this.oChart.getColumns().length;
+
+			assert.equal(this.aBars[0].height, "1.00%", "Column height");
+			assert.equal(this.aBars[0].top, "98.00%", "Column top");
+
+			assert.equal(this.aBars[1].height, "99.00%", "Column height");
+			assert.equal(this.aBars[1].top, "0.00%", "Column top");
+
+			assert.equal(this.aBars[2].height, "49.05%", "Column height");
+			assert.equal(this.aBars[2].top, "49.95%", "Column top");
+
+			assert.equal(this.aBars[3].height, "1.00%", "Column height");
+			assert.equal(this.aBars[3].top, "99.00%", "Column top");
+
+		});
+
+		QUnit.module("rendering", {
+			beforeEach: function() {
+			this.oChart = new sap.suite.ui.microchart.ColumnMicroChart({
+				width: "100px",
+				height: "50px",
+				leftTopLabel: new sap.suite.ui.microchart.ColumnMicroChartLabel({ label: "Left", color: "Critical"}),
+				rightBottomLabel: new sap.suite.ui.microchart.ColumnMicroChartLabel({ label: "Right", color: "Error"}),
+				columns: [
+							{value: 0, color: "Good"}, {value: 10, color: "Error"},
+							{value: -10, color: "Critical"}
+				]
+			});
+			this.oChart.placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("rendering test", function(assert) {
+			assert.equal(this.oChart.$().css("width"), "100px", "Chart width");
+			assert.equal(this.oChart.$().css("height"), "50px", "Chart height");
+			assert.ok(jQuery.sap.byId(this.oChart.getId() + "-bar-0").hasClass("sapSuiteClMCSemanticColorGood"));
+			assert.ok(jQuery.sap.byId(this.oChart.getId() + "-bar-1").hasClass("sapSuiteClMCSemanticColorError"));
+			assert.ok(jQuery.sap.byId(this.oChart.getId() + "-bar-2").hasClass("sapSuiteClMCSemanticColorCritical"));
+			assert.equal(jQuery.sap.byId(this.oChart.getId() + "-left-top-lbl").text(), "Left", "Left top label text");
+			assert.equal(jQuery.sap.byId(this.oChart.getId() + "-right-btm-lbl").text(), "Right", "Right bottom label text");
+		});
+
+		QUnit.test("Aria-label only includes the standard chart information", function(assert) {
+			// Arrange
+			var sAriaLabel = this.oChart.getAltText();
+			this.oChart.setTooltip("This is tooltip");
+			// Act
+			sap.ui.getCore().applyChanges();
+			// Assert
+			assert.equal(sAriaLabel, this.oChart.$().attr("aria-label"), "The aria-label includes only chart information");
+			assert.equal(null, this.oChart.$().attr("title"), "The title attribute is not rendered");
+		});
+
+		QUnit.module("Title attribute is added and removed when mouse enters and leaves", {
+			beforeEach: function() {
+				this.oCmc = new sap.suite.ui.microchart.ColumnMicroChart("cmc", {
+					width: "100px",
+					height: "50px",
+					leftTopLabel: new sap.suite.ui.microchart.ColumnMicroChartLabel({ label: "Left", color: "Critical"}),
+					rightBottomLabel: new sap.suite.ui.microchart.ColumnMicroChartLabel({ label: "Right", color: "Error"}),
+					columns: [{value: 0, color: "Good"},
+							{value: 10, color: "Error"},
+							{value: -10, color: "Critical"}]
+				}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this.oCmc.destroy();
+				this.oCmc = null;
+			}
+		});
+
+		QUnit.test("Tooltip is showed when mouse enters chart", function(assert) {
+			// Arrange
+			this.oCmc.setTooltip("This is cmc tooltip");
+			sap.ui.getCore().applyChanges();
+			// Act
+			this.oCmc.$().trigger("mouseenter");
+			// Assert
+			assert.equal("This is cmc tooltip", this.oCmc.$().attr("title"), "The title attribute is added when mouse enters the chart");
+		});
+
+		QUnit.test("Tooltip is removed when mouse leaves chart", function(assert) {
+			// Arrange
+			this.oCmc.setTooltip("This is cmc tooltip");
+			sap.ui.getCore().applyChanges();
+			// Act
+			this.oCmc.$().trigger("mouseenter");
+			this.oCmc.$().trigger("mouseleave");
+			// Assert
+			assert.equal(null, this.oCmc.$().attr("title"), "The title attribute is removed when mouse leaves the chart");
+		});
+
+		QUnit.module("Responsiveness", {
+			beforeEach: function() {
+			this.oChart = new sap.suite.ui.microchart.ColumnMicroChart("mCMChart", {
+				isResponsive: true
+			});
+			this.oFlexBox = new sap.m.FlexBox("FlexBox-cmc", {
+				items: [this.oChart],
+				width: "6rem",
+				height: "5rem"
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this.oFlexBox.destroy();
+				this.oFlexBox = null;
+			}
+		});
+
+		QUnit.test("Chart is rendered with the proper width and height higher than the thresholds", function(assert) {
+			//Arrange
+			// Two pixels subtracted, otherwise there's not enough space for the outline and the chart won't be rendered properly
+			// E.g. for FlexBox 5x6rem is expected: "width: 94px; height: 78px;"
+			var iChartHeightExpected = this.oFlexBox.$().height() - 2;
+			var iChartWidthExpected = this.oFlexBox.$().width() - 2;
+			//Act
+			//Assert
+			assert.equal(this.oChart.$().height(), iChartHeightExpected, "Chart is rendered with expected height");
+			assert.equal(this.oChart.$().width(), iChartWidthExpected, "Chart is rendered with expected width");
+		});
+
+		//do not show the chart if the width is smaller than 2rem (32 px)
+		QUnit.test("Chart is hidden when the width is less than threshold", function(assert) {
+			//Arrange
+			this.oFlexBox.setWidth("1.99rem");
+			this.oFlexBox.rerender();
+			//Act
+			var sChartStyle = this.oChart.$().attr("style");
+			//Assert
+			assert.ok(sChartStyle.indexOf("display: none;") >= 0, "Chart is hidden due to the width");
+		});
+
+		//do not show the canvas if the canvas' height is less than 1rem (16px)
+		QUnit.test("Canvas is hidden when the height is less than threshold", function(assert) {
+			//Arrange
+			this.oFlexBox.setHeight("18px");
+			this.oFlexBox.rerender();
+			//Act
+			var sCanvasStyle = this.oChart.$().find(".sapSuiteClMCBars").attr("style");
+			//Assert
+			assert.ok(sCanvasStyle.indexOf("display: none;") >= 0, "Canvas is hidden due to the height");
+		});
+
+		QUnit.test("Chart is hidden when the bars are too tiny and they can not be properly displayed", function(assert) {
+			//Arrange
+			//min-width for chart is 32px (flexbox 36px); min-width for bars is 3px; min-width betwwen the bars is 1px
+			//need like 9 columns to hide a chart
+			for (var i = 0; i < 9; i++) {
+				this.oChart.addColumn(new sap.suite.ui.microchart.ColumnMicroChartData({label: "Angola", value: 35, color: "Neutral"}));
+			}
+			this.oFlexBox.setWidth("36px");
+			this.oFlexBox.rerender();
+			//Act
+			var sChartStyle = this.oChart.$().attr("style");
+			//Assert
+			assert.ok(sChartStyle.indexOf("display: none;") >= 0, "Chart is hidden due to the tiny bars");
+		});
+
+		//Responsiveness: do not show the labels if they are truncated or do not show the top label if the height of the chart is less than 2rem
+		//before hiding the labels, reduce the font from 14px to 12px
+		QUnit.module("Responsiveness -- Labels and Fonts", {
+			beforeEach: function() {
+			this.oChart = new sap.suite.ui.microchart.ColumnMicroChart("mCMChart", {
+				isResponsive: true,
+				leftTopLabel : {
+					label : "June 1",
+					color : "Good"
+				},
+				leftBottomLabel : {
+					label : "0M",
+					color : "Good"
+				},
+				rightTopLabel : {
+					label : "June 30",
+					color : "Critical"
+				},
+				rightBottomLabel : {
+					label : "80M",
+					color : "Critical"
+				}
+			});
+			this.oFlexBox = new sap.m.FlexBox("FlexBox-cmc", {
+				items: [this.oChart],
+				width: "15rem",
+				height: "15rem"
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+			},
+			afterEach: function() {
+				this.oFlexBox.destroy();
+				this.oFlexBox = null;
+			}
+		});
+
+		QUnit.test("Chart is rendered with the top and bottom labels visible and proper font size", function(assert) {
+			//Arrange
+			//Act
+			var sTopLabelStyle = this.oChart.$().find(".sapSuiteClMCPositionTop.sapSuiteClMCLbls").attr("style");
+			var sBottomLabelStyle = this.oChart.$().find(".sapSuiteClMCPositionBtm.sapSuiteClMCLbls").attr("style");
+			//Assert
+			assert.ok(!sTopLabelStyle || sTopLabelStyle.indexOf("display: none;") === -1, "Chart is properly rendered with the top labels visible");
+			assert.ok(!sBottomLabelStyle || sBottomLabelStyle.indexOf("display: none;") === -1, "Chart is properly rendered with the bottom labels visible");
+			assert.ok(!this.oChart.hasStyleClass("sapSuiteClMCSmallFont"), "Chart is properly rendered with the labels having the standard font size");
+		});
+
+		QUnit.test("Chart is rendered with the labels visible having font resized to smallFont for height schrinking", function(assert) {
+			//the font is resized when the threshold for height is reached (40px)
+			//Arrange
+			this.oFlexBox.setHeight("2.2rem");
+			this.oFlexBox.rerender();
+			//Act
+			var sTopLabelStyle = this.oChart.$().find(".sapSuiteClMCPositionTop.sapSuiteClMCLbls").attr("style");
+			var aLabels = this.oChart.$().find(".sapSuiteClMCLbl");
+			//Assert
+			assert.ok(!sTopLabelStyle || sTopLabelStyle.indexOf("display: none") === -1, "Chart is properly rendered with the top label visible");
+			for (var i = 0; i < aLabels.size(); i++) {
+				assert.ok(aLabels[i].className.indexOf("sapSuiteClMCSmallFont") >= 0, "Chart is properly rendered with the font resized to smallFont for label " + (i+1));
+			}
+		});
+
+		QUnit.test("Chart is rendered with the top labels hidden and bottom labels present - height shrinking", function(assert) {
+			//top label is hidden when the threshold for height is reached (2rem) and there are bottom labels
+			//Arrange
+			this.oFlexBox.setHeight("1.99rem");
+			this.oFlexBox.rerender();
+			//Act
+			var sTopLabelStyle = this.oChart.$().find(".sapSuiteClMCPositionTop.sapSuiteClMCLbls").attr("style");
+			//Assert
+			assert.ok(sTopLabelStyle.indexOf("display: none") >= 0, "Chart is properly rendered with the top labels hidden");
+		});
+
+		QUnit.test("Chart is rendered with the top labels hidden and no bottom labels - height shrinking", function(assert) {
+			//top label is hidden when the threshold for height is reached (1rem) and there are no bottom labels
+			//Arrange
+			this.oFlexBox.setHeight("0.99rem");
+			this.oChart.setRightBottomLabel(null);
+			this.oChart.setLeftBottomLabel(null);
+			this.oFlexBox.rerender();
+			//Act
+			var sTopLabelStyle = this.oChart.$().find(".sapSuiteClMCPositionTop.sapSuiteClMCLbls").attr("style");
+			//Assert
+			assert.ok(sTopLabelStyle.indexOf("display: none") >= 0, "Chart is properly rendered with the top labels hidden");
+		});
+
+		QUnit.test("Chart is rendered with the bottom labels hidden - height shrinking", function(assert) {
+			//bottom label is hidden when the threshold for height is reached (1rem)
+			//Arrange
+			this.oFlexBox.setHeight("0.99rem");
+			this.oFlexBox.rerender();
+			//Act
+			var sBottomLabelStyle = this.oChart.$().find(".sapSuiteClMCPositionBtm.sapSuiteClMCLbls").attr("style");
+			//Assert
+			assert.ok(sBottomLabelStyle.indexOf("display: none") >= 0, "Chart is properly rendered with the bottom labels hidden");
+		});
+
+		QUnit.test("Chart is rendered with the top labels hidden - width shrinking", function(assert) {
+			//top label is hidden when the label text is truncated
+			//before the text to be truncated, the font is reduced
+			//Arrange
+			this.oFlexBox.setWidth("2.2rem");
+			this.oFlexBox.rerender();
+			//Act
+			var sTopLabelStyle = this.oChart.$().find(".sapSuiteClMCPositionTop.sapSuiteClMCLbls").attr("style");
+			//Assert
+			assert.ok(sTopLabelStyle.indexOf("display: none") >= 0, "Chart is properly rendered with the top labels hidden");
+		});
+
+		QUnit.test("Chart is rendered with top label visible and having font resized to smallFont - width shrinking", function(assert) {
+			//top label is hidden when the label text is truncated
+			//before the text to be truncated, the font is reduced
+			//Arrange
+			this.oFlexBox.setWidth("6rem");
+			this.oFlexBox.rerender();
+			//Act
+			var sTopLabelStyle = this.oChart.$().find(".sapSuiteClMCPositionTop.sapSuiteClMCLbls").attr("style");
+			var aLabels = this.oChart.$().find(".sapSuiteClMCLbl");
+			//Assert
+			assert.ok(!sTopLabelStyle || sTopLabelStyle.indexOf("display: none") === -1, "Chart is properly rendered with the top labels hidden");
+			for (var i = 0; i < 4; i++) {
+				assert.ok(aLabels[i].className.indexOf("sapSuiteClMCSmallFont") >= 0, "Chart is properly rendered with the font resized to smallFont");
+			}
+		});
+
+		QUnit.module("Responsiveness -- Chart inside a simple div", {
+			beforeEach : function() {
+				jQuery("#qunit-fixture").css("width", "500px");
+				jQuery("#qunit-fixture").css("height", "300px");
+				this.oChart = new sap.suite.ui.microchart.ColumnMicroChart("mCMChart", {isResponsive: true}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function() {
+				this.oChart.destroy();
+				this.oChart = null;
+			}
+		});
+
+		QUnit.test("Chart inside a simple div", function(assert) {
+			//Arrange
+			// Two pixels subtracted, otherwise there's not enough space for the outline and the chart won't be rendered properly
+			var iChartHeightExpected = parseFloat(this.oChart.getParent().oRootNode.getAttribute("style").split(" ")[3]);
+			var iChartWidthExpected = parseFloat(this.oChart.getParent().oRootNode.getAttribute("style").split(" ")[1]);
+			//Act
+			//Assert
+			assert.equal(this.oChart.$().height(), iChartHeightExpected, "Chart is rendered with the parent height");
+			assert.equal(this.oChart.$().width(), iChartWidthExpected, "Chart is rendered with the parent width");
+		});
+
+		QUnit.module("Responsiveness adjustments for the use within GenericTile", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.ColumnMicroChart().addStyleClass("sapUiSmallMargin");
+				this.oGenericTile = new sap.m.GenericTile("generic-tile", {
+					tileContent : new sap.m.TileContent({
+						content : this.oChart
+					})
+				});
+			},
+			afterEach: function() {
+				this.oGenericTile.destroy();
+			}
+		});
+
+		QUnit.test("The MicroChart becomes responsive if it is used in a Generic Tile", function(assert) {
+			//Act
+			this.oChart.onBeforeRendering();
+			//Assert
+			assert.ok(this.oChart.getIsResponsive(), "The chart became responsive");
+		});
+
+		QUnit.test("The standard margins are handled if chart is used in a Generic Tile", function(assert) {
+			//Arrange
+			var oRemoveMarginCallback = sinon.spy(sap.suite.ui.microchart, "_removeStandardMargins");
+			//Act
+			this.oChart.onBeforeRendering();
+			//Assert
+			assert.ok(oRemoveMarginCallback.called, "Library function that removes standard margins has been called.");
+		});
+		QUnit.module("Tooltip behavior", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.ComparisonMicroChart();
+				this.oModel = new sap.ui.model.json.JSONModel({
+					size : "M",
+					Tooltip : "Custom Tooltip"
+				});
+			},
+			afterEach: function() {
+				this.oChart.destroy();
+				this.oModel.destroy();
+			}
+		});
+
+		QUnit.test("Default value for tooltip", function(assert) {
+			//Arrange
+			//Act
+			//Assert
+			assert.deepEqual(this.oChart.getTooltip(), "{AltText}", "Default value set correctly");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, tooltip is not bound", function(assert) {
+			//Arrange
+			//Act
+			this.oChart.setModel(this.oModel);
+			sap.ui.getCore().applyChanges();
+			//Assert
+			assert.deepEqual(this.oChart.getTooltip(), "{AltText}", "Default value set correctly");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, control is bound, tooltip is not bound", function(assert) {
+			//Arrange
+			this.oChart.setAggregation("tooltip", new sap.ui.core.TooltipBase({
+				text : "{/Tooltip}"
+			}));
+			//Act
+			this.oChart.setModel(this.oModel);
+			sap.ui.getCore().applyChanges();
+			//Assert
+			assert.ok(this.oChart.getTooltip(), "Tooltip exists");
+			assert.deepEqual(this.oChart.getTooltip().getText(), "Custom Tooltip", "Tooltip exists");
+			assert.ok(!this.oChart.isBound("tooltip"), "Tooltip is not bound");
+		});
+
+		QUnit.test("Model exists, control is bound", function(assert) {
+			//Arrange
+			var oModel = new sap.ui.model.json.JSONModel({
+				data : [{
+					size : "M",
+					Tooltip : "Custom Tooltip"
+				}]
+			});
+			var oTable = new sap.m.Table({
+				items : {
+					path : "/data",
+					template : new sap.m.ColumnListItem({
+						cells : [new sap.suite.ui.microchart.ColumnMicroChart({
+							columns : [new sap.suite.ui.microchart.ColumnMicroChartData({
+								value : 4.20
+							})]
+						})]
+					})
+				}
+			}).setModel(oModel);
+			//Act
+			sap.ui.getCore().applyChanges();
+			var oChart = oTable.getItems()[0].getCells()[0];
+			//Assert
+			assert.deepEqual(oChart.getTooltip(), null, "Binding is empty, so tooltip aggregation is also empty.");
+			assert.ok(oChart.getTooltip_AsString(), "Tooltip is empty, default tooltip as string appears");
+			assert.ok(oChart.isBound("tooltip"), "Tooltip is bound");
+			//Cleanup
+			oTable.destroy();
+			oModel.destroy();
+		});
+
+		QUnit.module("Execution of functions onAfterRendering", {
+			beforeEach: function() {
+				this.oChart = new sap.suite.ui.microchart.ColumnMicroChart().placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+				sinon.spy(sap.suite.ui.microchart, "_checkControlIsVisible");
+			},
+			afterEach: function() {
+				sap.suite.ui.microchart._checkControlIsVisible.restore();
+				this.oChart.destroy();
+			}
+		});
+
+		QUnit.test("Visibility check", function(assert) {
+			//Act
+			this.oChart.onAfterRendering();
+			//Assert
+			assert.ok(sap.suite.ui.microchart._checkControlIsVisible.calledOnce, "Method _checkControlIsVisible has been called once.");
+		});
+	}());
+</script>
+</head>
+
+<body id="body" class="sapUiBody">
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+</body>

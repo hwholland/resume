@@ -1,0 +1,104 @@
+<core:View xmlns:core="sap.ui.core" xmlns="sap.m"
+	xmlns:smartfilterbar="sap.ui.comp.smartfilterbar"
+	xmlns:smartChart="sap.ui.comp.smartchart"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	controllerName="sap.ui.comp.sample.smartchart.SmartChart" height="100%">
+		<!-- use this to make the table occupy the available screen height -->
+		<Button id="toggleVariantMangement" text="Enable Variant Management" press="toggleVariantManagement"></Button>
+		<Button id="toggleChartType" text="Toggle ChartType display" press="toggleButtonList"></Button>
+		<Button id="toggleDetailsButton" text="Toggle Details Button" press="toggleDetailsButton"></Button>	
+		<Button id="toggleBreadcrumbs" text="Toggle Drill Breadcrumbs" press="toggleDrillBreadcrumbs"></Button>				
+		<VBox fitContainer="true" id="withoutVariant">
+				<smartfilterbar:SmartFilterBar id="SmartFilterBar" entityType="ZFAR_CUSTOMER_LINE_ITEMS2_SRV.Item" showClearButton="true" search="onSearchButtonPressed" reset="onReset" beforeVariantSave="onBeforeVariantSave" afterVariantLoad="onAfterVariantLoad">
+		               <smartfilterbar:customData>
+		                     <core:CustomData key="defaultDropDownDisplayBehaviour" value="descriptionOnly"/>
+		                     <core:CustomData key="defaultTokenDisplayBehaviour" value="idAndDescription"/>
+		                     <core:CustomData key="dateFormatSettings" value='\{"UTC":true,"style":"short"\}' />
+		               </smartfilterbar:customData>     		    		
+					   <smartfilterbar:controlConfiguration>
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.ValueHelpCustomer" key="Customer"
+									index="0" groupId="_BASIC" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.ValueHelpCompany" key="CompanyCode"
+									index="1" groupId="_BASIC" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.DateClearingDate" key="ClearingDate"
+									controlType="date" filterType="interval" index="3" hasTypeAhead="false"
+									groupId="_BASIC" visible="false" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.DateKeyDate" key="KeyDate"
+									controlType="date" index="4" hasTypeAhead="false" groupId="_BASIC" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.DateEntryDate" key="AccountingDocumentCreationDate"
+									controlType="date" filterType="interval" index="5" hasTypeAhead="false"
+									groupId="fin.ar.lineitems.display.AccountingDocumentGroup" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.InputFiscalYearPeriodInterval" key="FiscalYearPeriod"
+									controlType="input" index="6" groupId="_BASIC" visible="false" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.DatePostingDate" key="PostingDate"
+									controlType="date" filterType="interval" index="7" hasTypeAhead="false"
+									groupId="_BASIC" visible="false" />
+				       </smartfilterbar:controlConfiguration>		       		
+		            <smartfilterbar:layoutData>
+		                <FlexItemData shrinkFactor="0" />
+		            </smartfilterbar:layoutData>			
+				</smartfilterbar:SmartFilterBar>
+				
+			<smartChart:SmartChart id="ItemsSmartChart" entitySet="Items" smartFilterId="SmartFilterBar" 
+								showFullScreenButton="true" useChartPersonalisation="false" enableAutoBinding="true" showDetailsButton="false">
+				<!-- layout data used to make the table growing but the filter bar fixed -->
+				<smartChart:layoutData>
+						<FlexItemData growFactor="1"/>
+				</smartChart:layoutData>	  
+			</smartChart:SmartChart>
+		</VBox>
+		<VBox fitContainer="true" id="withVariant" visible="false">
+				<smartfilterbar:SmartFilterBar id="SmartFilterBar2" entityType="ZFAR_CUSTOMER_LINE_ITEMS2_SRV.Item" showClearButton="true" search="onSearchButtonPressed" reset="onReset" beforeVariantSave="onBeforeVariantSave" afterVariantLoad="onAfterVariantLoad" persistencyKey="Test">
+		               <smartfilterbar:customData>
+		                     <core:CustomData key="defaultDropDownDisplayBehaviour" value="descriptionOnly"/>
+		                     <core:CustomData key="defaultTokenDisplayBehaviour" value="idAndDescription"/>
+		                     <core:CustomData key="dateFormatSettings" value='\{"UTC":true,"style":"short"\}' />
+		               </smartfilterbar:customData>     		    		
+					   <smartfilterbar:controlConfiguration>
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.ValueHelpCustomer2" key="Customer"
+									index="0" groupId="_BASIC" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.ValueHelpCompany2" key="CompanyCode"
+									index="1" groupId="_BASIC" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.DateClearingDate2" key="ClearingDate"
+									controlType="date" filterType="interval" index="3" hasTypeAhead="false"
+									groupId="_BASIC" visible="false" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.DateKeyDate2" key="KeyDate"
+									controlType="date" index="4" hasTypeAhead="false" groupId="_BASIC" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.DateEntryDate2" key="AccountingDocumentCreationDate"
+									controlType="date" filterType="interval" index="5" hasTypeAhead="false"
+									groupId="fin.ar.lineitems.display.AccountingDocumentGroup" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.InputFiscalYearPeriodInterval2" key="FiscalYearPeriod"
+									controlType="input" index="6" groupId="_BASIC" visible="false" />
+								<smartfilterbar:ControlConfiguration
+									id="fin.ar.lineitems.display.DatePostingDate2" key="PostingDate"
+									controlType="date" filterType="interval" index="7" hasTypeAhead="false"
+									groupId="_BASIC" visible="false" />
+				       </smartfilterbar:controlConfiguration>		       		
+		            <smartfilterbar:layoutData>
+		                <FlexItemData shrinkFactor="0" />
+		            </smartfilterbar:layoutData>			
+				</smartfilterbar:SmartFilterBar>
+				
+			<smartChart:SmartChart i="ItemsSmartChart2" entitySet="Items" useVariantManagement="true" smartFilterId="SmartFilterBar" useChartPersonalisation="false"
+									showFullScreenButton="true" enableAutoBinding="true" persistencyKey="Test" showDetailsButton="false">
+				<!-- layout data used to make the table growing but the filter bar fixed -->
+				<smartChart:layoutData>
+						<FlexItemData growFactor="1"/>
+				</smartChart:layoutData>	  
+			</smartChart:SmartChart>
+		</VBox>
+</core:View>

@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+	xmlns:commons="sap.ui.commons" xmlns:layout="sap.ui.layout"
+	xmlns:sap.m="sap.m">
+	<sap.m:Dialog verticalScrolling="false" title="{/titleText}">
+		<layout:VerticalLayout width="100%">
+			<commons:TextView text="{/messageText}" />
+			<commons:FormattedTextView htmlText="{/mandatoryFieldList}" />
+		</layout:VerticalLayout>
+		<sap.m:beginButton>
+			<sap.m:Button text="{/hideText}" press="hideField" />
+		</sap.m:beginButton>
+		<sap.m:endButton>
+			<sap.m:Button text="{/cancelText}" press="closeDialog" />
+		</sap.m:endButton>
+	</sap.m:Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<script id="sap-ui-bootstrap" 
+		type="text/javascript"
+		src="../../../../../../resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_bluecrystal"
+		data-sap-ui-language="en-US"
+		data-sap-ui-noConflict="true"
+		data-sap-ui-libs="sap.ui.commons,sap.uiext.inbox">
+	</script>
+		<link rel="stylesheet" href="../../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="text/javascript">
+			jQuery.sap.require("sap.uiext.inbox.Inbox");
+			
+
+			
+			module("Tests for Inbox control initialization.");
+			test("Test for Inbox control initialization.", function(){
+				var oInbox = new sap.uiext.inbox.Inbox();
+				var oController  = oInbox.oController;
+				ok(oController instanceof sap.uiext.inbox.controller.InboxController,"Assertion to confirm that Inbox is initialized with a Controller of type sap.uiext.inbox.controller.InboxController");								
+			});
+			
+			/* test("Test for Inbox control destroy.", function(){
+				var oInbox = new sap.uiext.inbox.Inbox("inbox1");
+				oInbox.placeAt("inboxArea");
+				sap.ui.getCore().applyChanges();
+				oInbox.destroy();
+				ok(sap.ui.getCore().byId("inbox1") === undefined);
+				ok(sap.ui.getCore().byId("inbox1__button") === undefined)
+			}); */
+			
+			
+		</script>
+	</head>
+	<body>
+		<h1 id="qunit-header"><title>qUnit Page for Inbox Controller</title></h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup, will be hidden</div>
+		<div id="canvas" style="height:300px; width:300px"></div>
+		<br>
+		<div id="uiArea1" style="width: 80%;"></div>
+		<div id="inboxArea"></div>
+	</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can add a determining action button to the footer of the list report view or to the footer of the object page."/>
+<meta name="description" content="You can add a determining action button to the footer of the list report view or to the footer of the object page."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5462174900490538"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5462174900490538"/>
+<title>Adding Determining Actions</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio1743323829e5474eb3829d2e9ab022ae">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Adding Determining Actions</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You can add a determining action button to the footer of the list report view or to the
+		footer of the object page.</p>
+
+		<p class="p">Determining actions are used to trigger actions directly using the context of the table in the
+			list report, or the context of the page in the object page. </p>
+
+		<p class="p">Two types of determining actions are supported:</p>
+
+		<div class="p"><ul class="ul" id="loio1743323829e5474eb3829d2e9ab022ae__ul_ebg_bhl_lw">
+				<li class="li">
+					<p class="p">Actions that trigger a back-end call through the OData service (<samp class="ph codeph">Function</samp>,
+							<samp class="ph codeph">FunctionImport</samp>, <samp class="ph codeph">Action</samp>, or
+							<samp class="ph codeph">ActionImport</samp>), represented by the complex type
+							<samp class="ph codeph">DataFieldForAction</samp></p>
+
+				</li>
+
+				<li class="li">Actions that trigger intent-based navigation, represented by the complex type
+						<samp class="ph codeph">DataFieldForIntentBasedNavigation</samp></li>
+
+			</ul>
+To add a determining action to the footer of the list report or object page, use
+			the annotation term <samp class="ph codeph">UI.LineItem</samp> and set the
+				<samp class="ph codeph">Determining</samp> property to <samp class="ph codeph">true</samp> for the complex type.
+			This is displayed as shown below:</div>
+
+		<div class="fig fignone" id="loio1743323829e5474eb3829d2e9ab022ae__fig_tt5_b3l_lw"><div class="figcontainer">
+			
+			<img class="image" id="loio1743323829e5474eb3829d2e9ab022ae__image_fjd_yhl_lw" src="loio91baa1d6d09b4ab2bf0800ca808df0a0_LowRes.png"/>
+		<div class="figcap">List Report: Determining Action in Footer</div></div></div>
+
+		<div class="fig fignone" id="loio1743323829e5474eb3829d2e9ab022ae__fig_bld_m3l_lw"><div class="figcontainer">
+			
+			<img class="image" id="loio1743323829e5474eb3829d2e9ab022ae__image_htp_cll_lw" src="loio5dc52f1ca65c47bc97cdd6e5bb800ea0_LowRes.png"/>
+		<div class="figcap">Object Page: Determining Action in Footer</div></div></div>
+
+		<div class="section"><div class="section_title">Code Samples</div><div type="Code Samples"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">List Report</p>
+
+				<p class="p">The following code sample shows an example of how to create your annotations for
+					the determining actions in the list report:</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+&lt;Annotation Term="UI.LineItem"&gt;
+
+   &lt;Collection&gt;
+
+      &lt;Record Type="UI.DataFieldForAction"&gt;
+
+         &lt;PropertyValue Property="Label" String="Copy with new Supplier"/&gt;
+
+         &lt;PropertyValue Property="Action"
+
+             String="STTA_PROD_MAN.STTA_PROD_MAN_Entities/
+
+            STTA_C_MP_ProductCopywithparams"/&gt;
+
+         &lt;Annotation Term="UI. InvocationGrouping"
+
+            EnumMember="UI.OperationGroupingType/Isolated"/&gt;
+
+      &lt;/Record&gt;
+
+      &lt;Record Type="UI.DataFieldForAction"&gt;
+
+         &lt;PropertyValue Property="Label" String="Copy"/&gt;
+
+         &lt;PropertyValue Property="Action"
+
+            String="STTA_PROD_MAN.STTA_PROD_MAN_Entities/STTA_C_MP_ProductCopy"/&gt;
+
+         &lt;PropertyValue Property="Determining" Bool="true"/&gt;
+
+         &lt;Annotation Term="UI. InvocationGrouping"
+
+            EnumMember="UI.OperationGroupingType/Isolated"/&gt;
+
+      &lt;/Record&gt;
+
+      &lt;Record Type="UI.DataFieldForIntentBasedNavigation"&gt;
+
+         &lt;PropertyValue Property="Label" String="Manage Products (ST)"/&gt;
+
+         &lt;PropertyValue Property="SemanticObject" String="EPMProduct"/&gt;
+
+         &lt;PropertyValue Property="Action" String="manage_st"/&gt;
+
+         &lt;PropertyValue Property="Determining" Bool="true"/&gt;
+
+      &lt;/Record&gt;
+
+   &lt;/Collection&gt;
+
+&lt;/Annotation&gt;
+</pre></div>
+
+				<div class="note note"><span class="notetitle">Note</span> The <samp class="ph codeph">UI.LineItem</samp> vocabulary term is used to define the columns
+					for the smart table. </div>
+
+				<p class="p">In the example above for the first record type, the
+						<samp class="ph codeph">DataFieldForAction</samp> complex type does not contain the
+						<samp class="ph codeph">Determining</samp> property. Therefore, the action button will
+					appear in the smart table toolbar. </p>
+
+				<p class="p">With the last two record types, the <samp class="ph codeph">DataFieldForAction</samp> and
+						<samp class="ph codeph">DataFieldForIntentBasedNavigation</samp>, complex types are used
+					and contain the <samp class="ph codeph">Determining</samp> property, which is set to
+						<samp class="ph codeph">true</samp>. This means the action buttons will appear in the
+					footer. </p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Object Page</p>
+
+				<div class="p">The following code sample shows how to create your annotations for the determining actions on
+					the object
+					page:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+&lt;Annotation Term="UI.Identification"&gt;
+
+    &lt;Collection&gt;
+
+       &lt;Record Type="UI.DataFieldForAction"&gt;
+
+          &lt;PropertyValue Property="Label" String="CWP"/&gt;
+
+          &lt;PropertyValue Property="Action"
+
+             String="STTA_PROD_MAN.STTA_PROD_MAN_Entities/
+
+             STTA_C_MP_ProductCopywithparams"/&gt;
+
+          &lt;Annotation Term="UI.OperationGrouping"
+
+             EnumMember="UI.OperationGroupingType/Isolated"/&gt;
+
+          &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+
+       &lt;/Record&gt;
+
+       &lt;Record Type="UI.DataFieldForAction"&gt;
+
+          &lt;PropertyValue Property="Label" String="Copy"/&gt;
+
+          &lt;PropertyValue Property="Action"
+
+             String="STTA_PROD_MAN.STTA_PROD_MAN_Entities/STTA_C_MP_ProductCopy"/&gt;
+
+          &lt;PropertyValue Property="Determining" Bool="true"/&gt;
+
+          &lt;Annotation Term="UI.OperationGrouping"
+
+             EnumMember="UI.OperationGroupingType/Isolated"/&gt;
+
+          &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+
+       &lt;/Record&gt;
+
+    &lt;/Collection&gt;
+
+ &lt;/Annotation&gt;
+</pre></div>
+</div>
+
+				<div class="note note"><span class="notetitle">Note</span> The <samp class="ph codeph">UI.Identification</samp> vocabulary term is used to define the
+					actions on the object page.</div>
+
+				<p class="p">In the example above for the first record type, the <samp class="ph codeph">DataFieldForAction</samp>
+					complex type does not contain the <samp class="ph codeph">Determining</samp> property. That's
+					why the action button will appear in the object page header. </p>
+
+				<p class="p">With the last record type, the <samp class="ph codeph">DataFieldForAction</samp> complex type is used and
+					contains the <samp class="ph codeph">Determining</samp> property, which is set to
+						<samp class="ph codeph">true</samp>. This means the action button will appear in the
+					footer. Note that if the <samp class="ph codeph">Determining</samp> property is either not
+					present or is set to <samp class="ph codeph">false</samp>, the action will not appear in the
+					footer.</p>
+
+			</div></div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

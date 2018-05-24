@@ -1,0 +1,60 @@
+<core:View xmlns:core="sap.ui.core" xmlns="sap.m"
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:tree="sap.ui.table" controllerName="sap.ui.comp.sample.personalization.example10.Example"
+	class="sapUiSizeCompact">
+
+	<smartTable:SmartTable tableType="TreeTable"
+		editable="false" enableAutoBinding="true"
+		entitySet="GLAccountHierarchyInChartOfAccountsLiSet"
+		useVariantManagement="true" persistencyKey="PKeyTreeExample10"
+		useTablePersonalisation="true" header="tree table hierarchy"
+		showRowCount="true" useExportToExcel="false">
+
+		<!-- Limitation for Filter on TreeTable: Filter works on ODataTreeBinding. 
+			If as filter result a table line is found that is NOT on ROOT level the backward 
+			path determination to the root is not executed by the TreeTable!! (due to 
+			performance). Due to this the full qualified tree cannot be created and therefore 
+			the TreeTable does not support the whole filter logic. -->
+
+		<tree:TreeTable id="mytreeTable" selectionMode="None"
+			showColumnVisibilityMenu="false" visibleRowCount="20"
+			visibleRowCountMode="Interactive" rootLevel="1" expandFirstLevel="true">
+
+			<tree:Column grouped="false" autoResizable="true">
+				<Label text="FinStatementHierarchyLevelVal" />
+				<tree:template>
+					<Text text="{FinStatementHierarchyLevelVal}" wrapping="false"></Text>
+				</tree:template>
+				<tree:customData>
+					<core:CustomData key="p13nData"
+						value='\{"columnKey": "FinStatementHierarchyLevelVal","leadingProperty":"FinStatementHierarchyLevelVal"\}' />
+				</tree:customData>
+			</tree:Column>
+
+			<tree:Column grouped="false" autoResizable="true">
+				<Label text="UniqueHierarchyNode" />
+				<tree:template>
+					<Text text="{UniqueHierarchyNode}" wrapping="false"></Text>
+				</tree:template>
+				<tree:customData>
+					<core:CustomData key="p13nData"
+						value='\{"columnKey": "UniqueHierarchyNode"\}' />
+				</tree:customData>
+			</tree:Column>
+
+			<tree:Column grouped="false" autoResizable="true">
+				<Label text="UniqueParent" />
+				<tree:template>
+					<Text text="{UniqueParent}" wrapping="false"></Text>
+				</tree:template>
+				<tree:customData>
+					<core:CustomData key="p13nData"
+						value='\{"columnKey": "UniqueParent"\}' />
+				</tree:customData>
+			</tree:Column>
+
+
+		</tree:TreeTable>
+	</smartTable:SmartTable>
+
+</core:View>

@@ -1,0 +1,1169 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for sap.suite.ui.microchart.RadialMicroChart</title>
+
+<base href="../../../../../../">
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal"
+	data-sap-ui-libs="sap.suite.ui.microchart, sap.m">
+</script>
+
+<link rel="stylesheet" href="resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+<script type="text/javascript" src="resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript" src="resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript" src="resources/sap/ui/qunit/qunit-coverage.js"></script>
+<script type="text/javascript" src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+<script>
+	jQuery.sap.initMobile();
+
+	jQuery.sap.require("sap.suite.ui.microchart.RadialMicroChart");
+
+	QUnit.module("Control initialization core and theme checks", {
+		beforeEach: function() {
+			this.oStubIsInitialized = sinon.stub(sap.ui.getCore(), "isInitialized");
+			this.oSpyAttachInit = sinon.spy(sap.ui.getCore(), "attachInit");
+			this.oSpyHandleCoreInitialized = sinon.spy(sap.suite.ui.microchart.RadialMicroChart.prototype, "_handleCoreInitialized");
+			this.oStubThemeApplied = sinon.stub(sap.ui.getCore(), "isThemeApplied");
+			this.oStubAttachThemeApplied = sinon.stub(sap.ui.getCore(), "attachThemeChanged", function(fn, context) {
+				fn.call(context); //simulate immediate theme change
+			});
+			this.oSpyHandleThemeApplied = sinon.spy(sap.suite.ui.microchart.RadialMicroChart.prototype, "_handleThemeApplied");
+		},
+		afterEach: function() {
+			this.oStubIsInitialized.restore();
+			this.oSpyAttachInit.restore();
+			this.oSpyHandleCoreInitialized.restore();
+			this.oStubThemeApplied.restore();
+			this.oStubAttachThemeApplied.restore();
+			this.oSpyHandleThemeApplied.restore();
+		}
+	});
+
+	QUnit.test("Core initialization check - no core, no theme", function(assert) {
+		//Arrange
+		this.oStubIsInitialized.returns(false);
+		this.oStubThemeApplied.returns(false);
+
+		//Act
+		var oChart = new sap.suite.ui.microchart.RadialMicroChart();
+
+		//Assert
+		assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+		assert.ok(this.oSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+		assert.ok(this.oSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+		assert.ok(this.oStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+		assert.ok(this.oSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+	});
+
+	QUnit.test("Core initialization check - no core, but theme", function(assert) {
+		//Arrange
+		this.oStubIsInitialized.returns(false);
+		this.oStubThemeApplied.returns(true);
+
+		//Act
+		var oChart = new sap.suite.ui.microchart.RadialMicroChart();
+
+		//Assert
+		assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+		assert.ok(this.oSpyAttachInit.calledOnce, "Method Core.attachInit has been called once.");
+		assert.ok(this.oSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+		assert.ok(this.oStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+		assert.ok(this.oSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+	});
+
+	QUnit.test("Core initialization check - core, but no theme", function(assert) {
+		//Arrange
+		this.oStubIsInitialized.returns(true);
+		this.oStubThemeApplied.returns(false);
+
+		//Act
+		var oChart = new sap.suite.ui.microchart.RadialMicroChart();
+
+		//Assert
+		assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+		assert.ok(this.oSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+		assert.ok(this.oSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+		assert.ok(this.oStubAttachThemeApplied.calledOnce, "Method Core.attachThemeChanged has been called once.");
+		assert.ok(this.oSpyHandleThemeApplied.calledOnce, "Method _handleThemeApplied has been called once.");
+	});
+
+	QUnit.test("Core initialization check - core and theme", function(assert) {
+		//Arrange
+		this.oStubIsInitialized.returns(true);
+		this.oStubThemeApplied.returns(true);
+
+		//Act
+		var oChart = new sap.suite.ui.microchart.RadialMicroChart();
+
+		//Assert
+		assert.ok(oChart._bThemeApplied, "Rendering variable has been correctly set.");
+		assert.ok(this.oSpyAttachInit.notCalled, "Method Core.attachInit has not been called.");
+		assert.ok(this.oSpyHandleCoreInitialized.calledOnce, "Method _handleCoreInitialized has been called once.");
+		assert.ok(this.oStubAttachThemeApplied.notCalled, "Method Core.attachThemeChanged has not been called.");
+		assert.ok(this.oSpyHandleThemeApplied.notCalled, "Method _handleThemeApplied has not been called.");
+	});
+
+	QUnit.module("Rendering tests for 45.5%", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {
+				percentage : 45.5,
+				press : function(oEvent) {}
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Control rendered", function(assert){
+		//Arrange
+
+		//Act
+
+		//Assert
+		assert.ok(jQuery.sap.domById("radialMicroChart"), "Control was rendered");
+		assert.ok(this.oRadialMicroChart.$().hasClass("sapSuiteUiMicroChartPointer"), "Click and hover class was applied correctly due to press event");
+		var a$CircleElementsInRadialChartDom = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("circle");
+		assert.equal(a$CircleElementsInRadialChartDom.length, 3, "3 circles were rendered, Background, 2xBorder");
+		var a$PathElementsInRadialChartDom = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("path");
+		assert.equal(a$PathElementsInRadialChartDom.length, 2, "2 path elements were rendered, completed, not completed");
+	});
+
+	QUnit.test("Percentage constructor test", function(assert) {
+		//Arrange
+
+		//Act
+		var fPercentage = this.oRadialMicroChart.getPercentage();
+
+		//Assert
+		assert.equal(fPercentage, 45.5, "Constructor with percentage works");
+		assert.equal(this.oRadialMicroChart._getPercentageMode(), true, "Internal property percentageMode was set to true");
+	});
+
+	QUnit.test("Percentage set to the same value test", function(assert) {
+		//Arrange
+		sinon.spy(this.oRadialMicroChart, "setProperty");
+
+		//Act
+		this.oRadialMicroChart.setPercentage(45.5);
+		var fPercentage = this.oRadialMicroChart.getPercentage();
+
+		//Assert
+		assert.equal(fPercentage, 45.5, "Percentage value was not changed");
+		assert.equal(this.oRadialMicroChart.setProperty.calledOnce, false, "setProperty was not calledOnce on oRadialMicroChart since the percentage value was the same as the already configured one");
+	});
+
+	QUnit.test("Text Color test", function(assert) {
+		//Arrange
+		//Act
+		var sColor = sap.suite.ui.microchart.RadialMicroChartRenderer._getTextColorClass(this.oRadialMicroChart);
+		//Assert
+		assert.equal(sColor, "sapSuiteRMCNeutralTextColor", "Color class for 'Neutral' was correct if nothing was configured (default)");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor(sap.m.ValueColor.Neutral);
+		//Act
+		sColor = sap.suite.ui.microchart.RadialMicroChartRenderer._getTextColorClass(this.oRadialMicroChart);
+		//Assert
+		assert.equal(sColor, "sapSuiteRMCNeutralTextColor", "Color class for 'Neutral' was correct");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor(sap.m.ValueColor.Good);
+		//Act
+		sColor = sap.suite.ui.microchart.RadialMicroChartRenderer._getTextColorClass(this.oRadialMicroChart);
+		//Assert
+		assert.equal(sColor, "sapSuiteRMCGoodTextColor", "Color class for 'Good' was correct");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor(sap.m.ValueColor.Error);
+		//Act
+		sColor = sap.suite.ui.microchart.RadialMicroChartRenderer._getTextColorClass(this.oRadialMicroChart);
+		//Assert
+		assert.equal(sColor, "sapSuiteRMCErrorTextColor", "Color class for 'Error' was correct");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor(sap.m.ValueColor.Critical);
+		//Act
+		sColor = sap.suite.ui.microchart.RadialMicroChartRenderer._getTextColorClass(this.oRadialMicroChart);
+		//Assert
+		assert.equal(sColor, "sapSuiteRMCCriticalTextColor", "Color class for 'Critical' was correct");
+	});
+
+	QUnit.test("Path Color test", function(assert) {
+		//Arrange
+		//Act
+		var sColor = sap.suite.ui.microchart.RadialMicroChartRenderer._getPathColor(this.oRadialMicroChart);
+		//Assert
+		assert.equal(sColor, "sapSuiteRMCPathNeutral", "Color class for 'Neutral' was correct if nothing was configured (default)");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor(sap.m.ValueColor.Neutral);
+		//Act
+		sColor = sap.suite.ui.microchart.RadialMicroChartRenderer._getPathColor(this.oRadialMicroChart);
+		//Assert
+		assert.equal(sColor, "sapSuiteRMCPathNeutral", "Color class for 'Neutral' was correct");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor(sap.m.ValueColor.Good);
+		//Act
+		sColor = sap.suite.ui.microchart.RadialMicroChartRenderer._getPathColor(this.oRadialMicroChart);
+		//Assert
+		assert.equal(sColor, "sapSuiteRMCPathGood", "Color class for 'Good' was correct");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor(sap.m.ValueColor.Error);
+		//Act
+		sColor = sap.suite.ui.microchart.RadialMicroChartRenderer._getPathColor(this.oRadialMicroChart);
+		//Assert
+		assert.equal(sColor, "sapSuiteRMCPathError", "Color class for 'Error' was correct");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor(sap.m.ValueColor.Critical);
+		//Act
+		sColor = sap.suite.ui.microchart.RadialMicroChartRenderer._getPathColor(this.oRadialMicroChart);
+		//Assert
+		assert.equal(sColor, "sapSuiteRMCPathCritical", "Color class for 'Critical' was correct");
+	});
+
+	QUnit.test("Property valueColor test for multiple datatypes", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setValueColor("#666666");
+		//Act
+		sap.ui.getCore().applyChanges();
+		//Assert
+		assert.equal(this.oRadialMicroChart.getValueColor(), "#666666", "Applying hex value to property works");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor("red");
+		//Act
+		sap.ui.getCore().applyChanges();
+		//Assert
+		assert.equal(this.oRadialMicroChart.getValueColor(), "red", "Applying color string value to property works");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor(sap.m.ValueColor.Good);
+		//Act
+		sap.ui.getCore().applyChanges();
+		//Assert
+		assert.equal(this.oRadialMicroChart.getValueColor(), sap.m.ValueColor.Good, "Applying enum value to property works");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor("Good");
+		//Act
+		sap.ui.getCore().applyChanges();
+		//Assert
+		assert.equal(this.oRadialMicroChart.getValueColor(), "Good", "Applying enum value as string to property works");
+
+		//Arrange
+		this.oRadialMicroChart.setValueColor();
+		//Act
+		sap.ui.getCore().applyChanges();
+		//Assert
+		assert.equal(this.oRadialMicroChart.getValueColor(), sap.m.ValueColor.Neutral, "Applying no value to property works (neutral is set)");
+
+		//Assert
+		assert.throws(function () {
+			//Arrange
+			this.oRadialMicroChart.setValueColor(500);
+			//Act
+			sap.ui.getCore().applyChanges();
+		}, "Exception was thrown if integer value has been applied");
+	});
+
+	QUnit.module("Rendering tests for 0%", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {percentage : 0.0}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Control rendered", function(assert){
+		//Arrange
+
+		//Act
+
+		//Assert
+		assert.ok(jQuery.sap.domById("radialMicroChart"), "Control was rendered");
+		assert.ok(!this.oRadialMicroChart.$().hasClass("sapSuiteUiMicroChartPointer"), "Click and hover class was not applied since no press event was configured");
+		var a$CircleElementsInRadialChartDom = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("circle");
+		assert.equal(a$CircleElementsInRadialChartDom.length, 4, "4 circles were rendered, Background, 2xBorder, inner circle");
+		assert.equal(this.oRadialMicroChart.$().find(a$CircleElementsInRadialChartDom[3]).attr("class").trim(), "sapSuiteRMCPathIncomplete", "Incomplete (0%) circle was rendered");
+	});
+
+	QUnit.module("Rendering tests for 100%", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {percentage : 100.0}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Control rendered", function(assert){
+		//Arrange
+
+		//Act
+
+		//Assert
+		assert.ok(jQuery.sap.domById("radialMicroChart"), "Control was rendered");
+		var a$CircleElementsInRadialChartDom = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("circle");
+		assert.equal(a$CircleElementsInRadialChartDom.length, 4, "4 circles were rendered, Background, 2xBorder, inner circle");
+	});
+
+	QUnit.module("Rendering tests for percentage < 0%", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {percentage : -50.0}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Control rendered", function(assert){
+		//Arrange
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_PERCENTAGE_TEXT", [0]);
+
+		//Act
+
+		//Assert
+		assert.ok(jQuery.sap.domById("radialMicroChart"), "Control was rendered");
+		var a$CircleElementsInRadialChartDom = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("circle");
+		assert.equal(a$CircleElementsInRadialChartDom.length, 4, "4 circles were rendered, Background, 2xBorder, inner circle");
+		assert.equal(jQuery.sap.byId(this.oRadialMicroChart.getId()).find("text").text().trim(), sExpectedTranslationText, "Minimum value 0% was applied correctly when configuring value <0");
+	});
+
+	QUnit.module("Rendering tests for percentage > 100%", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {percentage : 150.0}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Control rendered", function(assert){
+		//Arrange
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_PERCENTAGE_TEXT", [100]);
+
+		//Act
+
+		//Assert
+		assert.ok(jQuery.sap.domById("radialMicroChart"), "Control was rendered");
+		var a$CircleElementsInRadialChartDom = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("circle");
+		assert.equal(a$CircleElementsInRadialChartDom.length, 4, "4 circles were rendered, Background, 2xBorder, inner circle");
+		assert.equal(jQuery.sap.byId(this.oRadialMicroChart.getId()).find("text").text().trim(), sExpectedTranslationText, "Maximum value 100% was applied correctly when configuring value >100");
+	});
+
+	QUnit.module("Rendering tests for Fraction > Total", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {
+				fraction : 145.5,
+				total : 100
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Control rendered", function(assert){
+		//Arrange
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_PERCENTAGE_TEXT", [100]);
+
+		//Act
+
+		//Assert
+		assert.ok(jQuery.sap.domById("radialMicroChart"), "Control was rendered");
+		var a$CircleElementsInRadialChartDom = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("circle");
+		assert.equal(a$CircleElementsInRadialChartDom.length, 4, "4 circles were rendered, Background, 2xBorder, inner circle");
+		var oText = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("text");
+		assert.equal(oText.text().trim(), sExpectedTranslationText, "Maximum value 100% was applied correctly when configuring value >100");
+		var oSVG = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("svg");
+		assert.equal(oSVG.hasClass("sapSuiteRMCSmallFont"), false, "Class sapSuiteRMCSmallFont is not added to SVG element when accessible size is not used");
+	});
+
+	QUnit.module("Rendering tests for Fraction < 0", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {
+				fraction : -45.5,
+				total : 100
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Control rendered", function(assert){
+		//Arrange
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_PERCENTAGE_TEXT", [0]);
+
+		//Act
+
+		//Assert
+		assert.ok(jQuery.sap.domById("radialMicroChart"), "Control was rendered");
+		var a$CircleElementsInRadialChartDom = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("circle");
+		assert.equal(a$CircleElementsInRadialChartDom.length, 4, "4 circles were rendered, Background, 2xBorder, inner circle");
+		assert.equal(jQuery.sap.byId(this.oRadialMicroChart.getId()).find("text").text().trim(), sExpectedTranslationText, "Minimum value 0% was applied correctly when configuring value <0");
+	});
+
+	QUnit.module("Rendering tests for Total = 0 an Fraction not set", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {total : 0}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Control rendered", function(assert){
+		//Arrange
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_PERCENTAGE_TEXT", [0]);
+
+		//Act
+
+		//Assert
+		assert.ok(jQuery.sap.domById("radialMicroChart"), "Control was rendered");
+		var a$CircleElementsInRadialChartDom = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("circle");
+		assert.equal(a$CircleElementsInRadialChartDom.length, 1, "1 circles were rendered, Background");
+	});
+
+	QUnit.module("Chart property binding of percentage", {
+		beforeEach: function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart({
+				percentage: "{/percentage}"
+			}).placeAt("qunit-fixture");
+			this.oRadialMicroChart.setModel(new sap.ui.model.json.JSONModel({
+				percentage: 0
+			}));
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach: function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("PercentageMode with percentage 0 correctly set", function(assert) {
+		assert.equal(this.oRadialMicroChart._getPercentageMode(), true, "PercentageMode set even if percentage is 0.");
+		assert.equal(this.oRadialMicroChart.getPercentage(), 0, "Percentage has been correctly set.");
+	});
+
+	QUnit.module("Rendering tests accessible text", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {total : 100});
+			this.oFlexBox = new sap.m.FlexBox("rmc-fb", {
+				items: [this.oRadialMicroChart],
+				height: "50px",
+				width: "50px",
+				alignItems: "Center"
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+			this.oFlexBox.destroy();
+			this.oFlexBox = null;
+		}
+	});
+
+	QUnit.test("Accessible text rendering", function(assert) {
+		//Arrange
+
+		//Act
+
+		//Assert
+		var sAssignedClassesOnSVGElement = this.oRadialMicroChart.$().find("svg").attr("class");
+		assert.ok(sAssignedClassesOnSVGElement.indexOf("sapSuiteRMCAccessibleTextColor") > 0, "Class has been added successfully since control has accessible size configured");
+		assert.ok(sAssignedClassesOnSVGElement.indexOf("sapSuiteRMCSmallFont") > 0, "sapSuiteRMCSmallFont class has been added successfully when the control has accessible size configured");
+	});
+
+	QUnit.module("Rendering small element without text", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {total : 100});
+			this.oFlexBox = new sap.m.FlexBox("rmc-fb", {
+				items: [this.oRadialMicroChart],
+				height: "46px",
+				width: "46px",
+				alignItems: "Center"
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+			this.oFlexBox.destroy();
+			this.oFlexBox = null;
+		}
+	});
+
+	QUnit.test("Without text rendering", function(assert) {
+		//Arrange
+
+		//Act
+
+		//Assert
+		var s$StyleAttributeContent = this.oRadialMicroChart.$().find("text").attr("style");
+		assert.ok(s$StyleAttributeContent.indexOf("display: none;") >= 0, "SVG Text element was hidden due to size.");
+	});
+
+	QUnit.test("Without text rendering - higher height", function(assert) {
+		//Arrange
+
+		//Act
+		this.oFlexBox.$().height("80px");
+		this.oRadialMicroChart.rerender();
+
+		//Assert
+		var s$StyleAttributeContent = this.oRadialMicroChart.$().find("text").attr("style");
+		assert.ok(s$StyleAttributeContent.indexOf("display: none;") >= 0, "SVG Text element was hidden due to size (small width but higher height).");
+	});
+
+	QUnit.test("With text rendering - higher height and width", function(assert) {
+		//Arrange
+
+		//Act
+		this.oFlexBox.$().height("80px");
+		this.oFlexBox.$().width("80px");
+		this.oRadialMicroChart.rerender();
+
+		//Assert
+		var s$StyleAttributeContent = this.oRadialMicroChart.$().find("text").attr("style");
+		assert.ok(!s$StyleAttributeContent || s$StyleAttributeContent.indexOf("display: none;") === -1, "SVG Text element was visible due to higher size (width and height).");
+	});
+
+	QUnit.module("After Rendering size manipulation", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {total : 100});
+			this.oFlexBox = new sap.m.FlexBox("rmc-fb", {
+				items: [this.oRadialMicroChart],
+				height: "50px",
+				width: "50px",
+				alignItems: "Center"
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Size after rendering needs to be the same as parent element.", function(assert) {
+		//Arrange
+
+		//Act
+		var sExpectedHeight = parseFloat(this.oRadialMicroChart.getParent().$().height()) -2;
+		var sExpectedWidth = parseFloat(this.oRadialMicroChart.getParent().$().width()) -2;
+
+		//Assert
+		assert.equal(this.oRadialMicroChart.$().height() , sExpectedHeight, "Div Height is the same as parent element");
+		assert.equal(this.oRadialMicroChart.$().children("svg").height(), sExpectedHeight, "SVG Height is the same as parent element");
+		assert.equal(this.oRadialMicroChart.$().width() , sExpectedWidth, "Div Width is the same as parent element");
+		assert.equal(this.oRadialMicroChart.$().children("svg").width(), sExpectedWidth, "SVG Width is the same as parent element");
+	});
+
+	QUnit.module("Rendering small element without control", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {total : 100});
+			this.oFlexBox = new sap.m.FlexBox("rmc-fb23", {
+				items: [this.oRadialMicroChart],
+				height: "23px",
+				width: "23px",
+				alignItems: "Center"
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+			this.oFlexBox.destroy();
+			this.oFlexBox = null;
+		}
+	});
+
+	QUnit.test("With control hidden - small width and height", function(assert) {
+		//Arrange
+
+		//Act
+
+		//Assert
+		var s$StyleAttributeContent = this.oRadialMicroChart.$().attr("style");
+		assert.ok(s$StyleAttributeContent.indexOf("display: none;") >= 0, "control was hidden due to small width and height.");
+	});
+
+	QUnit.test("With control hidden and bigger height", function(assert) {
+		//Arrange
+
+		//Act
+		this.oFlexBox.$().height("50px");
+		this.oRadialMicroChart.rerender();
+
+		//Assert
+		var s$StyleAttributeContent = this.oRadialMicroChart.$().attr("style");
+		assert.ok(s$StyleAttributeContent.indexOf("display: none;") >= 0, "control element was hidden due to small width only but higher height.");
+	});
+
+	QUnit.test("With control visible for bigger height and width", function(assert) {
+		//Arrange
+
+		//Act
+		this.oFlexBox.$().width("50px");
+		this.oFlexBox.$().height("50px");
+		this.oRadialMicroChart.rerender();
+
+		//Assert
+		var s$StyleAttributeContent = this.oRadialMicroChart.$().attr("style");
+		assert.ok(s$StyleAttributeContent.indexOf("display: none;") === -1, "control element was visible due to higher width and height.");
+	});
+
+	QUnit.module("After Rendering size manipulation in GenericTile", {
+		beforeEach : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {total : 100});
+			this.oGenericTile = new sap.m.GenericTile({
+				tileContent : [new sap.m.TileContent({
+					content : this.oRadialMicroChart
+				})]
+			}).placeAt("qunit-fixture");
+		},
+		afterEach : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+			this.oGenericTile.destroy();
+			this.oGenericTile = null;
+		}
+	});
+
+	QUnit.test("Size adjustments in case of chart located inside of GenericTile", function(assert) {
+		//Arrange
+		var oAdjustTcCallback = sinon.spy(this.oRadialMicroChart, "_adjustToTileContent");
+		//Act
+		this.oRadialMicroChart.onAfterRendering();
+		//Assert
+		assert.ok(oAdjustTcCallback.called, "Called function that performs the necessary adjustments in case of chart located iside of GenericTile.");
+	});
+
+	QUnit.module("Chart calculation", {
+		setup : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {
+				fraction : 45.5,
+				total : 100
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		teardown : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Total and fraction set in constructor", function(assert) {
+		//Arrange
+
+		//Act
+		var fTotal = this.oRadialMicroChart.getTotal();
+		var fFraction = this.oRadialMicroChart.getFraction();
+		var fPercentage = this.oRadialMicroChart.getPercentage();
+
+		//Assert
+		assert.equal(fTotal, 100, "Total was set correctly in constructor");
+		assert.equal(fFraction, 45.5, "Fraction was set correctly in constructor");
+		assert.equal(fPercentage, 45.5, "Percentage was calculated correctly setting total and fraction in constructor");
+	});
+
+	QUnit.test("Rendering with Total set to zero dynamically", function(assert) {
+		//Arrange
+
+		//Act
+		this.oRadialMicroChart.setTotal(0);
+		sap.ui.getCore().applyChanges();
+
+		//Assert
+		assert.ok(!this.oRadialMicroChart.hasStyleClass("sapSuiteRMCPath"), "The rendered control has no path element");
+		assert.ok(!this.oRadialMicroChart.hasStyleClass("sapSuiteUiMicroChartRadialMicroChartFont"), "The rendered control has no text element");
+		var a$CircleElementsInRadialChartDom = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("circle");
+		assert.equal(a$CircleElementsInRadialChartDom.length, 1, "Only one circle was rendered (background)");
+		assert.equal(a$CircleElementsInRadialChartDom.attr("class"), "sapSuiteRMCCircleBackground", "Background circle was rendered");
+	});
+
+	QUnit.test("Edge case > 99%", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setPercentage(99.5);
+
+		//Act
+		var fEdgeCasePercentageValue = sap.suite.ui.microchart.RadialMicroChartRenderer._getPercentageForCircleRendering(this.oRadialMicroChart);
+
+		//Assert
+		assert.equal(fEdgeCasePercentageValue, 99 - sap.suite.ui.microchart.RadialMicroChartRenderer.PADDING_WIDTH, "Value between 99.0 and 99.9 are returned as 99 to render the circle properly")
+	});
+
+	QUnit.test("Edge case < 1%", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setPercentage(0.5);
+
+		//Act
+		var fEdgeCasePercentageValue = sap.suite.ui.microchart.RadialMicroChartRenderer._getPercentageForCircleRendering(this.oRadialMicroChart);
+
+		//Assert
+		assert.equal(fEdgeCasePercentageValue, 1 + sap.suite.ui.microchart.RadialMicroChartRenderer.PADDING_WIDTH, "Value between 0 and 0.9 are returned as 1 to render the circle properly")
+	});
+
+	QUnit.module("Chart calculation with Total 0", {
+		setup : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {
+				fraction : 45.5, total : 0
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		teardown : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Rendering with Total set to zero in constructor", function(assert) {
+		//Arrange
+
+		//Act
+
+		//Assert
+		assert.ok(!this.oRadialMicroChart.hasStyleClass("sapSuiteRMCPath"), "The rendered control has no path element");
+		assert.ok(!this.oRadialMicroChart.hasStyleClass("sapSuiteUiMicroChartRadialMicroChartFont"), "The rendered control has no text element");
+		var $aCircleElementsInRadialChartDom = jQuery.sap.byId(this.oRadialMicroChart.getId()).find("circle");
+		assert.equal($aCircleElementsInRadialChartDom.length, 1, "Only one circle was rendered (background)");
+		assert.equal($aCircleElementsInRadialChartDom.attr("class"), "sapSuiteRMCCircleBackground", "Background circle was rendered");
+	});
+
+	QUnit.module("Aria and Tooltip", {
+		setup : function() {
+			this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart({percentage : 30}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		teardown : function() {
+			this.oRadialMicroChart.destroy();
+			this.oRadialMicroChart = null;
+		}
+	});
+
+	QUnit.test("Test method getTooltip_AsString", function(assert) {
+		//Arrange
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_ARIA_LABEL", [this.oRadialMicroChart.getPercentage(), this.oRadialMicroChart.getValueColor()]);
+
+		//Act
+		var sTooltip = this.oRadialMicroChart.getTooltip_AsString();
+
+		//Assert
+		assert.equal(sTooltip, sExpectedTranslationText, "Tooltip text matches the expected one");
+	});
+
+	QUnit.test("Tooltip by control - Default (neutral)", function(assert) {
+		//Arrange
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_ARIA_LABEL", [this.oRadialMicroChart.getPercentage(), this.oRadialMicroChart.getValueColor()]);
+
+		//Act
+		var sTooltip = this.oRadialMicroChart._getTooltipText();
+
+		//Assert
+		assert.equal(sTooltip, sExpectedTranslationText, "Tooltip text matches the expected one");
+	});
+
+	QUnit.test("Tooltip by control - Default (neutral) due to CSSColor", function(assert) {
+		//Arrange
+		var sTestColor = "#666666";
+		this.oRadialMicroChart.setValueColor(sTestColor);
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_ARIA_LABEL", [this.oRadialMicroChart.getPercentage(), sap.m.ValueColor.Neutral]);
+
+		//Act
+		var sTooltip = this.oRadialMicroChart._getTooltipText();
+
+		//Assert
+		assert.equal(sTooltip, sExpectedTranslationText, "Tooltip was created correctly by control");
+		assert.equal(this.oRadialMicroChart.getValueColor(), sTestColor, "Hex value wa applied correctly to valueColor property");
+	});
+
+	QUnit.test("Tooltip by control - Critical", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setValueColor(sap.m.ValueColor.Critical);
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_ARIA_LABEL", [this.oRadialMicroChart.getPercentage(), this.oRadialMicroChart._getStatusText()]);
+
+		//Act
+		var sTooltip = this.oRadialMicroChart._getTooltipText();
+
+		//Assert
+		assert.equal(sTooltip, sExpectedTranslationText, "Tooltip text matches the expected one");
+	});
+
+	QUnit.test("Tooltip by control - Error", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setValueColor(sap.m.ValueColor.Error);
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_ARIA_LABEL", [this.oRadialMicroChart.getPercentage(), this.oRadialMicroChart._getStatusText()]);
+
+		//Act
+		var sTooltip = this.oRadialMicroChart._getTooltipText();
+
+		//Assert
+		assert.equal(sTooltip, sExpectedTranslationText, "Tooltip text matches the expected one");
+	});
+
+	QUnit.test("Tooltip as string by application", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setTooltip("Custom Tooltip");
+
+		//Act
+		var sTooltip = this.oRadialMicroChart._getTooltipText();
+
+		//Assert
+		assert.equal(sTooltip, "Custom Tooltip", "Tooltip handed over correctly by application");
+	});
+
+	QUnit.test("Tooltip as TooltipBase by application", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setTooltip(new sap.ui.core.TooltipBase({text:"Custom Tooltip"}));
+
+		//Act
+		var sTooltip = this.oRadialMicroChart._getTooltipText();
+
+		//Assert
+		assert.equal(sTooltip, "Custom Tooltip", "Tooltip handed over correctly by application");
+	});
+
+	QUnit.test("ARIA-Label by control", function(assert) {
+		//Arrange
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_ARIA_LABEL", [this.oRadialMicroChart.getPercentage(), this.oRadialMicroChart.getValueColor()]);
+
+		//Act
+		var sAriaText = this.oRadialMicroChart._getAriaText();
+
+		//Assert
+		assert.equal(sAriaText, sExpectedTranslationText);
+	});
+
+	QUnit.test("ARIA-Label by application", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setTooltip("Custom Aria Text based on Tooltip");
+
+		//Act
+		var sAriaText = this.oRadialMicroChart._getAriaText();
+
+		//Assert
+		assert.equal(sAriaText, "Custom Aria Text based on Tooltip", "Aria Text handed over correctly by application");
+	});
+
+	QUnit.test("ARIA-Label by control and no tooltip", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setTooltip(" "); //Whitespace String
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_ARIA_LABEL", [this.oRadialMicroChart.getPercentage(), this.oRadialMicroChart.getValueColor()]);
+
+		//Act
+		var sAriaText = this.oRadialMicroChart._getAriaText();
+		var sTooltip = this.oRadialMicroChart._getTooltipText();
+
+		//Assert
+		assert.equal(sAriaText, sExpectedTranslationText, "Aria Text was created correctly by control");
+		assert.equal(sTooltip, null, "Tooltip handed over correctly by application (whitespace)");
+	});
+
+	QUnit.test("ARIA-Label by control and empty tooltip", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setTooltip("");
+		var sExpectedTranslationText = this.oRadialMicroChart._rb.getText("RADIALMICROCHART_ARIA_LABEL", [this.oRadialMicroChart.getPercentage(), this.oRadialMicroChart.getValueColor()]);
+
+		//Act
+		var sAriaText = this.oRadialMicroChart._getAriaText();
+		var sTooltip = this.oRadialMicroChart._getTooltipText();
+
+		//Assert
+		assert.equal(sAriaText, sExpectedTranslationText, "Aria Text was created correctly by control");
+		assert.equal(sTooltip, sExpectedTranslationText, "Tooltip handed over correctly by application (whitespace)");
+	});
+
+	QUnit.test("Tooltip was null", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setTooltip(null);
+
+		//Act
+		var bEmptyTooltip = this.oRadialMicroChart._isTooltipSuppressed();
+
+		//Assert
+		assert.ok(!bEmptyTooltip, "Tooltip was not an empty string (null in this case)");
+	});
+
+	QUnit.test("Tooltip was undefined", function(assert) {
+		//Arrange
+		this.oRadialMicroChart.setTooltip(undefined);
+
+		//Act
+		var bEmptyTooltip = this.oRadialMicroChart._isTooltipSuppressed();
+
+		//Assert
+		assert.ok(!bEmptyTooltip, "Tooltip was not an empty string (undefined in this case)");
+	});
+
+	QUnit.test("Aria-label only includes the standard chart information", function(assert) {
+		// Arrange
+		this.oRadialMicroChart.setTooltip("This is a tooltip");
+		var sAriaLabel = this.oRadialMicroChart._getAriaText();
+		// Act
+		sap.ui.getCore().applyChanges();
+		// Assert
+		assert.equal(this.oRadialMicroChart.$().attr("aria-label"), sAriaLabel, "The aria-label includes only chart information");
+		assert.equal(this.oRadialMicroChart.$().attr("title"), null, "The title attribute is not rendered");
+	});
+
+	QUnit.test("Tooltip is shown when mouse enters chart", function(assert) {
+		// Arrange
+		this.oRadialMicroChart.setTooltip("This is a tooltip");
+		sap.ui.getCore().applyChanges();
+		// Act
+		this.oRadialMicroChart.$().trigger("mouseenter");
+		// Assert
+		assert.equal(this.oRadialMicroChart.$().attr("title"), "This is a tooltip", "The title attribute is added when mouse enters the chart");
+	});
+
+	QUnit.test("Tooltip is removed when mouse leaves chart", function(assert) {
+		// Arrange
+		this.oRadialMicroChart.setTooltip("This is a tooltip");
+		sap.ui.getCore().applyChanges();
+		// Act
+		this.oRadialMicroChart.$().trigger("mouseenter");
+		this.oRadialMicroChart.$().trigger("mouseleave");
+		// Assert
+		assert.equal(this.oRadialMicroChart.$().attr("title"), null, "The title attribute is removed when mouse leaves the chart");
+	});
+
+	/* Module wrapper to define a scope for helper functions. This can be replaced with nested approach of QUnit in the future
+	 * This approach is not working in the current TestSuite configuration.
+	 * See 'Hooks stack on nested modules' sample at https://api.qunitjs.com/QUnit.module/ */
+	(function() {
+		QUnit.module("Eventhandling", {
+			setup : function() {
+				this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart({percentage : 30}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			teardown : function() {
+				this.oRadialMicroChart.destroy();
+				this.oRadialMicroChart = null;
+			}
+		});
+
+		QUnit.test("ontap called", function(assert) {
+			//Arrange
+			sinon.spy(this.oRadialMicroChart, "firePress");
+
+			//Act
+			this.oRadialMicroChart.ontap({});
+
+			//Assert
+			assert.ok(this.oRadialMicroChart.firePress.calledOnce, "firePress was calledOnce on oRadialMicroChart");
+		});
+
+		QUnit.test("onkeydown called on SPACE clicked", function(assert) {
+			//Arrange
+			var oEvent = {
+				which:jQuery.sap.KeyCodes.SPACE,
+				preventDefault : function(){}
+			};
+			sinon.spy(oEvent, "preventDefault");
+
+			//Act
+			this.oRadialMicroChart.onkeydown(oEvent);
+
+			//Assert
+			assert.ok(oEvent.preventDefault.calledOnce, "preventDefault was calledOnce on oEvent if SPACE was clicked");
+		});
+
+		QUnit.test("onkeydown called on ENTER clicked", function(assert) {
+			//Arrange
+			var oEvent = {
+				which:jQuery.sap.KeyCodes.ENTER,
+				preventDefault : function(){}
+			};
+			sinon.spy(oEvent, "preventDefault");
+
+			//Act
+			this.oRadialMicroChart.onkeydown(oEvent);
+
+			//Assert
+			assert.ok(!oEvent.preventDefault.calledOnce, "preventDefault was not calledOnce on oEvent if ENTER was clicked");
+		});
+
+		QUnit.test("onkeyup called on SPACE clicked", function(assert) {
+			//Arrange
+			var oEvent = {
+				which:jQuery.sap.KeyCodes.SPACE,
+				preventDefault : function(){}
+			};
+			sinon.spy(oEvent, "preventDefault");
+			sinon.spy(this.oRadialMicroChart, "firePress");
+
+			//Act
+			this.oRadialMicroChart.onkeyup(oEvent);
+
+			//Assert
+			assert.ok(oEvent.preventDefault.calledOnce, "preventDefault was calledOnce on oEvent if SPACE was clicked");
+			assert.ok(this.oRadialMicroChart.firePress.calledOnce, "firePress was calledOnce on oRadialMicroChart if SPACE was clicked");
+		});
+
+		QUnit.test("onkeyup called on ENTER clicked", function(assert) {
+			//Arrange
+			var oEvent = {
+				which:jQuery.sap.KeyCodes.ENTER,
+				preventDefault : function(){}
+			};
+			sinon.spy(oEvent, "preventDefault");
+			sinon.spy(this.oRadialMicroChart, "firePress");
+
+			//Act
+			this.oRadialMicroChart.onkeyup(oEvent);
+
+			//Assert
+			assert.ok(oEvent.preventDefault.calledOnce, "preventDefault was calledOnce on oEvent if ENTER was clicked");
+			assert.ok(this.oRadialMicroChart.firePress.calledOnce, "firePress was calledOnce on oRadialMicroChart if ENTER was clicked");
+		});
+
+		QUnit.test("onkeyup called on TAB clicked", function(assert) {
+			//Arrange
+			var oEvent = {
+				which:jQuery.sap.KeyCodes.TAB,
+				preventDefault : function(){}
+			};
+			sinon.spy(oEvent, "preventDefault");
+			sinon.spy(this.oRadialMicroChart, "firePress");
+
+			//Act
+			this.oRadialMicroChart.onkeyup(oEvent);
+
+			//Assert
+			assert.ok(!oEvent.preventDefault.calledOnce, "preventDefault was not calledOnce on oEvent if TAB was clicked");
+			assert.ok(!this.oRadialMicroChart.firePress.calledOnce, "firePress was not calledOnce on oRadialMicroChart if TAB was clicked");
+		});
+
+		QUnit.test("attachPress called", function(assert) {
+			//Arrange
+			sinon.spy(this.oRadialMicroChart, "rerender");
+
+			//Act
+			this.oRadialMicroChart.attachPress(fnPressHandler);
+
+			//Assert
+			assert.ok(this.oRadialMicroChart.rerender.calledOnce, "rerender was calledOnce on oRadialMicroChart on detachPress/detachEvent");
+			assert.ok(hasAttribute("tabindex", this.oRadialMicroChart), "Radial micro chart has attribute tabindex");
+			assert.ok(this.oRadialMicroChart.$().hasClass("sapSuiteUiMicroChartPointer"), "Class has been added successfully since press handler was configured");
+		});
+
+		QUnit.test("attachEvent called with non press", function(assert) {
+			//Arrange
+			sinon.spy(this.oRadialMicroChart, "rerender");
+
+			//Act
+			this.oRadialMicroChart.attachEvent("tab", fnPressHandler);
+
+			//Assert
+			assert.equal(this.oRadialMicroChart.rerender.calledOnce, false, "rerender was not calledOnce on oRadialMicroChart since other event then press was attached");
+			assert.equal(hasAttribute("tabindex", this.oRadialMicroChart), false, "Since rerender was not called, radial micro chart does not have attribute tabindex");
+			assert.equal(this.oRadialMicroChart.$().hasClass("sapSuiteUiMicroChartPointer"), false, "Since rerender was not called, class has not been added");
+		});
+
+		QUnit.test("detachPress called", function(assert) {
+			//Arrange
+			sinon.spy(this.oRadialMicroChart, "rerender");
+
+			//Act
+			this.oRadialMicroChart.detachPress(fnPressHandler);
+
+			//Assert
+			assert.ok(this.oRadialMicroChart.rerender.calledOnce, "rerender was calledOnce on oRadialMicroChart on detachPress/detachEvent");
+			assert.equal(hasAttribute("tabindex", this.oRadialMicroChart), false, "Radial micro chart has no attribute tabindex");
+			assert.equal(this.oRadialMicroChart.$().hasClass("sapSuiteUiMicroChartPointer"), false, "Class has been removed successfully since press handler was not configured");
+		});
+
+		QUnit.test("detachEvent called with non press", function(assert) {
+			//Arrange
+			sinon.spy(this.oRadialMicroChart, "rerender");
+
+			//Act
+			this.oRadialMicroChart.detachEvent("tab", fnPressHandler);
+
+			//Assert
+			assert.equal(this.oRadialMicroChart.rerender.calledOnce, false, "rerender was not calledOnce on oRadialMicroChart since other event then press was attached");
+			assert.equal(hasAttribute("tabindex", this.oRadialMicroChart), false, "Since rerender was not called, radial micro chart does not have attribute tabindex");
+			assert.equal(this.oRadialMicroChart.$().hasClass("sapSuiteUiMicroChartPointer"), false, "Since rerender was not called, class has not been added");
+		});
+
+		QUnit.module("Execution of functions onAfterRendering", {
+			beforeEach : function() {
+				this.oRadialMicroChart = new sap.suite.ui.microchart.RadialMicroChart("radialMicroChart", {percentage : 100.0}).placeAt("qunit-fixture");
+				sap.ui.getCore().applyChanges();
+			},
+			afterEach : function() {
+				this.oRadialMicroChart.destroy();
+				this.oRadialMicroChart = null;
+			}
+		});
+
+		QUnit.test("Visibility check", function(assert) {
+			//Arrange
+			var oSpyCheckControlIsVisible = sinon.spy(sap.suite.ui.microchart, "_checkControlIsVisible");
+			//Act
+			this.oRadialMicroChart.onAfterRendering();
+			//Assert
+			assert.ok(oSpyCheckControlIsVisible.calledOnce, "Method _checkControlIsVisible has been called once.");
+			oSpyCheckControlIsVisible.restore();
+		});
+
+		QUnit.test("Function check of _onControlIsVisible", function(assert) {
+			//Arrange
+			var oSpyIsInGenericTile = sinon.spy(sap.suite.ui.microchart, "_isInGenericTile");
+			//Act
+			this.oRadialMicroChart.onAfterRendering();
+			//Assert
+			assert.ok(oSpyIsInGenericTile.called, "Method _isInGenericTile has been called.");
+			oSpyIsInGenericTile.restore();
+		});
+
+		/* --- Helpers --- */
+
+		fnPressHandler = function() {};
+
+		hasAttribute = function(sAttribute, oCurrentObject) {
+			var sAttributeValue = oCurrentObject.$().attr(sAttribute);
+			if (typeof sAttributeValue !== typeof undefined && sAttributeValue !== false) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+</body>
+</html>

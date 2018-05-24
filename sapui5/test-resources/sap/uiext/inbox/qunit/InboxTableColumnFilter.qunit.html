@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<script id="sap-ui-bootstrap" 
+		type="text/javascript"
+		src="../../../../../resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_bluecrystal"
+		data-sap-ui-language="en-US"
+		data-sap-ui-noConflict="true"
+		data-sap-ui-libs="sap.ui.commons,sap.uiext.inbox">
+	</script>
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+			// redirect any resource loading for "sap.uiext.inbox.qunit.mockServer" to the local folder "mockServer/" 
+			jQuery.sap.registerModulePath("sap.uiext.inbox.qunit.mockServer", "mockServer/");
+			
+			// now load and activate the mock server
+			jQuery.sap.require("sap.uiext.inbox.qunit.mockServer.InboxMockServerQUnit");
+
+			module("Load");
+
+			test("InboxCreationOk",function() {
+				sap.ui.getCore().applyChanges(); 
+				var $Inbox = jQuery.sap.byId("inbox");
+				equals(false, ( $Inbox === undefined), "Checking if the Inbox Control is created and is not undefined.");
+				equals(false, ( $Inbox === null), "Checking if the Inbox Control is created and is not null.");
+				qutils.triggerMouseEvent("inbox" + "--tableViewSelectionButton", "click");
+			});
+			
+			module("Table creation");
+			
+			asyncTest("Checking table binding", function() {
+				sap.ui.getCore().applyChanges();
+				
+				var delayedCall = function() {
+					var oInbox = sap.ui.getCore().getControl("inbox");
+					var oTable = sap.ui.getCore().getControl("inbox--listViewTable");
+					var oListBinding = oTable.getBinding('rows');
+					equals(oListBinding.aKeys.length, 8, "Table is bound to correct data");
+					start();
+				};
+				setTimeout(delayedCall, 500); 
+			});
+			
+			test ("Filtering a column if none of the other columns are filtered", function() {
+				var oTable = sap.ui.getCore().getControl("inbox--listViewTable");
+				var oInbox = sap.ui.getCore().getControl("inbox");
+				var oTaskTitleColumn = oTable.getColumns()[0];
+				equals(oTaskTitleColumn.getFilterProperty(), "TaskTitle", "Filter property of column is correct");
+				oInbox._applyFilterOnTableColumns(oTaskTitleColumn, "purchase");
+				sap.ui.getCore().applyChanges();
+				
+				var oTable = sap.ui.getCore().getControl("inbox--listViewTable");
+				var oTaskTitleColumn = oTable.getColumns()[0];
+				equals(oTaskTitleColumn.getFiltered(), true, "Filtered property of column is set to true");
+				equals(oTaskTitleColumn.getFilterValue(), "purchase", "FilterValue property of column is set");
+				var oListBinding = oTable.getBinding('rows');
+				equals(oListBinding.aKeys.length, 2, "Table binding has changed according to the filter applied");
+			});
+			
+			test ("Filtering a column if other columns are already filtered", function() {
+				var oInbox = sap.ui.getCore().getControl("inbox");
+				var oTable = sap.ui.getCore().getControl("inbox--listViewTable");
+				var oDueDateColumn = oTable.getColumns()[3];
+				oInbox._applyFilterOnTableColumns(oDueDateColumn, "JuN 21");
+				sap.ui.getCore().applyChanges();
+				
+				oTable = sap.ui.getCore().getControl("inbox--listViewTable");
+				oDueDateColumn = oTable.getColumns()[3];
+				equals(oDueDateColumn.getFiltered(), true, "Filter property of column is correct");
+				equals(oDueDateColumn.getFilterValue(), "jun 21", "FilterValue property of column is set");
+				var oListBinding = oTable.getBinding('rows');
+				equals(oListBinding.aKeys.length, 1, "Table binding has changed according to the filter applied");
+				oInbox._removeTableFilters();
+			});
+			
+			test ("applying local search if columns of table are filtered", function() {
+				sap.ui.getCore().applyChanges();
+				oInbox = sap.ui.getCore().getControl("inbox");
+				oTable = sap.ui.getCore().getControl("inbox--listViewTable");
+				equals(oInbox._isTableFiltered(), false, "none of the columns are filtered");
+				oDueDateColumn = oTable.getColumns()[3];
+				oInbox._applyFilterOnTableColumns(oDueDateColumn, "JuN");
+				oTable = sap.ui.getCore().getControl("inbox--listViewTable");
+				oDueDateColumn = oTable.getColumns()[3];
+				equals(oDueDateColumn.getFiltered(), true, "Filter property of column is correct");
+				equals(oDueDateColumn.getFilterValue(), "jun", "FilterValue of column is set");
+				oListBinding = oTable.getBinding('rows');
+				equals(oListBinding.aKeys.length, 3, "Table binding has changed according to the filter applied");
+				
+				var oSeachField = sap.ui.getCore().getControl("inbox--searchField");
+				oSeachField.setValue("high");
+				oSeachField.focus();
+				qutils.triggerKeydown("inbox--searchField-tf", jQuery.sap.KeyCodes.ENTER, false, false, false);
+				oTable = sap.ui.getCore().getControl("inbox--listViewTable");
+				oDueDateColumn = oTable.getColumns()[3];
+				equals(oInbox._isTableFiltered(), true, "columns of table are filtered");
+				equals(oDueDateColumn.getFiltered(), true, "Filter property of column is correct");
+				equals(oDueDateColumn.getFilterValue(), "jun", "FilterValue of column is set");
+				equals(oInbox._getLocalSearchText(), "high", "searchfield value is set");
+				
+				oListBinding = oTable.getBinding('rows');
+				
+				equals(oListBinding.aKeys.length, 1, "Table binding has changed according to the filter and Local search applied");
+			});
+			
+			asyncTest("Switch to stream view if column filters are applied", function() {
+				var oInbox = sap.ui.getCore().byId('inbox');
+				qutils.triggerMouseEvent("inbox--rrViewSelectionButton", "click");
+				sap.ui.getCore().applyChanges();
+				
+				var delayedCall = function() {
+					equals(oInbox.currentView, "sap_inbox_stream", "current view is row repeater view");
+					start();
+				};
+				setTimeout(delayedCall, 500); 
+			});
+			
+			test ("Column filters and Local search in stream view", function() {
+				oInbox = sap.ui.getCore().getControl("inbox");
+				var oTasksRrView = sap.ui.getCore().byId('inbox--tasksRowRepeater');
+				
+				equals(oInbox._isTableFiltered(), false, "none of the columns are filtered; filters are removed on switchViews");
+				//equals(oInbox._getLocalSearchText(), "high", "Local search is still applied");
+				equals(oTasksRrView.getRows().length, 5, "Local search and column filters are removed");
+			});
+			
+			QUnit.done(function() {
+				qutils.triggerMouseEvent("inbox" + "--tableViewSelectionButton", "click");
+			});
+			
+			
+		</script>
+	</head>
+	<body>
+		<h1 id="qunit-header"><title>qUnit Page for Column Filters in Table View</title></h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup, will be hidden</div>
+		<div id="canvas" style="height:300px; width:300px"></div>
+		<br>
+		<div id="uiArea1" style="width: 80%;"></div>
+	</body>
+</html>

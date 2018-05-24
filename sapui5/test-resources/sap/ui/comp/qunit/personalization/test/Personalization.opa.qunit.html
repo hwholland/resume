@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>OPA Personalization Dialog: Test using 'Columns' Panel</title>
+<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+<meta charset="UTF-8">
+
+<script id='sap-ui-bootstrap'
+	src='../../../../../../../resources/sap-ui-core.js'
+	data-sap-ui-resourceroots='{"sap.ui.comp.qunit.personalization.test": "./", "test.sap.ui.comp.personalization": "../../../personalization"}'>
+	
+</script>
+
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet"
+	href="../../../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script src="../../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script src="../../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+
+<script>
+	jQuery.sap.require("sap.ui.test.Opa5");
+	jQuery.sap.require("sap.ui.test.opaQunit");
+	var Opa5 = sap.ui.test.Opa5;
+
+	jQuery.sap.require("sap.ui.comp.qunit.personalization.test.Arrangement");
+	jQuery.sap.require("sap.ui.comp.qunit.personalization.test.Action");
+	jQuery.sap.require("sap.ui.comp.qunit.personalization.test.Assertion");
+	jQuery.sap.require("sap.m.library");
+
+	sap.ui.test.Opa5.extendConfig({
+		arrangements: new sap.ui.comp.qunit.personalization.test.Arrangement(),
+		actions: new sap.ui.comp.qunit.personalization.test.Action(),
+		assertions: new sap.ui.comp.qunit.personalization.test.Assertion(),
+		viewNamespace: "view."
+	});
+
+	opaTest("When I look at the screen, personalization button should appear", function(Given, When, Then) {
+		// Arrangements
+		Given.iStartMyAppInAFrame('../applicationUnderTest/start.html');
+
+		//Actions
+		When.iLookAtTheScreen();
+
+		// Assertions
+		Then.iShouldSeePersonalizationButton();
+	});
+
+	opaTest("When I press on personalization button, the personalization dialog opens", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressOnPersonalizationButton();
+
+		// Assertions
+		Then.thePersonalizationDialogOpens();
+		Then.iShouldSeeNavigationControl();
+		Then.iShouldSeeNavigationControlWithPanels(4);
+		Then.iShouldSeePanelsInOrder([
+			sap.m.P13nPanelType.columns, sap.m.P13nPanelType.sort, sap.m.P13nPanelType.filter, sap.m.P13nPanelType.group
+		]);
+	});
+
+	/*	opaTest("When I navigate to columns panel, columns panel is shown", function(Given, When, Then) {
+	 // Arrangements
+
+	 //Actions
+	 // On phone we have explicit navigate to columns panel
+	 sap.ui.Device.system.phone ? When.iNavigateToPanel(sap.m.P13nPanelType.columns) : null;
+
+	 // Assertions
+	 // On desktop we can check if the columns tap is selected. On phone we do not have SegmentedButtons on the top of panel.
+	 sap.ui.Device.system.phone ? null : Then.iShouldSeeSelectedTab(sap.m.P13nPanelType.columns);
+	 Then.iShouldSeePanel(sap.m.P13nPanelType.columns);
+	 //TODO
+	 //Then.iShouldSeeTheCheckboxSelectAllSwitchedOn(true);
+	 });
+
+	 opaTest("When I switch off 'Select all', all columns should be deselected", function(Given, When, Then) {
+	 // Arrangements
+
+	 //Actions
+	 When.iClickOnTheCheckboxSelectAll();
+
+	 // Assertions
+	 //TODO
+	 //Then.iShouldSeeTheCheckboxSelectAllSwitchedOn(false);
+	 Then.iShouldSeeAllTableItemsSelected(false);
+	 });
+
+	 opaTest("When I press on group tab, group panel with selected group and warning message should appear", function(Given, When, Then) {
+	 // Arrangements
+
+	 //Actions
+	 // On phone we have explicit navigate back and then to group panel
+	 sap.ui.Device.system.phone ? When.iPressBackButton().and.iNavigateToPanel(sap.m.P13nPanelType.group) : When.iNavigateToPanel(sap.m.P13nPanelType.group);
+
+	 // Assertions
+	 // On desktop we can check if the group tap is selected. On phone we do not have SegmentedButtons on the top of panel.
+	 sap.ui.Device.system.phone ? null : Then.iShouldSeeSelectedTab(sap.m.P13nPanelType.group);
+	 Then.iShouldSeePanel(sap.m.P13nPanelType.group);
+	 Then.iShouldSeeGroupSelectionWithColumnName("Name");
+	 Then.theComboBoxShouldHaveWarningMessage();
+	 });
+
+	 opaTest("When I press on columns tab, columns panel should appear", function(Given, When, Then) {
+	 // Arrangements
+
+	 //Actions
+	 // On phone we have explicit navigate back and then to columns panel
+	 sap.ui.Device.system.phone ? When.iPressBackButton().and.iNavigateToPanel(sap.m.P13nPanelType.columns) : When.iNavigateToPanel(sap.m.P13nPanelType.columns);
+
+	 // Assertions
+	 // On desktop we can check if the columns tap is selected. On phone we do not have SegmentedButtons on the top of panel.
+	 sap.ui.Device.system.phone ? null : Then.iShouldSeeSelectedTab(sap.m.P13nPanelType.columns);
+	 Then.iShouldSeePanel(sap.m.P13nPanelType.columns);
+	 });
+
+	 opaTest("When I set grouped column to visible and press on group tab, warning message should disappear", function(Given, When, Then) {
+	 // Arrangements
+
+	 //Actions
+	 // On phone we have explicit navigate back and then to group panel
+	 sap.ui.Device.system.phone ? When.iSelectColumn("Name").and.iPressBackButton().and.iNavigateToPanel(sap.m.P13nPanelType.group) : When.iSelectColumn("Name").and.iNavigateToPanel(sap.m.P13nPanelType.group);
+
+	 // Assertions
+	 // On desktop we can check if the group tap is selected. On phone we do not have SegmentedButtons on the top of panel.
+	 sap.ui.Device.system.phone ? null : Then.iShouldSeeSelectedTab(sap.m.P13nPanelType.group);
+	 Then.iShouldSeeGroupSelectionWithColumnName("Name");
+	 Then.theComboBoxShouldNotHaveWarningMessage();
+
+	 Then.iTeardownMyAppFrame();
+	 });*/
+</script>
+
+</head>
+<body style="height: 100%">
+	<div id="content"></div>
+	<h1 id="qunit-header">Table Personalization Dialog</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+</body>
+</html>

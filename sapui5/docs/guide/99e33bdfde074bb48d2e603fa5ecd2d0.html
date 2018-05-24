@@ -1,0 +1,374 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The sap.ui.comp.smartform.SmartForm control makes it possible to render a form. Depending on user authorizations, the form enables users, for example, to switch from display to edit mode, add and group fields, rename field labels, and implement a user input check."/>
+<meta name="description" content="The sap.ui.comp.smartform.SmartForm control makes it possible to render a form. Depending on user authorizations, the form enables users, for example, to switch from display to edit mode, add and group fields, rename field labels, and implement a user input check."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9697850525650443"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9697850525650443"/>
+<title>Smart Form</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio99e33bdfde074bb48d2e603fa5ecd2d0">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Smart Form</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">sap.ui.comp.smartform.SmartForm</samp> control makes it possible to render
+		a form. Depending on user authorizations, the form enables users, for example, to switch
+		from display to edit mode, add and group fields, rename field labels, and implement a user
+		input check.</p>
+
+		<div class="note caution"><span class="cautiontitle">Caution</span> 
+                <p class="p">Controls in the <samp class="ph codeph">sap.ui.comp</samp> library (smart controls) focus
+                    strongly on SAP Fiori elements.</p>
+
+                <p class="p">We will continue to maintain the library and all of its controls in the future.
+                    However, there will be no development of new features unless specifically
+                    requested by SAP Fiori elements.</p>
+
+            </div>
+
+		<div class="note note"><span class="notetitle">Note</span> <span class="ph">The code samples in this section reflect examples of possible use
+				cases and might not always be suitable for your purposes. Therefore, we recommend
+				that you do not copy and use them directly</span></div>
+
+		<p class="p"><span class="ph">For more information about this control, see the <a class="xref" href="../../docs/api/symbols/sap.ui.comp.smartform.SmartForm.html" alt="../../docs/api/symbols/sap.ui.comp.smartform.SmartForm.html" title="../../docs/api/symbols/sap.ui.comp.smartform.SmartForm.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.comp.smartform.SmartForm/samples" alt="../../explored.html#/entity/sap.ui.comp.smartform.SmartForm/samples" title="../../explored.html#/entity/sap.ui.comp.smartform.SmartForm/samples">samples</a>.</span></p>
+
+		<div class="section"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p">The <samp class="ph codeph">SmartForm</samp> control displays form content. If used in combination
+				with the <samp class="ph codeph">SmartField</samp> control and OData metadata annotations along
+				with additional configuration, the control allows you to create a form with minimal
+				effort.</p>
+
+			<p class="p">The <samp class="ph codeph">SmartForm</samp> control supports the following features:</p>
+
+			<ul class="ul" id="loio99e33bdfde074bb48d2e603fa5ecd2d0__ul_n3l_ckc_jr">
+				<li class="li">
+					<p class="p">Adaptation settings</p>
+
+					<div class="p">A key user can adapt the form for all users in one client by doing the
+							following:<ul class="ul" id="loio99e33bdfde074bb48d2e603fa5ecd2d0__ul_d3r_3kc_jr">
+							<li class="li">
+								<p class="p">Adding and hiding fields</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Adding and hiding groups</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Changing the order of fields and groups</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Renaming field labels</p>
+
+							</li>
+
+						</ul>
+</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph uicontrol">Display/Edit</span> button</p>
+
+					<p class="p">This optional button allows the user to toggle from display to edit mode. </p>
+
+					<div class="note note"><span class="notetitle">Note</span> Fields of type <samp class="ph codeph">SmartField</samp> are automatically displayed
+						with
+						the appropriate
+						control
+						in the required mode, for example, texts on the user interface in display
+						mode and user input in edit mode. If controls other than the
+							<samp class="ph codeph">SmartField</samp> control are used, the application in
+						question has to handle the switch between display and edit
+						mode.</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Field labels</p>
+
+					<p class="p">For fields of type <samp class="ph codeph">SmartField</samp>, the
+							<samp class="ph codeph">SmartForm</samp> control automatically creates a label based
+						on the OData metadata annotations.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph uicontrol">Check</span> button</p>
+
+					<p class="p">This optional button allows the user to check the current user input. </p>
+
+					<div class="note note"><span class="notetitle">Note</span> For fields of type <samp class="ph codeph">SmartField</samp>, values will be checked based on the OData
+						metadata annotations.
+						Depending
+						on which theme is defined, the fields with errors will be
+						circled in red. When the user clicks on one of these fields, the relevant
+						error message is displayed.</div>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Details</div><div type="Details"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Groups</p>
+
+				<p class="p">A <samp class="ph codeph">SmartForm</samp> control consists of groups
+						(<samp class="ph codeph">sap.ui.comp.smartform.Group</samp>) and group elements
+						(<samp class="ph codeph">sap.ui.comp.smartform.GroupElement</samp>). </p>
+
+				<p class="p">A group element is a collection of controls that are displayed along with a
+					label. Typically, a group element consists of exactly one control and the
+					respective label. Multiple group elements can be grouped together. This group
+					then also has a label.</p>
+
+				<p class="p">The <samp class="ph codeph">SmartForm</samp> control aggregates groups, and a group aggregates
+					group elements. The group elements themselves aggregate elements of type
+						<samp class="ph codeph">sap.ui.core.Control</samp>.</p>
+
+				<p class="p">The following example shows the <samp class="ph codeph">SmartForm</samp> control and its
+					entities:</p>
+
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+
+&lt;smartForm:SmartForm id="MainForm" title="General Data"
+				entityType="Header, Tax" editTogglable="true" expandable="true"
+				expanded="true" ignoredFields="AccountingDocumentCategory"
+				checkButton="true"&gt;
+	&lt;smartForm:customData&gt;
+		&lt;core:CustomData key="suppressUnit" value="false" /&gt;
+		&lt;core:CustomData key="dateFormatSettings" value='\{"style":"short"\}' /&gt;
+		&lt;core:CustomData key="defaultDropDownDisplayBehaviour" value='descriptionAndId' /&gt;
+	&lt;/smartForm:customData&gt;
+	&lt;smartForm:customToolbar&gt;
+		&lt;Toolbar height="3rem"&gt;
+			&lt;Text text="Custom Toolbar with a header text" /&gt;
+			&lt;ToolbarSpacer /&gt;
+			&lt;Button icon="sap-icon://settings" /&gt;
+			&lt;Button icon="sap-icon://drop-down-list" /&gt;
+		&lt;/Toolbar&gt;
+	&lt;/smartForm:customToolbar&gt;
+	&lt;smartForm:Group id="GeneralLedgerDocument" label="General Ledger Document"
+					expandable="true"&gt;
+		&lt;smartForm:layout&gt;
+			&lt;layout:GridData span="L4 M4 S4" /&gt;
+		&lt;/smartForm:layout&gt;
+		&lt;smartForm:GroupElement id="GeneralLedgerDocument.CompanyCode"&gt;
+			&lt;smartField:SmartField value="{CompanyCode}"
+							enabled="true" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement id="GeneralLedgerDocument.AccountingDocument"&gt;
+			&lt;smartField:SmartField value="{AccountingDocument}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement id="GeneralLedgerDocument.FiscalYear"&gt;
+			&lt;smartField:SmartField value="{FiscalYear}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement
+						id="GeneralLedgerDocument.AccountingDocumentType"&gt;
+			&lt;smartField:SmartField value="{AccountingDocumentType}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement
+						id="GeneralLedgerDocument.AccountingDocumentHeaderText"&gt;
+			&lt;smartField:SmartField value="{AccountingDocumentHeaderText}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement
+						id="GeneralLedgerDocument.AccountingDocumentTypeName"&gt;
+			&lt;smartField:SmartField value="{AccountingDocumentTypeName}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement id="GeneralLedgerDocument.AmountInCoCodeCrcy"&gt;
+			&lt;smartField:SmartField value="{AmountInCoCodeCrcy}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement id="GeneralLedgerDocument.CoCodeCurrency"&gt;
+			&lt;smartField:SmartField value="{CoCodeCurrency}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement id="GeneralLedgerDocument.LedgerGroup"&gt;
+			&lt;smartField:SmartField value="{LedgerGroup}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+	&lt;/smartForm:Group&gt;
+	&lt;smartForm:Group label="Dates" id="Dates"&gt;
+		&lt;smartForm:layout&gt;
+			&lt;layout:GridData span="L3 M3 S3" /&gt;
+		&lt;/smartForm:layout&gt;
+		&lt;smartForm:GroupElement id="Dates.DocumentDate"&gt;
+			&lt;smartField:SmartField value="{DocumentDate}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement id="Dates.PostingDate"&gt;
+			&lt;smartField:SmartField value="{PostingDate}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+	&lt;/smartForm:Group&gt;
+	&lt;smartForm:Group label="Reversal" id="Reversal"&gt;
+		&lt;smartForm:layout&gt;
+			&lt;layout:GridData span="L3 M3 S3" /&gt;
+		&lt;/smartForm:layout&gt;
+		&lt;smartForm:GroupElement id="Reversal.ReversalDocument"&gt;
+			&lt;smartField:SmartField value="{ReverseDocument}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement id="Reversal.ReversalReasonName"&gt;
+			&lt;smartField:SmartField value="{ReversalReasonName}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+	&lt;/smartForm:Group&gt;
+	&lt;smartForm:Group label="Administrative Data" id="AdministrativeData"&gt;
+		&lt;smartForm:layout&gt;
+			&lt;layout:GridData span="L3 M3 S3" linebreak="true" /&gt;
+		&lt;/smartForm:layout&gt;
+		&lt;smartForm:GroupElement id="AdministrativeData.CreatedByUser"&gt;
+			&lt;smartField:SmartField value="{CreatedByUser}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement id="AdministrativeData.CreatedByUserName"&gt;
+			&lt;smartField:SmartField value="{CreatedByUserName}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+		&lt;smartForm:GroupElement id="AdministrativeData.CreationDate"&gt;
+			&lt;smartField:SmartField value="{CreationDate}" /&gt;
+		&lt;/smartForm:GroupElement&gt;
+	&lt;/smartForm:Group&gt;
+&lt;/smartForm:SmartForm&gt;</pre></div>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Layout</p>
+
+				<p class="p">The <samp class="ph codeph">SmartForm</samp> control uses a
+						<samp class="ph codeph">ResponsiveGridLayout</samp> that can be adjusted. The following
+					properties are exposed in the aggregation
+					layout:</p>
+
+				
+				<ul class="ul" id="loio99e33bdfde074bb48d2e603fa5ecd2d0__ul_ucp_qxy_jr">
+					<li class="li">
+						<p class="p"><samp class="ph codeph">labelSpanXL</samp>,
+								<samp class="ph codeph">labelSpanL</samp>, <samp class="ph codeph">labelSpanM</samp>,
+								<samp class="ph codeph">labelSpanS</samp></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">
+							<samp class="ph codeph">emptySpanXL</samp>, <samp class="ph codeph">emptySpanL</samp>
+							<samp class="ph codeph">emptySpanM</samp>, <samp class="ph codeph">emptySpanS</samp></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">columnsXL</samp>, <samp class="ph codeph">columnsL</samp>,
+								<samp class="ph codeph">columnsM</samp></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">breakpointXL</samp>, <samp class="ph codeph">breakpointL</samp>,
+								<samp class="ph codeph">breakpointM</samp>
+						</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">
+							<samp class="ph codeph">gridDataSpan</samp></p>
+
+					</li>
+
+					
+				</ul>
+
+				<p class="p">To display the fields next to each other with a label on top, you can use the
+						<samp class="ph codeph">gridDataSpan</samp> property of the <samp class="ph codeph">layout</samp>
+					element in combination with the <samp class="ph codeph">useHorizontalLayout</samp>
+					property.</p>
+
+				<p class="p">The form will be embedded in an <samp class="ph codeph">sap.m.Panel</samp> if the
+						<samp class="ph codeph">expandable</samp> property is set. Using this property, the form
+					can also be collapsed and expanded.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Group Layout</p>
+
+				<p class="p">The
+						<samp class="ph codeph">layoutData</samp>
+					aggregation
+					of
+					a group can be used to define a <samp class="ph codeph">GridData</samp> layout.
+					With
+					this layout, the default span of a single group can be changed to allocate the
+					number of columns available to each group. The number of columns allocated to
+					each group depends on how many groups there are. Moreover, a
+					line break can be inserted to display the group in a new line.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Toolbar</p>
+
+				<p class="p">The <samp class="ph codeph">SmartForm</samp> control uses a toolbar for displaying the title of
+					the form and the following buttons (if configured):</p>
+
+				<ul class="ul" id="loio99e33bdfde074bb48d2e603fa5ecd2d0__ul_olr_chz_jr">
+					<li class="li">
+						<p class="p"><span class="ph uicontrol">Display/Edit </span>(<samp class="ph codeph">editTogglable</samp>
+							property )</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><span class="ph uicontrol">Check</span> (<samp class="ph codeph">checkButton</samp> property)</p>
+
+					</li>
+
+				</ul>
+
+				<p class="p">Alternatively, the custom toolbar can be used (<samp class="ph codeph">customToolbar</samp>
+					aggregation). The <samp class="ph codeph">SmartForm</samp> control will then replace the
+					standard toolbar with the custom toolbar and add the title and the buttons if
+					requested.</p>
+
+			</div></div></div>
+
+		<div class="section"><div class="section_title">Key-User-Specific Adaptation</div><div type="Key-User-Specific Adaptation">
+			
+			<p class="p">To enable key user adaptation settings, the following prerequisites have to be
+				fulfilled:</p>
+
+			<ul class="ul" id="loio99e33bdfde074bb48d2e603fa5ecd2d0__ul_ojs_xrj_bw">
+				<li class="li">
+					<p class="p">Use of stable IDs for every <samp class="ph codeph">Group</samp>,
+							<samp class="ph codeph">GroupElement</samp>, and field in the XML view </p>
+
+					<p class="p">The adaptation settings use control IDs to identify the entities that can be
+						modified.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Use of the <samp class="ph codeph">entityType</samp> property</p>
+
+					<p class="p">The property determines the entity type of the OData service defining the
+						fields that can be added to the form.</p>
+
+					<p class="p">Fields that must not be available on the adaptation dialog can be listed in
+						the <samp class="ph codeph">ignoredFields</samp> property: Separate the property names by
+						commas without using spaces.</p>
+
+					
+				</li>
+
+				
+			</ul>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

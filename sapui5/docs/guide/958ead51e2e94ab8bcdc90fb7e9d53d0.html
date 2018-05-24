@@ -1,0 +1,149 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Components are independent and reusable parts used in SAPUI5 applications."/>
+<meta name="description" content="Components are independent and reusable parts used in SAPUI5 applications."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9057494026990842"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9057494026990842"/>
+<title>Components</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio958ead51e2e94ab8bcdc90fb7e9d53d0">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Components</h1>
+
+	
+	<div class="body"><p class="shortdesc">Components are independent and reusable parts used in <span class="ph"><span class="ph pname">SAPUI5</span></span>
+		applications.</p>
+
+		<p class="p">An application can use components from different locations from where the application is running. Thus, components can be developed by different
+			development teams and be used in different projects. Components also support the encapsulation of closely related parts of an application into a
+			particular component. This makes the structure of an application and its code easier to understand and to maintain.</p>
+
+		<div class="p">
+			<div class="note note" id="loio958ead51e2e94ab8bcdc90fb7e9d53d0__note_N1001B_N10018_N10011_N10001"><span class="notetitle">Note</span> Constraints due to cross-origin issues also apply to components.</div>
+
+		</div>
+
+		<p class="p"><span class="ph"><span class="ph pname">SAPUI5</span></span> provides the following two types of components:</p>
+
+		<ul class="ul" id="loio958ead51e2e94ab8bcdc90fb7e9d53d0__ul_dt4_hyw_4k">
+			<li class="li">
+				<p class="p">Faceless components (class: <samp class="ph codeph">sap.ui.core.Component</samp>)</p>
+
+				<p class="p">Faceless components do <strong class="ph b">not</strong> have a user interface and are used, for example, for a service that delivers data from a back-end
+					system.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">UI components (class: <samp class="ph codeph">sap.ui.core.UIComponent</samp>)</p>
+
+				<p class="p">UI components extend components and add rendering functionality to the component. They represent a screen area or element on the user
+					interface, for example, a button or a shell, along with the respective settings and metadata. <samp class="ph codeph">sap.ui.core.UIComponent</samp>
+					extends <samp class="ph codeph">sap.ui.core.Component</samp> and adds rendering functionality to the component.</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p">The <samp class="ph codeph">sap.ui.core.Component</samp> class is the base class for UI and faceless components and provides the metadata for both types of
+			components. To extend the functionality, components can inherit from their base class or from another component.</p>
+
+		<p class="p">Components are loaded and created via the component factory function <samp class="ph codeph">sap.ui.component</samp>. You can either pass the name of the component
+			or the URL of the descriptor file (<span class="ph filepath">manifest.json</span>) to load it via the descriptor, see <a class="xref" href="be0cf40f61184b358b5faedaec98b2da.html#loiobe0cf40f61184b358b5faedaec98b2da__manifirst">Manifest First Function</a>. We recommend loading the component using the descriptor
+			(if available) - it improves performance during the initial load since the loading process can be parallelized and optimized.</p>
+
+		<p class="p">After loading the descriptor, the component factory can load the dependencies (<span class="ph"><span class="ph pname">SAPUI5</span></span>
+			libraries and other dependent components) in parallel next to the component preload, and also models can be preloaded.</p>
+
+		<div class="section" id="loio958ead51e2e94ab8bcdc90fb7e9d53d0__section_N10059_N10011_N10001"><div class="section_title">Structure of a Component</div><div type="Structure of a Component"><p class="p">A component is organized in a unique namespace, the namespace of
+				the component equals the component name.</p>
+<div class="p">Basically, a component consists of the component controller (<span class="ph filepath">Component.js</span>)
+				and a descriptor (<span class="ph filepath">manifest.json</span>). Only the component controller is mandatory, but we recommend to also use the descriptor
+				file. The descriptor then contains the component metadata, and also expresses the component dependencies and configuration (see <a class="xref" href="be0cf40f61184b358b5faedaec98b2da.html" title="The descriptor for applications, components, and libraries is inspired by the Web Application Manifest concept introduced by the W3C. The descriptor provides a central, machine-readable and easy-to-access location for storing metadata associated with an application, an application component, or a library.">Descriptor for Applications, Components, and Libraries</a>). All required and optional resources of the component have to be organized in the namespace
+				of the component.<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">Optional resources are, for example, <samp class="ph codeph">CSS</samp>, <samp class="ph codeph">js</samp>, or <samp class="ph codeph">i18n</samp> files, views, controllers)</p>
+
+				</div>
+</div>
+<p class="p">The following figure gives an example of a component folder structure.</p>
+<img class="image" id="loio958ead51e2e94ab8bcdc90fb7e9d53d0__image_xqf_bmy_4k" src="loio1effb7160fdf472893409bfd2cabe24e_LowRes.png" alt="Using Components - Component Tree" title="Using Components - Component Tree"/><p class="p">The <samp class="ph codeph">ComponentContainer</samp> control wraps a UI component. You use the <samp class="ph codeph">ComponentContainer</samp> control in the <span class="ph"><span class="ph pname">SAPUI5</span></span> control tree in the same way as any other control.</p>
+</div></div>
+
+		<div class="section"><div class="section_title">Differentiation to Other Concepts in SAPUI5</div><div type="Differentiation to Other Concepts in SAPUI5">
+			
+			<p class="p">The following list explains how other concepts used in <span class="ph"><span class="ph pname">SAPUI5</span></span> are distinguished from
+				the <span class="ph"><span class="ph pname">SAPUI5</span></span> components concept:</p>
+
+			<ul class="ul" id="loio958ead51e2e94ab8bcdc90fb7e9d53d0__ul_xc4_nfl_kn">
+				<li class="li">
+					<p class="p">Composite controls</p>
+
+					<p class="p">Both concepts provide a set of controls behind a single interface. Composite controls are intended for reuse within control development
+						and allow to include existing controls in a complex control whereas components are intended for reuse in application development.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">UI library</p>
+
+					<p class="p">The UI library is the deployable unit around controls: Controls are never deployed standalone, but as part of a control library.
+						Components, however, are self-contained and should <span class="ph emphasis emphasis">not</span> be used to deploy controls.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Notepad control</p>
+
+					<p class="p">A notepad control is another way to define a control. Notepad controls have all the characteristics of a control.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">MVC</p>
+
+					<p class="p">The MVC concept allows to define views and controllers and, thus, to structure and reuse parts within an application. As MVC can only be
+						deployed separately and has no means to define dependent styles or scripts that are loaded together with a view, this concept is of
+						limited use across different applications.</p>
+
+				</li>
+
+				<li class="li"><p class="p">Application</p>
+Applications have a single start URL and contain everything belonging to the application in a deployable unit. However, it
+					is <span class="ph emphasis emphasis">not</span> possible to embed an application into another application as the knowledge about the required libraries, scripts
+					and additional style sheets is contained in the index.html.</li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="27ce0e4987cd426f8fa3e60836316428.html" title="The Component.js file is the component controller and provides the runtime metadata and the component methods.">Component.js File</a></strong><br/>
+</div>
+<div><strong><a class="link" href="346599f0890d4dfaaa11c6b4ffa96312.html" title="You can use a ComponentContainer to wrap a UIComponent and reuse it anywhere within the SAPUI5 control tree. You can use reuse components to nest components in other components.">Using and Nesting Components</a></strong><br/>
+</div>
+<div><strong><a class="link" href="562803c6f55c49608d01a453cc0590ab.html" title="Components are usually used with a root view and in this case, the component handles the prefixing of IDs of views, elements, or controls, with the component ID.">Handling IDs in UI Components</a></strong><br/>
+</div>
+<div><strong><a class="link" href="ecbc417ff264498b96bc364c53280242.html" title="Advanced concepts for components include routing and navigation and component data as well as the event bus.">Advanced Concepts for SAPUI5 Components</a></strong><br/>
+</div>
+</ul>
+
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="be0cf40f61184b358b5faedaec98b2da.html" title="The descriptor for applications, components, and libraries is inspired by the Web Application Manifest concept introduced by the W3C. The descriptor provides a central, machine-readable and easy-to-access location for storing metadata associated with an application, an application component, or a library.">Descriptor for Applications, Components, and Libraries</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.core.Component.html" alt="../../docs/api/symbols/sap.ui.core.Component.html" title="../../docs/api/symbols/sap.ui.core.Component.html">API Reference: <samp class="ph codeph">sap.ui.core.Component</samp></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

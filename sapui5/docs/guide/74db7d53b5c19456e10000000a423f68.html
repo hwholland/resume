@@ -1,0 +1,378 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="LOIO.FOLDER.IWB_FOLDER_ID" content="1234AC50C238B656E10000000A445394"/>
+<meta name="LOIO.FOLDER.IWB_TECH_NAME" content="HELPX.UI_EXT"/>
+<meta name="LOIO.FOLDER.IWB_FOLDER_GROUP" content="SAPXH"/>
+<meta name="LOIO.FOLDER.IWB_SHH_KEY" content=""/>
+<meta name="LOIO.FOLDER.IWB_TRANSLATION_MEMORY" content=""/>
+<meta name="LOIO.FOLDER.TERM_DOMAIN" content="FF"/>
+<meta name="LOIO.IWB_TYPE" content="ICG"/>
+<meta name="LOIO.IWB_SHH_KEY" content=""/>
+<meta name="LOIO.KW_CONVREF.CLASS" content=""/>
+<meta name="LOIO.KW_CONVREF.OBJID" content=""/>
+<meta name="PHIO.IWB_INDUSTRY" content="SHL"/>
+<meta name="PHIO.RELEASE" content="1.0_2014Q3"/>
+<meta name="PHIO.CREATED_AT" content="20140605161051"/>
+<meta name="PHIO.LAST_CHANGED_AT" content="20140605161051"/>
+<meta name="PHIO.IWB_LEVEL" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=043920965292163716"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=043920965292163716"/>
+<title>Predefined Representation Types</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio74db7d53b5c19456e10000000a423f68">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Predefined Representation Types</h1>
+<div class="body">  <div class="section"><div class="section_title">Use</div><div type="Use"><p class="p">The UI component of APF provides predefined representation types that can be used to display data.</p>
+ <p class="p">These representation types are predefined in the file
+          <span class="ph sap-technical-name sap-technical-name">sap/apf/core/representationTypes.js</span>. They can be
+        referenced in the analytical configuration using their IDs.</p>
+ <p class="p">Each representation type has a constructor assigned. The constructor is used as a parameter in
+                                                  the representation type object of the
+                                                  configuration file and points to the
+                                                  implementation of the representation type. The
+                                                  charts shipped with APF are implemented using the
+                                                  VizFrame charting library
+                                                  (<span class="ph sap-technical-name sap-technical-name">sap.viz.ui5.controls.VizFrame</span>)
+                                                  that is available with SAP UI5.</p>
+ <p class="p">The following table lists the order of available representation types:</p>
+
+                                                
+<div class="table-wrapper tablenoborder"><table summary="" id="loio74db7d53b5c19456e10000000a423f68__table_zd2_wzm_rv" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="25%"/><col width="25%"/><col width="25%"/><col width="25%"/></colgroup>
+
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  <thead class="thead" align="left"><tr class="row"><th class="entry" valign="top" width="25%" id="d8482134e70"><p class="p">Chart Name</p>
+ </th>
+ <th class="entry" valign="top" width="25%" id="d8482134e75"><p class="p">ID</p>
+ </th>
+ <th class="entry" valign="top" width="25%" id="d8482134e80"><p class="p">Constructor</p>
+ </th>
+ <th class="entry" valign="top" width="25%" id="d8482134e85"><p class="p">Chart Type in VizFrame Charting Library</p>
+ </th>
+ </tr>
+ </thead>
+ <tbody class="tbody"><tr class="row"><td class="entry" valign="top" width="25%" headers="d8482134e70 "><p class="p">Column chart</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e75 "><p class="p">ColumnChart</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e80 "><p class="p"><samp class="ph codeph">sap.apf.ui.representations.columnChart</samp></p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e85 "><p class="p"><samp class="ph codeph">sap.viz.ui5.controls.VizFrame({vizType : column});</samp></p>
+ </td>
+ </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e70 ">
+                                                  <p class="p">Bar chart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e75 ">
+                                                  <p class="p">BarChart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e80 ">
+                                                  <p class="p"><samp class="ph codeph">sap.apf.ui.representations.barChart</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e85 ">
+                                                  <p class="p"><samp class="ph codeph">sap.viz.ui5.controls.VizFrame({vizType
+                                                  : bar});</samp></p>
+
+                                                  </td>
+
+                                                  </tr>
+ <tr class="row"><td class="entry" valign="top" width="25%" headers="d8482134e70 "><p class="p">Line chart</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e75 "><p class="p">LineChart</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e80 "><p class="p"><samp class="ph codeph">sap.apf.ui.representations.lineChart</samp></p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e85 "><p class="p"><samp class="ph codeph">sap.viz.ui5.controls.VizFrame({vizType : line});</samp></p>
+ </td>
+ </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e70 ">
+                                                  <p class="p">Line chart with two vertical axes</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e75 ">
+                                                  <p class="p">LineChartWithTwoVerticalAxes</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e80 ">
+                                                  <p class="p"><samp class="ph codeph">sap.apf.ui.representations.lineChartWithTwoVerticalAxes</samp>
+                                                  </p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e85 ">
+                                                  <p class="p"><samp class="ph codeph">sap.viz.ui5.controls.Vi zFrame({vizType
+                                                  : dual_line});</samp>
+                                                  </p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e70 ">
+                                                  <p class="p">Line chart with time axis</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e75 ">
+                                                  <p class="p">LineChartWithTimeAxis</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e80 ">
+                                                  <p class="p"><samp class="ph codeph">sap.apf.ui.representations.lineChartWithTimeAxis</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e85 ">
+                                                  <p class="p"><samp class="ph codeph">sap.viz.ui5.controls.Vi zFrame({vizType
+                                                  : timeseries_line});</samp></p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e70 ">
+                                                  <p class="p">Pie chart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e75 ">
+                                                  <p class="p">PieChart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e80 ">
+                                                  <p class="p"><samp class="ph codeph">sap.apf.ui.representations.pieChart</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e85 ">
+                                                  <p class="p"><samp class="ph codeph">sap.viz.ui5.controls.VizFrame({vizType
+                                                  : pie});</samp></p>
+
+                                                  </td>
+
+                                                  </tr>
+
+            <tr class="row">
+              <td class="entry" valign="top" width="25%" headers="d8482134e70 ">
+                <p class="p">Donut chart</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="25%" headers="d8482134e75 ">
+                <p class="p">DonutChart</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="25%" headers="d8482134e80 ">
+                <p class="p"><samp class="ph codeph">sap.apf.ui.representations.donutChart</samp></p>
+
+              </td>
+
+              <td class="entry" valign="top" width="25%" headers="d8482134e85 ">
+                <p class="p"><samp class="ph codeph">sap.viz.ui5.controls.VizFrame({vizType : donut});</samp></p>
+
+              </td>
+
+            </tr>
+ <tr class="row"><td class="entry" valign="top" width="25%" headers="d8482134e70 "><p class="p">Scatter plot chart</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e75 "><p class="p">ScatterPlotChart</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e80 "><p class="p"><samp class="ph codeph">sap.apf.ui.representations.scatterPlotChart</samp></p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e85 "><p class="p"><samp class="ph codeph">sap.viz.ui5.controls.VizFrame({vizType : scatter});</samp></p>
+ </td>
+ </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e70 ">
+                                                  <p class="p">Bubble chart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e75 ">
+                                                  <p class="p">BubbleChart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e80 ">
+                                                  <p class="p"><samp class="ph codeph">sap.apf.ui.representations.bubbleChart</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e85 ">
+                                                  <p class="p"><samp class="ph codeph">sap.viz.ui5.controls.VizFrame({vizType
+                                                  : bubble});</samp></p>
+
+                                                  </td>
+
+                                                  </tr>
+ <tr class="row"><td class="entry" valign="top" width="25%" headers="d8482134e70 "><p class="p">Stacked column chart</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e75 "><p class="p">StackedColumnChart</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e80 "><p class="p"><samp class="ph codeph">sap.apf.ui.representations.stackedColumnChart</samp></p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e85 "><p class="p"><samp class="ph codeph">sap.viz.ui5.controls.VizFrame({vizType : 100_stacked_column});</samp></p>
+ </td>
+ </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e70 ">
+                                                  <p class="p">Stacked bar chart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e75 ">
+                                                  <p class="p">StackedBarChart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e80 ">
+                                                  <p class="p"><samp class="ph codeph">sap.apf.ui.representations.stackedBarChart</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e85 ">
+                                                  <p class="p"><samp class="ph codeph">sap.viz.ui5.controls.VizFrame({vizType
+                                                  : 100_stacked_bar});</samp></p>
+
+                                                  </td>
+
+                                                  </tr>
+ <tr class="row"><td class="entry" valign="top" width="25%" headers="d8482134e70 "><p class="p">100% stacked column chart</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e75 "><p class="p">PercentageStackedColumnChart</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e80 "><p class="p"><samp class="ph codeph">sap.apf.ui.representations.percentageStackedColumnChart</samp></p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e85 "><p class="p"><samp class="ph codeph">sap.viz.ui5.controls.VizFrame({vizType : 100_stacked_column});)</samp></p>
+ </td>
+ </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e70 ">
+                                                  <p class="p">100% stacked bar chart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e75 ">
+                                                  <p class="p">PercentageStackedBarChart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e80 ">
+                                                  <p class="p"><samp class="ph codeph">sap.apf.ui.representati
+                                                  ons.percentageStackedBarChart</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e85 ">
+                                                  <p class="p"><samp class="ph codeph">sap.viz.ui5.controls.Vi zFrame({vizType
+                                                  : 100_stacked_bar});) </samp></p>
+
+                                                  </td>
+
+                                                  </tr>
+
+                                                  <tr class="row">
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e70 ">
+                                                  <p class="p">Heatmap chart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e75 ">
+                                                  <p class="p">HeatmapChart</p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e80 ">
+                                                  <p class="p"><samp class="ph codeph">Sap.apf.ui.representations.heatmapChart</samp></p>
+
+                                                  </td>
+
+                                                  <td class="entry" valign="top" width="25%" headers="d8482134e85 ">
+                                                  <p class="p"><samp class="ph codeph">sap.viz.ui5.controls.Vi zFrame({vizType
+                                                  :heatmap});)</samp></p>
+
+                                                  </td>
+
+                                                  </tr>
+ <tr class="row"><td class="entry" valign="top" width="25%" headers="d8482134e70 "><p class="p">Table</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e75 "><p class="p">TableRepresentation</p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e80 "><p class="p"><samp class="ph codeph">sap.apf.ui.representations.tableRepresentation</samp></p>
+ </td>
+ <td class="entry" valign="top" width="25%" headers="d8482134e85 "><p class="p"><samp class="ph codeph">SAPUI5 table (sap.ui.table.Table)</samp></p>
+ </td>
+ </tr>
+
+            <tr class="row">
+              <td class="entry" valign="top" width="25%" headers="d8482134e70 ">
+                <p class="p">Tree table</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="25%" headers="d8482134e75 ">
+                <p class="p">TreeTableRepresentation</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="25%" headers="d8482134e80 ">
+                <p class="p"><samp class="ph codeph">sap.apf.ui.representations.treeTable</samp></p>
+
+              </td>
+
+              <td class="entry" valign="top" width="25%" headers="d8482134e85 ">
+                <p class="p"><samp class="ph codeph">SAPUI5 tree table (sap.ui.table.TreeTable)</samp></p>
+
+              </td>
+
+            </tr>
+ </tbody>
+ </table>
+</div>
+  <p class="p">You can use the predefined representation types to define representations in your application.
+                                                  To do so, depending on the chart type you choose,
+                                                  you must define parameters such as the fields used
+                                                  for the horizontal axis and the vertical axis, or
+                                                  the field by which a chart is sorted.</p>
+ </div></div>
+ </div>
+
+                <div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="5a467c53595a6655e10000000a423f68.html">Analytical Configuration</a></div>
+<div><a class="link" href="6f467c53595a6655e10000000a423f68.html">The Representation Type Object</a></div>
+</div>
+</div></div></div>
+
+</body>
+</html>

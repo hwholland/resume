@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<link href="style/sapvbistyle.css" type="text/css" rel="stylesheet" />
+	<script src="../../../../resources/sap-ui-core.js"
+		id="Script1"
+		data-sap-ui-libs="sap.ui.vbm"
+		data-sap-ui-theme="sap_bluecrystal">
+	</script>
+
+	<script>
+
+		function onSubmit(e) {
+			if (evtoutput.innerText !== undefined)
+				evtoutput.innerText = e.getParameter("data");
+			else
+				if (evtoutput.textContent !== undefined)
+					evtoutput.textContent = e.getParameter("data");	// due to ff
+		};
+
+		// creation of visual business
+		var oVBI1 = new sap.ui.vbm.VBI('vbiWrap', {
+			width: "100%",
+			height: 500,
+			submit: onSubmit        // set the event handler
+		});
+		oVBI1.placeAt("content");
+
+		// load the json and set the default text area text
+		var dat = $.getJSON("media/vbselect/main.json", function (dat) {
+			oVBI1.load(dat);
+		});
+		function trackLasso () {
+			oVBI1.setLassoSelection(true);
+		}
+		function trackRect () {
+			oVBI1.setRectangularSelection(true);
+		}
+		oVBI1.attachChangeTrackingMode(function (ev) {
+			var iMode = ev.getParameter("mode");
+			var bSet = ev.getParameter("bSet");
+			alert("props lasso: "+oVBI1.getLassoSelection()+"props rect: "+oVBI1.getRectangularSelection()+"VBI api:"+iMode +", "+bSet);
+			
+		});
+
+
+	</script>
+</head>
+
+<body class="sapUiBody">
+	<h1>Visual Business UI5: Selection Cardinality Test</h1>
+	<ul>
+		<li>The application defines 5 tables containing spots. The spot tables are rendered horizontally.</li>
+		<li>In each table a different selection cardinality is specified. The selection cardinality is written on the spots in the format (minSelect:maxSelect).</li>
+		<li>The initial data is corrupt due the selection cardinality is not fulfilled.</li> 
+		<li>Use the shift and ctrl keys and click on the spots to change the selection.</li>
+		<li>When touch gestures are used the selection behaves as if the ctrl key is pressed.</li>
+		<li>The selection is restricted by cardinality rules.</li>
+		<li>The ctl-key toggles the selection; the shift-key adds a selection; no modifier just sets a new selection for the affected table.</li>
+	</ul><a href="#rect" onclick="trackRect()">rect</a><a href="#lasso" onclick="trackLasso()">lasso</a>
+	<div id="content"></div>
+	<br />
+	<textarea style="width: 100%; box-sizing: border-box" id="evtoutput" rows="8"></textarea>
+</body>
+</html>

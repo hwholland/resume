@@ -1,0 +1,66 @@
+{
+  "title": "JSON schema for SAP.PLATFORM.RUNTIME Namespace",
+
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "description": "Represents Platform Specific Runtime Information",
+
+  "type": "object",
+
+  "required": ["componentProperties"],
+
+  "additionalProperties": false,
+
+  "properties": {
+    "uri" : {
+     "type" : "string"
+    },
+    "componentProperties" : {
+      "description": "Represents the information returned by the app index",
+      "type": "object",
+      "properties": {
+        "url": {
+	         "type": "string"
+	    },
+	    "self": {
+	          "type": "object",
+	          "properties": {
+	            "name": {
+	              "type": "string"
+	            },
+	            "url": {
+	              "type": "string"
+	            }
+	          }
+	        },
+	    "asyncHints": {
+	          "type": "object",
+	          "properties": {
+	            "components": {
+	              "type": "array",
+	              "items": {
+	                "type": "object",
+	                "properties": {
+	                  "name": {
+	                    "type": "string"
+	                  },
+	                  "url": {
+	                    "type": "object",
+	                    "properties": {
+	                      "url": {
+	                        "type": "string"
+	                      },
+	                      "final": {
+	                        "type": "boolean"
+	                      }
+	                    }
+	                  }
+	                }
+	              }
+	          }
+	      }
+	    }
+	 }
+  }
+}
+}

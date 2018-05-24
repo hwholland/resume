@@ -1,0 +1,385 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Texts in a properties file are simple value key pairs separated by an equal sign (=) or a comma (,). However, to enable proper translation for these texts, you have to classify the texts with additional information, at least with the text type. You must place the additional information in the line directly above the text element, beginning with the number sign (#)."/>
+<meta name="description" content="Texts in a properties file are simple value key pairs separated by an equal sign (=) or a comma (,). However, to enable proper translation for these texts, you have to classify the texts with additional information, at least with the text type. You must place the additional information in the line directly above the text element, beginning with the number sign (#)."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7279783488406327"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7279783488406327"/>
+<title>Text Classification</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio582ce93d326540f59d149031a44d5fb0">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Text Classification</h1>
+
+	
+	<div class="body"><p class="shortdesc">Texts in a properties file are simple value key pairs separated by an equal sign (=) or
+		a comma (,). However, to enable proper translation for these texts, you have to classify the
+		texts with additional information, at least with the text type. You must place the
+		additional information in the line directly above the text element, beginning with the
+		number sign (#). </p>
+
+		<p class="p">The complete line must have one of the following patterns (text type is mandatory,
+			maximum length and additional context information are optional):</p>
+
+		<ul class="ul" id="loio582ce93d326540f59d149031a44d5fb0__ul_ovn_hsf_bj">
+			<li class="li">
+				<p class="p">
+					<samp class="ph codeph">#&lt;TextType&gt;</samp></p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">
+					<samp class="ph codeph">#&lt;TextType&gt;,&lt;MaximumLength&gt;</samp>
+				</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">
+					<samp class="ph codeph">#&lt;TextType&gt;,&lt;MaximumLength&gt;:&lt;AdditionalContextInformation&gt;</samp>
+				</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">
+					<samp class="ph codeph">#&lt;TextType&gt;:&lt;AdditionalContextInformation&gt;</samp>
+				</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p"><span class="ph emphasis emphasis">Text Type (Mandatory)</span></p>
+
+		<p class="p">We recommend that you assign a text type to each text. The text type indicates to which
+			user interface element the text is related. You can use the following main text
+			types:</p>
+
+		<ul class="ul" id="loio582ce93d326540f59d149031a44d5fb0__ul_pvh_5yg_bt">
+			<li class="li">
+				<p class="p">For short texts (less than 120 characters) :</p>
+
+				
+<div class="table-wrapper tablenoborder"><table summary="" id="loio582ce93d326540f59d149031a44d5fb0__table_sqb_wyg_bt" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+						
+						
+						<thead class="thead" align="left">
+							<tr class="row">
+								<th class="entry" valign="top" width="50%" id="d5999127e83">
+									<p class="p"><strong class="ph b">Text Type</strong></p>
+
+								</th>
+
+								<th class="entry" valign="top" width="50%" id="d5999127e90">
+									<p class="p"><strong class="ph b">Description</strong></p>
+
+								</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody class="tbody">
+							
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XACT</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Accessibility</p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XBUT</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">Button</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XCKL</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Checkbox</p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XCOL</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Column header</p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XFLD</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Label</p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XGRP</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Group title</p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XLNK</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Hyperlink</p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XLOG</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Log entry</p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XLST</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">List box item</p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XMIT</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Menu item</p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XMSG</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Message</p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XRBL</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Radio button</p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XSEL</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Selection </p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XTIT</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Table title</p>
+
+								</td>
+
+							</tr>
+<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e83 "><samp class="ph codeph">XTOL</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e90 ">
+									<p class="p">Tooltip</p>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+</div>
+
+			</li>
+
+			<li class="li">
+				<p class="p">For long texts (more than 120 characters):</p>
+
+				
+<div class="table-wrapper tablenoborder"><table summary="" id="loio582ce93d326540f59d149031a44d5fb0__table_bkl_vzg_bt" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+						
+						
+						<thead class="thead" align="left">
+							<tr class="row">
+								<th class="entry" valign="top" width="50%" id="d5999127e303">
+									<p class="p"><strong class="ph b">Text Type</strong></p>
+
+								</th>
+
+								<th class="entry" valign="top" width="50%" id="d5999127e310">
+									<p class="p"><strong class="ph b">Description</strong></p>
+
+								</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody class="tbody">
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e303 "><samp class="ph codeph">YINS</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e310 ">
+									<p class="p">Instruction</p>
+
+								</td>
+
+							</tr>
+
+							<tr class="row">
+								<td class="entry" valign="top" width="50%" headers="d5999127e303 "><samp class="ph codeph">YMSG</samp></td>
+
+								<td class="entry" valign="top" width="50%" headers="d5999127e310 ">
+									<p class="p">Message</p>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+</div>
+
+			</li>
+
+			<li class="li">
+				<p class="p">For text elements that are not supposed to be translated, use the text type
+						<samp class="ph codeph">NOTR</samp>.</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p"><span class="ph emphasis emphasis">Maximum Length (Optional)</span></p>
+
+		<p class="p">You can provide the maximum text length for translation. It must be greater than the
+			source text length and must never exceed 255.</p>
+
+		<p class="p">To ensure that translators have enough space for the translated texts, set an appropriate
+			maximum text length for translation according to the source text length:</p>
+
+		<div class="p">
+			
+<div class="table-wrapper tablenoborder"><table summary="" id="loio582ce93d326540f59d149031a44d5fb0__table_rs3_41h_bt" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+					
+					
+					<thead class="thead" align="left">
+						<tr class="row">
+							<th class="entry" valign="top" width="50%" id="d5999127e386">
+								<p class="p">Length of Source Text in Characters</p>
+
+							</th>
+
+							<th class="entry" valign="top" width="50%" id="d5999127e392">
+								<p class="p">How Is the Maximum Text Length for Translation Calculated?</p>
+
+							</th>
+
+						</tr>
+
+					</thead>
+
+					<tbody class="tbody">
+						<tr class="row">
+							<td class="entry" valign="top" width="50%" headers="d5999127e386 ">
+								<p class="p">&lt; 8</p>
+
+							</td>
+
+							<td class="entry" valign="top" width="50%" headers="d5999127e392 ">
+								<p class="p">Multiply by 5; minimum 12 characters</p>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="50%" headers="d5999127e386 ">
+								<p class="p">8 - 30</p>
+
+							</td>
+
+							<td class="entry" valign="top" width="50%" headers="d5999127e392 ">
+								<p class="p">Multiply by 3</p>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry" valign="top" width="50%" headers="d5999127e386 ">
+								<p class="p">&gt; 31</p>
+
+							</td>
+
+							<td class="entry" valign="top" width="50%" headers="d5999127e392 ">
+								<p class="p">Multiply by 1.5</p>
+
+							</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+</div>
+
+		</div>
+
+		<p class="p"><span class="ph emphasis emphasis">Additional Context Information (Optional)</span></p>
+
+		<p class="p">You can also add a comment for the translator.</p>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

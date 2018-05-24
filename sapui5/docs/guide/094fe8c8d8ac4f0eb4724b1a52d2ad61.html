@@ -1,0 +1,142 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="To make things easier, you may want to create an app without variant management. In this case, only the title of the app is displayed. You can create a custom title, if required."/>
+<meta name="description" content="To make things easier, you may want to create an app without variant management. In this case, only the title of the app is displayed. You can create a custom title, if required."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3135156933009541"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3135156933009541"/>
+<title>Creating a List Report Without Variant Management</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio094fe8c8d8ac4f0eb4724b1a52d2ad61">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Creating a List Report Without Variant Management</h1>
+
+	
+	<div class="body taskbody"><p class="shortdesc">To make things easier, you may want to create an app without variant management. In this
+		case, only the title of the app is displayed. You can create a custom title, if
+		required.</p>
+
+		<div class="section context"><div class="tasklabel"><h2 class="sectiontitle tasklabel">Context</h2></div><p class="p">Without variant management, and with no custom title added, your app looks as
+				follows:</p>
+<div class="fig fignone" id="loio094fe8c8d8ac4f0eb4724b1a52d2ad61__fig_jff_gtm_qz"><div class="figcontainer">
+				
+				<img class="image" id="loio094fe8c8d8ac4f0eb4724b1a52d2ad61__image_x15_mtm_qz" width="1400px" src="loio8b8568489cd9471697d33df5ae3b5575_LowRes.png"/>
+			<div class="figcap">App Without Variant Management</div></div></div>
+<p class="p">Without variant management and with a custom title added, your app looks like
+				this:</p>
+<div class="fig fignone" id="loio094fe8c8d8ac4f0eb4724b1a52d2ad61__fig_jzy_cs3_5z"><div class="figcontainer">
+				
+			<div class="figcap">App Without Variant Management and With Custom Title</div></div></div>
+<img class="image" id="loio094fe8c8d8ac4f0eb4724b1a52d2ad61__image_snh_gs3_5z" width="1400px" src="loio98d4cb09ea0a4eadbbe932a75b9faf5e_LowRes.jpg"/></div>
+		<section class="section procedure"><div class="ol steps tasklabel"><h2 class="sectiontitle tasklabel">Procedure</h2></div><ol class="ol steps"><li class="li step stepexpand">
+				<span class="ph cmd">Include the <samp class="ph codeph">variantManagementHidden</samp> flag in the settings of the list
+					report component in the manifest.json of your app.</span>
+				<ul class="ul choices" id="loio094fe8c8d8ac4f0eb4724b1a52d2ad61__choices_agj_mbn_tz">
+					<li class="li choice">If you set the flag to <samp class="ph codeph">true</samp>, then standard variant management is not
+						available in the app. The app name is displayed instead.</li>
+
+					<li class="li choice">If you set the flag to <samp class="ph codeph">false</samp> or if the flag is not at all contained in
+						the manifest of the app, the standard variant management is available and
+						can be enabled or disabled. For more information, see <a class="xref" href="33c2b0d5bce24b30b1f05dbfe791f125.html" title="Variants allow you to store settings that users create for the smart filter bar, such as selection fields and layout, and for the smart table, such as sorting and visible columns.">Enabling Variant Management</a>.</li>
+
+				</ul>
+
+				<div class="itemgroup info">
+					<div class="p">
+						<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> List Report Without Variant
+							Management<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+"sap.ui.generic.app": {
+        "_version":"1.1.0",
+        "pages": [
+            {
+                "entitySet": "XXXXXX_Product",
+                "component": {
+                    "name": "sap.suite.ui.generic.template.ListReport",
+                    "list": true,
+                    "settings" : {
+                        "gridTable" : false,
+                        "multiSelect": false,
+                        "smartVariantManagement": true,
+                        "variantManagementHidden": true // Hides Variant management
+                    }
+                },
+</pre></div>
+</div>
+
+					</div>
+
+				</div>
+			</li>
+<li class="li step stepexpand">
+				<span class="ph cmd">If you want to use an app-specific title instead of the variant, include the
+						<samp class="ph codeph">subTitleIfVariantMgmtHidden</samp> property in the i18n file and
+					enter a text value as shown below:</span>
+				<div class="itemgroup info">
+					<div class="p">
+						<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+							<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+#XTIT,40
+subSubTitleIfVariantMgmtHidden = List Report Custom Title</pre></div>
+
+						</div>
+
+					</div>
+
+				</div>
+			</li>
+<li class="li step stepexpand">
+				<span class="ph cmd">Add a new property in the manifest.json of the application as shown below.</span>
+				<div class="itemgroup info">
+					<div class="p">
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+"sap.ui.generic.app": {
+
+        "_version":"1.1.0",
+
+        "pages": [
+
+            {
+
+                "entitySet": "XXXXXX_Product",
+
+                "component": {
+
+                    "name": "sap.suite.ui.generic.template.ListReport",
+
+                    "list": true,
+
+                    "settings" : {
+
+                        "gridTable" : false,
+
+                        "multiSelect": false,
+
+                        "smartVariantManagement": true,
+
+                        "variantManagementHidden": true,
+
+                        "subTitleIfVariantMgmtHidden": "{{subTitleIfVariantMgmtHidden}}" // Adding Custom Title here
+
+                    }
+
+                },</pre></div>
+
+					</div>
+
+				</div>
+			</li>
+</ol>
+</section>
+	</div>
+
+</div></div>
+
+</body>
+</html>

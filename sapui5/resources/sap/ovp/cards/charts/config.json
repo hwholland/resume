@@ -1,0 +1,165 @@
+{
+	"Line": {
+		"type": "line",
+		"dimensions": {
+			"min": 1,
+			"defaultRole": "Category"
+		},
+		"measures": {
+			"min": 1
+		},
+		"feeds": [{
+			"uid": "valueAxis",
+			"type": "measure"
+		}, {
+			"uid": "categoryAxis",
+			"min": 1,
+			"type": "dimension",
+			"role": "Category"
+		}, {
+			"uid": "color",
+			"type": "dimension",
+			"role": "Series"
+		}]
+	},
+	"Bubble": {
+		"type": "bubble",
+		"properties":{
+			"hideLabelWhenHeader": false
+		},
+		"dimensions": {
+			"max": 2
+		},
+		"measures": {
+			"min": 3,
+			"max": 3,
+			"defaultRole": "Axis1"
+		},
+		"feeds": [{
+			"uid": "valueAxis",
+			"min": 1,
+			"max": 1,
+			"type": "measure",
+			"role": "Axis1|Axis2|Axis3"
+		}, {
+			"uid": "valueAxis2",
+			"min": 1,
+			"max": 1,
+			"type": "measure",
+			"role": "Axis2|Axis1|Axis3"
+		}, {
+			"uid": "bubbleWidth",
+			"min": 1,
+			"max": 1,
+			"type": "measure",
+			"role": "Axis3|Axis1|Axis2"
+		}, {
+			"uid": "shape",
+			"max": 1,
+			"type": "dimension",
+			"role": "Category"
+		}, {
+			"uid": "color",
+			"max": 1,
+			"type": "dimension",
+			"role": "Series"
+		}]
+	},
+	"Donut": {
+		"type": "donut",
+		"dimensions": {
+			"min": 1
+		},
+		"measures": {
+			"min": 1,
+			"max": 1
+		},
+		"feeds": [{
+			"uid": "size",
+			"min": 1,
+			"max": 1,
+			"type": "measure"
+		}, {
+			"uid": "color",
+			"min": 1,
+			"type": "dimension"
+		}]
+	},
+	"Column": {
+		"type": "column",
+		"dimensions": {
+			"min": 1,
+			"defaultRole": "Category"
+		},
+		"measures": {
+			"min": 1,
+			"defaultRole": "Axis1"
+		},
+		"feeds": [{
+			"uid": "valueAxis",
+			"min": 1,
+			"type": "measure"
+		}, {
+			"uid": "categoryAxis",
+			"min": 1,
+			"type": "dimension"
+		}]
+	},
+	"ColumnStacked": {
+		"type": "stacked_column",
+		"dimensions": {
+			"min": 1,
+			"defaultRole": "Category"
+		},
+		"measures": {
+			"min": 1,
+			"defaultRole": "Axis1"
+		},
+		"feeds": [{
+			"uid": "valueAxis",
+			"min": 1,
+			"type": "measure"
+		}, {
+			"uid": "categoryAxis",
+			"min": 1,
+			"type": "dimension",
+			"role": "Category"
+		}, {
+			"uid": "color",
+			"type": "dimension",
+			"role": "Series"
+		}]
+	},
+	"VerticalBullet": {
+		"type": "vertical_bullet",
+		"dimensions": {
+			"min": 1,
+			"defaultRole": "Category"
+		},
+		"measures": {
+			"min": 1,
+			"defaultRole": "Axis1"
+		},
+		"feeds": [{
+			"uid": "actualValues",
+			"min": 1,
+			"type": "measure",
+			"role": "Axis1"
+		}, {
+			"uid": "targetValues",
+			"type": "measure",
+			"role": "Axis2"
+		}, {
+			"uid": "categoryAxis",
+			"min": 1,
+			"type": "dimension"
+		}]
+	},
+	"vertical_bullet": {
+		"reference": "VerticalBullet"
+	},
+	"StackedColumn": {
+		"reference": "ColumnStacked"
+	}
+
+}

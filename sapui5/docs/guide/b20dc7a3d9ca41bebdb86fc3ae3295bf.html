@@ -1,0 +1,117 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can replace the standard navigation from the object page with your own navigation to an external or internal target."/>
+<meta name="description" content="You can replace the standard navigation from the object page with your own navigation to an external or internal target."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7301670462009067"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7301670462009067"/>
+<title>Example: Replacing Standard Navigation in a Responsive Table on the Object Page</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob20dc7a3d9ca41bebdb86fc3ae3295bf">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Example: Replacing Standard Navigation in a Responsive Table on the Object Page</h1>
+
+	
+	<div class="body taskbody"><p class="shortdesc">You can replace the standard navigation from the object page with your own navigation to
+      an external or internal target.</p>
+
+		<section class="section procedure"><div class="ol steps tasklabel"><h2 class="sectiontitle tasklabel">Procedure</h2></div><ol class="ol steps" id="loiob20dc7a3d9ca41bebdb86fc3ae3295bf__steps_z5r_p12_z1b"><li class="li step stepexpand">
+				<span class="ph cmd">Add a navigation target to the manifest.js file.</span>
+				<div class="itemgroup info">
+					<p class="p">In the example below, external navigation (outbound) via the SAP Fiori
+						Launchpad has been added. </p>
+
+					<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+sap.app": {
+...
+  "crossNavigation": {
+     "inbounds": {},
+     "outbounds": {
+       "EPMProductManageSt": {
+         "semanticObject": "EPMProduct",
+         "action": "manage",
+         "parameters": {
+            "preferredMode": {
+               "value": {
+                  "value": "display"
+               }
+            }
+         }
+      }
+   }
+ }
+....
+</pre></div>
+
+					</div>
+
+				</div>
+			</li>
+<li class="li step stepexpand">
+				<span class="ph cmd">Register your extension in the manifest.js file.</span>
+				<div class="itemgroup info">
+					<div class="p">
+						<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+							<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"extends": {
+   "extensions": {
+      ... 
+      "sap.ui.controllerExtensions": { 
+         ...
+         "sap.suite.ui.generic.template.ObjectPage.view.Details": { 
+            ... 
+            "controllerName": "STTA_MP.ext.controller.DetailsExtension",
+            ...
+         }
+      } 
+      ...
+</pre></div>
+
+						</div>
+
+					</div>
+
+				</div>
+			</li>
+<li class="li step stepexpand">
+				<span class="ph cmd">Implement your controller extension.</span>
+				<div class="itemgroup info">
+					<p class="p">You have to implement the <span class="ph sap-technical-name sap-technical-name">onListNavigationExtension</span>
+                  function within the object page controller extension.</p>
+
+					<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+						<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">onListNavigationExtension: function(oEvent) {
+ var oNavigationController = this.extensionAPI.getNavigationController();
+ var oBindingContext = oEvent.getSource().getBindingContext();
+ var oObject = oBindingContext.getObject();
+ // for notebooks we trigger external navigation for all others we use internal navigation
+ if (oObject.ProductCategory == "Notebooks") {
+    oNavigationController.navigateExternal("EPMProductManageSt");
+ } else {
+    // return false to trigger the default internal navigation
+    return false;
+ }
+ // return true is necessary to prevent further default navigation
+ return true;
+ },
+</pre></div>
+
+					</div>
+
+				</div>
+			</li>
+</ol>
+</section>
+	</div>
+
+</div></div>
+
+</body>
+</html>

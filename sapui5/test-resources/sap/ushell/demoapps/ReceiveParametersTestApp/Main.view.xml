@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (c) 2009-2014 SAP SE, All Rights Reserved -->	
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:form="sap.ui.layout.form"
+	controllerName="sap.ushell.demo.ReceiveParametersTestApp.Main" xmlns:html="http://www.w3.org/1999/xhtml">
+	<VBox>
+			<form:SimpleForm id="appNavView1Form" minWidth="1024" maxContainerCols="2">
+				<Label text="Received AppState (JSON.stringified)" />
+				<TextArea type="Text" rows="20" enabled="false" id="fas2ta" value="{AppState>/appstate}"/>
+			</form:SimpleForm>	
+			<List headerText="Application Startup Parameters" noDataText="No startup parameters passed"
+				items="{path: 'startupParameters>/parameters'}">
+				<DisplayListItem label="{startupParameters>key}"
+					value="{startupParameters>value}" />
+			</List>
+	</VBox>
+</core:View>

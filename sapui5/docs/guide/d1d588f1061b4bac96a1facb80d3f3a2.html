@@ -1,0 +1,181 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="A worklist displays a collection of items that are to be processed by the user."/>
+<meta name="description" content="A worklist displays a collection of items that are to be processed by the user."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=05534279341445025"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=05534279341445025"/>
+<title>Worklist</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiod1d588f1061b4bac96a1facb80d3f3a2">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Worklist</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">A worklist displays a collection of items that are to be processed by the
+		user.</p>
+
+		<p class="p">Working through the item list usually involves reviewing details of the list items and
+			taking action. In most cases, the user has to either complete or delegate a work
+			item.</p>
+
+		<p class="p">The focus of the worklist floorplan is on processing the items. This differs from the
+			list report floorplan, which focuses on filtering content to create a list.</p>
+
+		
+		<div class="section"><div class="sectiondiv imagemap-wrapper imagemap_tooltips" id="loiod1d588f1061b4bac96a1facb80d3f3a2__im_overall1">
+				
+				<div class="fig imagemap" id="loiod1d588f1061b4bac96a1facb80d3f3a2____im_imagemap1"><div class="note note"><span class="insertion notetitle">Note</span>The following image contains links to more information.</div><img usemap="#d16148749e27" border="0" class="image" id="loiod1d588f1061b4bac96a1facb80d3f3a2____im_image1" src="loiob057362ebf50423eb05947ba2cb3337e_LowRes.png"/>
+<map name="d16148749e27" id="d16148749e27">
+<area href="ac70343fdf16499e8b39d42cec7593be.html" id="im1" alt="Application Header" title="Application Header" shape="rect" coords="0,0,1098,36"/>
+<area href="c0f6592a592e47f9bb6d09900de47412.html" id="im2" alt="Smart Table" title="Smart Table" shape="rect" coords="0,77,1099,720"/>
+<area href="d1d588f1061b4bac96a1facb80d3f3a2.html" id="im3" alt="Table Header Menu" title="Table Header Menu" shape="rect" coords="984,52,1074,74"/>
+</map></div>
+			</div>
+		</div>
+
+		<div class="section" id="loiod1d588f1061b4bac96a1facb80d3f3a2__section_zr3_ts2_z1b"><div class="section_title">Worklist Features That Differ from List Report Features</div><div type="Worklist Features That Differ from List Report Features">
+			
+			<div class="p">From a technical perspective, a worklist is a simplified list report. The following
+				aspects differ from the list report features:<ul class="ul" id="loiod1d588f1061b4bac96a1facb80d3f3a2__ul_ad3_xq2_z1b">
+					<li class="li">
+						<p class="p">You create a worklist using SAP WebIDE. In the<span class="ph uicontrol"> Template
+								Selection</span> step, choose <span class="ph uicontrol">Worklist</span>
+							as a template. For more information, see <a class="xref" href="9834a0a3b9284a6197f116f6c377ed06.html" title="You use SAP Web IDE to build UI applications using the SAP Fiori elements.">Building an App Using SAP Web IDE</a>. </p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">The worklist does not contain a smart filter bar. The search field is
+							available in the table toolbar.</p>
+
+					</li>
+
+					<li class="li"><p class="p">You can choose an app-specific title by setting the corresponding value
+							for the <samp class="ph codeph">subTitleIfVariantMgmtHidden</samp> property.</p>
+ For
+						more information, see Step 2 under <a class="xref" href="094fe8c8d8ac4f0eb4724b1a52d2ad61.html" title="To make things easier, you may want to create an app without variant management. In this case, only the title of the app is displayed. You can create a custom title, if required.">Creating a List Report Without Variant Management</a>. </li>
+
+					<li class="li">Variant management:<ul class="ul" id="loiod1d588f1061b4bac96a1facb80d3f3a2__ul_pmp_qr2_z1b">
+							<li class="li">
+								<p class="p">The worklist does not provide variant management.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">The <span class="ph uicontrol">Share</span> and <span class="ph uicontrol">Execute on
+										Select</span> actions are not available. </p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">You can adapt the worklist to provide variant management on page
+									level. To do so, set the
+										<samp class="ph codeph">variantManagementHidden</samp> flag to
+										<samp class="ph codeph">false</samp> in the manifest.json.</p>
+
+							</li>
+
+						</ul>
+</li>
+
+					<li class="li">
+						<p class="p">Smart table:</p>
+
+						<ul class="ul" id="loiod1d588f1061b4bac96a1facb80d3f3a2__ul_ufv_zr2_z1b">
+							<li class="li">
+								<p class="p">The multiselect function is enabled for all tables. If there are
+									only line item actions, a no-selection table is enabled.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">The <span class="keyword uinolabel">Export to Microsoft Excel</span> feature is
+									not available.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">The default table type is <span class="ph emphasis emphasis">responsive</span>. The
+									table title contains the row count. A fixed layout and growing
+									using the scrolling function is enabled.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">The table header menu provides the following options: Sort,
+									filter, group, and column settings.</p>
+
+							</li>
+
+						</ul>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+		<div class="section" id="loiod1d588f1061b4bac96a1facb80d3f3a2__section_i4j_dq2_z1b"><div class="section_title">Worklist Types</div><div type="Worklist Types">
+			
+			<p class="p">In the SAP WebIDE, you generate a simple worklist. You can create a category worklist
+				by defining a view on a worklist, as described under <a class="xref" href="0d390fed360c4c58a0f0619338938de1.html" title="You can define multiple views of a table and display them in single table mode. Users can switch between views using a segmented button.">Defining Multiple Views on a List Report Table - Single Table Mode</a>. </p>
+
+		</div></div>
+
+		<div class="section" id="loiod1d588f1061b4bac96a1facb80d3f3a2__section_ltl_st2_z1b"><div class="section_title">Configuring the Worklist</div><div type="Configuring the Worklist">
+			
+			<p class="p">See the user assistance for <a class="xref" href="c0eec49db81a441e878f528c8f3d28de.html">List Report and Object Page</a> for
+				any worklist configuration options. Apart from the features listed above, you can
+				also use the options described for the list report, for example:</p>
+
+			<ul class="ul" id="loiod1d588f1061b4bac96a1facb80d3f3a2__ul_dqh_yt2_z1b">
+				<li class="li">
+					<p class="p"><a class="xref" href="3af1d0381ffe4a97b8e86bf484eb94e3.html" title="You can use annotations to set up various elements in the list report view, such as the table type and smart filter bar.">Configuring List Report Features</a></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><a class="xref" href="a42427550b72436a8bdf53045b06effb.html" title="SAP Fiori elements control the navigation within an app (internal navigation) and the navigation to and from an app (external navigation).">Configuring Navigation</a></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><a class="xref" href="f4eb70f4808b48adb6ea03a4017aba24.html">Configuring Tables</a></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><a class="xref" href="a4d3c46175b34ac095245167dd2b787f.html" title="You can use annotations to set up various elements that are common to the list report and the object page, such as status colors and navigation.">Configuring Further Common Features</a></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><a class="xref" href="a892eb8ae1fb498a9bc6c5194432e820.html" title="Various extension points are available for list reports and object pages.">Extending Generated List Reports and Object Pages</a></p>
+
+				</li>
+
+				
+			</ul>
+
+		</div></div>
+
+		
+		<div class="section">For general information about the worklist floorplan, see <span class="ph">
+                                    <a class="xref" href="https://experience.sap.com/fiori-design-web/" alt="https://experience.sap.com/fiori-design-web/" title="https://experience.sap.com/fiori-design-web/"><span class="ph pname" id="loiod1d588f1061b4bac96a1facb80d3f3a2__d1776e93">SAP Fiori
+                                            Design Guidelines</span></a></span>.</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

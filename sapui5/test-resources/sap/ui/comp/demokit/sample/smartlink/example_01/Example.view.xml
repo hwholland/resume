@@ -1,0 +1,82 @@
+<core:View xmlns:core="sap.ui.core" xmlns:smartField="sap.ui.comp.smartfield"
+	xmlns:smartForm="sap.ui.comp.smartform" xmlns:l="sap.ui.layout"
+	xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.ui.comp.navpopover"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:smartTable="sap.ui.comp.smarttable" controllerName="sap.ui.comp.sample.smartlink.example_01.Example">
+
+	<l:VerticalLayout class="sapUiContentPadding">
+		<l:content>
+			<m:VBox>
+				<m:Text class="sapUiSmallMarginTop, sapUiLargeMarginBottom"
+					text="Field 'Name' is annotated as 'SemanticObject' in metadata. In CrossApplicationNavigation there are 2 targets maintained." />
+
+
+
+				<m:Text class="sapUiLargeMarginTop"
+					text="Example: SmartLink standalone with navigation target" />
+				<SmartLink text="{Name}" semanticObject="demokit_smartlink_example_01_SemanticObjectName"
+					semanticObjectLabel="{/#Product/Name/@sap:label}" />
+
+				<m:Text class="sapUiTinyMarginTop" text="Example: SmartLink with no navigation target" />
+				<SmartLink text="{Name}" semanticObject="SemanticObjectNoTargets"
+					semanticObjectLabel="{/#Product/Name/@sap:label}" />
+
+				<m:Text class="sapUiLargeMarginTop"
+					text="Example: SmartField embedded 
+					into a SmartForm with navigation target and with out" />
+				<smartForm:SmartForm>
+					<smartForm:Group>
+						<smartForm:GroupElement>
+							<smartField:SmartField value="{Name}" />
+							<smartField:SmartField value="{ProductId}" />
+						</smartForm:GroupElement>
+					</smartForm:Group>
+					<smartForm:semanticObjectController>
+						<SemanticObjectController entitySet="ProductCollection" />
+					</smartForm:semanticObjectController>
+				</smartForm:SmartForm>
+
+				<m:Text class="sapUiLargeMarginTop"
+					text="Example: SmartLink embedded into 
+					SmartField in SmartTable with navigation target and with out" />
+				<smartTable:SmartTable tableType="ResponsiveTable"
+					entitySet="ProductCollection" useVariantManagement="false"
+					useTablePersonalisation="false" showRowCount="false"
+					useExportToExcel="false">
+					<m:Table items="{/ProductCollection}">
+						<m:columns>
+							<m:Column customData:p13nData='\{"columnKey":"Name"\}'>
+								<m:Label text="Name" />
+							</m:Column>
+							<m:Column customData:p13nData='\{"columnKey":"ProductId"\}'>
+								<m:Text text="Product ID" />
+							</m:Column>
+						</m:columns>
+						<m:items>
+							<m:ColumnListItem>
+								<m:cells>
+									<smartField:SmartField value="{Name}">
+										<smartField:controlProposal>
+											<smartField:ControlProposal
+												controlType="ObjectIdentifier" />
+										</smartField:controlProposal>
+									</smartField:SmartField>
+									<m:Label text="{ProductId}" />
+								</m:cells>
+							</m:ColumnListItem>
+						</m:items>
+					</m:Table>
+				</smartTable:SmartTable>
+
+				<m:Text class="sapUiLargeMarginTop"
+					text="Example: SmartLink in SmartTable with navigation target and with out" />
+				<smartTable:SmartTable tableType="ResponsiveTable"
+					entitySet="ProductCollection" enableAutoBinding="true"
+					useVariantManagement="false" useTablePersonalisation="false"
+					showRowCount="false" useExportToExcel="false">
+				</smartTable:SmartTable>
+
+			</m:VBox>
+		</l:content>
+	</l:VerticalLayout>
+</core:View>

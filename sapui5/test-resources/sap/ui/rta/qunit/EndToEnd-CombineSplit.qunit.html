@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>QUnit page for testing End 2 End changes will reach LREP</title>
+
+<style>
+html, body, #qunit-tests {
+	height: 100%;
+}
+
+.sapUiView {
+	height: 100%;
+}
+
+#test-view {
+	border: 1px solid grey;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	width: 50%;
+	height: 50%;
+}
+</style>
+
+<script id="sap-ui-bootstrap" data-sap-ui-theme="sap_bluecrystal"
+	type="text/javascript" data-sap-ui-noConflict="true"
+	data-sap-ui-resourceroots='{"sap.ui.rta.test": "../testdata/rta/", "sap.ui.rta.qunit": "../qunit"}'
+	data-sap-ui-libs="sap.ui.rta,sap.ui.commons,sap.m,sap.ui.layout,sap.ui.dt"
+	src="../../../../../resources/sap-ui-core.js">
+	
+</script>
+<link rel="stylesheet"
+	href="../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript">
+	jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+	jQuery.sap.require("sap.ui.rta.RuntimeAuthoring");
+	jQuery.sap.require("sap.ui.fl.FakeLrepConnector");
+	jQuery.sap.require("sap.ui.rta.util.FakeLrepConnectorLocalStorage");
+	jQuery.sap.require("sap.ui.rta.util.FakeLrepLocalStorage");
+	jQuery.sap.require("sap.ui.dt.OverlayRegistry");
+	jQuery.sap.require("sap.ui.rta.qunit.RtaQunitUtils");
+	
+	var oCompCont = renderTestAppAt("test-view");
+
+	QUnit.module("Given RTA is started...", {
+		beforeEach : function(assert) {
+			sap.ui.rta.util.FakeLrepLocalStorage.deleteChanges();
+			assert.equal(sap.ui.rta.util.FakeLrepLocalStorage.getNumChanges(), 0, "Local storage based LREP is empty");
+
+			this.oGroupableField1 = sap.ui.getCore().byId("idMain1--GeneralLedgerDocument.Name");
+			this.oGroupableField2 = sap.ui.getCore().byId("idMain1--GeneralLedgerDocument.Mandatory");
+			this.oUngroupableField = sap.ui.getCore().byId("idMain1--GeneralLedgerDocument.BoundButton35");
+
+			var that = this;
+
+			var done = assert.async();
+
+			this.oRta = new sap.ui.rta.RuntimeAuthoring({
+				rootControl : oCompCont.getComponentInstance().getAggregation("rootControl")
+			});
+			this.oRta.attachStart(function() {
+				that.oGroupableField1Overlay = sap.ui.dt.OverlayRegistry.getOverlay(that.oGroupableField1);
+				that.oGroupableField2Overlay = sap.ui.dt.OverlayRegistry.getOverlay(that.oGroupableField2);
+				that.oUngroupableFieldOverlay = sap.ui.dt.OverlayRegistry.getOverlay(that.oUngroupableField);
+
+				done();
+			});
+			this.oRta.start();
+		},
+		afterEach : function(assert) {
+			this.oRta.destroy();
+			sap.ui.rta.util.FakeLrepLocalStorage.deleteChanges();
+		}
+	});
+
+	QUnit.test("when grouping/combining fields,", function(assert) {
+		waitForChangesToReachedLrepAtTheEnd(3, assert);
+
+		this.oRta._oDesignTime.setSelectionMode(sap.ui.dt.SelectionMode.Multi);
+		this.oGroupableField1Overlay.setSelected(true);
+		this.oGroupableField2Overlay.setSelected(true);
+		
+		var that = this;
+		this.oRta._handleGroupElements(this.oGroupableField1).then(function(){
+			that.oRta.stop();
+		});
+	});
+
+	QUnit.test("when ungrouping/splitting fields,", function(assert) {
+		waitForChangesToReachedLrepAtTheEnd(3, assert);
+
+		this.oUngroupableFieldOverlay.setSelected(true);
+
+		var that = this;
+		this.oRta._handleUngroupElements(this.oUngroupableField).then(function(){
+			that.oRta.stop();
+		});
+
+	});
+
+	QUnit.done(function(details) {
+		// If coverage is reuqested, remove the view to not overlap the coverage result
+		if (QUnit.config.coverage == true && details.failed === 0) {
+			jQuery("#test-view").hide();
+		};
+	});
+</script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit page for testing End 2 End changes
+		will reach LREP</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<ol id="qunit-tests"></ol>
+	<div id="test-view"></div>
+</body>
+</html>

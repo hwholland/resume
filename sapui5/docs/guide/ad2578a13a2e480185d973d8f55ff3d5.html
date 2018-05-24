@@ -1,0 +1,290 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, you will be adding the sap.ui.vk.StepNavigation control to a 3D Viewer application."/>
+<meta name="description" content="In this step, you will be adding the sap.ui.vk.StepNavigation control to a 3D Viewer application."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=1516428203224065"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=1516428203224065"/>
+<title>Step 5: Adding Step Navigation</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioad2578a13a2e480185d973d8f55ff3d5">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 5: Adding Step Navigation</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, you will be adding the <samp class="ph codeph">sap.ui.vk.StepNavigation</samp> control
+        to a 3D Viewer application. </p>
+
+        <div class="note caution"><span class="cautiontitle">Caution</span> The controls in the <samp class="ph codeph">sap.ui.vk</samp> library are currently
+            flagged as experimental. For more information, see <a class="xref" href="91f087396f4d1014b6dd926db0e91070.html" title="The following sections describe what SAP can change in major, minor, and patch releases. Always consider these rules when developing apps, features, or controls with or for SAPUI5.">Compatibility Rules</a>.</div>
+
+		<p class="p">Sometimes, you may encounter a 3D model that has a sequence of animations associated with it.
+            The <samp class="ph codeph">StepNavigation</samp> control allows you to display the steps in the
+            animation sequence, navigate to the individual steps in the animation sequence, and play
+            the animation in a single step or in all of the steps.</p>
+
+        <p class="p">The content in this step builds on the code from <a class="xref" href="773a0088c5a54d0cbeb985c347cb643f.html" title="In this step, you will be adding an sap.ui.vk.SceneTree control to your 3D Viewer application.">Step 4: Adding a Scene Tree</a>, and code changes performed in this
+            step of the tutorial are done in relation to the files in <a class="xref" href="773a0088c5a54d0cbeb985c347cb643f.html" title="In this step, you will be adding an sap.ui.vk.SceneTree control to your 3D Viewer application.">Step 4: Adding a Scene Tree</a>.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+            
+            <div class="fig fignone" id="loioad2578a13a2e480185d973d8f55ff3d5__fig_ls5_jrw_15"><div class="figcontainer">
+                
+                <img class="image" id="loioad2578a13a2e480185d973d8f55ff3d5__image_bxw_rtq_15" src="loio1b6819b8570245b8a35a4a0941a4fac3_LowRes.jpg"/>
+            <div class="figcap">Viewer application with a Step Navigation, Viewport, and Scene Tree</div></div></div>
+
+        </div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+            <p class="p">You can view and download all files <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.vk.tutorial.VIT.05/preview" alt="../../explored.html#/sample/sap.ui.vk.tutorial.VIT.05/preview" title="../../explored.html#/sample/sap.ui.vk.tutorial.VIT.05/preview">3D Viewer - Step 5 - Viewport with Scene Tree and Step
+                        Navigation</a></span>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">index.html</p>
+
+                <p class="p">Update the <samp class="ph codeph">index.html</samp> file to reference the
+                        <samp class="ph codeph">viewportScenetreeStepnav</samp> namespace, which will be the
+                    namespace we'll use for the sample application in this step.</p>
+
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-html">&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+        &lt;meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/&gt;
+    &lt;script id="sap-ui-bootstrap"
+        src="../../../../../../../../../resources/sap-ui-core.js"
+        data-sap-ui-libs="sap.ui.vk, sap.m, sap.ui.core"
+        data-sap-ui-theme="sap_belize"
+        data-sap-ui-bindingSyntax="complex"
+        data-sap-ui-resourceroots='{
+            <span class="ph emphasis emphasis">"viewportScenetreeStepnav": "./"</span>
+        }'&gt;
+    &lt;/script&gt;
+    &lt;script&gt;
+    sap.ui.getCore().attachInit(function(){
+        new sap.m.Shell({
+            app: new sap.ui.core.ComponentContainer({
+                <span class="ph emphasis emphasis">name : "viewportScenetreeStepnav"</span>
+            })
+        }).placeAt("content");
+    });
+    &lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body id="content" class="sapUiBody"&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">Component.js</p>
+
+                <p class="p">Update the <samp class="ph codeph">Component.js</samp> file to reference the namespace
+                    specified for this application.</p>
+
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+    "sap/ui/core/UIComponent"
+], function (UIComponent) {
+    "use strict";
+    <span class="ph emphasis emphasis">return UIComponent.extend("viewportScenetreeStepnav.Component",</span> {
+        metadata: {
+            manifest: "json"
+        },
+        init: function () {
+            // call the init function of the parent
+            UIComponent.prototype.init.apply(this, arguments);
+        }
+    });
+});</pre></div>
+
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">i18n.properties</p>
+
+                <p class="p">Because we are not creating any fields that a user can interact with, we only
+                    have one line of code which specifies what the label for the page title is.</p>
+
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-prefs"># Page Descriptor
+<span class="ph emphasis emphasis">pageTitle=Viewport with Scene Tree and Step Navigation</span></pre></div>
+
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">manifest.json</p>
+
+                <p class="p">Update the <samp class="ph codeph">manifest.json</samp> file so that it references the correct
+                    files.</p>
+
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">{
+    "_version": "1.8.0",
+    "sap.app": {
+        <span class="ph emphasis emphasis">"id": "viewportScenetreeStepnav",</span>
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "applicationVersion": {
+            "version": "1.0.0"
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        <span class="ph emphasis emphasis">"rootView": "viewportScenetreeStepnav.view.App",</span>
+        "dependencies": {
+            "minUI5Version": "1.30",
+            "libs": {
+                "sap.m": {}
+            }
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    <span class="ph emphasis emphasis">"bundleName": "viewportScenetreeStepnav.i18n.i18n"</span>
+                }
+            }
+        }
+    }
+}&lt;vk:StepNavigation&gt;</pre></div>
+
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">App.view.xml</p>
+
+                <p class="p">In this file, we have added a <samp class="ph codeph">&lt;vk:StepNavigation&gt;</samp> element to
+                    this file. We have specified the width and height of the
+                        <samp class="ph codeph">StepNavigation</samp> control on the screen.</p>
+
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+        <span class="ph emphasis emphasis">controllerName="viewportScenetreeStepnav.controller.App"</span>
+        xmlns="sap.m"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:vk="sap.ui.vk"
+        xmlns:l="sap.ui.layout"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:u="sap.ui.unified"
+        displayBlock="true"&gt;
+    &lt;App id="viewportScenetreeStepnav"&gt;
+        &lt;Page
+                title="{i18n&gt;pageTitle}"&gt;
+<span class="ph emphasis emphasis">                &lt;vk:StepNavigation
+                id="StepNavigation"
+                width="100%"
+                    height="17.5%"/&gt;</span>
+            &lt;vk:Viewport
+                    id="viewport"
+                    width="100%"
+                    height="50%"/&gt;
+            &lt;vk:SceneTree
+                    id="scenetree"
+                    width="100%"
+                    height="50%"/&gt;
+        &lt;/Page&gt;
+    &lt;/App&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+            </div><div class="sectiondiv subsection">
+                <p class="p subsectiontitle">App.controller.js</p>
+
+                <p class="p">The highlighted sections in the following code block indicate the additions and
+                    changes made in the code to incorporate step navigation in the 3D Viewer
+                    application.</p>
+
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/vk/ContentResource",
+
+], function (Controller, JSONModel, ContentResource) {
+    "use strict";
+    var contentResource = new sap.ui.vk.ContentResource({
+        source: "/models/boxTestModel.vds",
+        sourceType: "vds",
+        id: "abc123"
+    });
+    <span class="ph emphasis emphasis">return Controller.extend("viewportScenetreeStepnav.controller.App",</span>{
+        onInit: function() {
+            var mainScene;
+            jQuery.sap.require("sap.ui.vk.GraphicsCore");
+            var graphicsCore = new sap.ui.vk.GraphicsCore({},{
+                antialias: true,
+                alpha: true,
+                premultipliedAlpha: false
+            });
+            var view = this.getView();
+            var viewport = view.byId("viewport");
+            var sceneTree = view.byId("scenetree");
+            <span class="ph emphasis emphasis">var stepNavigation = view.byId ("StepNavigation");</span>
+            viewport.setGraphicsCore(graphicsCore);
+            graphicsCore.loadContentResourcesAsync([contentResource], function(sourcesFailedToLoad){
+                if (sourcesFailedToLoad){
+                    jQuery.sap.log.error("Some of content resources cannot be loaded.");
+                } else {
+                    var scene = graphicsCore.buildSceneTree([contentResource]);
+                    if (scene){
+                        mainScene = scene;
+                        viewport.setScene(mainScene);
+                        var viewStateManager = graphicsCore.createViewStateManager(mainScene.getDefaultNodeHierarchy());
+                        viewport.setViewStateManager(viewStateManager);
+                        sceneTree.setScene(mainScene, viewStateManager);
+                        <span class="ph emphasis emphasis">stepNavigation.setScene(mainScene);</span>
+                    } else {
+                        <span class="ph emphasis emphasis">jQuery.sap.log.error("Failed to build the viewport, the scene tree, and the step navigation.");</span>
+                    }
+                }
+            });
+        }
+    });
+});</pre></div>
+
+                <p class="p">Let us look at the changes in more detail.</p>
+
+                <p class="p">The following line of code adds a new Step Navigation object.</p>
+
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">var stepNavigation = view.byId ("StepNavigation");</pre></div>
+
+                <p class="p">We then associate the scene with the Step Navigation object, so that the
+                    animation sequences in the model are displayed in the
+                        <samp class="ph codeph">StepNavigation</samp> control.</p>
+
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">stepNavigation.setScene(mainScene);</pre></div>
+
+                <p class="p">Finally, we changed the message for the condition that determines whether the
+                    Viewport, the Scene Tree, and the Step Navigation controls loaded successfully
+                    or not:</p>
+
+                <div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">jQuery.sap.log.error("Failed to build the Viewport, the Scene Tree, and the Step Navigation.");</pre></div>
+
+            </div></div>
+
+	    <div class="section"><div class="section_title">API Reference</div><div type="API Reference">
+            
+            <ul class="ul" id="loioad2578a13a2e480185d973d8f55ff3d5__ul_scn_21c_f5">
+                <li class="li"><a class="xref" href="../../docs/api/symbols/sap.ui.vk.StepNavigation.html" alt="../../docs/api/symbols/sap.ui.vk.StepNavigation.html" title="../../docs/api/symbols/sap.ui.vk.StepNavigation.html">sap.ui.vk.StepNavigation</a></li>
+
+            </ul>
+
+        </div></div>
+
+	</div>
+
+    <div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="4717af4919e34245ba91905be4b57836.html">Step Navigation</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

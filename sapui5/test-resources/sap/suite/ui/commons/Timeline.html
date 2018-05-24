@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Timeline - sap.suite.ui.commons</title>
+
+<!-- UI5 Bootstrap -->
+<script src="../../../../../resources/sap-ui-core.js"
+	type="text/javascript" id="sap-ui-bootstrap"
+	data-sap-ui-libs="sap.suite.ui.commons,sap.m,sap.ui.commons"
+	data-sap-ui-theme="sap_bluecrystal"></script>
+
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+var oData = [
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 4).getTime(),
+       			text :  "On his first day as sole CEO at SAP, Bill McDermott addresses employees with a video message and asks for their support to work together to achieve the company’s mission and transform SAP into the cloud company powered by SAP HANA",
+       			userName : "Sarah Social",
+       			title : "added a Note",
+       			filterValue: "Note",
+       			icon : "sap-icon://accept"
+       		},
+       		{
+       			dateTime :  new Date(new Date().getTime() - (1000 * 3600 * 24) * 4).getTime(),
+       			text : "79% of consumers spend at least 50% of total shopping time researching products online 82% of consumers will substitute and switch brands due to an out-of-stock product", 
+       			userName : "Sarah Social",
+       			title : "added a Note about retail reality",
+       			filterValue: "Note",
+       			icon : "sap-icon://accept"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*4).getTime(),
+       			text : "Comments on the retail reality",
+       			userName : "John Smith",
+       			title : "posted a Comment",
+       			filterValue: "Comment",
+       			icon : "sap-icon://activity-items"
+       		},
+       		{
+       			dateTime :  new Date(new Date().getTime() - (1000 * 3600 * 24) * 1).getTime(),
+       			text : "Introducing the First  Collaborative SAP HANA",
+       			userName : "Sam Sales",
+       			title : "added a Note",
+       			filterValue: "Note",
+       			icon : "sap-icon://accept"
+       		},
+       		
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 6).getTime(),
+       			text : "A Call was made on this date. Left message to the customer to call back.",
+       			userName : "Tony Stark",
+       			title : "made the Call",
+       			filterValue: "Call",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 5).getTime(),
+       			text : "Added a comment on the customer call back that the issue is resolved",
+       			userName : "Tony Stark",
+       			title : "posted a Comment",
+       			filterValue: "Comment",
+       			icon : "sap-icon://activity-items"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 2).getTime(),
+       			text : "A Call was made on this date. Need to follow up next week.",
+       			userName : "Sarah Social",
+       			title : "made a Call",
+       			filterValue: "Call",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)).getTime(),
+       			text : "This is my comments appearing in Comment type Item.",
+       			userName : "Sam Sales",
+       			title : "posted a Comment",
+       			filterValue: "Comment",
+       			icon : "sap-icon://activity-items"
+       		},
+       	
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*12).getTime(),
+       			text : "Commented on the issues of Commute",
+       			userName : "Sarah Jones",
+       			title : "posted a Comment",
+       			filterValue: "Comment",
+       			icon : "sap-icon://activity-items"
+       		},
+       		
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)* 10).getTime(),
+       			text : "Sample text for a Note type item",
+       			userName : "John Smith",
+       			title : "added a Note",
+       			filterValue: "Note",
+       			icon : "sap-icon://accept"
+       		},
+       	    {
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 40).getTime(),
+       			text : "Global Learning Center in Dublin, CA, SAP Academy has been hard at work transforming 148 high-potential Millennials (representing 38 countries) into SAP’s next generation of Sales and Presales leaders.", 
+       			userName : "Sarah Jones",
+       			title : "added a Note",
+       			filterValue: "Note",
+       			icon : "sap-icon://accept"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 25).getTime(),
+       			text : "Made a Call to the IT group, reagrding the downtime of servers, need to hear back from them",
+       			userName : "Sarah Jones",
+       			title : "made a Call",
+       			filterValue: "Call",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 30).getTime(),
+       			text : "Made a call to customer and discussed the Timeline changes",
+       			userName : "Tony Stark",
+       			title : "made a Call",
+       			filterValue: "Call",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 5).getTime(),
+       			text : "A Call was made on this date. Need to follow up next week.",
+       			userName : "Tony Stark",
+       			title : "made a Call",
+       			filterValue: "Call",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		{
+       			dateTime : new Date(),
+       			text : "New Message - A Call was made on this date. Need to follow up next week.",
+       			userName : "Tony Stark",
+       			title : "made a Call",
+       			filterValue: "Call",
+       			icon : "sap-icon://outgoing-call"
+       		}
+       		
+       		
+       	];
+ // if both text and content are passed in data, control in content will be shown, not text.
+
+     var timeline = new sap.suite.ui.commons.Timeline({id: "aa.bb.cc", enableSocial: false, enableBusyIndicator: false});
+//     timeline.setSortOldestFirst(true);
+    	timeline.setData(oData);
+ 	//timeline.placeAt("content");
+ 	
+ 	var oIconCheckBox = new sap.m.CheckBox({
+				text: "Show Icons",
+				width: "70px",
+				selected :true,
+	 		select : function(oEvent){
+	 			if(oIconCheckBox.getSelected())
+	 				timeline.setShowIcons(true);
+		           else 
+		        	   timeline.setShowIcons(false);
+				 	}
+	       });
+	
+     var oSortCheckBox = new sap.m.CheckBox({
+			text: "Sort",
+			width: "45px",
+			selected :true,
+    		select : function(oEvent){
+    			if(oSortCheckBox.getSelected())
+	        	  timeline.setSort(true);
+	           else 
+	        	   timeline.setSort(false);
+			 	   timeline.setData(oData); }
+          });
+    
+     
+     var oHdrCheckBox = new sap.m.CheckBox({
+			text: "Show Hdr.",
+			width: "65px",
+			selected :true,
+		select : function(oEvent){
+			if(oHdrCheckBox.getSelected())
+				timeline.setShowHeaderBar(true);
+	           else 
+	        	   timeline.setShowHeaderBar(false);
+     		 	   timeline.setData(oData);
+   }
+    });
+/*     var oBusyCheckBox = new sap.m.CheckBox({
+			text: "Busy Indicator",
+			width: "70px",
+			selected :false,
+ 		select : function(oEvent){
+ 			if(oBusyCheckBox.getSelected())
+ 			    {  timeline.setEnableBusyIndicator(false);
+// 			       timeline.setData(oData);
+   		        }
+	           else 
+	        	   timeline.setEnableBusyIndicator(true);
+ 			       jQuery.sap.delayedCall(60000, this, function() {timeline.setData(oData)});
+//			 	   timeline.setData(oData);
+               }
+       });*/
+  
+     
+     var oToolbar = new sap.m.Toolbar({
+      content: [
+                oIconCheckBox,
+                oHdrCheckBox,
+                oSortCheckBox,
+                
+//                oBusyCheckBox,
+                ]});
+     
+ 	var item1 = new sap.suite.ui.commons.TimelineItem({
+ 		    dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 2).getTime(),
+ 			userName : "Tony Spark",
+ 			title : "made a Call",
+ 			icon : "sap-icon://outgoing-call",
+ 			userNameClickable : true,
+ 			embeddedControl : new sap.m.Button({
+				text: "Click me",
+				width: "90px",
+				press : function() { alert("Hello from Timeline Item");}
+				})
+ 	});
+ 	var l = format_date(item1.getDateTime());
+ 	item1.setFilterValue(l);
+
+	item1.attachUserNameClicked(
+  		function(oControlEvent) { 
+  			alert("Click on Us er Name " + oControlEvent.getSource().getUserName());
+  			var oVCard = new sap.suite.ui.commons.BusinessCard({
+  			    firstTitle:  new sap.ui.commons.Label({id:"vcard1-name-label",text:"White, Helen",tooltip:"White, Helen"}),
+//  			    iconPath: "D:\contact.gif",
+  			    secondTitle: "Sales Contact at Customer Side",
+  			    imageTooltip:"White, Helen",
+  			    width: "424px"
+  			});
+  		}	
+  	);
+ 	var item2 = new sap.suite.ui.commons.TimelineItem({
+ 		    dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*3).getTime(),
+  			text : "Innovational spirit, entrepreneurialism, simplicity, and boldness are the most important,criteria for participating in the first Hasso Plattner Founders’ Award.Any employee who would like to nominate himself/herself, a colleague,or a team for this prestigious award should be on the lookout for projects	and initiatives that exemplify entrepreneurial action, innovative thinking,	and bold decisions. Beyond this, the entry should also foster simplification at SAP.",
+ 			userName : "Sarah Social",
+ 			title : "added a Note",
+ 			icon : "sap-icon://accept"
+     });
+ 	var l = format_date(item2.getDateTime());
+ 	item2.setFilterValue(l);
+ 	
+ 	var item3 = new sap.suite.ui.commons.TimelineItem({
+     	dateTime : new Date().getTime(),
+ 		userName : "Tony Spark",
+ 		title : "added a Note",
+ 		icon : "sap-icon://accept"
+ 	});
+ 	var oText = new sap.m.Text();
+ 	oText.setText("Display text in this box from embedded content sap.m.Text");
+ 	item3.setEmbeddedControl(oText);
+ 	var l = format_date(item3.getDateTime());
+ 	item3.setFilterValue(l);
+ 	
+ 	
+ 	var item4 = new sap.suite.ui.commons.TimelineItem({
+     	dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)).getTime(),
+ 		userName : "John Smith",
+ 		title : "made a Call",
+ 		icon : "sap-icon://outgoing-call"
+ 	});
+ 	item4.setEmbeddedControl(new sap.m.Link({
+ 		text : "Link to SAP home page",
+ 		href : "http://www.sap.com",
+ 		target: "_blank"
+ 	}));
+ 	var l = format_date(item4.getDateTime());
+ 	item4.setFilterValue(l);
+ 	
+ 	var objectlistItem = new sap.m.ObjectHeader({
+ 		title:"Attachment.doc", number:"22.83", numberUnit:"USD",
+ 		attributes: [new sap.m.ObjectAttribute({text:"file name"})],
+ 		firstStatus: new sap.m.ObjectStatus({text:"Uploaded", state :sap.ui.core.ValueState.Error })
+ 	});
+ 	var item5 = new sap.suite.ui.commons.TimelineItem({
+     	dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*1).getTime(),
+  		userName : "Sarah Social",
+ 		title : "added some Contents",
+ 		icon : "sap-icon://activity-items",
+ 	});
+ 	item5.setEmbeddedControl(objectlistItem);
+ 	var oFT = new sap.ui.commons.FormattedTextView("oFT");
+ 	var sHtmlText = 'Example to have mixture of text and link: <embed data-index=\"0\">, <embed data-index=\"1\">';
+	sHtmlText += ' Click to navigate to outside links.';
+	oFT.setHtmlText(sHtmlText);
+	oFT.addControl(new sap.ui.commons.Link({
+ 		text : "SAP",
+ 		href : "http://www.sap.com",
+ 		target : "_blank"
+ 	}));
+	oFT.addControl(new sap.ui.commons.Link({
+ 		text : "Google",
+ 		href : "http://www.google.com",
+ 		target : "_blank"
+		}));
+	
+	var l = format_date(item5.getDateTime());
+ 	item5.setFilterValue(l);
+ 	
+ 	var item6 = new sap.suite.ui.commons.TimelineItem({
+ 		dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*16),
+		userName : "John Smith",
+		title : "added a custom text",
+		icon : "sap-icon://activity-items",
+		embeddedControl : oFT
+	});
+ 	
+// 	alert(item6.getDateTime());
+// 	var l = format_date(item6.getDateTime());
+// 	item6.setFilterValue(l);
+ 	
+ 	function format_date(idate){
+ 		
+ 	  	var d = new Date(parseInt(idate));
+ 	   	var year = d.getFullYear();
+   	    var day = d.getDate();
+   	    var month = d.getMonth() + 1;
+//	    if (day<10) { day = '0' + day; }
+//	    if (month<10) {month = '0' + month;}
+   	    var previousDate = month.toString() + '/' +  day.toString() + '/' + year.toString().substr(2,2);
+   	    return previousDate;
+   		}
+
+ 	 	
+ 	var conts = [item1,item2,item3,item4,item5,item6];
+ 	var timeline2 = new sap.suite.ui.commons.Timeline({enableSocial: true});
+ 	timeline2.setSortOldestFirst(true);
+ 	timeline2.setContent(conts);
+ 	timeline2.attachSelect(
+  		function(oControlEvent) { 
+    		alert("Select Timeline Item " + oControlEvent.getParameter("selectedItem").getUserName() + " " + oControlEvent.getParameter("selectedItem").getTitle());
+  		}	
+  	);
+
+  	var oModel = new sap.ui.model.odata.ODataModel("/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc/", true);
+  	var tlItem = new sap.suite.ui.commons.TimelineItem({
+    	dateTime : "{OrderDate}",
+		text : "{ShipName}",
+		title : "placed an order",
+		userName : "{CustomerID}",
+		filterValue: "{CustomerID}",
+		icon : "sap-icon://activity-items",
+		userNameClickable : true
+	});
+  	tlItem.attachUserNameClicked(
+  		function(oControlEvent) { 
+    			alert("Click on User Name " + oControlEvent.getSource().getUserName());
+  		}	
+  	);
+  	
+ //Bind timeline3 data 	
+  	var timeline3 = new sap.suite.ui.commons.Timeline({enableBusyIndicator: false});
+  	timeline3.setModel(oModel);
+  	timeline3.setShowIcons(false);
+  	timeline3.setWidth("80%");
+  	timeline3.setGrowingThreshold(2);
+  	timeline3.bindAggregation("content", {
+  		path: "/Orders",
+  		template: tlItem
+  	});
+  	timeline3.attachSelect(
+    		function(oControlEvent) { 
+      		alert("Select Timeline Item " + oControlEvent.getParameter("selectedItem").getUserName() + " " + oControlEvent.getParameter("selectedItem").getTitle());
+    		}	
+    	);
+  //Based on Filter rebind the Timeline data on click of New Data	
+  	var oFilter = new sap.ui.model.Filter("CustomerID", sap.ui.model.FilterOperator.EQ, "QUICK");
+	var oButton = new sap.m.Button({
+		text : "Load New Data",
+		press : function() {
+	  	timeline3.bindAggregation("content", {
+	  		path: "/Orders",
+	  		filters: [oFilter],
+	  		template: tlItem
+	  	});
+		}});
+	
+	var oToolbarFlt = new sap.m.Toolbar({
+	      content: [
+	                oButton,   
+	                 ]});
+  	
+	var oButton_Com = new sap.m.Button({
+		text : "Compact",
+		width: "100px",
+		press : function() {
+	  	layh.addStyleClass("sapUiSizeCompact"); 
+		}});
+    var oButton_Coz = new sap.m.Button({
+		text : "Cozy", 
+		width: "100px",
+		press : function() {
+	  	layh.removeStyleClass("sapUiSizeCompact"); 
+		}});
+    
+    var oButton_popover = new sap.m.Button({
+  		text : "Show in popover", 
+  		width: "100px",
+  		press : function(oEvent) {
+  			var oPopover = new sap.m.ResponsivePopover({
+  				content: new sap.suite.ui.commons.Timeline({
+  					showIcons: false,
+  					showHeaderBar: false,
+  					growingThreshold: 5,
+  					enableScroll:true,
+  					forceGrowing: false,
+  					showFilterBar: false,
+  					showSearch:false,
+  					content: [new sap.suite.ui.commons.TimelineItem({
+  						title: "abc"
+  					}),
+  							 new sap.suite.ui.commons.TimelineItem({
+  						title: "abc",
+  								 text: "def"
+  					}),new sap.suite.ui.commons.TimelineItem({
+  						title: "abc",
+  								 text: "def"
+  					}),new sap.suite.ui.commons.TimelineItem({
+  						title: "abc",
+  								 text: "def"
+  					}),new sap.suite.ui.commons.TimelineItem({
+  						title: "abc",
+  								 text: "def"
+  					}),new sap.suite.ui.commons.TimelineItem({
+  						title: "abc",
+  								 text: "def"
+  					}),new sap.suite.ui.commons.TimelineItem({
+  						title: "abc",
+  								 text: "def"
+  					}),new sap.suite.ui.commons.TimelineItem({
+  						title: "abc",
+  								 text: "def"
+  					}),new sap.suite.ui.commons.TimelineItem({
+  						title: "abc",
+  								 text: "def"
+  					}),new sap.suite.ui.commons.TimelineItem({
+  						title: "abc",
+  								 text: "def"
+  					}),new sap.suite.ui.commons.TimelineItem({
+  						title: "abc",
+  								 text: "def"
+  					}),new sap.suite.ui.commons.TimelineItem({
+  						title: "abc",
+  								 text: "def"
+  					})]
+  				})
+  			});
+  				
+  			oPopover.openBy(oEvent.getSource());
+  		}});
+    
+    var oButton_popover_1 = new sap.m.Button({
+  		text : "Growing in popover", 
+  		width: "100px",
+  		press : function(oEvent) {
+  			
+   	   var oTlItemFLp = new sap.suite.ui.commons.TimelineItem({
+    	 	 	dateTime : "{OrderDate}",
+    	 	 	userName : "{CustomerID}",
+    	 			title : "{CustomerName}",
+    	 			icon : "sap-icon://activity-items",
+    	 			text: "{ProductName}"
+    	 		});
+    	 		var oModelFLp = new sap.ui.model.odata.ODataModel("/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc/", true);
+    	 																	
+    	 		var oTimelineFLp = new sap.suite.ui.commons.Timeline({	enableBackendFilter: true,
+    	 		 														//enableAllInFilterItem: false,
+    	 		 														growing: true,
+    	 		 														growingThreshold: 3,
+    	 		 														showHeaderBar: false
+    	 			                                                        });
+    	 																	
+    	 		
+    	   		 	oTimelineFLp.setShowIcons(false);
+    	        	   	oTimelineFLp.setModel(oModelFLp);
+  		 
+    	        	    oTimelineFLp.bindAggregation("content", {
+    	    			    	path: "/Invoices",
+    	    			    	template: oTlItemFLp
+    	    				});  
+  			
+  			var oPopover = new sap.m.ResponsivePopover({
+  				content: oTimelineFLp
+  			});
+  			
+  			
+  				
+  			oPopover.openBy(oEvent.getSource());
+  		}});
+    
+
+	
+    var oToolbarMode = new sap.m.Toolbar({
+	      content: [ oButton_Com,oButton_Coz ,oButton_popover,oButton_popover_1  ]});
+	                 
+   	var panel1 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false,   width : "400px", height : "500px",  text:"Timeline: Text Items with Show Icons, Show Header, Sort", areaDesign: sap.ui.commons.enums.AreaDesign.Transparent});
+ 	panel1.addContent(oToolbar);
+   	panel1.addContent(timeline);
+   	
+   	var panel2 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false,   width : "400px", height : "500px", text:"Timeline: in Scroll Container with embedded controls" , areaDesign: sap.ui.commons.enums.AreaDesign.Transparent });
+   	panel2.addContent(oToolbarMode);
+   	panel2.addContent(timeline2);
+   	
+   	var panel3 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false,   width : "400px", height : "500px", text:"Timeline: in Scroll Container using oData model binding", areaDesign: sap.ui.commons.enums.AreaDesign.Transparent });
+	panel3.addContent(oToolbarFlt);
+   	panel3.addContent(timeline3);
+   	
+   	var layh = new sap.ui.commons.layout.HorizontalLayout({ width : "100%", height : "100%" });
+   	var indent = new sap.ui.commons.TextView({ width : '20px' });
+   	var indent2 = new sap.ui.commons.TextView({ width : '20px' });
+
+//Testing for  differnet aspects in TimelLine   	
+	var timelineLang = new sap.suite.ui.commons.Timeline();
+	var langitem1 = new sap.suite.ui.commons.TimelineItem({
+	 		    dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 2).getTime(),
+	 			userName : "Johnny Abel made a call",
+	 			userNameClickable:true,
+	 			icon : "sap-icon://outgoing-call",
+	 			embeddedControl : new sap.m.Button({
+					text: "Click me",
+					width: "90px",
+					press : function() { alert("Hello from Timeline Item");}
+					})
+	 	});
+	langitem1.attachUserNameClicked(
+	  		function(oControlEvent) { 
+	  			alert("Click on User Name " + oControlEvent.getSource().getUserName());
+	  		}	
+	  	);
+		
+	 	var langitem2 = new sap.suite.ui.commons.TimelineItem({
+	 		    dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*3).getTime(),
+	  			text : "TimeLineItem without UserName", 
+	  			userNameClickable:true,
+	 			title : "Tony Spark,added a Note",
+	 			icon : "sap-icon://accept"
+	     });
+	 
+	 	langitem2.attachUserNameClicked(
+	 	  		function(oControlEvent) { 
+	 	  			alert("Click on User Name " + oControlEvent.getSource().getUserName());
+	 	  		}	
+	 	  	);
+	 	var langitem3 = new sap.suite.ui.commons.TimelineItem({
+				text : "A Call was made on this date. Need to follow up next week, and check the various possibilites in testing the applications,on different browsers,and different devices",
+				userName : "Sarah Social",
+				userNameClickable:true,
+				title : "TimelineItem without Date",
+				icon : "sap-icon://outgoing-call"
+	 });
+	 	langitem3.attachUserNameClicked(
+	 	  		function(oControlEvent) { 
+	 	  			alert("Click on User Name " + oControlEvent.getSource().getUserName());
+	 	  		}	
+	 	  	);
+	 	
+	 	var langitem4 = new sap.suite.ui.commons.TimelineItem({
+		    dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*3).getTime(),
+			text : "Testing without username and Title",
+			userNameClickable:true,
+			icon : "sap-icon://accept"
+	});
+	 	langitem4.attachUserNameClicked(
+	 	  		function(oControlEvent) { 
+	 	  			alert("Click on User Name " + oControlEvent.getSource().getUserName());
+	 	  		}	
+	 	  	);
+	 	
+	   	var langItems = [langitem1,langitem2,langitem3, langitem4];
+	 	timelineLang.setContent(langItems);  	
+	 	
+	 	var panel4 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false,   width : "400px", height : "500px", text:"Timeline: Different Properties of TimeLineItem" , areaDesign: sap.ui.commons.enums.AreaDesign.Transparent });
+	 	panel4.addContent(oToolbarNoData);
+	   	panel4.addContent(timelineLang);  	
+	
+//	   	layh.addContent(panel1).addContent(indent).addContent(panel2).addContent(indent2).addContent(panel3);
+		layh.addContent(panel1).addContent(indent).addContent(panel2);
+	 
+//Test TimeLine resize	   	
+		var timelinesz = new sap.suite.ui.commons.Timeline();
+	   	timelinesz.setData(oData);
+	   	timelinesz.setWidth("50%");
+	   	
+//	   	var panel5 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false, width : "400px", height : "500px", text:"Timeline: Sizing" , areaDesign: sap.ui.commons.enums.AreaDesign.Transparent });
+//	 	panel5.addContent(timelinesz);
+//	 	panel5.placeAt("content");
+	 	
+	 	
+//Checking for NoData Text Property	 	
+	 	var timelinesz1 = new sap.suite.ui.commons.Timeline();
+	   	timelinesz1.setWidth("70%");
+	    timelinesz1.setContent([]);
+	      
+	    var otextField = new sap.ui.commons.TextField("textfield");
+	     var oNoDataBtn = new sap.m.Button({
+	         text: "No Data Text",
+	         height:"5px",
+	         press: function(oEvent) {
+	         	if( otextField.getValue() != null) {
+	                 timelinesz1.setNoDataText(otextField.getValue());
+	                 timelinesz1.setContent([]);
+	         }
+	         } 	
+	           });
+
+	   	var oToolbarNoData = new sap.m.Toolbar({
+	        content: [
+	                  otextField,   
+	                  oNoDataBtn,
+	                  ]});
+
+	   	
+	   	
+//Testing for Chinese and Russian Languages.
+
+var oDataChinese = [
+       		{
+       			dateTime : new Date(),
+       			text :  "在他的第一天作为唯一的首席执行官SAP，比尔·麦克德莫特解决员工的视频消息，并要求他们的支持，共同努力，以实现公司的使命和改造SAP进入云社搭载SAP HANA",
+       			userName :"莎拉社会",
+       			title : "加了注释",
+       			filterValue: "注",
+       			icon : "sap-icon://accept"
+       		},
+       		{
+       			dateTime :  new Date(new Date().getTime() - (1000 * 3600 * 24) * 4).getTime(),
+       			text : "消费者79％的花费占购物时间至少有50％的产品研究网上消费者的82％将替代和转换品牌，由于缺货的产品", 
+       			userName : "莎拉社会",
+       			title : "添加一个备注零售现实",
+       			filterValue: "注",
+       			icon : "sap-icon://accept"
+       		},
+             		
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*4).getTime(),
+       			text : "对零售的现实意见",
+       			userName : "约翰·史密斯",
+       			title : "发表评论",
+       			filterValue: "评论",
+       			icon : "sap-icon://activity-items"
+       		},
+         	{
+       			dateTime :  new Date(new Date().getTime() - (1000 * 3600 * 24) * 1).getTime(),
+       			text : "推出了第一款协同SAP HANA",
+       			userName : "山姆销售",
+       			title : "加了注",
+       			filterValue: "注",
+       			icon : "sap-icon://accept"
+       		},
+       		
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 6).getTime(),
+       			text : "有人呼吁在这个日期。离开的消息给客户回电。",
+       			userName : "托尼斯塔克",
+       			title : "发出的呼吁",
+       			filterValue: "通话",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		      		
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 2).getTime(),
+       			text : "有人呼吁在这个日期。需要下周跟进。",
+       			userName : "莎拉社会",
+       			title : "发出的呼吁",
+       			filterValue: "通话",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 2).getTime(),
+       			text : "有人呼吁在这个日期。需要下周跟进。",
+       			userName : "莎拉社会",
+       			title : "发出的呼吁",
+       			filterValue: "通话",
+       			icon : "sap-icon://outgoing-call"
+       		},
+       		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)).getTime(),
+       			text : "这是我的意见出现在注释类型的项目。",
+       			userName : "山姆销售",
+       			title : "发表评论 ",
+       			filterValue: "注释”",
+       			icon : "sap-icon://activity-items"
+       		},
+
+		{
+       			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*12).getTime(),
+       			text : "谈到通勤的问题",
+       			userName : "萨拉·琼斯",
+       			title : "发表评论",
+       			filterValue: "评论",
+       			icon : "sap-icon://activity-items"
+       		},
+    		
+       	];
+
+	 
+var oDataRussian = [
+               		{
+               			dateTime : new Date(),
+               			text :  "В первый день в качестве единственного исполнительного директора в SAP, Билл Макдермотт адреса сотрудников с видеообращением и спрашивает за их поддержку, чтобы работать вместе для достижения миссии компании и превратить SAP в облаке компании питается от SAP HANA",
+               			userName : "Сара Социальный",
+               			title : "Добавлено примечание",
+               			filterValue: "примечание",
+               			icon : "sap-icon://accept"
+               		},
+
+               		{
+               			dateTime :  new Date(new Date().getTime() - (1000 * 3600 * 24) * 4).getTime(),
+               			text : "79% потребителей тратить не менее 50% от общего времени торговой исследования продукции в Интернете 82% потребителей заменит и включайте бренды из-за вышедшего из запаса продукта", 
+               			userName : "Сара Социальный",
+               			title : "Добавлено примечание о розничной реальности",
+               			filterValue: "примечание",
+               			icon : "sap-icon://accept"
+               		},
+               		{
+               			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*4).getTime(),
+               			text : "Комментарии на розничном реальности",
+               			userName : "Джон Смит",
+               			title : "разместил комментарий",
+               			filterValue: "комментарий",
+               			icon : "sap-icon://activity-items"
+               		},
+               		{
+               			dateTime :  new Date(new Date().getTime() - (1000 * 3600 * 24) * 1).getTime(),
+               			text : "Представляем первый Collaborative HANA SAP",
+               			userName : "Сэм продаж",
+               			title : "Добавлено примечание",
+               			filterValue: "примечание",
+               			icon : "sap-icon://accept"
+               		},
+               		{
+               			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 6).getTime(),
+               			text : "Призыв был сделан в этот день. Левая сообщение для заказчика перезвонить.",
+               			userName : "Тони Старк",
+               			title : "уравнял",
+               			filterValue: "вызов",
+               			icon : "sap-icon://outgoing-call"
+               		},
+             		
+               		{
+               			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24) * 2).getTime(),
+               			text : "Призыв был сделан в этот день. Нужно следить за следующей неделе.",
+               			userName : "Сара Социальный",
+               			title : "сделал вызов",
+               			filterValue: "вызов",
+               			icon : "sap-icon://outgoing-call"
+               		},
+               		{
+               			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)).getTime(),
+               			text : "Это мои комментарии, появляющиеся в комментарий типа элемента.",
+               			userName : "Сэм продаж",
+               			title : "разместил комментарий",
+               			filterValue: "Комментарий",
+               			icon : "sap-icon://activity-items"
+               		},
+               	
+           		   		{
+               			dateTime : new Date(new Date().getTime() - (1000 * 3600 * 24)*12).getTime(),
+               			text : "Комментарии по вопросам Commute",
+               			userName : "Сара Джонс",
+               			title : "разместил комментарий",
+               			filterValue: "комментарий",
+               			icon : "sap-icon://activity-items"
+               		},
+               		
+];	 
+	 
+  	 	var timelineChinese = new sap.suite.ui.commons.Timeline();
+   		timelineChinese.setData(oDataChinese);
+   		
+   		var timelineRussian = new sap.suite.ui.commons.Timeline();
+   		timelineRussian.setData(oDataRussian);
+	 
+	   	var panel6 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false,   width : "400px", height : "500px", text:"Timeline: No DataText Property" , areaDesign: sap.ui.commons.enums.AreaDesign.Transparent });
+	  	panel6.addContent(oToolbarNoData);
+	 	panel6.addContent(timelinesz1);
+
+	 	var panel7 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false,   width : "400px", height : "500px", text:"Timeline: Chinese Language" , areaDesign: sap.ui.commons.enums.AreaDesign.Transparent });
+	  	panel7.addContent(timelineChinese);
+	 	
+	 	var panel8 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false,   width : "400px", height : "500px", text:"Timeline: Russian Language" , areaDesign: sap.ui.commons.enums.AreaDesign.Transparent });
+	  	panel8.addContent(timelineRussian);
+//	  Start of Ins by ----------- 07/07/2014-------------------------------------------------------------------------------*
+	  //Bind Aggregations for FilterList Example
+	    
+  	   var oFilterItem = new sap.suite.ui.commons.TimelineFilterListItem({
+		 	key : "{CustomerID}",
+		 	text: "{CompanyName}"
+		 });
+		 
+		 
+ 
+
+		
+		var oTlItemFL = new sap.suite.ui.commons.TimelineItem({
+	 	dateTime : "{OrderDate}",
+	 	userName : "{CustomerID}",
+			title : "{CustomerName}",
+			icon : "sap-icon://activity-items",
+			text: "{ProductName}"
+		});
+		var oModelFL = new sap.ui.model.odata.ODataModel("/uilib-sample/proxy/http/services.odata.org/V3/Northwind/Northwind.svc/", true);
+																	
+		var oTimelineFL = new sap.suite.ui.commons.Timeline({	enableBackendFilter: true,
+		 														//enableAllInFilterItem: false,
+		 														growing: true,
+		 														growingThreshold: 3,
+		 														showHeaderBar: true,
+			                                                        });
+																	
+		
+  		 	oTimelineFL.setShowIcons(false);
+       	   	oTimelineFL.setModel(oModelFL);
+			var oFltrAllChkBox = new sap.m.CheckBox({
+				text: "Show All in Filter",
+				width: "120px",
+				selected :true,
+			select : function(oEvent){
+				if(oFltrAllChkBox.getSelected())
+					oTimelineFL.setEnableAllInFilterItem(true);
+		           else 
+		        	oTimelineFL.setEnableAllInFilterItem(false);
+				 oTimelineFL.bindAggregation("filterList", {
+			  	    	path: "/Customers",
+			  	    	template: oFilterItem        
+			  		}); 
+  				   }
+			    });
+		
+		  
+		   var oInitFilterFL = new sap.ui.model.Filter("CustomerID", sap.ui.model.FilterOperator.EQ, 'AROUT');
+		   oTimelineFL.bindAggregation("filterList", {
+				  	    	path: "/Customers",
+				  	    	template: oFilterItem        
+				  		}); 
+		   oTimelineFL.bindAggregation("content", {
+			    	path: "/Invoices",
+			    	filters: [oInitFilterFL],
+			    	template: oTlItemFL
+				});           
+		   oTimelineFL.setCurrentFilter('AROUT');
+		   oTimelineFL.attachFilterSelectionChange(function(oControlEvent){
+		   	if (oControlEvent.getParameter("selectedItem").getKey() == "") {
+		       oTimelineFL.bindAggregation("content", {
+		 	    	path: "/Invoices",
+		 	    	template: oTlItemFL
+		 		});  	          		
+		   	}else {	          	
+		     	var oFilterFL = new sap.ui.model.Filter("CustomerID", sap.ui.model.FilterOperator.EQ, oControlEvent.getParameter("selectedItem").getKey());
+		     	oTimelineFL.bindAggregation("content", {
+				  		path: "/Invoices",
+				  		filters: [oFilterFL],
+				  		template: oTlItemFL
+				  	});   
+		     	
+		    };
+		   //
+         	oCurrentFilterKey = oTimelineFL.getCurrentFilter();
+		   //alert("Current selected  Filter Key is:" + oCurrentFilterKey);
+		   });
+			var oToolbarFltr = new sap.m.Toolbar({
+			      content: [ oFltrAllChkBox  ]});
+			 var oPanelFL = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false,   width : "400px", height : "500px", text:"Timeline: Backend Filter Usage" , areaDesign: sap.ui.commons.enums.AreaDesign.Transparent });
+	          oPanelFL.addContent(oToolbarFltr);
+	          oPanelFL.addContent(oTimelineFL);
+	          
+	  //	    End of Ins by -------------- 07/07/2014-----------------------------------------------------------------------------------* 	
+	   	var layh1 = new sap.ui.commons.layout.HorizontalLayout({ width : "100%", height : "100%" });
+//		layh1.addContent(panel4).addContent(new sap.ui.commons.TextView({ width : '20px' })).addContent(panel6).addContent(indent2).addContent(oPanelFL);
+		layh1.addContent(panel4).addContent(new sap.ui.commons.TextView({ width : '20px' })).addContent(panel6);
+		//.addContent(new sap.ui.commons.TextView({ width : '20px' })).addContent(panel5)
+		
+	    var layh2 = new sap.ui.commons.layout.HorizontalLayout({ width : "100%", height : "100%" });
+		layh2.addContent(panel7).addContent(new sap.ui.commons.TextView({ width : '20px' })).addContent(panel8);//.addContent(indent2).addContent(oPanelFL1);
+
+		var panel5 = new sap.ui.commons.Panel({ collapsed : false, showCollapseIcon : false, width : "300px", height : "500px", text:"Timeline: Sizing" , areaDesign: sap.ui.commons.enums.AreaDesign.Transparent });
+   		panel5.addContent(timelinesz);
+	    var layh3 = new sap.ui.commons.layout.HorizontalLayout({ width : "100%", height : "100%" });
+		layh3.addContent(panel5);//.addContent(new sap.ui.commons.TextView({ width : '20px' })).addContent(oPanelFL1); 
+		
+		var layh4 = new sap.ui.commons.layout.HorizontalLayout({ width : "100%", height : "100%" });
+		layh4.addContent(panel3).addContent(new sap.ui.commons.TextView({ width : '20px' })).addContent(oPanelFL);
+		
+		var layV = new sap.ui.commons.layout.VerticalLayout({ width : "100%", height : "100%" });
+		layV.addContent(layh).addContent(new sap.m.FlexBox({ height : "50px" })).addContent(layh1).addContent(new sap.m.FlexBox({ height : "50px" }))
+		.addContent(layh4).addContent(new sap.m.FlexBox({ height : "50px" })).addContent(layh2)
+		.addContent(new sap.m.FlexBox({ height : "50px" })).addContent(layh3);
+		layV.placeAt("content");  		   	
+</script>
+</head>
+
+<body class="sapUiBody">
+	<div id="content"></div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>qUnit Page for sap.ui.comp.smartfield.JSONTypes</title>
+
+		<script id="sap-ui-bootstrap" 
+			type="text/javascript"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.ui.comp">
+		</script>
+
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css"	type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+		<script type="text/javascript">
+		if (!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+			jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		}	
+		
+		(function() {
+			jQuery.sap.require("sap.ui.comp.smartfield.JSONTypes");
+			
+			QUnit.module("sap.ui.comp.smartfield.JSONTypes", {
+				beforeEach: function() {
+					this.oMetaData = new sap.ui.comp.smartfield.JSONTypes();					
+				},
+				afterEach: function() {
+					this.oMetaData.destroy();
+				}
+			});
+							
+			QUnit.test("Shall be instantiable", function() {
+				assert.ok(this.oMetaData);
+			});
+			
+			QUnit.test("getType : Boolean", function() {
+				var oResult = this.oMetaData.getType("Boolean");
+				assert.equal(oResult instanceof sap.ui.model.type.Boolean, true);
+			});
+			
+			QUnit.test("getType : Date", function() {
+				var oResult = this.oMetaData.getType("Date");
+				assert.equal(oResult instanceof sap.ui.model.type.Date, true);
+			});
+			
+			QUnit.test("getType : Date", function() {
+				var oResult = this.oMetaData.getType("DateTime");
+				assert.equal(oResult instanceof sap.ui.model.type.String, true);
+			});
+			
+			QUnit.test("getType : Float", function() {
+				var oResult = this.oMetaData.getType("Float");
+				assert.equal(oResult instanceof sap.ui.model.type.Float, true);
+			});
+			
+			QUnit.test("getType : Integer", function() {
+				var oResult = this.oMetaData.getType("Integer");
+				assert.equal(oResult instanceof sap.ui.model.type.Integer, true);
+			});
+			
+			QUnit.test("getType : String", function() {
+				var oResult = this.oMetaData.getType("String");			
+				assert.equal(oResult instanceof sap.ui.model.type.String, true);
+			});
+			
+			QUnit.test("getType : no input", function() {
+				var oResult = this.oMetaData.getType();			
+				assert.equal(!oResult, true);
+			});
+			
+			QUnit.test("Shall be destructible", function() {
+				this.oMetaData.destroy();
+				assert.ok(this.oMetaData);
+				assert.equal(this.oMetaData._oModel, null);
+			});
+			
+		}());
+		</script>
+	</head>
+	<body id="body" class="sapUiBody">
+		<h1 id="qunit-header">qUnit Page for qUnit Page for sap.ui.comp.smartfield.JSONTypes</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</body>
+</html>

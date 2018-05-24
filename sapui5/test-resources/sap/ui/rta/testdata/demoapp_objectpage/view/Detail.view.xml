@@ -1,0 +1,122 @@
+<mvc:View
+	controllerName="sap.ui.rta.test.Demo.ObjectPage.controller.Detail"
+	xmlns:m="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:smartForm="sap.ui.comp.smartform"
+	xmlns:smartField="sap.ui.comp.smartfield"
+	xmlns="sap.uxap"
+	xmlns:layout="sap.ui.layout"
+	xmlns:blockcolor="sap.ui.rta.test.Demo.ObjectPage.blockscolor"
+	xmlns:sample="sap.uxap.testblocks.objectpageblock"
+	
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:semantic="sap.m.semantic">
+
+	<semantic:FullscreenPage
+		id="page"
+		title="{i18n>overviewViewTitle}">
+		
+		<!-- Adapt UI -->
+		<semantic:customHeaderContent>
+			<m:Button text="{i18n>btnAdapt}" visible="{app>/showAdaptButton}" press="switchToAdaptionMode" />
+		</semantic:customHeaderContent>
+
+		<semantic:content>
+			
+			<!-- Object Header -->
+			<m:ObjectHeader
+				id="objectHeader"
+				responsive="true"
+				title="{i18n>objectHeaderTitle}"
+				number="4711"
+				numberUnit="EUR">
+				<m:attributes>
+					<m:ObjectAttribute text="{i18n>objectHeaderAttribute1}" />
+				</m:attributes>
+				<m:statuses>
+					<m:ObjectStatus
+						text="{i18n>objectHeaderStatus1}" />
+				</m:statuses>
+			</m:ObjectHeader>
+	
+				<!-- Object Page -->		
+	<ObjectPageLayout id="ObjectPageLayout" subSectionLayout="{ConfigModel>/subSectionLayout}" flexEnabled="true">
+		<headerTitle>
+			<ObjectPageHeader
+					objectTitle="ObjectPage BlockBase"
+					objectSubtitle=""
+					objectImageURI="">
+				<actions>
+					<ObjectPageHeaderActionButton icon="sap-icon://synchronize" press="toggleTitle" text="toggle title"/>
+				</actions>
+			</ObjectPageHeader>
+		</headerTitle>
+		<sections>
+			<ObjectPageSection id="ObjectPageSection1" title="ObjectPage Section 1">
+				<subSections>
+					<ObjectPageSubSection title="Blocks with columnLayout 1" mode="Collapsed">
+						<blocks>
+							<blockcolor:BlockBlue columnLayout="auto"/>
+							<blockcolor:BlockBlue columnLayout="1"/>
+							<blockcolor:BlockBlue columnLayout="1"/>
+						</blocks>
+					</ObjectPageSubSection>
+					
+					<ObjectPageSubSection title="Blocks with columnLayout 2" mode="Collapsed">
+						<blocks>
+							<blockcolor:BlockBlueWithInfo showSubSectionMore="true" columnLayout="2"/>
+							<blockcolor:BlockBlue columnLayout="2"/>
+						</blocks>
+					</ObjectPageSubSection>
+					<ObjectPageSubSection title="Blocks with columnLayout 3" mode="Collapsed">
+						<blocks>
+							<blockcolor:BlockBlue columnLayout="3"/>
+							<blockcolor:BlockBlue columnLayout="3"/>
+							<blockcolor:BlockBlue columnLayout="3"/>
+						</blocks>
+					</ObjectPageSubSection>     
+				</subSections>
+			</ObjectPageSection>
+  
+  
+			 <ObjectPageSection id="ObjectPageSection2" title="ObjectPage Section 2">
+				<subSections>
+					<ObjectPageSubSection title="Blocks with columnLayout 1" mode="Collapsed">
+						<blocks>
+							<blockcolor:BlockBlue columnLayout="auto"/>
+							<blockcolor:BlockBlue columnLayout="1"/>
+							<blockcolor:BlockBlue columnLayout="1"/>
+						</blocks>
+					</ObjectPageSubSection>
+					
+					<ObjectPageSubSection title="Blocks with columnLayout 2" mode="Collapsed">
+						<blocks>
+							<blockcolor:BlockBlue columnLayout="auto"/>
+							<blockcolor:BlockBlue columnLayout="1"/>
+							<blockcolor:BlockBlue columnLayout="1"/>
+						</blocks>
+					</ObjectPageSubSection>
+ 
+				   </subSections>
+			</ObjectPageSection>
+
+			 <ObjectPageSection id="ObjectPageSection3" title="ObjectPage Section 3" stashed="true">
+				<subSections>
+					<ObjectPageSubSection title="Blocks with columnLayout2" mode="Collapsed">
+						<blocks>
+							<blockcolor:BlockBlue columnLayout="auto"/>
+							<blockcolor:BlockBlue columnLayout="1"/>
+							<blockcolor:BlockBlue columnLayout="1"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		   
+		</sections>
+	</ObjectPageLayout>
+				
+		</semantic:content>
+
+	</semantic:FullscreenPage>
+
+</mvc:View>

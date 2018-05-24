@@ -1,0 +1,83 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Before retrieving or submitting any content from or to the SAPUI5 ABAP repository, you have to share a project in Eclipse with a single SAPUI5 repository (represented by a BSP application) with the SAPUI5 repository team provider."/>
+<meta name="description" content="Before retrieving or submitting any content from or to the SAPUI5 ABAP repository, you have to share a project in Eclipse with a single SAPUI5 repository (represented by a BSP application) with the SAPUI5 repository team provider."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3411983665317343"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3411983665317343"/>
+<title>Sharing Eclipse Projects with the SAPUI5 ABAP Repository</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc94f13fd242f40beb64e08fc62c494e7">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Sharing Eclipse Projects with the <span class="ph pname">SAPUI5</span> ABAP Repository</h1>
+
+	
+	<div class="body"><p class="shortdesc">Before retrieving or submitting any content from or to the <span class="ph pname">SAPUI5</span> ABAP repository, you have to
+		share a project in Eclipse with a single <span class="ph pname">SAPUI5</span> repository (represented by a
+		BSP application) with the <span class="ph pname">SAPUI5</span>
+		repository team provider.</p>
+
+		<ol class="ol" id="loioc94f13fd242f40beb64e08fc62c494e7__ol_qlq_xz1_bt">
+			<li class="li"> In Eclipse, go to the <span class="ph uicontrol">Project Explorer</span> view and select your
+				project.</li>
+
+			<li class="li"> In the context menu of the selected project, choose <span class="ph menucascade"><img src="images/navstart.gif" alt="Start of the navigation path" title="Start of the navigation path"/><span class="ph uicontrol">Team</span> <img src="images/navstep.gif" alt="Next navigation step" title="Next navigation step"/> <span class="ph uicontrol">Share Project…</span><img src="images/navend.gif" alt="End of the navigation path" title="End of the navigation path"/></span>. </li>
+
+			<li class="li"> Select <span class="ph uicontrol">SAPUI5 ABAP Repository</span> as the repository type and
+				choose <span class="ph uicontrol">Next</span>.</li>
+
+			<li class="li"> To define the connection to the ABAP system, choose <span class="ph uicontrol">Browse…</span>
+				and <span class="ph uicontrol">Next</span>. You can only select system connections that are
+				configured in the SAP GUI launchpad.</li>
+
+			<li class="li"> Enter the required information for client, user, password, and language. Choose
+					<span class="ph uicontrol">Next</span>.<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">Choosing the correct logon language is important. When creating a new
+						repository, this becomes the original language of the repository. For
+						submitting files to the repository, you have to be logged on in the original
+						language, otherwise an error occurs.</p>
+
+				</div>
+</li>
+
+			<li class="li">The Eclipse project can either be shared with an existing BSP application or with a
+				new BSP application.<ol class="ol" type="a" id="loioc94f13fd242f40beb64e08fc62c494e7__ol_s4y_31b_bt">
+					<li class="li">For sharing with an existing single <span class="ph pname">SAPUI5</span> repository,
+						select <span class="ph uicontrol">Select a BSP Application</span> and an existing BSP
+						application from the list.</li>
+
+					<li class="li">For sharing with a new single <span class="ph pname">SAPUI5</span> repository,
+						select <span class="ph uicontrol">Create a New BSP Application</span> and enter name,
+						description, and package (manually or browse for the package).</li>
+
+				</ol>
+</li>
+
+			<li class="li">Choose <span class="ph uicontrol">Next</span>. <div class="note note"><span class="notetitle">Note</span> If the new BSP application belongs to a
+					transportable ABAP package, choose a transport request or create a new one
+					before finishing the wizard. Since transport requests are not automatically
+					released, explicitly release them after transporting them using transaction
+						<samp class="ph codeph">SE09</samp>.</div>
+</li>
+
+			<li class="li">Choose <span class="ph uicontrol">Finish</span>.</li>
+
+		</ol>
+
+		<p class="p">The selected Eclipse project is now connected to a single <span class="ph pname">SAPUI5</span> repository. A description
+			containing the ABAP system, client, user, language, and <span class="ph pname">SAPUI5</span> repository name is
+			displayed next to the project name.</p>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

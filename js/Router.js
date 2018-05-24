@@ -26,6 +26,10 @@ function Router(oApp, oExpress) {
 Router.prototype.getRoutes = function() {
     var that = this;
 
+    this.app.get("/", function(oRequest, oResponse) {
+        oResponse.redirect("/web/app.html");
+    });
+
     this.app.get("/web", function(oRequest, oResponse) {
         oResponse.redirect("/web/app.html");
     });
@@ -52,6 +56,10 @@ Router.prototype.getRoutes = function() {
 
     this.app.get("/ui5/sap-ui-core.js", function(oRequest, oResponse) {
         oResponse.sendFile(path.join(__dirname + '/../ui5/sap-ui-core.js'));
+    });
+
+    this.app.get("/sapui5/sap-ui-core.js", function(oRequest, oResponse) {
+        oResponse.sendFile(path.join(__dirname + '/../sapui5/sap-ui-core.js'));
     });
 
     this.app.get("/libs/*", function(oRequest, oResponse) {

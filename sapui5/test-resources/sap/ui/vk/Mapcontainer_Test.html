@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link href="style/sapvbistyle.css" type="text/css" rel="stylesheet" />
+
+	<script src="../../../../resources/sap-ui-core.js"
+		id="Script1"
+		data-sap-ui-libs="sap.ui.commons,sap.ui.vk,sap.m, sap.ui.vbm"
+		data-sap-ui-theme="sap_bluecrystal"
+		data-sap-ui-xx-bindingSyntax="complex" >
+	</script>
+	
+	<style>
+		.strechBox {
+			position: relative;
+      	width: 100%;
+      }
+   	.strechBox:before {
+      	content: "";
+      	display: block;
+      	padding-top: 60%;  /* ratio 5:3 */
+   	}  
+   	.content {
+      	position: absolute;
+      	top: 0;
+      	left: 0;
+      	bottom: 0;
+      	right: 0;
+   	}   	    
+	</style>
+
+	<script>
+	
+	// some model data
+	var oSettingsData = {
+		title: "Settings",
+		options: [
+			{ title: "Do it" },
+			{ title: "Don't do it" },
+			{ title: "Maybe" }
+		]
+	};
+	
+	// create 
+	var oMapContainer = new sap.ui.vk.MapContainer({
+		autoAdjustHeight: true,
+    	content: [ 
+    	   new sap.ui.vk.ContainerContent(  {
+    		   icon: "sap-icon://map-2",
+    		   title: "Geo Map",
+    			content: new sap.ui.vbm.GeoMap()
+    		} ),
+    		new sap.ui.vk.ContainerContent(  {
+    			icon: "sap-icon://choropleth-chart",
+     		   title: "Analytic Map",
+    			content: new sap.ui.vbm.AnalyticMap()
+    		} ),
+    		new sap.ui.vk.ContainerContent(  {
+    			icon: "sap-icon://image-viewer",
+     		   title: "Image",
+    			content: new sap.m.Image({
+    				src: "test-resources/sap/ui/vk/media/pumps.jpg"
+    			})
+    		} )
+    	],
+    	listPanelStack: new sap.ui.vk.ListPanelStack({
+    		width: "400px",
+        	content: [ new sap.ui.vk.ListPanel(  {
+        		headerText: "Legend",
+        		headerIcon: "sap-icon://legend",    
+        		selectionMode: "SingleSelectMaster",
+        		items: [ 
+        		    new sap.ui.vk.LegendItem({ title: "Location", color: "rgb(255,0,0)"}),
+        		    new sap.ui.vk.LegendItem({ title: "Unplanned Route", icon: "sap-icon://shipping-status"}),
+        		    new sap.ui.vk.LegendItem({ title: "Planned Route"}),
+        		    new sap.ui.vk.LegendItem({ title: "Warning", semanticSpotType: sap.ui.vbm.SemanticType.Warning})
+        		]
+        	   }  ),
+        	   new sap.ui.vk.ListPanel(  {
+           		headerText: "{/title}",
+           		headerIcon: "sap-icon://settings",  
+           		//selectionMode: "SingleSelectMaster",
+           		items: { 
+           			path: "/options",
+           		    template: new sap.ui.vk.LegendItem({ title: "{title}"})
+           		}
+           	   }  ),
+        	   new sap.ui.vk.ListPanel(  {
+              		headerText: "Team",
+              		headerIcon: "sap-icon://group",  
+              		selectionMode: "SingleSelectMaster",
+              		expanded: false,
+              		items: [ 
+              		    new sap.ui.vk.LegendItem({ title: "Volker", icon: "sap-icon://manager"}),
+              		    new sap.ui.vk.LegendItem({ title: "Hans", icon: "sap-icon://employee"}),
+              		    new sap.ui.vk.LegendItem({ title: "Jim", icon: "sap-icon://employee"}),
+              		    new sap.ui.vk.LegendItem({ title: "Fred", icon: "sap-icon://employee"}),
+              		    new sap.ui.vk.LegendItem({ title: "Bert", icon: "sap-icon://employee"}),
+              		    new sap.ui.vk.LegendItem({ title: "Nick", icon: "sap-icon://employee"}),
+              		    new sap.ui.vk.LegendItem({ title: "Jeff", icon: "sap-icon://employee"}),
+              		    new sap.ui.vk.LegendItem({ title: "John", icon: "sap-icon://employee"}),
+              		    new sap.ui.vk.LegendItem({ title: "Ravi", icon: "sap-icon://employee"}),
+              		    new sap.ui.vk.LegendItem({ title: "Lian", icon: "sap-icon://employee"}),
+              		    new sap.ui.vk.LegendItem({ title: "Gert", icon: "sap-icon://employee"})
+              		]
+              	   }  )   
+    		]
+    	})
+	});
+	
+	var oModel = new sap.ui.model.json.JSONModel();
+	oModel.setData(oSettingsData);
+	sap.ui.getCore().setModel(oModel);
+
+	oMapContainer.placeAt("placeholder");
+	
+	function ToggleCompactMode(val) {
+		if (val) {
+			$(document.body).addClass("sapUiSizeCompact");
+		} else {
+			$(document.body).removeClass("sapUiSizeCompact");
+		}	
+	}
+	
+	</script>
+
+	<body class="sapUiBody" >
+		  <h1>Visual Interaction Map Container Sample</h1>
+			<ul>
+				<li> Testing the Map Container</li>
+				<li> UI Element sizes vary dependent on size mode. Default is Cozy for mobile device. On Desktop you can enable 
+					<input type="checkbox" id="CompactMode" value="true" 
+							onchange="ToggleCompactMode(this.checked)" >Compact mode</input> </li> 
+				<li> Right top toolbar should collapse into overflow if space gets short</li>
+				<li> ListPanelStack on left side should collapse to a vertical toolbar when all panels are closed</li>
+				<li> ListPanelStack should provide scrolling if all panel are open and vertical space is not sufficient</li>			
+			</ul>
+		   <div id="box" class="strechBox">
+		   <div id="placeholder" class="content"> </div> 
+		   </div>	
+	</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+
+		<title>QUnit: sap.gantt.config.TimeHorizon</title>
+
+		<script id="sap-ui-bootstrap"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.gantt">
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="../../../../../resources/sap/ui/thirdparty/qunit.css"/>
+		<script src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+			sap.ui.require([
+				"sap/gantt/config/TimeHorizon",
+				"sap/ui/thirdparty/sinon",
+				"sap/ui/thirdparty/sinon-qunit"
+			], function (TimeHorizon) {
+				"use strict";
+				
+				QUnit.module("Create config.TimeHorizon with default values.", {
+					setup: function () {
+						this.oConfig = new TimeHorizon();
+					},
+					teardown: function () {
+						this.oConfig.destroy();
+						this.oConfig = undefined;
+					}
+				});
+				
+				
+				QUnit.test("Test default configuration values." , function (assert) {
+					assert.strictEqual(this.oConfig.getStartTime(), undefined);
+					assert.strictEqual(this.oConfig.getEndTime(), undefined);
+				});
+				
+				QUnit.module("Create config.TimeHorizon with string Timestamps.", {
+					setup: function () {
+						this.oConfig = new TimeHorizon({
+							startTime: "20151201000000",
+							endTime: "20151231000000"
+						});
+					},
+					teardown: function () {
+						this.oConfig.destroy();
+						this.oConfig = undefined;
+					}
+				});
+				
+				
+				QUnit.test("Test timestamp values." , function (assert) {
+					assert.strictEqual(this.oConfig.getStartTime(), "20151201000000");
+					assert.strictEqual(this.oConfig.getEndTime(), "20151231000000");
+				});
+				
+				QUnit.module("Create config.TimeHorizon with Date Object.", {
+					setup: function () {
+						this.oConfig = new TimeHorizon({
+							startTime:  new Date(2015, 0, 1, 12, 12, 12),
+							endTime:  new Date(2015, 0, 31, 12, 12, 12)
+						});
+					},
+					teardown: function () {
+						this.oConfig.destroy();
+						this.oConfig = undefined;
+					}
+				});
+				
+				
+				QUnit.test("Test timestamp values." , function (assert) {
+					assert.strictEqual(this.oConfig.getStartTime(), "20150101121212");
+					assert.strictEqual(this.oConfig.getEndTime(), "20150131121212");
+				});
+			});
+		</script>
+
+
+	</head>
+	<body>
+		<div id="qunit"></div>
+	</body>
+</html>

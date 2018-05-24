@@ -1,0 +1,953 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="With this release the UI development toolkit for HTML5 (SAPUI5) is upgraded from version 1.30 to 1.32."/>
+<meta name="description" content="With this release the UI development toolkit for HTML5 (SAPUI5) is upgraded from version 1.30 to 1.32."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7977187463850319"/>
+<title>What's New in SAPUI5 1.32</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="">
+<div id="wrapper"><div id="container">
+<div class="nested0" id="loioc7c26285a53b461cbecb3da2c51a2f64">
+	<h1 class="title topictitle1">What's New in <span class="ph"><span class="ph pname">SAPUI5</span></span> 1.32</h1>
+
+	
+	<div class="body conbody" id="conbody_WhatsNewInSAPUI5_1_32"><p class="shortdesc">With this release the <span class="ph pname">UI development toolkit for HTML5</span>
+			(<span class="ph"><span class="ph pname">SAPUI5</span></span>) is upgraded from
+		version 1.30 to 1.32.</p>
+
+		<p class="p">In the following sections, we list the main new features and enhancements to <span class="ph"><span class="ph pname">SAPUI5</span></span>. <span class="ph">For a complete,
+				detailed list of all new and enhanced functions, see: <a class="xref" href="../../releasenotes.html" alt="../../releasenotes.html" title="../../releasenotes.html">Change Log</a>.</span></p>
+
+		<div class="section collapsible expanded"><div class="section_title">New Tutorials</div><div type="New Tutorials">
+			
+			<p class="p"><span class="ph emphasis emphasis">Testing</span></p>
+
+			<p class="p">In this tutorial, you learn how to test application functionality using the testing tools that
+				are delivered with <span class="ph"><span class="ph pname">SAPUI5</span></span>. While going through the steps of this tutorial, you will write tests using
+				QUnit, OPA5, and the mock server. Additionally, you will learn about testing
+				strategies, Test Driven Development (TDD), and much more: <a class="xref" href="291c9121e6044ab381e0b51716f97f52.html" title="In this tutorial we will test application functionality with the testing tools that are delivered with SAPUI5. At different steps of this tutorial you will write tests using QUnit, OPA5, and the mock server. Additionally, you will learn about testing strategies, Test Driven Development (TDD), and much more.">Testing</a></p>
+
+		</div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">Smart Templates</div><div type="Smart Templates">
+			
+			<p class="p">App developers can use smart templates to create SAP Fiori applications based on
+				OData services and annotations requiring no JavaScript UI coding. An app based on
+				smart templates uses predefined template views and controllers that are provided
+				centrally, so no application-specific view instances are required. The <span class="ph pname">SAPUI5</span> runtime interprets
+				metadata and annotations of the underlying OData service and creates the
+				corresponding views for the SAP Fiori app at startup.</p>
+
+			<p class="p">The predefined view templates and controllers ensure UI design consistency across similar
+				apps. Additionally, the metadata-driven development model significantly reduces the
+				amount of frontend code per app, so the developer can focus on the business
+				logic.</p>
+
+			<p class="p">Smart templates comprise templates for "List Report" and "Object Page". </p>
+
+			<p class="p"><span class="ph emphasis emphasis">New Libraries for Draft Handling and Smart Template Reuse
+					Components</span></p>
+
+			<p class="p">The new libraries <samp class="ph codeph">sap.ui.generic.app</samp> and
+					<samp class="ph codeph">sap.ui.generic.template</samp> are now available.
+					<samp class="ph codeph">sap.ui.generic.template</samp> uses
+					<samp class="ph codeph">sap.ui.generic.app</samp> and provides template reuse components, such
+				as <samp class="ph codeph">TemplateComponent</samp>, which creates and initializes smart template
+				components.</p>
+
+			<div class="p">In particular, the following artifacts are available in
+					<samp class="ph codeph">sap.ui.generic.app</samp>:<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_exm_ncy_jt">
+					<li class="li">
+						<p class="p"><samp class="ph codeph">sap.ui.generic.app.transaction.TransactionController</samp></p>
+
+						<p class="p">This class provides an API with reusable client logic for applications.
+							The class is used for submitting changes, invoking actions and OData
+							CRUD operations in general, and triggering client-side validations. The
+								<samp class="ph codeph">TransactionController</samp> can be used by applications
+							that are based on smart templates and also by any SAP Fiori app or
+								<span class="ph pname">SAPUI5</span>
+							user interface.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">sap.ui.generic.app.transaction.DraftController</samp></p>
+
+						<p class="p">This class implements the transactional interaction patterns specified
+							for OData services supporting draft documents and provides methods for
+							draft-specific actions. The <samp class="ph codeph">TransactionController</samp> and
+								<samp class="ph codeph">DraftController</samp> classes and their related entities
+							enable runtime draft handling for applications.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">sap.ui.generic.app.navigation.NavigationController</samp></p>
+
+						<p class="p">This class handles all navigation-related and routing-related tasks for the
+							applications.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">sap.ui.generic.app.AppComponent</samp></p>
+
+						<p class="p">This class interprets the configuration contained in the application descriptor.</p>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">Overview Pages</div><div type="Overview Pages">
+			
+			<p class="p">An overview page is an SAP Fiori application, based on OData services and annotations, which
+				provides an overview of a specific area and enables end users to interact with
+				business data and perform key actions. </p>
+
+			<div class="p">The overview page application is comprised of the following: <ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_zzw_y2f_rt">
+					<li class="li">
+						<p class="p">Application header: provides a description of the area for which this
+							application is providing an overview. The header also includes some
+							general application actions.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Card templates: a card is a smart component that uses UI annotation to
+							render its content. Each card is bound to a single data source.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Global filter: provides the application-level filters that affect all cards in the overview
+							page.</p>
+
+					</li>
+
+				</ul>
+</div>
+
+			<p class="p">The <samp class="ph codeph">sap.ovp</samp> library is now available with this version. This library provides
+				template reuse components, such as the different card types and an application
+				template thatcreates and initializes the cards in the application.</p>
+
+			<p class="p">App developers can create overview pages using the Overview Page wizard in SAP Web
+				IDE.</p>
+
+		</div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">UI5 Inspector</div><div type="UI5 Inspector">
+			
+			<div class="p">An open source Google Chrome Developer Tools extension that helps app developers to inspect,
+				analyze and support <span class="ph"><span class="ph pname">SAPUI5</span></span>-based apps. It
+				offers the following key features: <ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_kyq_nhh_nt">
+					<li class="li">
+						<p class="p">Inspect <span class="ph"><span class="ph pname">SAPUI5</span></span> controls and review their properties, bindings, and data model</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Modify control properties on-the-fly and see how this affects the
+							rendering and behavior</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Find relevant framework information for <span class="ph"><span class="ph pname">SAPUI5</span></span>-based apps</p>
+
+					</li>
+
+				</ul>
+The UI5 Inspector can be downloaded as a standard extension from the <a class="extlink" href="http://help.sap.com/disclaimer?site=https://chrome.google.com/webstore/detail/ui5-inspector/bebecogbafbighhaildooiibipcnbngo?hl=en" alt="https://chrome.google.com/webstore/detail/ui5-inspector/bebecogbafbighhaildooiibipcnbngo?hl=en" title="https://chrome.google.com/webstore/detail/ui5-inspector/bebecogbafbighhaildooiibipcnbngo?hl=en">Chrome Web Store<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a>. Once installed, it is then available
+				in the Google Chrome developer tools (by choosing <kbd class="key">F12</kbd>) and becomes active
+				when an <span class="ph"><span class="ph pname">SAPUI5</span></span> app is
+				loaded.</div>
+
+			<div class="fig fignone" id="loioc7c26285a53b461cbecb3da2c51a2f64__fig_xdf_2jh_nt"><div class="figcontainer">
+				<img class="image" id="loioc7c26285a53b461cbecb3da2c51a2f64__image_ck2_fjh_nt" src="loioac50c3cf1ad04986880b9db5a701f485_HiRes.png"/>
+			</div></div>
+
+			<p class="p">For more information, see <a class="xref" href="b24e72443eb34d0fb7bf6940f2d697eb.html" title="The UI5 Inspector is an open source Chrome DevTools extension that helps app developers to inspect, analyze, and support SAPUI5-based apps. It is supported for apps based on SAPUI5 version 1.28 and higher.">UI5 Inspector</a>.</p>
+
+		</div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">New Controls</div><div type="New Controls">
+			
+			<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_txf_51t_ht">
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis">Visual Interaction toolkit (<samp class="ph codeph">sap.ui.vk</samp>
+							library)</span>:</p>
+
+					<div class="p">The Visual Interaction toolkit (<samp class="ph codeph">sap.ui.vk</samp> library) provides controls that
+						enable the visualization and manipulation of 3D models in your browser. The
+						controls in the toolkit allow you to:<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_xpq_x1q_jt">
+							<li class="li">
+								<p class="p">Specify the content resources to be loaded into the
+										<samp class="ph codeph">Viewer</samp>, how those resources are loaded, and
+									the locations to load resources from</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Display the tree of nodes from your model</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Display procedures and steps in a 3D scene, and play these
+									procedures and steps</p>
+
+							</li>
+
+						</ul>
+More features are available in addition to the ones described in the
+						preceding list. For a full list of controls in the
+							<samp class="ph codeph">sap.ui.vk</samp> library and a detailed description about how
+						to use each control, see the <span class="ph">
+							<a class="xref" href="../../docs/api/symbols/sap.ui.vk.html" alt="../../docs/api/symbols/sap.ui.vk.html" title="../../docs/api/symbols/sap.ui.vk.html">API Reference</a>.</span></div>
+
+					<p class="p">You can easily get started with the Visual Interaction toolkit using the
+							<samp class="ph codeph">Viewer</samp> control - a composite control that connects and
+						presents the essential Visual Interaction toolkit controls. The
+							<samp class="ph codeph">Viewer</samp> control can be configured to specify which
+						controls to display by default. The following screenshot shows a simple
+							<samp class="ph codeph">Viewer</samp> application loaded with a 3D model. The
+						application has been configured to display a <samp class="ph codeph">Viewport</samp>, a
+							<samp class="ph codeph">SceneTree</samp>, and <samp class="ph codeph">StepNavigation</samp>.</p>
+
+					<div class="fig fignone" id="loioc7c26285a53b461cbecb3da2c51a2f64__fig_tfc_ccq_jt"><div class="figcontainer">
+						<img class="image" id="loioc7c26285a53b461cbecb3da2c51a2f64__image_wgx_pcq_jt" src="loio6834314a33354f8ea8d945bfb76c8894_HiRes.png"/>
+					</div></div>
+
+					<div class="p">The Visual Interaction toolkit supports the loading of the following file
+						formats: <ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_f3j_rcq_jt">
+							<li class="li">
+								<p class="p">.vds</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">.png</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">.jpg</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">.gif</p>
+
+							</li>
+
+						</ul>
+</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap.m.TimePicker</samp>: A composite control, consisting of an input field used to
+						type the time, and a dropdown, which contains the picker itself. The user
+						can enter the time using the keyboard on desktop devices.</p>
+
+					<div class="fig fignone" id="loioc7c26285a53b461cbecb3da2c51a2f64__fig_og4_dft_mt"><div class="figcontainer">
+						<img class="image" id="loioc7c26285a53b461cbecb3da2c51a2f64__image_et1_2ft_mt" src="loio2ad98a8ab819462bb8f8313d57f0ce41_HiRes.png"/>
+					</div></div>
+
+					<p class="p">In compact mode, the time-related fields can be easily and quickly filled by scrolling,
+						tapping or using the arrows. A mask containing placeholder symbols is
+						integrated into the input field. This helps users to enter correct symbols
+						and also validates them.</p>
+
+					<div class="fig fignone" id="loioc7c26285a53b461cbecb3da2c51a2f64__fig_l4x_rft_mt"><div class="figcontainer">
+						<img class="image" id="loioc7c26285a53b461cbecb3da2c51a2f64__image_rlp_sft_mt" src="loio15926e92110a472c81188b4039e8e01f_HiRes.png"/>
+					</div></div>
+
+					<p class="p">This control is responsive and works seamlessly on mobile devices. <span class="ph">For more
+							information, see the <a class="xref" href="../../docs/api/symbols/sap.m.TimePicker.html" alt="../../docs/api/symbols/sap.m.TimePicker.html" title="../../docs/api/symbols/sap.m.TimePicker.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.TimePicker/samples" alt="../../explored.html#/entity/sap.m.TimePicker/samples" title="../../explored.html#/entity/sap.m.TimePicker/samples">sample</a> in the Demo
+						Kit.</span></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap.m.DraftIndicator</samp>: The <samp class="ph codeph">DraftIndicator</samp> control shows the
+						current draft state – either saving or already saved. There is also an
+						integration use case that enables app developers to show a draft state
+						inside the footer of the semantic page - this has been implemented as part
+						of the draft handling concept. The <samp class="ph codeph">DraftIndicator</samp> does not
+						block the current screen, meaning other operations can be triggered in
+						parallel.</p>
+
+					<div class="fig fignone" id="loioc7c26285a53b461cbecb3da2c51a2f64__fig_w2g_vvg_nt"><div class="figcontainer">
+						<img class="image" id="loioc7c26285a53b461cbecb3da2c51a2f64__image_b4w_zxg_nt" src="loio0e472ebcd5d447b5b73a65af0d47b4e2_HiRes.jpg"/>
+					</div></div>
+
+					<p class="p">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.m.DraftIndicator.html" alt="../../docs/api/symbols/sap.m.DraftIndicator.html" title="../../docs/api/symbols/sap.m.DraftIndicator.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.DraftIndicator/samples" alt="../../explored.html#/entity/sap.m.DraftIndicator/samples" title="../../explored.html#/entity/sap.m.DraftIndicator/samples">sample</a> in the Demo Kit.</p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">Improved Features</div><div type="Improved Features">
+			
+			<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_shb_bcb_lt">
+				<li class="li">
+					<div class="p"><span class="ph emphasis emphasis">One Page Acceptance Tests (OPA)</span><ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_cmj_dcb_lt">
+							<li class="li">
+								<p class="p">To improve error handling, a test throwing an exception in OPA’s check/success or matcher
+									functions now fails immediately when the exception is thrown.
+									OPA will not execute further <samp class="ph codeph">waitFor</samp> statements
+									added by the failed test. Subsequent tests of a failed test will
+									still be executed.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">You can now use <samp class="ph codeph">sap.ui.test.matchers.BindingPath</samp> to check whether a
+									control has a binding context with the exact same binding path.
+										<span class="ph">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.test.matchers.html" alt="../../docs/api/symbols/sap.ui.test.matchers.html" title="../../docs/api/symbols/sap.ui.test.matchers.html">API Reference</a> and
+										the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.test.matchers/samples" alt="../../explored.html#/entity/sap.ui.test.matchers/samples" title="../../explored.html#/entity/sap.ui.test.matchers/samples">sample</a> in the
+										Demo Kit.</span></p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">OPA is now compatible with QUnit 2.x. As of now, the QUnit <samp class="ph codeph">assert</samp> object
+									is mapped to the OPA <samp class="ph codeph">assert</samp> object. You should
+									now call functions like <samp class="ph codeph">strictEqual()</samp>,
+										<samp class="ph codeph">ok()</samp>, and <samp class="ph codeph">equal()</samp> on the
+										<samp class="ph codeph">Opa5.assert</samp> object to make sure that the
+									tests still work when QUnit is upgraded to version 2.x.</p>
+
+							</li>
+
+						</ul>
+For more information, see <a class="xref" href="2696ab50faad458f9b4027ec2f9b884d.html" title="OPA5 is an API for SAPUI5 controls. It hides asynchronicity and eases access to SAPUI5 elements. This makes OPA especially helpful for testing user interactions, integration with SAPUI5, navigation, and data binding.">Integration Testing with One Page Acceptance Tests (OPA5)</a>.</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis">XSRF token handling in OData Model V2:</span> The XSRF token will now be
+						fetched via an asynchronous HEAD request to improve the performance.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis">Data state for bindings</span>: Bindings can now have a data state which is
+						accessible via an API. <span class="ph">For more
+							information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.sample.DataStateOData/preview" alt="../../explored.html#/sample/sap.ui.core.sample.DataStateOData/preview" title="../../explored.html#/sample/sap.ui.core.sample.DataStateOData/preview">sample</a> in the Demo
+						Kit.</span></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis">XML Templating</span></p>
+
+					<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_cgl_s1p_lt">
+						<li class="li">
+							<p class="p">The new <samp class="ph codeph">require</samp> statement lets template authors specify the modules
+								required for processing the templates. This prevents template view
+								users from having to require these modules. For more information,
+								see <a class="xref" href="263f6e5a915f430894ee290040e7e220.html" title="The template:require attribute can be used at the root element of an XML template view or fragment to specify a space separated list of module names for jQuery.sap.require. You do not need to call jQuery.sap.require(&#34;sap.ui.model.odata.AnnotationHelper&#34;) before use as it is automatically available.">require</a></p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">The new <samp class="ph codeph">alias</samp> statement in XML templating reduces the typing effort. For
+								more information, see <a class="xref" href="ac5751f89cb142b7a6d53eaf8a0f6339.html" title="The &lt;template:alias&gt; instruction can be used to define a shortcut alias name for a JavaScript value, for example a static helper class, a formatter function, or a helper function.">alias</a>.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Extension points can be used in XML templating to extend the standard with custom content.
+								For more information, see <a class="xref" href="b15e6afc5ae74227a661dc6ff104bf80.html" title="Extension points can be used in XML templating to extend the standard with custom content.">Extension Points</a>.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">The <samp class="ph codeph">XMLPreprocessor.IContext</samp> interface has been extended to let custom
+								formatter functions access arbitrary path segments in binding paths.
+								For more information, see <a class="xref" href="604b1eb50e47483ebaf97a27fb065e95.html" title="For attributes, SAPUI5 binding expressions are used instead of preprocessing instructions. If the value of an XML attribute represents a valid SAPUI5 binding which refers to currently available model (= variable) names only, the binding is evaluated and the result is written back into the XML attribute.">Replacement of Bindings</a>.</p>
+
+						</li>
+
+					</ul>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis">Annotation Helper</span></p>
+
+					<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_rk2_lbp_lt">
+						<li class="li">
+							<p class="p">It is now possible to integrate translatable texts into XML templates
+								by using simple bindings to a hard coded model name.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">The <samp class="ph codeph">sap.ui.model.odata.AnnotationHelper</samp> is now automatically required in
+								XML templating.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">AnnotationHelper</samp> supports annotations for an
+								<samp class="ph codeph">EntitySet</samp>.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">AnnotationHelper</samp> provides a method to create property settings (constant
+								or binding info) from binding expressions.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">The documentation now explicitly mentions that <samp class="ph codeph">xx-bindingSyntax</samp> needs to
+								be set to <samp class="ph codeph">complex</samp> to avoid warnings on the
+								console.</p>
+
+						</li>
+
+					</ul>
+
+					<p class="p">For more information, see <a class="xref" href="dbec058964f545e4bb3b7e9fbaa0602d.html" title="A collection of methods which help to consume OData Version 4.0 annotations in XML template views.">Annotation Helper</a>.</p>
+
+				</li>
+
+				
+				
+				
+				<li class="li">
+					<div class="p"><span class="ph emphasis emphasis">Object Page</span>: <ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_srr_l1h_nt">
+							<li class="li">
+								<p class="p"><span class="ph emphasis emphasis">Four-column layout on XL screens</span>: The object page can have more
+									columns on larger XL screens (that have a width of 1440px or
+									more). This new feature works out-of-the-box and does not
+									require anything to be set, but note that it only works if you
+									are using blocks as content holders in a subsection. Now the
+									content in a block can take up to four columns. In addition, the
+									block has an <samp class="ph codeph">auto</samp> setting used to calculate the
+									optimal size of each block in relation to its surrounding
+									blocks. For more information, see the samples in the Demo
+									Kit.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p"><span class="ph emphasis emphasis">Two-column layout on L screens</span>: A new property
+										<samp class="ph codeph">useTwoColumnsForLargeScreen</samp> allows
+									overriding the default behavior on large screens that shows
+									three columns so that two columns are displayed instead.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p"><span class="ph emphasis emphasis">Responsive prioritization</span>: It is now possible to define priorities
+									for sections and subsections using the
+										<samp class="ph codeph">importance</samp> enumeration
+										(<samp class="ph codeph">Low</samp>/<samp class="ph codeph">Medium</samp>/<samp class="ph codeph">High</samp>).
+									A responsive behavior for the different screen sizes has been
+									implemented. Also, a new property
+										<samp class="ph codeph">showOnlyHighImportance</samp> has been added in
+									the <samp class="ph codeph">ObjectPageLayout</samp> control, which alters the
+									behavior of the importance rules so that regardless of the
+									screen size, only the <samp class="ph codeph">High</samp> importance content
+									of a section or subsection is displayed. In addition, the
+										<span class="ph uicontrol">Expand</span> button has been implemented to
+									manually expand or collapse the low priority content in
+									sections. The <span class="ph uicontrol">More</span> and
+										<span class="ph uicontrol">Less</span> buttons can be used to manually
+									show or hide all subsections that are hidden or displayed.</p>
+
+							</li>
+
+						</ul>
+</div>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">Improved Controls</div><div type="Improved Controls">
+			
+			<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_tbc_x1t_ht">
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis">Field Groups</span>: Controls can now be assigned to logical groups which will
+						trigger an event if this group is left. <span class="ph">For more
+							information, see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.core.Control/samples" alt="../../explored.html#/entity/sap.ui.core.Control/samples" title="../../explored.html#/entity/sap.ui.core.Control/samples">sample</a> in the Demo
+						Kit.</span></p>
+
+				</li>
+
+				<li class="li"><p class="p"><span class="ph emphasis emphasis">Relative Date / Time Formatter</span>: We now provide new options to provide
+						relative date and times (e.g. seconds, minutes etc.)</p>
+
+					<div class="fig fignone" id="loioc7c26285a53b461cbecb3da2c51a2f64__fig_a4c_gxy_lt"><div class="figcontainer">
+						<img class="image" id="loioc7c26285a53b461cbecb3da2c51a2f64__image_a51_hxy_lt" src="loiobf90b5607e7e49f7bab8536b8c8cbb90_HiRes.png"/>
+					</div></div>
+
+					<p class="p">
+						<span class="ph">For more
+							information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.sample.TypeDateTimeAsString/preview" alt="../../explored.html#/sample/sap.ui.core.sample.TypeDateTimeAsString/preview" title="../../explored.html#/sample/sap.ui.core.sample.TypeDateTimeAsString/preview">sample</a> in the Demo Kit.</span>
+					</p>
+
+					
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis">New Design for Busy Indicator</span>: The visual design of the local and global busy indicator has been updated.</p>
+
+					<div class="fig fignone"><div class="figcontainer">
+						<img class="image" id="loioc7c26285a53b461cbecb3da2c51a2f64__image_ovj_4bt_ht" src="loio308945dbbbf24e03ba52cfc092cb8297_HiRes.gif"/>
+					</div></div>
+
+					<p class="p">
+						<span class="ph">For more
+							information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.BusyIndicator/preview" alt="../../explored.html#/sample/sap.m.sample.BusyIndicator/preview" title="../../explored.html#/sample/sap.m.sample.BusyIndicator/preview">sample</a> in the Demo
+						Kit.</span></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap.m.ComboBox</samp>: Improved rendering performance by internally using
+							<samp class="ph codeph">sap.m.SelectList</samp> instead of
+						<samp class="ph codeph">sap.m.List</samp>. <span class="ph">For more
+							information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.ComboBox/preview" alt="../../explored.html#/sample/sap.m.sample.ComboBox/preview" title="../../explored.html#/sample/sap.m.sample.ComboBox/preview"><samp class="ph codeph">sample</samp></a> in
+							the Demo Kit.</span></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap.m.MessagePopover</samp>: The text size has been increased on desktop devices.
+						A new <samp class="ph codeph">showArrow</samp> property has been added, which opens the
+							<samp class="ph codeph">MessagePopover</samp> in <samp class="ph codeph">Combobox</samp> mode,
+						without the arrow. </p>
+
+				</li>
+
+				<li class="li"><p class="p"><samp class="ph codeph">sap.m.MultiInput</samp>: Improved usability by always showing in multi-line mode on
+						phones. <span class="ph">For more
+							information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.MultiInput/preview" alt="../../explored.html#/sample/sap.m.sample.MultiInput/preview" title="../../explored.html#/sample/sap.m.sample.MultiInput/preview"><samp class="ph codeph">sample</samp></a> in
+							the Demo Kit.</span></p>
+</li>
+
+				<li class="li"><p class="p"><samp class="ph codeph">sap.m.MultiInput</samp> and <samp class="ph codeph">MultiComboBox</samp>: Added support for
+						copy-and-pasting tokens to Excel. <span class="ph">For more
+							information, see the samples for <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.MultiInput/preview" alt="../../explored.html#/sample/sap.m.sample.MultiInput/preview" title="../../explored.html#/sample/sap.m.sample.MultiInput/preview"><samp class="ph codeph">sap.m.MultiInput</samp></a> and <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.MultiComboBox/preview" alt="../../explored.html#/sample/sap.m.sample.MultiComboBox/preview" title="../../explored.html#/sample/sap.m.sample.MultiComboBox/preview"><samp class="ph codeph">MultiComboBox</samp></a> in the Demo Kit.</span></p>
+</li>
+
+				<li class="li"><div class="p"><samp class="ph codeph">sap.m.OverflowToolbar</samp>:<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_vqv_yyg_nt">
+							<li class="li">
+								<p class="p"><span class="ph emphasis emphasis">Prioritization</span>: You can set a priority to each
+										<samp class="ph codeph">OverflowToolbar</samp> item using the new
+										<samp class="ph codeph">priority</samp> property of the
+										<samp class="ph codeph">LayoutData</samp> element. The priority defines
+									the overflow order of the items when the size of the
+										<samp class="ph codeph">OverflowToolbar</samp> is not enough. The default
+									priority of each <samp class="ph codeph">OverflowToolbar</samp> item is
+										<samp class="ph codeph">High</samp>. All priorities are accessible through
+									the <samp class="ph codeph">sap.m.OverflowToolbarPriority</samp> type.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p"><span class="ph emphasis emphasis">Grouping</span>: The new group property of the <samp class="ph codeph">LayoutData</samp>
+									element enables <samp class="ph codeph">OverflowToolbar</samp> items to
+									overflow together even if they are on different positions. The
+									default value of the property is <samp class="ph codeph">0</samp>, meaning
+									that the element does not belong to any group. When group
+									elements have different priorities, the priority of the group is
+									defined by the maximum priority of its elements.</p>
+
+							</li>
+
+						</ul>
+</div>
+<p class="p">For more information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.sample.OverflowToolbarSimple/preview" alt="../../explored.html#/sample/sap.m.sample.OverflowToolbarSimple/preview" title="../../explored.html#/sample/sap.m.sample.OverflowToolbarSimple/preview">sample</a> in the Demo Kit.</p>
+</li>
+
+					<li class="li"><p class="p"><samp class="ph codeph">sap.m.SimpleForm</samp>: Added support for <samp class="ph codeph">AriaLabelledBy</samp>. <span class="ph">For more
+					information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.layout.form.SimpleForm.html" alt="../../docs/api/symbols/sap.ui.layout.form.SimpleForm.html" title="../../docs/api/symbols/sap.ui.layout.form.SimpleForm.html">API Reference</a> in the Demo Kit.</span></p>
+</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap.m.Slider</samp>: Added option to disable handle tooltip. <span class="ph">For more
+							information, see the <a class="xref" href="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.m.Slider.html" alt="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.m.Slider.html" title="https://sapui5.hana.ondemand.com/#docs/api/symbols/sap.m.Slider.html">API Reference</a> in the Demo
+							Kit.</span>
+					</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap.m.UploadCollection</samp>: In the 'Upload Pending' scenario, you can now
+						select multiple attachments in one step and add these to the upload list.
+						The control supports canceling the upload of a file of this selection
+						without canceling the other selected files.</p>
+
+					<p class="p">For more information, see the <a class="xref" target="_blank" href="../../explored.html#/entity/sample/sap.m.sample.UploadCollectionForPendingUpload/preview" alt="../../explored.html#/entity/sample/sap.m.sample.UploadCollectionForPendingUpload/preview" title="../../explored.html#/entity/sample/sap.m.sample.UploadCollectionForPendingUpload/preview">sample</a> in the Demo Kit.</p>
+
+				</li>
+
+				<li class="li">
+					<div class="p"><samp class="ph codeph">sap.m.Wizard</samp>: <ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_z4r_lqs_mt">
+							<li class="li">
+								<p class="p">The new <samp class="ph codeph">icon</samp> property on the
+										<samp class="ph codeph">WizardStep</samp> control enables developers to
+									replace the subsequent step numbering in the progress navigation
+									part of the <samp class="ph codeph">Wizard</samp> control. In order for the
+									icon to be displayed, each step in the <samp class="ph codeph">Wizard</samp>
+									should have this property defined, otherwise the default
+									numbering will be displayed.</p>
+
+								<div class="fig fignone" id="loioc7c26285a53b461cbecb3da2c51a2f64__fig_z3d_xqs_mt"><div class="figcontainer">
+									<img class="image" id="loioc7c26285a53b461cbecb3da2c51a2f64__image_qd4_xqs_mt" src="loiocfb4411c58184ab68ad67157d651cd46_HiRes.png"/>
+								</div></div>
+
+							</li>
+
+							<li class="li">
+								<p class="p">A branching mode has been implemented to enable users to take
+									multiple paths within a single wizard. Different outcomes and
+									steps are displayed depending on input from the previous steps.
+									Dashed lines in the wizard progress navigator indicate that all
+									subsequent steps may vary.</p>
+
+								<div class="fig fignone" id="loioc7c26285a53b461cbecb3da2c51a2f64__fig_xpr_grs_mt"><div class="figcontainer">
+									<img class="image" id="loioc7c26285a53b461cbecb3da2c51a2f64__image_syg_hrs_mt" src="loiofaee7bf45dd14c00a5ff5b72c8d67afa_HiRes.png"/>
+								</div></div>
+
+							</li>
+
+							<li class="li">
+								<p class="p">A new <span class="ph uicontrol">Summary</span> page has been implemented
+									that is displayed after all steps in a wizard are completed.
+									This enables users to review their input at a glance and edit it
+									if needed.</p>
+
+								<div class="fig fignone" id="loioc7c26285a53b461cbecb3da2c51a2f64__fig_gj1_gss_mt"><div class="figcontainer">
+									<img class="image" id="loioc7c26285a53b461cbecb3da2c51a2f64__image_hfx_gss_mt" src="loio2c981733ae6f4199bcc73a330b00cb01_HiRes.png"/>
+								</div></div>
+
+							</li>
+
+						</ul>
+</div>
+
+					<p class="p">For more information, see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.m.Wizard/samples" alt="../../explored.html#/entity/sap.m.Wizard/samples" title="../../explored.html#/entity/sap.m.Wizard/samples">samples</a> in the Demo Kit.</p>
+
+				</li>
+
+				<li class="li">
+					<div class="p"><samp class="ph codeph">sap.suite.ui.commons.ProcessFlow</samp>:<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_sly_lxp_lt">
+							<li class="li">
+								<p class="p">Clickable connection labels between process flow nodes have been implemented
+										(<samp class="ph codeph">ProcessFlowConnectionLabels</samp>). If
+									connections are not unique, you can select a connection by
+									clicking the label. You can hide or unhide these labels.</p>
+
+								<p class="p">For more information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.suite.ui.commons.sample.ProcessFlowConnectionLabels/preview" alt="../../explored.html#/sample/sap.suite.ui.commons.sample.ProcessFlowConnectionLabels/preview" title="../../explored.html#/sample/sap.suite.ui.commons.sample.ProcessFlowConnectionLabels/preview">sample</a> in the Demo
+									Kit.</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">You can now group nodes that are semantically equal or have some properties in common by
+									using the aggregated node type
+										<samp class="ph codeph">sap.suite.ui.commons.ProcessFlowNode</samp>. For
+									this reason, the <samp class="ph codeph">type</samp> property has been added
+									to the <samp class="ph codeph">ProcessFlowNode</samp> control. Possible values
+									are <samp class="ph codeph">single</samp> (default) or
+										<samp class="ph codeph">aggregated</samp>, which can be set by the
+									application. Aggregated nodes are displayed with a shadow
+									representing the stacked documents.</p>
+
+								<p class="p">For more information, see the <a class="xref" target="_blank" href="../../explored.html#/sample/sap.suite.ui.commons.sample.ProcessFlowAggregation/preview" alt="../../explored.html#/sample/sap.suite.ui.commons.sample.ProcessFlowAggregation/preview" title="../../explored.html#/sample/sap.suite.ui.commons.sample.ProcessFlowAggregation/preview">sample</a> in the Demo
+									Kit.</p>
+
+							</li>
+
+						</ul>
+
+					</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><span class="ph emphasis emphasis">Smart controls</span>: These controls now support multiple schemas with
+						different namespaces. For more information about smart controls, see the
+						control-specific information under <a class="xref" href="0cbbeba6fa6c45e4a339bc75d56299a2.html" title="This library contains composite controls.">sap.ui.comp</a>. </p>
+
+					<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_jqj_hjz_mt">
+						<li class="li">
+							<p class="p"><samp class="ph codeph">sap.ui.comp.smartfield.SmartField:</samp> The new property
+									<samp class="ph codeph">proposedControl</samp> is used to make a proposal for
+								a particular control that is to be used by
+									<samp class="ph codeph">SmartField</samp>. Currently
+									<samp class="ph codeph">sap.m.ObjectNumber</samp> and
+									<samp class="ph codeph">sap.m.ObjectIdentifier</samp> can be selected.</p>
+
+							<p class="p">The new event <samp class="ph codeph">valueListChanged</samp> is fired when the model is updated with
+								the selected data after the values have been selected using value
+								help or type-ahead.</p>
+
+							<p class="p">The toggling between edit and display mode is now handled by the
+								editable property instead of the enabled property of the
+								control.</p>
+
+							<p class="p">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.comp.smartfield.SmartField.html" alt="../../docs/api/symbols/sap.ui.comp.smartfield.SmartField.html" title="../../docs/api/symbols/sap.ui.comp.smartfield.SmartField.html">API Reference</a> and the
+									<a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.comp.smartfield.SmartField/samples" alt="../../explored.html#/entity/sap.ui.comp.smartfield.SmartField/samples" title="../../explored.html#/entity/sap.ui.comp.smartfield.SmartField/samples">sample</a> in the Demo
+								Kit.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">sap.ui.comp.smartfilterbar.SmartFilterBar</samp>:</p>
+
+							<p class="p">For <samp class="ph codeph">MultiInput</samp> filter fields, the <samp class="ph codeph">MultiLine</samp> mode has
+								been activated to improve usability.</p>
+
+							<p class="p">Multi-value and unrestricted <samp class="ph codeph">Date</samp> fields are now
+								supported if the annotation
+									<samp class="ph codeph">sap:filter-restriction="multi-value"</samp> is set for
+								date properties.</p>
+
+							<p class="p">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.comp.smartfilterbar.SmartFilterBar.html" alt="../../docs/api/symbols/sap.ui.comp.smartfilterbar.SmartFilterBar.html" title="../../docs/api/symbols/sap.ui.comp.smartfilterbar.SmartFilterBar.html">API Reference</a> and the
+									<a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.comp.smartfilterbar.SmartFilterBar/samples" alt="../../explored.html#/entity/sap.ui.comp.smartfilterbar.SmartFilterBar/samples" title="../../explored.html#/entity/sap.ui.comp.smartfilterbar.SmartFilterBar/samples">sample</a> in the Demo
+								Kit</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">sap.ui.comp.smarttable.SmartTable</samp>:</p>
+
+							<div class="p">The <samp class="ph codeph">SmartTable</samp> is now easier to use, even without annotations, thanks to
+								these easy-to-use configuration settings:<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_vqr_ftt_kt">
+									<li class="li">
+										<p class="p">The new property <samp class="ph codeph">initiallyVisibleFields</samp>
+											is used to specify the columns that are visible when the
+												<samp class="ph codeph">SmartTable</samp> is first started.</p>
+
+									</li>
+
+									<li class="li">
+										<p class="p">The new property <samp class="ph codeph">requestAtLeastFields</samp> is
+											used to specify the fields that should always be
+											requested.</p>
+
+									</li>
+
+								</ul>
+</div>
+
+							<div class="p">The new <samp class="ph codeph">PresentationVariant</samp> annotation can now be
+								used to do the following:<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_nbr_vyt_kt">
+									<li class="li">
+										<p class="p">Change existing behavior to consider
+												<samp class="ph codeph">LineItem</samp> annotation from the
+												<samp class="ph codeph">Visualizations</samp> property</p>
+
+									</li>
+
+									<li class="li">
+										<p class="p">Use <samp class="ph codeph">RequestAtLeast</samp> property to also
+											enable <samp class="ph codeph">$select</samp> for tables that are not
+											of type <samp class="ph codeph">AnalyticalTable</samp></p>
+
+									</li>
+
+								</ul>
+The <samp class="ph codeph">LineItem</samp> annotation is now a fallback
+								option and used only if no <samp class="ph codeph">PresentationVariant</samp>
+								annotation exists.</div>
+
+							<p class="p">The <samp class="ph codeph">Text</samp> annotation is now supported for built-in
+									<samp class="ph codeph">SmartTable</samp> controls (default is
+									<samp class="ph codeph">descriptionAndId</samp>, can be configured using
+									<samp class="ph codeph">defaultDropDownDisplayBehaviour</samp> custom
+								data)</p>
+
+							<p class="p">Several default UI settings have been improved, such as hiding the column visibility menu
+								option from the table header, the right-alignment of date and time
+								fields, and enabling <samp class="ph codeph">MultiToggle</samp> by default
+								(internally for <samp class="ph codeph">sap.ui.table.* tables</samp>).</p>
+
+							<p class="p">Depending on the internal table used, the new <samp class="ph codeph">noData</samp> aggregation can be
+								filled with a string (<samp class="ph codeph">sap.m.Table</samp> and
+									<samp class="ph codeph">sap.ui.table.Table</samp>) or with
+									<samp class="ph codeph">sap.ui.core.Control</samp>
+									(<samp class="ph codeph">sap.ui.table.Table</samp> only). Providing a control
+								for the <samp class="ph codeph">noData</samp> aggregation allows you to display
+								icons, texts, and even more complex layouts if no data is
+								available.</p>
+
+							<p class="p">The new property <samp class="ph codeph">ignoreFromPersonalisation</samp> can be
+								used to specify the fields that should not be shown in the table
+								personalization dialog.</p>
+
+							<p class="p">For more information, see the <a class="xref" href="../../docs/api/symbols/sap.ui.comp.smarttable.SmartTable.html" alt="../../docs/api/symbols/sap.ui.comp.smarttable.SmartTable.html" title="../../docs/api/symbols/sap.ui.comp.smarttable.SmartTable.html">API Reference</a> and the
+									<a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.comp.smarttable.SmartTable/samples" alt="../../explored.html#/entity/sap.ui.comp.smarttable.SmartTable/samples" title="../../explored.html#/entity/sap.ui.comp.smarttable.SmartTable/samples">sample</a> in the Demo Kit. </p>
+
+						</li>
+
+					</ul>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap.ui.comp.variants.VariantManagement</samp>: If the list of
+						variants contains ten or more items, a simple search is automatically made
+						available to improve usability.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap.ui.comp.valuehelpdialog.ValueHelpDialog</samp>: The dialog
+						provided by the <samp class="ph codeph">ValueHelpDialog</samp> control now supports
+						smartphone use for the first time. </p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap.ui.layout.DynamicSideContent</samp>: The aspect ratio on <samp class="ph codeph">M</samp>
+						breakpoint is changed – the side content area now has a 340px fixed width
+						instead of 33% (for better usability on tablet devices and small
+						screens).</p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section collapsible expanded"><div class="section_title">Documentation and Demo Kit Improvements</div><div type="Documentation and Demo Kit Improvements">
+			
+			<p class="p"><span class="ph uicontrol">Samples</span> section in the Demo Kit: For better readability of the sample
+				code in the code viewer, line numbering and syntax highlighting have been
+				implemented. </p>
+
+			<div class="p">The documentation contains several new helpful chapters. Just to name a few:<ul class="ul" id="loioc7c26285a53b461cbecb3da2c51a2f64__ul_qrt_fcp_lt">
+					<li class="li">
+						<p class="p"><a class="xref" href="28b59ca857044a7890a22aec8cf1fee9.html" title="We recommend creating at least three files for your app: the descriptor (manifest.json), the component (Component.js), and the main view of the app (App.view.xml).">App Overview: The Basic Files of Your App</a></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><a class="xref" href="003f755d46d34dd1bbce9ffe08c8d46a.html" title="The details described here represent a best practice for structuring an application that features one component, one OData service and less than 20 views. If you're building an app that has more components, OData services and views, you may have to introduce more folder levels than described here.">Folder Structure: Where to Put Your Files</a></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><a class="xref" href="a460a7348a6c431a8bd967ab9fb8d918.html" title="The app templates documented here are a kind of &#34;best practice&#34; for your app development.">App Templates: Kick Start Your App Development</a></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><a class="xref" href="69a8e469fbde46e7b8916250080effbd.html" title="The device API (sap.ui.Device) is an API which provides information about device specifics, like the operating system along with its version, the browser and browser version, screen size, current orientation and support for specific features like touch event support, orientation change and so on.">The Device API</a></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><a class="xref" href="8dbd35e1577b445d8077b2bc6ad8b958.html" title="Depending on the capabilities of the device on which the app is running, the functionality and the design of the application might differ. By introducing a local JSON model holding the device-dependent data, we can bind properties of our views to the device's capabilities.">Device Adaptation: Using Device Models for Your App</a></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">You can now find a list of terms with their definition in the new <a class="xref" href="9ef211e569ed4f819af904ba360ea7f6.html" title="Here's a list of terms used in SAPUI5. The list is still in progress, meaning some terms will still be missing of course. Please also check SAPterm at http://sapterm.com/ if you want to find out about a specific term's usage at SAP.">Glossary</a>.</p>
+
+					</li>
+
+				</ul>
+</div>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="6660a59a8a22460a91fe65a0d96a567e.html">Previous Versions</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="05ce1dc72c74475bada39234f6721f21.html" title="With this release, the UI development toolkit for HTML5 (SAPUI5) is upgraded from version 1.42 to 1.44.">What's New in SAPUI5 1.44</a></div>
+<div><a class="link" href="4768f1ac7f0645929b4e9ea9981bb65e.html" title="With this release the UI development toolkit for HTML5 (SAPUI5) is upgraded from version 1.40 to 1.42.">What's New in SAPUI5 1.42</a></div>
+<div><a class="link" href="e659bd2383524a05b716916bcda9b368.html" title="With this release the UI development toolkit for HTML5 (SAPUI5) is upgraded from version 1.38 to 1.40.">What's New in SAPUI5 1.40</a></div>
+<div><a class="link" href="6a875f998994489483e8085705347d72.html#loio6a875f998994489483e8085705347d72" title="With this release the UI development toolkit for HTML5 (SAPUI5) is upgraded from version 1.36 to 1.38.">What's New in SAPUI5 1.38</a></div>
+<div><a class="link" href="8d36a5a5f57a409792fb36a3f4940cdb.html#loio8d36a5a5f57a409792fb36a3f4940cdb" title="With this release the UI development toolkit for HTML5 (SAPUI5) is upgraded from version 1.34 to 1.36.">What's New in SAPUI5 1.36</a></div>
+<div><a class="link" href="2eba716185154494ac0b44cddd2e4c8e.html#loio2eba716185154494ac0b44cddd2e4c8e" title="With this release the UI development toolkit for HTML5 (SAPUI5) is upgraded from version 1.32 to 1.34.">What's New in SAPUI5 1.34</a></div>
+<div><a class="link" href="dec9d4c7d12d479d98483e2e46643e01.html#loiodec9d4c7d12d479d98483e2e46643e01" title="With this release the UI development toolkit for HTML5 (SAPUI5) is upgraded from version 1.28 to 1.30.">What's New in SAPUI5 1.30</a></div>
+<div><a class="link" href="4c605d154a894dc1a0a4662eb8c6cc63.html#loio4c605d154a894dc1a0a4662eb8c6cc63" title="With this release the UI development toolkit for HTML5 (SAPUI5) is upgraded from version 1.26 to 1.28.">What's New in SAPUI5 1.28</a></div>
+</div>
+</div>
+<div class="topic concept nested1" lang="en-US" id="loio62e3eb0b2556497e9b4160bf82965f73">
+	<h2 class="title topictitle2">What's New in Analysis Path Framework </h2>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">Several new or changed features are available for Analysis Path Framework (APF).</p>
+
+		<div class="section"><div class="section_title">APF for SAP S/4HANA</div><div type="APF for SAP S/4HANA">
+			
+			<p class="p">APF is now available for SAP S/4HANA. This includes the following features:</p>
+
+			<ul class="ul" id="loio62e3eb0b2556497e9b4160bf82965f73__ul_nc3_tt2_vt">
+				<li class="li">
+					<p class="p">Configuring an app using the APF configuration modeler for SAP S/4HANA</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Running the app using the generic APF runtime app for SAP S/4HANA</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Consuming CDS views</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Filter reduction to ensure that filters that are generated in APF are reduced
+						in a way that the Analytic Engine can handle them.</p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">APF for SAP Business Warehouse powered by SAP HANA</div><div type="APF for SAP Business Warehouse powered by SAP HANA">
+			
+			<p class="p">You can now also use APF to build analytical apps for SAP BW powered by SAP HANA. To
+				do so, it is required to consume BW OData queries.</p>
+
+		</div></div>
+
+	</div>
+
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

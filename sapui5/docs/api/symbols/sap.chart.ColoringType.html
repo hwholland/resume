@@ -1,0 +1,400 @@
+<!DOCTYPE html> <html xml:lang="en" lang="en"><head><meta charset="UTF-8" ><meta name="generator" content="JsDoc + OpenUI5/SAPUI5 template" ><title>JsDoc Report - SAP UI development Toolkit for HTML5 - API Reference - sap.chart.ColoringType</title><link rel="stylesheet" href="../default.css" ><link rel="stylesheet" href="../../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" /><link rel="stylesheet" href="../../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" /><script src="../../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script></head><body><div id="main"><div id="content"><h1 class="classTitle static">Enum <span class="package">sap.chart.</span>ColoringType<span class="module"><span>Module: </span><a href="../modules/sap_chart_ColoringType.html">sap/chart/ColoringType</a></span></h1><hr><div class="full-description"> Enum of available colorings. </div><div class="summary section"><div class="sectionTitle">Field Summary</div><div class="sectionItems"><div class="sectionItem classProperty static"><b class="icon" title="Criticality is based on the semantic color palette."><a href="sap.chart.ColoringType.html#.Criticality"><span class="package">sap.chart.ColoringType.</span>Criticality</a></b><span class='description'>Criticality is based on the semantic color palette.</span></div><div class="sectionItem classProperty static"><b class="icon" title="Emphasis is about highlighting certain data points in a chart."><a href="sap.chart.ColoringType.html#.Emphasis"><span class="package">sap.chart.ColoringType.</span>Emphasis</a></b><span class='description'>Emphasis is about highlighting certain data points in a chart.</span></div><div class="sectionItem classProperty static"><b class="icon" title="Gradation introduces the notion of levels to visually separate chart elements by different hues of colors."><a href="sap.chart.ColoringType.html#.Gradation"><span class="package">sap.chart.ColoringType.</span>Gradation</a></b><span class='description'>Gradation introduces the notion of levels to visually separate chart elements by different hues of colors.</span></div></div></div><div class="section details"><div class="sectionTitle">Field Detail</div><div class="sectionItems"><div id=".Criticality" class='sectionItem classProperty static'><div class="itemTitle icon"> sap.chart.ColoringType.Criticality <span class="light" title="returns string">: string</span></div><div class="full-description"><p>Criticality is based on the semantic color palette. </p><p>It can be defined for measure values and dimension values. <pre class="prettyprint">
+Criticality: {
+    MeasureValues: {
+        ...
+    },
+    DimensionValues: {
+        ...
+    }
+}
+</pre></p><p><b>For measure values</b>, criticality can be based on <code>static</code>, <code>calculated</code>, <code>DynamicThresholds</code> and <code>ConstantThresholds</code></p><p><code>Legend</code> is <b>optional</b> and can be used for custom legend labels. <pre class="prettyprint">
+MeasureValues: {
+    'measureName': {
+        Static: ... ,
+        Calculated: ... ,
+        DynamicThresholds: {
+            ...
+        },
+        ConstantThresholds: {
+            ...
+        },
+        Legend: {
+            Title: string,    // (optional) fixed, localized label
+            Positive: string, // fixed, localized label
+            Critical: string, // fixed, localized label
+            Negative: string, // fixed, localized label
+            Neutral:  string  // fixed, localized label
+        }
+    },
+    'measureName': { 
+        ...
+    }
+}
+</pre></p><ul><li><code>static</code></p><p> It indicates that the measure is always considered in the same way, for example positive.</p><p> The value of <code>static</code> is listed in <a href="sap.chart.coloring.CriticalityType.html">sap.chart.coloring.CriticalityType</a></p><p> Example:</p><p> In this case, all 'Profit' datapoints shall use Positive semantic color and all 'Revenue' datapoints shall use Negative semantic color. <pre class="prettyprint">
+  var oColorings = {
+      Criticality: {
+          MeasureValues: {
+              Profit: {
+                  Static: sap.chart.ColoringType.Positive
+              },
+              Revenue: {
+                  Static: sap.chart.ColoringType.Negative
+              }
+          }
+      }
+  };
+  var oActiveColoring = {
+      coloring: sap.chart.ColoringType.Criticality,
+      parameters: {
+          measure: ['Profit', 'Revenue']
+      }
+  };
+  </pre></li><li><code>Calculated</code></p><p> Criticality is calculated by the backend service.</p><p> The value of <code>Calculated</code> is a dimension name. The criticality of the measure of a datapoint is determined by the value of this dimension and its textProperty(if exists) will be used as legend label.</p><p> The possible values of this certain dimension are listed in <a href="sap.chart.coloring.CriticalityType.html">sap.chart.coloring.CriticalityType</a>.</p><p> Example:</p><p> In this case, the criticality of 'Profit' measure is determined by the value of 'ProfitCriticality' dimension which is calculated by backend service. <pre class="prettyprint">
+  var oColorings = {
+      Criticality: {
+          MeasureValues: {
+              Profit: {
+                  Calculated: 'ProfitCriticality'
+              }
+          }
+      }
+  };
+  var oActiveColoring = {
+      coloring: sap.chart.ColoringType.Criticality,
+      parameters: {
+          measure: ['Profit']
+      }
+  };
+  </pre></li><li><code>DynamicThresholds</code></p><p> Criticality is expressed with thresholds for the boundaries between negative, critical, neutral, and positive.</p><p> The direction of improvement for measure values is mandatory, combined with corresponding thresholds.</p><p> Thresholds are optional. For unassigned values, defaults are determined in this order:</p><p> - For DeviationRange, an omitted LowValue translates into the smallest possible number (-INF), an omitted HighValue translates into the largest possible number (+INF)</p><p> - For ToleranceRange, an omitted LowValue will be initialized with DeviationRangeLowValue, an omitted HighValue will be initialized with DeviationRangeHighValue</p><p> - For AcceptanceRange, an omitted LowValue will be initialized with ToleranceRangeLowValue, an omitted HighValue will be initialized with ToleranceRangeHighValue</p><p> Please refer to <a href="sap.chart.coloring.ImprovementDirectionType.html">sap.chart.coloring.ImprovementDirectionType</a> for detailed usage. <pre class="prettyprint">
+  DynamicThresholds: {
+      ImprovementDirection: string,    // refer to sap.chart.coloring.ImprovementDirectionType for detailed definition
+      AcceptanceRangeLowValue: string or number, // property name or number
+      AcceptanceRangeHighValue: string or number, // property name or number
+      ToleranceRangeLowValue: string or number, // property name or number
+      ToleranceRangeHighValue: string or number, // property name or number
+      DeviationRangeLowValue: string or number, // property name or number
+      DeviationRangeHighValue: string or number, // property name or number
+  }
+  </pre> Example:</p><p> In this case, the criticality of 'Profit' measure is determined by the value of 'ProfitAcceptanceRangeLowValue', 'ProfitToleranceRangeLowValue' and 'ProfitDeviationRangeLowValue' measure calculated with improvement direction <code>'Maximize'</code>. <pre class="prettyprint">
+  var oColorings = {
+      Criticality: {
+          MeasureValues: {
+              Profit: {
+                   DynamicThresholds : {
+                       ImprovementDirection: sap.chart.coloring.ImprovementDirectionType.Maximize,
+                       AcceptanceRangeLowValue: 'ProfitAcceptanceRangeLowValue',
+                       ToleranceRangeLowValue: 'ProfitToleranceRangeLowValue',
+                       DeviationRangeLowValue: 'ProfitDeviationRangeLowValue'
+                   }
+              }
+          }
+      }
+  };
+  var oActiveColoring = {
+      coloring: sap.chart.ColoringType.Criticality,
+      parameters: {
+          measure: ['Profit']
+      }
+  };
+  </pre></li><li><code>ConstantThresholds</code></p><p> Criticality is expressed with thresholds for the boundaries between negative, critical, neutral, and positive.</p><p> The direction of improvement for measure values is mandatory, combined with corresponding thresholds.</p><p> Thresholds are optional. For unassigned values, defaults are determined in this order:</p><p> - For DeviationRange, an omitted LowValue translates into the smallest possible number (-INF), an omitted HighValue translates into the largest possible number (+INF)</p><p> - For ToleranceRange, an omitted LowValue will be initialized with DeviationRangeLowValue, an omitted HighValue will be initialized with DeviationRangeHighValue</p><p> - For AcceptanceRange, an omitted LowValue will be initialized with ToleranceRangeLowValue, an omitted HighValue will be initialized with ToleranceRangeHighValue</p><p> Also Aggregation level (the visible dimensions) must be specified for providing the context for assessing the criticality.</p><p> Legend label is shown as value range and do not support customization in ConstantThresholds.</p><p> Please refer to <a href="sap.chart.coloring.ImprovementDirectionType.html">sap.chart.coloring.ImprovementDirectionType</a> for detailed usage. <pre class="prettyprint">
+  ConstantThresholds: {
+      ImprovementDirection: string, refer to sap.chart.coloring.ImprovementDirectionType for detailed definition
+      AggregationLevels: [{
+           VisibleDimensions: ['dimensionName', ...],
+           AcceptanceRangeLowValue: Number,
+           AcceptanceRangeHighValue:Number,
+           ToleranceRangeLowValue: Number,
+           ToleranceRangeHighValue: Number,
+           DeviationRangeLowValue: Number,
+           DeviationRangeHighValue: Number
+      },
+      ...]
+  }
+  </pre> Example:</p><p> In this case, the criticality of 'Profit' measure is determined by two concrete thresholds calculated with improvement direction <code>'Maximize'</code>. <pre class="prettyprint">
+  var oColorings = {
+      Criticality: {
+          MeasureValues: {
+              Profit: {
+                   ConstantThresholds : {
+                       ImprovementDirection: sap.chart.coloring.ImprovementDirectionType.Maximize,
+                       AcceptanceRangeLowValue:100,
+                       ToleranceRangeLowValue: 80,
+                       DeviationRangeLowValue: 60
+                   }
+              }
+          }
+      }
+  };
+  var oActiveColoring = {
+      coloring: sap.chart.ColoringType.Criticality,
+      parameters: {
+          measure: ['Profit']
+      }
+  };
+  </pre></li></ul><p><b>For dimension values</b></p><p>Criticality can be expressed by assigning values to negative, critical, and positive. Unassigned dimension values are automatically assigned to neutral.</p><p><code>'Values'</code> is used to specify concrete dimension value(s). <code>'Legend'</code> is used to customize legend label which is mandatory when multiple dimension values defined in <code>'Values'</code>.</p><p><pre class="prettyprint"> 
+DimensionValues: { 
+    'dimensionName': {
+         Positive: {
+             Values: 'dimensionValue' or ['dimensionValue', ...]
+             Legend: string // mandatory for value array
+         },
+         Critical: {
+             Values: 'dimensionValue' or ['dimensionValue', ...]
+             Legend: string // mandatory for value array
+         },
+         Negative: {
+             Values: 'dimensionValue' or ['dimensionValue', ...]
+             Legend: string // mandatory for value array
+         },
+         Neutral: {
+             Values: 'dimensionValue' or ['dimensionValue', ...]
+             Legend: string // mandatory for value array
+         }
+    },
+    'dimensionName': {
+        ... 
+    } 
+}
+</pre> Example:</p><p>In this case, the criticality of 'OrderStatus' dimension is determined by values specified to different criticality classes. <pre class="prettyprint">
+var oColorings = {
+    Criticality: {
+        DimensionValues: {
+            OrderStatus: {
+                 Positive : {
+                     Values: 'Finished'
+                 },
+                 Critical : {
+                     Values: 'Pending'
+                 },
+                 Negative : {
+                     Values: ['Stopped', 'Not Started'],
+                     Legend: 'Alert'
+                 },
+                 Neutral : {
+                     Values: ['Processing', 'Surveyed'],
+                     Legend: 'Normal'
+                 }
+            }
+        }
+    }
+};
+var oActiveColoring = {
+    coloring: sap.chart.ColoringType.Criticality,
+    parameters: {
+        dimension: ['OrderStatus']
+    }
+};
+</pre></p></div><div class="heading">Default Value:</div><table class="methodItem"><tbody><tr><td class="methodItemDesc"></td></tr></tbody></table></div><div id=".Emphasis" class='sectionItem classProperty static'><div class="itemTitle icon"> sap.chart.ColoringType.Emphasis <span class="light" title="returns string">: string</span></div><div class="full-description"><p>Emphasis is about highlighting certain data points in a chart.</p><p>It can be defined for dimension values. <pre class="prettyprint">
+Emphasis: {
+    DimensionValues: {
+        ...
+    }
+}
+</pre><b>For dimension values</b></p><p>Highlight a specified set of values of a dimension visible in the current chart layout. The qualitative color palette is used.</p><p><code>'Values'</code> is used to specify dimension value(s) for highlight. <code>'Legend'</code> is used to customize legend label whose <code>'Hightlighted'</code> is mandatory when multiple dimension values defined in <code>'Values'</code>. <pre class="prettyprint">
+DimensionValues: {
+    'dimensionName': {
+        Values: 'dimensionValue' or ['dimensionValue', ...],
+        Legend: {
+           Highlighted: string // mandatory for value array
+           Others: string      // optional
+        }
+    },
+    'dimensionName': {
+        ...
+    }
+}
+</pre> Example:</p><p>In this case, 'German' and 'France' are highlighted in 'Country' dimension with customized legend label 'Europe'. <pre class="prettyprint">
+var oColorings = {
+    Emphasis: {
+        DimensionValues: {
+            Country: {
+                Values: ['German', 'France']
+                Legend: 'Europe'
+            }
+        }
+    }
+};
+var oActiveColoring = {
+    coloring: sap.chart.ColoringType.Emphasis,
+    parameters: {
+        dimension: ['Country']
+    }
+};
+</pre></p></div><div class="heading">Default Value:</div><table class="methodItem"><tbody><tr><td class="methodItemDesc"></td></tr></tbody></table></div><div id=".Gradation" class='sectionItem classProperty static'><div class="itemTitle icon"> sap.chart.ColoringType.Gradation <span class="light" title="returns string">: string</span></div><div class="full-description"><p>Gradation introduces the notion of levels to visually separate chart elements by different hues of colors.</p><p>Gradation coloring is based on predefined color palettes implementing one of the following color schemes:</p><p>1. Single-color scheme:</p><p> Palette consists of a linear sequence of hues of the same color in increasing or decreasing saturation. Every hue represents a level.</p><p>2. Diverging color scheme:</p><p> Palette consists of two hues of different colors at the outer ends, and a linear sequence of other color hues between them. Every color hue represents a level. The palette has a central mid area with an own color separating the levels before and after the midpoint.</p><p>3. Target color scheme:</p><p> Palette consists of two instances of a diverging color scheme palette, where the second is appended at the end of the first with reverse order of hues. Every color hue represents a level. The palette has a central midpoint for the target value positioned between the two palette instances, separating the levels before and after the midpoint.</p><p>Whether a gradation can be applied depends on the chart layout. The <code>Colorings.Gradation</code> object has the overall structure: <pre class="prettyprint">
+Gradation: {
+    RankedMeasureValues: { // Only for heatmap charts, if the measure is visible in the chart layout.
+        …
+    },
+    DelineatedMeasures: { // More than one of these measures is visible in the chart layout.
+        …
+    },
+    DelineatedDimensionValues: { // If the dimension is the only visible dimension in the chart layout and has the category role, or if the dimension is the only dimension with the series role.
+        …
+    }
+}
+</pre></p><p>The option for ranked measure values can be specified for one or more measures identified by name: <pre class="prettyprint">
+RankedMeasureValues: {
+    'measureName': {
+        SingleColorScheme: {
+            Scheme: string, // enumeration: NoSemantics, Positive, Negative
+            Saturation: string, // enumeration: LightToDark, DarkToLight
+            NumberOfLevels: number, // between 2-6
+            RankingPerAggregationLevel: [
+                {
+                    VisibleDimensions: [ 'dimensionName', … ],
+                    LevelBoundaries: [ number, … ] // array with 1-5 numbers
+                },
+                …
+            ]
+        },
+        DivergingColorScheme: {
+            Scheme: string, // enumeration: NoSemantics, PositiveToNegative, NegativeToPositive, ColdToHot, HotToCold
+            NumberOfLevels: {
+                BelowMidArea: number, // between 2-6
+                AboveMidArea: number  // between 2-6
+            },
+            RankingPerAggregationLevel: [
+                {
+                    VisibleDimensions: [ 'dimensionName', … ],
+                    MidAreaLowValue: number,
+                    MidAreaHighValue: number
+                },
+                …
+            ]
+        },
+        TargetColorScheme: {
+            Scheme: string, // enumeration: PositiveTarget
+            NumberOfLevels: {
+                BelowTargetMidpoint: number, // between 2-6
+                AboveTargetMidpoint: number  // between 2-6
+            },
+            RankingPerAggregationLevel: [
+                {
+                    VisibleDimensions: [ 'dimensionName', … ],
+                    TargetMidpoint: number
+                },
+                …
+            ]
+        },
+    },
+    'measureName': { … }, 
+    ...
+}
+</pre></p><p>For a single color scheme, Scheme names the scheme to be applied. If it is not specified, the default is NoSemantics. The possible values of scheme name are listed in <a href="sap.chart.coloring.GradationSingleColorScheme.html">sap.chart.coloring.GradationSingleColorScheme</a>. If Saturation is not specified, the default is LightToDark. The possible values of saturation are listed in <a href="sap.chart.coloring.GradationSaturation.html">sap.chart.coloring.GradationSaturation</a></p><p>For an aggregation level specified by a list of visible dimensions, the level boundary array is a strictly increasing sequence of numbers establishing a series of consecutive value intervals. In case VisibleDimensions is omitted, the level boundaries are applied independent of the aggregation level in the current chart layout.</p><p>If RankingPerAggregationLevel is not provided, the chart will apply a default ranking by determining the minimum and maximum value of the measure in the data set and cutting this value range into equally sized intervals for the requested NumberOfLevels. If NumberOfLevels to be distinguished is not specified, the default is 5 levels.</p><p> Example: In this case, the values of 'Age' are ranked as 4 levels following the color scheme 'Positive' from dark to light. <pre class="prettyprint">
+var oColorings = {
+    Gradation: {
+        RankedMeasureValues: {
+            Age: {
+                 SingleColorScheme : {
+                     Scheme: 'Positive',
+                     Saturation: 'DarkToLight',
+                     RankingPerAggregationLevel: [
+                         {
+                             VisibleDimensions: ["Name"],
+                             LevelBoundaries: [20, 25, 28]
+                         }
+                     ]
+                 }
+            }
+        }
+    }
+};
+var oActiveColoring = {
+    coloring: sap.chart.ColoringType.Gradation
+};
+</pre></p><p>For a diverging color scheme, Scheme names the scheme to be applied. If it is not specified, the default is NoSemantics. The possible values of scheme name are listed in <a href="sap.chart.coloring.GradationDivergingColorScheme.html">sap.chart.coloring.GradationDivergingColorScheme</a>.</p><p>A diverging color scheme circles around a mid area represented by a level on its own. Therefore, two level counts are to be specified, one for the range of values below the mid area, and another for the range above the mid area.</p><p>For an aggregation level specified by a list of visible dimensions, the boundary values for the mid area must be specified in MidAreaLowValue and MidAreaHighValue. If both values are equal, the mid area collapses into a single point and the mid area level vanishes.</p><p>The chart determines the minimum and maximum values from the data set. To cut the value range before the mid area into the specified number of levels NumberOfLevels.BelowMidArea, the value interval from the MidAreaLowValue down to the minimum value is divided into as many equally sized intervals. In the same way, the value interval above the mid area is cut into the specified number of levels NumberOfLevels.AboveMidArea above the mid area using the determined maximum value. </p><p>In case VisibleDimensions is omitted, this ranking becomes the default and is applied independent of the aggregation level in the current chart layout. Further entries in RankingPerAggregationLevel must then include VisibleDimensions and are used to describe exceptions from the default ranking for the specified aggregation level.</p><p> Example: In this case, the values of 'Age' are ranked as 7 levels with a mid area [22, 27] following the color scheme 'PositiveToNegative'. <pre class="prettyprint">
+var oColorings = {
+    Gradation: {
+        RankedMeasureValues: {
+            Age: {
+                 DivergingColorScheme : {
+                     Scheme: 'PositiveToNegative',
+                     NumberOfLevels: {
+                         BelowMidArea: 3,
+                         AboveMidArea: 3
+                     },
+                     RankingPerAggregationLevel: [
+                         {
+                             VisibleDimensions: ["Name"],
+                             MidAreaLowValue: 22,
+                             MidAreaHighValue: 27
+                         }
+                     ]
+                 }
+            }
+        }
+    }
+};
+var oActiveColoring = {
+    coloring: sap.chart.ColoringType.Gradation
+};
+</pre></p><p>For a target color scheme, Scheme names the scheme to be applied. If it is not specified, the default is PositiveTarget. The possible values of scheme name are listed in <a href="sap.chart.coloring.GradationTargetColorScheme.html">sap.chart.coloring.GradationTargetColorScheme</a>.</p><p>For an aggregation level specified by a list of visible dimensions, the measure value to be used as target midpoint must be specified in TargetMidpoint. </p><p>The chart determines the minimum and maximum values from the data set. To cut the value range before the target midpoint into the specified number of levels NumberOfLevels.BelowTargetMidPoint, the value interval from the TargetMidpoint down to the minimum value is divided into as many equally sized intervals. In the same way, the value interval above the midpoint is cut into the specified number of levels NumberOfLevels.AboveTargetMidPoint above the midpoint using the determined maximum value.</p><p>In case VisibleDimensions is omitted, the midpoint is applied independent of the aggregation level in the current chart layout. Further entries in RankingPerAggregationLevel must then include VisibleDimensions and are used to describe exceptions from the general midpoint for the specified aggregation level.</p><p> Example: In this case, the values of 'Age' are ranked as 12 levels with a target mid point following the color scheme 'PositiveTarget'. <pre class="prettyprint">
+var oColorings = {
+    Gradation: {
+        RankedMeasureValues: {
+            Age: {
+                 TargetColorScheme : {
+                     Scheme: 'PositiveTarget',
+                     NumberOfLevels: {
+                         BelowTargetMidpoint: 6,
+                         AboveTargetMidpoint: 6
+                     },
+                     RankingPerAggregationLevel: [
+                         {
+                             VisibleDimensions: ["Name"],
+                             TargetMidpoint: 25
+                         }
+                     ]
+                 }
+            }
+        }
+    }
+};
+var oActiveColoring = {
+    coloring: sap.chart.ColoringType.Gradation
+};
+</pre></p><p>If no gradation has been specified for a measure (meaning: neither a single nor a diverging color nor a target scheme), then the ranked measure values option still can be applied via activeColoring. In this case, the default is a single-color scheme with defaults applied to all its component as described above.</p><p> The option for delineated measures maps (between two and six) measures identified by name to gradation levels, with increasing index numbers. It shall be applied only if the measures visible in the chart are a subset of those specified here: <pre class="prettyprint">
+DelineatedMeasures: {
+    SingleColorScheme: string, // enumeration of schemes-see above
+    Saturation: string, // enumeration: LightToDark, DarkToLight
+    Levels: [ 'measureName', … ] // between 2-6 members
+}
+</pre></p><p>If the color scheme is not specified, the default is NoSemantic. If Saturation is not specified, the default is LightToDark.</p><p>If delineated measure gradation is to be shown, and if the chart layout contains further visible measures not mentioned in the delineated measure configuration, then gradation coloring must not be applied.</p><p> Example: In this case, the value of 'Win', 'Draw' and 'Lose' are shown in 3 color levels. <pre class="prettyprint">
+var oColorings = {
+    Gradation: {
+        DelineatedMeasures: {
+            SingleColorScheme: 'PositiveTarget',
+            Saturation: 'DarkToLight',
+            Levels: ['Win', 'Draw', 'Lose']  
+        }
+    }
+};
+var oActiveColoring = {
+    coloring: sap.chart.ColoringType.Gradation
+};
+</pre></p><p> The option for delineated dimension values can map (between two and six) dimension values to gradation levels, with increasing index numbers. It shall be applied only if the data set to be visualized contains no dimension values other than those specified. <pre class="prettyprint">
+DelineatedDimensionValues: {
+    SingleColorScheme: string, // enumeration of schemes-see above
+    Saturation: string, // enumeration: LightToDark, DarkToLight
+    'dimensionName': {
+        Levels: [ 'dimensionValue', … ] // between 2-6 members
+    },
+    'dimensionName': {...},
+    ...
+}
+</pre></p><p>If color scheme is not specified, the default is NoSemantic. If Saturation is not specified, the default is LightToDark.</p><p>If delineated dimension value gradation is to be shown, and the “data” model contains dimension values not mentioned in the configuration, then gradation coloring must not be applied.</p><p> Example: In this case, the measures mapping to the dimension value 'Injured', 'Normal', 'Superb' and 'Tired' are shown in 4 color levels. <pre class="prettyprint">
+var oColorings = {
+    Gradation: {
+        DelineatedDimensionValues: {
+            SingleColorScheme: 'PositiveTarget',
+            Saturation: 'DarkToLight',
+            Fitness: {
+                Levels: ['Injured', 'Normal', 'Superb', 'Tired']
+            }    
+        }
+    }
+};
+var oActiveColoring = {
+    coloring: sap.chart.ColoringType.Gradation
+};
+</pre></p></div><div class="heading">Default Value:</div><table class="methodItem"><tbody><tr><td class="methodItemDesc"></td></tr></tbody></table></div></div></div></div></div></body></html>

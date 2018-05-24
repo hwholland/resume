@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="In this step, we will look at the SmartChart control with the chart personalization and in combination with the VariantManagement control that allow you to use complex graphics along with other smart control features."/>
+<meta name="description" content="In this step, we will look at the SmartChart control with the chart personalization and in combination with the VariantManagement control that allow you to use complex graphics along with other smart control features."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=820412850070715"/>
+<title>Step 9: Smart Chart with Chart Personalization and Variant Management</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/framewrapper.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio0219b115deda45a9ae46d11fdc7e69eb">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 9: Smart Chart with Chart Personalization and Variant Management</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we will look at the <samp class="ph codeph">SmartChart</samp> control with the chart
+		personalization and in combination with the <samp class="ph codeph">VariantManagement</samp> control that
+		allow you to use complex graphics along with other smart control features.</p>
+
+		<p class="p">The <samp class="ph codeph">SmartChart</samp> control can be used for visualizing data in a graphical manner.
+			The <samp class="ph codeph">SmartChart</samp> control creates a chart based on OData metadata and the
+			configuration data that has been specified. The <samp class="ph codeph">entitySet</samp> property must
+			be specified to use the control. This property is used to fetch fields from OData
+			metadata, from which the chart UI is generated.</p>
+
+		<p class="p">There are several features that can be enabled in <samp class="ph codeph">SmartChart</samp>, but for this
+			tutorial, we will have a look at the following features:</p>
+
+		<ul class="ul" id="loio0219b115deda45a9ae46d11fdc7e69eb__ul_pyk_jny_nv">
+			<li class="li">
+				<p class="p">Chart personalization</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Variant management support</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Semantic object navigation using <samp class="ph codeph">SemanticObjectController</samp></p>
+
+			</li>
+
+		</ul>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<p class="p">This is what the smart chart looks like initially after firing the query:</p>
+
+			<div class="fig fignone" id="loio0219b115deda45a9ae46d11fdc7e69eb__fig_phs_vrn_4v"><div class="figcontainer">
+				
+				<img class="image" id="loio0219b115deda45a9ae46d11fdc7e69eb__image_u4r_z5n_4v" src="loio935f9ed2eaeb470e9a097a4e18f61146_HiRes.png"/>
+			<div class="figcap">Initial Look of Smart Chart after Firing Query</div></div></div>
+
+			<p class="p">The toolbar of the smart chart contains the header, and next to it is the variant
+				management dialog that has been explained in detail in one of the previous steps. </p>
+
+			<p class="p">Next to the variant management dialog is a button labeled <span class="ph uicontrol">Jump
+					To</span>. This button is disabled by default, but once a column has been
+				selected inside the chart, this button gets enabled. When we click this button, a
+				popup appears that contains details of the selected column. You can also navigate to
+				related apps from here. This feature is enabled using
+					<samp class="ph codeph">SemanticObjectController</samp>.
+				When
+				we hover the mouse pointer over a column, a popup is displayed to provide additional
+				information.</p>
+
+			
+			<div class="fig fignone" id="loio0219b115deda45a9ae46d11fdc7e69eb__fig_tcb_rms_4v"><div class="figcontainer">
+				
+				
+				
+				<img class="image" id="loio0219b115deda45a9ae46d11fdc7e69eb__image_q44_rms_4v" src="loio77403c9e03b646e98ca9d5d5b2012bec_HiRes.png"/>
+			<div class="figcap">Semantic Navigation Feature</div></div></div>
+
+			<p class="p">The button at the right-hand side of the toolbar can be used for selecting the chart
+				type:</p>
+
+			<div class="fig fignone" id="loio0219b115deda45a9ae46d11fdc7e69eb__fig_qss_tns_4v"><div class="figcontainer">
+				
+				<img class="image" id="loio0219b115deda45a9ae46d11fdc7e69eb__image_kcs_24s_4v" src="loiod54fb32489224d9b92be1cb07093df1c_HiRes.png"/>
+			<div class="figcap">Selection of Chart Type</div></div></div>
+
+			<p class="p">The two buttons next to the <span class="ph uicontrol">Jump To</span> button can be used to
+				drill up and drill down into the chart. Using this feature you can display even more
+				detailed information in the chart: </p>
+
+			<div class="fig fignone" id="loio0219b115deda45a9ae46d11fdc7e69eb__fig_vdx_fss_4v"><div class="figcontainer">
+				
+				<img class="image" id="loio0219b115deda45a9ae46d11fdc7e69eb__image_wl1_tss_4v" src="loio8679d394653e4e928a57992f1a3a92b7_HiRes.png"/>
+			<div class="figcap">Drillup and Drilldown Features</div></div></div>
+
+			<p class="p">If we set the <samp class="ph codeph">showDetailsButton</samp> and
+					<samp class="ph codeph">showDrillBreadcrumbs</samp> properties to <samp class="ph codeph">true</samp>, we
+				can also use an alternative drilldown function:  A button labeled
+					<span class="ph uicontrol">Drilldown</span> is shown. If a column is selected inside the
+				chart, this button changes into a <span class="ph uicontrol">Details</span> button. When you
+				click this button, again, a popup appears that contains details of the selected
+				column and allows you to navigate to related apps. On the left-hand side, you see
+				the breadcrumbs trail for the drilldown path, which you can also use to drill up
+				within the chart.</p>
+
+			<div class="fig fignone" id="loio0219b115deda45a9ae46d11fdc7e69eb__fig_cm1_zbl_2w"><div class="figcontainer">
+				
+				<img class="image" id="loio0219b115deda45a9ae46d11fdc7e69eb__image_nnm_lcl_2w" src="loio63fed30c0b6946cb911256289874badb_HiRes.png"/>
+			<div class="figcap">Drilldown by Dimensions</div></div></div>
+
+			<p class="p">The next button can be used to toggle legend visibility:</p>
+
+			<div class="fig fignone" id="loio0219b115deda45a9ae46d11fdc7e69eb__fig_jsq_sts_4v"><div class="figcontainer">
+				
+				<img class="image" id="loio0219b115deda45a9ae46d11fdc7e69eb__image_ufb_p5s_4v" src="loio3e8568e8da664246aa1699ed572639e5_HiRes.png"/>
+			<div class="figcap">Toggle Legend Visibility</div></div></div>
+
+			<p class="p">The two buttons next to this in the toolbar are used for zooming in or out. This will
+				help you to get a clearer picture of a particular entity. The next button in the
+				toolbar is the <span class="ph uicontrol">Settings</span> icon that opens the personalization
+				dialog for the chart:</p>
+
+			<div class="fig fignone" id="loio0219b115deda45a9ae46d11fdc7e69eb__fig_ytc_gws_4v"><div class="figcontainer">
+				
+				<img class="image" id="loio0219b115deda45a9ae46d11fdc7e69eb__image_syg_pws_4v" src="loio18889d26d5b242f4a0d17946e86ff3bc_HiRes.png"/>
+			<div class="figcap">Dialog for Adding Measures and Dimensions</div></div></div>
+
+			<p class="p">The button next to the settings can be used to display a chart in full screen mode.
+				The chart will then take up 100 % width and height of the browser.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Explored</span> app in the Demo Kit
+					<span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.09/preview" alt="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.09/preview" title="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.09/preview">Smart Controls - Step 9 - Smart
+					Chart</a></span>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">SmartChart.view.xml</div><div type="SmartChart.view.xml">
+			
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>&lt;mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	controllerName="sap.ui.demo.smartControls.SmartChart" xmlns:sl="sap.ui.comp.navpopover"
+	xmlns:smartChart="sap.ui.comp.smartchart"&gt;
+	&lt;smartChart:SmartChart enableAutoBinding="true"
+		entitySet="Products" useVariantManagement="true"
+		persistencyKey="SmartChart_Explored" useChartPersonalisation="true"
+		header="Products"&gt;
+		&lt;smartChart:semanticObjectController&gt;
+			&lt;sl:SemanticObjectController
+				navigationTargetsObtained="onNavigationTargetsObtained" navigate="onNavigate" /&gt;
+		&lt;/smartChart:semanticObjectController&gt;
+	&lt;/smartChart:SmartChart&gt;
+&lt;/mvc:View&gt;
+</pre></div>
+
+			<p class="p">We see that a new control has been added to the <samp class="ph codeph">view.xml</samp>. In the
+					<samp class="ph codeph">SmartChart</samp> control, we refer to the entity type that we will
+				see later in the <samp class="ph codeph">metadata.xml</samp>. With
+					<samp class="ph codeph">SemanticObjectController</samp> that is added to the
+					<samp class="ph codeph">semanticObjectController</samp> aggregation of
+					<samp class="ph codeph">SmartChart</samp>, we can enable the display of linked data for a
+				particular entity. We also set <samp class="ph codeph">enableAutoBinding=”true”</samp>, which
+				enables automatic execution of the query and thus shows the result as soon as the
+					<samp class="ph codeph">SmartChart</samp> control is loaded. We set
+					<samp class="ph codeph">useVariantManagement=”true”</samp> and
+					<samp class="ph codeph">persistencyKey=”SmartChart_Explored”</samp> to enable the variant
+				management. We also set <samp class="ph codeph">useChartPersonalisation=”true”</samp>, which
+				enables the chart personalization.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">SmartChart.view.xml</div><div type="SmartChart.view.xml">
+			
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>sap.ui.define([
+	"sap/ui/core/mvc/Controller",
+	"sap/m/MessageBox"
+], function(Controller, MessageBox) {
+	"use strict";
+
+	return Controller.extend("sap.ui.demo.smartControls.SmartChart", {
+		onNavigationTargetsObtained: function(oEvent) {
+			var oParameters = oEvent.getParameters();
+			var oSemanticAttributes = oParameters.semanticAttributes;
+
+			oParameters.show("Supplier", new sap.ui.comp.navpopover.LinkData({
+				text: "Homepage",
+				href: "http://www.sap.com",
+				target: "_blank"
+			}), [
+				new sap.ui.comp.navpopover.LinkData({
+					text: "Go to shopping cart"
+				})
+			], new sap.ui.layout.form.SimpleForm({
+				maxContainerCols: 1,
+				content: [
+					new sap.ui.core.Title({
+						text: "Product description"
+					}), new sap.m.Image({
+						src: "img/HT-1052.jpg", //oSemanticAttributes.ProductPicUrl,
+						densityAware: false,
+						width: "50px",
+						height: "50px",
+						layoutData: new sap.m.FlexItemData({
+							growFactor: 1
+						})
+					}), new sap.m.Text({
+						text: oSemanticAttributes.Description
+					})
+				]
+			}));
+		},
+
+		onNavigate: function(oEvent) {
+			var oParameters = oEvent.getParameters();
+			if (oParameters.text === "Homepage") {
+				return;
+			}
+			MessageBox.show(oParameters.text + " has been pressed", {
+				icon: sap.m.MessageBox.Icon.INFORMATION,
+				title: "SmartChart demo",
+				actions: [
+					sap.m.MessageBox.Action.OK
+				]
+			});
+		}
+	});
+
+});
+</pre></div>
+
+			<p class="p">The following two functions are defined:</p>
+
+			<ul class="ul" id="loio0219b115deda45a9ae46d11fdc7e69eb__ul_ygq_bpf_4v">
+				<li class="li">
+					<p class="p"><samp class="ph codeph">onNavigationTargetObtained()</samp></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">onNavigate()</samp></p>
+
+				</li>
+
+			</ul>
+
+			<p class="p">
+				<samp class="ph codeph">onNavigationTargetObtained()</samp> is called when a column is selected
+				and you click the <span class="ph uicontrol">Jump To</span> button. With the
+				click
+				event the semantic parameters are obtained, and the function renders a navigation
+				popover containing a simple form that presents detailed information of the entity
+				selected as can be seen in figure 2.</p>
+
+			<p class="p"><samp class="ph codeph">onNavigate()</samp> is called when the links in the navigation popover are clicked.
+				This
+				is done to demonstrate how you add more functionality to the data in the navigation
+				popover. In our example, we are just showing a message box and
+				the navigation to one other link.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">metadata.xml</div><div type="metadata.xml">
+			
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;edmx:Edmx Version="1.0"
+	xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+	xmlns:sap="http://www.sap.com/Protocols/SAPData"&gt;
+	&lt;edmx:Reference
+		xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx"&gt;
+		&lt;edmx:Include Namespace="com.sap.vocabularies.Common.v1"
+			Alias="Common" /&gt;
+	&lt;/edmx:Reference&gt;
+	&lt;edmx:Reference
+		xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx"&gt;
+		&lt;edmx:Include Namespace="com.sap.vocabularies.UI.v1"
+			Alias="UI" /&gt;
+	&lt;/edmx:Reference&gt;
+	&lt;edmx:DataServices m:DataServiceVersion="2.0"&gt;
+		&lt;Schema Namespace="com.sap.wt08"
+			sap:schema-version="0" xmlns="http://schemas.microsoft.com/ado/2008/09/edm"&gt;
+			&lt;EntityType Name="Product" sap:service-schema-version="1"
+				sap:service-version="1" sap:semantics="aggregate"
+				sap:content-version="1"&gt;
+				&lt;Key&gt;
+					&lt;PropertyRef Name="ProductId" /&gt;
+				&lt;/Key&gt;
+				&lt;Property Name="ProductId" Type="Edm.String" Nullable="false"
+					MaxLength="10" sap:aggregation-role="dimension" sap:label="Product ID"
+					sap:creatable="false" sap:updatable="false" sap:sortable="true"
+					sap:filterable="true" /&gt;
+				&lt;Property Name="Category" Type="Edm.String" Nullable="false"
+					MaxLength="40" sap:aggregation-role="dimension" sap:label="Product Category"
+					sap:creatable="false" sap:updatable="false" sap:sortable="true"
+					sap:filterable="true" /&gt;
+				&lt;Property Name="Name" Type="Edm.String" Nullable="false"
+					MaxLength="255" sap:aggregation-role="dimension" sap:label="Name"
+					sap:creatable="false" sap:updatable="false" sap:sortable="true"
+					sap:filterable="true" /&gt;
+				&lt;Property Name="Description" Type="Edm.String" Nullable="false"
+					MaxLength="255" sap:aggregation-role="dimension" sap:label="Description"
+					sap:creatable="false" sap:updatable="false" sap:sortable="true"
+					sap:filterable="true" /&gt;
+				&lt;Property Name="SupplierName" Type="Edm.String" Nullable="false"
+					MaxLength="80" sap:aggregation-role="dimension" sap:label="Company Name"
+					sap:creatable="false" sap:updatable="false" sap:sortable="true"
+					sap:filterable="true" /&gt;
+				&lt;Property Name="Quantity" Type="Edm.Decimal" Nullable="false"
+					MaxLength="3" sap:aggregation-role="measure" sap:label="Quantity"
+					sap:creatable="false" sap:updatable="false" sap:sortable="true"
+					sap:filterable="true" /&gt;
+				&lt;Property Name="Price" Type="Edm.Decimal" Nullable="false"
+					Precision="23" Scale="4" sap:aggregation-role="measure" sap:label="Price"
+					sap:creatable="false" sap:updatable="false" sap:sortable="true"
+					sap:filterable="true" /&gt;
+				&lt;Property Name="CurrencyCode" Type="Edm.String" Nullable="false"
+					MaxLength="5" sap:aggregation-role="dimension" sap:label="Currency Code"
+					sap:creatable="false" sap:updatable="false" sap:sortable="true"
+					sap:filterable="true" /&gt;
+			&lt;/EntityType&gt;
+			&lt;EntityContainer Name="com.sap.wt08"
+				m:IsDefaultEntityContainer="true"&gt;
+				&lt;EntitySet Name="ProductCollection" EntityType="com.sap.wt08.Product"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1" /&gt;
+			&lt;/EntityContainer&gt;
+			&lt;Annotations Target="com.sap.wt08.Product"
+				xmlns="http://docs.oasis-open.org/odata/ns/edm"&gt;
+				&lt;Annotation Term="com.sap.vocabularies.UI.v1.LineItem"&gt;
+					&lt;Collection&gt;
+						&lt;Record Type="com.sap.vocabularies.UI.v1.DataField"&gt;
+							&lt;PropertyValue Property="Value" Path="Name" /&gt;
+							&lt;Annotation Term="com.sap.vocabularies.UI.v1.Importance"
+								EnumMember="com.sap.vocabularies.UI.v1.ImportanceType/High" /&gt;
+						&lt;/Record&gt;
+						&lt;Record Type="com.sap.vocabularies.UI.v1.DataField"&gt;
+							&lt;PropertyValue Property="Value" Path="Category" /&gt;
+							&lt;Annotation Term="com.sap.vocabularies.UI.v1.Importance"
+								EnumMember="com.sap.vocabularies.UI.v1.ImportanceType/High" /&gt;
+						&lt;/Record&gt;
+					&lt;/Collection&gt;
+				&lt;/Annotation&gt;
+			&lt;/Annotations&gt;
+			&lt;Annotations Target="com.sap.wt08.Product"
+				xmlns="http://docs.oasis-open.org/odata/ns/edm"&gt;
+				&lt;Annotation Term="com.sap.vocabularies.UI.v1.Chart"&gt;
+					&lt;Record&gt;
+						&lt;PropertyValue Property="Title" String="Line Items" /&gt;
+						&lt;PropertyValue Property="ChartType"
+							EnumMember="com.sap.vocabularies.UI.v1.ChartType/Column" /&gt;
+						&lt;PropertyValue Property="Dimensions"&gt;
+							&lt;Collection&gt;
+								&lt;PropertyPath&gt;Name&lt;/PropertyPath&gt;
+								&lt;PropertyPath&gt;Category&lt;/PropertyPath&gt;								
+							&lt;/Collection&gt;
+						&lt;/PropertyValue&gt;
+						&lt;PropertyValue Property="Measures"&gt;
+							&lt;Collection&gt;
+								&lt;PropertyPath&gt;Price&lt;/PropertyPath&gt;
+								&lt;PropertyPath&gt;Quantity&lt;/PropertyPath&gt;
+							&lt;/Collection&gt;
+						&lt;/PropertyValue&gt;
+					&lt;/Record&gt;
+				&lt;/Annotation&gt;
+			&lt;/Annotations&gt;
+			&lt;Annotations Target="com.sap.wt08.Product/Category"
+				xmlns="http://docs.oasis-open.org/odata/ns/edm"&gt;
+				&lt;Annotation Term="com.sap.vocabularies.Common.v1.SemanticObject"
+					String="SemanticObjectCategory" /&gt;
+			&lt;/Annotations&gt;
+		&lt;/Schema&gt;
+	&lt;/edmx:DataServices&gt;
+&lt;/edmx:Edmx&gt;
+</pre></div>
+
+			<p class="p">The most important point to keep in mind is that analytical annotations along with
+				chart annotations need to exist in the <samp class="ph codeph">metadata.xml</samp>. The most
+				prominent annotations are listed below:</p>
+
+			<ul class="ul" id="loio0219b115deda45a9ae46d11fdc7e69eb__ul_qvk_k1g_4v">
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap:semantics="aggregate"</samp></p>
+
+					<p class="p">An analytical operation can be performed on the data. This has to be added to
+							<samp class="ph codeph">EntityType</samp> (in our case “Product”)</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap:aggregation-role="dimension"</samp></p>
+
+					<p class="p">Defines that a property of <samp class="ph codeph">EntityType</samp> is treated as a
+						dimension.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">sap:aggregation-role="measure"</samp></p>
+
+					<p class="p">Defines that a property of <samp class="ph codeph">EntityType</samp> is treated as a
+						measure.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">
+						<samp class="ph codeph">Annotation Term="com.sap.vocabularies.UI.v1.Chart</samp></p>
+
+					<p class="p">Defines the UI annotation for rendering a chart.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">EnumMember="com.sap.vocabularies.UI.v1.ChartType/Column"</samp></p>
+
+					<p class="p">Defines the default chart type.</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">Annotation
+							Term="com.sap.vocabularies.Common.v1.SemanticObject"</samp></p>
+
+					<p class="p">Defines the <samp class="ph codeph">SemanticObject</samp> annotation for
+							<samp class="ph codeph">EntityType</samp> (in our case the product category).</p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Products.json</div><div type="Products.json">
+			
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>[
+  {
+	"ProductId": "1239102",
+	"Name": "Power Projector 4713",
+	"Category": "Projector",
+	"SupplierName": "Titanium",
+	"Description": "A very powerful projector with special features for Internet usability, USB",
+	"WeightMeasure": 1467,
+	"WeightUnit": "g",
+	"Price": 856.49,
+	"CurrencyCode": "EUR",
+	"Status": "Available",
+	"Quantity": 3,
+	"UoM": "PC",
+	"Width": 51,
+	"Depth": 42,
+	"Height": 18,
+	"DimUnit": "cm"
+  },
+.
+.
+.
+]
+</pre></div>
+
+			<p class="p">We have only listed a part of the <samp class="ph codeph">Products.json</samp> entries since the actual
+				values are not so relevant. Please note that for your convenience we have included
+				additional properties in this file to make it easier to experiment with changes of
+				the <samp class="ph codeph">metadata.xml</samp>, and possibly of the <samp class="ph codeph">view.xml</samp>, to
+				allow for a more hands-on experience.</p>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="64bde9a8879d4f418e2849f7285dd757.html" title="In this tutorial you learn how to work with smart controls.">Smart Controls</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="b1d4d261524b4a3da78547ed4283a082.html" title="In this step, we will look at the page variant of the VariantManagement control, an enhanced function of the SmartVariantManagement control that can handle multiple smart controls.">Step 8: Page Variant Management</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="ec59a200c9dc482e995da6c7c892999f.html" title="Summary of the Smart Controls tutorial">Summary</a><br/>
+</div>
+</div>
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Step 9: Smart Chart with Chart Personalization and Variant Management";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

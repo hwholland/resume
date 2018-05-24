@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+		<title>QUnit: sap.gantt.config.ChartScheme</title>
+		<script id="sap-ui-bootstrap"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.gantt">
+		</script>
+		<link rel="stylesheet" type="text/css" href="../../../../../resources/sap/ui/thirdparty/qunit.css"/>
+		<script src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+			sap.ui.require([
+				"sap/gantt/config/ChartScheme",
+				"sap/ui/thirdparty/sinon",
+				"sap/ui/thirdparty/sinon-qunit"
+			], function (ChartScheme) {
+				"use strict";
+
+				QUnit.module("Create config.ChartScheme with default values.", {
+					setup: function () {
+						this.oConfig = new ChartScheme();
+					},
+					teardown: function () {
+						this.oConfig.destroy();
+						this.oConfig = undefined;
+					}
+				});
+
+				QUnit.test("Test default configuration values.", function (assert) {
+					assert.strictEqual(this.oConfig.getKey(), "");
+					assert.strictEqual(this.oConfig.getName(), "");
+					assert.strictEqual(this.oConfig.getRowSpan(), 1);
+					assert.strictEqual(this.oConfig.getIcon(), "");
+					assert.strictEqual(this.oConfig.getModeKey(), sap.gantt.config.DEFAULT_MODE_KEY);
+					assert.deepEqual(this.oConfig.getShapeKeys(), []);
+				});
+
+				QUnit.module("Create config.ChartScheme with customized values.", {
+					setup: function () {
+						this.oConfig = new ChartScheme({
+							key: "ChartScheme",
+							name: "C1",
+							rowSpan: 2,
+							icon: "http://local:8080/1.png",
+							modeKey: "Z",
+							shapeKeys: ["S1", "S2"]
+						});
+					},
+					teardown: function () {
+						this.oConfig.destroy();
+						this.oConfig = undefined;
+					}
+				});
+
+				QUnit.test("Test customized configuration values." , function (assert) {
+					assert.strictEqual(this.oConfig.getKey(), "ChartScheme");
+					assert.strictEqual(this.oConfig.getName(), "C1");
+					assert.strictEqual(this.oConfig.getRowSpan(), 2);
+					assert.strictEqual(this.oConfig.getIcon(), "http://local:8080/1.png");
+					assert.strictEqual(this.oConfig.getModeKey(), "Z");
+					assert.deepEqual(this.oConfig.getShapeKeys(), ["S1", "S2"]);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+	</body>
+</html>

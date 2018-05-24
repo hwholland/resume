@@ -1,0 +1,80 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can add filters to all card types, by using the com.sap.vocabularies.UI.v1.SelectionVariant annotation term or by passing filter parameter in the URL."/>
+<meta name="description" content="You can add filters to all card types, by using the com.sap.vocabularies.UI.v1.SelectionVariant annotation term or by passing filter parameter in the URL."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=8811767336248351"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=8811767336248351"/>
+<title>Configuring Card Filters</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioecde99ffaf2d4c5d8e95552415588b74">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Configuring Card Filters</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">You can add filters to all card types, by using the
+         <samp class="ph codeph">com.sap.vocabularies.UI.v1.SelectionVariant</samp> annotation term or by passing
+      filter parameter in the URL.</p>
+
+		<div class="section">
+			<p class="p">The following example shows filter configuration in the annotation document. The record set is
+				filtered by the "TotalSum" property and returns values between 0 and 8000. You can
+				provide multiple filters in the <samp class="ph codeph">SelectOptions</samp> collection.</p>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotation Term="com.sap.vocabularies.UI.v1.SelectionVariant" Qualifier="bubble"&gt;
+    &lt;Record&gt;
+        &lt;PropertyValue Property="SelectOptions"&gt;
+            &lt;Collection&gt;
+            &lt;Record&gt;
+               &lt;PropertyValue Property="PropertyName" PropertyPath="TotalSum" /&gt;
+               &lt;PropertyValue Property="Ranges"&gt;
+                  &lt;Collection&gt;
+                     &lt;Record&gt;
+                        &lt;PropertyValue Property="Sign"
+                           EnumMember="com.sap.vocabularies.UI.v1.SelectionRangeSignType/I" /&gt;
+                        &lt;PropertyValue Property="Option"
+                           EnumMember="com.sap.vocabularies.UI.v1.SelectionRangeOptionType/BT" /&gt;
+                        &lt;PropertyValue Property="Low" String="0" /&gt;
+                        &lt;PropertyValue Property="High" String="8000" /&gt;
+                     &lt;/Record&gt;
+                  &lt;/Collection&gt;
+               &lt;/PropertyValue&gt;
+            &lt;/Record&gt;
+            &lt;/Collection&gt;
+        &lt;/PropertyValue&gt;
+    &lt;/Record&gt;
+&lt;/Annotation&gt;</pre></div>
+
+			</div>
+
+		</div>
+
+      <div class="section">
+         <div class="p">The preference for display currency type is taken from the SAP Fiori Launchpad user
+            setting in the DisplayCurrency field of an application. You can also set filters for SAP
+            Fiori overview page by passing a filter paramter in the URL. Applicable when you launch
+            SAP Fiori overview page from SAP Fiori Launchpad or from any other application with
+            filter parameter.<div class="note note"><span class="notetitle">Note</span> 
+               <p class="p">You can only pass string or integer as filter parameter. Filter applies
+                  automatically, if the filter property exsist in the entityset.</p>
+
+            </div>
+ For example:
+               http://abc#Equipment-overviewPage<kbd class="ph userinput">?EquipmentNumber=123456</kbd></div>
+
+      </div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

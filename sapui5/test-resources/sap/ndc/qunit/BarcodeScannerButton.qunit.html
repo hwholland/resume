@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+
+<!-- 
+  Tested class: sap.ui.app.Application
+-->
+
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>qUnit Page for sap.ndc.BarcodeScannerButton</title>
+
+		<script id="sap-ui-bootstrap" 
+			type="text/javascript"
+			data-sap-ui-libs="sap.ndc, sap.m"
+			data-sap-ui-theme="sap_bluecrystal"
+			src="../../../../resources/sap-ui-core.js">
+		</script>
+
+		<link rel="stylesheet" href="../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script language="javascript">
+			
+		test("should not have a default width set", 1, function() {
+				jQuery.sap.require("sap.ndc.BarcodeScannerButton");
+
+				var oScanButton = new sap.ndc.BarcodeScannerButton({
+					provideFallback: "{/btnFallback}",
+					visible: "{/btnVisible}",
+					scanSuccess: onScanSuccess,
+					scanFail: onScanError,
+					inputLiveUpdate: onScanLiveupdate,
+				});
+				
+				oScanButton.placeAt("qunit-fixture");
+				
+				strictEqual(oScanButton.getWidth(), "", "button width was set");
+
+				oScanButton.destroy();
+			});
+
+		test("should be able to set agregated button width to 30%", 1, function() {
+			jQuery.sap.require("sap.ndc.BarcodeScannerButton");
+			
+			var oScanButton30p = new sap.ndc.BarcodeScannerButton({
+				provideFallback: "{/btnFallback}",
+				visible: "{/btnVisible}",
+				scanSuccess: onScanSuccess,
+				scanFail: onScanError,
+				inputLiveUpdate: onScanLiveupdate,
+				width: "30%"
+			});			
+
+			oScanButton30p.placeAt("qunit-fixture");
+
+			strictEqual(oScanButton30p.getWidth(), "30%", "button width was set");
+			
+			oScanButton30p.destroy();
+		});
+		
+		test("should be able to set agregated button width to 100px", 1, function() {
+			jQuery.sap.require("sap.ndc.BarcodeScannerButton");
+
+			var oScanButton100px = new sap.ndc.BarcodeScannerButton({
+				provideFallback: "{/btnFallback}",
+				visible: "{/btnVisible}",
+				scanSuccess: onScanSuccess,
+				scanFail: onScanError,
+				inputLiveUpdate: onScanLiveupdate,
+				width: "100px"
+			});
+			
+			oScanButton100px.placeAt("qunit-fixture");
+			
+			strictEqual(oScanButton100px.getWidth(), "100px", "button width was set");
+			oScanButton100px.destroy();
+		});
+			
+		function onScanSuccess(oEvent) {
+			if (oEvent.getParameter("cancelled")) {
+				sap.m.MessageToast.show("Scan cancelled", { duration:1000 });
+			} else {
+				sap.m.MessageToast.show("Scanned: " + oEvent.getParameter("text"), { duration:2000 });
+			}
+		}
+
+		function onScanError(oEvent) {
+			sap.m.MessageToast.show("Scan failed" + oEvent, { duration:1000 });
+		}
+
+		function onScanLiveupdate(oEvent) {
+			var sCloseCode = oModel.getProperty("/closeCode");
+			if (sCloseCode && sCloseCode === oEvent.getParameter("newValue")) {
+				sap.ndc.BarcodeScanner.closeScanDialog();
+			}
+		}
+
+		function onScan() {
+			sap.ndc.BarcodeScanner.scan(onScanSuccess, onScanError, onScanLiveupdate);
+		}
+		
+		</script>
+	</head>
+	<body>
+	<div id="qunit-fixture"></div>
+	<h1 id="qunit-header">qUnit Page for sap.ndc.BarcodeScannerButton</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="main"></div>
+	</body>
+</html>

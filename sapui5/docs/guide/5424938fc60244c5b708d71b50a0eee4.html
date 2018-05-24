@@ -1,0 +1,135 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="As a fallback mechanism for translating apps, you can use the SAPUI5 text repository for storing the target texts."/>
+<meta name="description" content="As a fallback mechanism for translating apps, you can use the SAPUI5 text repository for storing the target texts."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=42536321695418844"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=42536321695418844"/>
+<title>Fallback: Translating Apps Using the SAPUI5 Text Repository</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio5424938fc60244c5b708d71b50a0eee4">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Fallback: Translating Apps Using the <span class="ph pname">SAPUI5</span> Text Repository</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">As a fallback mechanism for translating apps, you can use the <span class="ph pname">SAPUI5</span> text repository for storing
+		the target texts.</p>
+
+		<div class="section"><div class="section_title">What's the recommended translation approach?</div><div type="What's the recommended translation approach?">
+			
+			<p class="p">The recommended translation approach is to store your target texts in properties files
+				(resource bundles), a <samp class="ph codeph">&lt;identifier&gt;_&lt;locale&gt;.properties</samp>
+				file for every language the app is translated to (&lt;locale&gt; containing the
+				language and an optional country code). For example,
+					<samp class="ph codeph">i18n_en_US.properties</samp> would contain the American English texts
+				of the <samp class="ph codeph">i18n.properties</samp> source file. For more information, see <a class="xref" href="91f225ce6f4d1014b6dd926db0e91070.html" title="A resource bundle file is a Java properties file (as described in the Javadoc of class java.util.Properties). It contains key-value pairs where the values are the language-dependent texts and the keys are language-independent and used by the application to identify and access the corresponding values.">Resource Bundles</a>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">When can I use the SAPUI5 text repository?</div><div type="When can I use the SAPUI5 text repository?">
+			
+			<p class="p">You can use the <span class="ph pname">SAPUI5</span> text
+				repository as a fallback if you cannot use the recommended approach. Please only use
+				it in this case.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">What's the fallback all about?</div><div type="What's the fallback all about?">
+			
+			<p class="p">When you use the <span class="ph pname">SAPUI5</span> text
+				repository, the source texts are stored in the default properties file
+					<samp class="ph codeph">&lt;identifier&gt;.properties</samp> (that is, there are not <em class="ph i">n</em>
+				properties files as with the recommended approach). The <span class="ph pname">SAPUI5</span> text repository writes
+				the texts that are stored in the default properties file to a language-dependent
+				database table. As usual, the texts can then be translated using transaction
+					<samp class="ph codeph">SE63</samp> (usually in a separate system). The master language of the
+					<span class="ph pname">SAPUI5</span> ABAP repository
+				is taken as the master language for the submitted texts. Once the translated texts
+				are transported back to the respective systems, they can be accessed at runtime when
+				texts in a certain language are requested.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">What do I have to do to use the SAPUI5 text repository?</div><div type="What do I have to do to use the SAPUI5 text repository?">
+			
+			<p class="p">You have to set up the default properties file in a special way by adding the following key as
+				the first line in the properties file with texts that you submit to the <span class="ph pname">SAPUI5</span> ABAP repository:</p>
+
+			<p class="p"><samp class="ph codeph"># SAPUI5 TRANSLATION-KEY &lt;GUID with 32 characters&gt;</samp></p>
+
+			<p class="p">You can create the GUID with the ABAP function module <samp class="ph codeph">GUID_CREATE</samp>,
+				or you can create the complete line with the ABAP report
+					<samp class="ph codeph">/UI5/TEXT_FILE_GEN_TRANS_KEY</samp>. (A UUID as used in Java is also
+				supported.)</p>
+
+			<div class="note caution"><span class="cautiontitle">Caution</span> 
+				<p class="p">The GUID serves as a unique identifier for the properties file. Never change the
+					GUID or copy it to other properties files.</p>
+
+			</div>
+
+			<p class="p">The properties file has to fulfill the following rules:</p>
+
+			<div class="p">
+				<ul class="ul" id="loio5424938fc60244c5b708d71b50a0eee4__ul_ylr_sss_xw">
+					<li class="li">It doesn't contain any duplicate text elements.</li>
+
+					<li class="li">The text must be on one line and can have a maximum of 255 characters.</li>
+
+					<li class="li">A text type is assigned to every text element.</li>
+
+				</ul>
+
+			</div>
+
+			<p class="p">Accidental overwriting of texts in the <span class="ph pname">SAPUI5</span> text repository with
+				texts from other properties files is prevented. If a duplicate GUID is detected, the
+				properties files cannot be synchronized. It's not possible to rename or relocate a
+				properties file and to submit it once it's contained in the <span class="ph pname">SAPUI5</span> text repository.
+				Before you can rename or relocate a properties file, you have to remove the texts
+				from the <span class="ph pname">SAPUI5</span> text
+				repository by using the report <samp class="ph codeph">/UI5/TEXT_ENTRIES_DELETE</samp>.</p>
+
+			<div class="note caution"><span class="cautiontitle">Caution</span> 
+				<p class="p">If you run this report, all translated texts get lost. Therefore, only use it for
+					texts that are not yet translated.</p>
+
+			</div>
+
+			<p class="p">After running the report, submit the renamed or relocated properties file again.</p>
+
+			<p class="p">If you reassign the BSP application on the ABAP server (representing a single <span class="ph pname">SAPUI5</span> repository) from a
+				local (<samp class="ph codeph">$TMP</samp>) package to a non-local package, you also need to
+				resubmit the properties file. All text elements are generated again with the new
+				creation time stamp.</p>
+
+			<div class="p">
+				<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">Since the master language of the <span class="ph pname">SAPUI5</span> ABAP
+						repository serves as the master language of the texts, it's important that
+						you use the same language for the creation of the repository that was used
+						for the properties files. When you use the <span class="ph pname">SAPUI5</span> repository
+						team provider and create the BSP application manually, you have to choose
+						the correct language on the logon screen.</p>
+
+				</div>
+
+			</div>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> 
+</div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+
+<title>GanttChartWithTable</title>
+
+<script id="sap-ui-bootstrap"
+	data-sap-ui-libs="sap.gantt, sap.m, sap.ui.unified"
+	data-sap-ui-theme="sap_bluecrystal"
+	src="../../../resources/sap-ui-core.js" >
+</script>
+<script src="./test.js"></script>
+<script src="./qunit/data/DataProducer.js"></script>
+<script src="./qunit/data/DataMaker.js"></script>
+
+<style type="text/css">
+	.sapUiSizeCompact .sapUiTableCell > .critical{
+ 		color: red;
+ 		font-weight:bold;
+	}
+	.sapUiSizeCompact .sapUiTableCell > .notimportant{
+ 		color: green;
+ 		font-style:italic;
+	}	
+</style> 
+<script>
+	loadRequires();
+	defineShapes();
+	createPage("Test Page for sap.gantt.GanttChartWithTable", true);
+	addContentToPage();
+
+	function loadRequires() {
+		jQuery.sap.require("sap.gantt.def.SvgDefs");
+		jQuery.sap.require("sap.gantt.def.gradient.LinearGradient");
+		jQuery.sap.require("sap.gantt.def.gradient.Stop");
+		jQuery.sap.require("sap.gantt.shape.ext.Chevron");
+		jQuery.sap.require("sap.ui.core.format.DateFormat");
+		jQuery.sap.require("sap.gantt.def.cal.CalendarDefs");
+		jQuery.sap.require("sap.gantt.def.cal.Calendar");
+		jQuery.sap.require("sap.gantt.def.cal.TimeInterval");
+	};
+	
+	function defineShapes() {
+		sap.ui.define(["sap/gantt/shape/ext/Chevron"], function (Chevron) {
+			var StatusChevron = Chevron.extend("sap.gantt.shape.ext.StatusChevron", {
+				getFill: function(oRawData, oRowData) {
+					var sStatus = oRowData.data.status;
+					if (sStatus == "completed") {
+						return sap.ui.getCore().byId("gradient_green").getRefString();
+					} else if (sStatus == "released") {
+						return sap.ui.getCore().byId("gradient_blue").getRefString();
+					} else {
+						return Chevron.prototype.getFill.apply(this, arguments);
+					}
+				}
+			});
+			return StatusChevron;
+		},true);
+	};
+	
+	function addContentToPage() {
+		var oSvgDefs = new sap.gantt.def.SvgDefs({
+			defs: [new sap.gantt.def.gradient.LinearGradient("gradient_800080", {
+				x1: 0,
+				x2: 0,
+				y1: 0,
+				y2: 1,
+				stops: [new sap.gantt.def.gradient.Stop ({
+					offSet: 0,
+					stopColor: "#800080"
+				}), new sap.gantt.def.gradient.Stop ({
+					offSet: 1,
+					stopColor: "#FFFFFF"
+				})]
+			}),
+			new sap.gantt.def.gradient.LinearGradient("gradient_green", {
+				x1: 0,
+				x2: 0,
+				y1: 0,
+				y2: 1,
+				stops: [new sap.gantt.def.gradient.Stop ({
+					offSet: 0,
+					stopColor: "green"
+				}), new sap.gantt.def.gradient.Stop ({
+					offSet: 1,
+					stopColor: "#FFFFFF"
+				})]
+			}),
+			new sap.gantt.def.gradient.LinearGradient("gradient_blue", {
+				x1: 0,
+				x2: 0,
+				y1: 0,
+				y2: 1,
+				stops: [new sap.gantt.def.gradient.Stop ({
+					offSet: 0,
+					stopColor: "blue"
+				}), new sap.gantt.def.gradient.Stop ({
+					offSet: 1,
+					stopColor: "#FFFFFF"
+				})]
+			})]
+		});
+	
+		// create shape configuration
+		var oShapeConfig = new sap.gantt.config.Shape({
+			key: "activity",
+			shapeClassName: "sap.gantt.shape.ext.StatusChevron",
+			shapeDataName: "activity",
+			level: 10,
+			shapeProperties: {
+				time: "{startTime}",
+				endTime: "{endTime}",
+				fill: sap.ui.getCore().byId("gradient_800080").getRefString(),
+				height: 21,
+				headLength: 15,
+				isDuration: true
+			}
+		});
+		
+		// create shape configuration
+		var oShapeConfigCalendar = new sap.gantt.config.Shape({
+			key: "calendar",
+			shapeClassName: "sap.gantt.shape.cal.Calendar",
+			shapeDataName: "nwt",
+			level: 30,
+			shapeProperties: {
+				calendarName: "{id}",
+				height: 33,
+				isDuration: false
+			}
+		});
+		
+		// set up format
+		var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+			pattern: "dd.MM.yyyy"
+		});
+		var oDateFormatData = sap.ui.core.format.DateFormat.getDateInstance({
+			pattern: "yyyyMMddHHmmss"
+		});
+
+		var oDataProducer = new sap.gantt.DataProducer();
+		oDataProducer.produceData();
+		// create model
+		var oModel = new sap.ui.model.json.JSONModel();
+		oModel.setData(oDataProducer.getData("sap_hierarchy"));
+
+		//Set the planning horizon and initial horizon
+		sap.gantt.config.DEFAULT_TIME_AXIS.setInitHorizon(new sap.gantt.config.TimeHorizon({
+			startTime: "20150918000000",
+			endTime: "20151027000000"
+		}));
+		sap.gantt.config.DEFAULT_TIME_AXIS.setPlanHorizon(new sap.gantt.config.TimeHorizon({
+			startTime: "20150918000000",
+			endTime: "20171027000000"
+		}));
+
+		// create View
+		sap.m.ComboBox.extend("sap.gantt.ComboBox", {
+			updateState: function(sKey) {
+				var aItems = this.getItems();
+				var sSelectedKey = this.getSelectedKey();
+				
+				for (var i = aItems.length - 1; i > -1; i--) {
+					if (aItems[i].getKey() != sSelectedKey) {
+						this.removeItem(aItems[i]);
+					}
+				}
+				
+				if (sKey == "created") {
+					this.addItem(new sap.ui.core.Item({
+						key: "released",
+						text: "released"
+					}), true);
+				} else if (sKey == "released") {
+					this.addItem(new sap.ui.core.Item({
+						key: "canceled",
+						text: "canceled"
+					}), true);
+					this.addItem(new sap.ui.core.Item({
+						key: "completed",
+						text: "completed"
+					}), true);
+				} else if (sKey == "canceled") {
+					this.addItem(new sap.ui.core.Item({
+						key: "released",
+						text: "released"
+					}), true);
+				} else if (sKey == "completed") {
+				} else {
+					this.addItem(new sap.ui.core.Item({
+						key: "created",
+						text: "created"
+					}), true);
+				}
+				
+				this.setEnabled(sKey != "completed");
+			},
+			
+			createItem: function(sKey) {
+				this.addItem(new sap.ui.core.Item({
+					key: sKey,
+					text: sKey
+				}), true);
+			},
+			
+			setSelectedKey: function(sKey) {
+				this.updateState(sKey);
+				this.createItem(sKey);
+				
+				sap.m.ComboBox.prototype.setSelectedKey.apply(this, arguments);
+			},
+			
+			renderer: function(oRm, oControl) {
+				sap.m.ComboBoxRenderer.render.apply(this, arguments);
+			}
+		});
+		
+		var oComboBox = new sap.gantt.ComboBox({
+			selectedKey: {
+				path: "status",
+				model: "test"
+			},
+			
+			selectionChange: function(oEvent) {
+				var sKey = oEvent.getParameters().selectedItem.getKey();
+				
+				this.updateState(sKey);
+			}
+		});
+		
+		var oNumberInput = new sap.m.Input({
+			type: "Number",
+			width: "30px",
+			value: "0",
+			tooltip: "Row index"
+		});
+		
+		var oSelectBtn = new sap.m.Button({
+			text: "Select",
+			tooltip: "Select",
+			press: function() {
+				var iSelectedIndex = parseInt(oNumberInput.getValue());
+				oGanttChartWithTable.setSelectedIndex(iSelectedIndex);
+				
+				var iFirstVisibleRow = oGanttChartWithTable.getFirstVisibleRow();
+				var iLastVisibleRow = iFirstVisibleRow + oGanttChartWithTable.getVisibleRowCount();
+				
+				if (iSelectedIndex < iFirstVisibleRow || iSelectedIndex > iLastVisibleRow) {
+					oGanttChartWithTable.setFirstVisibleRow(iSelectedIndex);
+					setTimeout(function(){
+						oGanttChartWithTable.getRows()[iSelectedIndex - oGanttChartWithTable.getFirstVisibleRow()].getCells()[4].focus();
+					},100);
+				} else {
+					oGanttChartWithTable.getRows()[iSelectedIndex - oGanttChartWithTable.getFirstVisibleRow()].getCells()[4].focus();
+				}
+			}
+		});
+		
+		var oExpandBtn = new sap.m.Button({
+			text: "Expand",
+			tooltip: "Expand",
+			press: function() {
+				oGanttChartWithTable.expand(parseInt(oNumberInput.getValue()));
+			}
+		});
+		
+		var oCollapseBtn = new sap.m.Button({
+			text: "Collapse",
+			tooltip: "Collapse",
+			press: function() {
+				oGanttChartWithTable.collapse(parseInt(oNumberInput.getValue()));
+			}
+		});
+		
+		var oBusyBtn = new sap.m.Button({
+			text: "Busy",
+			tooltip: "Busy",
+			press: function() {
+				oGanttChartWithTable.setBusy(true);
+				
+				setTimeout(function() {
+					oGanttChartWithTable.setBusy(false);
+				}, 6000);
+			}
+		});
+		
+		var oTextColumn = new sap.ui.table.Column({
+			label: "Text",
+			sortProperty: "text",
+			filterProperty: "text",
+			width: "80px",
+			template: new sap.m.Link({
+				text: {
+					path: "text",
+					model: "test",
+				},href:  {
+					path: "url",
+					model: "test",
+				}, target: "_blank"
+			})
+		});
+		
+		var oGanttChartWithTable = new sap.gantt.GanttChartWithTable("view", {
+			fixedColumnCount: 1,
+			shapeDataNames: ["activity", "nwt"],
+			shapes: [oShapeConfig, oShapeConfigCalendar],
+			svgDefs: oSvgDefs,
+			//baseRowHeight: 27,
+			calendarDef: new sap.gantt.def.cal.CalendarDefs({
+				defs: {
+					path: "test>/calendar",
+					template: new sap.gantt.def.cal.Calendar({
+						key: "{test>id}",
+						timeIntervals: {
+							path: "test>data",
+							templateShareable: true,
+							template: new sap.gantt.def.cal.TimeInterval({
+								startTime: "{test>startTime}",
+								endTime: "{test>endTime}"
+							})
+						}
+					})
+				}
+			}),
+			customToolbarItems: [oNumberInput, oSelectBtn, oExpandBtn, oCollapseBtn, oBusyBtn],
+			columns: [new sap.ui.table.Column({
+				label: "Unique ID",
+				sortProperty: "uuid",
+				filterProperty: "uuid",
+				width: "130px",
+				template:
+					new sap.ui.layout.HorizontalLayout({
+	                    content: [ new sap.ui.core.Icon({
+	    					src: {
+	        					path: "icon",
+	        					model: "test"
+	        				},
+	    					size: "15px",
+	    					color: "red",
+	    					width: "25px"
+	    				}), new sap.m.Label({
+	        				text: {
+	        					path: "uuid",
+	        					model: "test",
+	
+	        				}
+	        			})]
+	                })
+		
+					/*new sap.m.Label({
+					text: {
+						path: "uuid",
+						model: "test"
+					}
+				})*/
+			}),new sap.ui.table.Column({
+				label: "End Date",
+				sortProperty: "endDate",
+				filterProperty: "endtDate",
+				width: "100px",
+				filterType: function(sValue) {
+					if (sValue) {
+						return oDateFormatData.format(oDateFormat.parse(sValue));
+					}
+				},
+				template: new sap.m.Label({
+					text: {
+						path: "endDate",
+						model: "test",
+						formatter: function(sValue) {
+							if (sValue) {
+								this.addStyleClass(oModel.getObject(this.getBindingContext("test").getPath()).style);
+								return oDateFormat.format(oDateFormatData.parse(sValue));
+							}
+						}
+					},
+				})
+			}), oTextColumn
+			
+			,new sap.ui.table.Column({
+				label: "Icon",
+				width: "80px",
+				template: new sap.ui.layout.HorizontalLayout({
+	                content: [new sap.ui.core.Icon({
+					src: {
+						path: "icon",
+						model: "test"
+					},
+					size: "15px",
+					color: "red",
+					width: "25px",
+					press: function(){
+						window.open(oModel.getObject(this.getBindingContext("test").getPath()).url,"","fullscreen=0"); 
+						}
+				}),new sap.ui.core.Icon({
+					src: {
+						path: "icon2",
+						model: "test"
+					},
+					size: "15px",
+					color: "red",
+					width: "25px",
+					press: function(){
+						window.open(oModel.getObject(this.getBindingContext("test").getPath()).url,"","fullscreen=0"); 
+						}
+				})]
+	            })
+			}),new sap.ui.table.Column({
+				label: "Start Date",
+				sortProperty: "startDate",
+				filterProperty: "startDate",
+				width: "130px",
+				filterType: function(sValue) {
+					if (sValue) {
+						return oDateFormatData.format(oDateFormat.parse(sValue));
+						
+					}
+				},
+				template: new sap.m.DatePicker({
+					value: {
+						path: "startDate",
+						model: "test"
+					},
+					valueFormat: "yyyyMMddHHmmss",
+					displayFormat: "dd.MM.yyyy",
+					placeholder: "Enter Date ...",
+					visible: {
+						path: "startDate",
+						model: "test",
+						formatter: function(sVal) {
+							return sVal != null;						
+						}
+					}
+				})
+			}), new sap.ui.table.Column({
+				label: "Selected",
+				sortProperty: "selected",
+				filterProperty: "selected",
+				width: "70px",
+				filterType: new sap.ui.model.type.Boolean(),
+				template: new sap.m.CheckBox({
+					selected: {
+						path: "selected",
+						model: "test"
+					}
+				})
+			}), new sap.ui.table.Column({
+				label: "Status",
+				width: "130px",
+				sortProperty: "status",
+				filterProperty: "status",
+				template: oComboBox
+			}), new sap.ui.table.Column({
+				label: "Text",
+				width: "130px",
+				sortProperty: "text",
+				filterProperty: "text",
+				template: new sap.m.Input({
+					value: {
+						path: "text",
+						model: "test"
+					}
+				})
+			}), new sap.ui.table.Column({
+				label: "Mode",
+				width: "300px",
+				sortProperty: "mode",
+				filterProperty: "mode",
+				template: new sap.m.MultiComboBox({
+					selectedKeys: {
+						path: "mode",
+						model: "test",
+						formatter: function(sValue) {
+							return sValue ? sValue.split(",") : [];
+						}
+					},
+					items: [
+						new sap.ui.core.Item({key: "01", text: "01"}),
+						new sap.ui.core.Item({key: "02", text: "02"}),
+						new sap.ui.core.Item({key: "03", text: "03"}),
+						new sap.ui.core.Item({key: "04", text: "04"})
+					]
+				})
+			})],
+			rows: {
+				path: "test>/root",
+				parameters: {
+					arrayNames: ["children"]
+				}
+			},
+			chartMouseOver: pushEventToMsgStack,
+			chartDoubleClick: pushEventToMsgStack,
+			chartRightClick: pushEventToMsgStack
+		});
+		oGanttChartWithTable.setModel(oModel, "test");
+		var oModeSegmentedButton = sap.ui.jsfragment("sap.gantt.test.CSSModeButton", oGanttChartWithTable);
+		addFooterContentsToPage(oModeSegmentedButton);
+		window.oPage.addContent(oGanttChartWithTable);
+	}
+</script>
+</head>
+<body id="body" class="sapUiBody  sapUiSizeCompact">
+	<div id="content" style="width: 100%; height: 100vh;"></div>
+</body>
+</html>

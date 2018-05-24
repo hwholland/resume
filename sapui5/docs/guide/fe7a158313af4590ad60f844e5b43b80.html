@@ -1,0 +1,128 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="This section describes the setup of a development project where multiple developers work together on the same code."/>
+<meta name="description" content="This section describes the setup of a development project where multiple developers work together on the same code."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=6107612600171639"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=6107612600171639"/>
+<title>Continuous Integration: Ensure Code Quality</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiofe7a158313af4590ad60f844e5b43b80">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Continuous Integration: Ensure Code Quality </h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">This section describes the setup of a development project where multiple developers
+		work together on the same code.</p>
+
+		<p class="p">When you develop an app, you want, of course, to deliver high code quality. To do so, you have
+			various tools at hand:</p>
+
+		<ul class="ul" id="loiofe7a158313af4590ad60f844e5b43b80__ul_al4_cdj_pbb">
+			<li class="li"><p class="p">Unit and integration tests to make sure that your change doesn't break the app or other tests
+					(see <a class="xref" href="09d145cd86ee4f8e9d08715f1b364c51.html" title="QUnit is a powerful, easy-to-use JavaScript unit testing framework. It is used by the jQuery, jQuery UI and jQuery Mobile projects and is capable of testing any generic JavaScript code. It supports asynchronous tests out-of-the-box.">Unit Testing with QUnit</a> and <a class="xref" href="2696ab50faad458f9b4027ec2f9b884d.html" title="OPA5 is an API for SAPUI5 controls. It hides asynchronicity and eases access to SAPUI5 elements. This makes OPA especially helpful for testing user interactions, integration with SAPUI5, navigation, and data binding.">Integration Testing with One Page Acceptance Tests (OPA5)</a>) </p>
+</li>
+
+			<li class="li"><p class="p">Code analyzer (or "linter") to check whether the code follows the code style
+					conventions that apply to your project</p>
+</li>
+
+			<li class="li"><p class="p">A code coverage analyzer to check the test coverage of your code</p>
+</li>
+
+			<li class="li"><p class="p">A code collaboration tool to let other experts review your code</p>
+</li>
+
+			<li class="li">
+				<p class="p">An automation server that orchestrates the automated task</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p">If you work in a team where you share the same code with your colleagues, or if you work in a
+			continuous delivery context where an app is updated on a regular basis, you need the
+			support of automated continuous integration processes.</p>
+
+		<p class="p">Continuous integration makes sure that only code that has passed various automated and manual
+			checks is merged to productive use.</p>
+
+		<div class="p">In an <span class="ph"><span class="ph pname">SAPUI5</span></span> project, the process,
+			for example, can look like this:<ol class="ol" id="loiofe7a158313af4590ad60f844e5b43b80__ol_upq_yfj_pbb">
+				<li class="li">
+					<p class="p">When the code is ready, the developer commits the code to the source code
+						management system (SCMS, for example, <span class="ph uicontrol">Gerrit Code
+							Review</span>) and assigns experts that should review the code.
+					</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">The SCMS calls an automation server (for example,
+							<span class="ph uicontrol">Jenkins</span>).</p>
+
+				</li>
+
+				<li class="li">
+					<div class="p">The developer triggers the peer code review and the automation server starts
+						a voter job that triggers, among others:<ul class="ul" id="loiofe7a158313af4590ad60f844e5b43b80__ul_jbh_phj_pbb">
+							<li class="li">
+								<p class="p">Static code checks (for example, <span class="ph uicontrol">ESLint</span>)
+									to check the code style</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Unit and integration test automated by a test runner (for
+									example, <span class="ph uicontrol">Karma</span>)</p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Analysis to check whether all parts of the code are covered with automated tests (for
+									example, with <span class="ph uicontrol">Karma</span> plug-in
+										<span class="ph uicontrol">Istanbul Code Coverage</span>)</p>
+
+							</li>
+
+						</ul>
+</div>
+
+				</li>
+
+				<li class="li">
+					<p class="p">When the voter job and the human reviewer have both given their OK, the change can be
+						merged.</p>
+
+				</li>
+
+			</ol>
+<div class="fig fignone" id="loiofe7a158313af4590ad60f844e5b43b80__fig_rgh_cfj_pbb"><div class="figcontainer">
+				
+				<img class="image" id="loiofe7a158313af4590ad60f844e5b43b80__image_snj_dfj_pbb" src="loiob1c16e7bde8d466a804647f9c0fb9d37_LowRes.png"/>
+			<div class="figcap">Code cannot be merged because automated tests failed</div></div></div>
+</div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="7cdee404cac441888539ed7bfe076e57.html" title="SAPUI5 provides several testing options, like to unit and integration tests and the mock server.">Testing</a></div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fwww.gerritcodereview.com" alt="https://www.gerritcodereview.com" title="https://www.gerritcodereview.com"><span class="ph uicontrol">Gerrit Code Review </span>Home Page<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fjenkins.io%2F" alt="https://jenkins.io/" title="https://jenkins.io/"><span class="ph uicontrol">Jenkins</span> Home Page<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Feslint.org%2F" alt="https://eslint.org/" title="https://eslint.org/"><span class="ph uicontrol">ESLint</span> Home Page<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fkarma-runner.github.io%2F" alt="https://karma-runner.github.io/" title="https://karma-runner.github.io/"><span class="ph uicontrol">Karma</span> Home Page<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+<div><a class="extlink" href="http://help.sap.com/disclaimer?site=https%3A%2F%2Fistanbul.js.org%2F" alt="https://istanbul.js.org/" title="https://istanbul.js.org/"><span class="ph uicontrol">Istanbul Code Coverage</span> Home Page<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

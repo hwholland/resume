@@ -1,0 +1,523 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The NetworkGraph control displays objects as a network of nodes connected to one another by lines."/>
+<meta name="description" content="The NetworkGraph control displays objects as a network of nodes connected to one another by lines."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=9057430717882762"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=9057430717882762"/>
+<title>Network Graph</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob5649c8de7f74739b66747dcc9356d0b">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Network Graph</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The <samp class="ph codeph">NetworkGraph</samp> control displays objects as a network of nodes
+		connected to one another by lines.</p>
+
+		<p class="p"><span class="ph">For more
+				information about this control, see the <a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.suite.ui.commons.networkgraph.Graph/samples" alt="../../explored.html#/entity/sap.suite.ui.commons.networkgraph.Graph/samples" title="../../explored.html#/entity/sap.suite.ui.commons.networkgraph.Graph/samples">samples</a> in the Demo Kit.</span></p>
+
+		<div class="section" id="loiob5649c8de7f74739b66747dcc9356d0b__section_odd_lzj_3bb"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p">The <samp class="ph codeph">NetworkGraph</samp> control can be used to illustrate how different
+				objects are related. In a network graph, each object is represented by a node, and
+				the relations between objects are represented by lines connecting the nodes. Nodes
+				can be clustered into groups that can be expanded or collapsed to show or hide a
+				portion of the graph.</p>
+
+			<p class="p">This control supports both directed and undirected graphs, as well as graphs that
+				contain cycles. It also provides broad customization options, enabling you to
+				separate the graph layout from its rendering and to position individual graph
+				elements freely, for example, when displaying geospatial data on top of a map.</p>
+
+			<div class="fig fignone" id="loiob5649c8de7f74739b66747dcc9356d0b__fig_chj_fxp_mbb"><div class="figcontainer">
+				
+				<img class="image" id="loiob5649c8de7f74739b66747dcc9356d0b__image_ncw_xwp_mbb" width="1400px" src="loio671dd3097bba46a5b87cb93f88ba56bb_Source1.png" alt="Network Graph Example" title="Network Graph Example"/>
+			<div class="figcap">Network Graph Example</div></div></div>
+
+		</div></div>
+
+		<div class="section" id="loiob5649c8de7f74739b66747dcc9356d0b__section_rkt_lzj_3bb"><div class="section_title">Details</div><div type="Details">
+			
+			<p class="p"><span class="ph emphasis emphasis">Layout</span></p>
+
+			<ul class="ul" id="loiob5649c8de7f74739b66747dcc9356d0b__ul_pxp_3lb_kbb">
+				<li class="li">
+					
+					<p class="p">There are three layout options available:</p>
+
+					<ul class="ul" id="loiob5649c8de7f74739b66747dcc9356d0b__ul_o1b_wdc_kbb">
+						<li class="li">
+							<p class="p">Layered layout – The <samp class="ph codeph">LayeredLayout</samp> algorithm
+								arranges the nodes into a layered graph.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Force-based layout – The <samp class="ph codeph">ForceBasedLayout</samp> algorithm
+								arranges the nodes into a force-based (or force-directed) graph.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Free-form layout (<samp class="ph codeph">NoopLayout</samp>) – No layout algorithm
+								is applied, so the nodes can be placed anywhere within the
+								graph.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Custom layout – You can define your own algorithm that will be used
+								to lay out your graph.</p>
+
+						</li>
+
+					</ul>
+
+					<p class="p"><span class="ph">For
+							details, see <a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.layout.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.layout.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.layout.html">
+								<samp class="ph codeph">sap.suite.ui.commons.networkgraph.layout</samp></a>.</span></p>
+
+				</li>
+
+				<li class="li">
+					
+					<p class="p">The process of drawing the graph consists of two phases:</p>
+
+					<ul class="ul" id="loiob5649c8de7f74739b66747dcc9356d0b__ul_q1p_l51_4bb">
+						<li class="li">
+							<p class="p">Computing the layout based on the specified layout algorithm</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">Visual rendering of the graph</p>
+
+						</li>
+
+					</ul>
+
+					<p class="p">The first phase is marked by the <samp class="ph codeph">beforeLayouting</samp> event that
+						is fired just before the layout computation begins. The second phase starts
+						with the <samp class="ph codeph">afterLayouting</samp> event that is fired when the layout
+						algorithm has finished arranging the graph and the visual rendering
+						begins.</p>
+
+					<p class="p">Any change to nodes or other graph elements that happens after the layout has
+						been computed may cause invalidation of the whole graph, making it
+						impossible to render. It may lead to an infinite loop with graph
+						invalidation triggering layout algorithms that trigger the event that caused
+						the original invalidation of the graph, and so on.</p>
+
+					<p class="p">To prevent unwanted invalidation, you can call the
+							<samp class="ph codeph">preventInvalidation</samp> method on the graph:</p>
+
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">this._graph.attachEvent("beforeLayouting", function (oEvent) {
+	this._graph.preventInvalidation(true);
+
+	// Perform actions on the nodes that would normally trigger invalidation.
+ 
+	// Check out the Org Chart sample for more inspiration.
+
+	this._graph.preventInvalidation(false);
+}.bind(this));
+</pre></div>
+
+					<p class="p"><span class="ph">For
+							more information, see <a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Graph.html#preventInvalidation" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Graph.html#preventInvalidation" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Graph.html#preventInvalidation">
+								<samp class="ph codeph">sap.suite.ui.commons.networkgraph.Graph#preventInvalidation</samp></a>.</span></p>
+
+				</li>
+
+			</ul>
+
+			<p class="p"><span class="ph emphasis emphasis">Appearance</span></p>
+
+			<ul class="ul" id="loiob5649c8de7f74739b66747dcc9356d0b__ul_pvf_vlb_kbb">
+				<li class="li">
+					
+					<p class="p"><span class="ph emphasis emphasis">Grouping</span> – You can join nodes into a group, so they are
+						displayed closer to one another. A group can be collapsed to hide the nodes
+						that are included in it. Please note that grouping is available only for
+						graphs that use layered layout.</p>
+
+					<p class="p"><span class="ph">For
+							details, see <a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Group.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Group.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Group.html">
+								<samp class="ph codeph">sap.suite.ui.commons.networkgraph.Group</samp></a>.</span></p>
+
+				</li>
+
+				<li class="li">
+					
+					<p class="p"><span class="ph emphasis emphasis">Node Shape</span> – You can choose between two node shapes:
+						circular or rectangular. Depending on the node shape, the
+							<samp class="ph codeph">width</samp> and <samp class="ph codeph">height</samp> properties of the
+						node are treated differently:</p>
+
+					<ul class="ul" id="loiob5649c8de7f74739b66747dcc9356d0b__ul_vwb_dfj_mbb">
+						<li class="li">
+							<p class="p">For rectangular nodes, only the <samp class="ph codeph">width</samp> property is
+								considered, while the <samp class="ph codeph">height</samp> property is
+								ignored.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">For circular nodes, the <samp class="ph codeph">height</samp> property determines
+								the diameter of the circle, while the <samp class="ph codeph">width</samp>
+								property is used as the width of the node's title and
+								description.</p>
+
+						</li>
+
+					</ul>
+
+					<p class="p"><span class="ph">For
+							details, see <a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Node.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Node.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Node.html">
+								<samp class="ph codeph">sap.suite.ui.commons.networkgraph.Node</samp></a>.</span></p>
+
+					<p class="p"><span class="ph emphasis emphasis">Other Properties</span> – In addition to shape, you can define
+						some other properties:</p>
+
+					<ul class="ul" id="loiob5649c8de7f74739b66747dcc9356d0b__ul_i1n_d1y_kbb">
+						<li class="li">
+							<p class="p"><span class="ph"><a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Node.html#setIcon" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Node.html#setIcon" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Node.html#setIcon"><samp class="ph codeph">icon</samp></a></span> – The icon to be displayed
+								inside the node shape. </p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><span class="ph"><a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementBase.html#setTitle" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementBase.html#setTitle" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementBase.html#setTitle"><samp class="ph codeph">title</samp></a></span> – The node's title. </p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><span class="ph"><a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementBase.html#setDescription" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementBase.html#setDescription" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementBase.html#setDescription"><samp class="ph codeph">description</samp></a></span> – The node's description.
+									</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><span class="ph"><a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementAttribute.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementAttribute.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementAttribute.html">Element
+									attributes</a></span> – Additional attributes of the node. </p>
+
+						</li>
+
+					</ul>
+
+				</li>
+
+				<li class="li">
+					
+					<p class="p"><span class="ph emphasis emphasis">Line Customization</span> – You can choose among several
+						connector line styles: dashed, dotted, or solid, as well as define where the
+						arrow should be positioned and where it should point to.</p>
+
+					<p class="p"><span class="ph">For
+							details, see <a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.LineType.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.LineType.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.LineType.html">
+								<samp class="ph codeph">sap.suite.ui.commons.networkgraph.LineType</samp></a>.</span></p>
+
+				</li>
+
+				<li class="li">
+					
+					<p class="p"><span class="ph emphasis emphasis">Semantic Colors</span> – Nodes, groups of nodes, and connector
+						lines may use semantic colors, based on their status. You can use any of the
+						custom statuses defined by the <samp class="ph codeph">statuses</samp> aggregation in the
+							<span class="ph"><a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Graph.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Graph.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Graph.html"><samp class="ph codeph">sap.suite.ui.commons.networkgraph.Graph</samp></a></span>
+						control or use the default statuses provided by <span class="ph"><a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementStatus.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementStatus.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementStatus.html"><samp class="ph codeph">sap.suite.ui.commons.networkgraph.ElementStatus</samp></a></span>.</p>
+
+					<p class="p"><span class="ph">For details, see
+								<a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementStatus.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementStatus.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.ElementStatus.html"><samp class="ph codeph">sap.suite.ui.commons.networkgraph.ElementStatus</samp></a>
+							and <a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Status.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Status.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Status.html"><samp class="ph codeph">sap.suite.ui.commons.networkgraph.Status</samp></a>.</span></p>
+
+				</li>
+
+			</ul>
+
+			<p class="p"><span class="ph emphasis emphasis">Customizing the Graph</span></p>
+
+			<ul class="ul" id="loiob5649c8de7f74739b66747dcc9356d0b__ul_s3r_cmb_kbb">
+				<li class="li">
+					
+					<p class="p"><span class="ph emphasis emphasis">Arbitrary Node Positions</span> – To be able to position the
+						nodes freely, switch the layout algorithm to
+						<samp class="ph codeph">NoopLayout</samp>.</p>
+
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Graph&gt;
+   &lt;layoutAlgorithm&gt;
+      &lt;layout:NoopLayout/&gt;
+   &lt;/layoutAlgorithm&gt;
+...
+&lt;/Graph&gt;
+</pre></div>
+
+					<p class="p"><span class="ph">For
+							details, see <a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.layout.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.layout.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.layout.html">
+								<samp class="ph codeph">sap.suite.ui.commons.networkgraph.layout</samp></a>.</span></p>
+
+					<p class="p">After that you can define the positions for each of your nodes using their
+							<samp class="ph codeph">x</samp> and <samp class="ph codeph">y</samp> attributes that define the
+						coordinates of the upper left corner of the node (or upper right corner in
+						languages that have right-to-left writings systems).</p>
+
+					<p class="p">To redefine the positions of the lines connecting the nodes, you can use the
+						aggregation <samp class="ph codeph">Coordinates</samp> for the <samp class="ph codeph">Line</samp>
+						control. Each coordinate contains x and y coordinates of one point. It is
+						recommended that you use the following methods to add coordinates to the
+							<samp class="ph codeph">Coordinates</samp> aggregation:</p>
+
+					<ul class="ul" id="loiob5649c8de7f74739b66747dcc9356d0b__ul_bd1_dr3_mbb">
+						<li class="li">
+							<p class="p"><samp class="ph codeph">setSource</samp> – Sets the starting point of the line.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">setTarget</samp> – Sets the end point of the line.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">addBend</samp> – Adds a point between the start and the end
+								points of the line.</p>
+
+						</li>
+
+					</ul>
+
+					<p class="p">These methods do not trigger invalidation.</p>
+
+					<p class="p"><span class="ph">For
+							details, see <a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Line.html" alt="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Line.html" title="../../docs/api/symbols/sap.suite.ui.commons.networkgraph.Line.html">
+								<samp class="ph codeph">sap.suite.ui.commons.networkgraph.Line</samp></a>.</span></p>
+
+				</li>
+
+				<li class="li">
+					
+					<p class="p"><span class="ph emphasis emphasis">Using Events for Graph Customization</span> – You can adjust
+						the graph behavior through a variety of event calls. Such event calls may
+						suppress the default behavior of certain events. For example, if you define
+						the following function for a node, action buttons will no longer be
+						displayed when the user clicks the node:</p>
+
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Node press="nodePress"&gt;
+...
+nodePress: function (oEvent) {
+      // Prevents the rendering of default action buttons
+      oEvent.preventDefault();
+};
+</pre></div>
+
+					<p class="p">Similarly, you can suppress the following events:</p>
+
+					
+<div class="table-wrapper tablenoborder"><table summary="" id="loiob5649c8de7f74739b66747dcc9356d0b__table_sxj_xny_kbb" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="25%"/><col width="25%"/><col width="50%"/></colgroup>
+
+							
+							
+							
+							<thead class="thead" align="left">
+								<tr class="row">
+									<th class="entry" valign="top" width="25%" id="d14288958e477">
+										<p class="p">Object</p>
+
+									</th>
+
+									<th class="entry" valign="top" width="25%" id="d14288958e483">
+										<p class="p">Suppressed Event</p>
+
+									</th>
+
+									<th class="entry" valign="top" width="50%" id="d14288958e489">
+										<p class="p">Result</p>
+
+									</th>
+
+								</tr>
+
+							</thead>
+
+							<tbody class="tbody">
+								<tr class="row">
+									<td class="entry" valign="top" width="25%" headers="d14288958e477 ">
+										<p class="p">Node</p>
+
+									</td>
+
+									<td class="entry" valign="top" width="25%" headers="d14288958e483 ">
+										<p class="p"><samp class="ph codeph">press</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%" headers="d14288958e489 ">
+										<p class="p">Action buttons will not be displayed when the user clicks
+											the node.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="25%" headers="d14288958e477 ">
+										<p class="p">Node</p>
+
+									</td>
+
+									<td class="entry" valign="top" width="25%" headers="d14288958e483 ">
+										<p class="p"><samp class="ph codeph">collapseExpand</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%" headers="d14288958e489 ">
+										<p class="p">The node will not be expanded or collapsed when the user
+											clicks the <span class="ph uicontrol">Collapse/Expand</span>
+											button.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="25%" headers="d14288958e477 ">
+										<p class="p">Node</p>
+
+									</td>
+
+									<td class="entry" valign="top" width="25%" headers="d14288958e483 ">
+										<p class="p"><samp class="ph codeph">hover</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%" headers="d14288958e489 ">
+										<p class="p">Moving the mouse over the node will have no effect on the
+											node appearance.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="25%" headers="d14288958e477 ">
+										<p class="p">Line</p>
+
+									</td>
+
+									<td class="entry" valign="top" width="25%" headers="d14288958e483 ">
+										<p class="p"><samp class="ph codeph">press</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%" headers="d14288958e489 ">
+										<p class="p">Details popup will not be displayed when the user clicks
+											the line.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="25%" headers="d14288958e477 ">
+										<p class="p">Line</p>
+
+									</td>
+
+									<td class="entry" valign="top" width="25%" headers="d14288958e483 ">
+										<p class="p"><samp class="ph codeph">hover</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%" headers="d14288958e489 ">
+										<p class="p">Moving the mouse over the line will have no effect on the
+											line appearance.</p>
+
+									</td>
+
+								</tr>
+
+								<tr class="row">
+									<td class="entry" valign="top" width="25%" headers="d14288958e477 ">
+										<p class="p">Group</p>
+
+									</td>
+
+									<td class="entry" valign="top" width="25%" headers="d14288958e483 ">
+										<p class="p"><samp class="ph codeph">showDetail</samp></p>
+
+									</td>
+
+									<td class="entry" valign="top" width="50%" headers="d14288958e489 ">
+										<p class="p">Details dialog will not be displayed when the user clicks
+											the <span class="ph uicontrol">Group Details</span> icon.</p>
+
+									</td>
+
+								</tr>
+
+							</tbody>
+
+						</table>
+</div>
+
+				</li>
+
+			</ul>
+
+			<p class="p"><span class="ph emphasis emphasis">Zooming</span></p>
+
+			<ul class="ul" id="loiob5649c8de7f74739b66747dcc9356d0b__ul_vxb_llb_kbb">
+				<li class="li">
+					<p class="p">The predefined zooming scale used by the <samp class="ph codeph">NetworkGraph</samp>
+						control supports zooming levels ranging from 5 to 500 percent of the
+						original graph size. The zooming level is updated when the user clicks the
+							<span class="ph uicontrol">Zoom In</span> or <span class="ph uicontrol">Zoom Out</span>
+						buttons or uses a mouse, a trackpad, or a touch screen to zoom in or
+						out.</p>
+
+					<ul class="ul" id="loiob5649c8de7f74739b66747dcc9356d0b__ul_wdb_wqq_kbb">
+						<li class="li">
+							<p class="p">When the user clicks <img class="image" id="loiob5649c8de7f74739b66747dcc9356d0b__image_d5q_2bw_4bb" src="loio3508f6659f2a4fa2845cfd1c67d7ea5e_LowRes.png" alt="Zoom-In icon" title="Zoom-In icon"/> (<span class="ph uicontrol">Zoom In</span>) or <img class="image" id="loiob5649c8de7f74739b66747dcc9356d0b__image_ork_jbw_4bb" src="loio9bb7e962ed674566ab5e86f64194f69a_LowRes.png" alt="Zoom-Out icon" title="Zoom-Out icon"/> (<span class="ph uicontrol">Zoom Out</span>), the graph is scaled up
+								or down to the next zooming level.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">When the user clicks <img class="image" id="loiob5649c8de7f74739b66747dcc9356d0b__image_gcg_lbw_4bb" src="loiod0529dcc77cf4e08aef54b07377e4e90_LowRes.png" alt="Zoom-To-Fit icon" title="Zoom-To-Fit icon"/> (<span class="ph uicontrol">Zoom to Fit</span>), the graph is scaled
+								up or down, so all nodes and lines it includes are visible on the
+								screen. The optimal zooming level is selected from the predefined
+								scale: 5%, 10%, 25%, 33%, and so on up to 500%.</p>
+
+							<p class="p">If the original graph size is out of scale, taking up less than 5
+								percent or more than 500 percent of the screen, clicking
+									<span class="ph uicontrol">Zoom to Fit</span> scales the graph up or down
+								to the closest minimum or maximum zooming level, 5% or 500%. For
+								example, if the original graph takes 1 percent of the screen, when
+								the user clicks <span class="ph uicontrol">Zoom to Fit</span>, the graph is
+								scaled up to the 5% zooming level.</p>
+
+						</li>
+
+					</ul>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

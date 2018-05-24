@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+
+<title>QUnit: library - sap.suite.ui.microchart</title>
+
+<base href="../../../../../../">
+
+<script id="sap-ui-bootstrap"
+	src="resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_belize"
+	data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.suite.ui.microchart, sap.m, sap.ui.layout, sap.ui.comp">
+</script>
+
+<link rel="stylesheet" type="text/css" href="resources/sap/ui/thirdparty/qunit.css"/>
+<script src="resources/sap/ui/thirdparty/qunit.js"></script>
+<script src="resources/sap/ui/qunit/qunit-junit.js"></script>
+<script src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script src="resources/sap/ui/thirdparty/sinon.js"></script>
+<script src="resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+<script>
+
+	jQuery.sap.initMobile();
+
+	QUnit.module("MicroChart in GenericTile", {
+		beforeEach: function() {
+			this.oChart = new sap.suite.ui.microchart.AreaMicroChart();
+		},
+		afterEach: function() {
+			this.oChart.destroy();
+		}
+	});
+
+	QUnit.test("MicroChart is in GenericTile", function(assert) {
+		var oGenericTile = new sap.m.GenericTile("generic-tile", {
+			tileContent : new sap.m.TileContent("tile-cont", {
+				content : this.oChart
+			}),
+		}).placeAt("qunit-fixture");
+		sap.ui.getCore().applyChanges();
+		assert.ok(sap.suite.ui.microchart._isInGenericTile(this.oChart), "The chart is in GenericTile");
+		oGenericTile.destroy();
+	});
+
+	QUnit.test("MicroChart (with layout) is in GenericTile", function(assert) {
+		var oLayout = new sap.ui.layout.FixFlex("fix-flex", {
+			fixContent: this.oChart
+		});
+		var oGenericTile = new sap.m.GenericTile("generic-tile", {
+			subheader : "Expenses By Region",
+			frameType : sap.m.FrameType.OneByOne,
+			size : "Auto",
+			tileContent : new sap.m.TileContent("tile-cont", {
+				unit : "EUR",
+				size : "Auto",
+				footer : "Current Quarter",
+				content : oLayout
+			}),
+		}).placeAt("qunit-fixture");
+		assert.ok(sap.suite.ui.microchart._isInGenericTile(this.oChart), "The chart is in GenericTile");
+		oGenericTile.destroy();
+	});
+
+	QUnit.test("MicroChart is not in GenericTile", function(assert) {
+		assert.ok(!sap.suite.ui.microchart._isInGenericTile(this.oChart), "The chart is not in GenericTile");
+	});
+
+	QUnit.module("Responsiveness adjustments for the use within GenericTile", {
+		beforeEach: function() {
+			this.oChart = new sap.suite.ui.microchart.BulletMicroChart().addStyleClass("sapUiSmallMargin");
+		},
+		afterEach: function() {
+			this.oChart.destroy();
+		}
+	});
+
+	QUnit.test("Applying library function to remove a standard margin class", function(assert) {
+		//Act
+		sap.suite.ui.microchart._removeStandardMargins(this.oChart)
+		//Assert
+		assert.ok(!this.oChart.hasStyleClass("sapUiSmallMargin"), "The margin has been removed.");
+	});
+
+	QUnit.module("Passing parent context to the child in case of using responsiveness for annotated charts", {
+		beforeEach : function() {
+			this.bDependencyLoaded = true;
+			if (!sap.ui.getCore().getLoadedLibraries()["sap.ui.comp"]) {
+				this.bDependencyLoaded = false;
+				return;
+			}
+			this.oSmartMicroChart = new sap.ui.comp.smartmicrochart.SmartMicroChart({
+				entitySet : "Products"
+			});
+			this.oSmartMicroChart._oChartViewMetadata = {
+				chartType : "bullet",
+				annotation : {
+					ChartType : {
+						EnumMember : "UiVoca/Bullet"
+					}
+				}
+			};
+			this.oSmartMicroChart._createInnerChart();
+			this.oBulletSMC = this.oSmartMicroChart.getAggregation("_chart");
+			this.oBulletMC = this.oBulletSMC.getAggregation("_chart");
+			this.oFlexBox = new sap.m.FlexBox({
+				items: [this.oSmartMicroChart]
+			});
+		},
+		afterEach : function() {
+			if (this.oSmartMicroChart) {
+				this.oSmartMicroChart.destroy();
+			}
+			this.oFlexBox.destroy();
+		}
+	});
+
+	QUnit.test("Passing parent context from SmartMicroChart to SmartBulletMicrochart", function(assert) {
+		if (!this.bDependencyLoaded) {
+			assert.expect(0);
+			return;
+		}
+		//Arrange
+		//Act
+		sap.suite.ui.microchart._passParentContextToChild(this.oSmartMicroChart, this.oBulletSMC);
+		//Assert
+		assert.equal(this.oBulletSMC.data("_parentRenderingContext").getId(), this.oFlexBox.getId(), "The parent context has the same id as the relevant flexbox : " + this.oFlexBox.getId() + " = " + this.oBulletSMC.data("_parentRenderingContext").getId());
+	});
+
+	QUnit.test("Passing parent context from SmartBulletMicrochart to BulletMicrochart", function(assert) {
+		if (!this.bDependencyLoaded) {
+			assert.expect(0);
+			return;
+		}
+		//Arrange
+		sap.suite.ui.microchart._passParentContextToChild(this.oSmartMicroChart, this.oBulletSMC);
+		//Act
+		sap.suite.ui.microchart._passParentContextToChild(this.oBulletSMC, this.oBulletMC);
+		//Assert
+		assert.equal(this.oBulletMC.data("_parentRenderingContext").getId(), this.oFlexBox.getId(), "The parent context has the same id as the relevant flexbox : " + this.oFlexBox.getId() + " = " + this.oBulletSMC.data("_parentRenderingContext").getId());
+	});
+
+	QUnit.module("Function _checkControlIsVisible", {
+		beforeEach: function() {
+			this.oControl = new sap.m.Label({text:"Lorem ipsum"});
+			this.oControl.placeAt("qunit-fixture");
+			this.sMeasureId = this.oControl.getId() + "-qunit-check-visible";
+			sap.ui.getCore().applyChanges();
+
+			jQuery.sap.measure.setActive(true)
+		},
+		afterEach: function() {
+			this.oControl.destroy();
+			jQuery.sap.measure.setActive(false)
+		}
+	});
+
+	QUnit.test("If control is visible callback is directly called", function(assert) {
+		sap.suite.ui.microchart._checkControlIsVisible(this.oControl, function() {
+			assert.ok(true, "Callback directly called.")
+		});
+	});
+
+	QUnit.test("Default timeout is correctly reached if the element stays invisible", function(assert) {
+		//Arrange
+		this.oControl.setVisible(false);
+		var done = assert.async(1); //only one call to done() is allowed in order to fail the test if both handlers are called
+
+		//Act
+		sap.suite.ui.microchart._checkControlIsVisible(this.oControl, function() {
+			//Assert
+			assert.notOk(true, "Control became visible."); //this case is bad!
+			done();
+		});
+
+		setTimeout(function() {
+			//Assert
+			assert.ok(true, "The timeout has been reached.");
+
+			done();
+		}, 500);
+	});
+
+	QUnit.test("Number of visibility checks is correct", function(assert) {
+		//Arrange
+		this.oControl.setVisible(false);
+		sinon.spy(jQuery.sap, "delayedCall");
+		var done = assert.async();
+
+		//Act
+		sap.suite.ui.microchart._checkControlIsVisible(this.oControl);
+
+		setTimeout(function() {
+			//Assert
+			assert.equal(jQuery.sap.delayedCall.callCount, 6, "Correct number of performed checks.");
+
+			//cleanup
+			jQuery.sap.delayedCall.restore();
+
+			done();
+		}, 500);
+	});
+
+	QUnit.test("Timeout is not reached and callback is invoked", function(assert) {
+		//Arrange
+		var done = assert.async();
+		var that = this;
+		jQuery.sap.measure.start(this.sMeasureId);
+		sinon.spy(jQuery.sap, "delayedCall");
+
+		//Act
+		sap.suite.ui.microchart._checkControlIsVisible(this.oControl, function() {
+			//Assert
+			var oMeasure = jQuery.sap.measure.end(that.sMeasureId);
+			assert.ok(oMeasure.duration < 500, "Duration is below timeout.");
+			assert.equal(jQuery.sap.delayedCall.callCount, 0, "Correct number of performed checks.");
+
+			done();
+		});
+	});
+
+	QUnit.test("Control found when css display is changed", function(assert) {
+		//Arrange
+		var done = assert.async();
+		var that = this;
+		this.oControl.$().css("display", "none");
+		jQuery.sap.measure.start(this.sMeasureId);
+
+		jQuery.sap.delayedCall(200, null, function() {
+			this.oControl.$().css("display", "block");
+		}.bind(this));
+
+		//Act
+		sap.suite.ui.microchart._checkControlIsVisible(this.oControl, function() {
+			//Assert
+			var oMeasure = jQuery.sap.measure.end(that.sMeasureId);
+			assert.ok(oMeasure.duration > 200, "Duration is above delay.");
+			assert.ok(this.$().is(":visible"), "Control is visible.");
+
+			done();
+		});
+	});
+
+	QUnit.test("Css visibility does not influence check", function(assert) {
+		//Arrange
+		var done = assert.async();
+		var that = this;
+		this.oControl.$().css("visibility", "hidden");
+		jQuery.sap.measure.start(this.sMeasureId);
+
+		jQuery.sap.delayedCall(200, null, function() {
+			this.oControl.$().css("visibility", "visible");
+		}.bind(this));
+
+		//Act
+		sap.suite.ui.microchart._checkControlIsVisible(this.oControl, function() {
+			//Assert
+			var oMeasure = jQuery.sap.measure.end(that.sMeasureId);
+			assert.ok(oMeasure.duration < 200, "Duration is below delay.");
+
+			done();
+		});
+	});
+
+</script>
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+</body>
+</html>

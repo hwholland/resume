@@ -1,0 +1,130 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can add an additional section to your object page, as described below."/>
+<meta name="description" content="You can add an additional section to your object page, as described below."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=5343992601933769"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=5343992601933769"/>
+<title>Adding a Section to an Object Page</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioa357047be956436ebb1dfebf1aa29af2">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Adding a Section to an Object Page</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You can add an additional section to your object page, as described below.</p>
+
+		<div class="p">For this example, you want to add a section called <span class="ph uicontrol">Product
+				Description</span> to the object page of the <span class="ph uicontrol">Manage
+				Products</span> app. <div class="note note"><span class="notetitle">Note</span> This documentation describes how to manually define
+				extensions. The following video provides an example for how to create a section
+				extension on the object page using the extension wizard: <div class="video-links-disclaimer"><span class="video-links-disclaimer-label">Disclaimer: </span>The below video <img src="images/3rd_link.png" title="Information published on non-SAP site" alt="Information published on non-SAP site"/> is not part of the SAP product documentation.  Please read the <a href="http://help.sap.com/disclaimer?site=">legal disclaimer</a> for video links before viewing this video.</div><div class="iframe-wrapper"><iframe width="" height="" src="https://www.youtube.com/embed/u-IwLFBh158">
+</iframe></div></div>
+</div>
+
+		<div class="section"><div class="section_title">Step 1: Create fragment for the new facet</div><div type="Step 1: Create fragment for the new facet">
+			
+			<p class="p">In the SAP Web IDE, open the folder structure of the Manage Products project and
+				proceed as follows:</p>
+
+			<ol class="ol">
+				<li class="li">In the <samp class="ph codeph">webapp</samp> folder, create a new subfolder called
+						<samp class="ph codeph">ext</samp>.</li>
+
+				<li class="li">In the folder <samp class="ph codeph">ext</samp>, create a new subfolder called
+						<samp class="ph codeph">view</samp>.</li>
+
+				<li class="li">In the <samp class="ph codeph">view</samp> folder, create file
+						<samp class="ph codeph">DescriptionBreakout.view.xml</samp>.</li>
+
+				<li class="li">Define the view with its elements, here a <samp class="ph codeph">TextArea</samp> that
+					consumes the section title for the product description text in the original
+					language.</li>
+
+			</ol>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;core:View xmlns:core="sap.ui.core" xmlns="sap.m"&gt;
+	&lt;VBox&gt;
+		&lt;TextArea id="DescriptionTextArea" 
+				value="{to_ProductTextInOriginalLang/Description}"
+				width="30%" 
+				editable="false"/&gt;
+	&lt;/VBox&gt;
+&lt;/core:View&gt;		</pre></div>
+
+			</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Step 2: Add section title to the i18n file</div><div type="Step 2: Add section title to the i18n file">
+			
+			<p class="p">To make the section title translatable, add the text to the <samp class="ph codeph">i18n</samp>
+				file as follows:</p>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">#This is the resource bundle for Manage Products
+					
+# XTIT: Title of a facet within an object page if not needed in local/annotations.xml
+ProductDescription=Product Description		</pre></div>
+
+			</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Step 3: Add extension definition to the manifest.json file</div><div type="Step 3: Add extension definition to the manifest.json file">
+			
+			<p class="p">To add the extension definition to the <samp class="ph codeph">manifest.json</samp> file, use a
+					<samp class="ph codeph">viewExtension</samp>.</p>
+
+			<p class="p">The extension appears within the <samp class="ph codeph">ObjectPage.view</samp> using the
+					<samp class="ph codeph">AfterFacet</samp> option.</p>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">manifest.json
+	"extends": {
+			"extensions": {
+				"sap.ui.viewExtensions": {
+					"sap.suite.ui.generic.template.ObjectPage.view.Details": {
+						"AfterFacet|SEPMRA_C_PD_Product|GeneralInformation": {
+							"className": "sap.ui.core.mvc.View",
+							"viewName": "ManageProducts.ext.view.DescriptionBreakout",
+							"type": "XML",
+							"sap.ui.generic.app": {
+								"title": "{{ProductDescription}}"
+							}
+						}
+					}
+				}
+			}
+		},
+			</pre></div>
+
+			</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Results</div><div type="Results">
+			
+			<p class="p">The object page of the <span class="ph uicontrol">Manage Products</span> app shows the new
+				section <span class="ph uicontrol">Product Description</span>:</p>
+
+			<div class="fig fignone"><div class="figcontainer">
+				<img class="image" src="loio5964a7fbfb294a6cacaa15b123304748_LowRes.png"/>
+			</div></div>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

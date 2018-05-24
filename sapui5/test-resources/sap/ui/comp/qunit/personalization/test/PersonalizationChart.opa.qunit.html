@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>OPA Personalization Dialog for Chart: Test using
+	'DimMeasure' Panel</title>
+<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+<meta charset="UTF-8">
+
+<script id='sap-ui-bootstrap'
+	src='../../../../../../../resources/sap-ui-core.js'
+	data-sap-ui-resourceroots='{"sap.ui.comp.qunit.personalization.test": "./", "test.sap.ui.comp.personalization": "../../../personalization"}'>
+	
+</script>
+
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet"
+	href="../../../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script src="../../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script src="../../../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+
+<script>
+	jQuery.sap.require("sap.ui.test.Opa5");
+	jQuery.sap.require("sap.ui.test.opaQunit");
+	jQuery.sap.require("sap.ui.comp.qunit.personalization.test.Util");
+	jQuery.sap.require("sap.ui.comp.qunit.personalization.test.Arrangement");
+	jQuery.sap.require("sap.ui.comp.qunit.personalization.test.Action");
+	jQuery.sap.require("sap.ui.comp.qunit.personalization.test.Assertion");
+	jQuery.sap.require("sap.m.library");
+
+	var Opa5 = sap.ui.test.Opa5;
+	var Util = sap.ui.comp.qunit.personalization.test.Util;
+
+	sap.ui.test.Opa5.extendConfig({
+		arrangements: new sap.ui.comp.qunit.personalization.test.Arrangement(),
+		actions: new sap.ui.comp.qunit.personalization.test.Action(),
+		assertions: new sap.ui.comp.qunit.personalization.test.Assertion(),
+		viewNamespace: "view."
+	});
+
+	opaTest("When I look at the screen, personalization button should appear", function(Given, When, Then) {
+		// Arrangements
+		Given.iStartMyAppInAFrame('../applicationUnderTestDimeasure/start.html');
+
+		//Actions
+		When.iLookAtTheScreen();
+
+		// Assertions
+		Then.iShouldSeePersonalizationButton();
+	});
+
+	// ------------------------------------------- Test Case -------------------------------------------
+	// Test 'Restore': Make some changes on DimMeasurePanel, click 'OK', open Dialog:
+	// --> changes should remain
+	// Press 'Restore':
+	// --> changes are replaced by initial state
+	// Press 'OK'
+	// -------------------------------------------------------------------------------------------------
+
+	opaTest("When I press on personalization button, the personalization dialog opens", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressOnPersonalizationButton();
+
+		// Assertions
+		Then.thePersonalizationDialogOpens();
+		Then.iShouldSeeNavigationControl();
+		Then.iShouldSeeNavigationControlWithPanels(3);
+	});
+
+/*	opaTest("When I navigate to dimeasure panel, dimeasure panel is shown", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		// On phone we have explicit navigate to columns panel
+		sap.ui.Device.system.phone ? When.iNavigateToPanel(sap.m.P13nPanelType.dimeasure) : null;
+
+		// Assertions
+		// On desktop we can check if the columns tap is selected. On phone we do not have SegmentedButtons on the top of panel.
+		sap.ui.Device.system.phone ? null : Then.iShouldSeeSelectedTab(sap.m.P13nPanelType.dimeasure);
+		Then.iShouldSeePanel(sap.m.P13nPanelType.dimeasure);
+		//TODO
+		//Then.iShouldSeeTheCheckboxSelectAllSwitchedOn(false);
+	});
+
+	opaTest("When I switch on 'Select all', all dimeasures should be selected", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iClickOnTheCheckboxSelectAll();
+
+		// Assertions
+		//TODO
+		//Then.iShouldSeeTheCheckboxSelectAllSwitchedOn(true);
+		Then.iShouldSeeAllTableItemsSelected(true);
+	});
+
+	opaTest("When I press 'Ok' button, the dialog should close", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressOkButton();
+
+		// Assertions
+		Then.thePersonalizationDialogShouldBeClosed();
+	});
+
+	//opaTest("When I look at the chart, dirty flag should appear", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions		
+
+		// Assertions
+	//	Then.theDirtyFlagOnToolbarIsDisplayed(true);
+	//});
+
+	opaTest("When I press on personalization button again, the personalization dialog opens", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressOnPersonalizationButton();
+
+		// Assertions
+		Then.thePersonalizationDialogOpens();
+		Then.iShouldSeeNavigationControl();
+		Then.iShouldSeeNavigationControlWithPanels(3);
+	});
+
+	opaTest("When I navigate to dimeasure panel, dimeasure panel is shown", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		// On phone we have explicit navigate to columns panel
+		sap.ui.Device.system.phone ? When.iNavigateToPanel(sap.m.P13nPanelType.dimeasure) : null;
+
+		// Assertions
+		// On desktop we can check if the columns tap is selected. On phone we do not have SegmentedButtons on the top of panel.
+		sap.ui.Device.system.phone ? null : Then.iShouldSeeSelectedTab(sap.m.P13nPanelType.dimeasure);
+		Then.iShouldSeePanel(sap.m.P13nPanelType.dimeasure);
+		//TODO
+		//Then.iShouldSeeTheCheckboxSelectAllSwitchedOn(true);
+		Then.iShouldSeeAllTableItemsSelected(true);
+	});
+
+	opaTest("When I press now 'Restore' button, the initail dimeasures should reappear", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressRestoreButton();
+
+		// Assertions
+		Then.theNumberOfSelectedDimeasuresShouldRemainStable();
+	});
+
+	opaTest("When I press 'Ok' button, the dialog should close", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressOkButton();
+
+		// Assertions
+		Then.thePersonalizationDialogShouldBeClosed();
+	});
+
+	// ------------------------------------------- Test Case -------------------------------------------
+	// Make some changes on DimMeasurePanel, switch to FilterPanel, switch back to DimMeasurePanel.
+	// --> changes should remain
+	// Press 'Restore', press 'OK'
+	// -------------------------------------------------------------------------------------------------
+	opaTest("When I press on personalization button again, the personalization dialog opens", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressOnPersonalizationButton();
+
+		// Assertions
+		Then.thePersonalizationDialogOpens();
+		Then.iShouldSeeNavigationControl();
+		Then.iShouldSeeNavigationControlWithPanels(3);
+	});
+
+	opaTest("When I switch on 'Select all', all dimeasures should be selected", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iClickOnTheCheckboxSelectAll();
+
+		// Assertions
+		//TODO
+		//Then.iShouldSeeTheCheckboxSelectAllSwitchedOn(true);
+		Then.iShouldSeeAllTableItemsSelected(true);
+	});
+
+	opaTest("When I navigate to filter panel, filter panel is shown", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		// On phone we have explicit navigate back and then to group panel
+		sap.ui.Device.system.phone ? When.iPressBackButton().and.iNavigateToPanel(sap.m.P13nPanelType.filter) : When.iNavigateToPanel(sap.m.P13nPanelType.filter);
+
+		// Assertions
+		// On desktop we can check if the filter tab is selected. On phone we do not have SegmentedButtons on the top of panel.
+		sap.ui.Device.system.phone ? null : Then.iShouldSeeSelectedTab(sap.m.P13nPanelType.filter);
+		Then.iShouldSeePanel(sap.m.P13nPanelType.filter);
+	});
+
+	opaTest("When I navigate to dimeasure panel, dimeasure panel is shown", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		// On phone we have explicit navigate back and then to group panel
+		sap.ui.Device.system.phone ? When.iPressBackButton().and.iNavigateToPanel(sap.m.P13nPanelType.dimeasure) : When.iNavigateToPanel(sap.m.P13nPanelType.dimeasure);
+
+		// Assertions
+		// On desktop we can check if the columns tap is selected. On phone we do not have SegmentedButtons on the top of panel.
+		sap.ui.Device.system.phone ? null : Then.iShouldSeeSelectedTab(sap.m.P13nPanelType.dimeasure);
+		Then.iShouldSeePanel(sap.m.P13nPanelType.dimeasure);
+		//TODO
+		//Then.iShouldSeeTheCheckboxSelectAllSwitchedOn(true);
+		Then.iShouldSeeAllTableItemsSelected(true);
+	});
+
+	opaTest("When I press now 'Restore' button, the initail dimeasures should reappear", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressRestoreButton();
+
+		// Assertions
+		Then.theNumberOfSelectedDimeasuresShouldRemainStable();
+	});
+
+	opaTest("When I press 'Ok' button, the dialog should close", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressOkButton();
+
+		// Assertions
+		Then.thePersonalizationDialogShouldBeClosed();
+	});
+
+	// ------------------------------------------- Test Case -------------------------------------------
+	// Make some changes on SortPanel, click 'OK', open dialog, click 'Restore'
+	// --> initial state appears
+	// Press 'OK'
+	// -------------------------------------------------------------------------------------------------
+	opaTest("When I press on personalization button again, the personalization dialog opens", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressOnPersonalizationButton();
+
+		// Assertions
+		Then.thePersonalizationDialogOpens();
+		Then.iShouldSeeNavigationControl();
+		Then.iShouldSeeNavigationControlWithPanels(3);
+	});
+
+	opaTest("When I navigate to sort panel, change sorting column and press 'OK', the dialog should close", function(Given, When, Then) {
+		// Arrangements		
+
+		//Actions
+		// On phone we have explicit navigate back and then to sort panel
+		sap.ui.Device.system.phone ? When.iPressBackButton().and.iNavigateToPanel(sap.m.P13nPanelType.sort) : When.iNavigateToPanel(sap.m.P13nPanelType.sort);
+		When.iChangeSortSelectionTo("SupplierName");
+		When.iPressOkButton();
+
+		// Assertions
+		Then.thePersonalizationDialogShouldBeClosed();
+	});
+
+	opaTest("When I press on personalization button again, the personalization dialog opens", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressOnPersonalizationButton();
+
+		// Assertions
+		Then.thePersonalizationDialogOpens();
+		Then.iShouldSeeNavigationControl();
+		Then.iShouldSeeNavigationControlWithPanels(3);
+	});
+
+	opaTest("When I press now 'Restore' button, the initail dimeasures should reappear", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressRestoreButton();
+
+		// Assertions
+		Then.theNumberOfSelectedDimeasuresShouldRemainStable();
+	});
+
+	opaTest("When I press 'Ok' button, the dialog should close", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions
+		When.iPressOkButton();
+
+		// Assertions
+		Then.thePersonalizationDialogShouldBeClosed();
+		Then.iTeardownMyAppFrame();
+	});*/
+	
+	/*opaTest("When I look at the chart, dirty flag should not appear", function(Given, When, Then) {
+		// Arrangements
+
+		//Actions		
+
+		// Assertions
+		Then.theDirtyFlagOnToolbarIsDisplayed(false);
+		//Then.iTeardownMyAppFrame();
+	});*/
+</script>
+
+</head>
+<body style="height: 100%">
+	<div id="content"></div>
+	<h1 id="qunit-header">Table Personalization Dialog</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+</body>
+</html>

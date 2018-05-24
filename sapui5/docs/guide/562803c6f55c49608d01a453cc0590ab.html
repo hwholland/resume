@@ -1,0 +1,51 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Components are usually used with a root view and in this case, the component handles the prefixing of IDs of views, elements, or controls, with the component ID."/>
+<meta name="description" content="Components are usually used with a root view and in this case, the component handles the prefixing of IDs of views, elements, or controls, with the component ID."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=24984520744823746"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=24984520744823746"/>
+<title>Handling IDs in UI Components</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio562803c6f55c49608d01a453cc0590ab">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Handling IDs in UI Components</h1>
+
+	
+	<div class="body"><p class="shortdesc">Components are usually used with a root view and in this case, the component handles the
+		prefixing of IDs of views, elements, or controls, with the component ID.</p>
+
+		<p class="p">This works similar to the prefixing of control IDs in XML views, see <a class="xref" href="91f28be26f4d1014b6dd926db0e91070.html" title="Stable IDs are used to identify and modify the controls within the controller during runtime. However, if you reuse or nest these views, these stable IDs are no longer unique. To avoid ambiguity, each view adds its own ID as prefix to all its child controls.">Support for Unique IDs</a>. However, if you implement your own
+				<samp class="ph codeph">createContent</samp> function, you need to handle this yourself. The
+			following two options exist:</p>
+
+		<ul class="ul" id="loio562803c6f55c49608d01a453cc0590ab__ul_izh_mh2_x5">
+			<li class="li">
+				<p class="p">Set the <samp class="ph codeph">sap.ui5/autoPrefixId</samp> attribute in the <samp class="ph codeph">manifest.json</samp> file to <samp class="ph codeph">true</samp>. This is the easiest option.</p>
+
+			</li>
+
+			<li class="li">
+				<p class="p">Use the <samp class="ph codeph">createId</samp> function of the UI component to prefix the
+					respective ID of a view, element, or control yourself.</p>
+
+			</li>
+
+		</ul>
+
+		<p class="p">Use the <samp class="ph codeph">byId</samp> function of the UI component to retrieve the views, controls, and
+			elements that have been created in a UI component.</p>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

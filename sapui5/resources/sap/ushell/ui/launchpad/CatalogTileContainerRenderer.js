@@ -1,0 +1,2 @@
+// Copyright (c) 2009-2014 SAP SE, All Rights Reserved
+(function(){"use strict";jQuery.sap.require("sap.ushell.resources");jQuery.sap.declare("sap.ushell.ui.launchpad.CatalogTileContainerRenderer");jQuery.sap.require("sap.ushell.ui.launchpad.TileContainerRenderer");sap.ushell.ui.launchpad.CatalogTileContainerRenderer={};sap.ushell.ui.launchpad.CatalogTileContainerRenderer=sap.ui.core.Renderer.extend(sap.ushell.ui.launchpad.TileContainerRenderer);}());

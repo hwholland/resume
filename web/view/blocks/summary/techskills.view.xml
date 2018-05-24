@@ -1,0 +1,25 @@
+<mvc:View xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:forms="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc">
+	<forms:SimpleForm>
+		<forms:content>
+			<core:Title text="Technical Proficiencies"/>
+			<Label text="Platforms"/>
+			<Tokenizer width="100%"
+			tokens="{
+				path: 'tokens>/platforms',
+				sorter: { path: 'name' }
+			}">
+			<Token key="{tokens>name}" text="{tokens>name}" />
+		</Tokenizer>
+					<Label text="Tools/Languages"/>
+		<MultiInput enableMultiLineMode="true" 
+		tokens="{
+			path: 'tokens>/tools',
+			sorter: { path: 'name' }
+		}">
+		<tokens>
+			<Token key="{tokens>name}" text="{tokens>name}" />
+		</tokens>
+	</MultiInput>
+		</forms:content>
+	</forms:SimpleForm>
+</mvc:View>

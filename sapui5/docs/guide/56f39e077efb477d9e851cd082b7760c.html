@@ -1,0 +1,246 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="List cards display lists of records according to the configuration in the com.sap.vocabularies.UI.v1.LineItem term. List cards display up to six fields of data in each list item."/>
+<meta name="description" content="List cards display lists of records according to the configuration in the com.sap.vocabularies.UI.v1.LineItem term. List cards display up to six fields of data in each list item."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=1640673614842315"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=1640673614842315"/>
+<title>List Cards</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio56f39e077efb477d9e851cd082b7760c">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">List Cards</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">List cards display lists of records according to the configuration in the
+			<samp class="ph codeph">com.sap.vocabularies.UI.v1.LineItem</samp> term. List cards display up to six
+		fields of data in each list item.  </p>
+
+		
+		<div class="section">
+			<div class="p">When creating a list card, you can choose from a number of different types of lists and the
+				number of items displayed depends on the type of list. You can choose from two types
+				of list cards:<ul class="ul" id="loio56f39e077efb477d9e851cd082b7760c__ul_k1f_sxz_qt">
+					<li class="li">
+						<p class="p">Condensed</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Extended</p>
+
+					</li>
+
+				</ul>
+For each of these types you can choose from two flavors: <ul class="ul" id="loio56f39e077efb477d9e851cd082b7760c__ul_cdm_yxz_qt">
+					<li class="li">
+						<p class="p">Standard</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Bar</p>
+
+					</li>
+
+				</ul>
+</div>
+
+			<p class="p"> The <samp class="ph codeph">com.sap.vocabularies.UI.v1.LineItem</samp> term can be configured in
+				the application manifest file by setting the <samp class="ph codeph">annotationPath</samp>
+				property with a qualifier, as shown in the example below. If the
+					<samp class="ph codeph">annotationPath</samp> property is not configured, the
+					<samp class="ph codeph">com.sap.vocabularies.UI.v1.LineItem</samp> term, without a qualifier,
+				is used.</p>
+
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"sap.ovp": {
+    ...
+    "cards": {
+        ...
+        "card04": {
+            "model": "ZCD204_EPM_DEMO_SRV",
+            "template": "sap.ovp.cards.list",
+            "settings": {
+                "sortBy": "Price",
+                "sortOrder": "descending",
+                "listFlavor": "bar",
+                "annotationPath": "com.sap.vocabularies.UI.v1.LineItem#bar",
+                "category": "{{card04_category}}",
+                "entitySet": "Products"
+            }
+        },
+        ...
+    }
+}</pre></div>
+
+			</div>
+
+			<p class="p">By default, the fields in the list card are mapped to the
+					<samp class="ph codeph">com.sap.vocabularies.UI.v1.LineItem</samp> annotation. Any other
+				collection of <samp class="ph codeph">DataFieldAbstract</samp> can be used by setting the
+					<samp class="ph codeph">annotationPath</samp> property. <samp class="ph codeph">LineItem</samp> is a
+				collection of <samp class="ph codeph">DataFieldAbstract</samp> records. You can use different
+					<samp class="ph codeph">com.sap.vocabularies.UI.v1.LineItem</samp> annotations for different
+				card instances of the same entity type by using different qualifiers and setting the
+					<samp class="ph codeph">annotationPath</samp> property with the qualifier in the card
+				configuration. For example
+					<samp class="ph codeph">com.sap.vocabularies.UI.v1.LineItem#Qualifier1</samp>. </p>
+
+			<p class="p">At runtime, the <samp class="ph codeph">DataField</samp> records are sorted according to the
+				optional <samp class="ph codeph">Importance (com.sap.vocabularies.UI.v1.ImportanceType)</samp>
+				annotation. <samp class="ph codeph">DataField</samp> entries are sorted according to importance
+				and their order of entry. </p>
+
+		</div>
+
+		<div class="section"><div class="section_title">Condensed List Type - Standard Flavor</div><div type="Condensed List Type - Standard Flavor">In this type of list, each list item
+			displays up to three fields. The first two <samp class="ph codeph">DataField</samp> records are
+			displayed at the top left and bottom left of the list item. If there is a
+				<samp class="ph codeph">DataFieldForAnnotation</samp> record that has a <samp class="ph codeph">DataPoint</samp>
+			target, it is displayed at the top right of the list item, and its value can be
+			highlighted according to the criticality of the datapoint. If no
+				<samp class="ph codeph">DataFieldForAnnotation</samp> record is defined, the next
+				<samp class="ph codeph">DataField</samp> record is displayed instead.<p class="p">Number of list items
+				displayed: up to 3.</p>
+</div></div>
+
+		<div class="section"><div class="section_title">Extended List Type - Standard Flavor</div><div type="Extended List Type - Standard Flavor">
+			
+			<p class="p">In this type of list, each list item displays up to six fields. <samp class="ph codeph">DataField</samp>
+				records are displayed on the left side of the line item, and
+					<samp class="ph codeph">DataPoint</samp> records are displayed on the right. If no
+					<samp class="ph codeph">DataPoint</samp> record is defined, or less than three
+					<samp class="ph codeph">DataPoint</samp> records are available, the right side of the line
+				item displays <samp class="ph codeph">DataField</samp> records instead. </p>
+
+			<p class="p">Number of list items displayed: up to 6.</p>
+
+			
+<div class="table-wrapper tablenoborder"><table summary="" id="loio56f39e077efb477d9e851cd082b7760c__table_c5h_cgy_st" class="table" frame="void" border="0" rules="none">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+					
+					
+					<tbody class="tbody">
+						<tr class="row">
+							<td class="entry border_none" align="center" valign="top" width="50%">
+								<p class="p"><img class="image" id="loio56f39e077efb477d9e851cd082b7760c__image_cvm_254_55" src="loio342d904536de41bd901afe4f1b7dcc96_LowRes.png"/></p>
+
+							</td>
+
+							<td class="entry border_none" align="center" valign="top" width="50%">
+								<p class="p"><img class="image" id="loio56f39e077efb477d9e851cd082b7760c__image_jsl_f54_55" src="loio849fdc4187b54d15a09a220e51c5e893_LowRes.png"/></p>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry border_none" align="center" valign="top" width="50%">
+								<p class="p">Condensed List Type - Standard Flavor</p>
+
+							</td>
+
+							<td class="entry border_none" align="center" valign="top" width="50%">
+								<p class="p">Extended List Type - Standard Flavor</p>
+
+							</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Condensed List Type - Bar Flavor</div><div type="Condensed List Type - Bar Flavor">
+			
+			<p class="p">In this type of list, each list item displays up to three fields. Only use this kind of list
+				if you want to display a <samp class="ph codeph">DataPoint</samp> record. The first
+					<samp class="ph codeph">DataField</samp> record is displayed as a title for the line item in
+				the top-left field. The first <samp class="ph codeph">DataPoint</samp> record is displayed as a
+				bar beneath the title, and as a numeric value to the right of the bar. You can also
+				display an additional <samp class="ph codeph">DataPoint</samp> record to the right of the first
+					<samp class="ph codeph">DataPoint</samp> record. The bar can display values as a percentage or
+				as any numeric value. </p>
+
+			<p class="p">Number of list items displayed: up to 3.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Extended List Type - Bar Flavor</div><div type="Extended List Type - Bar Flavor">
+			
+			<p class="p">In this type of list, each list item displays up to five fields. The first
+					<samp class="ph codeph">DataField</samp> record is displayed as a title for the line item in
+				the top-left field. An additional <samp class="ph codeph">DataField</samp> record can be displayed
+				beneath the title. The first <samp class="ph codeph">DataPoint</samp> record is displayed as a bar
+				beneath the <samp class="ph codeph">DataField</samp> records, and as a numeric value to the right
+				of the bar at the bottom of the line item. You can also display two additional
+					<samp class="ph codeph">DataPoint</samp> records to the right of line item, one above the
+				other. </p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">If highlighting (criticality) is defined in the annotation of the <samp class="ph codeph">DataPoint</samp>
+					records, only one will be highlighted in the line item according to the order in
+					which they are displayed. </p>
+
+				<p class="p">Number of list items displayed: up to 5.</p>
+
+			</div>
+
+			
+<div class="table-wrapper tablenoborder"><table summary="" id="loio56f39e077efb477d9e851cd082b7760c__table_lk3_3gy_st" class="table" frame="void" border="0" rules="none">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+
+					
+					
+					<tbody class="tbody">
+						<tr class="row">
+							<td class="entry border_none" align="center" valign="top" width="50%">
+								<p class="p"><img class="image" id="loio56f39e077efb477d9e851cd082b7760c__image_ljt_g54_55" src="loio8f1def4d5aea4a1ea109576da809b311_LowRes.png"/></p>
+
+							</td>
+
+							<td class="entry border_none" align="center" valign="top" width="50%">
+								<p class="p"><img class="image" id="loio56f39e077efb477d9e851cd082b7760c__image_vvg_h54_55" src="loiobdbbbb2802f243fea692a4ee3bf1d76d_LowRes.png"/></p>
+
+							</td>
+
+						</tr>
+
+						<tr class="row">
+							<td class="entry border_none" align="center" valign="top" width="50%">
+								<p class="p">Condensed List Type - Bar Flavor</p>
+
+							</td>
+
+							<td class="entry border_none" align="center" valign="top" width="50%">
+								<p class="p">Extended List Type - Bar Flavor</p>
+
+							</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+</div>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

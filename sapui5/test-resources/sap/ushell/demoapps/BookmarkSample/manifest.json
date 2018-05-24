@@ -1,0 +1,64 @@
+// created according to https://sapui5.netweaver.ondemand.com/docs/guide/3a9babace121497abea8f0ea66e156d9.html
+{
+    "_version": "1.1.0",
+    "sap.app": {
+        "id": "sap.ushell.demo.bookmark",
+        "_version": "1.0.0",
+        "i18n": "i18n/i18n.properties",
+        "type": "application",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "title": "{{title}}",
+        "description": "{{description}}",
+        "tags": {
+            "keywords": [
+                "{{keyword.sample}}", "{{keyword.demo}}", "{{keyword.flp}}"
+            ]
+        },
+        "ach": "CA-UI2-INT-FE",
+        "resources": "resources.json"
+    },
+    "sap.ui": {
+        "_version": "1.1.0",
+        "icons": {
+            "icon": "sap-icon://favorite"
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        },
+        "supportedThemes": [
+            "sap_hcb",
+            "sap_bluecrystal"
+        ]
+    },
+    "sap.ui5": {
+        "_version": "1.1.0",
+        "dependencies": {
+            "minUI5Version": "1.28",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ui.layout": {},
+                "sap.ui.layout.form": {},
+                "sap.ushell": {
+                    "minVersion": "1.28"
+                }
+            }
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "rootView": "sap.ushell.demo.bookmark.bookmark",
+        "handleValidation": false,
+        "contentDensities": {
+            "compact": false,
+            "cozy": true
+        }
+    }
+}

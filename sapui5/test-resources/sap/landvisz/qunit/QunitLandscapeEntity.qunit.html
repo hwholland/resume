@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<!-- 
+  Tested control/class: sap.landvisz.LandscapeEntity
+  Author: SAP
+-->
+
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Qunit for Landscape Entity Control</title>
+	<script id="sap-ui-bootstrap" 
+		type="text/javascript"
+		src="../../../../resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_goldreflection"
+		data-sap-ui-language="en-US"
+		data-sap-ui-noConflict="true"
+		data-sap-ui-libs="sap.ui.commons,sap.ui.ux3,sap.landvisz"
+		data-sap-ui-preload="false">
+	</script>
+	
+	<link rel="stylesheet" href="../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+	<script type="text/javascript" src="../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	<script type="text/javascript" src="../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+	
+	<!-- Control initialization -->
+
+<script language="javascript">
+
+
+var myModel = {
+		name : "AWX",
+		//tooltip : "Am a Overall tooltip",
+		type : "TechnicalSystem",
+		qualifierText : "ABAP",
+		qualifierTooltip : "ABAP Server System",
+		qualifierType : "Abap",
+		id : "aminId",
+		renderingSize : "Regular",
+		defaultState : "NotSelected",
+		description : "Am in Description",
+	
+	myHeaders: [ { header :"OverView",properties:[{ label :"OS",value:"Windows"},
+	         	                                  { label :"DB",value:"DB2"}
+	         	]},
+
+	    	 { header :"Product",properties:  [{ label :"SAP ERP", value:"",iconType:"p",iconTitle:"Product"}]
+	    	 },
+	    	 { header :"ProductVersion",properties:  [{ label :"SAP ERP 6.0",value:"",iconType:"pv",iconTitle:"ProductVersion"}]
+	    	 }
+	    	 
+	    ],
+	  actions: [{action: "Relations",icon: "http://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg"},{ action:"copy"},{ action: "paste", icon:"http://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg"}] ,
+	};
+
+var oLandEntity = new sap.landvisz.LandscapeEntity({
+
+   systemName : "{/name}",
+	//tooltip : "{/tooltip}",
+	type : sap.landvisz.LandscapeObject.TechnicalSystem,
+	qualifierText : "{/qualifierText}",
+	qualifierTooltip : "{/qualifierTooltip}",
+	qualifierType : sap.landvisz.TechnicalSystemType.ABAP,
+	id : "aminId",
+	renderingSize : sap.landvisz.EntityCSSSize.Medium,
+	enabled : true,
+	visible : true,
+	defaultState : "{/defaultState}",
+	description : "{/description}",
+	//systemStatus : sap.landvisz.ModelingStatus.WARNING,
+	showCustomActions: true,
+	showEntityActions: true
+
+});
+var oModel = new sap.ui.model.json.JSONModel();
+oModel.setData(myModel);
+oLandEntity.setModel(oModel);
+
+var oDataContainer = new sap.landvisz.internal.DataContainer({ header : "{header}",selected:"{selected}" });
+var oRowField = new sap.landvisz.internal.LinearRowField({ label:"{label}",value:"{value}",iconTitle:"{iconTitle}",iconType:"{iconType}"});
+oDataContainer.bindAggregation("properties","properties",oRowField);
+oLandEntity.bindAggregation("dataContainers","/myHeaders",oDataContainer);
+var oActionBar =  new sap.landvisz.internal.ActionBar({actionLabel: "{action}", iconSrc:"{icon}"});
+oLandEntity.bindAggregation("actionBar","/actions",oActionBar);
+
+
+
+    oLandEntity.placeAt("content");
+
+
+		  //Tests Starts
+			module("InitialTest");
+		  
+			var oLandEntity = sap.ui.getCore().byId("aminId");			
+
+			test("LandscapeEntityCreationOk", 2, function() {
+				sap.ui.getCore().applyChanges(); 
+				equals(false, (jQuery.sap.byId("aminId") === undefined), "Checking if the Landscape Entity Control is created and is not undefined.");
+				equals(false, (jQuery.sap.byId("aminId") === null), "Checking if the Landscape Entity Control is created and is not null.");
+				
+			});	
+			
+			module("PropertiesTest");
+			
+			test("LandscapeEntityPropertiesOk", function() {
+				sap.ui.getCore().applyChanges(); 
+				equals(false, (jQuery.sap.byId("landscapeEntity") === undefined), "Checking if the Landscape Enity Control is created and is not undefined.");
+				equals(oLandEntity.getSystemName() , "AWX", "System name exists");
+				//equals(oLandEntity.getTooltip() , "Am a Overall tooltip", "tooltip exists");
+				equals(oLandEntity.getType() , sap.landvisz.LandscapeObject.TechnicalSystem, "System type exists");
+				equals(oLandEntity.getQualifierText() , "ABAP", "Qualifier text exists");
+				equals(oLandEntity.getQualifierTooltip() , "ABAP Server System", "Qualifier tooltip exists");
+				equals(oLandEntity.getQualifierType() , sap.landvisz.TechnicalSystemType.ABAP, "Qualifier type exists");
+				equals(oLandEntity.getId() , "aminId", "System ID exists");
+				equals(oLandEntity.getRenderingSize() ,  sap.landvisz.EntityCSSSize.Medium, "Rendering Size exists");
+				//equals(oLandEntity.getEnabled() , "true", "System is enabled");
+				//equals(oLandEntity.getVisible() , "true", "System is visible");
+				equals(oLandEntity.getDefaultState() , "NotSelected", "System is not selected i.e. default state");
+				equals(oLandEntity.getDescription() , "Am in Description", "Description for the system exists");
+				
+			});	
+			module("SizeTest");
+			test("DimensionSizeOk", 3, function() {
+				sap.ui.getCore().applyChanges(); 
+				equals(false, (oLandEntity.getRenderingSize() === sap.landvisz.EntityCSSSize.Regular), "Regular Size is rendered");
+				equals(true, (oLandEntity.getRenderingSize() === sap.landvisz.EntityCSSSize.Medium), "Medium Size is rendered");
+				equals(false, (oLandEntity.getRenderingSize() === sap.landvisz.EntityCSSSize.Large), "Large Size is not rendered");
+			});	
+			
+			module("Identification Region");
+			test("IdentificationRegionCreationOk", function() {
+				var oDomRef = jQuery.sap.domById("aminId-CLVEntityVLayout");
+	    		ok(oDomRef, "Identification Region exists in the page");
+	    		equals(jQuery.sap.byId("aminId-CLVEntityIdnRegion").children().length, 4, "There should items displayed : identifier icon, identifier text, qualifier icon, qualifier text");
+				var oDomRef = jQuery.sap.domById("aminId-CLVEntityIdnRegion-CLVIdnImg");
+	    		ok(oDomRef, "Identifier icon exists");
+	    		var oDomRef = jQuery.sap.domById("aminId-CLVEntityIdnRegion-CLVIdnTxt");
+	    		ok(oDomRef, "Identifier text exists");
+	    		equals(oLandEntity.getSystemName() , "AWX", "Identifier text is AWX");
+	    		var oDomRef = jQuery.sap.domById("aminId-CLVEntityIdnRegion-CLVQuaImg");
+	    		ok(oDomRef, "Qualifier icon exists");
+	    		var oDomRef = jQuery.sap.domById("aminId-CLVEntityIdnRegion-CLVQuaTxt");
+	    		ok(oDomRef, "Qualifier text exists");
+	    		equals(oLandEntity.getQualifierText() , "ABAP", "Qualifier text is ABAP");
+				
+			});	
+			module("CLVEntityActionsCreation");
+			test("CLVEntityActionsCreationOk", function() {
+				//var oDomRef = jQuery.sap.domById(oLandEntity.getId()."CLVEntityActions");
+	    		//ok(oDomRef, "CLVEntityActions exist in the page");
+	    		for(i=0; i<oLandEntity.getModel().getData().actions.length; i++){
+	    		equals(oLandEntity.getModel().getData().actions[i].action , oLandEntity.getModel().getData().actions[i].action, "Action " + i + " is " + oLandEntity.getModel().getData().actions[i].action);
+			     }
+	    		/*
+				var oDomRef = jQuery.sap.domById("__bar0-aminId-0");
+				//var oDomRef = jQuery.sap.domById("sapLandviszAction");
+	    		ok(oDomRef, "Action 1 exists");
+	    		equals(oLandEntity.getModel().getData().actions[0].action , "Relations", "Action 1 is Relations");
+	    		var oDomRef = jQuery.sap.domById("__bar0-aminId-1");
+	    		ok(oDomRef, "Action 2 exists");
+	    		equals(oLandEntity.getModel().getData().actions[1].action , "copy", "Action 2 is copy");
+	    		var oDomRef = jQuery.sap.domById("__bar0-aminId-2");
+	    		ok(oDomRef, "Action 3 exists");
+	    		equals(oLandEntity.getModel().getData().actions[2].action , "paste", "Action 3 is paste");*/
+	    					
+			});	
+			module("CustomActionsCreation");
+			test("CustomActionsCreationOk", function() {
+				var oDomRef = jQuery.sap.domById(oLandEntity.getId()+"showAllEntityAction-CLVEntityActionImg");
+	    		ok(oDomRef, "Explode View exists");
+	    		var oDomRef = jQuery.sap.domById(oLandEntity.getId()+"maxEntityAction-CLVEntityActionImg");
+	    		ok(oDomRef, "Maximize Button exists");
+	    		//var oDomRef = jQuery.sap.domById("aminId-RestoreEntityAction");
+	    		//ok(oDomRef, "Restore icon exists");
+	    					
+			});	
+			
+			module("MiniNavigationCreation");
+			test("MiniNavigationCreationOk", function() {
+				
+				equals(jQuery.sap.byId(oLandEntity.getId()+"CLVEntityMiniNavigationHLayout").children().length, 3, "Mini Navigation exists. There should 3 items displayed : Overview, Product and Product Version");
+	    		/*
+	    		var oDomRef = jQuery.sap.domById("aminId0.8450478378217667-CLVMiniNavigation");
+	    		ok(oDomRef, "Overview exists");
+	    		var oDomRef = jQuery.sap.domById("aminId0.17577493540011346-CLVMiniNavigation");
+	    		ok(oDomRef, "Product exists");
+	    		var oDomRef = jQuery.sap.domById("aminId0.7342118218075484-CLVMiniNavigation");
+	    		ok(oDomRef, "Product Version exists");
+	    		*/
+	    					
+			});	
+			/*
+			module("NavigationHeaderCreation");
+			test("NavigationHeaderCreationOk", function() {
+				var oDomRef;
+				var oDomRef = jQuery.sap.domById("aminId0.5079969584476203-CLVMiniNavigation");
+				ok(oDomRef, "Navigation Tab exists");
+				/*for(i=0; i<oLandEntity.getModel().getData().myHeaders.length; i++){
+		    		//equals(oLandEntity.getModel().getData().myHeaders[i].header , "__container" + i + "-aminId-" + i + "-CLVItemHeader", "Action " + i + " is " + oLandEntity.getModel().getData().myHeaders[i].header);
+					oDomRef = jQuery.sap.domById("__container" + i + "-aminId-" + i + "-CLVItemHeader");
+		    		ok(oDomRef, oLandEntity.getModel().getData().myHeaders[i].header +" exists");
+				     }*/
+			/*	
+	    		var oDomRef = jQuery.sap.domById("__container0-aminId-0-CLVItemHeader");
+	    		ok(oDomRef, "Overview exists");
+	    		equals(oLandEntity.getModel().getData().myHeaders[0].header , "OverView", "Overview is selected");
+	    		var oDomRef = jQuery.sap.domById("__container0-aminId-1-CLVItemHeader");
+	    		ok(oDomRef, "Product exists");
+	    		var oDomRef = jQuery.sap.domById("__container0-aminId-2-CLVItemHeader");
+	    		ok(oDomRef, "Product Version exists");
+	    		
+	    					
+			});	
+			*/
+			module("DataContainerCreation");
+			test("DataContainerCreationOk", function() {
+				var oDomRef = jQuery.sap.domById("aminId-CLVEntityVLayoutProperties");
+	    		ok(oDomRef, "Data Container Row Field exists");
+	    		//var oDomRef = jQuery.sap.domById("aminId0OverView0.09979265346191823-CLVDatacontainerRowField-CLVConLabel");
+	    		//equals(jQuery.sap.domById(aminId0OverView0.09979265346191823-CLVDatacontainerRowField-CLVConLabel) , "OS", "Label exists");
+	    		
+	    		//ok(oDomRef, "Label exists");
+	    		//var oDomRef = jQuery.sap.domById("aminId0OverView0.09979265346191823-CLVDatacontainerRowField-CLVConValue");
+	    		//ok(oDomRef, "Value exists");	
+	    		if(oLandEntity.getModel().getData().myHeaders[0].selected == true){
+	    		equals(oLandEntity.getModel().getData().myHeaders[0].header , "OverView", "Overview is selected");
+	    		equals(oLandEntity.getModel().getData().myHeaders[0].properties[0].label, "Operating System", "Label is operating system");
+	    		equals(oLandEntity.getModel().getData().myHeaders[0].properties[0].value, "Windows Server 2003", "Value is Windows Server 2003");
+	    		equals(oLandEntity.getModel().getData().myHeaders[0].header , "OverView", "Overview is selected");
+	    		equals(oLandEntity.getModel().getData().myHeaders[0].properties[1].label, "Database", "Label is Database");
+	    		equals(oLandEntity.getModel().getData().myHeaders[0].properties[1].value, "IBM DB2", "Value is IBM DB2");
+	    		}
+	    		if(oLandEntity.getModel().getData().myHeaders[1].selected == true){
+	    		equals(oLandEntity.getModel().getData().myHeaders[1].header , "Product", "Product is selected");
+	    		equals(oLandEntity.getModel().getData().myHeaders[1].properties[0].label, "SAP Netweaver", "Label is SAP Netweaver");
+	    		equals(oLandEntity.getModel().getData().myHeaders[1].properties[0].iconType, "p", "Icon type is product");
+	    		equals(oLandEntity.getModel().getData().myHeaders[1].properties[0].iconTitle, "Product", "icon Title is Product");
+	    		
+	    		}
+	    		if(oLandEntity.getModel().getData().myHeaders[2].selected == true){
+		    		equals(oLandEntity.getModel().getData().myHeaders[2].header , "ProductVersion", "ProductVersion is selected");
+		    		equals(oLandEntity.getModel().getData().myHeaders[2].properties[0].value, "SAP Netweaver 7.0", "Value is SAP Netweaver 7.0");
+		    		equals(oLandEntity.getModel().getData().myHeaders[2].properties[0].iconType, "pv", "Icon Type is Product Version");
+		    		equals(oLandEntity.getModel().getData().myHeaders[2].properties[0].iconTitle, "ProductVersion", "icon Title is ProductVersion");
+		    		
+		    		}
+	    		
+			});	
+			
+			
+		    
+</script>
+
+</head>
+ <body class="sapUiBody">
+       	<h1 id="qunit-header">QUnit Page for CLV UI5 Control</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup, will be hidden</div>
+		<div id="content">
+       </div>
+       </body>
+</html>

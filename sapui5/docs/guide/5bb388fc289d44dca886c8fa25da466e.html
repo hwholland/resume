@@ -1,0 +1,131 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3439156669368757"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3439156669368757"/>
+<title>Request Fails Due to Same-Origin Policy (Cross-Origin Resource Sharing (CORS))</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio5bb388fc289d44dca886c8fa25da466e">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Request Fails Due to Same-Origin Policy (Cross-Origin Resource Sharing (CORS))</h1>
+
+	<div class="body conbody">
+		<p class="p">If you use a remote URL in your code, for example a remote OData service, such as the publicly available Northwind OData service, the browser may refuse to connect to a remote URL. Due to the same-origin policy, browsers deny AJAX requests to service endpoints if the domain/subdomain, protocol, or port differ from the app’s domain/subdomain, protocol, or port.</p>
+
+		<div class="section" id="loio5bb388fc289d44dca886c8fa25da466e__section_a3s_mvw_p1b"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio5bb388fc289d44dca886c8fa25da466e__fig_jyf_f1k_c5"><div class="figcontainer">
+				
+				<img class="image" id="loio5bb388fc289d44dca886c8fa25da466e__image_lmw_d1k_c5" src="loio2c36d72282e34903a97197783fe92122_HiRes.png"/>
+			<div class="figcap">Violations of the same-origin policy in Google Chrome</div></div></div>
+
+		</div></div>
+
+		<div class="section" id="loio5bb388fc289d44dca886c8fa25da466e__section_q5w_mvw_p1b"><div class="section_title">Root Cause</div><div type="Root Cause">
+			
+			<p class="p">Normally, the remote system would be configured to send the cross-origin resource sharing (CORS) headers to make the browser also allow direct access to remote URLs. However, if you, for example, use a Northwind OData service, you cannot modify the publicly available service. Then when you try to execute XHR requests (<samp class="ph codeph">XMLHttpRequest</samp>) the browser prevents the call due to the same-origin policy.</p>
+
+		</div></div>
+
+		<div class="section" id="loio5bb388fc289d44dca886c8fa25da466e__section_v4n_mvw_p1b"><div class="section_title">Resolution</div><div type="Resolution"><div class="p">To solve the issue, you have the following options:<ul class="ul" id="loio5bb388fc289d44dca886c8fa25da466e__ul_hgq_4dk_c5"><li class="li"><p class="p">Deploy the app on the same server or domain as the service that you want to call, so that both
+							resources are in the same origin (if possible)</p>
+</li>
+<li class="li"><p class="p">Set the CORS-relevant response headers on the remote system (if possible)</p>
+</li>
+<li class="li"><p class="p">Disable the same-origin policy in the browser for local testing</p>
+<p class="p">In Google Chrome, you can easily disable the same-origin policy of Chrome by running Chrome with
+							the following command:
+								<samp class="ph codeph">[your-path-to-chrome-installation-dir]\chrome.exe
+								--disable-web-security --user-data-dir</samp>. Make sure that all
+							instances of Chrome are closed before you run the command. This allows
+							all web sites to break out of the same-origin policy and connect to the
+							remote service directly. </p>
+<div class="note caution"><span class="cautiontitle">Caution</span> <p class="p"><span class="ph emphasis emphasis">This approach is not recommended for productive apps. Running Chrome this way for surfing on the internet poses a security risk.</span> However, it allows you to avoid the need of setting up a proxy at development time or for testing purposes.</p>
+</div>
+</li>
+<li class="li"><p class="p">Use a helper service from the same domain of your app as a proxy to call the real remote service as described below</p>
+</li>
+</ul>
+</div>
+<div class="sectiondiv subsection"><p class="p subsectiontitle">Using a Helper Service as a Proxy</p>
+<p class="p">A proxy is simply a service end point on the same domain of your app to overcome the restrictions. It receives requests from the app, forwards them to another server, and finally returns the corresponding response from the remote service.</p>
+<p class="p"><span class="ph pname">SAP Web IDE</span> and the <span class="ph pname">SAP Cloud Platform</span> offer destinations that allow you to easily connect to remote systems. The destination to the Northwind OData service is an internet proxy made available inside the app at <span class="ph filepath">&lt;protocol&gt;://&lt;domain&gt;/destinations/northwind/*</span>. Any request that is sent to this location is forwarded to <span class="ph filepath">http://services.odata.org</span> automatically. </p>
+
+<div class="table-wrapper tablenoborder"><table summary="" id="loio5bb388fc289d44dca886c8fa25da466e__table_dfw_f2k_c5" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+<thead class="thead" align="left"><tr class="row"><th class="entry" valign="top" width="50%" id="d6258949e94"><p class="p">Requested URL</p>
+</th>
+<th class="entry" valign="top" width="50%" id="d6258949e97"><p class="p">Forwarded To</p>
+</th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry" valign="top" width="50%" headers="d6258949e94 "><p class="p"><span class="ph filepath"> /destinations/northwind/V2/Northwind/Northwind.svc/$metadata</span></p>
+</td>
+<td class="entry" valign="top" width="50%" headers="d6258949e97 "><p class="p"><span class="ph filepath"> http://services.odata.org/V2/Northwind/Northwind.svc/$metadata</span></p>
+</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d6258949e94 "><p class="p"><span class="ph filepath"> /destinations/northwind/V2/Northwind/Northwind.svc/Invoices</span></p>
+</td>
+<td class="entry" valign="top" width="50%" headers="d6258949e97 "><p class="p"><span class="ph filepath"> http://services.odata.org/V2/Northwind/Northwind.svc/Invoices</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p">The destination itself is configured inside the <span class="ph pname">SAP Cloud Platform</span> Cockpit. For more information, see <a class="xref" href="3a16c7a2f1e944deb000db49e5ece6be.html" title="Configure a destination in the SAP Cloud Platform Cockpit in order to bypass the same-origin policy of the browser.">Create a Northwind Destination</a>. </p>
+<p class="p">We describe the setup for the <span class="ph pname">SAP Web IDE</span> in the following sections. If you are using a different development environment, you can either create a simple proxy service by yourself or use an existing one.</p>
+<p class="p">For <span class="ph pname">SAP Web IDE</span>, a <span class="ph filepath">neo-app.json</span> file is needed to make sure that the destination and resource mapping are available in the app. It has to be located in the root folder (<span class="ph filepath">webapp</span>), on the same level as the <span class="ph filepath">user.project.json</span> file that is automatically created. </p>
+<p class="p">If it does not exist yet, create a <span class="ph filepath">neo-app.json</span> file and reference the Northwind destination there. Just copy the content of the code into that file and try to run the app again.</p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">{
+  "routes": [
+    {
+      "path": "/destinations/northwind",
+      "target": {
+        "type": "destination",
+        "name": "northwind"
+      },
+      "description": "Northwind OData Service"
+    }
+  ]
+}</span></pre></div>
+<div class="note note"><span class="notetitle">Note</span> <p class="p">If the file already exists, for example, because you already created it to map the <span class="ph"><span class="ph pname">SAPUI5</span></span> resources, just append the destination to the existing <samp class="ph codeph">route</samp> definitions.</p>
+</div>
+<p class="p">In the <span class="ph filepath">manifest.json</span> descriptor file of your app, you can now change the data source to use the remote destination, for example:</p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">{
+  "_version": "1.8.0",
+  "sap.app": {
+	...
+	"dataSources": {
+	  "invoiceRemote": {
+
+		"uri": "<span class="ph emphasis emphasis">/destinations/northwind/</span>V2/Northwind/Northwind.svc/",
+		"type": "OData",
+		"settings": {
+		  "odataVersion": "2.0"
+		}
+	  }
+	}
+  },
+  "sap.ui": {
+	...
+  },
+  "sap.ui5": {
+	...
+  }
+}</pre></div>
+<p class="p">After this change, you can run the app in <span class="ph pname">SAP Web IDE</span> without disabling the same-origin policy of your browser. The destination now manages the connection to the remote service.</p>
+</div></div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

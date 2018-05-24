@@ -1,0 +1,161 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The sap.ui.richtexteditor offers functionality for text editing - like, for example, bullets, indentation, fonts, and coloring."/>
+<meta name="description" content="The sap.ui.richtexteditor offers functionality for text editing - like, for example, bullets, indentation, fonts, and coloring."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=18381639825991247"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=18381639825991247"/>
+<title>sap.ui.richtexteditor</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiod4f3f1598373452bb73f2120930c133c">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">sap.ui.richtexteditor</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The sap.ui.richtexteditor offers functionality for text editing - like, for example,
+		bullets, indentation, fonts, and coloring.   </p>
+
+		<div class="section" id="loiod4f3f1598373452bb73f2120930c133c__section_lld_djj_wz"><div class="section_title">Overview</div><div type="Overview"><p class="p">The RichTextEditor uses an
+				open-source library called TinyMCE. Beside the native toolbar, it can also use a
+				toolbar built with sap.m controls.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Preamble</p>
+
+				<p class="p">The RichTextEditor uses a third-party component and therefore some additional
+					limitations apply for its proper usage and support:</p>
+
+				<ul class="ul" id="loiod4f3f1598373452bb73f2120930c133c__ul_yrf_vwr_5bb">
+					<li class="li">
+						<p class="p">If you use API calls to the native API of TinyMCE, we
+								<span class="ph emphasis emphasis">cannot</span> guarantee backwards compatibility after
+							an upgrade of the TinyMCE library.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Accessibility features that the wrapper control provides, like high-contrast themes and
+							keyboard handling, are not fully available for the native toolbar.</p>
+
+					</li>
+
+				</ul>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Guidelines</p>
+
+				<ul class="ul" id="loiod4f3f1598373452bb73f2120930c133c__ul_hrl_pjj_wz">
+					<li class="li">
+						<p class="p">Do not instantiate the RichTextEditor from a hidden container (for
+							example a <samp class="ph codeph">div</samp> with
+								<samp class="ph codeph">visibility="hidden"&gt;</samp>).</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"> Make sure you destroy the <samp class="ph codeph">RichTextEditor</samp> instance
+							instead of hiding it and create a new one when you show it again.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">The RichTextEditor has to be used only for desktop scenarios.</p>
+
+					</li>
+
+				</ul>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Custom sap.m. Toolbar</p>
+
+				<div class="p">To replace the native toolbar, set the following properties:<ul class="ul" id="loiod4f3f1598373452bb73f2120930c133c__ul_nbh_fkj_wz">
+						<li class="li">
+							<p class="p"><samp class="ph codeph">customToolbar=true</samp></p>
+
+						</li>
+
+						<li class="li">
+							<p class="p"><samp class="ph codeph">editorType = tinyMCE4</samp></p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">If you want to use the custom toolbar, you need to instantiate the RichTextEditor in the
+								application’s controller. It cannot be embedded in an XML view.</p>
+
+						</li>
+
+					</ul>
+<div class="note caution"><span class="cautiontitle">Caution</span> 
+						<p class="p">In order to render the custom toolbar, make sure that your application
+							has loaded the sap.m library.</p>
+
+					</div>
+</div>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Custom Buttons</p>
+
+				<p class="p">With version 1.48 you can add your own buttons to the custom toolbar. The buttons
+					are stored in the <samp class="ph codeph">customButtons</samp> aggregation. Make sure that you
+					provide dedicated click events for your buttons.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Tables</p>
+
+				<p class="p">As of version 1.50, the table functionality is available just by adding the table
+					button group for both toolbars (TinyMCE and custom).</p>
+
+				<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">This changes won't affect applications already using a
+							<samp class="ph codeph">sap.ui.richtexteditor.RichTextEditor</samp> with an added
+						table plugin.</p>
+
+					<p class="p">When the table button group is added and the <samp class="ph codeph">customToolbar</samp>
+						property is set to <span class="ph emphasis emphasis"><samp class="ph codeph">true</samp></span>, a button with
+						a table icon will be visible in the custom toolbar. This button opens a
+							<samp class="ph codeph">sap.m.Dialog</samp> for inserting tables. You can choose how
+						many rows and columns your table will have and set the height and width
+						properties. After creating the table, the native TinyMCE context menu for
+						modifying the table properties, triggered from selecting the table in the
+						edit area, will be available.</p>
+
+				</div>
+
+			</div></div></div>
+
+		<div class="section"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Headings</p>
+
+				<div class="p">As of version 1.52, the heading functionality is available by adding the
+						<samp class="ph codeph">styleselect</samp> or <samp class="ph codeph">formatselect</samp> button group
+					to both toolbars (TinyMCE and custom). The available formatting options are
+					heading 1 to heading 6 and paragraph.<div class="note note"><span class="notetitle">Note</span> 
+						<p class="p">These changes won't affect applications already using a
+								<samp class="ph codeph">sap.ui.richtexteditor.RichTextEditor</samp> with an added
+								<samp class="ph codeph">styleselect</samp> or <samp class="ph codeph">formatselect</samp>
+							option.</p>
+
+					</div>
+</div>
+
+			</div><span class="ph">For
+				more information, see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.ui.richtexteditor.RichTextEditor/samples" alt="../../explored.html#/entity/sap.ui.richtexteditor.RichTextEditor/samples" title="../../explored.html#/entity/sap.ui.richtexteditor.RichTextEditor/samples">sample</a>.</span></div>
+
+	</div>
+
+	<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="363cd16eba1f45babe3f661f321a7820.html" title="SAPUI5 provides a set of JavaScript and CSS libraries, which can be combined in an application using the combinations that are supported.">Supported Library Combinations</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

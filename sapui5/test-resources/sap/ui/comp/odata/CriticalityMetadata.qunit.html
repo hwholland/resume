@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for sap.ui.comp.odata.CriticalityMetadata</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.ui.comp">
+	
+</script>
+
+<link rel="stylesheet"
+	href="../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+<script type="text/javascript">
+	(function() {
+		jQuery.sap.require("sap.ui.comp.odata.CriticalityMetadata");
+
+		module("sap.ui.comp.odata.CriticalityMetadata", {
+			setup: function() {
+				this.oCriticalityMetadata = sap.ui.comp.odata.CriticalityMetadata;
+			},
+			teardown: function() {
+				this.oCriticalityMetadata
+			}
+		});
+
+		test("Shall be instantiable", function() {
+			ok(this.oCriticalityMetadata);
+		});
+
+		test("Shall return the proper UI5 ValueState based on CriticalityType/Int32 value", function() {
+			var sState = null;
+			sState = this.oCriticalityMetadata.getCriticalityState("com.sap.vocabularies.UI.v1.CriticalityType/Neutral");
+			strictEqual(sState, "None");
+			sState = this.oCriticalityMetadata.getCriticalityState("com.sap.vocabularies.UI.v1.CriticalityType/Negative");
+			strictEqual(sState, "Error");
+			sState = this.oCriticalityMetadata.getCriticalityState("com.sap.vocabularies.UI.v1.CriticalityType/Critical");
+			strictEqual(sState, "Warning");
+			sState = this.oCriticalityMetadata.getCriticalityState("com.sap.vocabularies.UI.v1.CriticalityType/Positive");
+			strictEqual(sState, "Success");
+
+			sState = this.oCriticalityMetadata.getCriticalityState(3);
+			strictEqual(sState, "Success");
+
+			sState = this.oCriticalityMetadata.getCriticalityState("foo");
+			strictEqual(sState, undefined);
+		});
+
+		test("Shall return the proper UI5 Icon based on CriticalityType/Int32 value", function() {
+			var sIcon = null;
+
+			sIcon = this.oCriticalityMetadata.getCriticalityIcon("com.sap.vocabularies.UI.v1.CriticalityType/Neutral");
+			strictEqual(sIcon, "sap-icon://status-inactive");
+			sIcon = this.oCriticalityMetadata.getCriticalityIcon("com.sap.vocabularies.UI.v1.CriticalityType/Negative");
+			strictEqual(sIcon, "sap-icon://status-negative");
+			sIcon = this.oCriticalityMetadata.getCriticalityIcon("com.sap.vocabularies.UI.v1.CriticalityType/Critical");
+			strictEqual(sIcon, "sap-icon://status-critical");
+			sIcon = this.oCriticalityMetadata.getCriticalityIcon("com.sap.vocabularies.UI.v1.CriticalityType/Positive");
+			strictEqual(sIcon, "sap-icon://status-positive");
+
+			sIcon = this.oCriticalityMetadata.getCriticalityIcon(2);
+			strictEqual(sIcon, "sap-icon://status-critical");
+
+			sIcon = this.oCriticalityMetadata.getCriticalityIcon("foo");
+			strictEqual(sIcon, undefined);
+		});
+
+		test("Shall return the whether icon should be visible based on CriticalityRepresentationType value", function() {
+			var bIcon = null;
+			bIcon = this.oCriticalityMetadata.getShowCriticalityIcon("com.sap.vocabularies.UI.v1.CriticalityRepresentationType/WithIcon");
+			strictEqual(bIcon, true);
+
+			bIcon = this.oCriticalityMetadata.getShowCriticalityIcon("com.sap.vocabularies.UI.v1.CriticalityRepresentationType/WithoutIcon");
+			strictEqual(bIcon, false);
+
+			bIcon = this.oCriticalityMetadata.getShowCriticalityIcon(undefined);
+			strictEqual(bIcon, true);
+
+			bIcon = this.oCriticalityMetadata.getShowCriticalityIcon("foo");
+			strictEqual(bIcon, true);
+		});
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.ui.comp.odata.CriticalityMetadata</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="content"></div>
+</body>
+</html>

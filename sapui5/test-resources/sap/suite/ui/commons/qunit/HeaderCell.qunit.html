@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>HeaderCell - sap.suite.ui.commons</title>
+
+<!-- UI5 Bootstrap -->
+<script id="sap-ui-bootstrap" 
+		type="text/javascript"
+		src="../../../../../../resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_bluecrystal"
+		data-sap-ui-libs="sap.ui.core,sap.suite.ui.commons,sap.m"
+		data-sap-ui-language="en">
+</script>
+
+<!-- QUnit libraries -->
+<link rel="stylesheet"
+	href="../../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+	<script src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+	<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script>
+
+	QUnit.config.autostart = false;
+	jQuery(document).ready(function() {
+		QUnit.start();
+	});
+	jQuery.sap.initMobile();
+
+	var oNVConfM = new sap.suite.ui.commons.NumericContent("conf-tile-M", {
+		value : "1224",
+		scale : "MM",
+		valueColor : sap.suite.ui.commons.InfoTileValueColor.Good,
+		indicator : sap.suite.ui.commons.DeviationIndicator.Up,
+		size : sap.suite.ui.commons.InfoTileSize.M,
+		formatterValue : false,
+		truncateValueTo : 4
+	});
+
+	var oHcNumeric = new sap.suite.ui.commons.HeaderCell("header-cell", {
+		north : new sap.suite.ui.commons.HeaderCellItem({
+			content : oNVConfM,
+		}),
+		south:new sap.suite.ui.commons.HeaderCellItem({
+			content : new sap.m.Label("label", {text:"South label"}),
+		})
+	});
+	oHcNumeric.placeAt("qunit-fixture");
+
+	QUnit.module("Rendering test - sap.suite.ui.commons.HeaderCell");
+	QUnit.test("Header Cell rendered.", function(assert) {
+		assert.ok(jQuery.sap.domById("header-cell"), "HeaderCell was rendered successfully");
+		assert.ok(jQuery.sap.domById("conf-tile-M"), "Numeric content was rendered successfully");
+		assert.ok(jQuery.sap.domById("label"), "Label was rendered successfully");
+	});
+</script>
+</head>
+
+<body class="sapUiBody">
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+</body>
+</html>

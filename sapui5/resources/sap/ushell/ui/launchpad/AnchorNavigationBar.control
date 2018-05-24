@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<control xmlns="http://www.sap.com/sap.ui.library.xsd" >
+
+	<name>ui/launchpad/AnchorNavigationBar</name>
+	<documentation>Add your documentation for the newui/launchpad/AnchorNavigationBar</documentation>
+
+	<baseType>sap.m/Bar</baseType>
+	<properties>
+		<property name="accessibilityLabel" type="sap.ui.core/string">
+			<documentation>A value for an optional accessibility label</documentation>
+		</property>
+        <property group="Misc" name="selectedItemIndex" type="sap.ui.core/int" defaultValue="0">
+        </property>
+	</properties>
+	<aggregations>
+		<aggregation cardinality="0..n" name="groups" type="sap.ushell/ui/launchpad/AnchorItem">
+		</aggregation>
+	</aggregations>
+	<events>
+		<event name="afterRendering">
+		</event>
+        <event name="itemPress">
+        </event>
+	</events>
+</control>

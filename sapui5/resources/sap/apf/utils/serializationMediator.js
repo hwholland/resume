@@ -1,0 +1,6 @@
+/*!
+ * SAP APF Analysis Path Framework
+ * 
+ * (c) Copyright 2012-2014 SAP AG. All rights reserved
+ */
+jQuery.sap.declare("sap.apf.utils.serializationMediator");(function(){'use strict';sap.apf.utils.SerializationMediator=function(i){this.savePath=function(a,b,c){var e;i.instances.startFilterHandler.serialize().done(d);function d(s){e={filterIdHandler:i.instances.filterIdHandler.serialize(),startFilterHandler:s};if(typeof a==='string'&&typeof b==='function'){i.instances.coreApi.savePath(a,b,e);}else if(typeof a==='string'&&typeof b==='string'&&typeof c==='function'){i.instances.coreApi.savePath(a,b,c,e);}}};this.openPath=function(p,c,n){var C=function(r,e,m){if(r&&r.path&&r.path.SerializedAnalysisPath&&r.path.SerializedAnalysisPath.filterIdHandler){i.instances.filterIdHandler.deserialize(r.path.SerializedAnalysisPath.filterIdHandler);delete r.path.SerializedAnalysisPath.filterIdHandler;}if(r&&r.path&&r.path.SerializedAnalysisPath&&r.path.SerializedAnalysisPath.startFilterHandler){i.instances.startFilterHandler.deserialize(r.path.SerializedAnalysisPath.startFilterHandler);delete r.path.SerializedAnalysisPath.startFilterHandler;}c(r,e,m);};i.instances.coreApi.openPath(p,C,n);};this.deletePath=function(p,c){i.instances.coreApi.deletePath(p,c);};this.readPaths=function(c){i.instances.coreApi.readPaths(c);};};}());

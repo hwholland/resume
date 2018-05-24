@@ -1,0 +1,132 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Feature files are human-readable specifications that are also machine-readable."/>
+<meta name="description" content="Feature files are human-readable specifications that are also machine-readable."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4188278582162821"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4188278582162821"/>
+<title>Feature Files</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio9113397cd27e4a1090590e1c4f6edf5f">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Feature Files</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"> Feature files are human-readable specifications that are also machine-readable.</p>
+
+		<p class="p">The Gherkin syntax is simple. Each major software feature is written in a separate file. You need to decide how to split your software up into
+			features. For example, if you are testing a coffee machine, features might include: serving coffee, accepting money, dispensing change, setting the
+			cost of each beverage, serving hot chocolate, serving hot water, etc. Each one of these features could have its own feature file.</p>
+
+		<p class="p">Each feature file contains exactly one feature, and this feature contains one or more test scenarios. Each test scenario contains one or more test
+			steps. Test steps describe the practical steps that the user needs to perform to execute the overall test scenario.</p>
+
+		<p class="p">For example, for the "accepting money" feature, a test scenario might include steps such as (1) the user must insert enough money into the machine
+			before (2) the machine serves coffee. You could create a second test scenario, where (1) the user doesn't insert enough money and (2) the machine
+			does not serve coffee. In this example, each scenario  is composed of two steps.</p>
+
+		<div class="section"><div class="section_title">Conventions for Feature Files</div><div type="Conventions for Feature Files">
+			
+			<div class="p">
+				<ul class="ul" id="loio9113397cd27e4a1090590e1c4f6edf5f__ul_qgp_rrn_kx">
+					<li class="li">
+						<p class="p">Use the file extension <samp class="ph codeph">.feature</samp></p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Can include comments by adding the hash (<samp class="ph codeph">#</samp>) symbol at the beginning of a line</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Feature files are composed of one or more test scenarios, which walk the user through using the software; what the user does, and
+							what the expected results are.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">These scenarios are themselves composed of lines starting with the keywords <samp class="ph codeph">Given</samp>, <samp class="ph codeph">When</samp>,
+								<samp class="ph codeph">Then</samp>, <samp class="ph codeph">And</samp>, <samp class="ph codeph">But</samp> and <samp class="ph codeph">*</samp>.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">New lines begin with a keyword</p>
+
+						<ul class="ul" id="loio9113397cd27e4a1090590e1c4f6edf5f__ul_j4x_vrn_kx">
+							<li class="li">
+								<p class="p">Features start with <samp class="ph codeph">Feature</samp></p>
+
+							</li>
+
+							<li class="li">
+								<p class="p">Test scenarios start with <samp class="ph codeph">Scenario</samp></p>
+
+							</li>
+
+						</ul>
+
+						<p class="p">Indentation is purely for readability and is not parsed. Similarly, blank lines are ignored by the parser.</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">You can also just create a bulleted list of steps instead of using keywords</p>
+
+					</li>
+
+				</ul>
+
+			</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Example</div><div type="Example">
+			
+			<div class="p">The following example shows the structure of a sample feature file :
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-feature">Feature: this is the name of the feature
+
+    Here you can describe the feature. Indentation is purely to make 
+    this more readable for you. This section will not be used for 
+    testing, it is solely for human consumption.
+
+  Scenario: this is the scenario's name
+
+      This is a comment about the scenario
+
+    Given you make a certain assumption here
+    And you make another assumption
+    When some action is taken
+    Then there is an expected response that you write here
+    But there is an exception you should test for
+
+  # comment lines must start with #, and will be skipped by the parser
+
+  Scenario: another scenario's name
+    * you can also just create a bulleted list of steps
+    * instead of using keywords</pre></div>
+</div>
+
+		</div></div>
+
+	</div>
+
+<div class="related-links"> <br/>
+<div class="childtopics"><strong>In this section:</strong></div><ul class="ullinks">
+<div><strong><a class="link" href="a509db45afbe42678f33f5b07f4cc35b.html" title="We recommend that you familiarize yourself with the following advanced concepts in behavior-driven development with Gherkin.">Additional Options for Feature Files</a></strong><br/>
+</div>
+</ul>
+
+</div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<html>
+ <head>
+  <title>TestSuite for sap.ui.templateapps</title>
+  <script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-redirect.js"></script>
+  <script language="javascript">
+
+  /**
+   * Add new test suites to this test suite function.
+   * Do not add test pages here but in one of the sub testsuites.
+   */
+  function suite() {
+    var suite = new parent.jsUnitTestSuite();
+    var contextPath = "/" + window.location.pathname.split("/")[1];
+    suite.addTestPage(contextPath + "/test-resources/sap/ui/templateapps/demokit/master-detail/webapp/test/testsuite.qunit.html");
+    suite.addTestPage(contextPath + "/test-resources/sap/ui/templateapps/demokit/worklist/webapp/test/testsuite.qunit.html");
+    return suite;
+  }
+
+  </script>
+ </head>
+ <body>
+ </body>
+</html>

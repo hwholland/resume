@@ -1,0 +1,162 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="In this step, we use the automatic data type detection of the OData V4 model to parse, validate, and format user entries. The service metadata contains type information for the properties of each entity."/>
+<meta name="description" content="In this step, we use the automatic data type detection of the OData V4 model to parse, validate, and format user entries. The service metadata contains type information for the properties of each entity."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=7517384094428506"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=7517384094428506"/>
+<title>Step 3: Automatic Data Type Detection</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio96bb6e06fa22491fa65a5040f6da099c">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 3: Automatic Data Type Detection</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">In this step, we use the automatic data type detection of the OData V4 model to parse,
+		validate, and format user entries. The service metadata contains type information for the
+		properties of each entity.</p>
+
+		<p class="p">The OData V4 Model utilizes this information to compute the corresponding <span class="ph"><span class="ph pname">SAPUI5</span></span> type, including
+			constraints, and sets this type to the <span class="ph"><span class="ph pname">SAPUI5</span></span> property binding for
+			the entity property. For example, for <samp class="ph codeph">&lt;Input value={Age}/&gt;</samp> the
+				<span class="ph"><span class="ph pname">SAPUI5</span></span> type
+				<samp class="ph codeph">Int64</samp> is used, which corresponds to the OData type
+				<samp class="ph codeph">Edm.Int64</samp>.</p>
+
+		<div class="section" id="loio96bb6e06fa22491fa65a5040f6da099c__section_bt4_fxc_z1b"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio96bb6e06fa22491fa65a5040f6da099c__fig_zyb_mlb_mcb"><div class="figcontainer">
+				
+				<img class="image" id="loio96bb6e06fa22491fa65a5040f6da099c__image_qzp_llb_mcb" src="loio8320fcfb59db4d209e17a84c21e44647_LowRes.png"/>
+			<div class="figcap">Input does not match the underlying data type</div></div></div>
+
+		</div></div>
+
+		<div class="section" id="loio96bb6e06fa22491fa65a5040f6da099c__section_tsr_gxc_z1b"><div class="section_title">Coding</div><div type="Coding">
+			<p class="p">You can view and download all files <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.core.tutorial.odatav4.03/preview" alt="../../explored.html#/sample/sap.ui.core.tutorial.odatav4.03/preview" title="../../explored.html#/sample/sap.ui.core.tutorial.odatav4.03/preview">OData V4 - Step 3</a></span>.</p>
+
+		</div></div>
+
+		<div class="section" id="loio96bb6e06fa22491fa65a5040f6da099c__section_pp2_mxc_z1b"><div class="section_title">webapp/manifest.json</div><div type="webapp/manifest.json">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-json">{
+	"_version": "1.8.0",
+	"sap.app": {...
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"deviceTypes": {
+		   
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+		...
+		},
+		"dependencies": {
+			...
+			}
+		},
+		"contentDensities": {
+			...
+		},
+		<span class="ph emphasis emphasis">"handleValidation": true</span>,
+		
+		"models": {
+			...
+			}
+		}
+	},
+	"sap.platform.hcp": {
+		...
+	}
+</pre></div>
+
+			<p class="p">In the <span class="ph filepath">manifest.json</span> descriptor file, we add the <samp class="ph codeph">"handleValidation": true</samp> setting. This makes sure that any validation errors that are detected by the <span class="ph"><span class="ph pname">SAPUI5</span></span> types are shown on the UI using the message manager. </p>
+
+			<div class="p">We now run the app using the <span class="ph filepath">index.html</span> file and enter values that don't
+				match the type and constraints given in the metadata file. For example, enter the
+				string value <kbd class="ph userinput">Young at Heart</kbd> in field
+					<span class="ph uicontrol">Age</span>, which requires an integer input (<span class="ph"><span class="ph pname">SAPUI5</span></span> type
+					<samp class="ph codeph">sap.ui.model.odata.type.Int64</samp>, corresponding to OData type
+					<samp class="ph codeph">Edm.Int64</samp>), or remove an entry from the <span class="ph uicontrol">User
+					Name</span> or <span class="ph uicontrol">First Name</span> fields, which are
+				mandatory. Fields with incorrect entries are highlighted and an error message is displayed.<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">If you explicitly define a type in the binding info of a control, the
+						automatic type detection for that binding will be turned off. For example,
+						if you change the <samp class="ph codeph">Input</samp> for <samp class="ph codeph">Age</samp> in the
+						view to <samp class="ph codeph">&lt;Input value="{path:'Age',
+							type:'sap.ui.model.type.String'}/&gt;</samp>, the
+							<samp class="ph codeph">String</samp> type will be used, not the
+							<samp class="ph codeph">Int64</samp> type from the service metadata.</p>
+
+				</div>
+</div>
+
+		</div></div>
+
+		<div class="section" id="loio96bb6e06fa22491fa65a5040f6da099c__section_pvc_fyc_z1b"><div class="section_title">localService/metadata.xml</div><div type="localService/metadata.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;EntityType Name="Person"&gt;
+	&lt;Key&gt;
+		&lt;PropertyRef Name="UserName"/&gt;
+	&lt;/Key&gt;
+	&lt;Property Name="UserName" Type="Edm.String" Nullable="false" /&gt;
+	&lt;Property Name="FirstName" <span class="ph emphasis emphasis">Type="Edm.String"</span> /&gt;
+	&lt;Property Name="LastName" Type="Edm.String"/&gt;
+	&lt;Property Name="MiddleName" Type="Edm.String"/&gt;
+	&lt;Property Name="Gender" Type="Microsoft.OData.Service.Sample.TrippinInMemory.Models.PersonGender"
+			  Nullable="false"/&gt;
+	&lt;Property Name="Age" Type="Edm.Int64" /&gt;
+   </pre></div>
+
+			<p class="p">To make the <span class="ph uicontrol">First Name</span> optional, we remove the parameter
+					<samp class="ph codeph">Nullable="false"</samp> from the <samp class="ph codeph">FirstName</samp> property.
+				You can play around with the settings for the other properties, for example, change
+				the type of property <samp class="ph codeph">Age</samp> to <samp class="ph codeph">Type="Edm.String"</samp> to
+				allow free text.</p>
+
+		</div></div>
+
+		<div class="section" id="loio96bb6e06fa22491fa65a5040f6da099c__section_idw_54b_mcb">
+			<div class="note tip"><span class="tiptitle">Tip</span> 
+				<p class="p">To see the metadata of an OData service, you append the <samp class="ph codeph">$metadata</samp> variable
+					to the URL of the service. You can try this, for example, with <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fservices.odata.org%2FTripPinRESTierService%2F" alt="http://services.odata.org/TripPinRESTierService/" title="http://services.odata.org/TripPinRESTierService/">http://services.odata.org/TripPinRESTierService/<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a> and <a class="extlink" href="http://help.sap.com/disclaimer?site=http%3A%2F%2Fservices.odata.org%2FTripPinRESTierService%2F%24metadata" alt="http://services.odata.org/TripPinRESTierService/$metadata" title="http://services.odata.org/TripPinRESTierService/$metadata">http://services.odata.org/TripPinRESTierService/$metadata<img src="images/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"/></a></p>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="bcdbde6911bd4fc68fd435cf8e306ed0.html" title="In this tutorial, we explore how features of OData V4 can be used in SAPUI5. We write a small app that consumes data from an OData V4 service to understand how to access, modify, aggregate, and filter data in an OData V4 model.">OData V4</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="e9de002ddf1e478fbb9232bfba83dcf0.html" title="In this step, we see how the Table that is bound to the People entity set initially requests its data, and how the data can be refreshed. We use the Console tab in the browser developer tools to monitor the communication between the browser and the server. We see the initial request as well as the requests for refreshing the data.">Step 2: Data Access and Client-Server Communication</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="426ff318051a465191c861b51a74f00e.html" title="In this step, we add features to filter, sort, and count the user data by using the OData V4 model API to apply OData system query options $filter, $orderby, and $count.">Step 4: Filtering, Sorting, and Counting</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="54e0ddf695af4a6c978472cecb01c64d.html#loio54e0ddf695af4a6c978472cecb01c64d__Type_Determination">Binding: Type Determination</a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.model.odata.type.html" alt="../../docs/api/symbols/sap.ui.model.odata.type.html" title="../../docs/api/symbols/sap.ui.model.odata.type.html">API Reference: <samp class="ph codeph">sap.ui.model.odata.type</samp></a></div>
+<div><a class="link" href="https://sapui5.hana.ondemand.com/explored.html#/sample/sap.ui.core.sample.ViewTemplate.types/preview" alt="https://sapui5.hana.ondemand.com/explored.html#/sample/sap.ui.core.sample.ViewTemplate.types/preview" title="https://sapui5.hana.ondemand.com/explored.html#/sample/sap.ui.core.sample.ViewTemplate.types/preview">Sample for <samp class="ph codeph">sap.ui.core.mvc.XMLView</samp>: <span class="ph uicontrol">XML
+					Templating: UI5 OData types</span></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

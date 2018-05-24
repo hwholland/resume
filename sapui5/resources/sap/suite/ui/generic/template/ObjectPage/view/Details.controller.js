@@ -1,0 +1,1 @@
+sap.ui.define(["sap/suite/ui/generic/template/lib/TemplateAssembler","sap/suite/ui/generic/template/ObjectPage/controller/ControllerImplementation"],function(T,C){"use strict";return T.getTemplateController(C.getMethods,"sap.suite.ui.generic.template.ObjectPage.view.Details",{});},true);

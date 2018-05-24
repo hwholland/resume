@@ -1,0 +1,87 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=09342852753394815"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=09342852753394815"/>
+<title>Defining Line Items</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiof0e1e1743bef4f519c34025ad4351f77">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Defining Line Items</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">To define the line items of a table, use <samp class="ph codeph">com.sap.vocabularies.UI.v1.LineItem</samp>
+			as shown in the code samples below. The rendering result is as follows:</p>
+
+		<div class="p">
+			<div class="fig fignone" id="loiof0e1e1743bef4f519c34025ad4351f77__fig_irb_m5w_pv"><div class="figcontainer">
+				
+				<img class="image" id="loiof0e1e1743bef4f519c34025ad4351f77__image_jrb_m5w_pv" src="loio69a7c44950a042b68c1ef3cf9d7f811a_LowRes.png"/>
+			<div class="figcap">List Report: LineItem of Root EntitySet</div></div></div>
+
+		</div>
+
+		<p class="p">This video shows the step-by-step procedure for adding line items to a list report table:
+				<div class="video-links-disclaimer"><span class="video-links-disclaimer-label">Disclaimer: </span>The below video <img src="images/3rd_link.png" title="Information published on non-SAP site" alt="Information published on non-SAP site"/> is not part of the SAP product documentation.  Please read the <a href="http://help.sap.com/disclaimer?site=">legal disclaimer</a> for video links before viewing this video.</div><div class="iframe-wrapper"><iframe width="" height="" src="https://www.youtube.com/embed/FJp7636DeAw">
+</iframe></div></p>
+
+		<div class="section"><div class="section_title">Code Samples</div><div type="Code Samples">
+			
+			<div class="p"><span class="ph emphasis emphasis">Root entitySet in
+				manifest.json</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">"pages: [
+    {
+	"entitySet": "SEPMRA_C_PD_Product",
+	"component": {
+	     "name": "sap.suite.ui.generic.template.ListReport",
+	     "list": true
+	},</pre></div>
+</div>
+
+			<div class="p"><span class="ph emphasis emphasis">Annotation XML: Determining Column
+				Names</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">...
+&lt;Annotation Term="UI.LineItem"&gt;
+    &lt;Collection&gt;
+	&lt;RecordType="UI.DataField"&gt;
+	    &lt;PropertyValue Property="Value" Path="Product"/&gt;
+	    &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+	&lt;/Record&gt;
+	&lt;RecordType="UI.DataField"&gt;
+	    &lt;PropertyValue Property="Value" Path="ProductCategory"/&gt;
+	    &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+	&lt;/Record&gt;
+	&lt;RecordType="UI.DataField"&gt;
+	    &lt;PropertyValue Property="Value" Path="Supplier"/&gt;
+	    &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+	&lt;/Record&gt;
+    &lt;/Collection&gt;
+&lt;/Annotation&gt;</pre></div>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">More Information</div><div type="More Information">
+			
+			<p class="p">For information about adding actions for line items in the list report view, see
+					<a class="xref" href="8ba009d7b8434dc1a4948c9211e30c40.html">Enabling Actions in the List Report</a>.</p>
+
+			<p class="p">For information about responsiveness options in tables, see <a class="xref" href="69efbe747fc44c0fa445b24ed369cb1e.html" title="When using SAP Fiori elements, you can make use of specific responsiveness options. For example, in pages that have toolbars (such as list report tables, object page tables, and smart chart toolbars), the system evaluates the com.sap.vocabularies.UI.v1.Importance for each field:">Responsiveness Options: Example</a>.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

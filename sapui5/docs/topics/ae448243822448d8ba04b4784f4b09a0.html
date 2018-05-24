@@ -1,0 +1,850 @@
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html lang="en-us" dir="ltr">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Test Automation</title>
+      <link rel="icon" href="themes/sap-default/img/favicon.ico" type="image/x-icon">
+      <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="abstract" content="To make sure that the code is always tested thoroughly before it is included in a productive app, you should use a test runner that automates tests. The test runner can be included in your project setup so that it is called whenever code changes are submitted.">
+      
+      <meta name="description" content="To make sure that the code is always tested thoroughly before it is included in a productive app, you should use a test runner that automates tests. The test runner can be included in your project setup so that it is called whenever code changes are submitted.">
+      <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"ae448243822448d8ba04b4784f4b09a0.html","previousTopicHref":"a428d4128f22435693a65223fe6d8ff2.html"}</script>
+      <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
+      <script type="text/javascript">
+      
+        d4p.cssGridPath = d4p.dev ? 'html5-themes/modules/960-Responsive-Grid/css/' : 'themes/dita-d4p-classic/css/';
+        var ADAPT_CONFIG = {
+          // Where is your CSS?
+          path: d4p.relativePath + d4p.cssGridPath,
+
+          // false = Only run once, when page first loads.
+          // true = Change on window resize and page tilt.
+          dynamic: true,
+
+          // Optional callback... myCallback(i, width)
+          callback: doc_resize,
+
+          // First range entry is the minimum.
+          // Last range entry is the maximum.
+          // Separate ranges by "to" keyword.
+          range: [
+             // small (size-0)
+            '0px    to 760px  =',
+             // medium (size-1, size-2)
+            '760px  to 980px  = ',
+            '980px  to 1270px = ',
+             // large (size-3, size-5)
+            '1270px to 1600px = ',
+            '1600px to 1940px = ',
+             // extra large (size-6)
+            '1940px to 2540px = ',
+            '2540px           = '
+          ]
+        };
+
+        function doc_resize(i, width)
+        {
+          d4p.setBodyClassfunction(i, width);
+        }
+
+
+        
+      </script>
+      <script type="text/javascript" src="toc-info.js"></script>
+      <script type="text/javascript" src="themes/sap-default/js/script.js"></script>
+      
+      		<!--[if lt IE 9]>
+      			<script>
+      			  var e = ("abbr,article,aside,audio,canvas,datalist,details," +
+      			    "figure,footer,header,hgroup,mark,menu,meter,nav,output," +
+      			    "progress,section,time,video").split(',');
+      			  for (var i = 0; i < e.length; i++) {
+      			    document.createElement(e[i]);
+      			  }
+      			</script>
+      		<![endif]-->
+      
+      <script>
+      function addLoadEvent(func) {
+      var oldonload = window.onload;
+      if (typeof window.onload != 'function') {
+      window.onload = func;
+      } else {
+      window.onload = function() {
+      if (oldonload) {
+      oldonload();
+      }
+      func();
+      }
+      }
+      }
+      
+      addLoadEvent(function() { prettyPrint();
+      if ($('#local-navigation').length) {
+      $('#local-navigation').navigation();
+      }
+      
+      
+      });
+      
+      </script>
+      <script type="text/javascript" src="js/prettify.js"> </script>
+      <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
+      <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
+   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+      <div id="d4h5-main-container" class="container_12" role="application">
+         <ul id="page-links" class="hidden">
+            <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
+            <li><a id="skip-to-localnav" href="#local-navigation">Skip to navigation</a></li>
+            <li><a id="skip-to-footer" href="#footer-container">Skip to footer</a></li>
+         </ul>
+         
+         
+         <div id="d4h5-section-container" class="grid_12" style="padding-top: 0;">
+            
+            
+            
+            <div id="d4h5-main-content" class="grid_8 alpha omega" style="margin: 0 0.5em;">
+               <section>
+                  <div id="content-toolbar" class="toolbar hide-for-small"></div>
+                  <div class="page concept  - topic-topic concept-concept " id="loioae448243822448d8ba04b4784f4b09a0">
+                     
+                     <h1 class="title topictitle1" hidden>Test Automation</h1>
+                     
+                     <div class="body conbody">
+                        <p class="shortdesc" hidden>To make sure that the code is always tested thoroughly before it is included in a
+                           		productive app, you should use a test runner that automates tests. The test runner can be
+                           		included in your project setup so that it is called whenever code changes are
+                           		submitted.
+                        </p>
+                        
+                        		
+                        <p class="p">In the following section, we describe the setup with <span class="ph uicontrol">Karma</span>, but you can
+                           			of course choose a different solution.
+                        </p>
+                        
+                        		
+                        <p class="p"><span class="ph uicontrol">Karma</span> uses adapters to include testing frameworks such as QUnit. In <span class="ph"><span class="ph pname">SAPUI5</span></span>, you can use the
+                           				<samp class="ph codeph">karma-openui5</samp> adapter. This adapter loads <span class="ph"><span class="ph pname">SAPUI5</span></span> from the specified
+                           			location and makes it available for the tests to run in
+                           			<span class="ph uicontrol">Karma</span>.
+                        </p>
+                        
+                        	
+                     </div>
+                     
+                     <div class="related-links"> 
+                        
+                        <div class="relinfo">
+                           <div class="relinfotitle ">Related Information</div>
+                           
+                           <div><a class="link" href="../../#/topic/fe7a158313af4590ad60f844e5b43b80.html" title="This section describes the setup of a development project where multiple developers work together on the same code." target="_top">Continuous Integration: Ensure Code Quality</a></div>
+                           
+                           <div><a class="extlink" href="http://help.sap.com/disclaimer?site=https://karma-runner.github.io/" target="_blank" alt="https://karma-runner.github.io/" title="https://karma-runner.github.io/"><span class="ph uicontrol">Karma</span> Home Page<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a></div>
+                           
+                        </div>
+                        
+                     </div>
+                     <div class="topic task nested1" lang="en-US" id="loioa182676ed3714bd5b4f011eb29076f6c">
+                        	
+                        <h2 class="title topictitle2">Installing Karma for Automated Testing</h2>
+                        
+                        	
+                        	
+                        <div class="body taskbody">
+                           <p class="shortdesc" hidden>Initial setup of the application testing environment with Karma.</p>
+                           
+                           		
+                           <div class="section prereq p" id="loioa182676ed3714bd5b4f011eb29076f6c__prereq_opk_1my_bcb">
+                              <div class="tasklabel">
+                                 <h3 class="sectiontitle tasklabel">Prerequisites</h3>
+                              </div>
+                              			
+                              <p class="p">You have <span class="ph uicontrol">Node.js</span> and <span class="ph uicontrol">npm</span> installed. For
+                                 				more information, see <a class="xref" href="../../#/topic/98a4d1ded43945e5802dbffc53ffb7b8.html" title="Installation steps for Node.js" target="_top">Installing the Node.js-Based Development Environment</a>.
+                              </p>
+                              
+                              		
+                           </div>
+                           
+                           		<span id="steps" class="anchor"></span><section class="section procedure">
+                              <div class="ol steps tasklabel">
+                                 <h3 class="sectiontitle tasklabel">Procedure</h3>
+                              </div>
+                              <ol class="ol steps" id="loioa182676ed3714bd5b4f011eb29076f6c__steps_av1_rfy_bcb">
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Install <span class="ph uicontrol">Karma</span> globally via <span class="ph uicontrol">npm</span> so that you
+                                       					can run <span class="ph uicontrol">Karma</span> by typing the <samp class="ph codeph">karma</samp>
+                                       					command in your command-line interface (CLI).</span>
+                                    				
+                                    <div class="itemgroup info">
+                                       					
+                                       <p class="p">For more information, see the <a class="extlink" href="http://help.sap.com/disclaimer?site=http://karma-runner.github.io/1.0/intro/installation.html" target="_blank" alt="http://karma-runner.github.io/1.0/intro/installation.html" title="http://karma-runner.github.io/1.0/intro/installation.html">Karma Installation Guide on GitHub<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a>.
+                                       </p>
+                                       
+                                       					
+                                       <div class="p">Use the following
+                                          						command:<pre class="pre codeblock prettyprint nocode">npm install --global karma-cli</pre>
+                                          </div>
+                                       
+                                       				
+                                    </div>
+                                    			
+                                 </li>
+                                 
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Create a <span class="ph filepath">package.json</span> file.</span>
+                                    				
+                                    <ul class="ul choices" id="loioa182676ed3714bd5b4f011eb29076f6c__choices_rxm_11f_ccb">
+                                       					
+                                       <li class="li choice">
+                                          						
+                                          <p class="p">If you already have an <span class="ph uicontrol">npm</span> project, you can skip
+                                             							this step.
+                                          </p>
+                                          
+                                          					
+                                       </li>
+                                       
+                                       					
+                                       <li class="li choice">
+                                          						
+                                          <div class="p">If not, use the following
+                                             							command:<pre class="pre codeblock prettyprint nocode">npm init --yes</pre>
+                                             </div>
+                                          
+                                          					
+                                       </li>
+                                       
+                                       				
+                                    </ul>
+                                    
+                                    			
+                                 </li>
+                                 
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Install <span class="ph uicontrol">Karma</span> locally in your working directory.</span>
+                                    				
+                                    <div class="itemgroup info">
+                                       					
+                                       <div class="p">Use the following
+                                          						command:<pre class="pre codeblock prettyprint nocode">npm install --save-dev karma</pre>
+                                          </div>
+                                       
+                                       				
+                                    </div>
+                                    			
+                                 </li>
+                                 
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Generate a <span class="ph filepath">karma.conf.js</span> configuration file.</span>
+                                    				
+                                    <div class="itemgroup info">
+                                       					
+                                       <div class="p">Use the following command:<pre class="pre codeblock prettyprint nocode">karma init</pre>
+                                          </div>
+                                       
+                                       					
+                                       <div class="p">Answer the questions that follow during the initialization process as in this
+                                          						example:<pre class="pre codeblock prettyprint nocode">Which testing framework do you want to use ?
+Press tab to list possible options. Enter to move to the next question.
+&gt; qunit
+
+Do you want to use Require.js ?
+This will add Require.js plugin.
+Press tab to list possible options. Enter to move to the next question.
+&gt; no
+
+Do you want to capture any browsers automatically ?
+Press tab to list possible options. Enter empty string to move to the next question.
+&gt; Chrome
+&gt;
+
+What is the location of your source and test files ?
+You can use glob patterns, eg. &quot;js/*.js&quot; or &quot;test/**/*Spec.js&quot;.
+Enter empty string to move to the next question.
+&gt;
+
+Should any of the files included by the previous patterns be excluded ?
+You can use glob patterns, eg. &quot;**/*.swp&quot;.
+Enter empty string to move to the next question.
+&gt;
+
+Do you want Karma to watch all the files and run the tests on change ?
+Press tab to list possible options.
+&gt; yes
+
+</pre>
+                                          </div>
+                                       
+                                       					
+                                       <p class="p">For more information, see the <a class="extlink" href="http://help.sap.com/disclaimer?site=https://karma-runner.github.io/1.0/intro/configuration.html" target="_blank" alt="https://karma-runner.github.io/1.0/intro/configuration.html" title="https://karma-runner.github.io/1.0/intro/configuration.html">Karma Configuration Guide on GitHub<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a>.
+                                       </p>
+                                       
+                                       					
+                                       <p class="p">In this example, we use QUnit as testing framework and Google Chrome as browser. You can
+                                          						find an overview of available browser launchers and adapters by searching
+                                          						for packages with the keywords <a class="extlink" href="http://help.sap.com/disclaimer?site=https://npmjs.org/browse/keyword/karma-launcher" target="_blank" alt="https://npmjs.org/browse/keyword/karma-launcher" title="https://npmjs.org/browse/keyword/karma-launcher"><samp class="ph codeph">karma-launcher</samp><img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a> and <a class="extlink" href="http://help.sap.com/disclaimer?site=https://npmjs.org/browse/keyword/karma-adapter" target="_blank" alt="https://npmjs.org/browse/keyword/karma-adapter" title="https://npmjs.org/browse/keyword/karma-adapter"><samp class="ph codeph">karma-adapter</samp><img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a> on the
+                                          							<span class="ph uicontrol">npm</span> home page.
+                                       </p>
+                                       
+                                       				
+                                    </div>
+                                    			
+                                 </li>
+                                 
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Install QUnit.</span>
+                                    				
+                                    <div class="itemgroup info">
+                                       					
+                                       <p class="p">The QUnit version that you install depends on which version of QUnit you are using in your
+                                          						test files. You can use version 1 or version 2.
+                                       </p>
+                                       
+                                       				
+                                    </div>
+                                    				
+                                    <ul class="ul choices">
+                                       					
+                                       <li class="li choice">
+                                          						
+                                          <div class="p">Use the following command for version
+                                             							1:<pre class="pre codeblock prettyprint nocode">npm install --save-dev qunitjs@^1</pre>
+                                             </div>
+                                          
+                                          					
+                                       </li>
+                                       
+                                       					
+                                       <li class="li choice">
+                                          						
+                                          <div class="p">Use the following command for version
+                                             							2:<pre class="pre codeblock prettyprint nocode">npm install --save-dev qunitjs@^2</pre>
+                                             </div>
+                                          
+                                          					
+                                       </li>
+                                       
+                                       				
+                                    </ul>
+                                    
+                                    			
+                                 </li>
+                                 
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Install and configure the <samp class="ph codeph">karma-openui5</samp> adapter for <span class="ph"><span class="ph pname">SAPUI5</span></span>.</span>
+                                    				
+                                    <div class="itemgroup info">
+                                       					
+                                       <div class="p">Use the following command to install the
+                                          						adapter:<pre class="pre codeblock prettyprint nocode">npm install --save-dev karma-openui5</pre>
+                                          </div>
+                                       
+                                       					
+                                       <div class="p">Add the following code to the <samp class="ph codeph">frameworks</samp> section of the
+                                          							<span class="ph filepath">karma.conf.js</span>
+                                          						file:<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+  config.set({
+
+    [...]
+
+    // frameworks to use
+    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+    <span class="ph emphasis emphasis">frameworks: [&apos;qunit&apos;, &apos;openui5&apos;],</span>
+
+    [...]
+
+  });
+};</pre>
+                                          </div>
+                                       
+                                       				
+                                    </div>
+                                    			
+                                 </li>
+                                 
+                              </ol>
+                              
+                           </section>
+                           	
+                        </div>
+                        
+                        	
+                        <div class="related-links"> 
+                           
+                           <div class="relinfo">
+                              <div class="relinfotitle ">Related Information</div>
+                              
+                              <div><a class="extlink" href="http://help.sap.com/disclaimer?site=https://karma-runner.github.io/" target="_blank" alt="https://karma-runner.github.io/" title="https://karma-runner.github.io/"><span class="ph uicontrol">Karma</span> Home Page<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a></div>
+                              
+                              <div><a class="extlink" href="http://help.sap.com/disclaimer?site=http://nodejs.org/" target="_blank" alt="http://nodejs.org/" title="http://nodejs.org/"><span class="ph uicontrol">Node.js</span> Home Page<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a></div>
+                              
+                              <div><a class="extlink" href="http://help.sap.com/disclaimer?site=https://www.npmjs.com/" target="_blank" alt="https://www.npmjs.com/" title="https://www.npmjs.com/"><span class="ph uicontrol">npm</span> Home Page<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a></div>
+                              
+                              <div><a class="extlink" href="http://help.sap.com/disclaimer?site=https://github.com/SAP/karma-openui5" target="_blank" alt="https://github.com/SAP/karma-openui5" title="https://github.com/SAP/karma-openui5"><samp class="ph codeph">karma-openui5</samp> on GitHub<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a></div>
+                              
+                           </div>
+                           
+                        </div>
+                        
+                     </div>
+                     
+                     <div class="topic task nested1" lang="en-US" id="loiod2c0f3b3fe2245ce81b3f2e875acfd41">
+                        	
+                        <h2 class="title topictitle2">Configuring Karma for Your App</h2>
+                        
+                        	
+                        	
+                        <div class="body taskbody">
+                           <p class="shortdesc" hidden>Configure <span class="ph uicontrol">Karma</span> for test automation of your app.
+                           </p>
+                           
+                           		
+                           <div class="section prereq p" id="loiod2c0f3b3fe2245ce81b3f2e875acfd41__prereq_jdt_3my_bcb">
+                              <div class="tasklabel">
+                                 <h3 class="sectiontitle tasklabel">Prerequisites</h3>
+                              </div>
+                              			
+                              <div class="p">All tests are written according to the <span class="ph"><span class="ph pname">SAPUI5</span></span> best practices.
+                                 				This means: 
+                                 <ul class="ul" id="loiod2c0f3b3fe2245ce81b3f2e875acfd41__ul_m4d_hhy_bcb">
+                                    					
+                                    <li class="li">
+                                       						
+                                       <p class="p">Tests are written with proper
+                                          								<samp class="ph codeph">sap.ui.define</samp>/<samp class="ph codeph">sap.ui.require</samp> AMD
+                                          							syntax.
+                                       </p>
+                                       
+                                       					
+                                    </li>
+                                    
+                                    					
+                                    <li class="li">
+                                       						
+                                       <p class="p">Use <samp class="ph codeph">sap.ui.require</samp> only in HTML pages (<span class="ph filepath">*.qunit.html</span>).
+                                          							For all other test files, use <samp class="ph codeph">sap.ui.define</samp>. 
+                                       </p>
+                                       
+                                       					
+                                    </li>
+                                    
+                                    					
+                                    <li class="li">
+                                       						
+                                       <p class="p">Individual test files do not load or include QUnit, as <span class="ph uicontrol">Karma</span> already
+                                          							requires its own version of QUnit. The only place where QUnit should be
+                                          							included, is in the respective QUnit test pages
+                                          								(<span class="ph filepath">*.qunit.html</span>).
+                                       </p>
+                                       
+                                       					
+                                    </li>
+                                    
+                                    				
+                                 </ul>
+                                 
+                                 <aside class="note note  insertion"><span class="title">Note</span> 
+                                    					
+                                    <p class="p">If you follow the recommendations given in the <span class="ph uicontrol">Testing</span>
+                                       						tutorial, these prerequisites should be fulfilled. For more information, see
+                                       							<a class="xref" href="../../#/topic/291c9121e6044ab381e0b51716f97f52.html" title="In this tutorial we will test application functionality with the testing tools that are delivered with SAPUI5. At different steps of this tutorial you will write tests using QUnit, OPA5, and the mock server. Additionally, you will learn about testing strategies, Test Driven Development (TDD), and much more." target="_top">Testing</a>. 
+                                    </p>
+                                    
+                                    				
+                                 </aside>
+                                 
+                              </div>
+                              
+                              		
+                           </div>
+                           
+                           		<span id="steps" class="anchor"></span><section class="section procedure">
+                              <div class="ol steps tasklabel">
+                                 <h3 class="sectiontitle tasklabel">Procedure</h3>
+                              </div>
+                              <ol class="ol steps" id="loiod2c0f3b3fe2245ce81b3f2e875acfd41__steps_sqt_vmy_bcb">
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Add your app folder to the <span class="ph uicontrol">Karma</span> configuration file
+                                       						(<span class="ph filepath">karma.conf.js</span>) as <samp class="ph codeph">basePath</samp>.</span>
+                                    				
+                                    <div class="itemgroup info">
+                                       					
+                                       <p class="p">In the <span class="ph uicontrol">Testing</span> tutorial, the app is located in the
+                                          							<samp class="ph codeph">webapp</samp> folder. The configuration looks like this:
+                                       </p>
+                                       
+                                       					
+                                       <div class="p">
+                                          						<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+  config.set({
+    [...]
+    // base path that will be used to resolve all patterns (eg. files, exclude)
+    <span class="ph emphasis emphasis">basePath: &apos;webapp&apos;,</span>
+    [...]
+  });
+};</pre>
+                                          
+                                          					</div>
+                                       
+                                       				
+                                    </div>
+                                    			
+                                 </li>
+                                 
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Set the path to the <span class="ph"><span class="ph pname">SAPUI5</span></span> resources in
+                                       					the <span class="ph uicontrol">Karma</span> configuration file
+                                       						(<span class="ph filepath">karma.conf.js</span>).</span>
+                                    				
+                                    <div class="itemgroup info">To start the testing environment, the adapter needs to start <span class="ph"><span class="ph pname">SAPUI5</span></span>. Provide a
+                                       					URL to the relevant source location to be included for
+                                       						testing.<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+  config.set({
+    [...]
+    <span class="ph emphasis emphasis">openui5: {
+      path: &apos;http://&lt;<var class="keyword varname">&lt;server&gt;</var>&gt;:&lt;<var class="keyword varname">&lt;port&gt;</var>&gt;/resources/sap-ui-core.js&apos;
+</span>    },
+    [...]
+  });
+};</pre>
+                                       <div class="p">Adapt
+                                          						the path
+                                          								(<samp class="ph codeph">&lt;<var class="keyword varname">&lt;server&gt;</var>&gt;:&lt;<var class="keyword varname">&lt;port&gt;</var>&gt;</samp>)
+                                          						to the <span class="ph"><span class="ph pname">SAPUI5</span></span>
+                                          						resources according to your installation. You can also use <span class="ph"><span class="ph pname">SAPUI5</span></span> from a
+                                          						content delivery network (see <a class="xref" href="../../#/topic/2d3eb2f322ea4a82983c1c62a33ec4ae.html" title="SAPUI5 can either be loaded locally with a relative path from a Web server or externally from a Content Delivery Network (CDN)." target="_top">Variant for Bootstrapping from Content Delivery Network</a>).
+                                          <aside class="note note  insertion"><span class="title">Note</span> 
+                                             							
+                                             <p class="p">Also use <samp class="ph codeph">openui5</samp> for apps that are based on <span class="ph pname">SAPUI5</span>
+                                                								because the core libraries are located in the
+                                                									<samp class="ph codeph">openui5</samp> namespace for both flavors.
+                                             </p>
+                                             
+                                             						
+                                          </aside>
+                                          
+                                       </div>
+                                       
+                                    </div>
+                                    			
+                                 </li>
+                                 
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Pass on the <span class="ph"><span class="ph pname">SAPUI5</span></span>
+                                       					configuration.</span>
+                                    				
+                                    <div class="itemgroup info">
+                                       					
+                                       <div class="p">You can create an object that configures the adapter with any of the <span class="ph"><span class="ph pname">SAPUI5</span></span> configuration options like in the following example:<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+  config.set({
+    [...]
+    <span class="ph emphasis emphasis">client: {
+      openui5: {
+        config: {
+          theme: &apos;sap_belize&apos;,
+          language: &apos;EN&apos;,
+          resourceroots: {
+            &apos;my.own.application&apos;: &apos;./base&apos;,
+            &apos;test&apos;: &apos;./base/test&apos;
+          }
+        }
+      }
+    },</span>
+    [...]
+  });
+};</pre>
+                                          </div>
+                                       
+                                       					
+                                       <p class="p">For more information, see <a class="xref" href="../../#/topic/91f2d03b6f4d1014b6dd926db0e91070.html" title="The complete list of configuration options available in SAPUI5 can be found in the API Reference under sap.ui.core.Configuration. The following table shows a subset of the available configuration options." target="_top">Configuration Options and URL Parameters</a></p>
+                                       
+                                       				
+                                    </div>
+                                    			
+                                 </li>
+                                 
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Include your tests.</span>
+                                    				
+                                    <div class="itemgroup info">
+                                       					
+                                       <p class="p">All tests should be listed in specific files. You can, for example, collect all unit tests
+                                          						in an <span class="ph filepath">allTests.js</span> file and all OPA integration tests in
+                                          						an <span class="ph filepath">AllJourneys.js</span> file. With the help of these files,
+                                          							<span class="ph uicontrol">Karma</span> can find all tests that belong to specific
+                                          						modules or components.
+                                       </p>
+                                       
+                                       					
+                                       <div class="p">Add the module names of the files to the
+                                          						configuration:<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+  config.set({
+
+    [...]
+
+    client: {
+      openui5: {
+<span class="ph emphasis emphasis">        tests: [
+          &apos;test/unit/allTests&apos;,
+          &apos;test/integration/AllJourneys&apos;
+</span>
+        ]
+      }
+    }
+
+    [...]
+
+  });
+};</pre>
+                                          </div>
+                                       
+                                       				
+                                    </div>
+                                    			
+                                 </li>
+                                 
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Configure which files are served by <span class="ph uicontrol">Karma</span>.</span>
+                                    				
+                                    <div class="itemgroup info">
+                                       					
+                                       <div class="p">Configure Karma to load and serve files with its integrated web server. The <span class="ph"><span class="ph pname">SAPUI5</span></span> adapter
+                                          						takes care of loading the tests (as configured in the previous step), so you
+                                          						just make all files available by using the <samp class="ph codeph">**</samp>
+                                          						pattern:<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+  config.set({
+
+    [...]
+
+    <span class="ph emphasis emphasis">// list of files / patterns to load in the browser
+    files: [
+      { pattern: &apos;**&apos;, included: false, served: true, watched: true }
+    ],
+</span>
+
+    [...]
+
+  });
+};</pre>
+                                          </div>
+                                       
+                                       				
+                                    </div>
+                                    			
+                                 </li>
+                                 
+                                 <li class="li step stepexpand">
+                                    				<span class="ph cmd">Configure the mock server.</span>
+                                    				
+                                    <div class="itemgroup info">
+                                       <div class="p">For the mock server configuration, you can pass an object like you would for the
+                                          							<samp class="ph codeph">sap.ui.core.util.MockServer.config</samp> function. If you use
+                                          						the mock server, the <samp class="ph codeph">rootUri</samp> and the
+                                          							<samp class="ph codeph">metadataURL</samp> are required properties . You can also pass
+                                          						mock data settings like you would for the simulate function of the mock
+                                          						server. The mock server needs to be enabled explicitly by setting the
+                                          							<samp class="ph codeph">useMockServer</samp>
+                                          						option:<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+  config.set({
+
+    [...]
+
+    openui5: {
+      useMockServer: true
+    },
+    client: {
+      openui5: {
+        <span class="ph emphasis emphasis">mockserver: {
+          config: {
+            autoRespond: true
+          },
+          rootUri: &apos;/my/service/&apos;,
+          metadataURL: &apos;/test/mock.xml&apos;,
+          mockdataSettings: {}
+        }
+</span>
+      }
+    },
+
+    [...]
+
+  });
+};</pre>
+                                          </div>
+                                       For
+                                       					more information, see <a class="xref" href="../../#/topic/69d3cbd4150c4ffb884e788f7f60fd93.html" title="Mock server is a mocking framework for HTTP and HTTPS that is used to simplify integration testing and to decouple development teams by allowing to develop against a service that is not complete or unstable." target="_top">Mock Server</a>.
+                                    </div>
+                                    			
+                                 </li>
+                                 
+                              </ol>
+                              
+                           </section>
+                           		
+                           <div class="section result" id="loiod2c0f3b3fe2245ce81b3f2e875acfd41__result_jff_zry_bcb"><span id="results" class="anchor"></span><div class="tasklabel">
+                                 <h3 class="sectiontitle tasklabel">Results</h3>
+                              </div>
+                              			
+                              <div class="p">You can now run the tests with the following
+                                 				command:<pre class="pre codeblock prettyprint nocode">karma start</pre>
+                                 </div>
+                              
+                              		
+                           </div>
+                           	
+                        </div>
+                        
+                        
+                     </div>
+                     
+                     <div class="topic concept nested1" lang="en-US" id="loio8c27b0ab239242c69f181208c9b8fb1d">
+                        	
+                        <h2 class="title topictitle2">Automating Tests that Use iFrames</h2>
+                        
+                        	
+                        	
+                        <div class="body conbody">
+                           <p class="shortdesc" hidden>When tests are run in an iFrame, for example OPA5 tests, you have to configure some
+                              		additional settings.
+                           </p>
+                           
+                           		
+                           <div class="section">
+                              			
+                              <p class="p">Make sure that the <span class="ph filepath">*.html</span> file that loads <span class="ph"><span class="ph pname">SAPUI5</span></span> can find the
+                                 				resources relative to its location. (The resource location must be the location
+                                 				configured as the <samp class="ph codeph">basePath</samp> in the
+                                 					<span class="ph filepath">karma.conf.js</span> file.
+                              </p>
+                              
+                              			
+                              <div class="p">Add the proxy settings to the <span class="ph filepath">karma.conf.js</span> file:<pre class="pre codeblock prettyprint lang-js">module.exports = function(config) {
+  config.set({
+    [...]
+    // map of path-proxy pairs
+    <span class="ph emphasis emphasis">proxies: {
+      &apos;/resources&apos;: &apos;http://&lt;<var class="keyword varname">&lt;server&gt;</var>&gt;:&lt;<var class="keyword varname">&lt;port&gt;</var>&gt;/resources&apos;,
+      &apos;/test-resources&apos;: &apos;http://&lt;<var class="keyword varname">&lt;server&gt;</var>&gt;:&lt;<var class="keyword varname">&lt;port&gt;</var>&gt;/test-resources&apos;
+    },</span>
+    [...]
+  });
+};</pre>
+                                 </div>
+                              
+                              			
+                              <aside class="note note  insertion"><span class="title">Note</span> 
+                                 				
+                                 <p class="p">Adapt the path
+                                    							(<samp class="ph codeph">&lt;<var class="keyword varname">&lt;server&gt;</var>&gt;:&lt;<var class="keyword varname">&lt;port&gt;</var>&gt;</samp>)
+                                    					according to your installation.
+                                 </p>
+                                 
+                                 			
+                              </aside>
+                              
+                              		
+                           </div>
+                           
+                           		
+                           <div class="section" id="loio8c27b0ab239242c69f181208c9b8fb1d__section_ccz_gsy_bcb">
+                              <section class="section" type="Code Coverage with Istanbul and OPA5">
+                                 <h2 class="section_title" style="font-size: 1.15em;">Code Coverage with Istanbul and OPA5</h2>
+                                 			
+                                 			
+                                 <p class="p">To measure the code coverage, you can use the <span class="ph uicontrol">Istanbul Code Coverage</span>
+                                    				plugin for <span class="ph uicontrol">Karma</span>. Since the <span class="ph uicontrol">Istanbul</span>
+                                    				plugin cannot retrieve results from within iFrames, you may run into problems if you
+                                    				use OPA5 tests.
+                                 </p>
+                                 
+                                 			
+                                 <p class="p">To get correct code coverage results for OPA5 tests, you need to execute them inside the
+                                    				component containers instead of iFrames. This will also speed up the execution time
+                                    				of your OPA5 tests.
+                                 </p>
+                                 
+                                 			
+                                 <aside class="note note  insertion"><span class="title">Note</span> 
+                                    				
+                                    <p class="p">With component containers, you lose the isolation of your single tests. Also, the
+                                       						<span class="ph filepath">index.html</span> file of your app is no longer executed (only
+                                       					the <span class="ph filepath">Component.js</span> file is needed).
+                                    </p>
+                                    
+                                    			
+                                 </aside>
+                                 
+                                 			
+                                 <p class="p">To execute the tests inside a component container, replace
+                                    					<samp class="ph codeph">iStartMyAppInAFrame()</samp> with
+                                    					<samp class="ph codeph">iStartMyUIComponent()</samp> and
+                                    					<samp class="ph codeph">iTeardownMyAppFrame()</samp> with
+                                    					<samp class="ph codeph">iTeardownMyUIComponent()</samp> in all your OPA5 tests.
+                                 </p>
+                                 
+                                 			
+                                 <aside class="note restriction  insertion"><span class="title">Restriction</span> 
+                                    				
+                                    <p class="p">Currently, this does not work for apps that are created for the <span class="ph pname">SAP Fiori launchpad</span> (<span class="ph pname">FLP</span>).
+                                    </p>
+                                    
+                                    			
+                                 </aside>
+                                 
+                                 			
+                                 <p class="p">For more
+                                    				information, see the <a class="xref" href="../../#/api/sap.ui.test.Opa5" target="_top" alt="#/api/sap.ui.test.Opa5" title="#/api/sap.ui.test.Opa5">API Reference:
+                                       					<samp class="ph codeph">sap.ui.test.Opa5</samp></a>.
+                                 </p>
+                                 
+                                 			
+                                 		
+                              </section>
+                           </div>
+                           
+                           	
+                        </div>
+                        
+                        	
+                        <div class="related-links"> 
+                           
+                           <div class="relinfo">
+                              <div class="relinfotitle ">Related Information</div>
+                              
+                              <div><a class="extlink" href="http://help.sap.com/disclaimer?site=https://istanbul.js.org/" target="_blank" alt="https://istanbul.js.org/" title="https://istanbul.js.org/"><span class="ph uicontrol">Istanbul Code Coverage</span> Home Page<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a></div>
+                              
+                           </div>
+                           
+                        </div>
+                        
+                     </div>
+                     
+                  </div>
+                  
+               </section>
+               <div class="clear"></div>
+               
+            </div>
+            <div class="clearfix"></div>
+         </div>
+      </div>
+      <div class="clearfix"></div>
+      <div id="footer-container" class="grid_12">
+         <footer>
+            	
+            <div id="custom-footerSpacer"></div>
+            	
+            
+         </footer>
+         
+         
+      </div>
+   </body>
+</html>

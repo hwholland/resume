@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<!-- 
+  Tested control/class: sap.landvisz.LandscapeEntity
+  Author: SAP
+-->
+
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Qunit for Landscape Entity Custom ontrol</title>
+	<script id="sap-ui-bootstrap" 
+		type="text/javascript"
+		src="../../../../resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_goldreflection"
+		data-sap-ui-language="en-US"
+		data-sap-ui-noConflict="true"
+		data-sap-ui-libs="sap.ui.commons,sap.ui.ux3,sap.landvisz"
+		data-sap-ui-preload="false">
+	</script>
+	<link rel="stylesheet" href="../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+	<script type="text/javascript" src="../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	<script type="text/javascript" src="../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+	<!-- Control initialization -->
+
+<script language="javascript">
+
+ 
+var myModel = {
+			name : "AWX",
+			tooltip : "Am a Overall tooltip",
+			type : "TechnicalSystem",
+			qualifierText : "ABAP",
+			qualifierTooltip : "ABAP Server System",
+			qualifierType : "Abap",
+			id : "aminId",
+			renderingSize : "Regular",
+			defaultState : "NotSelected",
+			description : "Am in Description",
+		
+			myHeaders: [ 
+			             
+			             { header :"OverView", selected: true, properties:[
+	      	                                 
+	     	                                  new sap.landvisz.internal.LinearRowField({ label :"Operating System",value:"Windows Server 2003"}),
+	     	                                  new sap.landvisz.internal.LinearRowField({ label :"Database",value:"IBM DB2"})
+	     	]},
+
+		 { header :"Product",selected: false, properties:  [new sap.landvisz.internal.LinearRowField({ label :"SAP Netweaver",iconType:"p",iconTitle:"Product"})
+		 ]},
+		 { header :"ProductVersion",selected: false,properties:  [new sap.landvisz.internal.LinearRowField({ value :"SAP Netweaver 7.0",iconType:"pv",iconTitle:"ProductVersion"})
+		 ]}
+	    	 
+	    ],
+	  actions: [{action: "Relations"},{ action:"copy"},{ action: "paste"}] ,
+	};
+
+	
+	
+	
+	
+	
+		  var oLandEntity = new sap.landvisz.LandscapeEntity({
+
+			   systemName : "{/name}",
+				tooltip : "{/tooltip}",
+				type : sap.landvisz.LandscapeObject.TechnicalSystem,
+				qualifierText : "{/qualifierText}",
+				qualifierTooltip : "{/qualifierTooltip}",
+				qualifierType : sap.landvisz.TechnicalSystemType.Abap,
+				id : "aminId",
+				renderingSize : sap.landvisz.EntityCSSSize.Regular,
+				enabled : true,
+				visible : true,
+				defaultState : "{/defaultState}",
+				description : "{/description}",
+
+	 });
+			var oModel = new sap.ui.model.json.JSONModel();
+			oModel.setData(myModel);
+			oLandEntity.setModel(oModel);
+			
+			var oDataContainer = new sap.landvisz.internal.DataContainer({ header : "{header}" });
+			var oRowField = new sap.landvisz.internal.LinearRowField({ label:"{label}",value:"{value}",iconTitle:"{iconTitle}",iconType:"{iconType}"});
+			oDataContainer.bindAggregation("properties","properties",oRowField);
+			oLandEntity.bindAggregation("dataContainers","/myHeaders",oDataContainer);
+			var oActionBar =  new sap.landvisz.internal.ActionBar({customAction: "{action}"});
+        oLandEntity.bindAggregation("actionBar","/actions",oActionBar);
+        
+		    oLandEntity.placeAt("content");
+		    
+		  //Tests Starts
+						
+			module("CustomActionsCreation");
+			test("CustomActionsCreationOk", function() {
+				var oDomRef = jQuery.sap.domById(oLandEntity.getId()+"showAllEntityAction-CLVEntityActionImg");
+	    		ok(oDomRef, "Explode View exists");
+	    		var oDomRef = jQuery.sap.domById(oLandEntity.getId()+"maxEntityAction-CLVEntityActionImg");
+	    		ok(oDomRef, "Maximize Button exists");
+// 	    		var oDomRef = jQuery.sap.domById(oLandEntity.getId()+"RestoreEntityAction");
+// 	    		ok(oDomRef, "Restore icon exists");
+	    					
+			});	
+			
+// 			oLandEntity.setRenderingSize(sap.landvisz.EntityCSSSize.Large);
+			
+// 			test("CustomActionsCreationOk", function() {
+// 	    		var oDomRef = jQuery.sap.domById(oLandEntity.getId()+"RestoreEntityAction");
+// 	    		ok(oDomRef, "Restore icon exists");
+	    		
+// 	    		var oDomRef = jQuery.sap.domById(oLandEntity.getId()+"RestoreEntityAction");
+// 	    		ok(oDomRef, "Restore icon exists");	
+	    					
+// 			});	
+			
+
+</script>
+
+
+</head>
+ <body class="sapUiBody">
+       	<h1 id="qunit-header">QUnit Page for CLV UI5 Custom Actions Control</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup, will be hidden</div>
+		<div id="content">
+       </div>
+       </body>
+</html>

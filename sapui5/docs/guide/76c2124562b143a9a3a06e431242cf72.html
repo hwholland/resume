@@ -1,0 +1,67 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=017767526064469297"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=017767526064469297"/>
+<title>Deletion of Personal Data in SAP S/4HANA</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio76c2124562b143a9a3a06e431242cf72">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Deletion of Personal Data in <span class="ph pname">SAP S/4HANA</span></h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"/>
+
+		<p class="p">This section explains how an administrator or a user can delete personal data in <span class="ph pname">SAP S/4HANA</span>.</p>
+
+		<div class="section" id="loio76c2124562b143a9a3a06e431242cf72__section_ix1_fbm_xz"><div class="section_title">Deleting Analysis Paths</div><div type="Deleting Analysis Paths"><p class="p">When you create an
+				analysis path using an APF-based app, the path as well as the user who created the
+				path are stored in a database table.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Deletion by an Administrator</p>
+
+				<p class="p">When a user left the company, the administrator deletes the user master record
+					from the system. The user master record includes the personalization object
+						<samp class="ph codeph">BSANLY_APF</samp> (Analysis Path Framework personalization
+					object). This ensures that deleting the user master record automatically also
+					deletes analysis paths created by the user.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Deletion by a User</p>
+
+				<p class="p">Users who still have system access can delete their own saved analysis paths directly in the
+					analysis path gallery of the runtime application. To do so, open the analysis
+					path menu and choose <span class="ph uicontrol">Delete</span>. This opens a list of all
+					saved analysis paths, which can be deleted individually. Repeat this for each
+					APF-based application since you can see only those analysis paths that were
+					created in the application you're currently using.</p>
+
+			</div></div></div>
+
+		<div class="section" id="loio76c2124562b143a9a3a06e431242cf72__section_dtm_zcm_xz"><div class="section_title">Personal Data in Analysis Paths</div><div type="Personal Data in Analysis Paths">
+			
+			<p class="p">In an APF-based application, personal data can also appear in an analysis path, for
+				example, as a measure in an analysis step such as ‘revenue by consultant’. APF does
+				not persist these measures, but only filter criteria that are relevant for
+				selections made in a chart. When a user is deleted from the system, the personal
+				data of this user is not displayed any longer in an analysis path. The filter
+				criteria is also removed from the analysis path so that no personal data of the
+				deleted user shows up.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

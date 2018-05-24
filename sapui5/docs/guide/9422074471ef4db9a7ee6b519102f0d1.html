@@ -1,0 +1,87 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="If you want to display more content in your header facet, you can enable the simple header facet."/>
+<meta name="description" content="If you want to display more content in your header facet, you can enable the simple header facet."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=015316506367981098"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=015316506367981098"/>
+<title>Enabling Simple Header Facets</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio9422074471ef4db9a7ee6b519102f0d1">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Enabling Simple Header Facets</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">If you want to display more content in your header facet, you can enable the simple
+		header facet.</p>
+
+		<p class="p">To do so, you must add the <samp class="ph codeph">simpleHeaderFacets:true</samp> flag manually under
+                                <samp class="ph codeph">sap.ui.generic.app</samp> → <samp class="ph codeph">pages (Object page)</samp>→ <samp class="ph codeph">component</samp> →
+                                <samp class="ph codeph">settings</samp> in the app's manifest.json file. </p>
+
+                <div class="note note"><span class="notetitle">Note</span> The simple header facet does not support the use of complex data points and
+                                <samp class="ph codeph">DataFieldForAnnotation</samp>, such as ratings, progress
+                        indicators, or charts.</div>
+
+		<p class="p">The following figure shows a sample simple header facet:</p>
+
+		<div class="fig fignone" id="loio9422074471ef4db9a7ee6b519102f0d1__fig_ivh_lvm_qz"><div class="figcontainer">
+			
+			<img class="image" id="loio9422074471ef4db9a7ee6b519102f0d1__image_lr1_4vm_qz" src="loiod017c3b40c1646e1a63c4bb28fac388e_LowRes.jpg"/>
+		<div class="figcap">Simple Header Facet</div></div></div>
+
+		<div class="p">
+			<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> Enabling simple header
+                                facet<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">
+"sap.ui.generic.app": {
+        "_version": "1.2.0",
+        
+        "pages": [{
+                "entitySet": "STTA_C_MP_Product",
+                "component": {
+                        "name": "sap.suite.ui.generic.template.ListReport",
+                        "list": true,
+                        "settings": {
+                                "gridTable": false,
+                                "multiSelect": true,
+                                "smartVariantManagement": true
+                        }
+                },
+                "pages": [{
+                        "entitySet": "STTA_C_MP_Product",
+                        "component": {
+                                "name": "sap.suite.ui.generic.template.ObjectPage",
+                                "settings": {
+                                        "showRelatedApps": true,
+                                        "gridTable": false,
+                                        "editableHeaderContent": true,
+                                        "simpleHeaderFacets":true, // This Enables Simple Header Facet on the Object Page
+                                }
+                        },
+                        "pages": [{
+                                "navigationProperty": "to_ProductText",
+                                "entitySet": "STTA_C_MP_ProductText",
+                                "component": {
+                                        "name": "sap.suite.ui.generic.template.ObjectPage"
+                                }
+                        }]
+                }]
+        }]
+},</pre></div>
+</div>
+
+		</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

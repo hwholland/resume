@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>NumericContent - sap.suite.ui.commons</title>
+
+<!-- UI5 Bootstrap -->
+<script id="sap-ui-bootstrap" type="text/javascript" src="../../../../../../resources/sap-ui-core.js" data-sap-ui-theme="sap_bluecrystal"
+data-sap-ui-libs="sap.ui.core,sap.suite.ui.commons,sap.m" data-sap-ui-language="en"></script>
+
+<!-- QUnit libraries -->
+<link rel="stylesheet" href="../../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+<script src="../../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript" src="../../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script>
+	jQuery.sap.initMobile();
+
+	QUnit.module("Rendering", {
+		beforeEach : function() {
+			this.oNumericContent = new sap.suite.ui.commons.NumericContent("numeric-content", {
+				size : sap.suite.ui.commons.InfoTileSize.L,
+				state : sap.suite.ui.commons.LoadState.Loaded,
+				scale : "M",
+				indicator : sap.suite.ui.commons.DeviationIndicator.Up,
+				truncateValueTo : 4,
+				nullifyValue : true,
+				formatterValue : false,
+				valueColor : sap.suite.ui.commons.InfoTileValueColor.Good,
+				icon : "sap-icon://customer-financial-fact-sheet"
+			}).placeAt("qunit-fixture");
+			sap.ui.getCore().applyChanges();
+		},
+		afterEach : function() {
+			this.oNumericContent.destroy();
+		}
+	});
+
+	QUnit.test("Numeric Content rendered.", function(assert) {
+		assert.ok(jQuery.sap.domById("numeric-content"), "NumericContent was rendered successfully");
+	});
+
+</script>
+</head>
+
+<body class="sapUiBody">
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+</body>
+</html>

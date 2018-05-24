@@ -1,0 +1,144 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="When upgrading to the current SAPUI5 version from a version below 1.38 (released in June 2016), check whether the changes listed below influence your apps."/>
+<meta name="description" content="When upgrading to the current SAPUI5 version from a version below 1.38 (released in June 2016), check whether the changes listed below influence your apps."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=45176182613494964"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=45176182613494964"/>
+<title>Upgrading from a Version Below 1.38</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc1025c2e30a748ae82e929cb7f6d2f9a">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Upgrading from a Version Below 1.38</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">When upgrading to the current <span class="ph"><span class="ph pname">SAPUI5</span></span> version from a version below 1.38 (released in
+		June 2016), check whether the changes listed below influence your apps.</p>
+
+		<p class="p">With this <span class="ph"><span class="ph pname">SAPUI5</span></span> version, jQuery has been upgraded to version 2.2.3.</p>
+
+		<p class="p">This upgrade may impact your <span class="ph"><span class="ph pname">SAPUI5</span></span> apps. The following sections give an overview of our
+			findings and how to deal with them.</p>
+
+		<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">If you use additional open-source libraries that depend on jQuery, check whether they need to be upgraded as well.</p>
+
+		</div>
+
+		<div class="section collapsible"><div class="section_title">jQuery.Event</div><div type="jQuery.Event"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Problem</p>
+
+			</div><p class="p">jQuery removed some robustness checks in its event handling code. Without these checks, the <samp class="ph codeph">jQuery.trigger</samp> function
+				must only be called with events that either have no <samp class="ph codeph">originalEvent</samp> property or where the <samp class="ph codeph">originalEvent</samp> has all
+				methods that <samp class="ph codeph">window.Event implements</samp> (especially <samp class="ph codeph">preventDefault</samp>, <samp class="ph codeph">stopPropagation</samp> and
+					<samp class="ph codeph">stopImmediatePropagation</samp>).</p>
+<p class="p">When a <samp class="ph codeph">jQuery.Event</samp> is constructed with an object literal
+					(<samp class="ph codeph">properties</samp>) or when <samp class="ph codeph">originalEvent</samp> is set to some object after construction, this constraint is not
+				fulfilled. Unfortunately, many <span class="ph"><span class="ph pname">SAPUI5</span></span>  unit tests used this approach to simulate
+				mouse or key events.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Solution</p>
+
+				<p class="p">For each code that creates events, you have to apply the following fix: </p>
+
+				<p class="p">The module <samp class="ph codeph">QUnitUtils</samp> now rewrites the <samp class="ph codeph">jQuery.Event</samp> constructor so that any given object literal is
+					enriched with the missing methods. Most <span class="ph"><span class="ph pname">SAPUI5</span></span> unit tests include the
+						<samp class="ph codeph">QUnitUtils</samp> module early, which then fixes the issue.</p>
+
+				<p class="p">Application code that needs to simulate an event, either should omit the <samp class="ph codeph">originalEvent</samp> or use <samp class="ph codeph">Event.create</samp>
+					to create a native event and only then create a <samp class="ph codeph">jQuery.Event</samp>. </p>
+
+			</div></div></div>
+
+		<div class="section collapsible"><div class="section_title">jQuery.fn.position</div><div type="jQuery.fn.position"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Problem</p>
+
+				<p class="p"><samp class="ph codeph">jQuery.fn.position</samp> now takes the scroll positions of the parent element into account. This change was recoginzed as
+					incompatible by the jQuery team and reverted with version 2.2.1.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Solution</p>
+
+				<p class="p">Nothing, this is automatically fixed.</p>
+
+			</div></div></div>
+
+		<div class="section collapsible"><div class="section_title">jQuery.now</div><div type="jQuery.now"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Problem</p>
+
+				<p class="p"><samp class="ph codeph">jQuery.now</samp> is now set to <samp class="ph codeph">Date.now</samp> for all browsers. But as the jQuery property represents a separate
+					reference to that function, it is not touched by code that modifies <samp class="ph codeph">Date.now</samp>, especially not by Sinon fake timers.
+					Therefore Sinon fake timers don't work with jQuery 2.2 if Sinon is started after <samp class="ph codeph">jQuery</samp>.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Solution</p>
+
+				<p class="p">As a workaround, <samp class="ph codeph">QUnitUtils</samp> redefines <samp class="ph codeph">jQuery.now</samp> so that it delegates to the current
+						<samp class="ph codeph">Date.now</samp>. This will then use any installed fake timer.</p>
+
+			</div></div></div>
+
+		<div class="section collapsible"><div class="section_title">:visible selector</div><div type=":visible selector"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Problem</p>
+
+				<p class="p">Somewhere between jQuery 1.11.1 and 2.2.0, the behavior of the <samp class="ph codeph">:visible</samp> selector has changed. For empty inline elements (for
+					example, a <samp class="ph codeph">span</samp> with no text), the selector now reports <samp class="ph codeph">:visible = true</samp> whereas jQuery 1.1.1 reported it
+					as <samp class="ph codeph">hidden</samp>. There was only one functionality in the <samp class="ph codeph">sap.ui.dt</samp> library where this change in behavior caused
+					problems.</p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Solution</p>
+
+				<p class="p">Instead of using <samp class="ph codeph">:visible</samp>, that functionality now uses its own implementation similar to jQuery 1.11.1.</p>
+
+			</div></div></div>
+
+		<div class="section collapsible"><div class="section_title">Sizzle attribute selector ([name=value])</div><div type="Sizzle attribute selector ([name=value])"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Problem</p>
+
+				<p class="p">In Microsoft Internet Explorer, the attribute selector no longer works when the attribute value is unquoted and starts with a hash
+						(<samp class="ph codeph">#</samp>). This is the case when hash-name-references are searched for, like with the <samp class="ph codeph">usemap</samp> attribute of
+					the <samp class="ph codeph">IMG</samp> element. </p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Solution</p>
+
+				<p class="p">Use quotes (<samp class="ph codeph">""</samp>) for attribute values in those cases.</p>
+
+			</div></div></div>
+
+		<div class="section collapsible"><div class="section_title">jQuery.isPlainObject</div><div type="jQuery.isPlainObject"><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Problem</p>
+
+				<p class="p">jQuery 2.2.0 simplified the implementation of <samp class="ph codeph">jQuery.isPlainObject</samp>. As a side-effect, objects with a
+						<samp class="ph codeph">constructor</samp> property with a non-function value (like a <samp class="ph codeph">string</samp> value) caused a runtime error when
+						<samp class="ph codeph">jQuery.isPlainObject</samp> was applied. </p>
+
+			</div><div class="sectiondiv subsection">
+				<p class="p subsectiontitle">Solution</p>
+
+				<p class="p">This issue is fixed with jQuery 2.2.2.</p>
+
+			</div></div></div>
+
+		
+		<div class="section"><div class="section_title">Descriptor for Applications, Components, and Libraries</div><div type="Descriptor for Applications, Components, and Libraries">
+			
+			<p class="p">If you want to add new attributes of a descriptor version higher than V2 (SAPUI5
+				1.30) to your existing <samp class="ph codeph">manifest.json</samp> file, see <a class="xref" href="a110f762148a4933a33d30751a37a743.html" title="Information how to add new attributes of descriptor versions higher than V2 (SAPUI5 1.30) to the descriptor file.">Migration Information for Upgrading the Descriptor File</a>.</p>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

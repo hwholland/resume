@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="sap.ui.richtexteditor" xmlns:n1="sap.ui.richtexteditor" xmlns:n0="sap.ui.core">
+<xsd:import namespace="sap.ui.core"/>
+<xsd:element name="RichTextEditor" type="n1:_RichTextEditorType" substitutionGroup="n0:Control">
+<xsd:annotation>
+<xsd:documentation>The RichTextEditor-Control is used to enter formatted text.</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<!--type definition for UIElement 'sap.ui.richtexteditor.RichTextEditor'-->
+<xsd:complexType name="_RichTextEditorType">
+<xsd:complexContent>
+<xsd:extension base="n0:_ControlType">
+<xsd:attribute name="value" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>An HTML string representing the editor content. Because this is HTML, the value cannot be generically escaped to prevent cross-site scripting, so the application is responsible for doing so.
+Overwriting this property would also reset editor's Undo manager and buttons "Undo"/"Redo" would be set to their initial state.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="textDirection" type="n0:_TextDirectionType">
+<xsd:annotation>
+<xsd:documentation>The text direction</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="width" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>Width of RichTextEditor control in CSS units.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="height" type="n0:_CSSSizeType">
+<xsd:annotation>
+<xsd:documentation>Height of RichTextEditor control in CSS units.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="editorType" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>The editor implementation to use.
+Valid values are the ones found under sap.ui.richtexteditor.EditorType and any other editor identifier that may be introduced by other groups (hence this is not an enumeration).
+Any attempts to set this property after the first rendering will not have any effect.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="editorLocation" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Relative or absolute URL where the editor is available. Must be on the same server.
+Any attempts to set this property after the first rendering will not have any effect.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="editable" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether the editor content can be modified by the user. When set to "false" there might not be any editor toolbar.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showGroupFontStyle" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether the toolbar button group containing commands like Bold, Italic, Underline and Strikethrough is available. Changing this after the initial rendering will result in some visible redrawing.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showGroupTextAlign" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether the toolbar button group containing text alignment commands is available. Changing this after the initial rendering will result in some visible redrawing.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showGroupStructure" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether the toolbar button group containing commands like Bullets and Indentation is available. Changing this after the initial rendering will result in some visible redrawing.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showGroupFont" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether the toolbar button group containing commands like Font, Font Size and Colors is available. Changing this after the initial rendering will result in some visible redrawing.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showGroupClipboard" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether the toolbar button group containing commands like Cut, Copy and Paste is available. Changing this after the initial rendering will result in some visible redrawing.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showGroupInsert" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether the toolbar button group containing commands like Insert Image and Insert Smiley is available. Changing this after the initial rendering will result in some visible redrawing.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showGroupLink" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether the toolbar button group containing commands like Create Link and Remove Link is available. Changing this after the initial rendering will result in some visible redrawing.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="showGroupUndo" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether the toolbar button group containing commands like Undo and Redo is available. Changing this after the initial rendering will result in some visible redrawing.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="wrapping" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether the text in the editor is wrapped. This does not affect the editor's value, only the representation in the control.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="required" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether a value is required.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="sanitizeValue" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether to run the HTML sanitizer once the value (HTML markup) is applied or not. To configure allowed URLs please use the whitelist API via jQuery.sap.addUrlWhitelist</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="plugins" type="">
+<xsd:annotation>
+<xsd:documentation>An array of plugin configuration objects with the obligatory property "name".
+Each object has to contain a property "name" which then contains the plugin name/ID.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="useLegacyTheme" type="xsd:boolean">
+<xsd:annotation>
+<xsd:documentation>Whether or not to use the legacy theme for the toolbar buttons. If this is set to false, the default theme for the editor will be used (which might change slightly with every update). The legacy theme has the disadvantage that not all functionality has its own icon, so using non default buttons might lead to invisible buttons with the legacy theme - use the default editor theme in this case.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="buttonGroups" type="">
+<xsd:annotation>
+<xsd:documentation>An array of button configurations. These configurations contain the names of buttons as array in the property "buttons" and the name of the group in "name", they can also contain the "row" where the buttons should be placed, a "priority" and whether the buttons are "visible". See method addButtonGroup() for more details on the structure of the objects in this array.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="change" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Event is fired when the text in the field has changed AND the focus leaves the editor or when the Enter key is pressed.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="ready" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>Fired when the used editor is loaded and ready (its HTML is also created).</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+<xsd:attribute name="beforeEditorInit" type="xsd:string">
+<xsd:annotation>
+<xsd:documentation>This event is fired right before the TinyMCE instance is created and can be used to change the settings object that will be given to TinyMCE. The parameter "configuration" is the javascript oject that will be given to TinyMCE upon first instantiation. The configuration parameter contains a map that can be changed in the case of TinyMCE.</xsd:documentation>
+</xsd:annotation>
+</xsd:attribute>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:simpleType name="_EditorTypeType">
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="TinyMCE">
+<xsd:annotation>
+<xsd:documentation>Uses TinyMCE version 3 as editor (default)</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+<xsd:enumeration value="TinyMCE4">
+<xsd:annotation>
+<xsd:documentation>Uses TinyMCE version 4 as editor</xsd:documentation>
+</xsd:annotation>
+</xsd:enumeration>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:schema>

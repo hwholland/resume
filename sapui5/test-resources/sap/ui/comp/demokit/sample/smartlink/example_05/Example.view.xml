@@ -1,0 +1,82 @@
+<core:View xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout"
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:sl="sap.ui.comp.navpopover"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:m="sap.m" xmlns="sap.ui.comp.navpopover" controllerName="sap.ui.comp.sample.smartlink.example_05.Example">
+
+	<l:VerticalLayout class="sapUiContentPadding">
+		<l:content>
+			<m:VBox>
+				<m:Text class="sapUiSmallMarginTop, sapUiLargeMarginBottom"
+					text="Field 'Name' is annotated as 'SemanticObject' in metadata. In CrossApplicationNavigation there are no targets maintained. Nevertheless the application may implement an breakout in order to enhance or change the layout." />
+
+
+				<m:Text class="sapUiLargeMarginTop"
+					text="Example: SmartLink with main link and additional content" />
+				<SmartLink text="{Name}" semanticObject="demokit_smartlink_example_05_SemanticObjectName"
+					semanticObjectLabel="{/#Product/Name/@sap:label}"
+					navigationTargetsObtained="onNavigationTargetsObtainedMainAndContent" />
+
+
+				<m:Text class="sapUiLargeMarginTop" text="Example: SmartLink with main and action link" />
+				<SmartLink text="{Name}" semanticObject="demokit_smartlink_example_05_SemanticObjectName"
+					semanticObjectLabel="{/#Product/Name/@sap:label}"
+					navigationTargetsObtained="onNavigationTargetsObtainedMainAndAction" />
+
+
+				<m:Text class="sapUiLargeMarginTop"
+					text="Example: SmartLink with additional content and action link" />
+				<SmartLink text="{Name}" semanticObjectLabel="{/#Product/Name/@sap:label}"
+					navigationTargetsObtained="onNavigationTargetsObtainedContentAndAction" />
+
+
+				<m:Text class="sapUiSmallMarginTop"
+					text="Example: SmartLink with additional content only" />
+				<smartTable:SmartTable tableType="ResponsiveTable"
+					entitySet="ProductCollection" enableAutoBinding="true"
+					useVariantManagement="false" useTablePersonalisation="false"
+					showRowCount="false" useExportToExcel="false">
+					<smartTable:semanticObjectController>
+						<sl:SemanticObjectController
+							prefetchDone="onPrefetchDone" navigationTargetsObtained="onNavigationTargetsObtainedOnlyContent" />
+					</smartTable:semanticObjectController>
+				</smartTable:SmartTable>
+
+
+				<m:Text class="sapUiLargeMarginTop"
+					text="Example: SmartLink embedded into SmartTable with navigation target and with out" />
+				<smartTable:SmartTable tableType="ResponsiveTable"
+					entitySet="ProductCollection" useVariantManagement="false"
+					useTablePersonalisation="false" showRowCount="false"
+					useExportToExcel="false">
+					<m:Table items="{/ProductCollection}">
+						<m:columns>
+							<m:Column customData:p13nData='\{"columnKey":"Name"\}'>
+								<m:Label text="Name" />
+							</m:Column>
+							<m:Column customData:p13nData='\{"columnKey":"ProductId"\}'>
+								<m:Text text="ProductId" />
+							</m:Column>
+						</m:columns>
+						<m:items>
+							<m:ColumnListItem>
+								<m:cells>
+									<sl:SmartLink text="{Name}" semanticObject="demokit_smartlink_example_05_SemanticObjectName"
+										semanticObjectLabel="{/#Product/Name/@sap:label}"
+										ignoreLinkRendering="{path: 'Name', formatter:'.formatter.ignoreLinkRendering'}" />
+									<m:Text text="{ProductId}" />
+								</m:cells>
+							</m:ColumnListItem>
+						</m:items>
+					</m:Table>
+				</smartTable:SmartTable>
+
+
+				<m:Text class="sapUiLargeMarginTop" text="Example: SmartLink with direct navigation" />
+				<SmartLink text="{Name}" semanticObject="demokit_smartlink_example_05_SemanticObjectName"
+					semanticObjectLabel="{/#Product/Name/@sap:label}"
+					navigationTargetsObtained="onNavigationTargetsObtainedOnlyMain"
+					beforePopoverOpens="onBeforePopoverOpens" />
+			</m:VBox>
+		</l:content>
+	</l:VerticalLayout>
+</core:View>

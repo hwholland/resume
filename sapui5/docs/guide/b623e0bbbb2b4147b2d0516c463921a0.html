@@ -1,0 +1,158 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can add a line item action button as a column within the SmartTable control in both the list report and the object page."/>
+<meta name="description" content="You can add a line item action button as a column within the SmartTable control in both the list report and the object page."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=3322719307713996"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3322719307713996"/>
+<title>Adding Line Item Actions in Tables</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiob623e0bbbb2b4147b2d0516c463921a0">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Adding Line Item Actions in Tables</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You can add a line item action button as a column within the <samp class="ph codeph">SmartTable</samp>
+		control in both the list report and the object page.</p>
+
+		<div class="p">Line item actions are used to trigger actions directly for a single table row. Currently, the
+         following types of line item actions are supported: <ul class="ul" id="loiob623e0bbbb2b4147b2d0516c463921a0__ul_nwv_svc_wv">
+            <li class="li">
+               <p class="p">Actions that trigger a back-end call through the OData service, for example,
+                     <span class="ph uicontrol">Approve</span> or <span class="ph uicontrol">Unblock</span>, represented
+                  by the complex type <samp class="ph codeph">DataFieldForAction</samp></p>
+
+            </li>
+
+            <li class="li">Actions that trigger navigation, for example, to a different app, represented by the
+               complex type <samp class="ph codeph">DataFieldForIntentBasedNavigation</samp>
+            </li>
+
+         </ul>
+</div>
+
+		<p class="p">To add a line item action to a smart table, in the annotation term
+         <samp class="ph codeph">UI.LineItem</samp>, set the <samp class="ph codeph">Inline</samp> property to
+            <samp class="ph codeph">true</samp> for the complex types listed above. The line item actions are then
+         displayed as shown below:</p>
+
+      <div class="fig fignone" id="loiob623e0bbbb2b4147b2d0516c463921a0__fig_jlb_twt_xv"><div class="figcontainer">
+         
+         <img class="image" id="loiob623e0bbbb2b4147b2d0516c463921a0__image_sn4_xwt_xv" src="loio17255b8d6ce84db28106fc7c8e57a238_LowRes.png"/>
+      <div class="figcap">Line Item Actions (List Report Shown)</div></div></div>
+
+		<div class="section"><div class="section_title">Code Sample</div><div type="Code Sample"><p class="p">The following code sample shows how to create your
+            annotations for line item
+            actions:</p>
+<div class="p"><span class="ph emphasis emphasis">UI.LineItem</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;Annotation Term="UI.LineItem"&gt;
+   &lt;Collection&gt;
+      &lt;Record Type="UI.DataFieldForAction"&gt;
+         &lt;PropertyValue Property="Label" String="Copy with new Supplier"/&gt;
+         &lt;PropertyValue Property="Action"
+            String="STTA_PROD_MAN.STTA_PROD_MAN_Entities/STTA_C_MP_ProductCopywithparams"/&gt;
+         &lt;Annotation Term="UI. InvocationGrouping"
+            EnumMember="UI.OperationGroupingType/Isolated"/&gt;
+      &lt;/Record&gt;
+      &lt;Record Type="UI.DataFieldForAction"&gt;
+         &lt;PropertyValue Property="Label" String="Activate"/&gt;
+         &lt;PropertyValue Property="Action"
+            String="STTA_PROD_MAN.STTA_PROD_MAN_Entities/STTA_C_MP_ProductActivation"/&gt;
+         &lt;Annotation Term="UI. InvocationGrouping"
+            EnumMember="UI.OperationGroupingType/ChangeSet"/&gt;
+      &lt;/Record&gt;
+      &lt;Record Type="UI.DataField"&gt;
+         &lt;PropertyValue Property="Value" Path="Product"/&gt;
+         &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+      &lt;/Record&gt;
+      &lt;Record Type="UI.DataField"&gt;
+         &lt;PropertyValue Property="Value" Path="ProductCategory"/&gt;
+         &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+      &lt;/Record&gt;
+      &lt;Record Type="UI.DataField"&gt;
+         &lt;PropertyValue Property="Value" Path="to_Supplier/CompanyName"/&gt;
+         &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+      &lt;/Record&gt;
+      &lt;Record Type="UI.DataField"&gt;
+         &lt;PropertyValue Property="Criticality" Path="to_StockAvailability/StockAvailability"/&gt;
+         &lt;PropertyValue Property="Value" Path="to_StockAvailability/StockAvailability"/&gt;
+         &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+      &lt;/Record&gt;
+      &lt;Record Type="UI.DataField"&gt;
+         &lt;PropertyValue Property="Value" Path="Price"/&gt;
+         &lt;Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/&gt;
+      &lt;/Record&gt;
+      &lt;Record Type="UI.DataFieldForAction"&gt;
+         &lt;PropertyValue Property="Label" String="Copy"/&gt;
+         &lt;PropertyValue Property="Action"
+            String="STTA_PROD_MAN.STTA_PROD_MAN_Entities/STTA_C_MP_ProductCopy"/&gt;
+         &lt;PropertyValue Property="Inline" Bool="true"/&gt;
+         &lt;Annotation Term="UI. InvocationGrouping"
+            EnumMember="UI.OperationGroupingType/Isolated"/&gt;
+      &lt;/Record&gt;
+      &lt;Record Type="UI.DataFieldForIntentBasedNavigation"&gt;
+         &lt;PropertyValue Property="Label" String="Manage Products (ST)"/&gt;
+         &lt;PropertyValue Property="SemanticObject" String="EPMProduct"/&gt;
+         &lt;PropertyValue Property="Action" String="manage_st"/&gt;
+         &lt;PropertyValue Property="Inline" Bool="true"/&gt;
+      &lt;/Record&gt;
+      &lt;Record Type="UI.DataFieldWithIntentBasedNavigation"&gt;
+
+         &lt;PropertyValue Property="Label" String="Weight (with IBN)" /&gt;
+
+         &lt;PropertyValue Property="Value" Path="Weight"/&gt;
+
+         &lt;PropertyValue Property="SemanticObject" String="EPMProduct" /&gt;
+
+         &lt;PropertyValue Property="Action" String="manage_st"/&gt;
+
+      &lt;/Record&gt;
+   &lt;/Collection&gt;
+&lt;/Annotation&gt;
+</pre></div>
+</div>
+<p class="p">Note
+            that the <samp class="ph codeph">UI.LineItem</samp> vocabulary term is used to define the columns for
+            the smart table. </p>
+<p class="p">In the example above, the order in which the record types are
+            presented in the annotation determines the order in which they appear in the table
+            columns.</p>
+<p class="p">For the first two record types, the <samp class="ph codeph">DataFieldForAction</samp>
+            complex type does not contain the <samp class="ph codeph">Inline</samp> property, which means that the
+            action button will appear in the smart table toolbar. If the <samp class="ph codeph">Inline</samp>
+            property is there and set to <samp class="ph codeph">false</samp>, the action button is also displayed
+            in the smart table toolbar. </p>
+<p class="p">With the next five record types, the
+               <samp class="ph codeph">DataField</samp> complex type is used to define the data for a column
+            within the smart table. </p>
+<p class="p">With the last two record types, the
+               <samp class="ph codeph">DataFieldForAction</samp> and
+               <samp class="ph codeph">DataFieldForIntentBasedNavigation</samp> complex types are used and contain
+            the <samp class="ph codeph">Inline</samp> property which is set to <samp class="ph codeph">true</samp>. This means
+            the action buttons will appear in every row in the appropriate column within the smart
+            table.</p>
+<p class="p">With the last record type, the
+               <samp class="ph codeph">DataFieldWithIntentBasedNavigation</samp> complex type is used to render
+            the property value as a link allowing for navigation to the semantic object.</p>
+<div class="sectiondiv subsection">
+            <p class="p subsectiontitle">UI Annotation in CDS Views</p>
+
+            <p class="p">Currently, line item actions are not supported in CDS views. For this reason, you
+               need to add the <samp class="ph codeph">UI.LineItem</samp> annotation term to the local annotations
+               file of the application to override the OData service <samp class="ph codeph">UI.LineItem</samp>
+               annotations for the entity type.</p>
+
+         </div></div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

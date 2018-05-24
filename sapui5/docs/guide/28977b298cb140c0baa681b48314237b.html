@@ -1,0 +1,229 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="MicroProcessFlow is a linear process flow with circular nodes that serve as progress indicators."/>
+<meta name="description" content="MicroProcessFlow is a linear process flow with circular nodes that serve as progress indicators."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=2842269412301087"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=2842269412301087"/>
+<title>Micro Process Flow</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio28977b298cb140c0baa681b48314237b">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Micro Process Flow</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc"><samp class="ph codeph">MicroProcessFlow</samp> is a linear process flow with circular nodes that
+		serve as progress indicators.</p>
+
+		<p class="p"><span class="ph">For more
+				information about this control, see the <a class="xref" href="../../docs/api/symbols/sap.suite.ui.commons.MicroProcessFlow.html" alt="../../docs/api/symbols/sap.suite.ui.commons.MicroProcessFlow.html" title="../../docs/api/symbols/sap.suite.ui.commons.MicroProcessFlow.html">API Reference</a> and the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.suite.ui.commons.MicroProcessFlow/samples" alt="../../explored.html#/entity/sap.suite.ui.commons.MicroProcessFlow/samples" title="../../explored.html#/entity/sap.suite.ui.commons.MicroProcessFlow/samples">samples</a> in the Demo Kit.</span></p>
+
+		<div class="section" id="loio28977b298cb140c0baa681b48314237b__section_f1k_fd5_qcb"><div class="section_title">Overview</div><div type="Overview">
+			
+			<p class="p">The <samp class="ph codeph">MicroProcessFlow</samp> control can be used to display the progress of linear
+				workflows, such as order flows, document flows, and approval flows. It can be
+				embedded into tiles, tables, and other types of parent containers.</p>
+
+			<p class="p">It is best used for simple linear workflows that include up to seven progress steps.
+				For more complex processes and workflows, consider using the <a class="xref" href="70307d4b63814dad9a95220e85a563dc.html" title="The ProcessFlow control allows you to show flows of multiple object types, for example, documents or approvals."><samp class="ph codeph">ProcessFlow</samp></a> control instead.</p>
+
+			<div class="fig fignone" id="loio28977b298cb140c0baa681b48314237b__fig_xzt_v22_scb"><div class="figcontainer">
+				<img class="image" id="loio28977b298cb140c0baa681b48314237b__image_ivk_w22_scb" src="loioe40ca583a0f14eb98f904f9c54d12344_LowRes.png" alt="Micro Process Flow with a Popup Dialog" title="Micro Process Flow with a Popup Dialog"/>
+			</div></div>
+
+		</div></div>
+
+		<div class="section" id="loio28977b298cb140c0baa681b48314237b__section_cnq_fd5_qcb"><div class="section_title">Details</div><div type="Details">
+			
+			
+			<p class="p"><span class="ph emphasis emphasis">Layout and Content</span></p>
+
+			<ul class="ul" id="loio28977b298cb140c0baa681b48314237b__ul_rmp_f32_scb">
+				<li class="li">
+					<p class="p">The <samp class="ph codeph">MicroProcessFlow</samp> control consists of progress indicator nodes that are
+						laid out horizontally and connected by connector lines.</p>
+
+					<ul class="ul" id="loio28977b298cb140c0baa681b48314237b__ul_s3g_mgf_scb">
+						<li class="li">
+							<p class="p">The nodes can be defined using <samp class="ph codeph">MicroProcessFlowItem</samp> controls that are
+								added to the <samp class="ph codeph">content</samp> aggregation in the
+									<samp class="ph codeph">MicroProcessFlow</samp> control.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">The connector line that appears right after each node can be hidden
+								using the <samp class="ph codeph">showSeparator</samp> property of the
+									<samp class="ph codeph">MicroProcessFlowItem</samp> control that defines this
+								node.</p>
+
+						</li>
+
+						<li class="li">
+							<p class="p">If you want to display additional objects between nodes, you can
+								define them using the <samp class="ph codeph">intermediary</samp> aggregation in
+								the <samp class="ph codeph">MicroProcessFlowItem</samp> control and use the
+									<samp class="ph codeph">showIntermediary</samp> property to make them
+								visible.</p>
+
+							<p class="p">If you enable the <samp class="ph codeph">showIntermediary</samp> property without
+								defining the objects, the nodes are separated by red vertical
+								bars.</p>
+
+						</li>
+
+					</ul>
+
+				</li>
+
+				<li class="li">
+					<p class="p">Default nodes use semantic colors that correspond to their
+							<samp class="ph codeph">status</samp> property values. Available statuses include:
+							<samp class="ph codeph">Standard</samp> (neutral), <samp class="ph codeph">Error</samp> (negative),
+							<samp class="ph codeph">Success</samp> (positive), and <samp class="ph codeph">Warning</samp>
+						(critical).</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p">To display a custom control instead of a default node, you can use the
+							<samp class="ph codeph">customControl</samp> aggregation in the
+							<samp class="ph codeph">MicroProcessFlowItem</samp> control defining this node.</p>
+
+					<p class="p">For example, if you want to use a rectangular <a class="xref" href="8d5664a644f14063aa05cc8d18aa56eb.html" title="The StatusIndicator control reflects a percentage value between 0 and 100.">status indicator</a>
+						instead of a node, you can add the following to your <a class="xref" href="1409791afe4747319a3b23a1e2fc7064.html" title="Putting all our UI into the index.html file will very soon result in a messy setup and there is quite a bit of work ahead of us. So let’s do a first modularization by putting the sap.m.Text control into a dedicated view.">view</a>:</p>
+
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+...
+<span class="ph emphasis emphasis">xmlns:si="sap.suite.ui.commons.statusindicator"</span>&gt;
+...
+
+&lt;MicroProcessFlow&gt;
+	&lt;content&gt;
+	...
+		&lt;MicroProcessFlowItem&gt;
+					<span class="ph emphasis emphasis">&lt;customControl&gt;
+				&lt;si:StatusIndicator id="indicator1" width="20px" 
+							height="40px" viewBox="-1 -1 52 102" value="50"&gt;
+					&lt;si:ShapeGroup&gt;
+						&lt;si:Rectangle x="0" y="0" width="50" height="100" 
+								  fullAnimationDuration="2000" fillColor="blue" 
+								  strokeWidth="1" animationOnStartup="true" 
+								  fillingType="Linear"/&gt;
+					&lt;/si:ShapeGroup&gt;
+				&lt;/si:StatusIndicator&gt;
+			&lt;/customControl&gt;</span>
+		&lt;/MicroProcessFlowItem&gt;
+	...
+	&lt;/content&gt;	
+&lt;/MicroProcessFlow&gt;
+
+...
+&lt;/mvc:View&gt;</pre></div>
+
+					<p class="p"><span class="ph">For
+							more ideas and examples, see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.suite.ui.commons.MicroProcessFlow/samples" alt="../../explored.html#/entity/sap.suite.ui.commons.MicroProcessFlow/samples" title="../../explored.html#/entity/sap.suite.ui.commons.MicroProcessFlow/samples">samples</a> in the Demo
+							Kit.</span></p>
+
+				</li>
+
+			</ul>
+
+			
+			<p class="p"><span class="ph emphasis emphasis">Click Events</span></p>
+
+			<ul class="ul" id="loio28977b298cb140c0baa681b48314237b__ul_bhb_j32_scb">
+				<li class="li">
+					<p class="p">You can specify click events for each of the nodes in the micro process flow
+						using the <samp class="ph codeph">press</samp> event.</p>
+
+					<p class="p">For example, to display a <span class="ph"><a class="xref" href="../../docs/api/symbols/sap.m.Popover.html" alt="../../docs/api/symbols/sap.m.Popover.html" title="../../docs/api/symbols/sap.m.Popover.html">popover</a></span> element when the user clicks
+						the node, consider adding the following (or similar) code to your <a class="xref" href="1409791afe4747319a3b23a1e2fc7064.html" title="Putting all our UI into the index.html file will very soon result in a messy setup and there is quite a bit of work ahead of us. So let’s do a first modularization by putting the sap.m.Text control into a dedicated view.">view</a> and its <a class="xref" href="50579ddf2c934ce789e056cfffe9efa9.html" title="In this step, we replace the text with a button and show the “Hello World” message when the button is pressed. The handling of the button's press event is implemented in the controller of the view.">controller</a>.</p>
+
+					<p class="p"><span class="ph emphasis emphasis">View</span></p>
+
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;MicroProcessFlowItem state="Success" <span class="ph emphasis emphasis">press="itemPress"</span>&gt;
+	&lt;customData&gt;
+		&lt;core:CustomData key="title" value="Payment"/&gt;
+		&lt;core:CustomData key="icon" value="sap-icon://accept"/&gt;
+		&lt;core:CustomData key="subTitle" value="Payment successful"/&gt;
+	&lt;/customData&gt;
+&lt;/MicroProcessFlowItem&gt;</pre></div>
+
+					<p class="p"><span class="ph emphasis emphasis">Controller</span></p>
+
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js"><span class="ph emphasis emphasis">itemPress: function (oEvent) {
+	var oItem = oEvent.getSource(),
+		aCustomData = oItem.getCustomData(),
+		sTitle = aCustomData[0].getValue(),
+		sIcon = aCustomData[1].getValue(),
+		sSubTitle = aCustomData[2].getValue();
+
+	var oPopover = new sap.m.Popover({
+		contentWidth: "300px",
+		title: "Order status",
+		content: [
+			new sap.m.HBox({
+				items: [
+					new sap.ui.core.Icon({
+						src: sIcon,
+						color: this._getColorByState(oItem)
+					}).addStyleClass("sapUiSmallMarginBegin sapUiSmallMarginEnd"),
+					new sap.m.FlexBox({
+						width: "100%",
+						renderType: "Bare",
+						direction: "Column",
+						items: [new sap.m.Title({
+							level: sap.ui.core.TitleLevel.H1,
+							text: sTitle
+						}), new sap.m.Text({
+							text: sSubTitle
+						}).addStyleClass("sapUiSmallMarginBottom sapUiSmallMarginTop"),
+							new sap.m.Text({
+								text: sDescription
+							})
+						]
+					})
+				]
+			}).addStyleClass("sapUiTinyMargin")
+		],
+		footer: [
+			new sap.m.Toolbar({
+				content: [
+					new sap.m.ToolbarSpacer(),
+					new sap.m.Button({
+						text: "Close",
+						press: function() {
+							oPopover.close();
+						}
+					})]
+			})
+		]
+	});</span>
+
+	oPopover.openBy(oEvent.getParameter("item"));
+}</pre></div>
+
+					<p class="p"><span class="ph">For
+							more ideas and examples, see the <a class="xref" target="_blank" href="../../explored.html#/entity/sap.suite.ui.commons.MicroProcessFlow/samples" alt="../../explored.html#/entity/sap.suite.ui.commons.MicroProcessFlow/samples" title="../../explored.html#/entity/sap.suite.ui.commons.MicroProcessFlow/samples">samples</a> in the Demo
+							Kit.</span></p>
+
+				</li>
+
+			</ul>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="You can use the SmartField control in combination with the ValueHelpDialog control that allow you to carry out a complex search in order to identify the value you are looking for."/>
+<meta name="description" content="You can use the SmartField control in combination with the ValueHelpDialog control that allow you to carry out a complex search in order to identify the value you are looking for."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=3569383915303458"/>
+<title>Step 2: Smart Field with Value Help</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+  <script src="../../resources/sap/ui/thirdparty/jquery.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/framewrapper.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="" id="loio3361e270c62c46c9893eaefb2966d62e">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 2: Smart Field with Value Help</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You can use the <samp class="ph codeph">SmartField</samp> control in combination with the
+			<samp class="ph codeph">ValueHelpDialog</samp> control that allow you to carry out a complex search in
+		order to identify the value you are looking for.</p>
+
+		<p class="p">We would like to stress the importance of this feature with a dedicated example, even though
+			you might argue that this is just another feature of the <samp class="ph codeph">SmartField</samp>
+			control. In the following example, we see a value help for a currency code. By providing
+			a value help, the user can find the correct currency by firing a query with complex
+			input parameters. Surely, you can imagine that there are more complex examples in which
+			specifying the correct value is almost impossible without performing a query. For
+			example, when providing a customer ID, you would want to find this based on the last
+			name of the customer.</p>
+
+		<p class="p">We would like to emphasize here that the response to the query input (whether it is the
+			response to the query input for the main table, as we will see later, or whether it is
+			related to the value help, as we will see here) heavily depends on the server handling
+			the request. In our case, the <samp class="ph codeph">MockServer</samp> is not a full-fledged
+			implementation that handles all OData requests as the user might expect. Therefore,
+			please bear in mind that the examples are intended for a tutorial and not a real
+			application. </p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loio3361e270c62c46c9893eaefb2966d62e__fig_r1j_pst_mr"><div class="figcontainer">
+				
+				<img class="image" id="loio3361e270c62c46c9893eaefb2966d62e__image_vlf_h53_js" src="loiob78bc5d7bb6349e3b4f1514591b413a7_HiRes.png"/>
+			<div class="figcap">Smart Field with Value Help</div></div></div>
+
+			<p class="p">There is a small icon right next to the currency code. After pressing this icon you see a
+				dialog (the <samp class="ph codeph">ValueHelpDialog</samp> control) on which a query can be
+				executed.</p>
+
+			<div class="fig fignone" id="loio3361e270c62c46c9893eaefb2966d62e__fig_nfp_j53_js"><div class="figcontainer">
+				
+				<img class="image" id="loio3361e270c62c46c9893eaefb2966d62e__image_xrf_m53_js" src="loioe9a36eac36df4112a8e658f4ca16f0c7_HiRes.png"/>
+			<div class="figcap">Value Help</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Coding</div><div type="Coding">
+			
+			<p class="p">You can view and download all files in the <span class="ph uicontrol">Explored</span> app in the Demo Kit
+					<span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.02/preview" alt="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.02/preview" title="../../explored.html#/sample/sap.ui.comp.tutorial.smartControls.02/preview">Smart Controls - Step 2 - Smart Field with
+						Value Help</a></span>.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">SmartFieldWithValueHelp.view.xml</div><div type="SmartFieldWithValueHelp.view.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>&lt;mvc:View
+	xmlns:mvc="sap.ui.core.mvc"
+	controllerName="sap.ui.demo.smartControls.SmartFieldWithValueHelp"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:smartField="sap.ui.comp.smartfield"&gt;
+	&lt;form:SimpleForm 
+		minWidth="1024"
+		maxContainerCols="2"
+		editable="true"
+		layout="ResponsiveGridLayout"
+		labelSpanL="3"
+		labelSpanM="3"
+		emptySpanL="4"
+		emptySpanM="4"
+		columnsL="1"
+		columnsM="1"
+		class="editableForm"&gt;
+		&lt;form:content&gt;
+			&lt;smartField:SmartLabel labelFor="idPrice"/&gt;
+			&lt;smartField:SmartField value="{Price}" id="idPrice"/&gt;
+		&lt;/form:content&gt;
+	&lt;/form:SimpleForm&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">For the view definition, we see that there is no difference to the previous example. This is
+				an important fact since this exemplifies the underlying idea of what we mean by
+				“smart”: Depending on the metadata, the control  automatically adjusts its
+				behavior.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">SmartField.controller.js</div><div type="SmartField.controller.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>sap.ui.define([
+	"sap/ui/core/mvc/Controller"
+], function(Controller) {
+	"use strict";
+
+	return Controller.extend("sap.ui.demo.smartControls.SmartFieldWithValueHelp", {
+		onInit: function() {
+			this.getView().bindElement("/Products('4711')");
+		}
+	});
+
+});</pre></div>
+
+			<p class="p">Again, this file is in essence identical with the controller in step 1.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">metadata.xml</div><div type="metadata.xml">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;edmx:Edmx Version="1.0"
+	xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+	xmlns:sap="http://www.sap.com/Protocols/SAPData"&gt;
+	&lt;edmx:DataServices m:DataServiceVersion="2.0"&gt;
+		&lt;Schema Namespace="com.sap.wt02" 
+			sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm"&gt;
+			&lt;EntityType Name="Product"&gt;
+				&lt;Key&gt;
+					&lt;PropertyRef Name="ProductId" /&gt;
+				&lt;/Key&gt;
+				&lt;Property Name="ProductId" Type="Edm.String" /&gt;
+				&lt;Property Name="Price" Type="Edm.String" 
+					sap:unit="CurrencyCode" MaxLength="3" sap:label="Price"
+					sap:updatable="true" /&gt;
+				&lt;Property Name="CurrencyCode" Type="Edm.String" 
+					MaxLength="3" sap:label="Currency" sap:semantics="currency-code"
+					sap:updatable="true" /&gt;
+			&lt;/EntityType&gt;
+			<span class="ph emphasis emphasis">&lt;EntityType Name="Currency"&gt;
+				&lt;Key&gt;
+					&lt;PropertyRef Name="CURR" /&gt;
+				&lt;/Key&gt;
+				&lt;Property Name="CURR" Type="Edm.String" MaxLength="4"
+					sap:display-format="UpperCase" sap:text="DESCR" sap:label="Currency Code"
+					sap:filterable="false" /&gt;
+				&lt;Property Name="DESCR" Type="Edm.String" MaxLength="25"
+					sap:label="Description" /&gt;
+			&lt;/EntityType&gt;</span>
+			&lt;EntityContainer m:IsDefaultEntityContainer="true"
+				sap:supported-formats="atom json"&gt;
+				&lt;EntitySet Name="Products" EntityType="com.sap.wt02.Product" /&gt;
+				<span class="ph emphasis emphasis">&lt;EntitySet Name="Currency" EntityType="com.sap.wt02.Currency" /&gt;</span>
+			&lt;/EntityContainer&gt;
+			<span class="ph emphasis emphasis">&lt;Annotations Target="com.sap.wt02.Product/CurrencyCode"
+				xmlns="http://docs.oasis-open.org/odata/ns/edm"&gt;
+				&lt;Annotation Term="com.sap.vocabularies.Common.v1.ValueList"&gt;
+					&lt;Record&gt;
+						&lt;PropertyValue Property="Label" String="Currency" /&gt;
+						&lt;PropertyValue Property="CollectionPath" String="Currency" /&gt;
+						&lt;PropertyValue Property="SearchSupported" Bool="true" /&gt;
+						&lt;PropertyValue Property="Parameters"&gt;
+							&lt;Collection&gt;
+								&lt;Record Type="com.sap.vocabularies.Common.v1.ValueListParameterOut"&gt;
+									&lt;PropertyValue Property="LocalDataProperty"
+										PropertyPath="CurrencyCode" /&gt;
+									&lt;PropertyValue Property="ValueListProperty"
+										String="CURR" /&gt;
+								&lt;/Record&gt;
+								&lt;Record
+									Type="com.sap.vocabularies.Common.v1.ValueListParameterDisplayOnly"&gt;
+									&lt;PropertyValue Property="ValueListProperty"
+										String="DESCR" /&gt;
+								&lt;/Record&gt;
+							&lt;/Collection&gt;
+						&lt;/PropertyValue&gt;
+					&lt;/Record&gt;
+				&lt;/Annotation&gt;
+			&lt;/Annotations&gt;</span>
+		&lt;/Schema&gt;
+	&lt;/edmx:DataServices&gt;
+&lt;/edmx:Edmx&gt;						</pre></div>
+
+			<p class="p">As stated above, the metadata file is the place in which the difference to step 1 can be found
+				- we have highlighted the changes. We will dig deeper into this file now. </p>
+
+			<div class="p">First we inspect the added entity type:
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>&lt;EntityType Name="Currency" sap:content-version="1"&gt;
+&lt;Key&gt;
+		&lt;PropertyRef Name="CURR" /&gt;
+	&lt;/Key&gt;
+	&lt;Property Name="CURR" Type="Edm.String" MaxLength="4" 
+sap:display-format="UpperCase" sap:text="DESCR" 
+sap:label="Currency Code" <span class="ph emphasis emphasis">sap:filterable="false"</span>/&gt;
+	&lt;Property Name="DESCR" Type="Edm.String" MaxLength="25"	 sap:label="Description"/&gt;
+&lt;/EntityType&gt;</pre></div>
+We
+				notice that we have set <samp class="ph codeph">sap:filterable="false"</samp> for the
+					<samp class="ph codeph">CURR</samp> property. We do this, since we would otherwise also have a
+				currency code search field in the dialog that we wish to avoid (default of
+					<samp class="ph codeph">sap:filterable</samp> is true).</div>
+
+			<div class="p"> Now let us look at the <samp class="ph codeph">ValueList</samp>
+				annotation:<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>&lt;Annotations <span class="ph emphasis emphasis">Target="com.sap.wt02.Product/CurrencyCode"</span>
+				xmlns="http://docs.oasis-open.org/odata/ns/edm"&gt;
+&lt;Annotation Term="com.sap.vocabularies.Common.v1.ValueList"&gt;
+	&lt;Record&gt;
+		&lt;PropertyValue Property="Label" String="Currency"/&gt;
+		&lt;PropertyValue Property="CollectionPath" String="Currency"/&gt;
+		<span class="ph emphasis emphasis">&lt;PropertyValue Property="SearchSupported" Bool="true"/&gt;
+</span>		&lt;PropertyValue Property="Parameters"&gt;
+			&lt;Collection&gt;
+<span class="ph emphasis emphasis">&lt;Record Type="com.sap.vocabularies.Common.v1.ValueListParameterOut"&gt;
+					&lt;PropertyValue Property="LocalDataProperty" PropertyPath="CurrencyCode" /&gt;
+					&lt;PropertyValue Property="ValueListProperty" String="CURR" /&gt;
+				&lt;/Record&gt;
+				&lt;Record Type="com.sap.vocabularies.Common.v1.ValueListParameterDisplayOnly"&gt;
+					&lt;PropertyValue Property="ValueListProperty" String="DESCR" /&gt;
+				&lt;/Record&gt;</span>
+			&lt;/Collection&gt;
+		&lt;/PropertyValue&gt;
+	&lt;/Record&gt;
+&lt;/Annotation&gt;
+&lt;/Annotations&gt;</pre></div>
+With
+				the metadata <samp class="ph codeph">Target="com.sap.wt02.Product/CurrencyCode"</samp>, we define
+				that the <samp class="ph codeph">CurrencyCode</samp> of the <samp class="ph codeph">EntityType</samp>
+				<samp class="ph codeph">Product</samp> will have a <samp class="ph codeph">ValueList</samp> (or
+					<samp class="ph codeph">ValueHelp</samp>) associated to it. We set the property
+					<samp class="ph codeph">SearchSupported</samp> to true in order to get a general search field.
+				This is the field in the dialog that has the <span class="ph uicontrol">Search</span> shadow
+				text.</div>
+
+			<div class="p"><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>&lt;Record Type="com.sap.vocabularies.Common.v1.ValueListParameterOut"&gt;
+					&lt;PropertyValue Property="LocalDataProperty" PropertyPath="CurrencyCode" /&gt;
+					&lt;PropertyValue Property="ValueListProperty" String="CURR" /&gt;
+				&lt;/Record&gt;</pre></div>
+This
+				specification defines that the value help will export the value of the
+					<samp class="ph codeph">CURR</samp> field to the <samp class="ph codeph">CurrencyCode</samp> field using
+					<samp class="ph codeph">ValueListParameterOut</samp>. This export happens, for example, by
+				selecting an entry in the list of currency values.</div>
+
+			<div class="p">Lastly, as for the <samp class="ph codeph">ValueList</samp> annotation, we specify with the following
+				specification that the <samp class="ph codeph">DESCR</samp> field is shown in the table (but only
+				for display purposes in the sense that no interaction with the content of this field
+				is possible):
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!xml</samp>&lt;Record Type="com.sap.vocabularies.Common.v1.ValueListParameterDisplayOnly"&gt;
+					&lt;PropertyValue Property="ValueListProperty" String="DESCR" /&gt;
+&lt;/Record&gt;</pre></div>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Products.json</div><div type="Products.json">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>[{
+	"ProductId": "4711",
+	"Price": 856.49,
+	"CurrencyCode": "EUR"
+}]</pre></div>
+
+			<p class="p">Since the product we show initially is the same as in step 1, there is no change to
+				the <samp class="ph codeph">Products.json</samp> file.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Currency.json</div><div type="Currency.json">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint"><samp class="ph codeph">#!js</samp>[{
+	"CURR": "EUR",
+	"DESCR": "European Euro"
+},
+{
+	"CURR": "USD",
+	"DESCR": "United States Dollar"
+},
+{
+	"CURR": "GBP",
+	"DESCR": "British Pound"
+},
+{
+	"CURR": "DKK",
+	"DESCR": "Danish Krone"
+},
+{
+	"CURR": "INR",
+	"DESCR": "Indian Rupee"
+},
+{
+	"CURR": "NOK",
+	"DESCR": "Norwegian Krone"
+},
+{
+	"CURR": "SEK",
+	"DESCR": "Swedish Krona"
+},
+{
+	"CURR": "CHF",
+	"DESCR": "Swiss Franc"
+}]</pre></div>
+
+			<p class="p">In the newly added <samp class="ph codeph">Currency.json</samp> file, we include the values needed
+				for the currency entities.</p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="64bde9a8879d4f418e2849f7285dd757.html" title="In this tutorial you learn how to work with smart controls.">Smart Controls</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="ed8fda66cd3b406cbd22f6019188ce82.html" title="One important building block of smart controls is the SmartField control that, depending on the OData metadata defined, allows you to renders other controls and, for example, define fields with certain attributes based on the metadata.">Step 1: Smart Field</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="c81d6b3382df43abb56e3468a2b5d22e.html" title="We now show yet another but quite different feature of the SmartField control, SmartField used in combination with SmartLink, which allow you to embed a dialog with related cross-application links.">Step 3: Smart Field with Smart Link</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="4864403f08c64ca08a2b0ee1fa9cb5e2.html" title="The sap.ui.comp.smartfield.SmartField control offers a wrapper for other controls using OData metadata to determine which control has to be instantiated and makes it possible to add input-enabled fields to an application.">Smart Field</a></div>
+</div>
+</div>
+</div></div>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Step 2: Smart Field with Value Help";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

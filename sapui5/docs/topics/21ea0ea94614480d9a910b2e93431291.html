@@ -1,0 +1,426 @@
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html lang="en-us" dir="ltr">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Icon and Icon Pool</title>
+      <link rel="icon" href="themes/sap-default/img/favicon.ico" type="image/x-icon">
+      <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="abstract" content="The sap-icon:// protocol supports the use of icons in your application based on the icon font concept, which uses an embedded font instead of a pixel image.">
+      
+      <meta name="description" content="The sap-icon:// protocol supports the use of icons in your application based on the icon font concept, which uses an embedded font instead of a pixel image.">
+      <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"d4f3f1598373452bb73f2120930c133c.html","previousTopicHref":"72227f813bef427bad2e847b6fb1583d.html"}</script>
+      <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
+      <script type="text/javascript">
+      
+        d4p.cssGridPath = d4p.dev ? 'html5-themes/modules/960-Responsive-Grid/css/' : 'themes/dita-d4p-classic/css/';
+        var ADAPT_CONFIG = {
+          // Where is your CSS?
+          path: d4p.relativePath + d4p.cssGridPath,
+
+          // false = Only run once, when page first loads.
+          // true = Change on window resize and page tilt.
+          dynamic: true,
+
+          // Optional callback... myCallback(i, width)
+          callback: doc_resize,
+
+          // First range entry is the minimum.
+          // Last range entry is the maximum.
+          // Separate ranges by "to" keyword.
+          range: [
+             // small (size-0)
+            '0px    to 760px  =',
+             // medium (size-1, size-2)
+            '760px  to 980px  = ',
+            '980px  to 1270px = ',
+             // large (size-3, size-5)
+            '1270px to 1600px = ',
+            '1600px to 1940px = ',
+             // extra large (size-6)
+            '1940px to 2540px = ',
+            '2540px           = '
+          ]
+        };
+
+        function doc_resize(i, width)
+        {
+          d4p.setBodyClassfunction(i, width);
+        }
+
+
+        
+      </script>
+      <script type="text/javascript" src="toc-info.js"></script>
+      <script type="text/javascript" src="themes/sap-default/js/script.js"></script>
+      
+      		<!--[if lt IE 9]>
+      			<script>
+      			  var e = ("abbr,article,aside,audio,canvas,datalist,details," +
+      			    "figure,footer,header,hgroup,mark,menu,meter,nav,output," +
+      			    "progress,section,time,video").split(',');
+      			  for (var i = 0; i < e.length; i++) {
+      			    document.createElement(e[i]);
+      			  }
+      			</script>
+      		<![endif]-->
+      
+      <script>
+      function addLoadEvent(func) {
+      var oldonload = window.onload;
+      if (typeof window.onload != 'function') {
+      window.onload = func;
+      } else {
+      window.onload = function() {
+      if (oldonload) {
+      oldonload();
+      }
+      func();
+      }
+      }
+      }
+      
+      addLoadEvent(function() { prettyPrint();
+      if ($('#local-navigation').length) {
+      $('#local-navigation').navigation();
+      }
+      
+      
+      });
+      
+      </script>
+      <script type="text/javascript" src="js/prettify.js"> </script>
+      <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
+      <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
+   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+      <div id="d4h5-main-container" class="container_12" role="application">
+         <ul id="page-links" class="hidden">
+            <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
+            <li><a id="skip-to-localnav" href="#local-navigation">Skip to navigation</a></li>
+            <li><a id="skip-to-footer" href="#footer-container">Skip to footer</a></li>
+         </ul>
+         
+         
+         <div id="d4h5-section-container" class="grid_12" style="padding-top: 0;">
+            
+            
+            
+            <div id="d4h5-main-content" class="grid_8 alpha omega" style="margin: 0 0.5em;">
+               <section>
+                  <div id="content-toolbar" class="toolbar hide-for-small"></div>
+                  <div class="page topic  - topic-topic " id="loio21ea0ea94614480d9a910b2e93431291">
+                     
+                     <h1 class="title topictitle1" hidden>Icon and Icon Pool</h1>
+                     
+                     <div class="body">
+                        <p class="shortdesc" hidden>The <samp class="ph codeph">sap-icon://</samp> protocol supports the use of icons in your application
+                           		based on the icon font concept, which uses an embedded font instead of a pixel
+                           		image.
+                        </p>
+                        
+                        		
+                        <div class="p">Compared to image-based icons, icon font is easily scalable and you can change the color and
+                           			apply various effects via CSS. <span class="ph"><span class="ph pname">SAPUI5</span></span> provides the
+                           				<samp class="ph codeph">sap.ui.core.icon</samp> control and a set of predefined icons is available
+                           			in <samp class="ph codeph">sap.ui.core.IconPool</samp>.
+                           <aside class="note note  insertion"><span class="title">Note</span> 
+                              				
+                              <p class="p">The icon font will not work if Web fonts are blocked for the user&apos;s operating
+                                 					system, for example, by the <span class="ph uicontrol">Blocking Untrusted Fonts</span>
+                                 					feature in Microsoft Windows (see <a class="extlink" href="http://help.sap.com/disclaimer?site=https://technet.microsoft.com/en-us/itpro/windows/keep-secure/block-untrusted-fonts-in-enterprise" target="_blank" alt="https://technet.microsoft.com/en-us/itpro/windows/keep-secure/block-untrusted-fonts-in-enterprise" title="https://technet.microsoft.com/en-us/itpro/windows/keep-secure/block-untrusted-fonts-in-enterprise">Block untrusted fonts in an enterprise<img src="themes/sap-default/img/3rd_link.png" class="link-external" alt="Information published on non-SAP site" title="Information published on non-SAP site" border="0"></a> in the
+                                 					Microsoft Windows IT Center).
+                              </p>
+                              
+                              			
+                           </aside>
+                           
+                           <aside class="note restriction  insertion"><span class="title">Restriction</span> 
+                              				
+                              <p class="p">In <span class="ph pname">SAP Fiori</span> app, you
+                                 					should not use icons with active state to trigger actions, use icon-only buttons
+                                 						(<samp class="ph codeph">sap.m.button</samp>) instead.
+                              </p>
+                              
+                              			
+                           </aside>
+                           
+                        </div>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="Using Custom Icons">
+                              <h2 class="section_title" style="font-size: 1.15em;">Using Custom Icons</h2>
+                              			
+                              			
+                              <p class="p">To use your own icon font files in the <samp class="ph codeph">sap.ui.core.Icon</samp> control, the
+                                 				font file needs to be declared with font-face tag in the CSS styles and the icon
+                                 				font file needs to be registered in <samp class="ph codeph">sap.ui.core.IconPool</samp>. The
+                                 				required icon font file depends on the browser supported by your application. For
+                                 				Internet Explorer (IE) versions below IE9, the font files need the following
+                                 				extensions: <samp class="ph codeph">.eot</samp> and <samp class="ph codeph">.ttf</samp>. For other browser
+                                 				versions, only the <samp class="ph codeph">.ttf</samp> extension is required.
+                              </p>
+                              
+                              			
+                              <p class="p">To add custom icons, proceed as follows:</p>
+                              
+                              			
+                              <ol class="ol" id="loio21ea0ea94614480d9a910b2e93431291__ol_ltc_lv3_1l">
+                                 				
+                                 <li class="li">
+                                    					
+                                    <p class="p">Declare the <samp class="ph codeph">font-face</samp> tag in your CSS.
+                                    </p>
+                                    
+                                    					
+                                    <p class="p">Example for IE versions below IE9:</p>
+                                    
+                                    					<pre class="pre codeblock prettyprint lang-html">&lt;style&gt;
+font-face {
+    font-family: &apos;SAP-icons&apos;; /*Please replace &apos;SAP-icons&apos; with your font name which will be used when register in sap.ui.core.IconPool*/
+    src: url(&apos;_PATH_TO_EOT_FILE_&apos;);
+    src: url(&apos;_PATH_TO_EOT_FILE_?#iefix&apos;) format(&apos;embedded-opentype&apos;), /*?#iefix is required to be added to the end of the path of eot file here*/
+         url(&apos;_PATH_TO_TTF_FILE_&apos;) format(&apos;truetype&apos;);
+    font-weight: normal;
+    font-style: normal;
+};
+&lt;/style&gt;</pre>
+                                    
+                                    					<p class="p">Example for IE versions as of IE9:</p>
+                                    
+                                    					<pre class="pre codeblock prettyprint lang-html">&lt;style&gt;
+@font-face {
+    font-family: &apos;SAP-icons&apos;; /*Please replace &apos;SAP-icons&apos; with your font name which will be used when register in sap.ui.core.IconPool*/
+    src: url(&apos;_PATH_TO_TTF_FILE_&apos;) format(&apos;truetype&apos;);
+    font-weight: normal;
+    font-style: normal;
+};
+&lt;/style&gt;</pre>
+                                    
+                                    				</li>
+                                 
+                                 				
+                                 <li class="li">
+                                    					
+                                    <p class="p">Call <samp class="ph codeph">sap.ui.core.IconPool.addIcon</samp> with the following
+                                       						parameters for each character your icon supports:
+                                    </p>
+                                    
+                                    					
+                                    <ul class="ul" id="loio21ea0ea94614480d9a910b2e93431291__ul_jc4_xv3_1l">
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p"><samp class="ph codeph">iconName</samp>: This parameter defines the name of the
+                                             								current icon. The icon name is used together with the collection
+                                             								name as an identifier for the icon to address the icon via URI and
+                                             								must, thus, be unique within the collection.
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p"><samp class="ph codeph">collectionName</samp>: This parameter defines the name of
+                                             								an icon collection. Together with the icon name it is used to
+                                             								uniquely identify an icon in a URI.
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p"><samp class="ph codeph">fontFamily</samp>: This parameter matches the string you
+                                             								have used in the <samp class="ph codeph">@font-face</samp> tag in CSS for the
+                                             									<samp class="ph codeph">font-family</samp> property (&apos;SAP-icons&apos; in the code
+                                             								snippet in step 1).
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       						
+                                       <li class="li">
+                                          							
+                                          <p class="p"><samp class="ph codeph">content</samp>: This parameter defines the special
+                                             								character that represents this icon; use a format like &apos;e000&apos;
+                                             								without escape character.
+                                          </p>
+                                          
+                                          						
+                                       </li>
+                                       
+                                       					
+                                    </ul>
+                                    
+                                    				
+                                 </li>
+                                 
+                                 			
+                              </ol>
+                              
+                              		
+                           </section>
+                        </div>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="Referencing Icons">
+                              <h2 class="section_title" style="font-size: 1.15em;">Referencing Icons</h2>
+                              			
+                              			
+                              <p class="p">To reference icons, you assign the icon URI to a control by setting
+                                 					<samp class="ph codeph">sURI</samp> for the control&apos;s corresponding property. To get the icon
+                                 				URI, the following two options exist:
+                              </p>
+                              
+                              			
+                              <ul class="ul" id="loio21ea0ea94614480d9a910b2e93431291__ul_gl1_yx3_1l">
+                                 				
+                                 <li class="li">
+                                    					
+                                    <p class="p">Call <samp class="ph codeph">sap.ui.core.IconPool.getIconURI</samp> with the
+                                       							<samp class="ph codeph">iconName</samp> property:
+                                    </p>
+                                    
+                                    					<pre class="pre codeblock prettyprint lang-js">
+sap.ui.require([&quot;sap.ui.core.IconPool&quot;], function(IconPool) {
+    var sURI = IconPool.getIconURI(&quot;accidental-leave&quot;);//please change the parameter to the name of your desired icon
+});</pre>
+                                    
+                                    				</li>
+                                 
+                                 				
+                                 <li class="li">
+                                    					
+                                    <p class="p">If you know the collection name and the icon name, write the icon URI
+                                       						directly in the following format:
+                                    </p>
+                                    
+                                    					<pre class="pre codeblock prettyprint">sap-icon://[collection-name]/[icon-name]</pre>
+                                    
+                                    					<aside class="note note  insertion"><span class="title">Note</span> You need the collection name only for custom icons. The URI for predefined
+                                       						icons does <strong class="ph b">not</strong> need the collection name.
+                                    </aside>
+                                    
+                                    				
+                                 </li>
+                                 
+                                 			
+                              </ul>
+                              
+                              		
+                           </section>
+                        </div>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="Using Icons in Controls">
+                              <h2 class="section_title" style="font-size: 1.15em;">Using Icons in Controls</h2>
+                              			
+                              			
+                              <p class="p">The following code snippet shows how the sap.m.Dialog control that already supported
+                                 				image URI has been adapted to also support icon URI.
+                                 					<samp class="ph codeph">sap.ui.core.IconPool.createControlByURI</samp> returns an instance of
+                                 					<samp class="ph codeph">sap.ui.core.Icon</samp> if <samp class="ph codeph">sURI</samp> is an icon URI.
+                                 				Otherwise, the second parameter is called as a constructor method to create an
+                                 				instance. The <samp class="ph codeph">sURI</samp> is set for the <samp class="ph codeph">src</samp> property of
+                                 				the instance.
+                              </p>
+                              
+                              			<pre class="pre codeblock prettyprint lang-js">sap.ui.define([&#x2026;, &apos;sap/ui/core/IconPool&apos;, ...], function(&#x2026;, IconPool, &#x2026;) {
+...    Dialog.prototype.setIcon = function(sURI){
+        this.setProperty(&quot;icon&quot;, sURI, true);
+        if(!jQuery.os.ios){
+           //icon is only shown in non iOS platform
+           if(this._iconImage){
+               this._iconImage.setSrc(sURI);
+           }else{
+               this._iconImage = IconPool.createControlByURI({
+                   src: sURI //src is mandatory
+                   /* other properties can be put here, such as id, ...*/
+               }, sap.m.Image);
+           }
+       }
+       return this;
+    };
+
+...</pre>
+                              
+                              			<p class="p">If the <samp class="ph codeph">img</samp> tag is rendered directly in the control, and not by creating an
+                                 				image control, use the <samp class="ph codeph">writeIcon</samp> method on
+                                 					<samp class="ph codeph">sap.ui.core.RenderManager</samp>. The <samp class="ph codeph">writeIcon</samp>
+                                 				method accepts a URI as the first parameter. Depending on this parameter, it renders
+                                 				either an <samp class="ph codeph">img</samp> or a <samp class="ph codeph">span</samp> tag. The classes and
+                                 				attributes defined in the second and third parameter are also added to the rendered
+                                 				tag.
+                              </p>
+                              
+                              			
+                              <p class="p">Font face is inserted into the style sheet dynamically when <samp class="ph codeph">Icon</samp> or
+                                 					<samp class="ph codeph">writeIcon</samp> are used for the first time. If the special character
+                                 				needs to be written into the CSS to show the icon in a control, call the
+                                 					<samp class="ph codeph">sap.ui.core.IconPool.insertFontFaceStyle</samp> function to insert the
+                                 				built in font face in your CSS. This is shown in the following code snippet:
+                              </p>
+                              
+                              			<pre class="pre codeblock prettyprint lang-js">sap.ui.require([&quot;sap/ui/core/IconPool&quot;], function(IconPool) {  IconPool.insertFontFaceStyle();
+});</pre>
+                              
+                              		</section>
+                        </div>
+                        
+                        		
+                        <div class="section">
+                           <section class="section" type="Styling the Icon Control">
+                              <h2 class="section_title" style="font-size: 1.15em;">Styling the Icon Control</h2>
+                              			
+                              			
+                              <p class="p">If you render the icon span directly in your control, or use icon font in your CSS,
+                                 				you have the maximal freedom to style the Icon control.
+                              </p>
+                              
+                              			
+                              <p class="p">If you use the icon by creating an instance of <samp class="ph codeph">sap.ui.core.Icon</samp>
+                                 				within your control, however, use the CSS class <samp class="ph codeph">sapUiIcon</samp> to add a
+                                 				new style to the icon. To avoid influencing the style of icons used elsewhere, wrap
+                                 				the icon CSS class with your control&apos;s root DOM class.
+                              </p>
+                              
+                              		
+                           </section>
+                        </div>
+                        
+                        	
+                     </div>
+                     
+                  </div>
+                  
+               </section>
+               <div class="clear"></div>
+               
+            </div>
+            <div class="clearfix"></div>
+         </div>
+      </div>
+      <div class="clearfix"></div>
+      <div id="footer-container" class="grid_12">
+         <footer>
+            	
+            <div id="custom-footerSpacer"></div>
+            	
+            
+         </footer>
+         
+         
+      </div>
+   </body>
+</html>

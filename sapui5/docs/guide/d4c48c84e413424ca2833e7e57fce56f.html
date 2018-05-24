@@ -1,0 +1,112 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="The control shows a progress chart that displays the overall progress and a summary of the items."/>
+<meta name="description" content="The control shows a progress chart that displays the overall progress and a summary of the items."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4911931267775004"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4911931267775004"/>
+<title>Stacked Bar Micro Chart</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiod4c48c84e413424ca2833e7e57fce56f">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Stacked Bar Micro Chart</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">The control shows a progress chart that displays the overall progress and a summary of
+		the items.</p>
+
+		<p class="p">Various bars can have different value colors, for example for different statuses such as
+			accepted, rejected, and open items. There is no limit to the number of bars that the
+				<samp class="ph codeph">StackedBarMicroChart</samp> control can contain.</p>
+
+		<p class="p">The <samp class="ph codeph">sap.suite.ui.microchart.StackedBarMicroChart</samp> control is designed to
+			display key figures or numbers inside a set of bars defined by different lengths and
+			colors. It can be displayed standalone or in a table.</p>
+
+		<div class="fig fignone" id="loiod4c48c84e413424ca2833e7e57fce56f__fig_lj5_mtg_my"><div class="figcontainer">
+			<img class="image" id="loiod4c48c84e413424ca2833e7e57fce56f__image_pkq_n3q_3y" src="loiofa042ce69451414093342b4aa935efab_Source1.jpg" alt="Stacked Bar Micro Chart with percentage values" title="Stacked Bar Micro Chart with percentage values"/>
+		</div></div>
+
+		<p class="p"/>
+
+		<div class="fig fignone" id="loiod4c48c84e413424ca2833e7e57fce56f__fig_tqf_stg_my"><div class="figcontainer">
+			<img class="image" id="loiod4c48c84e413424ca2833e7e57fce56f__image_tgt_r3q_3y" src="loiofd785e395e374427affe26486362b94f_Source1.jpg" alt="Stacked Bar Micro Chart in a table with absolute values" title="Stacked Bar Micro Chart in a table with absolute values"/>
+		</div></div>
+
+		<div class="section"><div class="section_title">Details</div><div type="Details"><p class="p"><span class="ph emphasis emphasis">Bar values</span></p>
+<p class="p">The progress status of
+				each item can be defined as an absolute value or as a percentage
+					(<span class="keyword apiname">value</span> property). Each stacked bar is part of the chart that
+				is defined as 100% (if you are working with percentages) or as an absolute value (if
+				you are working with a maximum value). If you do not set a maximum value
+					(<span class="keyword apiname">maxValue</span> property), the sum of all bar values is considered
+				as the maximum value and the displayed value is set as a percentage for each
+				item.</p>
+<p class="p">The number of decimal places for percentage values is, by default, 1.
+				This can be changed by the application using the <samp class="ph codeph">precision</samp>
+				property. If the percentage values are used as labels, the
+					<samp class="ph codeph">precision</samp> property affects the length of the labels. Take this
+				into account when the length of the bar is limited or there is not enough space to
+				display the whole label.</p>
+<p class="p"><span class="ph emphasis emphasis">Bar colors</span></p>
+<p class="p">By default, the
+				given value is displayed as a label inside the bar, but you can overwrite it in your
+				application using the <samp class="ph codeph">displayValue</samp> property. You can also overwrite
+				the default color of the bar (<samp class="ph codeph">valueColor</samp> property) using predefined
+					<samp class="ph codeph">less</samp> parameters for colors, predefined semantic parameters (for
+				example, <span class="keyword apiname">Error</span>, <span class="keyword apiname">Critical</span>,
+					<span class="keyword apiname">Good</span>, <span class="keyword apiname">Neutral</span>) or even hex values, such as
+					<samp class="ph codeph">#fafafa</samp>. If there is no color, the micro chart automatically
+				chooses one of the chart colors
+					(<samp class="ph codeph">sapUiChart1-11</samp>).</p>
+<p class="p"><span class="ph emphasis emphasis">Text and background
+					colors</span></p>
+<p class="p"> The text color adapts automatically depending on the
+				corresponding bar background color. If there is a dark background, a light text
+				color is used and if there is a light background, a dark text color is used.
+					</p>
+<p class="p"><span class="ph emphasis emphasis">Chart size</span></p>
+<p class="p"> You can define the chart with the
+					<samp class="ph codeph">size</samp> property. If you use a fixed size, you can select
+				predefined sizes (XS, S, M, L). If you use a responsive design, you can use the
+					<samp class="ph codeph">responsive</samp> property value. The chart size is then adjusted
+				based on the surrounding container size, for example in a
+					<samp class="ph codeph">sap.m.FlexBox</samp> control. The maximum height of the chart is 1
+				rem. If there is not enough space to show the labels, they are not displayed. If
+				there is not enough space to show the micro chart, it is not displayed
+					either.</p>
+<p class="p"><span class="ph emphasis emphasis">Integration and use </span></p>
+<p class="p">The
+					<samp class="ph codeph">sap.suite.ui.microchart.StackedBarMicroChart</samp> control is a chart
+				control and aggregates the bars of type
+					<samp class="ph codeph">sap.suite.ui.microchart.StackedBarMicroChartBar</samp>. One chart can
+				contain one or more bars. You can call it up by clicking the mouse button or by
+				using the <kbd class="key">Space</kbd> or <kbd class="key">Enter</kbd> key.</p>
+<p class="p"><span class="ph emphasis emphasis">Tooltip
+					support</span></p>
+<p class="p">The chart can have a tooltip with predefined
+					<samp class="ph codeph">displayValue</samp> property values or calculated percent values and
+				it can be set on bar level and on chart level. Each value of the chart is displayed
+				in the tooltip in a separate line. When the bar has a semantic color, the text (for
+				example Good, Critical) will be added behind the displayed value. In some cases the
+				text in the tooltip has another name than the semantic color. The tooltip can be
+				suppressed by setting its value to an empty string. </p>
+<img class="image" id="loiod4c48c84e413424ca2833e7e57fce56f__image_rxt_pkq_3y" src="loiof181e4e5f7d7481eaeec1a9e771eecdc_Source1.png" alt="Example of a tooltip with semantic colors" title="Example of a tooltip with semantic colors"/></div></div>
+
+		<div class="section"><div class="section_title">API Reference/Sample</div><div type="API Reference/Sample"><span class="ph">For more information about the
+					<samp class="ph codeph">StackedBarMicroChart</samp> control, see the <a class="xref" href="../../docs/api/symbols/sap.suite.ui.microchart.StackedBarMicroChart.html" alt="../../docs/api/symbols/sap.suite.ui.microchart.StackedBarMicroChart.html" title="../../docs/api/symbols/sap.suite.ui.microchart.StackedBarMicroChart.html">API Reference</a> and the samples in the Demo
+				Kit.</span></div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

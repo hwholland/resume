@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<script id="sap-ui-bootstrap" 
+		type="text/javascript"
+		src="../../../../../resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_bluecrystal"
+		data-sap-ui-language="en-US"
+		data-sap-ui-noConflict="true"
+		data-sap-ui-libs="sap.ui.commons,sap.uiext.inbox">
+	</script>
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+			// redirect any resource loading for "sap.uiext.inbox.qunit.mockServer" to the local folder "mockServer/" 
+			jQuery.sap.registerModulePath("sap.uiext.inbox.qunit.mockServer", "mockServer/");
+			
+			// now load and activate the mock server
+			jQuery.sap.require("sap.uiext.inbox.qunit.mockServer.InboxMockServerQUnit");
+
+			module("Load");
+
+			test("InboxCreationOk",function() {
+				sap.ui.getCore().applyChanges(); 
+				var $Inbox = jQuery.sap.byId("inbox");
+				equals(false, ( $Inbox === undefined), "Checking if the Inbox Control is created and is not undefined.");
+				equals(false, ( $Inbox === null), "Checking if the Inbox Control is created and is not null.");
+				qutils.triggerMouseEvent("inbox" + "--tableViewSelectionButton", "click");
+				
+			});
+			
+			module("Show Custom Attribute")
+			
+			asyncTest("Checking if Custom Attribute Icon is not Selected on Switching to Row Repeater View", function() {
+			sap.ui.getCore().applyChanges(); 
+			var oInbox = jQuery.sap.byId("inbox");
+			qutils.triggerMouseEvent("inbox" +"--"+"rrViewSelectionButton", "click");
+				var delayedCall = function() {
+					
+					var oRowRepeaterView = sap.ui.getCore().byId('inbox--tasksRowRepeater');
+					var sId = "inbox--customAttributesSegBtn-inbox--tasksRowRepeater-";
+					
+					//Checking the properties of Toggle Custom Attribute Button
+					var oToggleCustomAttributeBtn = sap.ui.getCore().byId("inbox--toggleCustomAttributes");
+					equals(oToggleCustomAttributeBtn.getPressed(), false, "Checking if the Toggle Custom Attribute Button is not Selected");
+					equals(oToggleCustomAttributeBtn.getTooltip(), "Show All Task Details", "Checking Tooltip, when the Toggle Custom Attribute Button is not Selected");
+					
+					for (var i =0; i< oRowRepeaterView.getRows().length ; i++) {
+						var oCustmAttrToggleBtn = sap.ui.getCore().byId(sId+i);
+						equals(oCustmAttrToggleBtn.getPressed(), false, "Checking if the Custom Attribute Button is not Selected");
+						equals(oCustmAttrToggleBtn.getTooltip(), "Show Task Details", "Checking Tooltip, when Custom Attribute Button is not Selected");
+					}
+					start();
+				};
+				setTimeout(delayedCall, 500); 
+			
+			});
+			
+			
+			asyncTest("Checking if Custom Attribute Icon is not Selected by default in the next page", function() {
+				sap.ui.getCore().applyChanges();
+				qutils.triggerMouseEvent("inbox--rowRepeaterPaginator-li--2", "click");
+				sap.ui.getCore().applyChanges();
+				
+					var delayedCall = function() {
+						var oRowRepeaterView = sap.ui.getCore().byId('inbox--tasksRowRepeater');
+						var sId = "inbox--customAttributesSegBtn-inbox--tasksRowRepeater-";
+						
+						//Checking the properties of Toggle Custom Attribute Button
+						var oToggleCustomAttributeBtn = sap.ui.getCore().byId("inbox--toggleCustomAttributes");
+						equals(oToggleCustomAttributeBtn.getPressed(), false, "Checking if the Toggle Custom Attribute Button is not Selected");
+						equals(oToggleCustomAttributeBtn.getTooltip(), "Show All Task Details", "Checking Tooltip, when the Toggle Custom Attribute Button is not Selected");
+						
+						for (var i =5; i< 8; i++) {
+							var oCustmAttrToggleBtn = sap.ui.getCore().byId(sId+(i));
+							equals(oCustmAttrToggleBtn.getPressed(), false, "Checking if the Custom Attribute Button is not Selected");
+							equals(oCustmAttrToggleBtn.getTooltip(), "Show Task Details", "Checking Tooltip, when Custom Attribute Button is not Selected");
+						} 
+						start();
+					};
+					setTimeout(delayedCall, 500); 
+				
+				}); 
+			
+			asyncTest("Showing All Custom Attributes", function() {
+				sap.ui.getCore().applyChanges();
+				qutils.triggerMouseEvent("inbox--toggleCustomAttributes", "click");
+				sap.ui.getCore().applyChanges();
+				
+					var delayedCall = function() {
+						var oRowRepeaterView = sap.ui.getCore().byId('inbox--tasksRowRepeater');
+						var sId = "inbox--customAttributesSegBtn-inbox--tasksRowRepeater-";
+						
+						//Checking the properties of Toggle Custom Attribute Button
+						var oToggleCustomAttributeBtn = sap.ui.getCore().byId("inbox--toggleCustomAttributes");
+						equals(oToggleCustomAttributeBtn.getPressed(), true, "Checking if the Toggle Custom Attribute Button is Selected");
+						equals(oToggleCustomAttributeBtn.getTooltip(), "Hide All Task Details", "Checking Tooltip, when the Toggle Custom Attribute Button is Selected");
+						
+						for (var i =5; i< 8; i++) {
+							var oCustmAttrToggleBtn = sap.ui.getCore().byId(sId+(i));
+							equals(oCustmAttrToggleBtn.getPressed(), true, "Checking if the Custom Attribute Button is Selected");
+							equals(oCustmAttrToggleBtn.getTooltip(), "Hide Task Details", "Checking Tooltip if Custom Attribute Button is Selected");
+							
+							var oLabel =   sap.ui.getCore().byId('inbox--' + 'customattr'+'-label-'+'-row-'+'0'+'-index-' + '0');
+							equals(oLabel.getText(),"Strings", "Checking if the custom attribute Property is Dates")
+							var oValue = sap.ui.getCore().byId( 'inbox--' +  'customattr'+'-value-'+'-row-'+'0'+'-index-' + '0');
+							equals(oValue.getText(), "Manna","Checking if value is Nov 16, 2012");
+							
+							var oLayout = sap.ui.getCore().byId("__layout2--begin");							
+
+							var oCustomAttributeDataRow = sap.ui.getCore().byId('inbox'+'--lastRowCell-'+i);
+							equals((oCustomAttributeDataRow.getId() === undefined),false, "Checking if Row is created for displaying the Custom Atrribute Data");
+						} 
+						start();
+					};
+					setTimeout(delayedCall, 500); 
+				
+				}); 
+			
+			
+			asyncTest("Hiding All Custom Attributes", function() {
+				sap.ui.getCore().applyChanges();
+				qutils.triggerMouseEvent("inbox--toggleCustomAttributes", "click");
+				sap.ui.getCore().applyChanges();
+				var delayedCall = function() {
+						var oRowRepeaterView = sap.ui.getCore().byId('inbox--tasksRowRepeater');
+						var sId = "inbox--customAttributesSegBtn-inbox--tasksRowRepeater-";
+						
+						//Checking the properties of Toggle Custom Attribute Button
+						var oToggleCustomAttributeBtn = sap.ui.getCore().byId("inbox--toggleCustomAttributes");
+						equals(oToggleCustomAttributeBtn.getPressed(), false, "Checking if the Toggle Custom Attribute Button is not Selected");
+						equals(oToggleCustomAttributeBtn.getTooltip(), "Show All Task Details", "Checking Tooltip, when the Toggle Custom Attribute Button is not Selected");
+						
+						for (var i =5; i< 8; i++) {
+							var oCustmAttrToggleBtn = sap.ui.getCore().byId(sId+(i));
+							equals(oCustmAttrToggleBtn.getPressed(), false, "Checking if the Custom Attribute Button is not Selected");
+							equals(oCustmAttrToggleBtn.getTooltip(), "Show Task Details", "Checking Tooltip if Custom Attribute Button is not Selected");
+						} 
+						start();
+					};
+					setTimeout(delayedCall, 0); 
+				
+				}); 
+			
+			QUnit.done(function() {
+				qutils.triggerMouseEvent("inbox" + "--tableViewSelectionButton", "click");
+			});
+		</script>
+	</head>
+	<body>
+		<h1 id="qunit-header"><title>Qunit for Custom Attribute Icon</title></h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup, will be hidden</div>
+		<div id="canvas" style="height:300px; width:300px"></div>
+		<br>
+		<div id="uiArea1" style="width: 80%;"></div>
+	</body>
+</html>

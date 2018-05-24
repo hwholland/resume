@@ -1,0 +1,299 @@
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html lang="en-us" dir="ltr">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Expressions and Helpers for HTML Templating</title>
+      <link rel="icon" href="themes/sap-default/img/favicon.ico" type="image/x-icon">
+      <link rel="shortcut icon" href="themes/sap-default/img/favicon.ico">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="abstract" content="SAPUI5 provides several expressions and helpers for HTML templating.">
+      
+      <meta name="description" content="SAPUI5 provides several expressions and helpers for HTML templating.">
+      <script type="text/javascript">var d4p = {"relativePath":'',"dev":false,"debug":false,"draft":false,"nextTopicHref":"312c097c9c7e4df58eee1f121c5490b4.html","previousTopicHref":"2a1969c2f0e54685b222dca14ff70b23.html"}</script>
+      <link rel="stylesheet" type="text/css" media="screen, projection" href="themes/sap-default/css/style.css">
+      <script type="text/javascript">
+      
+        d4p.cssGridPath = d4p.dev ? 'html5-themes/modules/960-Responsive-Grid/css/' : 'themes/dita-d4p-classic/css/';
+        var ADAPT_CONFIG = {
+          // Where is your CSS?
+          path: d4p.relativePath + d4p.cssGridPath,
+
+          // false = Only run once, when page first loads.
+          // true = Change on window resize and page tilt.
+          dynamic: true,
+
+          // Optional callback... myCallback(i, width)
+          callback: doc_resize,
+
+          // First range entry is the minimum.
+          // Last range entry is the maximum.
+          // Separate ranges by "to" keyword.
+          range: [
+             // small (size-0)
+            '0px    to 760px  =',
+             // medium (size-1, size-2)
+            '760px  to 980px  = ',
+            '980px  to 1270px = ',
+             // large (size-3, size-5)
+            '1270px to 1600px = ',
+            '1600px to 1940px = ',
+             // extra large (size-6)
+            '1940px to 2540px = ',
+            '2540px           = '
+          ]
+        };
+
+        function doc_resize(i, width)
+        {
+          d4p.setBodyClassfunction(i, width);
+        }
+
+
+        
+      </script>
+      <script type="text/javascript" src="toc-info.js"></script>
+      <script type="text/javascript" src="themes/sap-default/js/script.js"></script>
+      
+      		<!--[if lt IE 9]>
+      			<script>
+      			  var e = ("abbr,article,aside,audio,canvas,datalist,details," +
+      			    "figure,footer,header,hgroup,mark,menu,meter,nav,output," +
+      			    "progress,section,time,video").split(',');
+      			  for (var i = 0; i < e.length; i++) {
+      			    document.createElement(e[i]);
+      			  }
+      			</script>
+      		<![endif]-->
+      
+      <script>
+      function addLoadEvent(func) {
+      var oldonload = window.onload;
+      if (typeof window.onload != 'function') {
+      window.onload = func;
+      } else {
+      window.onload = function() {
+      if (oldonload) {
+      oldonload();
+      }
+      func();
+      }
+      }
+      }
+      
+      addLoadEvent(function() { prettyPrint();
+      if ($('#local-navigation').length) {
+      $('#local-navigation').navigation();
+      }
+      
+      
+      });
+      
+      </script>
+      <script type="text/javascript" src="js/prettify.js"> </script>
+      <script id="search-processing" type="text/javascript" src="js/search-processing.js"> </script>
+      <link type="text/css" rel="stylesheet" href="css/overrides.css"></head>
+   <body class="en-us sap-default centered navigation-default enumeration-disabled" style="font-family: &apos;72&apos;, Arial, Helvetica, sans-serif;">
+      <div id="d4h5-main-container" class="container_12" role="application">
+         <ul id="page-links" class="hidden">
+            <li><a id="skip-to-content" href="#d4h5-main-content">Skip to content</a></li>
+            <li><a id="skip-to-localnav" href="#local-navigation">Skip to navigation</a></li>
+            <li><a id="skip-to-footer" href="#footer-container">Skip to footer</a></li>
+         </ul>
+         
+         
+         <div id="d4h5-section-container" class="grid_12" style="padding-top: 0;">
+            
+            
+            
+            <div id="d4h5-main-content" class="grid_8 alpha omega" style="margin: 0 0.5em;">
+               <section>
+                  <div id="content-toolbar" class="toolbar hide-for-small"></div>
+                  <div class="page topic  - topic-topic " id="loio58a8e2deb5954cc79fcc81841b2e13aa">
+                     
+                     <h1 class="title topictitle1" hidden>Expressions and Helpers for HTML Templating</h1>
+                     
+                     <div class="body">
+                        <p class="shortdesc" hidden><span class="ph"><span class="ph pname">SAPUI5</span></span> provides several expressions and helpers for HTML templating.
+                        </p>
+                        
+                        		
+                        <p class="p">The following expressions and helpers exist:</p>
+                        
+                        		
+                        <ul class="ul" id="loio58a8e2deb5954cc79fcc81841b2e13aa__ul_xpw_xfd_rl">
+                           			
+                           <li class="li">
+                              				
+                              <p class="p">plain handlebars</p>
+                              
+                              				
+                              <p class="p">The plain handlebars expressions do not refer to <span class="ph"><span class="ph pname">SAPUI5</span></span> models, but to a context
+                                 					which is passed along when, for example, an instance for the template is
+                                 					created. The following example shows how you can use plain handlebars
+                                 					expressions and helpers.
+                              </p>
+                              
+                              				<pre class="pre codeblock prettyprint lang-html">&lt;h3&gt;{{title}}&lt;/h3&gt;
+&lt;ul&gt;
+{{#each persons}}
+    &lt;li&gt;{{firstName}} {{lastName}}&lt;/li&gt;
+{{/each}}
+&lt;/ul&gt;</pre>
+                              
+                              				<p class="p">For more information about handlebars expressions and helpers, see the handlebars
+                                 					documentation.
+                              </p>
+                              
+                              			
+                           </li>
+                           
+                           			
+                           <li class="li">
+                              				
+                              <p class="p"><span class="ph"><span class="ph pname">SAPUI5</span></span>-specific helpers
+                              </p>
+                              
+                              				
+                              <p class="p"><span class="ph"><span class="ph pname">SAPUI5</span></span> provides the following helpers for HTML templating
+                              </p>
+                              
+                              				
+                              <ul class="ul" id="loio58a8e2deb5954cc79fcc81841b2e13aa__ul_vcx_3gd_rl">
+                                 					
+                                 <li class="li">
+                                    						
+                                    <p class="p"><samp class="ph codeph">{{text}}</samp></p>
+                                    
+                                    						
+                                    <p class="p">You use the <samp class="ph codeph">text</samp> helper to bind texts to properties of
+                                       							<span class="ph"><span class="ph pname">SAPUI5</span></span> models. The helper registers to changes in the <span class="ph"><span class="ph pname">SAPUI5</span></span> model and
+                                       							updates the template instance if the property in the model changes. When
+                                       							the templating engine parses the helper, it is replaced with the new
+                                       							value in the model. The <samp class="ph codeph">path</samp> attribute supports the
+                                       							standard <span class="ph"><span class="ph pname">SAPUI5</span></span> data binding syntax.
+                                    </p>
+                                    
+                                    						
+                                    <p class="p">Example: <samp class="ph codeph">{{text path=&quot;/title&quot;}}</samp></p>
+                                    
+                                    						
+                                    <p class="p">To bind properties from named models, such as translatable text, you can specify this in
+                                       							the path attribute as follows:
+                                    </p>
+                                    
+                                    						
+                                    <p class="p"><samp class="ph codeph">{{text path=&quot;i18n&gt;MY_TEXT&quot;}}</samp></p>
+                                    
+                                    					
+                                 </li>
+                                 
+                                 					
+                                 <li class="li">
+                                    						
+                                    <p class="p"><samp class="ph codeph">{{element}}</samp></p>
+                                    
+                                    						
+                                    <p class="p">You use the <samp class="ph codeph">element</samp> helper to create single DOM
+                                       							elements. You can nest DOM elements and bind DOM attributes against
+                                       							values of the model.
+                                    </p>
+                                    
+                                    						
+                                    <p class="p">Example: <samp class="ph codeph">{{element tag=&quot;div&quot; text=&quot;Hello World&quot; data-myattr=&quot;myvalue&quot; style=&quot;border: 1px solid black;&quot; class=&quot;myStyleClass&quot;}}</samp></p>
+                                    
+                                    						
+                                    <p class="p">Example for use with data binding with a <samp class="ph codeph">span</samp> DOM
+                                       							element as default tag name: <samp class="ph codeph">{{element text=&quot;{/title}&quot;}}</samp></p>
+                                    
+                                    						
+                                    <p class="p">Example for use with data binding and named models: <samp class="ph codeph">{{element tag=&quot;div&quot; text=&quot;{i18n&gt;MY_TEXT}&quot;}}</samp></p>
+                                    
+                                    						
+                                    <p class="p">Example for use with editable DOM elements for two-way binding (binding
+                                       							the value of an input field against a model property): 
+                                    </p>
+                                    
+                                    						<pre class="pre codeblock prettyprint lang-html">{{element tag=&quot;input&quot; value=&quot;{/title}&quot;}}
+{{element tag=&quot;textarea&quot; text=&quot;{/title}&quot;}}</pre>
+                                    
+                                    						<p class="p">DOM elements have the advantage that you can update them individually
+                                       							when the property value in the model has changed. You do not need to
+                                       							re-render the template completely.
+                                    </p>
+                                    
+                                    					
+                                 </li>
+                                 
+                                 					
+                                 <li class="li">
+                                    						
+                                    <p class="p"><samp class="ph codeph">{{control}}</samp></p>
+                                    
+                                    						
+                                    <p class="p">You use the <samp class="ph codeph">control</samp> helper to create or embed <span class="ph"><span class="ph pname">SAPUI5</span></span>
+                                       							controle intro a template instance. It is aligned with declarative
+                                       							support. The following example shows how you embed an
+                                       								<samp class="ph codeph">sap.m.Input</samp> control in a template:
+                                    </p>
+                                    
+                                    						
+                                    <p class="p"><samp class="ph codeph">{{control sap-ui-type=&quot;sap.m.Input&quot; value=&quot;{/title}&quot;}}</samp></p>
+                                    
+                                    					
+                                 </li>
+                                 
+                                 					
+                                 <li class="li">
+                                    						
+                                    <p class="p"><samp class="ph codeph">{{each}}</samp></p>
+                                    
+                                    						
+                                    <p class="p">You can use the <samp class="ph codeph">each</samp> helper together with <span class="ph"><span class="ph pname">SAPUI5</span></span> data
+                                       							binding by specifying the <samp class="ph codeph">path</samp> attribute:
+                                    </p>
+                                    
+                                    						<pre class="pre codeblock prettyprint lang-html">{{#each path=&quot;/persons&quot;}}
+  {{element text=&quot;firstName&quot;}}
+{{/each}}
+</pre>
+                                    
+                                    					</li>
+                                 
+                                 				
+                              </ul>
+                              
+                              			
+                           </li>
+                           
+                           		
+                        </ul>
+                        
+                        	
+                     </div>
+                     
+                  </div>
+                  
+               </section>
+               <div class="clear"></div>
+               
+            </div>
+            <div class="clearfix"></div>
+         </div>
+      </div>
+      <div class="clearfix"></div>
+      <div id="footer-container" class="grid_12">
+         <footer>
+            	
+            <div id="custom-footerSpacer"></div>
+            	
+            
+         </footer>
+         
+         
+      </div>
+   </body>
+</html>

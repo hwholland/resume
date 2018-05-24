@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<!-- 
+  Tested control/class: sap.viz.ui5.* (except VizFrame)
+  Author: Frank Weigel
+-->
+<html lang='en'>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" >
+	<meta charset="UTF-8" >
+	<title>QUnit Test for Chart Wrappers</title>
+
+
+	<script id="sap-ui-bootstrap"
+	  src="../../../../resources/sap-ui-core.js"
+	  data-sap-ui-libs="sap.viz"></script>
+	<link rel="stylesheet" href="../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+	<script type="text/javascript" src="../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	<script type="text/javascript" src="../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+
+	<script>
+	
+		// get list of wrapper controls
+		var aChartWrappers = sap.ui.getCore().getLoadedLibraries()["sap.viz"].controls.filter(function(sControl) {
+			return /^sap\.viz\.ui5\.[^.]+$/.test(sControl) && !/\.Viz[^.]+$/.test(sControl);
+		});
+
+		aChartWrappers.forEach(function(sControl) {
+			
+			QUnit.test("Chart Wrapper " + sControl, function(assert) {
+				
+				jQuery.sap.require(sControl);
+				assert.ok(true, "module could be loaded");
+				
+				var fnChart = jQuery.sap.getObject(sControl);
+				var oChart = new fnChart();
+				assert.ok( oChart instanceof sap.viz.ui5.core.BaseChart, "wrapper should be instance of BaseChart");
+				assert.ok( oChart.getRenderer() === sap.viz.ui5.core.BaseChartRenderer, "chart should inherit BaseChartRenderer");
+				
+				assert.ok( !jQuery.sap.isDeclared(sControl + "Renderer"), "renderer should not have been loaded yet");
+				jQuery.sap.require(sControl + "Renderer");
+				assert.ok( jQuery.sap.isDeclared(sControl + "Renderer"), "renderer should have been loaded");
+				assert.ok( jQuery.sap.getObject(sControl + "Renderer") === sap.viz.ui5.core.BaseChartRenderer, "renderer should be the BaseChartRenderer");
+				
+			});
+
+		})
+		
+	</script>
+
+</head>
+<body class="sapUiBody" >
+	<div id="qunit"></div>
+</body>
+</html>

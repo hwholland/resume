@@ -1,0 +1,169 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Quick view cards display detailed information about a single record, in greater depth than would be displayed in a table or list."/>
+<meta name="description" content="Quick view cards display detailed information about a single record, in greater depth than would be displayed in a table or list."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=013540045059956984"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=013540045059956984"/>
+<title>Quick View Cards</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loioc4bd35e657df4285bb6d4b2a6c51a5af">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Quick View Cards</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">Quick view cards display detailed information about a single record, in greater depth
+		than would be displayed in a table or list. </p>
+
+		<div class="section">
+			<p class="p">The information displayed in quick view cards configured in the
+					<samp class="ph codeph">com.sap.vocabularies.UI.v1.HeaderInfo</samp> and
+					<samp class="ph codeph">com.sap.vocabularies.UI.v1.Facets</samp> terms. The
+					<samp class="ph codeph">com.sap.vocabularies.UI.v1.HeaderInfo</samp> term is used to present
+				the entity header information, and the
+					<samp class="ph codeph">com.sap.vocabularies.UI.v1.Facets</samp> term is used to present
+				detailed information about the record. It supports the following properties:</p>
+
+			<ul class="ul" id="loioc4bd35e657df4285bb6d4b2a6c51a5af__ul_rfc_12x_s5">
+				<li class="li">
+					<p class="p"><samp class="ph codeph">TypeNamePlural</samp></p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">ImageUrl</samp>
+					</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">Title</samp>
+					</p>
+
+				</li>
+
+				<li class="li">
+					<p class="p"><samp class="ph codeph">Description</samp></p>
+
+				</li>
+
+			</ul>
+
+		</div>
+
+		<div class="section"><p class="p">The content area shows <samp class="ph codeph">FieldGroup</samp> records from
+					<samp class="ph codeph">referenceFacet</samp> items that have been tagged using the
+					<samp class="ph codeph">IsSummary</samp> annotation in the
+					<samp class="ph codeph">com.sap.vocabularies.UI.v1.Facets</samp> annotation.</p>
+<p class="p">The
+					<samp class="ph codeph">com.sap.vocabularies.UI.v1.Facets</samp> term can be configured in the
+				application manifest file by setting the <samp class="ph codeph">annotationPath</samp> property
+				with a qualifier, as shown in the example below. If the
+					<samp class="ph codeph">annotationPath</samp> property is not configured, the
+					<samp class="ph codeph">com.sap.vocabularies.UI.v1.Facets</samp> term, without a qualifier, is
+				used.</p>
+<div class="sectiondiv subsection">
+				<p class="p subsectiontitle"><span class="ph emphasis emphasis">Card Footer</span></p>
+
+				<p class="p">You can assign actions to quick view cards that open in the object stream of the
+					stack card. The actions are displayed as buttons in the card footer.</p>
+
+			</div><div class="p">From <samp class="ph codeph">com.sap.vocabularies.UI.v1.Identification</samp>, there
+				are two kinds of actions that you can display in the card footer:<ul class="ul" id="loioc4bd35e657df4285bb6d4b2a6c51a5af__ul_cbb_1ly_5x">
+					<li class="li"><samp class="ph codeph">com.sap.vocabularies.UI.v1.DataFieldForIntentBasedNavigation</samp>
+					</li>
+
+					<li class="li"><samp class="ph codeph">com.sap.vocabularies.UI.v1.DataFieldForAction</samp></li>
+
+				</ul>
+</div>
+<div class="p">Depending on the number of assigned actions, they are displayed in the
+				footer as follows:<ul class="ul" id="loioc4bd35e657df4285bb6d4b2a6c51a5af__ul_kpv_ycj_st">
+					<li class="li">If there is only one action, the button is aligned to the right of the
+						footer area. </li>
+
+					<li class="li">If there are two actions, such as <span class="ph uicontrol">OK</span> and
+							<span class="ph uicontrol">Cancel</span>, they are presented according to their
+						importance and order of entry. We recommend to provide the annotation in a
+						such a way that the positive action is on the left and the negative action
+						is on the right.</li>
+
+					<li class="li">If there are more than two actions, an <span class="ph uicontrol">Actions</span> button
+						is displayed. Clicking the <span class="ph uicontrol">Actions</span> button opens an
+							<samp class="ph codeph">ActionSheet</samp> control with all of the defined actions in
+						the order that they appear in the metadata.</li>
+
+					<li class="li">If no actions are assigned to the card, the footer area is not displayed.
+					</li>
+
+				</ul>
+
+			</div>
+<div class="p">Each OData action is translated into a request according to the annotation.
+				Clicking an action invokes the OData service request. Complex actions open a dialog
+				box with the action parameters or a confirmation message.<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+					<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"sap.ovp": {
+    ...
+    "cards": {
+        ...
+        "card01": {
+            "model": "ZCD204_EPM_DEMO_SRV",
+            "template": "sap.ovp.cards.table",
+            "settings": {
+                ...
+                "identificationAnnotationPath": "com.sap.vocabularies.UI.v1.Identification#Qualifier1",
+                ...
+            }
+        },
+        ...
+    }
+}</pre></div>
+
+				</div>
+</div>
+<p class="p">Interaction buttons in the footer area are now part of
+					<samp class="ph codeph">sap.m.OverflowToolbar</samp>. With this, the quick view cards can now
+				display action buttons based on the width of the card and if more actions are
+				necessary, the remaining actions are shown on the Overflow Toolbar.</p>
+<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">Since the height of each quick view card is aligned with the content of the card,
+					this means cards can have different sizes. If there is more content than can be
+					shown in the card then you'll be able to scroll vertically, but only within the
+					content area itself. The header and footers stay fixed.</p>
+
+			</div>
+<div class="note sap-samplecodeblock samplecode"><span class="samplecodetitle">Sample Code</span> 
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">"sap.ovp": {
+    ...
+    "cards": {
+        "card00": {
+            "model": "ZCD204_EPM_DEMO_SRV",
+            "template": "sap.ovp.cards.stack",
+            "settings": {
+                "category": "{{card01_category}}",
+                "entitySet": "BusinessPartners",
+                "objectStreamCardsSettings": {
+                    "annotationPath": "com.sap.vocabularies.UI.v1.Facets#Qualifier2"
+                }
+            }
+        },
+        ...
+    }
+}</pre></div>
+
+			</div>
+</div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

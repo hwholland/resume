@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<script id="sap-ui-bootstrap" 
+		type="text/javascript"
+		src="../../../../../resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_bluecrystal"
+		data-sap-ui-language="en-US"
+		data-sap-ui-noConflict="true"
+		data-sap-ui-libs="sap.ui.commons,sap.uiext.inbox">
+	</script>
+		<link rel="stylesheet" href="../../../../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+	
+		<script type="text/javascript" src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+		module("Test for Date format For DateTime");
+		test("DateTimeFormat", function(){
+			var inx = new sap.uiext.inbox.Inbox("inbox");
+			sap.ui.getCore().applyChanges(); 
+			var dateValue = "\/Date(1335439338973)\/";
+		 	var date = new Date();
+		    date.setTime(dateValue.substring((dateValue.indexOf("(") + 1), dateValue.indexOf(")")));
+		    dateValue = date;
+		
+			if (dateValue != undefined && dateValue != "") {
+		 	   var utc = Date.UTC(dateValue.getUTCFullYear(),dateValue.getUTCMonth(),dateValue.getUTCDate(),dateValue.getUTCHours(),dateValue.getUTCMinutes(),dateValue.getUTCSeconds(),dateValue.getUTCMilliseconds())
+		        var userTime =  utc + new Date().getTimezoneOffset() + (new Date().getTimezoneOffset()*60*1000);
+		 	  var ins = sap.ui.core.format.DateFormat.getDateInstance({
+		            style : "medium"
+		        });
+		        var ins2 = sap.ui.core.format.DateFormat.getTimeInstance({
+		            style : "short"
+		        });
+		        var expectedDateValue = ins.format(new Date(userTime)) + " " + ins2.format(new Date(userTime));
+		    }
+			var ut = "\/Date(" + userTime + ")\/";
+			equals(inx.inboxUtils.dateTimeFormat(ut), expectedDateValue ,"Checking date format");
+			});
+		
+		</script>
+	</head>
+	<body>
+		<h1 id="qunit-header"><title>qUnit Page for Inbox Utils</title></h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup, will be hidden</div>
+		<div id="canvas" style="height:300px; width:300px"></div>
+		<br>
+		<div id="uiArea1" style="width: 80%;"></div>
+	</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for
+	sap.ui.comp.navpopover.SemanticObjectController</title>
+
+<script id="sap-ui-bootstrap" type="text/javascript"
+	src="../../../../../resources/sap-ui-core.js"
+	data-sap-ui-theme="sap_bluecrystal" data-sap-ui-noConflict="true"
+	data-sap-ui-libs="sap.ui.comp"
+	data-sap-ui-resourceroots='{
+				"test.sap.ui.comp.navpopover": "./"
+			}'>
+	
+</script>
+
+<link rel="stylesheet"
+	href="../../../../../resources/sap/ui/thirdparty/qunit.css"
+	type="text/css" media="screen" />
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/qunit-coverage.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+<script type="text/javascript"
+	src="../../../../../resources/sap/ui/thirdparty/sinon.js"></script>
+
+<script language="javascript">
+	(function() {
+		jQuery.sap.require("test.sap.ui.comp.navpopover.Util");
+		jQuery.sap.require("sap.ui.core.Control");
+		jQuery.sap.require("sap.m.MessageBox");
+		jQuery.sap.require("sap.ui.comp.navpopover.SmartLink");
+		jQuery.sap.require("sap.ui.comp.navpopover.SemanticObjectController");
+		jQuery.sap.require("sap.ui.comp.navpopover.Factory");
+		jQuery.sap.require("sap.ui.comp.odata.MetadataAnalyser");
+
+		module("sap.ui.comp.navpopover.SemanticObjectController", {
+			setup: function() {
+				test.sap.ui.comp.navpopover.Util.mockUShellServices({
+					TestObject: {
+						links: [
+							{
+								action: "displayFactSheet",
+								intent: "#/dummyLink1",
+								text: "Fact Sheet"
+							}, {
+								action: "anyAction",
+								intent: "#/dummyLink2",
+								text: "List"
+							}
+						]
+					},
+					TestObject2: {
+						links: [
+							{
+								action: "displayFactSheet",
+								intent: "#/dummyLink3",
+								text: "Fact Sheet"
+							}, {
+								action: "anyAction",
+								intent: "#/dummyLink4",
+								text: "List2"
+							}
+						]
+					},
+					TestObject3: {
+						links: []
+					}
+				});
+			},
+			teardown: function() {
+				test.sap.ui.comp.navpopover.Util.unMockUShellServices();
+				sap.ui.comp.navpopover.SemanticObjectController.destroyDistinctSemanticObjects();
+			}
+		});
+
+		fPrepareBinding = function(oSmartLink, oContext) {
+			var oBindingContextStub = sinon.stub();
+			oBindingContextStub.getObject = sinon.stub().returns(oContext);
+			oBindingContextStub.getPath = sinon.stub().returns(oSmartLink.getFieldName());
+			oSmartLink.getBindingContext = sinon.stub().returns(oBindingContextStub);
+
+			var oBindingStub = sinon.stub();
+			oBindingStub.getPath = sinon.stub().withArgs("text").returns(oSmartLink.getFieldName());
+			oSmartLink.getBinding = sinon.stub().returns(oBindingStub);
+		};
+
+		test("constructor", function() {
+			ok(new sap.ui.comp.navpopover.SemanticObjectController());
+		});
+
+		test("getDistinctSemanticObjects with delay", function() {
+			// system under test
+
+			// arrange
+			var done = assert.async();
+
+			sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects().then(function() {
+				// act
+
+				// assertions
+				ok(sap.ui.comp.navpopover.SemanticObjectController.bHasPrefetchedDistinctSemanticObjects);
+				ok(!jQuery.isEmptyObject(sap.ui.comp.navpopover.SemanticObjectController.oSemanticObjects));
+
+				done();
+
+				// cleanup
+			});
+		});
+
+		test("register and unregister", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			// arrange
+			var oSmartLink = new sap.ui.comp.navpopover.SmartLink();
+
+			// act
+			oSemanticObjectController.registerControl(oSmartLink);
+
+			// assertions
+			equal(oSemanticObjectController._aRegisteredControls.length, 1, "one control has to be registered");
+			ok(oSmartLink.hasListeners("beforePopoverOpens"), "Semantic Object Controller has to register event BeforePopoverOpens");
+			ok(oSmartLink.hasListeners("navigationTargetsObtained"), "Semantic Object Controller has to register event NavigationTargetsObtained");
+			ok(oSmartLink.hasListeners("innerNavigate"), "Semantic Object Controller has to register event InnerNavigate");
+
+			// act
+			oSemanticObjectController.unregisterControl(oSmartLink);
+
+			// assertions
+			equal(oSemanticObjectController._aRegisteredControls.length, 0, "no control has to be registered");
+			ok(!oSmartLink.hasListeners("beforePopoverOpens"), "Semantic Object Controller has to unregister event BeforePopoverOpens");
+			ok(!oSmartLink.hasListeners("navigationTargetsObtained"), "Semantic Object Controller has to unregister event NavigationTargetsObtained");
+			ok(!oSmartLink.hasListeners("innerNavigate"), "Semantic Object Controller has to unregister event InnerNavigate");
+
+			// cleanup
+			oSemanticObjectController.destroy();
+			oSmartLink.destroy();
+		});
+
+		test("setIgnoredFields - via constructor", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController({
+				ignoredFields: "TestField, DummyField"
+			});
+
+			// arrange
+
+			// act
+			var oSmartLink = new sap.ui.comp.navpopover.SmartLink({
+				fieldName: "TestField",
+				semanticObject: "TestObject",
+				semanticObjectController: oSemanticObjectController
+			});
+
+			// assertions
+			var done = assert.async();
+			sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects().then(function() {
+				equal(oSmartLink.getEnabled(), false);
+
+				done();
+
+				// cleanup
+				oSemanticObjectController.destroy();
+				oSmartLink.destroy();
+			});
+		});
+
+		test("setIgnoredFields - via setIgnoredFields method", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			// arrange
+			var oSmartLink = new sap.ui.comp.navpopover.SmartLink({
+				fieldName: "TestField",
+				semanticObject: "TestObject",
+				semanticObjectController: oSemanticObjectController
+			});
+
+			// act
+			oSemanticObjectController.setIgnoredFields("TestField, DummyField");
+
+			// assertions
+			var done = assert.async();
+			sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects().then(function() {
+				equal(oSmartLink.getEnabled(), false);
+
+				done();
+
+				// cleanup
+				oSemanticObjectController.destroy();
+				oSmartLink.destroy();
+			});
+		});
+
+		test("setIgnoredFields - via setSemanticObjectController method", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController({
+				ignoredFields: "TestField"
+			});
+
+			// arrange
+			var oSmartLink = new sap.ui.comp.navpopover.SmartLink({
+				fieldName: "TestField",
+				semanticObject: "TestObject",
+				semanticObjectController: new sap.ui.comp.navpopover.SemanticObjectController({
+					ignoredFields: "DummyField"
+				})
+			});
+
+			// act
+			oSmartLink.setSemanticObjectController(oSemanticObjectController);
+
+			// assertions
+			var done = assert.async();
+			sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects().then(function() {
+				equal(oSmartLink.getEnabled(), false);
+
+				done();
+
+				// cleanup
+				oSemanticObjectController.destroy();
+				oSmartLink.destroy();
+			});
+		});
+
+		test("setIgnoredFields", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			// arrange
+			var oSmartLink = new sap.ui.comp.navpopover.SmartLink({
+				fieldName: "TestField",
+				semanticObject: "TestObject",
+				semanticObjectController: oSemanticObjectController
+			});
+
+			// act
+			oSemanticObjectController.setIgnoredFields("TestField, DummyField");
+			oSemanticObjectController.setIgnoredFields("DummyField1, DummyField2");
+
+			// assertions
+			var done = assert.async();
+			sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects().then(function() {
+
+				equal(oSmartLink.getEnabled(), true);
+				done();
+
+				// cleanup
+				oSemanticObjectController.destroy();
+				oSmartLink.destroy();
+			});
+		});
+
+		test("Check BeforePopoverOpens event", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			var bOpenWasCalled = false;
+			var oEventArgs = {
+				open: function() {
+					bOpenWasCalled = true;
+				}
+			};
+
+			var oSmartLink = new sap.ui.comp.navpopover.SmartLink();
+			oSemanticObjectController.registerControl(oSmartLink);
+
+			oSmartLink.fireBeforePopoverOpens(oEventArgs)
+			ok(bOpenWasCalled, "SemanticObject controller has to call open if BeforePopoverOpens is not registered");
+
+			bOpenWasCalled = false;
+			var aReceivedParams = null;
+			oSemanticObjectController.attachBeforePopoverOpens(function(oEvent) {
+				aReceivedParams = oEvent.getParameters();
+			});
+
+			oSmartLink.fireBeforePopoverOpens(oEventArgs)
+			ok(!bOpenWasCalled, "SemanticObject controller should not call open if BeforePopoverOpens is registered");
+			ok(aReceivedParams.open === oEventArgs.open, "open function has to be forwarded via event args if BeforePopoverOpens is registered");
+
+			// cleanup
+			oSemanticObjectController.destroy();
+			oSmartLink.destroy();
+		});
+
+		test("Check TargetsObtained event", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			var bShowWasCalled = false;
+			var oEventArgs = {
+				show: function() {
+					bShowWasCalled = true;
+				}
+			};
+
+			var oSmartLink = new sap.ui.comp.navpopover.SmartLink();
+			oSemanticObjectController.registerControl(oSmartLink);
+
+			oSmartLink.fireNavigationTargetsObtained(oEventArgs)
+			ok(bShowWasCalled, "SemanticObject controller has to call show if TargetsObtained is not registered");
+
+			bShowWasCalled = false;
+			var aReceivedParams = null;
+			oSemanticObjectController.attachNavigationTargetsObtained(function(oEvent) {
+				aReceivedParams = oEvent.getParameters();
+			});
+
+			oSmartLink.fireNavigationTargetsObtained(oEventArgs)
+			ok(!bShowWasCalled, "SemanticObject controller should not call open if TargetsObtained is registered");
+			ok(aReceivedParams.show === oEventArgs.show, "show function has to be forwarded via event args if TargetsObtained is registered");
+
+			// cleanup
+			oSemanticObjectController.destroy();
+			oSmartLink.destroy();
+		});
+
+		test("Check getFieldSemanticObjectMap function", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			sinon.stub(jQuery.sap.log, "warning");
+			var oMyMap = {};
+			var oMap = oSemanticObjectController.getFieldSemanticObjectMap();
+			ok(oMap === null, "no map should be returned");
+			ok(jQuery.sap.log.warning.calledOnce, "no map available, warning should be logged");
+
+			sinon.stub(sap.ui.comp.odata.MetadataAnalyser.prototype, "getFieldSemanticObjectMap").returns(oMyMap);
+			oSemanticObjectController.setEntitySet("dummySet");
+			oMap = oSemanticObjectController.getFieldSemanticObjectMap();
+			ok(oMap === oMyMap, "map should be returned");
+			ok(sap.ui.comp.odata.MetadataAnalyser.prototype.getFieldSemanticObjectMap.calledOnce, "MetadataAnalyser function should be called once")
+
+			oMap = oSemanticObjectController.getFieldSemanticObjectMap();
+			ok(sap.ui.comp.odata.MetadataAnalyser.prototype.getFieldSemanticObjectMap.calledOnce, "MetadataAnalyser function should be called only once")
+
+			// cleanup
+			oSemanticObjectController.destroy();
+		});
+
+		test("Check getEntitySet function", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			var oParent = {
+				getParent: function() {
+					return {
+						getParent: function() {
+							return {
+								getEntitySet: function() {
+									return "dummySet";
+								}
+							}
+						}
+					}
+				}
+			}
+
+			oSemanticObjectController.getParent = function() {
+				return oParent;
+			}
+			equal(oSemanticObjectController.getEntitySet(), "dummySet", "entity set should be taken from parent");
+
+			// cleanup
+			oSemanticObjectController.destroy();
+		});
+
+		test("setPrefetchNavigationTargets - BCP 1680068310", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			// arrange
+			var done = assert.async();
+			oSemanticObjectController.attachPrefetchDone(function(oEvent) {
+				// assertions
+				equal(Object.keys(oEvent.getParameters().semanticObjects).length, 3);
+
+				done();
+
+				// cleanup
+				oSemanticObjectController.destroy();
+			});
+
+			// act
+			oSemanticObjectController.setPrefetchNavigationTargets(true);
+		});
+
+		test("setPrefetchNavigationTargets", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			// arrange
+			var fnFirePrefetchDoneSpy = sinon.spy(oSemanticObjectController, "firePrefetchDone");
+			var done = assert.async();
+			oSemanticObjectController.attachPrefetchDone(function(oEvent) {
+				// assert
+				ok(fnFirePrefetchDoneSpy.calledOnce);
+				equal(oSemanticObjectController.hasSemanticObjectLinks("TestObject"), true);
+				equal(oSemanticObjectController.hasSemanticObjectLinks("dummy"), false);
+				equal(oSemanticObjectController.hasSemanticObjectLinks(""), false);
+				equal(oSemanticObjectController.hasSemanticObjectLinks(null), false);
+
+				done();
+
+				// cleanup
+				oSemanticObjectController.destroy();
+			});
+
+			// act
+			oSemanticObjectController.setPrefetchNavigationTargets(true);
+		});
+
+		test("setPrefetchNavigationTargets", function() {
+			// system under test
+			var oSemanticObjectController = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			// arrange
+			var fnFirePrefetchDoneSpy = sinon.spy(oSemanticObjectController, "firePrefetchDone");
+
+			// act
+			oSemanticObjectController.setPrefetchNavigationTargets(false);
+
+			// assert
+			ok(!fnFirePrefetchDoneSpy.calledOnce);
+
+			// cleanup
+			oSemanticObjectController.destroy();
+		});
+
+		test("Several instances of SemanticObjectController", function() {
+			// system under test
+
+			// arrange
+			var done = assert.async();
+			var fnHasDistinctSemanticObjectSpy = sinon.spy(sap.ui.comp.navpopover.SemanticObjectController, "getDistinctSemanticObjects");
+
+			// act
+			var oSemanticObjectController1 = new sap.ui.comp.navpopover.SemanticObjectController();
+			var oSemanticObjectController2 = new sap.ui.comp.navpopover.SemanticObjectController();
+
+			sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects().then(function() {
+
+				// assert
+				strictEqual(fnHasDistinctSemanticObjectSpy.callCount, 3);
+
+				done();
+
+				// cleanup
+				oSemanticObjectController1.destroy();
+				oSemanticObjectController2.destroy();
+			});
+		});
+
+		test("getDistinctSemanticObjects - order of multiple calls", function() {
+			// system under test
+
+			// arrange
+			var aTimer = [];
+
+			// act
+			var done = assert.async();
+			sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects().then(function(oSemanticObjects) {
+
+				// assert
+				equal(aTimer.length, 0);
+				equal(!!oSemanticObjects[""], false);
+
+				aTimer.push("");
+				done();
+
+				// cleanup
+				sap.ui.comp.navpopover.SemanticObjectController.destroyDistinctSemanticObjects();
+			});
+
+			var done1 = assert.async();
+			sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects().then(function(oSemanticObjects) {
+
+				// assert
+				equal(aTimer[0], "");
+				equal(!!oSemanticObjects["TestObject"], true);
+
+				aTimer.push("TestObject");
+				done1();
+
+				// cleanup
+				sap.ui.comp.navpopover.SemanticObjectController.destroyDistinctSemanticObjects();
+			});
+
+			var done2 = assert.async();
+			sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects("TestObject2").then(function(oSemanticObjects) {
+
+				// assert
+				equal(aTimer[0], "");
+				equal(aTimer[1], "TestObject");
+				equal(!!oSemanticObjects["TestObject2"], true);
+
+				aTimer.push("TestObject2");
+				done2();
+
+				// cleanup
+				sap.ui.comp.navpopover.SemanticObjectController.destroyDistinctSemanticObjects();
+			});
+
+			var done3 = assert.async();
+			sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects(null).then(function(oSemanticObjects) {
+
+				// assert
+				equal(aTimer[0], "");
+				equal(aTimer[1], "TestObject");
+				equal(aTimer[2], "TestObject2");
+				equal(!!oSemanticObjects[null], false);
+
+				done3();
+
+				// cleanup
+				sap.ui.comp.navpopover.SemanticObjectController.destroyDistinctSemanticObjects();
+			});
+
+			var done4 = assert.async();
+			sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects().then(function(oSemanticObjects) {
+				// assert
+				equal(!!oSemanticObjects[""], false);
+
+				sap.ui.comp.navpopover.SemanticObjectController.getDistinctSemanticObjects().then(function(oSemanticObjects) {
+
+					// assert
+					equal(!!oSemanticObjects["TestObject"], true);
+
+					done4();
+
+					// cleanup
+					sap.ui.comp.navpopover.SemanticObjectController.destroyDistinctSemanticObjects();
+				});
+			});
+		});
+
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for qUnit Page for
+		sap.ui.comp.navpopover.SemanticObjectController</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="content"></div>
+</body>
+</html>

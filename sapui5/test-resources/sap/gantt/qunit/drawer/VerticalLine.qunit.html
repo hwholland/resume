@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+
+		<title>QUnit: VerticalLine Qunit Test page</title>
+
+		<script id="sap-ui-bootstrap"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.gantt">
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="../../../../../resources/sap/ui/thirdparty/qunit.css"/>
+		<script src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="application/javascript">
+
+			sap.ui.define(['jquery.sap.global', "sap/ui/base/Object",], function (jQuery, Object) {
+				var AxisTime = Object.extend("mock.AxisTime", {
+					
+				});
+				AxisTime.prototype.getCurrentTickTimeIntervalKey = function(){
+					return '1week';
+				};
+				AxisTime.prototype.getTickTimeIntervalLabel = function(){
+					return [
+						[ ],
+						[	{ value: 0 },
+							{ value: 20 },
+							{ value: 40 },
+							{ value: 60 },
+							{ value: 80 }
+						]
+					]
+				}
+				return AxisTime;
+			}, true);
+
+			sap.ui.require(["sap/gantt/drawer/VerticalLine"], function(VerticalLine){
+				"use strict";
+				var oVerticalLine;
+				QUnit.module("VerticalLine TestModule",{
+					setup: function() {
+						oVerticalLine = new VerticalLine(new mock.AxisTime());
+						oVerticalLine.drawSvg(d3.select("#chart"));
+					},
+					teardown: function(){
+						oVerticalLine.destroySvg(d3.select("#chart"));
+						oVerticalLine = null;
+					}
+				});
+				QUnit.test("1. Vertical line has class name sapGanttChartVerticalLine", function(assert){
+					var $rect = jQuery('.sapGanttChartSvg').find('.sapGanttChartVerticalLine');
+					assert.ok($rect.length === 1, "class name not found");
+				});
+				QUnit.test("2. Vertical line draw the height same as the browser window", function(assert){
+					var $path = jQuery('.sapGanttChartSvg').find('path');
+					var sMoves = $path.attr("d");
+					var $parentHeight = jQuery('.sapGanttChartSvg').height();
+					// assert.ok($rect.height() === $parent.height(), "vertical line height set correctly");
+					assert.ok($path, "path was drawned");
+					assert.ok(sMoves, "d attribute is not empty");
+					assert.ok(sMoves.indexOf($parentHeight) !== -1, "d attribut has parent height");
+				});
+				
+				QUnit.test("3. Vertical Line destroy should remove path", function(assert){
+					oVerticalLine.destroySvg(d3.select("#chart"));
+					var $path = jQuery('.sapGanttChartSvg').find('path');
+					// assert.ok($rect.height() === $parent.height(), "vertical line height set correctly");
+					assert.ok($path.length === 0, "vertical line path was removed");
+				});
+			});
+
+		</script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+		<svg id="chart" class="sapGanttChartSvg" width="100" height="200"></svg>
+	</body>
+</html>

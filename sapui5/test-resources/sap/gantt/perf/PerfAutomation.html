@@ -1,0 +1,699 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+
+<title>GanttChart</title>
+<style>
+	#line-chart {
+		background-color: #fff;
+	}
+	#line-chart path { 
+		stroke: steelblue;
+		stroke-width: 2;
+		fill: none;
+	}
+	.axis path, .axis line {
+		fill: none;
+		stroke: grey;
+		stroke-width: 1;
+		shape-rendering: crispEdges;
+	}
+</style>
+<script id="sap-ui-bootstrap"
+	data-sap-ui-libs="sap.gantt, sap.m, sap.ui.table"
+	data-sap-ui-theme="sap_bluecrystal"
+	data-sap-ui-modules="jquery.sap.storage"
+	src="../../../../resources/sap-ui-core.js">
+</script>
+<script src="./PerfSetting.js"></script>
+<script src="../test.js"></script>
+
+<script>
+
+	jQuery.sap.measure.setActive(true);
+
+	var fnInitializeUIControls = function(){
+		var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local),
+			sStorageKey = 'scenarios';
+
+		var aDefaultScenarios = [
+			{
+				scenario: 1,
+				rows: 100,
+				shapes: 500,
+				calendar: true,
+				warning: false,
+				relationship: false,
+				text: false
+			},
+			{
+				scenario: 2,
+				rows: 500,
+				shapes: 100,
+				calendar: true,
+				warning: true,
+				relationship: false,
+				text: false
+				
+			},
+			{
+				scenario: 3,
+				rows: 250,
+				shapes: 100,
+				calendar: true,
+				warning: true,
+				relationship: true,
+				text: false
+			}
+		];
+		var aScenarios = oStorage.get(sStorageKey) || aDefaultScenarios.slice(); // copy from default scenarios
+
+		var fnFormatDefaultScenarios = function(aScenarios){
+			aScenarios.forEach(function(oItem){
+				oItem.label = oItem.rows + ' rows, '+ oItem.shapes +' shapes per row';
+				if (oItem.calendar) oItem.label += ' with calendars';
+				if (oItem.warning) oItem.label += ', warning icons';
+				if (oItem.relationship) oItem.label += ' and relationship';
+				if (oItem.text) oItem.label += ' and text';
+			});
+		};
+		fnFormatDefaultScenarios(aScenarios)
+
+		var oSelectModel = new sap.ui.model.json.JSONModel();
+		oSelectModel.setData({ items: aScenarios });
+
+		var fnSetupScenarioState = function(oItem) {
+			var byId = sap.ui.getCore().byId;
+				byId('rows').setValue(oItem.rows);
+				byId('shapes').setValue(oItem.shapes)
+				byId('hierarchy').setValue(1);
+				byId('relationship').setSelected(oItem.relationship);
+				byId('calendar').setSelected(oItem.calendar);
+				byId('warning').setSelected(oItem.warning);
+				byId('text').setSelected(oItem.text);
+		};
+		var oSelect = new sap.m.Select({
+			items: {
+				path: "/items",
+				template: new sap.ui.core.Item({
+					key: "{scenario}",
+					text: "{label}"
+				})
+			},
+			change: function(oEvent) {
+				oAllRunningCosts = [];
+				var oResultTable = sap.ui.getCore().byId('result-table');
+				if (oResultTable) {
+					oResultTable.getModel('result').setData({costs: oAllRunningCosts});
+					oResultTable.setFooter('No Data available');
+					jQuery("#line-chart").empty();
+				}
+				fnSetupScenarioState(oEvent.getParameter('selectedItem').getBindingContext().getObject());
+			}
+		});
+		var oTimes = new sap.m.Input({
+			ariaLabelledBy: new sap.m.Label({text: 'Times'}),
+			type: sap.m.InputType.Number,
+			width: '100px',
+			value: parseInt(oStorage.get('runTimes'), 10)  || 20
+		})
+		var oExecuteButton = new sap.m.Button({
+			text: 'Run',
+			press: function(oEvent) {
+				var oItem = oSelect.getSelectedItem().getBindingContext().getObject();
+				var iRows = oItem.rows,
+					iShapes = oItem.shapes,
+					bShowCalendar = oItem.calendar,
+					bShowWarning = oItem.warning,
+					bShowRelationship = oItem.relationship;
+
+				var iRunTimes = parseInt(oTimes.getValue(), 10);
+
+				var oPerfSetting = new sap.gantt.perf.PerfSetting({
+					numberOfRow: iRows,
+					numberOfShape: iShapes,
+					showCalendar: bShowCalendar,
+					showWarning: bShowWarning,
+					showRelationship: bShowRelationship
+				});
+				oStorage.put('selectedKey', oItem.scenario);
+				oStorage.put('runTimes', iRunTimes);
+				fnStartRunPerformanceTesting(oPerfSetting, iRunTimes);
+			}
+		});
+
+		var fnAddTestingScenario = function(oEvent) {
+			var byId = sap.ui.getCore().byId;
+			var iRows = parseInt(byId('rows').getValue(), 10);
+			var iShapes = parseInt(byId('shapes').getValue(), 10);
+			var iHierarchies = parseInt(byId('hierarchy').getValue(), 10);
+			var bShowRelationship = byId('relationship').getSelected();
+			var bShowCalendar = byId('calendar').getSelected();
+			var bShowWarning = byId('warning').getSelected();
+			var bShowText = byId('text').getSelected();
+			
+			var bExists = aScenarios.some(function(oItem){
+				return oItem.rows === iRows && oItem.shapes === iShapes
+						&& oItem.calendar === bShowCalendar
+						&& oItem.warning  === bShowWarning
+						&& oItem.relationship === bShowRelationship
+						&& oItem.text  === bShowText;
+			});
+			if (!bExists) {
+				var oScenario = {
+					scenario: aScenarios.length + 1,
+					rows: iRows,
+					shapes: iShapes,
+					calendar: bShowCalendar,
+					warning: bShowWarning,
+					relationship: bShowRelationship,
+					text: bShowText
+				};
+				aScenarios.push(oScenario);
+				fnFormatDefaultScenarios(aScenarios)
+				oSelectModel.setData({ items: aScenarios });
+				oStorage.put(sStorageKey, aScenarios);
+			}
+		};
+
+		var fnResetToDefaultScenario = function(){
+			aScenarios = aDefaultScenarios.slice();
+			oSelectModel.setData({ items: aDefaultScenarios });
+			oStorage.remove(sStorageKey, aScenarios);
+		};
+
+		sap.ui.jsfragment("sap.gantt.perf.UISettings", this).addContent(new sap.m.Button({
+			text: 'Add Scenario',
+			press: fnAddTestingScenario
+		})).addContent(new sap.m.Button({
+			text: 'Reset Scenario',
+			press: fnResetToDefaultScenario
+		})).placeAt('initial');
+		new sap.m.Toolbar({
+			content: [oSelect, oTimes, oExecuteButton]
+		}).placeAt('initial');
+		
+		var byId = sap.ui.getCore().byId;
+		// disable number of views input
+		byId('views').setEnabled(false);
+		byId('horizon-label').setVisible(false);
+		byId('horizon').setVisible(false);
+
+		oSelect.setModel(oSelectModel);
+		oSelect.setSelectedKey(oStorage.get('selectedKey'));
+		fnSetupScenarioState(oSelect.getSelectedItem().getBindingContext().getObject());
+	};
+
+	fnInitializeUIControls();
+
+	var oAllRunningCosts = [];
+	var fnStartRunPerformanceTesting = function(oPerfSetting, iRunTimes) {
+		sap.ui.define(['jquery.sap.global', 'sap/gantt/GanttChart', 'sap/gantt/GanttChartRenderer', 'sap/gantt/shape/Rectangle', 'sap/gantt/shape/SelectedShape', 'sap/gantt/shape/Group',
+			'sap/gantt/def/SvgDefs', 'sap/gantt/def/filter/MorphologyFilter', 'sap/gantt/def/pattern/SlashPattern',
+			'sap/gantt/def/pattern/BackSlashPattern', 'sap/gantt/def/gradient/LinearGradient', 'sap/gantt/def/cal/CalendarDefs',
+			'sap/gantt/def/cal/Calendar', 'sap/gantt/def/cal/TimeInterval'],
+			function(jQuery, GanttChart, GanttChartRenderer, Rectangle, SelectedShape, Group, SvgDefs,
+			MorphologyFilter, SlashPattern, BackSlashPattern, LinearGradient, CalendarDefs, Calendar, TimeInterval){
+				'use strict'
+				//--------------------------------Global Variables & Functions-----------------------------
+				var fnRandomHexColor = function() {
+					return '#'+(Math.random()*0xFFFFFF<<0).toString(16)
+				};
+				var oJSONData = oPerfSetting.generate();
+				var oModel = new sap.ui.model.json.JSONModel();
+
+				var iCurrentTime = -1;
+
+				var aDrawingCosts = [];
+				var oResultMap = {};
+
+				// subscribe to event bus
+				var oBus = sap.ui.getCore().getEventBus();
+				oBus.destroy();
+				oBus.subscribe('sap.gantt.perf', 'drawSvg', function(sChannel, sEvent, oData){
+					aDrawingCosts.push(oData.cost);
+
+					oResultMap['control'] = oData.id
+					var oCurrentCost = oResultMap['costs'] || [];
+					oCurrentCost.push(oData.cost);
+					oResultMap['costs'] = oCurrentCost;
+
+					// _drawSvg need 3 times to run in order to render one gantt chart instance
+					oResultMap['sum'] = oCurrentCost.reduce(function(a, b) { return a + b; });
+					oAllRunningCosts.push(oResultMap);
+
+					// reset drawing cost for next running cycle
+					aDrawingCosts = [];
+					oResultMap = {};
+
+					var iOldIndex = parseInt(oData.id.split('_')[1], 10);
+
+					if (iOldIndex < iRunTimes) {
+						setTimeout(function(){
+							fnDestroyGanttChart(oData.id);
+							fnStartRunning(iOldIndex + 1);
+						});
+					}
+
+					jQuery('#result').text('Current Loop:' + iOldIndex + ' \nAverage drawing costs ' + fnCalculateAverageCost(oAllRunningCosts) + ' ms seconds');
+					if (iOldIndex === iRunTimes) {
+						fnDestroyGanttChart(oData.id);
+						fnCleanupElements();
+						fnShowResultInTable(oAllRunningCosts);
+						fnVisualizeResult(oAllRunningCosts);
+					}
+				});
+
+				var fnDestroyGanttChart = function(id){
+					var oOldControl = sap.ui.getCore().byId(id);
+					if (oOldControl) {
+						oOldControl.destroy();
+						//sap.ui.getCore().applyChanges();
+					}
+				};
+
+				var fnCalculateAverageCost = function(oAllRunningCosts) {
+					var iSum = 0;
+					oAllRunningCosts.forEach(function(oItem){
+						iSum += (oItem.sum || 0);
+					});
+					return iSum / oAllRunningCosts.length;
+				};
+
+				var fnCleanupElements = function() {
+					oSvgDefs.destroy();
+				};
+				var fnVisualizeResult = function(aCosts) {
+					// Set the dimensions of the canvas / graph
+					var margin = {top: 30, right: 20, bottom: 30, left: 50},
+						width = 800 - margin.left - margin.right,
+						height = 705 - margin.top - margin.bottom;
+
+					var iTicks = aCosts.length;
+
+					var data = aCosts.map(function(oCost, iIndex) {
+						return {index: iIndex + 1, value: oCost.sum };
+					});
+
+					// Set the ranges
+					var x = d3.scale.linear().range([0, width]);
+					var y = d3.scale.linear().range([height, 0]);
+					// Define the axes
+					var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(iTicks);
+
+					var yAxis = d3.svg.axis().scale(y).orient("left").ticks(iTicks);
+					// Define the line
+					var valueline = d3.svg.line()
+						.x(function(d) { return x(d.index); })
+						.y(function(d) { return y(d.value); });
+
+					var fnCreateLineChart = function() {
+						// Adds the svg canvas
+						x.domain(d3.extent(data, function(d) { return d.index; }));
+						y.domain([0, d3.max(data, function(d) {
+							return d.value; 
+						})]);
+						var svg = d3.select("#line-chart")
+							.append("svg")
+								.attr("width", width + margin.left + margin.right)
+								.attr("height", height + margin.top + margin.bottom)
+							.append("g")
+								.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+						svg.append("path")
+							.attr("class", "line")
+							.attr("d", valueline(data));
+						// Add the X Axis
+						svg.append("g")
+							.attr("class", "x axis")
+							.attr("transform", "translate(0," + height + ")")
+							.call(xAxis);
+
+						// Add the Y Axis
+						svg.append("g")
+							.attr("class", "y axis")
+							.call(yAxis);
+					};
+
+					var fnUpdateLineChart = function() {
+						x.domain(d3.extent(data, function(d) { return d.index; }));
+						y.domain([0, d3.max(data, function(d) {
+							return d.value; 
+						})]);
+						var svg = d3.select("#line-chart").transition();
+						svg.select(".line")
+							.duration(750)
+							.attr("d", valueline(data));
+						svg.select(".x.axis")
+							.duration(750)
+							.call(xAxis);
+						svg.select(".y.axis")
+							.duration(750)
+							.call(yAxis);
+					};
+
+					jQuery('path.line').length === 0 ? fnCreateLineChart() : fnUpdateLineChart();
+				};
+				var fnShowResultInTable = function(oAllRunningCosts) {
+					var oSplitter = sap.ui.getCore().byId('final-result');
+					var oResultTable = sap.ui.getCore().byId('result-table');
+					if (!oResultTable && !oSplitter) {
+						oResultTable = new sap.ui.table.Table({
+							id: 'result-table',
+							selectionMode: sap.ui.table.SelectionMode.Single,
+							visibleRowCount: 20,
+							columns: [
+								new sap.ui.table.Column({label: 'Running Loop', template: "result>control"}),
+								new sap.ui.table.Column({
+									label: "Single Run cost (_drawSvg invokes 3 times)",
+									template: new sap.m.Label({
+										text: {
+											path: "result>costs",
+											formatter: function(aCost) {
+												if (aCost) {
+													return aCost.map(function(oCost) {
+														return oCost + 'ms;';
+													}).join('\t');
+												}
+											}
+										}
+									})
+								}),
+								new sap.ui.table.Column({label: "Total Cost (Sum) in million seconds", template: "result>sum"})
+							],
+							layoutData: new sap.ui.layout.SplitterLayoutData({
+								resizable : true,
+								size      : "50%",
+								minSize   : 800
+							})
+						});
+						oSplitter = new sap.ui.layout.Splitter({
+							id: 'final-result',
+							contentAreas: [
+								oResultTable,
+								new sap.ui.core.HTML({id: 'line-chart'}).setDOMContent('<div id="line-chart"></div>')
+							]
+						}).placeAt('table-result');
+					}
+					var oResultModel = new sap.ui.model.json.JSONModel();
+					oResultModel.setData({root: oAllRunningCosts});
+					oResultTable.setModel(oResultModel, 'result');
+					oResultTable.bindRows('result>/root');
+					oResultTable.setFooter('Run ' + oAllRunningCosts.length +' times and the average drawing costs ' + fnCalculateAverageCost(oAllRunningCosts) + ' ms seconds');
+
+					oSplitter.setVisible(true);
+				};
+				//-------------------------------- Start Preparation --------------------------------
+
+				var aPatterns = ['pattern_slash_grey', 'pattern_slash_blue',
+								'pattern_slash_green', 'pattern_slash_orange',
+								'pattern_slash_lightblue', 'pattern_slash_grey'];
+				/*** Order Shape Declaration **/
+				var OrderShape = Rectangle.extend("sap.test.gantt.OrderShape", {});
+
+				OrderShape.prototype.getFill = function(oRawData){
+					if (oRawData.status === 2) {
+						return 'lightblue'; //fnRandomHexColor();
+					} else {
+						return sap.ui.getCore().byId(aPatterns[oRawData.type]).getRefString();
+					}
+				};
+				OrderShape.prototype.getStroke = function (oRawData) {
+					var iIndex = parseInt(oRawData.type, 10) || 0;
+					return sap.ui.getCore().byId(aPatterns[iIndex]).getRefString();
+				};
+
+				/*** Rectangle Group Declaration **/
+				var RectangleGroup = Group.extend("sap.test.gantt.RectangleGroup",{});
+				RectangleGroup.prototype.getRLSAnchors = function(oRawData, oObjectInfo){
+					var shapes = this.getShapes();
+					var rectangleShapeClass;
+					for(var i in shapes){
+						if(shapes[i] instanceof sap.gantt.shape.Rectangle){
+							rectangleShapeClass = shapes[i];
+						}
+					}
+					var _x = rectangleShapeClass.getX(oRawData);
+					var _y = rectangleShapeClass.getY(oRawData, oObjectInfo) + rectangleShapeClass.getHeight()/2;
+					return {
+						startPoint: {
+							x: _x,
+							y: _y,
+							height:rectangleShapeClass.getHeight(oRawData),
+						},
+						endPoint: {
+							x: _x + rectangleShapeClass.getWidth(oRawData),
+							y: _y,
+							height:rectangleShapeClass.getHeight(oRawData),
+						}
+					};
+				};
+				/*** Selected Shape Declaration */
+				var RectPath = SelectedShape.extend("sap.test.gantt.RectPath", {});
+				RectPath.prototype.getFill = function(oRawData){
+					return "none";
+				};
+				RectPath.prototype.getStroke = function (oRawData) {
+					switch (oRawData.type) {
+					case 0:
+						return "#000000"; //black
+					case 1:
+						return "#FFFF00"; //yellow
+					case 2:
+						return "#FF00FF"; //light purple
+					case 4:
+						return "#CC0099"; //purple
+					case "TOL":
+						return "#0000FF"; //blue
+					default:
+						return "#FF0000"; //red
+					}
+				};
+				RectPath.prototype.getStrokeWidth = function (oRawData) {
+					return 2;
+				};
+
+				var MyGanttChart = GanttChart.extend("MyGanttChart", {
+					renderer: GanttChartRenderer.render
+				});
+				MyGanttChart.prototype._drawSvg = function(oRawData){
+					jQuery.sap.measure.start('_drawSvg', ["_drawSvg"]);
+					GanttChart.prototype._drawSvg.apply(this);
+					jQuery.sap.measure.end('_drawSvg');
+					var iCost = Math.round(jQuery.sap.measure.getMeasurement("_drawSvg").duration * 1) / 1;
+					sap.ui.getCore().getEventBus().publish("sap.gantt.perf", "drawSvg", { id: this.getId(), cost: iCost});
+				};
+
+				//-------------------------------- End Preparation --------------------------------
+
+
+				//-------------------------------- Start to setup Gantt Chart --------------------------------
+				var oSvgDefs = new sap.gantt.def.SvgDefs({
+					defs: [new BackSlashPattern("pattern_backslashFilled_gray", {
+						stroke: "@sapUiChart8",
+						strokeWidth:1,
+						backgroundColor: "none"
+					}), new BackSlashPattern("pattern_backslash_grey", {
+						stroke: "@sapUiChart8",
+						backgroundColor: "@sapUiChartNeutral"
+					}), new SlashPattern("pattern_slash_grey", {
+						stroke: "@sapUiChartPaletteSemanticNeutralDark2"
+					}), new SlashPattern("pattern_slash_blue", {
+						stroke: "@sapUiChart1"
+					}), new SlashPattern("pattern_slash_green", {
+						stroke: "@sapUiChart2"
+					}), new SlashPattern("pattern_slash_orange", {
+						stroke: "@sapUiChart3"
+					}), new SlashPattern("pattern_slash_lightblue", {
+						stroke: "@sapUiChart4"
+					}), new MorphologyFilter("PSmorphologyFilter", {})]
+				});
+
+				// create shape configuration
+				var oRectangleShapeConfig;
+				if (oPerfSetting.getShowRelationship()) {
+					oRectangleShapeConfig = new sap.gantt.config.Shape({
+						key: "ActivityKey",
+						shapeDataName: "activity",
+						modeKeys: ["A"],
+						level: 10,
+						shapeClassName: "sap.test.gantt.RectangleGroup",
+						shapeProperties: {
+							time: "{startTime}",
+							endTime: "{endTime}",
+							rx: 0,
+							ry: 0,
+							isDuration: true
+						},
+						selectedClassName: "sap.test.gantt.RectPath",
+						groupAggregation: [new sap.gantt.config.Shape({
+								shapeClassName: "sap.test.gantt.OrderShape",
+								shapeProperties: {
+									time: "{startTime}",
+									endTime: "{endTime}",
+									title: "{tooltip}",
+									rx: 0,
+									ry: 0,
+									isDuration: true
+								}
+						})]
+					});
+				} else {
+					oRectangleShapeConfig = new sap.gantt.config.Shape({
+						key: "activity",
+						shapeClassName: "sap.test.gantt.OrderShape",
+						shapeDataName: "activity",
+						level: 10,
+						shapeProperties: {
+							time: "{startTime}",
+							endTime: "{endTime}",
+							title: "{tooltip}"
+						}
+					});
+				}
+
+				var oCalendarShapeConfig = new sap.gantt.config.Shape({
+					key: "calendar",
+					shapeClassName: "sap.gantt.shape.cal.Calendar",
+					shapeDataName: "nwt",
+					level: 30,
+					shapeProperties: {
+						isDuration: false,
+						calendarName: "{id}"
+					}
+				});
+
+				var oImageConfig = new sap.gantt.config.Shape({
+					key: "image",
+					shapeClassName: "sap.gantt.shape.Image",
+					shapeDataName: "warning",
+					level: 5,
+					shapeProperties: {
+						time: "{time}",
+						image: "../image/{iconName}.png",
+						height: 17,
+						filter: sap.ui.getCore().byId("PSmorphologyFilter").getRefString(),
+						title: "{tooltip}"
+					}
+				});
+
+				//Relationship config
+				var oRelationshipConfig = new sap.gantt.config.Shape({
+					key: "relationship",
+					shapeDataName: "relationship",
+					modeKeys: ["A"],
+					level: 30,
+					shapeClassName: "sap.gantt.shape.ext.rls.Relationship",
+					shapeProperties: {
+						isDuration: false,
+						lShapeforTypeFS: true,
+						showStart: false,
+						showEnd: true,
+						stroke: "{stroke}",
+						strokeWidth: 1,
+						type: "{relation_type}",
+						fromObjectPath: "{fromObjectPath}",
+						toObjectPath: "{toObjectPath}",
+						fromDataId: "{fromDataId}",
+						toDataId: "{toDataId}",
+						fromShapeId: "{fromShapeId}",
+						toShapeId: "{toShapeId}",
+						title: "{tooltip}"
+					}
+				});
+
+				var aShapeNames = ['activity'];
+				var aShapeConfigs = [oRectangleShapeConfig];
+	
+				if (oPerfSetting.getShowCalendar()) {
+					aShapeNames.push('nwt');
+					aShapeConfigs.push(oCalendarShapeConfig);
+				}
+
+				if (oPerfSetting.getShowWarning()) {
+					aShapeNames.push('warning');
+					aShapeConfigs.push(oImageConfig);
+				}
+
+				if (oPerfSetting.getShowRelationship()) {
+					aShapeNames.push('relationship');
+					aShapeConfigs.push(oRelationshipConfig);
+				}
+
+				var oTimeAxisConfig = new sap.gantt.config.TimeAxis({
+					planHorizon: new sap.gantt.config.TimeHorizon(oPerfSetting.getTimeHorizon()),
+					initHorizon: new sap.gantt.config.TimeHorizon(oPerfSetting.getTimeHorizon())
+				});
+
+				var fnCreateGanttChart = function(id) {
+					var oGanttChart = new MyGanttChart({
+						id: id,
+						shapeDataNames: aShapeNames,
+						shapes: aShapeConfigs,
+						svgDefs: oSvgDefs,
+						timeAxis: oTimeAxisConfig,
+						locale: sap.gantt.config.DEFAULT_LOCALE_CET,
+						rows: {
+							path: "test>/root",
+								parameters: {
+									arrayNames: ["children"]
+								}
+						},
+						relationships:{
+							path: "test>/root/relationships"
+						},
+						calendarDef: new sap.gantt.def.cal.CalendarDefs({
+							defs: {
+								path: "test>/calendar",
+								template: new sap.gantt.def.cal.Calendar({
+									key: "{test>id}",
+									timeIntervals: {
+										path: "test>data",
+										templateShareable: true,
+										template: new sap.gantt.def.cal.TimeInterval({
+											startTime: "{test>startTime}",
+											endTime: "{test>endTime}"
+										})
+									}
+								})
+							}
+						})
+					});
+					oModel.setSizeLimit(Number.MAX_SAFE_INTEGER);
+					oModel.setData(oJSONData);
+					oGanttChart.setModel(oModel, "test");
+					return oGanttChart;
+				}
+
+				var fnStartRunning = function(iTime) {
+					// hide result table if necessary
+					var oSplitter = sap.ui.getCore().byId('final-result');
+					if (oSplitter) {
+						oSplitter.setVisible(false);
+					}
+					iCurrentTime = iTime;
+					var oControl = fnCreateGanttChart('ganttchart' + new Date().getTime() + '_' + iTime);
+					oControl.placeAt("content");
+					sap.ui.getCore().applyChanges();
+					oControl.jumpToPosition();
+				};
+
+				setTimeout(function(){
+					fnStartRunning(1);
+				});
+
+		});
+	};
+
+</script>
+</head>
+<body id="body" class="sapUiBody sapUiSizeCompact">
+	<h4 id="result"></h4>
+	<div id="initial"></div>
+	<div>
+		<div id="table-result"></div>
+	</div>
+	<div id="content" style="width: 98vw; height: 90vh;"></div>
+</body>
+</html>

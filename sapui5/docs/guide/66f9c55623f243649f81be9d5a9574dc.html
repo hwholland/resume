@@ -1,0 +1,69 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="Allows you to specify filter field values based on the configuration in the sap:filter-restriction of the respective field in the entity set."/>
+<meta name="description" content="Allows you to specify filter field values based on the configuration in the sap:filter-restriction of the respective field in the entity set."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=4945746950944736"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=4945746950944736"/>
+<title>Compact Filter Setup</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loio66f9c55623f243649f81be9d5a9574dc">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Compact Filter Setup</h1>
+
+	
+	<div class="body refbody"><p class="shortdesc">Allows you to specify filter field values based on the configuration in the
+			<samp class="ph codeph">sap:filter-restriction</samp> of the respective field in the entity set. </p>
+
+		<div class="section">
+			<p class="p">In addition to the fields configured in the <samp class="ph codeph">SelectionFields</samp> annotation,
+				compact filters also display the mandatory parameters and filters required for
+				querying the entity set. You can explicitly add additional filter fields listed in
+				the filter configuration dialog to the filter area, if required.</p>
+
+			<div class="p">The <samp class="ph codeph">ValueList</samp> annotation handles the dependency of filter values based on the
+				selection of filter values in other filter fields.<div class="note note"><span class="notetitle">Note</span> To enable value help in
+					compact filters, you must define at least one <samp class="ph codeph">ValueList</samp>
+					annotation without a qualifier that is not associated with any
+						<samp class="ph codeph">PresentationVariant</samp> qualifier.</div>
+</div>
+
+			<p class="p">The <samp class="ph codeph">AND</samp> operator groups multiple filter field selections and the
+					<samp class="ph codeph">OR</samp> operator groups multiple selections within the same
+				field.</p>
+
+		</div>
+
+		<div class="section"><div class="section_title">Annotation for Filter Field Selection</div><div type="Annotation for Filter Field Selection"><p class="p">Annotation:
+			<samp class="ph codeph">UI.SelectionFields</samp></p>
+<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint">&lt;Annotation Term="UI.SelectionFields"&gt;
+	&lt;Collection&gt;
+		&lt;PropertyPath&gt;AmountInCompanyCodeCurrency&lt;/PropertyPath&gt;
+		&lt;PropertyPath&gt;PostingDate&lt;/PropertyPath&gt;
+		&lt;PropertyPath&gt;CompanyCode&lt;/PropertyPath&gt;
+		&lt;PropertyPath&gt;CostCenter&lt;/PropertyPath&gt;
+		&lt;PropertyPath&gt;FiscalMonth&lt;/PropertyPath&gt;
+		&lt;PropertyPath&gt;YearMonth&lt;/PropertyPath&gt;
+	&lt;/Collection&gt;
+&lt;/Annotation&gt;</pre></div>
+</div></div>
+
+	</div>
+
+<div class="related-links"> 
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="33f3d807c10b47d9a8141692d2619dc2.html" title="The section following the title area is the filter area. Set up filters to achieve the required search results in the main content area.">Configuring the Filter Area</a></div>
+<div><a class="link" href="16d43eb0472c4d5a9439ca1bf92c915d.html" title="Allows you to map an entity with another entity, that is associated with a different entity set. The value list annotation defines the relationhip between filter fields of the main entity set and the fields in the value help entity set.">Defining ValueList Annotation</a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>

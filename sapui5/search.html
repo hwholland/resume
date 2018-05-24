@@ -1,0 +1,181 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta charset="UTF-8">
+		<title>SAPUI5 SDK - Demo Kit</title>
+		<link rel="stylesheet" href="theme/default.css">
+		<style>	
+			html, body{
+				height: 100%;
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+			}
+		
+			#rResult {
+				margin-top: 10px;
+			}
+			
+			#rResultCount {
+				display: inline-block;
+				position: absolute;
+				right: 30px;
+				top: 20px;
+			}
+			
+			.sapUiTv, #result, #count {
+				color: #363636;
+			}
+			
+			.space1 {
+				margin-left: 10px;
+			}
+			
+			.space2 {
+				margin-left: 5px;
+			}
+			
+			.details, .details.sapUiTv {
+				color: #606060;
+				font-size: 0.75em;
+			}
+			
+			.details.sapUiTv {
+				margin-top: 1px;
+			}
+			
+			#result .sapUiRrRow {
+				padding-top: 5px;
+				padding-left: 10px;
+				padding-right: 5px;
+				border-bottom: 1px dotted gray;
+			}
+			
+			#result .sapUiRrRow:hover {
+				background-color: #A4D1E8;
+			}
+			
+			#result .sapUiRrTitle {
+				font-size: 20px;
+			}
+			
+			#result .sapUiRrLogo > img {
+				display: none;
+			}
+		</style>
+		<script 
+			id="sap-ui-bootstrap"
+			src="resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-preload="async"
+			data-sap-ui-libs="sap.ui.commons, sap.ui.ux3, sap.ui.demokit"
+			data-sap-ui-bindingSyntax="complex"
+			data-sap-ui-xx-supportedLanguages="default"
+			data-sap-ui-xx-waitForTheme="true" >
+		</script>
+		<script>
+			sap.ui.getCore().attachInit(function() {
+				// trigger query request first
+				var sQuery = jQuery.sap.getUriParameters().get("q");
+				
+				var oResultCount = new sap.ui.commons.TextView("count", {design: sap.ui.commons.TextViewDesign.Bold});
+				var oResultTitle = new sap.ui.core.Title({text:"Search Results for '" + sQuery + "'"});
+				var oResult = new sap.ui.commons.RowRepeater("result", {numberOfRows: 4, title: oResultTitle});
+				
+				jQuery.ajax({
+					url: "search?q=" + encodeURIComponent("-category:topics AND -category:entity AND (" + sQuery + ")"),
+					dataType : "json",
+					success : function(oData, sStatus, xhr) {
+						jQuery(function() {
+							processResult(oData, sStatus, xhr);
+						});
+					},
+					error : function() {
+						jQuery(function() {
+							processResult(null);
+						});
+					}
+				});
+		
+				jQuery(function(){
+					//Heuristic to set the number of visible rows according to screen size
+					var iRows = (jQuery(document).height()-75/*Header+Footer*/)/95/*Row Height*/;
+					if(iRows > 4){
+						oResult.setNumberOfRows(Math.floor(iRows));
+					}
+				});
+				
+				oResultCount.placeAt("rResultCount");
+				oResult.placeAt("rResult");
+		
+				var oRowTemplate = new sap.ui.commons.layout.MatrixLayout();
+				var oRowTemplateLink =  new sap.ui.commons.Link();
+				oRowTemplate.createRow(oRowTemplateLink);
+				oRowTemplateLink.bindProperty("text", "title");
+				oRowTemplateLink.bindProperty("href", "path");
+				var oRowTemplateSummary = new sap.ui.commons.TextView();
+				oRowTemplateSummary.bindProperty("text", "summary");
+				oRowTemplate.createRow(oRowTemplateSummary);
+				var oRowTemplateDetails = new sap.ui.commons.layout.MatrixLayoutCell();
+				var oRowTemplateScore = new sap.ui.commons.TextView("score");
+				oRowTemplateScore.addStyleClass("space2");
+				oRowTemplateScore.addStyleClass("details");
+				var oRowTemplateScoreL = new sap.ui.commons.Label("scoreL", {text: "Score:", labelFor: "score", design: sap.ui.commons.LabelDesign.Bold});
+				oRowTemplateScoreL.addStyleClass("details");
+				oRowTemplateScore.bindProperty("text", "score");
+				oRowTemplateDetails.addContent(oRowTemplateScoreL);
+				oRowTemplateDetails.addContent(oRowTemplateScore);
+				var oRowTemplateMod = new sap.ui.commons.TextView("mod");
+				oRowTemplateMod.addStyleClass("space2");
+				oRowTemplateMod.addStyleClass("details");
+				var oRowTemplateModL = new sap.ui.commons.Label("modL", {text: "Last Modified:", labelFor: "mod", design: sap.ui.commons.LabelDesign.Bold});
+				oRowTemplateModL.addStyleClass("space1");
+				oRowTemplateModL.addStyleClass("details");
+				oRowTemplateMod.bindProperty("text", "modified");
+				oRowTemplateDetails.addContent(oRowTemplateModL);
+				oRowTemplateDetails.addContent(oRowTemplateMod);
+				oRowTemplate.createRow(oRowTemplateDetails);
+		
+				// call back to process the query results
+				function processResult(oData, sStatus, xhr) {
+					if ( oData && oData[0] && oData[0].success ) {
+						if ( oData[0].totalHits == 0 ) {
+							jQuery(".sapUiRrNoData").html("No matches found.");
+						} else {
+							var dataObject = {data:[]};
+							for(var i=0; i<oData[0].matches.length; i++) {
+								var oDoc = oData[0].matches[i];
+								//TODO: Find a nicer Date formatting procedure
+								oDoc.modifiedStr = oDoc.modified+"";
+								var sModified = oDoc.modifiedStr.substring(0,4) + "/" + oDoc.modifiedStr.substring(4,6) + "/" + oDoc.modifiedStr.substring(6,8) + ", " + oDoc.modifiedStr.substring(8,10) + ":" + oDoc.modifiedStr.substring(10);
+								dataObject.data.push({
+									index: i,
+									title: oDoc.title ? oDoc.title : "Untitled",
+									path: oDoc.path,
+									summary: oDoc.summary ? (oDoc.summary + "...") : "",
+									score: oDoc.score,
+									modified: sModified
+								});
+							}
+							var oModel = new sap.ui.model.json.JSONModel();
+							oModel.setData(dataObject); 
+							sap.ui.getCore().setModel(oModel);
+							oResult.bindRows("/data", oRowTemplate); 
+		
+							var sMatchesText = oData[0].matches.length + " matches" + (oData[0].matches.length < oData[0].totalHits ? " out of " + oData[0].totalHits + " total matches" : "") + " found";
+							oResultCount.setText(sMatchesText);
+						}
+					} else {
+						jQuery(".sapUiRrNoData").html("Search failed, please retry ...");
+					}
+				}
+			});
+		</script>
+	</head>
+
+	<body class="sapUiDemokitBody sapUiBody" role="application">
+	  	<div id="rResult"></div>
+	  	<div id="rResultCount"></div>
+	</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>qUnit Page for sap.suite.ui.generic.template.BaseViewController</title>
+
+<base href="../../../../../../../../">
+		<!--[if lte IE 9]><script type="text/javascript">
+		(function() {
+			var baseTag = document.getElementsByTagName('base')[0];
+			baseTag.href = baseTag.href;
+		})();
+		</script><![endif]-->
+
+		<script id="sap-ui-bootstrap"
+			type="text/javascript"
+			src="resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true">
+		</script>
+
+		<link rel="stylesheet" href="resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="resources/sap/ui/thirdparty/qunit.js"></script>
+		<script type="text/javascript" src="resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script type="text/javascript" src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon.js"></script>
+		<script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+		
+		
+<script type="text/javascript">
+	(function() {
+		//jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+		//BaseViewController Test currently deactivated in testsuite.qunit.html since class was deleted
+		
+		jQuery.sap.require("sap.suite.ui.generic.template.lib.BaseViewController");
+		jQuery.sap.require("sap.ui.core.Component");	
+		jQuery.sap.require("sap.ui.model.odata.ODataModel");
+		jQuery.sap.require("sap.ui.model.odata.ODataMetaModel");
+		jQuery.sap.require("sap.suite.ui.generic.template.lib.NavigationController");
+		jQuery.sap.require("sap.ui.generic.app.transaction.TransactionController");
+		jQuery.sap.require("sap.ui.generic.app.transaction.DraftController");
+		jQuery.sap.require("sap.ui.table.Table");
+		jQuery.sap.require("sap.m.Table");
+		
+		
+		var bTestHasDraft = false;
+		
+		var oTestMetaModel = sinon.createStubInstance(sap.ui.model.odata.ODataMetaModel);
+		var oTestModel = sinon.createStubInstance(sap.ui.model.odata.ODataModel);
+		oTestModel.getMetaModel.returns(oTestMetaModel);
+		oTestMetaModel.getODataEntitySet.returns({entityType: "TestEntityType"});
+		oTestMetaModel.getODataAssociationSetEnd.returns({entitySet: "TestEntitySet"});
+		oTestMetaModel.getODataEntityType.returns({key: {propertyRef:[{name: "key1"}, {name: "key2"}]}});
+		
+		
+		var bPromiseFailure = false;
+		var fUsePromise = function(){
+			return {
+				then: function(fSuccess, fError){
+					if (bPromiseFailure){
+						fError(oTestResponse);
+					}else{
+						fSuccess(oTestResponse);
+					}
+				}
+			}
+		};	
+		
+		var oTestDraftContext = { 
+		                          hasDraft: function() { return bTestHasDraft;},
+		                          isDraftEnabled: function(sEntitySet) { return true;},
+		                          checkUpdateOnChange: function(sEntitySet, sValue) { return true; },
+		                          getSemanticKey: function(sEntitySet) { return [{name: "SemanticKey1"}, {name: "SemanticKey2"}] },
+		                          isDraftRoot: function() { return false; }
+		};
+		
+		var oTestDraftController = sinon.createStubInstance(sap.ui.generic.app.transaction.DraftController);
+		oTestDraftController.getDraftContext.returns(oTestDraftContext);
+		oTestDraftController.prepareDraftEntity.returns(fUsePromise());
+		oTestDraftController.validateDraftEntity.returns(fUsePromise());
+		oTestDraftController.activateDraftEntity.returns(fUsePromise());
+		oTestDraftController.createNewDraftEntity.returns(fUsePromise());		
+		oTestDraftController.isActiveEntity.returns(true);
+		
+		var oTestResponse = {
+		              context: {
+		            	  getPath: function(){
+		            		  return "";
+		            	  }
+		              }       
+		};
+		
+		var oTestTransactionController = sinon.createStubInstance(sap.ui.generic.app.transaction.TransactionController);
+		oTestTransactionController.getDraftController.returns(oTestDraftController);
+		oTestTransactionController.deleteEntity.returns(fUsePromise());
+		oTestTransactionController.editEntity.returns(fUsePromise());
+		oTestTransactionController.propertyChanged.returns(fUsePromise());
+		oTestTransactionController.triggerSubmitChanges.returns(fUsePromise());				
+		
+		
+		var oTestNavigationController = sinon.createStubInstance(sap.suite.ui.generic.template.lib.NavigationController);		
+		
+		var oTestComponentContainer = { bindElement: function() {},
+		                                getElementBinding: function() { return { getPath: function() { return "ComponentContainer/TestPath/" }}},
+										unbindElement: function() {},
+										getObjectBinding: function(){return {refresh: function(){}}}
+		};
+		var oTestAppComponent = {
+			                      getTransactionController: function() {return oTestTransactionController; },
+								  getNavigationController: function() {return oTestNavigationController; }
+			                      }; 
+		
+		var oTestComponentData = {
+			preprocessordata: {
+				rootContextExpand: [
+					"to_ProductTextInOriginalLang"
+				]
+			}	
+		};
+		
+		var oTestComponent = {
+							  getComponentData: function() {return oTestComponentData;},
+		                      getComponentContainer: function() {return oTestComponentContainer; },
+							  getAppComponent: function() {return oTestAppComponent; },
+							  getEntitySet: function() {return "TestEntitySet"; },
+							  setRefreshRequired: function(){}
+		};
+		
+		var oTestBindingContext = { 
+		                            getPath: function() { return "TestPath"; },
+		                            getObject: function() { return {}; }
+		};
+		var oTestView = { 
+				getBindingContext: function() {return oTestBindingContext; },
+				getModel: function() { return oTestModel; }
+		};
+		
+		QUnit.module("sap.suite.ui.generic.template.lib.BaseViewController", {			
+			setup: function() {
+				bTestHasDraft = false;
+				bPromiseFailure = false;
+				sinon.stub(sap.ui.core.Component, "getOwnerComponentFor").returns(oTestComponent);
+				sinon.stub(sap.m.MessageToast, "show");
+				this.oBaseViewController = new sap.suite.ui.generic.template.lib.BaseViewController();
+				this.oBaseViewController.getView = function(){return oTestView; };
+				this.oBaseViewController._oRb = {
+				                                 getText: function(){return ""; }
+				}				
+			},
+			teardown: function() {
+				sap.ui.core.Component.getOwnerComponentFor.restore();
+				sap.m.MessageToast.show.restore();
+				delete this.oBaseViewController;
+			}
+		});
+
+		QUnit.test("Shall be instantiable", function(assert) {
+			assert.ok(this.oBaseViewController);
+		});
+		
+		QUnit.test("Function editEntity", function(assert) {
+			bTestHasDraft = true;
+			var done = assert.async();
+			var oPromise = this.oBaseViewController.editEntity();		
+ 			assert.equal (this.oBaseViewController._oCurrentOperation.name, sap.suite.ui.generic.template.lib.BaseViewController.operations.editEntity, "BaseViewController current operation should be edit operation");
+
+ 			oPromise.then(function(oContext){ 				
+ 				assert.ok (oContext === oTestResponse.context, "Response context should be returned correctly");
+ 				done();
+ 			}, function(){
+ 				assert.ok(false, "Promise failed");
+ 				done();
+ 			}); 			
+		});
+		
+		failureHelper = function(sFunctionName, assert){
+			sinon.stub(sap.ui.generic.template.MessageUtil.prototype, "handleError");			
+			bPromiseFailure = true;
+			var done = assert.async();
+			var oPromise = this.oBaseViewController[sFunctionName]();
+ 			
+			oPromise.then(function(oContext){ 				
+				assert.ok(false, "Promise should fail!");
+				sap.ui.generic.template.MessageUtil.prototype.handleError.restore();
+ 				done();
+ 			}, function(){
+ 				assert.ok(sap.ui.generic.template.MessageUtil.prototype.handleError.calledOnce, "Promise failed correctly");
+ 				sap.ui.generic.template.MessageUtil.prototype.handleError.restore();
+ 				done();
+ 			});
+		}
+		
+		QUnit.test("Function editEntity failure", function(assert) {
+			failureHelper.call(this, "editEntity", assert);
+		});
+		
+		QUnit.test("Function deleteEntity", function(assert) {			
+			var done = assert.async();		
+			var oPromise = this.oBaseViewController.deleteEntity();		
+ 			assert.equal (this.oBaseViewController._oCurrentOperation.name, sap.suite.ui.generic.template.lib.BaseViewController.operations.deleteEntity, "BaseViewController current operation should be delete operation");
+ 			
+ 			oPromise.then(function(){ 
+ 				assert.ok (true, "Promise resolved");
+ 				done();
+ 			}, function(){
+ 				assert.ok(false, "Promise failed");
+ 				done();
+ 			}); 			
+		});
+		
+		QUnit.test("Function deleteEntity failure", function(assert) {
+			failureHelper.call(this, "deleteEntity", assert);
+		});
+		
+		QUnit.test("Function modifyEntity", function(assert) {
+			var oPromise = this.oBaseViewController.modifyEntity("Test Entity");		
+			var done = assert.async();
+			assert.equal (this.oBaseViewController._oCurrentOperation.name, sap.suite.ui.generic.template.lib.BaseViewController.operations.modifyEntity, "BaseViewController current operation should be modify operation");
+ 			
+ 			oPromise.then(function(){ 				
+ 				assert.ok (true, "Promise resolved");
+ 				done();
+ 			}, function(){
+ 				assert.ok(false, "Promise failed");
+ 				done();
+ 			}); 			
+		});
+		
+		QUnit.test("Function modifyEntity failure", function(assert) {
+			failureHelper.call(this, "modifyEntity", assert);			 			
+		});
+		
+		QUnit.test("Function saveEntity", function(assert) {
+			var oPromise = this.oBaseViewController.saveEntity();		
+			var done = assert.async();
+ 			assert.equal (this.oBaseViewController._oCurrentOperation.name, sap.suite.ui.generic.template.lib.BaseViewController.operations.saveEntity, "BaseViewController current operation should be save operation");
+ 			
+ 			oPromise.then(function(oContext){
+ 				assert.ok (oContext === oTestResponse.context, "Response context should be returned correctly"); 				
+ 				done();
+ 			}, function(){
+ 				assert.ok(false, "Promise failed");
+ 				done();
+ 			}); 			
+		});
+		
+		QUnit.test("Function saveEntity failure", function(assert) {
+			failureHelper.call(this, "saveEntity", assert);			 			
+		});
+		
+		QUnit.test("Function activateDraftEntity", function(assert) {
+			var oPromise = this.oBaseViewController.activateDraftEntity();	
+			var done = assert.async();
+ 			assert.equal (this.oBaseViewController._oCurrentOperation.name, sap.suite.ui.generic.template.lib.BaseViewController.operations.activateDraftEntity, "BaseViewController current operation should be activateDraftEntity operation");
+ 			
+ 			oPromise.then(function(oContext){
+ 				assert.ok (oContext === oTestResponse, "Response context should be returned correctly"); 				
+ 				done();
+ 			}, function(){
+ 				assert.ok(false, "Promise failed");
+ 				done();
+ 			}); 			
+		});
+		
+		QUnit.test("Function activateDraftEntity failure", function(assert) {
+			failureHelper.call(this, "activateDraftEntity", assert);			 			
+		});
+
+		QUnit.test("Function prepareDraftEntity", function(assert) {
+			var oPromise = this.oBaseViewController.prepareDraftEntity();		
+			var done = assert.async();
+ 			assert.equal (this.oBaseViewController._oCurrentOperation.name, sap.suite.ui.generic.template.lib.BaseViewController.operations.prepareDraftEntity, "BaseViewController current operation should be prepareDraftEntity operation");
+ 			
+ 			oPromise.then(function(oContext){
+ 				assert.ok (oContext === oTestResponse, "Response context should be redone();ectly"); 				
+ 				done();
+ 			}, function(){
+ 				assert.ok(false, "Promise failed");
+ 				done();
+ 			}); 			
+		});
+		
+		QUnit.test("Function prepareDraftEntity failure", function(assert) {
+			failureHelper.call(this, "prepareDraftEntity", assert);			 			
+		});
+		
+		QUnit.test("Function validateDraftEntity", function(assert) {
+			var done = assert.async();
+			var oPromise = this.oBaseViewController.validateDraftEntity();		
+ 			assert.equal (this.oBaseViewController._oCurrentOperation.name, sap.suite.ui.generic.template.lib.BaseViewController.operations.validateDraftEntity, "BaseViewController current operation should be validateDraftEntity operation");
+ 			
+ 			oPromise.then(function(oContext){
+ 				assert.ok (oContext === oTestResponse, "Response context should be returned correctly"); 				
+ 				done();
+ 			}, function(){
+ 				assert.ok(false, "Promise failed");
+ 				done();
+ 			}); 			
+		});
+		
+		QUnit.test("Function validateDraftEntity failure", function(assert) {
+			failureHelper.call(this, "validateDraftEntity", assert);			 			
+		});
+		
+		QUnit.test("Function _getErrorContext", function(assert) {
+			var oOperation = {};
+			this.oBaseViewController._oCurrentOperation = oOperation;
+			var mParameters = {};
+			var oResult = this.oBaseViewController._getErrorContext(mParameters);		
+ 			
+			assert.equal (oResult.isDraft, true, "BaseViewController is draft enabled");
+			assert.equal (oResult.lastOperation, oOperation, "BaseViewController last operation has to be correct");
+			assert.equal (oResult.showMessages, true, "BaseViewController showMessages is true"); 			 			
+		});
+
+		/* Rework after refactoring 		
+		QUnit.test("Function callAction", function(assert) {
+			var sFunctionImport = "MyFunctionImport";			
+			var sFunctionImportLabel = "MyFunctionImportLabel";
+			sinon.stub(sap.ui.generic.template.ActionUtil.prototype, "call", function(){ return { then: function() {}}});			
+			
+			var oResult = this.oBaseViewController.callAction(sFunctionImport, null, sFunctionImportLabel);		
+			assert.equal (this.oBaseViewController._oCurrentOperation.name, sap.suite.ui.generic.template.lib.BaseViewController.operations.callAction, "BaseViewController current operation should be callAction operation");
+			assert.ok(sap.ui.generic.template.ActionUtil.prototype.call.calledWith(sFunctionImport, sFunctionImportLabel), "ActionUtil.call has to be called correctly")
+			
+			sap.ui.generic.template.ActionUtil.prototype.call.restore(); 			 			
+		}); */
+		
+		/*
+		Removed: ViewUtil does not exist anymore... 
+		Refacotring necssary!
+		QUnit.test("Function addEntry", function(assert) {
+			var oTable = {};
+			sinon.stub(sap.ui.generic.template.ViewUtil,"getTableBinding").returns({path: "TestTablePath"});
+			
+			oTestDraftController.createNewDraftEntity.returns(fUsePromise());
+					
+			var oPromise = this.oBaseViewController.addEntry(oTable);		
+			assert.equal (this.oBaseViewController._oCurrentOperation.name, sap.suite.ui.generic.template.lib.BaseViewController.operations.addEntry, "BaseViewController current operation should be addEntry operation");
+			
+			assert.ok(oTestDraftController.createNewDraftEntity.calledOnce, "DraftController.createNewDraftEntity was called");
+			
+			oTestDraftController.createNewDraftEntity.restore();
+			sap.ui.generic.template.ViewUtil.getTableBinding.restore();
+		});
+		*/
+
+/* Method has been moved to CommonEventHandlers. Add a test there		
+		QUnit.test("Function getTableQueryParameters", function(assert) {
+			var oQueryParameters = {
+			                        parameters: { select: "a,b,key1"}
+			}
+			
+			var oExpectedQueryParameters = {
+			                        parameters: { select: "a,b,key1,key2,SemanticKey1,SemanticKey2,IsActiveEntity,HasDraftEntity,HasActiveEntity"}
+			}
+			
+			this.oBaseViewController.getTableQueryParameters("MyTestEntitySet", oQueryParameters);		
+			assert.deepEqual (oQueryParameters, oExpectedQueryParameters, "BaseViewController getTableQueryParameters should contain draft entities and key fields in select parameter");			
+		}); */
+		
+		/*
+		Removed: ViewUtil does not exist anymore... 
+		Refacotring necssary!
+		QUnit.test("Function navigateFromListItem (call with ListItem)", function(assert) {
+			var oTestListBindingContext = { getPath: function() {return "/MyListPath" }};
+			var oSelectedListItem = {
+			                         getBindingContext: function(){ return oTestListBindingContext; }
+			}
+			
+			sinon.stub(sap.ui.generic.template.ViewUtil,"getTableBinding").returns({path: "TestTablePath"});
+			sinon.stub(sap.ui.generic.template.ViewUtil,"getParentTable");
+			
+			oTestNavigationController.navigateToContext.reset();
+			
+			this.oBaseViewController.navigateFromListItem(oSelectedListItem);		
+			
+			assert.ok (oTestNavigationController.navigateToContext.calledOnce, "NavigationController.navigateToContext has to be called");			
+			assert.ok (oTestNavigationController.navigateToContext.calledWith(oTestListBindingContext, "TestTablePath"), "NavigationController.navigateToContext has to be called with correct parameters");
+			
+			sap.ui.generic.template.ViewUtil.getTableBinding.restore();
+			sap.ui.generic.template.ViewUtil.getParentTable.restore();
+		});
+		
+		
+		QUnit.test("Function navigateFromListItem (call with context)", function(assert) {
+			var oTestListBindingContext = { getPath: function() {return "/MyListPath" }};
+			var oTable = {};
+			sinon.stub(sap.ui.generic.template.ViewUtil,"getTableBinding").returns({path: "TestTablePath"});
+			
+			oTestNavigationController.navigateToContext.reset();
+			
+			this.oBaseViewController.navigateFromListItem(oTestListBindingContext, oTable);		
+			
+			assert.ok (oTestNavigationController.navigateToContext.calledOnce, "NavigationController.navigateToContext has to be called");			
+			assert.ok (oTestNavigationController.navigateToContext.calledWith(oTestListBindingContext, "TestTablePath"), "NavigationController.navigateToContext has to be called with correct parameters");
+			
+			sap.ui.generic.template.ViewUtil.getTableBinding.restore();
+		});
+		*/
+		
+	}());
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="qunit-header">qUnit Page for
+		sap.suite.ui.generic.template.lib.BaseViewController</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="content"></div>
+</body>
+</html>

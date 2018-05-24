@@ -1,0 +1,286 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="You can add a read-only rating indicator to the object page header."/>
+<meta name="description" content="You can add a read-only rating indicator to the object page header."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=2952402872168902"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=2952402872168902"/>
+<title>Rating Indicator Facet</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiobcc12cbe038146a2a586ac021a20f3a7">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Rating Indicator Facet</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">You can add a read-only rating indicator to the object page header. </p>
+
+		<p class="p">The rating indicator allows you to visually represent the rating types described below.</p>
+
+		<p class="p"/>
+
+		<div class="section"><div class="section_title">Aggregated Rating</div><div type="Aggregated Rating">
+			
+			<p class="p">This rating shows an average of all ratings recorded for the object and is displayed
+				as shown below in the object page header (<span class="ph uicontrol">Display</span> mode):</p>
+
+			<div class="fig fignone" id="loiobcc12cbe038146a2a586ac021a20f3a7__fig_gy4_mhb_mw"><div class="figcontainer">
+				
+				<img class="image" id="loiobcc12cbe038146a2a586ac021a20f3a7__image_u41_5hb_mw" src="loio4811ec83a34a46979b90cafba5120dc8_LowRes.png"/>
+			<div class="figcap">Aggregated Rating Indicator</div></div></div>
+
+			<div class="p">When the rating indicator shows an aggregated rating, it contains the following
+					elements:<ul class="ul" id="loiobcc12cbe038146a2a586ac021a20f3a7__ul_rwr_vhb_mw">
+					<li class="li">
+						<p class="p">Title</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Subtitle, displaying the total number of ratings </p>
+
+						<div class="p">
+							<div class="note note"><span class="notetitle">Note</span> 
+								<p class="p">You have the option to specify a text in the subtitle to be more descriptive (example:
+										<span class="ph uicontrol">139 user reviews</span>, where "139" is the
+									number of reviews received, and "user reviews" is the text
+									added). For information, see the code sample below.</p>
+
+							</div>
+
+						</div>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">Rating</samp> control, displaying the visual representation of
+							the rating (stars)</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Footer text, displaying the calculated average of all ratings </p>
+
+					</li>
+
+				</ul>
+</div>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">If you wish to use an aggregated rating, you must use local annotations (as
+					opposed to CDS annotations). For information, see the code sample below.</p>
+
+			</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Non-aggregated Rating</div><div type="Non-aggregated Rating">
+			
+			<p class="p">This rating shows a single rating, such the user's own rating for the object. In the examples
+				below, the non-aggregated rating is used to display the user's own rating. This
+				rating type is displayed as shown below:</p>
+
+			<div class="fig fignone" id="loiobcc12cbe038146a2a586ac021a20f3a7__fig_wxv_f3b_mw"><div class="figcontainer">
+				
+				<img class="image" id="loiobcc12cbe038146a2a586ac021a20f3a7__image_btk_k3b_mw" src="loioe8f6dd124f2b4b5c9fd092312917b8dd_LowRes.png"/>
+			<div class="figcap">Non-aggregated Rating Indicator</div></div></div>
+
+			<div class="p">When the rating indicator shows a non-aggregated rating, it contains the following
+					elements:<ul class="ul" id="loiobcc12cbe038146a2a586ac021a20f3a7__ul_y34_n3b_mw">
+					<li class="li">
+						<p class="p">Title</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Subtitle</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p"><samp class="ph codeph">Rating</samp> control, displaying the visual representation of
+							the rating (stars)</p>
+
+					</li>
+
+				</ul>
+<div class="note note"><span class="notetitle">Note</span> 
+					<p class="p">There is no footer for this rating type.</p>
+
+					<p class="p">If you wish to use a non-aggregated rating, you can use either local
+						annotations or CDS annotations. See the code samples below.</p>
+
+				</div>
+</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Rating Indicator in Edit Mode</div><div type="Rating Indicator in Edit Mode">
+			
+			<p class="p">When the object page is in <span class="ph uicontrol">Edit</span> mode, the rating indicator moves into
+				the header facet and appears as shown below with the title only. For an aggregated
+				rating, the number of ratings is shown in parentheses after the stars. Note that the
+				rating indicator is still read-only in this mode.</p>
+
+			<div class="fig fignone" id="loiobcc12cbe038146a2a586ac021a20f3a7__fig_bgd_djb_mw"><div class="figcontainer">
+				
+				<img class="image" id="loiobcc12cbe038146a2a586ac021a20f3a7__image_cnm_fjb_mw" src="loiob9fe8adfef7b4023bacbf1830060c691_LowRes.png"/>
+			<div class="figcap">Rating Indicator in Edit Mode</div></div></div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Code Samples</div><div type="Code Samples">
+			
+			<p class="p">To add a rating indicator facet to the object page header, use a
+					<samp class="ph codeph">UI.ReferenceFacet</samp> that points to a
+					<samp class="ph codeph">UI.DataPoint</samp> with <samp class="ph codeph">Rating</samp> as the
+					<samp class="ph codeph">UI.VisualizationType</samp> as shown in the code sample below.</p>
+
+			<p class="p"> The rating indicator uses the values of the <samp class="ph codeph">UI.DataPoint</samp>, which contains the
+				path to the field in the back-end system that provides the rating value.</p>
+
+			<p class="p"><span class="ph emphasis emphasis">Set the Maximum Number of Stars</span></p>
+
+			<div class="p">The maximum number of stars (<samp class="ph codeph">TargetValue</samp>) can be set in one of the
+				following ways:<ul class="ul" id="loiobcc12cbe038146a2a586ac021a20f3a7__ul_hx3_4jb_mw">
+					<li class="li">
+						<p class="p">Specified in the annotation, as shown in the sample code for the
+							aggregated rating</p>
+
+					</li>
+
+					<li class="li">
+						<p class="p">Determined by a path to a specific field in the back-end system, as shown
+							in the sample code for the non-aggregated rating </p>
+
+					</li>
+
+				</ul>
+</div>
+
+			<p class="p"><span class="ph emphasis emphasis">Change the Subtitle</span></p>
+
+			<p class="p">The subtitle is set differently for the aggregated and non-aggregated ratings. </p>
+
+			<p class="p">To render a subtitle for an aggregated rating, set the <samp class="ph codeph">SampleSize</samp> property
+				for the term <samp class="ph codeph">UI.DataPoint</samp>. The <samp class="ph codeph">SampleSize</samp> property
+				value (for example, <span class="ph uicontrol">139</span>) is then concatenated with a text
+				(for example, <span class="ph uicontrol">user reviews</span>). You can change this text by
+				annotating the <samp class="ph codeph">SampleSize</samp> with <samp class="ph codeph">Common.Label</samp>, as
+				shown in the sample code for the aggregated rating. Otherwise, the default text
+					(<span class="ph uicontrol">ratings</span>) is used.</p>
+
+			<p class="p">To render a subtitle for a non-aggregated rating, the <samp class="ph codeph">Description</samp> property
+				needs to be set for the term <samp class="ph codeph">UI.DataPoint</samp>, as shown in the sample
+				code for the non-aggregated rating.</p>
+
+			<div class="p">
+				<span class="ph emphasis emphasis">Aggregated
+				Rating</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;Record Type="UI.ReferenceFacet"&gt;
+
+    &lt;PropertyValue Property="Target" AnnotationPath="to_ProductRating/@UI.DataPoint#Aggregated"/&gt;
+
+&lt;/Record&gt;
+
+&lt;Annotation Term="UI.DataPoint" Qualifier="Aggregated"&gt;
+
+   &lt;!--aggregated rating --&gt;
+
+   &lt;Record&gt;
+
+      &lt;PropertyValue Property="Title" String="{@i18n&gt;@ProductAverageRating}"/&gt;
+
+      &lt;PropertyValue Property="Value" Path="AverageRating"/&gt;
+
+      &lt;PropertyValue Property="TargetValue" Int="3"/&gt;
+
+      &lt;PropertyValue Property="Visualization" EnumMember="UI.VisualizationType/Rating"/&gt;
+
+      &lt;PropertyValue Property="SampleSize" Path="ReviewCount"/&gt;
+
+   &lt;/Record&gt;
+
+&lt;/Annotation&gt;
+
+ 
+
+&lt;!--replace default subtitle text with custom text --&gt;
+
+ 
+
+&lt;Annotations Target="STTA_PROD_MAN.STTA_C_MP_ProductRatingType/ReviewCount"&gt;
+
+    &lt;Annotation Term="Common.Label" String="user reviews"/&gt;
+
+&lt;/Annotations&gt; </pre></div>
+</div>
+
+			<p class="p"><span class="ph emphasis emphasis">Non-aggregated Rating</span></p>
+
+			<div class="p">
+				<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+&lt;Record Type="UI.ReferenceFacet"&gt;
+
+    &lt;PropertyValue Property="Target" AnnotationPath="to_ProductRating/@UI.DataPoint#NonAggregated"/&gt;
+
+&lt;/Record&gt;
+
+&lt;!-- non aggregated rating --&gt;
+
+&lt;Annotation Term="UI.DataPoint" Qualifier="NonAggregated"&gt;
+
+   &lt;Record&gt;
+
+      &lt;PropertyValue Property="Title" String="{@i18n&gt;@ProductUserRating}"/&gt;
+
+	  &lt;PropertyValue Property="Description" String="@i18n&gt;@MyRating}"/&gt;
+
+      &lt;PropertyValue Property="Value" Path="Rating"/&gt;
+
+      &lt;PropertyValue Property="TargetValue" Path="MaxRating"/&gt;
+
+      &lt;PropertyValue Property="Visualization" EnumMember="UI.VisualizationType/Rating"/&gt;
+
+   &lt;/Record&gt;
+
+&lt;/Annotation&gt; 
+</pre></div>
+
+			</div>
+
+			<div class="p"><span class="ph emphasis emphasis">CDS Annotation Source (Non-aggregated Rating
+				Only)</span><div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">
+@UI.dataPoint: {   
+
+    title:'Product Rating',   
+
+    description: 'Rating Indicator',   
+
+    targetValueElement: 'MaxRating',   
+
+    visualization: #RATING
+
+}
+
+ 
+
+@EndUserText.label: 'Rating' 
+
+ProductRating.Rating     as Rating
+</pre></div>
+</div>
+
+		</div></div>
+
+	</div>
+
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link href="style/sapvbistyle.css" type="text/css" rel="stylesheet" />
+
+	<base href="../../../../">
+	<script src="resources/sap-ui-core.js"
+		id="Script1"
+		data-sap-ui-libs="sap.ui.commons,sap.ui.vk,sap.m"
+		data-sap-ui-theme="sap_bluecrystal"
+		data-sap-ui-xx-bindingSyntax="complex" >
+	</script>
+	
+	<style>
+	</style>
+
+	<script>
+	
+	function onClick(e) {
+		alert("Click event received. Position: " + e.getParameter("pos")); 
+	};
+	
+	function onContextMenu(e) {
+		var oMenu = e.getParameter("menu");
+		oMenu.addItem(new sap.ui.unified.MenuItem({text: "Do something"}));
+		oOverlay.openContextMenu(oMenu);
+	};
+	
+	// have some data
+	var oData = 
+		{
+				Areas :
+				[
+					{ "key" : "1", "pos": "0.4;0.6;0;0.6;0.6;0;0.6;0.4;0;0.4;0.4;0",  "tooltip": "Area 1", "edit": true }
+				]
+		};
+	
+	// create model and set the data
+	var oModel = new sap.ui.model.json.JSONModel();
+	oModel.setData( oData );
+	sap.ui.getCore().setModel( oModel );
+	
+var oImage = new sap.m.Image({
+	src: "test-resources/sap/ui/vk/media/pumps.jpg",
+	width: "800px"
+});
+
+	// create control and bind to model
+	var oOverlay = new sap.ui.vk.Overlay({
+		click: onClick,
+		contextMenu: onContextMenu,
+    	areas: { 
+             	path : "/Areas",
+              	template: new sap.ui.vk.OverlayArea(  { position: '{pos}', tooltip: '{tooltip}', changeable: '{edit}' }  )
+           	},
+        target: oImage
+	});
+
+
+
+	oOverlay.placeAt("imageplaceholder");
+	oImage.placeAt("imageplaceholder");
+	
+	
+	// modification of the context
+	function onCreateArea() {
+		//trigger interactive creation mode
+		oOverlay.getPositionInteractive( true, function(pos) {
+			oData = oModel.getData();
+			oData.Areas.push({"key" : "N", "pos": pos,  "tooltip": "NewArea", "edit": true});
+			oModel.setData(oData);				
+		} );
+	};	
+	function onImageUrlChange() {
+		//trigger interactive creation mode
+		oImage.setSrc("test-resources/sap/ui/vk/media/cat.jpg");
+	};	
+	function onImageReduceSize() {
+		var size = oImage.getWidth();
+		size = parseInt(size.replace("px","")) * 0.95;
+		oImage.setWidth(size.toString() + "px");
+	};
+	function onImageIncreaseSize() {
+		var size = oImage.getWidth();
+		size = parseInt(size.replace("px","")) / 0.95;
+		oImage.setWidth(size.toString() + "px");
+	};		
+	
+	</script>
+
+	<body class="sapUiBody" >
+		  <h1>Visual Business GeoMap Sample</h1>
+			<ul>
+				<li> Testing the Overlay Control with Redlining-Areas</li>	
+			</ul>
+		   <button id="CreateArea" onClick="onCreateArea()">Create new Overlay Area</button>	
+		   <button id="ImageUrl" onClick="onImageUrlChange()">Change Image URL</button>		
+		   <button id="HalfSize" onClick="onImageReduceSize()">Reduce Image Size</button>		
+		   <button id="DoubleSize" onClick="onImageIncreaseSize()">Increase Image Size</button>			
+		 <div id="frame" style="position:absolute">	
+		   <div id="imageplaceholder"> </div> 	
+		 </div>
+	</body>
+</html>

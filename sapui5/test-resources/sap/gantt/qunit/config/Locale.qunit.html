@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+		<title>QUnit: sap.gantt.config.Locale</title>
+		<script id="sap-ui-bootstrap"
+			src="../../../../../resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-noConflict="true"
+			data-sap-ui-libs="sap.gantt">
+		</script>
+		<link rel="stylesheet" type="text/css" href="../../../../../resources/sap/ui/thirdparty/qunit.css"/>
+		<script src="../../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script src="../../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		<script>
+			sap.ui.require([
+				"sap/gantt/config/Locale",
+				"sap/gantt/config/TimeHorizon",
+				"sap/ui/thirdparty/sinon",
+				"sap/ui/thirdparty/sinon-qunit"
+			], function (Locale, TimeHorizon) {
+				"use strict";
+
+				QUnit.module("Create config.Locale with default values.", {
+					setup: function () {
+						this.oConfig = new Locale();
+					},
+					teardown: function () {
+						this.oConfig.destroy();
+						this.oConfig = undefined;
+					}
+				});
+
+				QUnit.test("Test default configuration values." , function (assert) {
+					assert.strictEqual(this.oConfig.getTimeZone(), "UTC");
+					assert.strictEqual(this.oConfig.getUtcdiff(), "000000");
+					assert.strictEqual(this.oConfig.getUtcsign(), "+");
+					assert.deepEqual(this.oConfig.getDstHorizons(), []);
+				});
+
+				QUnit.module("Create config.Locale with customized values.", {
+					setup: function () {
+						this.dstHorizons = [new TimeHorizon({
+							startTime: "20150401000000",
+							endTime: "20151024000000"
+						}), new TimeHorizon({
+							startTime: "20140402000000",
+							endTime: "20141031000000"
+						})
+						];
+						this.oConfig = new Locale({
+							timeZone: "UST",
+							utcdiff: "000010",
+							utcsign: "-",
+							dstHorizons: this.dstHorizons
+						});
+					},
+					teardown: function () {
+						this.oConfig.destroy();
+						this.oConfig = undefined;
+					}
+				});
+
+				QUnit.test("Test customized configuration values.", function (assert) {
+					assert.strictEqual(this.oConfig.getTimeZone(), "UST");
+					assert.strictEqual(this.oConfig.getUtcdiff(), "000010");
+					assert.strictEqual(this.oConfig.getUtcsign(), "-");
+					assert.deepEqual(this.oConfig.getDstHorizons(), this.dstHorizons);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+	</body>
+</html>

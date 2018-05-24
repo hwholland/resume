@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+
+<title>Testpage - sap.gantt.GanttWithTable</title>
+
+<script id="sap-ui-bootstrap"
+	data-sap-ui-libs="sap.gantt, sap.m, sap.ui.unified"
+	data-sap-ui-theme="sap_bluecrystal"
+	src="../../../../resources/sap-ui-core.js">
+</script>
+		<link rel="stylesheet" type="text/css" href="../../../../resources/sap/ui/thirdparty/qunit.css"/>
+		<script src="../../../../resources/sap/ui/thirdparty/qunit.js"></script>
+		<script src="../../../../resources/sap/ui/qunit/qunit-junit.js"></script>
+		<script src="../../../../resources/sap/ui/qunit/QUnitUtils.js"></script>
+		
+<script src="../test.js"></script>
+<script src="./data/DataProducer.js"></script>
+<script src="./data/DataMaker.js"></script>
+<script>
+
+<!-- add the qunit-coverage.js to add client-side coverage to QUnit tests -->
+if(!(sap.ui.Device.browser.internet_explorer && sap.ui.Device.browser.version <= 8)) {
+      jQuery.sap.require("sap.ui.qunit.qunit-coverage");
+}
+
+var aFirstViewColumns = [new sap.ui.table.Column({
+	label: "Unique ID",
+	sortProperty: "uuid",
+	filterProperty: "uuid",
+	template: new sap.m.Label({
+		text: {
+			path: "uuid",
+			model: "test"
+		}
+	})
+})];
+
+var oDataProducer = new sap.gantt.DataProducer();
+oDataProducer.produceData();
+// create model and load data
+var oModel = new sap.ui.model.json.JSONModel();
+oModel.setData(oDataProducer.getData("sap_hierarchy"));
+
+// create GanttChart
+var oGanttChartWithTable = new sap.gantt.GanttChartWithTable({
+	columns: aFirstViewColumns,
+	rows: {
+		path: "test>/root",
+			parameters: {
+				arrayNames: ["children"]
+			}
+	}
+});
+oGanttChartWithTable.setModel(oModel, "test");
+oGanttChartWithTable.placeAt("content");
+
+qutils.delayTestStart();
+module("Basic Rendering Tests", {
+	setup: function() {
+ 		//setup
+ 	},
+ 	teardown: function() {
+ 		//teardown
+ 	}
+});
+
+test("TreeTable API test", function() {	
+	assert.equal(oGanttChartWithTable.getSelectedIndex(), oGanttChartWithTable._oTT.getSelectedIndex(), "Default selected index");
+	oGanttChartWithTable.setSelectedIndex(0);
+	assert.equal(oGanttChartWithTable.getSelectedIndex(), oGanttChartWithTable._oTT.getSelectedIndex(), "Return index that was set");
+	
+	assert.equal(oGanttChartWithTable.getVisibleRowCount(), oGanttChartWithTable._oTT.getVisibleRowCount(), "Number of visible rows");
+	
+	assert.equal(oGanttChartWithTable.getRows().length, oGanttChartWithTable._oTT.getRows().length, "Number of rows");
+	
+	assert.equal(oGanttChartWithTable.getFirstVisibleRow(), 0, "Default visible row");
+	oGanttChartWithTable.setFirstVisibleRow(1);
+	assert.equal(oGanttChartWithTable.getFirstVisibleRow(), 1, "Should be 1");
+});
+
+module("Collapse/Expand mock tests", {
+	setup: function() {
+ 		this.oGanttChartWithTable = new sap.gantt.GanttChartWithTable();
+ 	},
+ 	teardown: function() {
+ 		this.oGanttChartWithTable.destroy();
+ 	}
+});
+
+test("Expand test", function() {
+	var iInitialRowIndex = 0;
+	this.oGanttChartWithTable._oTT.expand = function(iRowIndex) {
+		assert.equal(iRowIndex, iInitialRowIndex, "Expand method of TreeTable was called with correct parameter");
+	};
+	assert.equal(this.oGanttChartWithTable.expand(iInitialRowIndex), this.oGanttChartWithTable, "The object GanttChartWithTable was returned");
+});
+
+test("Collapse test", function() {
+	var iInitialRowIndex = 0;
+	this.oGanttChartWithTable._oTT.collapse = function(iRowIndex) {
+		assert.equal(iRowIndex, iInitialRowIndex, "Collapse method of TreeTable was called with correct parameter");
+	};
+	assert.equal(this.oGanttChartWithTable.collapse(iInitialRowIndex), this.oGanttChartWithTable, "The object GanttChartWithTable was returned");
+});
+</script>
+</head>
+<body id="body" class="sapUiBody">
+	<h1 id="header">Test Page for <code>sap.gantt.GanttChartWithTable</code></h1>
+	<div id="content" class="sapUiSizeCompact" style="width: 98vw; height: 200px; margin-bottom: 40px"></div>
+	<div id="qunit"></div>
+</body>
+</html>

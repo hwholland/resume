@@ -1,0 +1,312 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="abstract" content="We now configure the visibility and properties of controls based on the device that we run the application on. By making use of the sap.ui.Device API and defining a device model we will make the app look great on many devices."/>
+<meta name="description" content="We now configure the visibility and properties of controls based on the device that we run the application on. By making use of the sap.ui.Device API and defining a device model we will make the app look great on many devices."/>
+
+<link rel="stylesheet" type="text/css" href="css/prettify.css?x=46353750228024404"/>
+<link rel="stylesheet" type="text/css" href="css/documentation.css?x=46353750228024404"/>
+<title>Step 36: Device Adaptation</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+    <script src="../../resources/sap/ui/demokit/js/sdk-pagehelper.js"></script>
+  </head>
+<body class="" id="loiod63a15e5eebb45cdada317bae5f45bc2">
+<div id="wrapper"><div id="container">
+
+	<h1 class="title topictitle1">Step 36: Device Adaptation</h1>
+
+	
+	<div class="body conbody"><p class="shortdesc">We now configure the visibility and properties of controls based on the device that we
+		run the application on. By making use of the <samp class="ph codeph">sap.ui.Device</samp> API and defining
+		a device model we will make the app look great on many devices.</p>
+
+		<div class="section"><div class="section_title">Preview</div><div type="Preview">
+			
+			<div class="fig fignone" id="loiod63a15e5eebb45cdada317bae5f45bc2__fig_rz5_qfp_lt"><div class="figcontainer">
+				
+				<img class="image" id="loiod63a15e5eebb45cdada317bae5f45bc2__image_icv_kgp_lt" src="loio26ae5cb9623a4e698b30be0fbbd33480_HiRes.png"/>
+			<div class="figcap">On phone devices, the panel is collapsed to save screen space and a button is
+					hidden</div></div></div>
+
+		</div></div>
+
+		<div class="section">
+			<div class="section_title">Coding</div>
+			<p class="p">You can view and download all files <span class="ph">at <a class="xref" target="_blank" href="../../explored.html#/sample/sap.m.tutorial.walkthrough.36/preview" alt="../../explored.html#/sample/sap.m.tutorial.walkthrough.36/preview" title="../../explored.html#/sample/sap.m.tutorial.walkthrough.36/preview">Walkthrough - Step 36</a></span>.</p>
+
+			<div class="section_title">webapp/view/HelloPanel.view.xml</div>
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+	controllerName="sap.ui.demo.walkthrough.controller.HelloPanel"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"&gt;
+	&lt;Panel
+		headerText="{i18n&gt;helloPanelTitle}"
+		class="sapUiResponsiveMargin"
+		width="auto"<span class="ph emphasis emphasis">
+		expandable="{device&gt;/system/phone}"
+		expanded="{= !${device&gt;/system/phone} }"</span>&gt;
+		&lt;content&gt;
+			&lt;Button
+				icon="sap-icon://world"
+				text="{i18n&gt;openDialogButtonText}"
+				press="onOpenDialog"
+				class="sapUiSmallMarginEnd <span class="ph emphasis emphasis">sapUiVisibleOnlyOnDesktop</span>"/&gt;
+			&lt;Button
+				text="{i18n&gt;showHelloButtonText}"
+				press="onShowHello"
+				class="myCustomButton"/&gt;
+			&lt;Input
+				value="{/recipient/name}"
+				valueLiveUpdate="true"
+				width="60%"/&gt;
+			&lt;FormattedText
+				htmlText="Hello {/recipient/name}"
+				class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/&gt;
+		&lt;/content&gt;
+	&lt;/Panel&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">We add two new properties <samp class="ph codeph">expandable</samp> and <samp class="ph codeph">expanded</samp> to the <samp class="ph codeph">HelloPanel</samp>. The user can now close
+				and open the panel to have more space for the table below on devices with small screens. The property <samp class="ph codeph">expandable</samp> is
+				bound to a model named <samp class="ph codeph">device</samp> and the path <span class="ph filepath">/system/phone</span>. So the panel can be expanded on phone
+				devices only. The device model is filled with the <span class="keyword apiname">sap.ui.Device</span> API of <span class="ph"><span class="ph pname">SAPUI5</span></span> as we see further down. The <samp class="ph codeph">expanded</samp> property
+				controls the state of the panel and we use expression binding syntax to close it on phone devices and have the panel expanded on all
+				other devices. The device API of <span class="ph"><span class="ph pname">SAPUI5</span></span> offers more functionality to
+				detect various device-specific settings, please have a look at the documentation for more details.</p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">The <span class="keyword apiname">sap.ui.Device</span> API detects the device type (Phone, Tablet,
+					Desktop) based on the user agent and many other properties of the device.
+					Therefore simply reducing the screen size will not change the device type. To
+					test this feature, you will have to enable device emulation in your browser or
+					open it on a real device.</p>
+
+			</div>
+
+			<p class="p">We can also hide single controls by device type when we set a CSS class like
+					<samp class="ph codeph">sapUiVisibleOnlyOnDesktop</samp> or
+					<samp class="ph codeph">sapUiHideOnDesktop</samp> . We only show the button that opens the
+				dialog on desktop devices and hide it for other devices. For more options, see the
+				documentation linked below.</p>
+
+		</div>
+
+		<div class="section"><div class="section_title">webapp/Component.js</div><div type="webapp/Component.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">sap.ui.define([
+	"sap/ui/core/UIComponent",
+	"sap/ui/model/json/JSONModel",
+	"sap/ui/demo/walkthrough/controller/HelloDialog"<span class="ph emphasis emphasis">,
+	"sap/ui/Device"</span>
+], function (UIComponent, JSONModel, HelloDialog<span class="ph emphasis emphasis">, Device</span>) {
+	"use strict";
+	return UIComponent.extend("sap.ui.demo.walkthrough.Component", {
+		metadata: {
+			manifest: "json"
+		},
+		init: function () {
+			// call the init function of the parent
+			UIComponent.prototype.init.apply(this, arguments);
+
+			// set data model
+			var oData = {
+				recipient: {
+					name: "World"
+				}
+			};
+			var oModel = new JSONModel(oData);
+			this.setModel(oModel);
+			// disable batch grouping for v2 API of the northwind service
+			this.getModel("invoice").setUseBatch(false);
+
+			<span class="ph emphasis emphasis">// set device model
+			var oDeviceModel = new JSONModel(Device);
+			oDeviceModel.setDefaultBindingMode("OneWay");
+			this.setModel(oDeviceModel, "device");
+</span>
+			// set dialog
+			this._helloDialog = new HelloDialog(this.getRootControl());
+			// create the views based on the url/hash
+			this.getRouter().initialize();
+		},
+
+		exit : function() {
+			this._helloDialog.destroy();
+			delete this._helloDialog;
+		},
+
+		openHelloDialog : function () {
+			this._helloDialog.open();
+		}
+
+	});
+});</pre></div>
+
+			<p class="p">In the <samp class="ph codeph">app</samp> component we add a dependency to
+					<samp class="ph codeph">sap.ui.Device</samp> and initialize the device model in the
+					<samp class="ph codeph">init</samp> method. We can simply pass the loaded dependency
+					<samp class="ph codeph">Device</samp> to the constructor function of the JSONModel. This will
+				make most properties of the <span class="ph"><span class="ph pname">SAPUI5</span></span> device API
+				available as a JSON model.  The model is then set on the component as a named model
+				so that we can reference it in data binding as we have seen in the view above.</p>
+
+			<div class="note note"><span class="notetitle">Note</span> 
+				<p class="p">We have to set the binding mode to <samp class="ph codeph">OneWay</samp> as the device model is
+					read-only and we want to avoid changing the model accidentally  when we bind
+					properties of a control to it. By default, models in <span class="ph"><span class="ph pname">SAPUI5</span></span> are
+					bidirectional (<samp class="ph codeph">TwoWay</samp>). When the property changes, the bound
+					model value is updated as well.</p>
+
+			</div>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/view/Detail.view.xml</div><div type="webapp/view/Detail.view.xml">
+			
+			<div class="note tip"><span class="tiptitle">Tip</span> 
+				<p class="p">You can test the device specific features of your app with the developer tools of
+					your browser. For example in Google Chrome, you can emulate a tablet or a phone
+					easily and see the effects. Some responsive options of <span class="ph"><span class="ph pname">SAPUI5</span></span> are only set
+					initially when loading the app, so you might have to reload your page to see the
+					results.</p>
+
+			</div>
+
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-xml">&lt;mvc:View
+	controllerName="sap.ui.demo.walkthrough.controller.Detail"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:wt="sap.ui.demo.walkthrough.control"&gt;
+	&lt;Page
+		title="{i18n&gt;detailPageTitle}"
+		showNavButton="true"
+		navButtonPress="onNavBack"&gt;
+		&lt;ObjectHeader<span class="ph emphasis emphasis">
+			responsive="true"
+			fullScreenOptimized="true"
+			number="{
+				parts: [{path: 'invoice&gt;ExtendedPrice'}, {path: 'view&gt;/currency'}],
+				type: 'sap.ui.model.type.Currency',
+				formatOptions: {
+					showMeasure: false
+				}
+			}"
+			numberUnit="{view&gt;/currency}"</span>
+			intro="{invoice&gt;ShipperName}"
+			title="{invoice&gt;ProductName}"&gt;
+			<span class="ph emphasis emphasis">&lt;attributes&gt;
+				&lt;ObjectAttribute title="{i18n&gt;quantityTitle}" text="{invoice&gt;Quantity}"&gt;&lt;/ObjectAttribute&gt;
+				&lt;ObjectAttribute title="{i18n&gt;dateTitle}" text="{
+					path: 'invoice&gt;ShippedDate',
+					type: 'sap.ui.model.type.Date',
+					formatOptions: {
+					  style: 'long',
+					  source: {
+						pattern: 'yyyy-MM-ddTHH:mm:ss'
+					  }
+					}
+				  }"/&gt;
+			&lt;/attributes&gt;</span>
+		&lt;/ObjectHeader&gt;
+		&lt;wt:ProductRating id="rating" class="sapUiSmallMarginBeginEnd" change="onRatingChange"/&gt;
+	&lt;/Page&gt;
+&lt;/mvc:View&gt;</pre></div>
+
+			<p class="p">Some controls already have built-in responsive features that can be configured. The
+					<samp class="ph codeph">ObjectHeader</samp> control can be put in a more flexible mode by
+				setting the attribute <samp class="ph codeph">responsive</samp> to <samp class="ph codeph">true</samp> and
+					<samp class="ph codeph">fullScreenOptimized</samp> to true as well. This will show the data
+				that we add to the view now at different positions on the screen based on the device
+				size. </p>
+
+			<p class="p">We add the <samp class="ph codeph">number</samp> and <samp class="ph codeph">numberUnit</samp> field from the list of the
+				previous steps also to the <samp class="ph codeph">ObjectHeader</samp> and use the same formatter
+				with the <samp class="ph codeph">currency</samp> type as in the previous steps. We then define two
+				attributes: The quantity of the invoice and the shipped date which is part of the
+				data model. We have not used this <samp class="ph codeph">shippedDate</samp> field from the
+				invoices JSON file so far, it contains a date in typical string format.</p>
+
+			<p class="p">We now use the <samp class="ph codeph">Date</samp> type and provide the pattern of our date format
+				in the source section of the format options. It will display a more human-readable
+				formatted date text that also fits to small screen devices.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/controller/Detail.controller.js</div><div type="webapp/controller/Detail.controller.js">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-js">sap.ui.define([
+	"sap/ui/core/mvc/Controller",
+	"sap/ui/core/routing/History",
+	"sap/m/MessageToast"<span class="ph emphasis emphasis">,
+	"sap/ui/model/json/JSONModel"</span>
+], function (Controller, History, MessageToast<span class="ph emphasis emphasis">, JSONModel</span>) {
+	"use strict";
+	return Controller.extend("sap.ui.demo.walkthrough.controller.Detail", {
+		onInit : function () {
+			<span class="ph emphasis emphasis">var oViewModel = new JSONModel({
+				currency: "EUR"
+			});
+			this.getView().setModel(oViewModel, "view");
+</span>
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.getRoute("detail").attachPatternMatched(this._onObjectMatched, this);
+		},
+		_onObjectMatched : …
+});</pre></div>
+
+			<p class="p">In the <samp class="ph codeph">Detail</samp> controller we simply add the view model with our
+				currency definition to display the number properly. It is the same code as in the
+					<samp class="ph codeph">InvoiceList</samp> controller file.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">webapp/i18n/i18n.properties</div><div type="webapp/i18n/i18n.properties">
+			
+			<div class="div_pre_codeblock"><pre class="pre codeblock prettyprint lang-prefs"># Detail Page
+detailPageTitle=Walkthrough - Details
+ratingConfirmation=You have rated this product with {0} stars
+<span class="ph emphasis emphasis">dateTitle=Order date
+quantityTitle=Quantity</span></pre></div>
+
+			<p class="p">We add the column names and the attribute titles to our <samp class="ph codeph">i18n</samp>
+				file.</p>
+
+			<p class="p">We can see the results when we decrease the browser's screen size or open the app on
+				a small device.</p>
+
+		</div></div>
+
+		<div class="section"><div class="section_title">Conventions</div><div type="Conventions">
+			
+			<p class="p">Optimize your application for the different screen sizes of phone, tablet, and
+				desktop devices.</p>
+
+		</div></div>
+
+	</div>
+
+	<div class="related-links"> 
+
+<div class="familylinks">
+<div class="parentlink"><br/>
+<strong>Parent topic: </strong><a class="link" href="3da5f4be63264db99f2e5b04c5e853db.html" title="In this tutorial we will introduce you to all major development paradigms of SAPUI5.">Walkthrough</a><br/>
+</div>
+<div class="previouslink"><br/>
+<strong>Previous: </strong><a class="link" href="a96e18b4cd924196b255eb9623431dbb.html" title="In this step, we improve the responsiveness of our app. SAPUI5 applications can be run on phone, tablet, and desktop devices and we can configure the application to make best use of the screen estate for each scenario. Fortunately, SAPUI5 controls like the sap.m.Table already deliver a lot of features that we can use.">Step 35: Responsiveness</a><br/>
+</div>
+<div class="nextlink"><br/>
+<strong>Next: </strong><a class="link" href="d935dbf196d34997bf1ac42ac3e81579.html" title="In the last step of our Walkthrough tutorial, we adjust the content density based on the user’s device. SAPUI5 contains different content densities allowing you to display larger controls for touch-enabled devices and a smaller, more compact design for devices that are operated by mouse. In our app, we will detect the device and adjust the density accordingly.">Step 37: Content Density</a><br/>
+</div>
+</div>
+<div class="relinfo"><div class="relinfotitle ">Related Information</div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.Device.media.RANGESETS.html" alt="../../docs/api/symbols/sap.ui.Device.media.RANGESETS.html" title="../../docs/api/symbols/sap.ui.Device.media.RANGESETS.html">API Reference: <samp class="ph codeph">sap.ui.Device.media.RANGESETS</samp></a></div>
+<div><a class="link" href="../../docs/api/symbols/sap.ui.Device.html" alt="../../docs/api/symbols/sap.ui.Device.html" title="../../docs/api/symbols/sap.ui.Device.html">API Reference: <samp class="ph codeph">sap.ui.Device</samp></a></div>
+</div>
+</div>
+</div></div>
+
+</body>
+</html>
