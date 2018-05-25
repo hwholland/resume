@@ -1,6 +1,0 @@
-/*!
- * SAP UI development toolkit for HTML5 (SAPUI5)
-
-(c) Copyright 2009-2016 SAP SE. All rights reserved
- */
-sap.ui.define(['sap/ui/fl/Utils','jquery.sap.global','sap/ui/fl/changeHandler/Base'],function(U,q,B){"use strict";var R={};R.applyChange=function(c,C,p){var o=c.getDefinition();var m=p.modifier;var P=o.content.labelProperty;if(!P&&m.targets==="xmlTree"){return false;}if(o.texts&&o.texts.fieldLabel&&this._isProvided(o.texts.fieldLabel.value)){if(!C){throw new Error("no Control provided for renaming");}var f=o.texts.fieldLabel.value;if(!P){if(typeof C.setLabel==='function'){P="label";}else if(typeof C.setTitle==='function'){P="title";}else{throw new Error('Control does not support "renameField" change');}}m.setProperty(C,P,f);return true;}else{U.log.error("Change does not contain sufficient information to be applied: ["+o.layer+"]"+o.namespace+"/"+o.fileName+"."+o.fileType);}};R.completeChangeContent=function(c,s){var C=c.getDefinition();if(this._isProvided(s.fieldLabel)){B.setTextInChange(C,"fieldLabel",s.fieldLabel,"XFLD");}else{throw new Error("oSpecificChangeInfo.fieldLabel attribute required");}if(s.labelProperty){C.content.labelProperty=s.labelProperty;}};R._isProvided=function(s){return typeof(s)==="string";};return R;},true);

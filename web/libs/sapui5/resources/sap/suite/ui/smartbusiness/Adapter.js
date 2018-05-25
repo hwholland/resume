@@ -1,5 +1,0 @@
-/*!
-* SAP UI development toolkit for HTML5 (SAPUI5) (c) Copyright 2009-2013 SAP SE. All rights reserved
-* @deprecated since SAPUI 5 version 1.28.0
-*/
-jQuery.sap.declare("sap.suite.ui.smartbusiness.Adapter");(function(){jQuery.sap.require("sap.suite.ui.smartbusiness.Configuration");var S={"Navigation":{func:"getNavigationServicePath"},"ModelerServices":{func:"getMetadataPath"},"CatalogServices":{func:"getCatalogServicePath"},"DrilldownServices":{func:"getMetadataPath"},"RuntimeServices":{func:"getMetadataPath"}};var c=sap.suite.ui.smartbusiness.Configuration;var _={};var g=function(c,s){return c[S[s]["func"]]()+"."+s;};var A=function(){this.getService=function(s,p){p=p||{};var m,a,b,t,d;if(!S[s]){throw new Error("Service '"+s+"' Not Supported!");}m=c.getLibraryModulePath()+"."+s;d=m+"_"+JSON.stringify(p);if(_[d]){return _[d];}jQuery.sap.require(m);b=jQuery.sap.getObject(m);if(b.hasAdapter){a=g(c,s)+"Adapter";jQuery.sap.require(a);b=jQuery.sap.getObject(a);}if(b instanceof Function){var t=new b(p);}else{t=b;}t=jQuery.sap.newObject(t);_[d]=t;return _[d]};this.getCache=function(){return _;}};sap.suite.ui.smartbusiness.Adapter=new A();})();

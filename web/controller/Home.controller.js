@@ -1,9 +1,7 @@
 sap.ui.define([
     'sap/ui/core/mvc/Controller',
-    "sap/ui/model/json/JSONModel",
-    "resume/web/model/js/VizFrame",
-    "sap/viz/ui5/controls/Popover"
-], function(Controller, JSONModel, VizFrame, Popover) {
+    "sap/ui/model/json/JSONModel"
+], function(Controller, JSONModel) {
     "use strict";
 
     /**
@@ -13,60 +11,13 @@ sap.ui.define([
     return Controller.extend("resume.web.controller.Home", {
 
         onInit: function() {
-            var oTokens = this.getOwnerComponent().getModel("tokens");
-            this.getView().setModel(oTokens, "tokens");
-            var oViz = this.getOwnerComponent().getModel("viz");
-            var oTimeline = oViz.getProperty("/timeline");
-            
+            var oData = this.getOwnerComponent().getModel("data");
+            this.getView().setModel(oData, "data");
+            var oTimeline = oData.getProperty("/timeline");
             oTimeline.forEach(element => {
                 var oDate = new Date(element.Date);
-                console.log(oDate);
                 element.Date = oDate;
             });
-            this.getView().setModel(oViz, "viz");
-            /*
-            var oViz = this.getOwnerComponent().getModel("viz");
-            this.getView().setModel(oViz, "viz");
-            console.log(oViz);
-            var oVizProperties = {
-                "general": {
-                },
-                "legend": {
-                    "title": {
-                        "visible": true
-                    }
-                },
-                "plotArea": {
-                    "colorPalette": [
-                        "sapUiChartPaletteSequentialHue1Light3",
-                        "sapUiChartPaletteSequentialHue1Light2",
-                        "sapUiChartPaletteSequentialHue1Light1",
-                        "sapUiChartPaletteSequentialHue1Dark2",
-                        "sapUiChartPaletteSequentialHue1Dark1"
-                    ]
-                },
-                "title": {
-                    "visible": false
-                }
-            };
-            var oVizFrame = this.oVizFrame = this.getView().byId("idVizFrame");
-            //var oVizFrame2 = this.oVizFrame = this.getView().byId("idVizFrame2")
-            oVizFrame.setVizProperties(oVizProperties);
-            //oVizFrame2.setVizProperties(oVizProperties);
-            oVizFrame.setModel(oViz);
-            //oVizFrame2.setModel(oViz);
-            var oVizPopover = new Popover(this.createId("Popover"));
-            console.log(this.getView());
-            oVizPopover.connect(oVizFrame.getVizUid());
-            //oVizPopover.connect(oVizFrame2.getVizUid());
-
-            */
-        },
-
-        onAfterRendering: function() {
-            //console.log(this);
-            //console.log(this.getView());
-            
         },
 
         onPressLinkedIn: function() {
@@ -78,10 +29,10 @@ sap.ui.define([
         },
 
         onPressSDN: function() {
-            window.open("https://people.sap.com/harrison.holland4", "_blank");  
+            window.open("https://people.sap.com/harrison.holland4", "_blank");
         },
 
-        onPressEmail: function () {
+        onPressEmail: function() {
             sap.m.URLHelper.triggerEmail("harrisonholland@gmail.com", "Info Request");
         },
 

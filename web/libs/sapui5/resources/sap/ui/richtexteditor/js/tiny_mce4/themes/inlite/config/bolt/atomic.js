@@ -1,1 +1,0 @@
-configure({configs:['./prod.js']});

@@ -1,1 +1,0 @@
-define("tinymce/codesampleplugin/Utils",[],function(){function i(e){return e&&e.nodeName=='PRE'&&e.className.indexOf('language-')!==-1;}function t(p){return function(a,b){return p(b);};}return{isCodeSample:i,trimArg:t};});

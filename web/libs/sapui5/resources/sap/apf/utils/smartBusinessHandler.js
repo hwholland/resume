@@ -1,7 +1,0 @@
-/*!
- * SAP APF Analysis Path Framework
- * 
- * (c) Copyright 2012-2014 SAP SE. All rights reserved
- */
-jQuery.sap.declare('sap.apf.utils.smartBusinessHandler');jQuery.sap.require('sap.apf.core.constants');
-sap.apf.utils.SmartBusinessHandler=function(i){"use strict";var s=this;var c={getApplicationConfigProperties:i.getApplicationConfigProperties,createReadRequestByRequiredFilter:i.createReadRequestByRequiredFilter,getTextNotHtmlEncoded:i.getTextNotHtmlEncoded};var m=i.oMessageHandler;var S=i.startParameter;var d=new jQuery.Deferred();var p=d.promise();var f=[];var P=[];var C=[];var a={FILTER_TYPE:"FI",PARAMETER_TYPE:"PA"};var g=function(){return S.getEvaluationId();};var e=g();this.initialize=function(){p=this._fetchSBData().then(this._pushAllSBFilters);};this.getEvaluationId=function(){return e;};this._fetchSBData=function(){if(e){var b=c.getApplicationConfigProperties().smartBusiness||c.getApplicationConfigProperties().smartBusinessService;var h=b.runtime||b.evaluation;var E=sap.apf.core.constants.entitySets.smartBusiness;var j=[h.service,"/",E,"('",e,"')/FILTERS?$format=json"].join("");if(d.state()==="pending"){jQuery.ajax({url:j,success:function(k){d.resolveWith(s,[k]);},error:function(k,t,l){var M=m.createMessageObject({code:"6011"});m.putMessage(M);}});}}else{d.resolveWith(s,[{d:{results:[]}}]);}return d.promise();};this._pushAllSBFilters=function(b){var h=b.d.results;h.forEach(function(j){if(j.TYPE===a.FILTER_TYPE){f.push(j);}else if(j.TYPE===a.PARAMETER_TYPE){P.push(j);}C.push(j);});return C;};this.getAllFilters=function(){return p;};};

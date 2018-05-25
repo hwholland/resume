@@ -11,17 +11,9 @@
             "version": "1.0.0"
         },
         "dataSources": {
-             "tokens": {
+             "data": {
                 "type": "json",
-                "uri": "model/json/tokens.json"
-            },
-            "viz": {
-                "type": "json",
-                "uri": "model/json/viz.json"
-            },
-            "test": {
-                "type": "json",
-                "uri": "model/json/test.json"
+                "uri": "model/json/data.json"
             }
         }
     },
@@ -29,26 +21,15 @@
         "_version": "1.54.2",
         "rootView": {
             "viewName": "resume.web.view.App",
-            "type": "XML",
+            "type": "JS",
              "async": true
         },
         "models": {
-            "tokens": {
-                "dataSource": "tokens",
+            "data": {
+                "dataSource": "data",
                 "preload": true,
                 "type": "sap.ui.model.json.JSONModel"
-            },
-            "viz": {
-                "dataSource": "viz",
-                "preload": true,
-                "type": "sap.ui.model.json.JSONModel"
-            },
-            "test": {
-                "dataSource": "test",
-                "preload": true,
-                "type": "sap.ui.model.json.JSONModel"
-            }
-        },
+            }        },
         "dependencies": {
             "minUI5Version": "1.54.2",
             "libs": {
@@ -69,7 +50,7 @@
            "routing": {
             "config": {
                 "routerClass": "sap.m.routing.Router",
-                "controlId": "app",
+                "controlId": "resume-app",
                 "controlAggregation": "pages",
                 "transition": "show",
                 "async": true
