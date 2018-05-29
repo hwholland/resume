@@ -1,0 +1,75 @@
+<mvc:View controllerName="nav.controller.App" displayBlock="true" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.uxap" 
+	xmlns:suite="sap.suite.ui.commons" 
+	xmlns:layout="sap.ui.layout" 
+	xmlns:forms="sap.ui.layout.form" 
+	xmlns:core="sap.ui.core" 
+	xmlns:m="sap.m" height="100%">
+	<m:App id="app" showHeader="false">
+		<m:Page showHeader="false">
+			<ObjectPageLayout alwaysShowContentHeader="false" id="ObjectPageLayout" showTitleInHeaderContent="true" subSectionLayout="TitleOnLeft" useIconTabBar="true">
+				<headerTitle>
+					<ObjectPageHeader headerDesign="Light" id="header" objectImageShape="Circle" objectImageURI="./view/img/picture.jpg" objectSubtitle="Software Engineer &amp; Data Architect" objectTitle="Harrison Holland">
+						<actions>
+							<ObjectPageHeaderActionButton icon="sap-icon://email" text="email" press="onPressEmail" type="Transparent"/>
+						</actions>
+					</ObjectPageHeader>
+				</headerTitle>
+				<headerContent>
+					<layout:VerticalLayout>
+						<m:ObjectStatus text="Atlanta, GA" title="Location"/>
+						<m:ObjectStatus text="+1 (757) 291-9057" title="Phone"/>
+						<m:ObjectAttribute active="false" text="harrison@runsimple.io" title="Email"/>
+					</layout:VerticalLayout>
+					<layout:VerticalLayout>
+						<m:ObjectAttribute active="true" text="https://www.linkedin.com/in/harrisonholland" title="LinkedIn" press="onPressLinkedIn"/>
+						<m:ObjectAttribute active="true" text="https://github.com/hwholland" title="GitHub" press="onPressGithub"/>
+						<m:ObjectAttribute active="true" text="https://people.sap.com/harrison.holland4" title="SAP Developer Network" press="onPressSDN"/>
+					</layout:VerticalLayout>
+					<layout:HorizontalLayout>
+						<m:Text text="SAP HANA Architect and SAP UI5 Developer with expertise in software product development, business software analysis, and process re-engineering and delivery. Entrepreneurial leader recognized as the Founder of three start-ups and for Executive experience running a multi-million dollar consulting firm. Hands-on product developer devoted to solving customer pain points and managing full lifecycle development projects." width="375px"/>
+					</layout:HorizontalLayout>
+				</headerContent>
+				<sections>
+					<ObjectPageSection title="Overview">
+						<subSections>
+							<ObjectPageSubSection>
+								<blocks>
+									<suite:Timeline id="idTimeline" axisOrientation="Horizontal" enableDoubleSided="true" lazyLoading="true" groupBy="Employer" textHeight="4" content="{timeline>/data}" showHeaderBar="false" showIcons="false">
+										<suite:content>
+											<suite:TimelineItem id="idTemplateItem" maxCharacters="5000" dateTime="{timeline>Date}" userNameClickable="true" text="{timeline>Text}" status="{timeline>Status}" title="{timeline>Title}" userName="{timeline>UserName}">
+											</suite:TimelineItem>
+										</suite:content>
+									</suite:Timeline>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection>
+					<ObjectPageSection title="Startup">
+						<subSections>
+							<ObjectPageSubSection title="solo">
+								<blocks>
+									<forms:SimpleForm width="100%">
+										<forms:content>
+											<core:Title text="Work Details"/>
+											<m:Label text="Category"/>
+											<m:Text text="{blocks>/startup/0/category}"/>
+											<m:Label text="Primary Responsibilities"/>
+											<m:Text text="{blocks>/startup/0/responsibilities}"/>
+											<m:Label text="Duration"/>
+											<m:Text text="{blocks>/startup/0/duration}"/>
+											<core:Title text="Work Description"/>
+											<m:Label text="Summary"/>
+											<m:Text text="{blocks>/startup/0/summary}"/>
+										</forms:content>
+									</forms:SimpleForm>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection>
+				</sections>
+			</ObjectPageLayout>
+		</m:Page>
+	</m:App>
+</mvc:View>

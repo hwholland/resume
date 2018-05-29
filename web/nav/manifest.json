@@ -1,0 +1,84 @@
+{
+    "_version": "1.0.0",
+    "sap.app": {
+        "_version": "1.0.0",
+        "id": "nav",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "dataSources": {
+            "timeline": {
+                "type": "json",
+                "uri": "json/timeline.json"
+            },
+            "blocks": {
+                "type": "json",
+                "uri": "json/blocks.json"
+            }
+        },
+        "title": "{{title}}",
+        "description": "{{description}}",
+        "applicationVersion": {
+            "version": "1.0.0"
+        }
+    },
+
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+
+    "sap.ui5": {
+        "resourceRoots": {},
+        "rootView": {
+            "viewName": "nav.view.App",
+            "type": "XML",
+            "async": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "nav.i18n.i18n"
+                }
+            },
+            "timeline": {
+                "dataSource": "timeline",
+                "preload": true,
+                "type": "sap.ui.model.json.JSONModel"
+            },
+            "blocks": {
+                "dataSource": "blocks",
+                "preload": true,
+                "type": "sap.ui.model.json.JSONModel"
+            }
+        },
+        "dependencies": {
+            "minUI5Version": "1.54.2",
+            "libs": {
+                "sap.ui.core": {
+                    "lazy": false
+                },
+                "sap.uxap": {
+                    "lazy": false
+                }
+            }
+        },
+        "resources": {
+            "css": [{
+                "uri": "css/style.css"
+            }]
+        }
+    }
+}

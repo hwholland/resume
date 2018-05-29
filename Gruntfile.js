@@ -1,39 +1,39 @@
 module.exports = function(grunt) {
 
-    // Project configuration.
-    grunt.initConfig({
-      pkg: grunt.file.readJSON('package.json'),
-      openui5_preload: {
-        component: {
-          options: {
-            resources: {
-              cwd: '',
-              prefix: '',
-              src: [
-                '!web/ui5/**/*.js',
-                '!web/sapui5/**/*.js',
-                '!node_modules/**/*.js',
-                'web/**/*.js',
-                'web/**/*.fragment.html',
-                'web/**/*.fragment.json',
-                'web/**/*.fragment.xml',
-                'web/**/*.view.html',
-                'web/**/*.view.json',
-                'web/**/*.view.xml',
-                'web/**/*.properties'
-              ]
-            },
-            dest: '',
-            compress: true
+  // Project configuration.
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    openui5_preload: {
+      component: {
+        options: {
+          resources: {
+            cwd: '',
+            prefix: '',
+            src: [
+              '!web/ui5/**',
+              '!node_modules/**',
+              'web/nav/json/timeline.json',
+              'web/nav/Component.js',
+              'web/nav/index.html',
+              'web/nav/manifest.json',
+              'web/nav/view/App.view.xml',
+              'web/nav/controller/App.controller.js',
+              'web/nav/view/block/entreprenuer.js',
+              'web/nav/view/block/entreprenuer.view.xml',
+              'web/nav/i18n/*'
+            ]
           },
-          components: true
-        }
+          dest: '',
+          compress: true
+        },
+        components: true
       }
-    });
-  
-    grunt.loadNpmTasks('grunt-openui5');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.registerTask('default', [
-        "openui5_preload"
-    ]);
-  }
+    }
+  });
+
+  grunt.loadNpmTasks('grunt-openui5');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.registerTask('default', [
+      "openui5_preload"
+  ]);
+}

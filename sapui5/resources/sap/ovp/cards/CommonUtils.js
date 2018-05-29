@@ -1,1 +1,0 @@
-(function(){"use strict";jQuery.sap.declare("sap.ovp.cards.CommonUtils");sap.ovp.cards.CommonUtils={app:undefined,navigationHandler:undefined,enable:function(a,n){this.app=a;this.navigationHandler=n;},getApp:function(){return this.app;},getNavigationHandler:function(){return this.navigationHandler;}};}());

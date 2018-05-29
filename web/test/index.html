@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta charset="utf-8">
+
+		<title>Object Page with LazyLoading</title>
+
+		<script id="sap-ui-bootstrap"
+			src="../ui5/resources/sap-ui-core.js"
+			data-sap-ui-libs="sap.m"
+			data-sap-ui-theme="sap_belize"
+			data-sap-ui-xx-bindingSyntax="complex"
+			data-sap-ui-preload="async"
+			data-sap-ui-compatVersion="edge"
+			data-sap-ui-resourceroots='{"sap.uxap.sample.ObjectPageOnJSONWithLazyLoading": "./", "sap.ui.demo.mock": "mockdata"}'>
+		</script>
+
+		<!-- Application launch configuration -->
+		<script>
+
+			sap.ui.getCore().attachInit(function() {
+				new sap.m.App ({
+					pages : [
+						new sap.m.Page({
+							title : "Object Page with LazyLoading",
+							enableScrolling : false,
+							content : [ new sap.ui.core.ComponentContainer({
+								height : "100%", name : "sap.uxap.sample.ObjectPageOnJSONWithLazyLoading",
+								settings : {
+									id : "sap.uxap.sample.ObjectPageOnJSONWithLazyLoading"
+								}
+						})
+					]
+						})
+					]					
+				}).placeAt("content");
+			});
+
+		</script>
+	</head>
+
+	<!-- UI Content -->
+	<body class="sapUiBody" id="content" role="application">
+	</body>
+
+</html>

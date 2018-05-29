@@ -1,6 +1,0 @@
-/*!
- * SAP UI development toolkit for HTML5 (SAPUI5)
-
-(c) Copyright 2009-2016 SAP SE. All rights reserved
- */
-sap.ui.define(['jquery.sap.global','sap/ui/fl/changeHandler/Base','sap/ui/fl/Utils'],function(q,B,F){"use strict";var O={};O.applyChange=function(c,C,m,v){if(!c){throw new Error("No change instance");}var o=c.getDefinition();if(!o.selector||!o.content||!o.content.orderFields||o.content.orderFields.length===0||Object.keys(o.selector).length!==1){throw new Error("Change format invalid");}O._applyChange(C,o,m,v);};O._applyChange=function(c,C,m,v){var g=m.getAggregation(c,"groupElements");var G=g.length;var k=C.content.orderFields;var K=k.length;var o={},a={};var s;var i;for(i=0;i<G;i++){a=g[i];if(!m.getId(a)){return;}s=m.getId(a);o[s]=a;}m.removeAllAggregation(c,"groupElements",v);for(i=0;i<G;i++){s=k[i];if(o[s]){m.insertAggregation(c,"groupElements",o[s],i);o[s]=null;}}i=K;q.each(o,function(b,e){if(e!==null){i+=1;m.insertAggregation(c,"groupElements",e,i);}});};O.completeChangeContent=function(c,s){var C=c.getDefinition();if(s.orderFields){if(!C.content){C.content={};}if(!C.content.orderFields){C.content.orderFields={};}C.content.orderFields=s.orderFields;}else{throw new Error("oSpecificChangeInfo.orderFields attribute required");}};return O;},true);

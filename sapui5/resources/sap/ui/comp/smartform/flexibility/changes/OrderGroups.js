@@ -1,6 +1,0 @@
-/*!
- * SAP UI development toolkit for HTML5 (SAPUI5)
-
-(c) Copyright 2009-2016 SAP SE. All rights reserved
- */
-sap.ui.define(['jquery.sap.global','sap/ui/fl/changeHandler/Base','sap/ui/fl/Utils'],function(q,B,F){"use strict";var O={};O.applyChange=function(c,C,m,v){if(!c){throw new Error("No change instance");}var o=c.getDefinition();if(!o.selector||!o.content||!o.content.orderGroups||o.content.orderGroups.length===0||Object.keys(o.selector).length!==1){throw new Error("Change format invalid");}var g=m.getAggregation(C,"groups");var G=g.length;var k=o.content.orderGroups;var K=k.length;var a={},b={};var s;var i;for(i=0;i<G;i++){b=g[i];if(!m.getId(b)){return true;}s=m.getId(b);a[s]=b;}if(G>0){m.removeAllAggregation(C,"groups",v);}for(i=0;i<G;i++){s=k[i];if(a[s]){m.insertAggregation(C,"groups",a[s],i);a[s]=null;}}i=K;q.each(a,function(d,e){if(e!==null){i+=1;m.insertAggregation(C,"groups",e,i);}});return true;};O.completeChangeContent=function(c,s){var C=c.getDefinition();if(s.orderGroups){if(!C.content){C.content={};}if(!C.content.orderGroups){C.content.orderGroups={};}C.content.orderGroups=s.orderGroups;}else{throw new Error("oSpecificChangeInfo.orderGroups attribute required");}};return O;},true);

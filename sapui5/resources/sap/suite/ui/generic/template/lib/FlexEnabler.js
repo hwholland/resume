@@ -1,1 +1,0 @@
-jQuery.sap.declare("sap.suite.ui.generic.template.lib.FlexEnabler");sap.ui.core.Control.extend("sap.suite.ui.generic.template.lib.FlexEnabler",{metadata:{properties:{flexEnabled:{type:"boolean",group:"Misc",defaultValue:true}}},renderer:function(r,c){"use strict";}});
