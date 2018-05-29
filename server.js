@@ -43,6 +43,6 @@ oApp.use("/web", express.static(__dirname + "/web"));
 oRouter.loadRoutes();
 oApp.listen(3000);
 
-open("http://localhost:3000/web/nav/index.html");
+//open("http://localhost:3000/web/nav/index.html");
 
 console.log("Web-server running at\n  => " + "http://localhost:3000/web" + " \nCTRL + C to shutdown");
