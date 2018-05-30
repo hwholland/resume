@@ -9,6 +9,10 @@ router.prototype.loadRoutes = function() {
     'use strict';
     var that = this;
     
+    this.app.get("/", function(oRequest, oResponse) {
+        oResponse.redirect("/web/nav/index.html");
+    });
+
     this.app.get("/web", function(oRequest, oResponse) {
         oResponse.redirect("/web/nav/index.html");
     });
