@@ -8,15 +8,7 @@ sap.ui.define([
 
         onInit: function () {
             var oTimelineModel = this.getOwnerComponent().getModel("timeline");
-            var oTimelineData = oTimelineModel.getData();
-            /*
-            oTimelineData.data.forEach(element => {
-                var oDate = new Date(element.Date);
-                element.Date = oDate;
-            });
-            */
-            oTimelineModel.setData(oTimelineData);
-
+            this.getView().setModel(oTimelineModel, "timeline");
             var oBlockModel = this.getOwnerComponent().getModel("blocks");
             var oStartupData = oBlockModel.getProperty("/startup");
             var oConsultingData = oBlockModel.getProperty("/consulting");

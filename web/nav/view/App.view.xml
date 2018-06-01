@@ -36,12 +36,15 @@
 						<subSections>
 							<ObjectPageSubSection>
 								<blocks>
-									<suite:Timeline id="idTimeline" axisOrientation="Horizontal" enableDoubleSided="true" lazyLoading="true" groupBy="Employer" textHeight="4" content="{timeline>/data}" showHeaderBar="false" showIcons="false">
+									<layout:VerticalLayout>
+									
+									<suite:Timeline id="idTimeline" sortOldestFirst="true" enableScroll="false" axisOrientation="Vertical" enableDoubleSided="true" lazyLoading="true" textHeight="4" content="{timeline>/data}" showHeaderBar="false" showIcons="false" height="100%">
 										<suite:content>
 											<suite:TimelineItem id="idTemplateItem" maxCharacters="5000" dateTime="{timeline>Date}" userNameClickable="true" text="{timeline>Text}" status="{timeline>Status}" title="{timeline>Title}" userName="{timeline>UserName}">
 											</suite:TimelineItem>
 										</suite:content>
 									</suite:Timeline>
+									</layout:VerticalLayout>
 								</blocks>
 							</ObjectPageSubSection>
 						</subSections>
